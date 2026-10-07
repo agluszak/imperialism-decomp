@@ -91,10 +91,10 @@ public:
   virtual void ExecuteNationPendingActionStateMachine(void);
   void PlaceCity(short homeTileIndex, char* cityName);
   virtual bool HasDeveloper(void);
-  virtual void BuildTransportLinkedInfluenceMap(char** outInfluenceMap);
+  virtual void TraceSupplyRoutes(char** outInfluenceMap);
   virtual void TraceRail(char* regionMap, short regionId);
 
-  char* BuildCityInfluenceLevelMap();
+  char* MakeConnectionMap();
 
   // ---- turn-event message dispatch ----
   virtual void FinishCityPhase(void);
@@ -110,7 +110,7 @@ public:
   // city-stock vector here. The base implementation is a bare `ret 4`.
   // ORACLE: Mac names TGreatPower::UpdateCountryStockpile(short*).
   virtual void UpdateCountryStockpile(short* needVector);
-  virtual unsigned int GetMerchantCapacityForProposal(int proposalCode);
+  virtual unsigned int GetUnreservedMerchantCapacity(int proposalCode);
   // ORACLE: Mac names TGreatPower::AddTransportedItems().
   virtual void AddTransportedItems(void); // slot 0x41
   // ORACLE: Mac names TGreatPower::AddPurchasedItems().
@@ -142,8 +142,7 @@ public:
   virtual void MoveCivilians(void); // Mac oracle
   // slot 0x57 — body 0x004e03d0: armyTransportRemaining = transportCapacity / 5.
   virtual void MoveArmy(void); // Mac oracle
-  virtual void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
-                                                                            int isBoycottEnabled);
+  virtual void TellColoniesToBoycott(int targetNationSlot, int isBoycottEnabled);
   virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);
   virtual void InitializeTradeStatus(void);
   // ORACLE: Mac names TGreatPower::RecallTradeBids().
@@ -160,7 +159,7 @@ public:
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
   virtual void ConsumeMerchantCapacityForPurchase(int delta);             // slot 0x66
   virtual void SetTradeOffersFor(short resourceKind, short offerContext); // slot 0x19c
-  virtual bool AreAdvancedManufacturedTradeOffersExhausted(void);         // slot 0x68
+  virtual bool WereAllOfferedGoodsSold(void);                             // slot 0x68
   // ORACLE: Mac TGreatPower::SetItemPotentials(short, short).
   virtual void SetItemPotentials(short resourceKind, short value); // slot 0x69
   // ORACLE: Mac names TGreatPower::RememberTradeBids().
@@ -173,14 +172,14 @@ public:
   // ORACLE: Mac names this TGreatPower::AddToDealBook(short, short, short, short, long).
   virtual void AddToDealBook(short kind, NationSlot targetNation, short value, short slotIndex,
                              int payload);
-  virtual short GetTrackedSlotEntryCountLow(short targetSlot); // slot 0x6d
-  virtual bool AnyDealHasZeroValue(short targetSlot);          // slot 0x6e
+  virtual short GetNumDealsIn(short targetSlot);  // slot 0x6d
+  virtual bool WasItemDeclined(short targetSlot); // slot 0x6e
   // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
   virtual void GetDealInfo(short slotIndex, short ordinal, short* outKind, short* outValue,
                            short* outTargetNation, int* outPayload);
-  virtual void SetDealPayloadForTarget(int targetSlot, int matchKey,
-                                       int payload); // slot 0x70
-  virtual void ClearTradeOffers(void);               // index 113
+  virtual void DealInterupted(int targetSlot, int matchKey,
+                              int payload); // slot 0x70
+  virtual void ClearTradeOffers(void);      // index 113
   // ORACLE: Mac names TGreatPower::SetDiplomacyPolicies().
   virtual void SetDiplomacyPolicies(); // index 114
   virtual void ResetPolicies(void);    // index 115
@@ -195,9 +194,9 @@ public:
   // ORACLE: Mac names TGreatPower::FinishDiplomacyPhase().
   virtual void FinishDiplomacyPhase();                                // index 120 — body 0x004de7e0
   virtual void DecrementNeedLevelByNationStep(NationSlot nationSlot); // index 121
-  virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
-  virtual void AcceptOffer(short proposalIndex);                                       // index 123
-  virtual void RejectOffer(short proposalQueueIndex);                                  // index 124
+  virtual bool CanAfford(short additionalCost);                       // index 122
+  virtual void AcceptOffer(short proposalIndex);                      // index 123
+  virtual void RejectOffer(short proposalQueueIndex);                 // index 124
   virtual bool IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
                                                          int targetNation);
   virtual void InitializeDiplomacyOffers(void);
@@ -267,14 +266,13 @@ public:
   // ORACLE: Mac names TGreatPower::KillUnitsIn(long).
   virtual void KillUnitsIn(int regionId);
   virtual void AddColony(int targetNation);
-  virtual void DeclareWarOnTargetForAlignedMinors(int targetNation);
-  virtual void MakePeaceWithTargetForAlignedMinors(int targetNation);
-  virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot,
-                                                       DiplomacyRelationship relationship);
+  virtual void TellColoniesAboutNewEnemy(int targetNation);
+  virtual void TellColoniesAboutNewPeace(int targetNation);
+  virtual void TellColoniesAboutNewTreaty(int targetNationSlot, DiplomacyRelationship relationship);
   virtual void SorryYouLose(void);
   virtual int SumCommodityRecordAccumulatedValues(void);
   virtual void RecomputeAiExpansionAndMissionPressureScores(void);
-  virtual void RefreshTrackedEntriesAndReplanAiDevelopment(int unused);
+  virtual void ReassessMissions(int unused);
   virtual bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
   // ORACLE: Mac names TGreatPower::AnnounceLater(short, short, short).
   virtual void AnnounceLater(short orderKind, short payload, short flags);
@@ -386,7 +384,7 @@ public:
   float ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordIndex, int mode,
                                                    int linkCityRecordIndex);
   float ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int mode);
-  int SumNavyOrderPriorityForNationAndNodeType(TZone* zone);
+  int GetNavalForceIn(TZone* zone);
   int SumNavyOrderPriorityForNation();
   void IGreatPower(short nationSlotIndex, short humanControlledFlag);
 

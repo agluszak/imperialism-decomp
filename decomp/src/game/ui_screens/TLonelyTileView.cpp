@@ -24,7 +24,7 @@ TLonelyTileView::~TLonelyTileView() {}
 void TLonelyTileView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
   CRect destRect;
-  QueryContentBounds(&destRect);
+  GetExtent(&destRect);
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
   RECT srcRect;

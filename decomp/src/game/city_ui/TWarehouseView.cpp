@@ -44,7 +44,7 @@ void TWarehouseView::DoStartup() {
 
   // 'name' -- the warehouse title label.
   TStaticText* name =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   name->InstallTextStyle(style.desc, 0);
   name->SetJustification(1, false);
   g_pSimMgr->GetString(0x2719, 0xd, &hoverText);
@@ -56,7 +56,7 @@ void TWarehouseView::DoStartup() {
   const int* commodityTag = g_pTradeSummarySelectionMap;
   TPictureNumberText** commodityControl = commodityValueControls;
   for (int commodityCount = 0; commodityCount < 23; ++commodityCount) {
-    TStaticText* control = static_cast<TStaticText*>(ResolveControlByTag(*commodityTag));
+    TStaticText* control = static_cast<TStaticText*>(FindSubView(*commodityTag));
     *commodityControl = static_cast<TPictureNumberText*>(control);
     if (control != NULL) {
       control->InstallTextStyle(style.desc, 0);
@@ -68,7 +68,7 @@ void TWarehouseView::DoStartup() {
 
   // 'labo' -- labor value control.
   laborValueControl =
-      static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'o')));
+      static_cast<TPictureNumberText*>(FindSubView(IMPERIALISM_FOURCC('l', 'a', 'b', 'o')));
   if (laborValueControl != NULL) {
     laborValueControl->InstallTextStyle(style.desc, 0);
     laborValueControl->SetJustification(1, false);
@@ -76,7 +76,7 @@ void TWarehouseView::DoStartup() {
 
   // 'powe' -- power value control.
   powerValueControl =
-      static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e')));
+      static_cast<TPictureNumberText*>(FindSubView(IMPERIALISM_FOURCC('p', 'o', 'w', 'e')));
   if (powerValueControl != NULL) {
     powerValueControl->InstallTextStyle(style.desc, 0);
     powerValueControl->SetJustification(1, false);
@@ -85,7 +85,7 @@ void TWarehouseView::DoStartup() {
   if (g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] != 0) {
     TWindow* window = GetWindow();
     CRect windowBounds;
-    window->QueryBounds(&windowBounds);
+    window->GetFrame(&windowBounds);
 
     commodityValueControls[6]->Show(1, 1);
     commodityValueControls[12]->Show(1, 1);
@@ -96,10 +96,10 @@ void TWarehouseView::DoStartup() {
     cachedBitmap->CopyBitmapDimensionsToPoint(&bitmapSize);
     CRect expandedBounds(windowBounds.left, windowBounds.top, windowBounds.left + bitmapSize.x,
                          windowBounds.top + bitmapSize.y);
-    window->ApplyBounds(&expandedBounds, true);
+    window->SetFrame(&expandedBounds, true);
 
     CRect pictureBounds(0, 0, bitmapSize.x, bitmapSize.y);
-    ApplyBounds(&pictureBounds, false);
+    SetFrame(&pictureBounds, false);
 
     unsigned int shiftedControlTags[6] = {
         IMPERIALISM_FOURCC('h', 'o', 'r', 's'), IMPERIALISM_FOURCC('f', 'o', 'o', 'd'),
@@ -108,12 +108,12 @@ void TWarehouseView::DoStartup() {
     };
     unsigned int* shiftedTag = shiftedControlTags;
     for (int shiftedCount = 0; shiftedCount < 6; ++shiftedCount) {
-      TView* shiftedControl = ResolveControlByTag(*shiftedTag);
+      TView* shiftedControl = FindSubView(*shiftedTag);
       CRect shiftedBounds;
-      shiftedControl->QueryBounds(&shiftedBounds);
+      shiftedControl->GetFrame(&shiftedBounds);
       shiftedBounds.top += static_cast<short>(bitmapSize.x);
       shiftedBounds.bottom += static_cast<short>(bitmapSize.x);
-      shiftedControl->ApplyBounds(&shiftedBounds, false);
+      shiftedControl->SetFrame(&shiftedBounds, false);
       ++shiftedTag;
     }
   }
@@ -160,9 +160,9 @@ void TWarehouseView::DoStartup() {
         scanBracketExpressions(g_pSimMgr, &hoverText, static_cast<LPCSTR>(hoverTemplate),
                                static_cast<LPCSTR>(commodityName), static_cast<LPCSTR>(valueText));
         CRect hoverBounds;
-        hoverControl->QueryBounds(&hoverBounds);
+        hoverControl->GetFrame(&hoverBounds);
         hoverBounds.left -= 0x28;
-        hoverControl->ApplyBounds(&hoverBounds, true);
+        hoverControl->SetFrame(&hoverBounds, true);
         break;
       }
       default:

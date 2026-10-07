@@ -65,9 +65,8 @@ public:
   virtual void NoOpTurnEventStateVtableSlot8C(int arg);        // 0x8c
   virtual bool MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
                                         short proposalCode); // 0x90
-  virtual char PoseWarOfferIfTurnFlowReady(int sourceNation, int minorNationSlot,
-                                           int enemyNationSlot,
-                                           int promptCode); // 0x94
+  virtual char MakeWarOfferDialog(int sourceNation, int minorNationSlot, int enemyNationSlot,
+                                  int promptCode); // 0x94
   virtual void ShowOfferSheet(short respondingNation, short offeringNation, short proposedAmount,
                               short maxAmount, short commodityType); // 0x98; Mac oracle
   virtual void ShowNewspaper(int pageIndex = 0);                     // 0x9c; Mac oracle uses long
@@ -75,20 +74,20 @@ public:
   virtual void ShowCitySiteSelectorAndWait(int payload,
                                            TEventHandler* waitTarget); // 0xa4
   virtual void ShowCityProductionView(short nationSlot);               // 0xa8; Mac oracle
-  virtual void RefreshCityProductionUi();                              // 0xac 0x5d7f70
+  virtual void UpdateCityScreen();                                     // 0xac 0x5d7f70
   virtual void CloseBuilding(short buildingSlot);                      // 0xb0 0x5d7f90
-  virtual bool ShowNewCityDialog(TTown* town);                         // 0xb4 0x5dcdf0
+  virtual bool MakeNewTownDialog(TTown* town);                         // 0xb4 0x5dcdf0
   virtual void ShowBuildingExpansionDialog(short buildingSlotId, class TCity* city,
                                            class TCityProductionView* productionView); // 0xb8
-  virtual void ShowTerrainMap(short nationSlot);                            // 0xbc; Mac oracle
-  virtual void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches();    // 0xc0 0x5dc180
-  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();           // 0xc4 0x5dc1c0
-  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();        // 0xc8 0x5dc1a0
-  virtual void RefreshActiveGoldControlAndUiRuntimeState();                 // 0xcc 0x5dc160
-  virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot);  // 0xd0
-  virtual void NoOpTurnEventStateVtableSlotD4(int arg);                     // 0xd4
-  virtual void ShowCombatReportDialog(TCombatReportContext* reportContext); // 0xd8 0x5dcf20
-  virtual int ShowConstructionOptionsDialog(int dialogValue = 0);           // 0xdc
+  virtual void ShowTerrainMap(short nationSlot);                           // 0xbc; Mac oracle
+  virtual void CreateMapArtStorage();                                      // 0xc0 0x5dc180
+  virtual void GenerateMiniMap();                                          // 0xc4 0x5dc1c0
+  virtual void GenerateRegions();                                          // 0xc8 0x5dc1a0
+  virtual void RefreshActiveGoldControlAndUiRuntimeState();                // 0xcc 0x5dc160
+  virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot); // 0xd0
+  virtual void NoOpTurnEventStateVtableSlotD4(int arg);                    // 0xd4
+  virtual void MakeCombatReport(TCombatReportContext* reportContext);      // 0xd8 0x5dcf20
+  virtual int MakeEngineeringDialog(int dialogValue = 0);                  // 0xdc
   virtual void HandleGlobalMapNationContextSelection(int nationSlot, int unused = 0); // 0xe0
   // Modal town-name notice; stringCode indexes the town-names string list.
   virtual void ShowTownNameDialog(int stringCode);                            // 0xe4
@@ -124,14 +123,14 @@ public:
   bool ModalMessage(long templateKind, CString titleSuffix, CString message,
                     const POINT& messagePosition, short overlayMode, unsigned char showCancel);
 
-  bool ShowCivilianReportDialogAndReturnConfirm(class TCivUnit* pCivilianOrderEntry);
+  bool MakeCivInfoWindow(class TCivUnit* pCivilianOrderEntry);
 
   bool RunNationInfoModalAndReturnNonCancel(int messageKind, CString titleSuffix,
                                             const char* messageChars, int messageLength,
                                             const POINT& messagePosition, short contextTag,
                                             char showCancel);
 
-  bool DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex, int* categoryCounts);
+  bool MakeArmyInfoWindow(short cityRecordIndex, int* categoryCounts);
 
   int MakePlanetSeedDialog(const char* instruction, CString& planetSeed, const char* firstChoice,
                            const char* secondChoice, int initialChoice, bool showCancel) const;

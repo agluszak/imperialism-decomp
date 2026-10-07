@@ -39,7 +39,7 @@ IMPLEMENT_SERIAL(TObject, CObject, 1)
 void TObject::Serialize(CArchive& archive) {
   ArchiveStreamAdapter adapter(&archive);
   TFileStream stream;
-  stream.SetBackingArchive(&adapter);
+  stream.IFileStream(&adapter);
 
   if (archive.IsStoring()) {
     WriteTo(&stream);

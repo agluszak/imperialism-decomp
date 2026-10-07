@@ -42,7 +42,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
   g_bMultiplayerScenarioSetupActive = false;
   scenarioListRowCount = 0;
 
-  TTextList* scenarioList = static_cast<TTextList*>(ResolveControlByTag(kControlTagList));
+  TTextList* scenarioList = static_cast<TTextList*>(FindSubView(kControlTagList));
   scenarioList->AssertValid();
 
   // Scenario slots 9..15 are single-player only, so a multiplayer session skips them.
@@ -93,7 +93,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
   ResolveUiThemeColor(0x2b6c, &shadowColor);
 
   TDropShadowText* moreLabel =
-      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagMore)); // 'more'
+      static_cast<TDropShadowText*>(FindSubView(kControlTagMore)); // 'more'
   moreLabel->AssertValid();
   g_pSimMgr->GetString(0x2758, 0x20, &headingText);
   moreLabel->SetTextAndMaybeRefresh(&headingText, false);
@@ -104,11 +104,11 @@ void TScenarioChooser::DoPostCreate(int arg) {
   TextStyle bodyStyle;
   BuildUiTextStyleDescriptor(&bodyStyle, 0, 0xc, 0x2b6a);
   TDeluxeText* scenarioDescription =
-      static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagScenarioDescription));
+      static_cast<TDeluxeText*>(FindSubView(kControlTagScenarioDescription));
   scenarioDescription->AssertValid();
   scenarioDescription->SetTextStyle(bodyStyle, false);
   TDeluxeText* nationDescription =
-      static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
+      static_cast<TDeluxeText*>(FindSubView(kControlTagCountryDescription));
   nationDescription->AssertValid();
   nationDescription->SetTextStyle(bodyStyle, false);
 
@@ -117,19 +117,18 @@ void TScenarioChooser::DoPostCreate(int arg) {
   }
   selectedScenarioIndex = -1;
 
-  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
+  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(FindSubView(kControlTagCurs));
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   cursorPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
   cursorPanel->SetJustification(1, true);
 
   LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x18, this);
-  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(kControlTagExit));
-  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16,
-                                             ResolveControlByTag(kControlTagPreviewMap));
-  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x19, ResolveControlByTag(kControlTagStar));
-  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x1a, ResolveControlByTag(kControlTagList));
-  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x1c, ResolveControlByTag(kControlTagMore));
+  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, FindSubView(kControlTagExit));
+  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, FindSubView(kControlTagPreviewMap));
+  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x19, FindSubView(kControlTagStar));
+  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x1a, FindSubView(kControlTagList));
+  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x1c, FindSubView(kControlTagMore));
 }
 
 // FUNCTION: IMPERIALISM 0x0057a050
@@ -143,7 +142,7 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     SetCursor(LoadCursorA(NULL, IDC_ARROW));
   } else if (commandId == kControlTagPick) { // 'pick'
     TMapPreviewView* mapPreview =
-        static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap)); // 'pmap'
+        static_cast<TMapPreviewView*>(FindSubView(kControlTagPreviewMap)); // 'pmap'
     mapPreview->AssertValid();
     if (difficultyLevelByNation[mapPreview->pendingNation] != -1 &&
         mapPreview->pendingNation != mapPreview->selectedNation) {
@@ -152,11 +151,10 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       mapPreview->EnhancePhoto();
       mapPreview->RefreshControl();
       TDeluxeText* descControl =
-          static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
+          static_cast<TDeluxeText*>(FindSubView(kControlTagCountryDescription));
       descControl->AssertValid();
-      descControl->SetTextEntryFromChars(
-          nationDescriptionTextByNation[mapPreview->pendingNation],
-          nationDescriptionLengthByNation[mapPreview->pendingNation]);
+      descControl->StuffBuffer(nationDescriptionTextByNation[mapPreview->pendingNation],
+                               nationDescriptionLengthByNation[mapPreview->pendingNation]);
       descControl->Show(1, 0);
       descControl->RefreshControl();
     }
@@ -165,8 +163,8 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       StartGame();
     }
   } else if (commandId == 0xd) {
-    if (sourceHandler->controlTag == kControlTagMore) {                                // 'more'
-      TTextList* list = static_cast<TTextList*>(ResolveControlByTag(kControlTagList)); // 'list'
+    if (sourceHandler->controlTag == kControlTagMore) {                        // 'more'
+      TTextList* list = static_cast<TTextList*>(FindSubView(kControlTagList)); // 'list'
       list->AssertValid();
       int newOffset = list->frameHeight / list->itemHeight + list->scrollOffset;
       list->scrollOffset = (newOffset > list->totalItems) ? 0 : newOffset;
@@ -214,8 +212,7 @@ void TScenarioChooser::StartGame() {
   }
   g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(languageTag);
 
-  TMapPreviewView* mapControl =
-      static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
+  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(FindSubView(kControlTagPreviewMap));
   mapControl->AssertValid();
   g_pSimMgr->CreateSimObjects(true);
   g_pSimMgr->LoadScenario(selectedScenarioIndex);
@@ -284,10 +281,10 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   }
   *scenarioDescriptionEnd++ = 0;
   TDeluxeText* scenarioDescription =
-      static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagScenarioDescription));
+      static_cast<TDeluxeText*>(FindSubView(kControlTagScenarioDescription));
   scenarioDescription->AssertValid();
-  scenarioDescription->SetTextEntryFromChars(
-      fieldBuffer, static_cast<short>(scenarioDescriptionEnd - fieldBuffer));
+  scenarioDescription->StuffBuffer(fieldBuffer,
+                                   static_cast<short>(scenarioDescriptionEnd - fieldBuffer));
   scenarioDescription->Show(1, 0);
   scenarioDescription->RefreshControl();
 
@@ -323,10 +320,10 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   fclose(metadataStream);
 
   TDeluxeText* nationDescription =
-      static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
+      static_cast<TDeluxeText*>(FindSubView(kControlTagCountryDescription));
   nationDescription->AssertValid();
-  nationDescription->SetTextEntryFromChars(nationDescriptionTextByNation[previewNationSlot],
-                                           nationDescriptionLengthByNation[previewNationSlot]);
+  nationDescription->StuffBuffer(nationDescriptionTextByNation[previewNationSlot],
+                                 nationDescriptionLengthByNation[previewNationSlot]);
   nationDescription->Show(1, 0);
   nationDescription->RefreshControl();
 
@@ -340,8 +337,7 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
     fieldBuffer[tileIndex] = tileRecords[tileIndex].ownerNationTag;
   }
 
-  TMapPreviewView* mapPreview =
-      static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
+  TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(FindSubView(kControlTagPreviewMap));
   mapPreview->AssertValid();
   mapPreview->TakeSatellitePhoto(fieldBuffer);
   mapPreview->selectedNation = previewNationSlot;
@@ -350,7 +346,7 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   mapPreview->ViewEnable(1, 0);
   mapPreview->RefreshControl();
 
-  TView* startButton = ResolveControlByTag(kControlTagStar); // 'star'
+  TView* startButton = FindSubView(kControlTagStar); // 'star'
   startButton->AssertValid();
   startButton->ViewEnable(1, 1);
   startButton->Show(1, 0);

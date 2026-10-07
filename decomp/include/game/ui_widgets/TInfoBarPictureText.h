@@ -11,8 +11,8 @@ public:
   DECLARE_DYNCREATE(TInfoBarPictureText)
   virtual ~TInfoBarPictureText() override;           // slot 0x01 (scalar deleting destructor)
   virtual void ClearTextAndLayoutRect(int) override; // slot 0x7f 0x5b5dd0
-  virtual void SetTextAndLayoutRect(CString text,
-                                    RECT* layoutRect) override; // slot 0x80 0x5b5cb0
+  virtual void HotText(CString text,
+                       RECT* layoutRect) override; // slot 0x80 0x5b5cb0
 
   TInfoBarPictureText() {}
 };

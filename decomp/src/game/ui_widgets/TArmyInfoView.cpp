@@ -46,7 +46,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   InitializeUiTextStyleDescriptor(&smallStyle, 0, 0xa, 0x2b67, 3);
   InitializeUiTextStyleDescriptor(&smallBoldStyle, 2, 0xa, 0x2b67, 3);
 
-  TStaticText* control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
+  TStaticText* control = static_cast<TStaticText*>(FindSubView(kControlTagTitl));
   if (control == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x18fd);
   }
@@ -54,7 +54,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(titleStyle, 0);
 
-  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab2));
+  control = static_cast<TStaticText*>(FindSubView(kControlTagLab2));
   if (control == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1902);
   }
@@ -62,7 +62,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab3));
+  control = static_cast<TStaticText*>(FindSubView(kControlTagLab3));
   if (control == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1907);
   }
@@ -89,14 +89,14 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
     }
   }
 
-  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagWhom));
+  control = static_cast<TStaticText*>(FindSubView(kControlTagWhom));
   if (control == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x191b);
   }
   control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(smallStyle, 0);
 
-  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagGene));
+  control = static_cast<TStaticText*>(FindSubView(kControlTagGene));
   if (control == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1920);
   }
@@ -106,7 +106,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   }
   control->InstallTextStyle(smallStyle, 0);
 
-  short cityOwner = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(cityRecordIndex);
+  short cityOwner = g_pGlobalMapState->FindCountry(cityRecordIndex);
   short activeNation = g_pSimMgr->GetPlayerCountry();
   short orderTemplateIndex = static_cast<short>(cityOwner == activeNation ? 0xa : 0xe);
   g_pSimMgr->GetString(0x2744, orderTemplateIndex, &orderTemplate);
@@ -114,7 +114,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   scanBracketExpressions(g_pSimMgr, &reportText, static_cast<LPCSTR>(orderTemplate),
                          static_cast<LPCSTR>(cityName));
 
-  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagOrds));
+  control = static_cast<TStaticText*>(FindSubView(kControlTagOrds));
   if (control == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x192c);
   }

@@ -58,7 +58,7 @@ bool TFoodProcessingOrder::SetQuantity(short quantity) {
     ownerCity->cityStockLivestock = static_cast<short>(ownerCity->cityStockLivestock - halfDelta);
   }
   ownerCity->VerifyStocks();
-  g_pViewMgr->RefreshCityProductionUi();
+  g_pViewMgr->UpdateCityScreen();
   return true;
 }
 

@@ -32,7 +32,7 @@ void TNumberedArrowButton::SetState(short value86Arg, unsigned char refreshFlag)
   if (arrowState != value86Arg) {
     if (refreshFlag != '\0') {
       RefreshControl();
-      QueryBounds(&bounds);
+      GetFrame(&bounds);
     }
     arrowState = value86Arg;
   }
@@ -88,7 +88,7 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
     if (arrowState != 0) {
       RefreshControl();
       CRect bounds;
-      QueryBounds(&bounds);
+      GetFrame(&bounds);
       arrowState = 0;
     }
     if (visualState == 2) {
@@ -103,7 +103,7 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
     if (arrowState != visualState) {
       RefreshControl();
       CRect bounds;
-      QueryBounds(&bounds);
+      GetFrame(&bounds);
       arrowState = visualState;
     }
     PaintOrInvalidateControl(0);

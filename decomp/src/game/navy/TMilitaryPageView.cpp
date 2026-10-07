@@ -25,7 +25,7 @@ TMilitaryPageView::~TMilitaryPageView() {}
 // FUNCTION: IMPERIALISM 0x005649a0
 void TMilitaryPageView::DoPostCreate(int arg) {
   TPageView::DoPostCreate(arg);
-  TView* okControl = ownerContext->ResolveControlByTag(kControlTagOkay);
+  TView* okControl = ownerContext->FindSubView(kControlTagOkay);
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22, okControl);
   CString empty(g_szEmptyString);
   SetControlHoverHelpText(empty, this);
@@ -34,7 +34,7 @@ void TMilitaryPageView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x00564a10
 void TMilitaryPageView::AfterStuffValues() {
   visibleColumnCount = 2;
-  BuildPageLayout();
+  CalculatePageStarts();
   ShowPage(1);
 
   TBook* book = static_cast<TBook*>(ownerContext);
@@ -49,7 +49,7 @@ void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int he
   TMapDialog* mapDialog = g_pViewMgr->mapUberPicture->subview2A8;
   primaryUnitAtlas = mapDialog->quickDrawSurface;
   mapDialog->suppressMarkerOverlay = true;
-  mapDialog->ResetAllTileMarkersToSentinel();
+  mapDialog->FlushCache();
 
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(bitmapResourceId));
@@ -92,5 +92,5 @@ void TMilitaryPageView::Close() {
   TView::Close();
   TMapDialog* mapDialog = g_pViewMgr->mapUberPicture->subview2A8;
   mapDialog->suppressMarkerOverlay = false;
-  mapDialog->ResetAllTileMarkersToSentinel();
+  mapDialog->FlushCache();
 }

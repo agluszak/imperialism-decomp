@@ -27,7 +27,7 @@ void TTradePageBuyView::SetItem(short categorySlot) {
     return;
   }
   lastBuiltCategorySlot = categorySlot;
-  ResetPageLayout();
+  Clear();
 
   if (categorySlot != -1) {
     if (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetPlayerCountry()) ||
@@ -39,7 +39,7 @@ void TTradePageBuyView::SetItem(short categorySlot) {
       headerRow->SetTheJustification(1);
       TextStyle headerStyle;
       BuildUiTextStyleDescriptor(&headerStyle, 4, 0xc, 0x2b6a);
-      headerRow->SetTextLineStyleDescriptor(&headerStyle);
+      headerRow->SetTheTextStyle(&headerStyle);
       orderedEntries->AddTail(headerRow);
 
       for (short nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
@@ -54,7 +54,7 @@ void TTradePageBuyView::SetItem(short categorySlot) {
       }
     }
 
-    BuildPageLayout();
+    CalculatePageStarts();
     ShowPage(1);
   }
 

@@ -11,7 +11,7 @@
 #include <stdlib.h>
 
 // FUNCTION: IMPERIALISM 0x0059ed60
-TShip* TNavyTacUnit::GetSourceShip() {
+TShip* TNavyTacUnit::GetRealShip() {
   return sourceShip;
 }
 

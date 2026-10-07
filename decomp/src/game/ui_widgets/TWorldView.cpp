@@ -352,15 +352,14 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 
   short outY = 0;
   short outX = 0;
-  ForwardProjectTileIndexToWrappedScreenOffsetByScale(previewTile, &viewportOrigin, &outX, &outY,
-                                                      projectionScale);
+  TileID2TileTopLeft(previewTile, &viewportOrigin, &outX, &outY, projectionScale);
 
   GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
 
   CRect previewRect(outY, outX, outY + previewSquareRadius, outX + previewSquareRadius);
   CRect contentBounds;
-  QueryContentBounds(&contentBounds);
+  GetExtent(&contentBounds);
   SectRect(&previewRect, &contentBounds, &previewRect);
 
   CRect clipRect = previewRect;
@@ -374,10 +373,10 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   if (regionPresent == 0) {
     CRect badgeRect;
     if (interactionMode == 0) {
-      RenderMapOrderEntryTilePreview(selectedOrder, outX, outY, 1, previewTile);
+      DrawUnit(selectedOrder, outX, outY, 1, previewTile);
     } else if (interactionMode == 1) {
       badgeRect.SetRect(outY, outX, outY + previewSquareRadius, outX + previewSquareRadius);
-      RenderTacticalStackCountIndicatorAndUnitBadge(previewTile, &badgeRect, 1);
+      DrawGarrison(previewTile, &badgeRect, 1);
     } else if (interactionMode == 2) {
       badgeRect.SetRect(outY, outX, outY + previewSquareRadius, outX + previewSquareRadius);
       RenderMapDialogTerrainOverlayFrameByTileOwner(previewTile, &badgeRect, true);
@@ -388,12 +387,11 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 }
 
 // FUNCTION: IMPERIALISM 0x00596020
-void TWorldView::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
-                                                int projectedY, int flag, short tileIndex) {}
+void TWorldView::DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, int flag,
+                          short tileIndex) {}
 
 // FUNCTION: IMPERIALISM 0x00596040
-void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
-                                                               int flag) {}
+void TWorldView::DrawGarrison(short tileIndex, CRect* dstRect, int flag) {}
 
 // FUNCTION: IMPERIALISM 0x00596060
 void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
@@ -412,11 +410,9 @@ void TWorldView::ConvertPoint(const CPoint& point, short& outColumn, short& outR
                               short& outRegionBand) {}
 
 // FUNCTION: IMPERIALISM 0x005960e0
-void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                     const CPoint* viewportOrigin,
-                                                                     short* outVerticalOffset,
-                                                                     short* outHorizontalOffset,
-                                                                     int projectionScale) {}
+void TWorldView::TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
+                                    short* outVerticalOffset, short* outHorizontalOffset,
+                                    int projectionScale) {}
 
 // FUNCTION: IMPERIALISM 0x00596100
 bool TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
@@ -467,8 +463,7 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndex
 
   int tileIndex = static_cast<short>(tileIndexArg);
   if (g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainWater) {
-    TZone* orderContext =
-        g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(static_cast<short>(tileIndex));
+    TZone* orderContext = g_pActiveMapOrderContext->GetZoneAt(static_cast<short>(tileIndex));
     TMapUberPicture* mapPicture = static_cast<TMapUberPicture*>(ownerContext);
     mapPicture->SetMapInteractionMode(2);
     if (!mapPicture->invalidationFlag) {
@@ -480,10 +475,9 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndex
     }
     TTaskForce* refreshedTaskForce = 0;
     if (orderContext != 0) {
-      refreshedTaskForce =
-          g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(orderContext);
+      refreshedTaskForce = g_pActiveMapOrderContext->AssembleUIForce(orderContext);
     }
-    mapPicture->RefreshMapOrderEntryPanel(refreshedTaskForce);
+    mapPicture->FocusOnForce(refreshedTaskForce);
   }
 
   g_lastClickedMapTileIndex = tileIndex;
@@ -579,7 +573,7 @@ void TWorldView::SetMapViewCellCoordinates(int column, int row) {}
 void TWorldView::SetMapViewTileIndex(int tileIndex) {}
 
 // FUNCTION: IMPERIALISM 0x005966c0
-void TWorldView::RefreshMapTile(short tileIndex) {}
+void TWorldView::ImmediateDrawTile(short tileIndex) {}
 
 // FUNCTION: IMPERIALISM 0x005966e0
 bool TWorldView::IsTileVisible(short tileIndex) {

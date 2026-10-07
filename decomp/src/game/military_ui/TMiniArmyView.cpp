@@ -83,8 +83,8 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TView* sourceView = static_cast<TView*>(sourceHandler);
       sourceView->Show(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText), sourceView);
-      TStaticText* tbr1 = static_cast<TStaticText*>(
-          g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
+      TStaticText* tbr1 =
+          static_cast<TStaticText*>(g_pDisplayMgr->activeDialog->FindSubView(kControlTagTbr1));
       tbr1->AssertValid();
       tbr1->SetJustification(static_cast<short>(g_pSimMgr->GetPlayerCountry()), false);
     } else {

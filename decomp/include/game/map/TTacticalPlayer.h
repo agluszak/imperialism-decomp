@@ -18,10 +18,10 @@ public:
   virtual void NextMove();                              // slot 0x0b 0x59ad90
   virtual void DoClick(int unused);                     // slot 0x0c 0x59adb0
   virtual void ApplyChanges(unsigned char sideWonFlag); // slot 0x0d 0x59add0
-  virtual void RemoveTacticalUnitFromUnitList(class TTacticalUnit* unit); // slot 0x0e 0x59afa0
-  virtual void AddTacticalUnitToUnitListHead(class TTacticalUnit* unit);  // slot 0x0f 0x59afe0
-  virtual bool AlwaysTrueTacticalPredicate10(class TTacticalUnit* unit);  // slot 0x10 0x59adf0
-  virtual void ProceedAfterBattleIntroAccepted();                         // slot 0x11 0x59ae10
+  virtual void RemoveCapturedUnit(class TTacticalUnit* unit);            // slot 0x0e 0x59afa0
+  virtual void AddCapturedUnit(class TTacticalUnit* unit);               // slot 0x0f 0x59afe0
+  virtual bool AlwaysTrueTacticalPredicate10(class TTacticalUnit* unit); // slot 0x10 0x59adf0
+  virtual void ProceedAfterBattleIntroAccepted();                        // slot 0x11 0x59ae10
 
   TList* unitList;               // +0x04 the side's tactical unit records (new TList())
   TList* secondaryList;          // +0x08 reserve list: never-deployed units (0x59b740)
@@ -40,14 +40,14 @@ public:
 
   void ITacticalPlayer(unsigned char isOurSide, unsigned char watch, int nationIndex);
 
-  class TTacticalUnit* SelectNextTacticalUnitForDoneCommand();
+  class TTacticalUnit* GetNextUnit();
 
   void HandleTacticalCommandTag_skip();
 
   void RetireUndeployedUnitsToReserveList();
 
   // Whether this side belongs to the local active nation. 0x0059b010, __thiscall.
-  bool IsTacticalControllerOwnedByActiveNation();
+  bool IsPlayer();
 
   // NOOP: verified empty in original 0x0059ad42
   TTacticalPlayer() {}

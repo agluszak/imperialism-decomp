@@ -19,7 +19,7 @@ public:
   virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6350
   virtual float GetDamageScale() override;     // slot 0x0d 0x5a6370
   short GetSourceShipTypeDescriptorWord();     // 0x5a6390
-  virtual TShip* GetSourceShip();              // slot 0x10 0x59ed60 (Mac: GetRealShip)
+  virtual TShip* GetRealShip();                // slot 0x10 0x59ed60 (Mac: GetRealShip)
 
   void ApplyNavalDamage(float damageAmount, NavyTargeting targeting);
 

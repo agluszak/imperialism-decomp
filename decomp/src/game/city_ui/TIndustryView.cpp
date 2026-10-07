@@ -50,7 +50,7 @@ void TIndustryView::DoStartup() {
   BuildUiTextStyleDescriptor(&headingStyle, 0, 0xc, 0x2b67);
 
   CString displayText;
-  TStaticText* nameText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagName)); // 'name'
+  TStaticText* nameText = static_cast<TStaticText*>(FindSubView(kControlTagName)); // 'name'
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex, &displayText);
     nameText->InstallTextStyle(headingStyle, 0);
@@ -58,8 +58,7 @@ void TIndustryView::DoStartup() {
     nameText->SetTextAndMaybeRefresh(&displayText, false);
   }
 
-  TStaticText* capacityText =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagCapT)); // 'capT'
+  TStaticText* capacityText = static_cast<TStaticText*>(FindSubView(kControlTagCapT)); // 'capT'
   if (capacityText != 0) {
     CString numberText;
     CString templateText;
@@ -72,8 +71,7 @@ void TIndustryView::DoStartup() {
     capacityText->SetTextAndMaybeRefresh(&displayText, false);
   }
 
-  TStaticText* provinceText =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagProv)); // 'prov'
+  TStaticText* provinceText = static_cast<TStaticText*>(FindSubView(kControlTagProv)); // 'prov'
   if (provinceText != 0) {
     CString numberText;
     CString templateText;
@@ -87,7 +85,7 @@ void TIndustryView::DoStartup() {
   }
 
   TStaticText* conjunctionText =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagOrSpSp)); // 'or  '
+      static_cast<TStaticText*>(FindSubView(kControlTagOrSpSp)); // 'or  '
   if (conjunctionText != 0) {
     g_pSimMgr->GetString(0x2738, 0x11, &displayText);
     conjunctionText->InstallTextStyle(headingStyle, 0);
@@ -97,13 +95,13 @@ void TIndustryView::DoStartup() {
 
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
-  TView* expansionControl = ResolveControlByTag(kControlTagExpa); // 'expa'
+  TView* expansionControl = FindSubView(kControlTagExpa); // 'expa'
   if (expansionControl != 0) {
     g_pSimMgr->GetString(0x2738, 0x12, &displayText);
     SetControlHoverHelpText(displayText, expansionControl);
   }
 
-  TView* flagControl = ResolveControlByTag(kControlTagFlag); // 'flag'
+  TView* flagControl = FindSubView(kControlTagFlag); // 'flag'
   if (flagControl != 0) {
     if (flagControl->IsActionable()) {
       g_pSimMgr->GetString(0x2738, 0x13, &displayText);
@@ -113,7 +111,7 @@ void TIndustryView::DoStartup() {
     SetControlHoverHelpText(displayText, flagControl);
   }
 
-  TView* equationControl = ResolveControlByTag(kControlTagEqua); // 'equa'
+  TView* equationControl = FindSubView(kControlTagEqua); // 'equa'
   if (equationControl != 0) {
     g_pSimMgr->GetString(0x2738, embeddedPageIndex, &displayText);
     SetControlHoverHelpText(displayText, equationControl);
@@ -123,8 +121,7 @@ void TIndustryView::DoStartup() {
   BuildUiTextStyleDescriptor(&valueStyle, 0, 9, 0x2b69);
   CString mappedValueText(s_mcflavor_00696674);
 
-  TStaticText* valueBalanceText =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagLabV)); // 'Vbal'
+  TStaticText* valueBalanceText = static_cast<TStaticText*>(FindSubView(kControlTagLabV)); // 'Vbal'
   if (valueBalanceText != 0) {
     valueBalanceText->InstallTextStyle(valueStyle, 0);
     valueBalanceText->SetTextAndMaybeRefresh(&mappedValueText, false);
@@ -154,7 +151,7 @@ void TIndustryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     TWindow* ownerWindow = static_cast<TWindow*>(owner);
     bool wasDisabled = ownerWindow->nativeWindow->EnableWindow(0) == 0;
 
-    TView* mainControl = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
+    TView* mainControl = g_pDisplayMgr->activeDialog->FindSubView(kControlTagMain);
     if (mainControl == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x84c);
     }
@@ -227,15 +224,15 @@ void TIndustryView::UpdateFields() {
   }
 
   if (embeddedPageIndex == 0xc) {
-    TView* grainControl = ResolveControlByTag(kControlTagGrai); // 'grai'
+    TView* grainControl = FindSubView(kControlTagGrai); // 'grai'
     grainControl->AssertValid();
     SetIndustryControlEnabledIfChanged(grainControl, city->cityStockGrain >= 2);
 
-    TView* fruitControl = ResolveControlByTag(kControlTagProd); // 'prod'
+    TView* fruitControl = FindSubView(kControlTagProd); // 'prod'
     fruitControl->AssertValid();
     SetIndustryControlEnabledIfChanged(fruitControl, city->cityStockFruit >= 1);
 
-    TView* fishControl = ResolveControlByTag(kControlTagFish); // 'fish'
+    TView* fishControl = FindSubView(kControlTagFish); // 'fish'
     fishControl->AssertValid();
     SetIndustryControlEnabledIfChanged(
         fishControl, static_cast<int>(city->cityStockFish) + city->cityStockLivestock >= 1);
@@ -244,13 +241,13 @@ void TIndustryView::UpdateFields() {
                                          kControlTagClot}; // 'food', 'furn', 'clot'
     const short resourceSlots[3] = {7, 14, 13};
     for (int index = 0; index < 3; ++index) {
-      TView* control = ResolveControlByTag(controlTags[index]);
+      TView* control = FindSubView(controlTags[index]);
       control->AssertValid();
       SetIndustryControlEnabledIfChanged(control, city->CityStockByType(resourceSlots[index]) >= 1);
     }
   }
 
-  TView* flagControl = ResolveControlByTag(kControlTagFlag); // 'flag'
+  TView* flagControl = FindSubView(kControlTagFlag); // 'flag'
   CString hoverHelp;
   if (flagControl != 0) {
     if (flagControl->IsActionable()) {

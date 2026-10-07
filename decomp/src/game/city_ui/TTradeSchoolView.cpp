@@ -30,7 +30,7 @@ void TTradeSchoolView::DoStartup() {
   BuildUiTextStyleDescriptor(&titleStyle, 0, 0x18, 0x2b67);
 
   CString text;
-  TStaticText* nameText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagName)); // 'name'
+  TStaticText* nameText = static_cast<TStaticText*>(FindSubView(kControlTagName)); // 'name'
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex, &text);
     nameText->InstallTextStyle(titleStyle, 0);
@@ -43,7 +43,7 @@ void TTradeSchoolView::DoStartup() {
   const unsigned int equationHelpTags[3] = {kControlTagEqu1, kControlTagEqu2,
                                             kControlTagEqu3}; // 'equ1'-'equ3'
   for (short equation = 0; equation < 3; ++equation) {
-    TView* equationControl = ResolveControlByTag(equationHelpTags[equation]);
+    TView* equationControl = FindSubView(equationHelpTags[equation]);
     if (equationControl != 0) {
       g_pSimMgr->GetString(0x2738, static_cast<short>(0x18 + equation), &text);
       SetControlHoverHelpText(text, equationControl);
@@ -51,9 +51,9 @@ void TTradeSchoolView::DoStartup() {
   }
 
   LoadUiStringByGroupAndIndexToControlObject(0x2738, 0x1f,
-                                             ResolveControlByTag(kControlTagEqu4)); // 'equ4'
+                                             FindSubView(kControlTagEqu4)); // 'equ4'
   LoadUiStringByGroupAndIndexToControlObject(0x2738, 0x20,
-                                             ResolveControlByTag(kControlTagEqu5)); // 'equ5'
+                                             FindSubView(kControlTagEqu5)); // 'equ5'
 
   TextStyle valueStyle;
   BuildUiTextStyleDescriptor(&valueStyle, 0, 9, 0x2b69);
@@ -62,7 +62,7 @@ void TTradeSchoolView::DoStartup() {
       kControlTagPap1, kControlTagPap2, kControlTagMon1, // 'pap1', 'pap2', 'mon1'
       kControlTagMon2, kControlTagUntV, kControlTagTraV};
   for (int valueIndex = 0; valueIndex < 6; ++valueIndex) {
-    TStaticText* valueText = static_cast<TStaticText*>(ResolveControlByTag(valueTags[valueIndex]));
+    TStaticText* valueText = static_cast<TStaticText*>(FindSubView(valueTags[valueIndex]));
     if (valueText == 0) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp",
                                static_cast<int>(0x99e + valueIndex * 5));
@@ -77,7 +77,7 @@ void TTradeSchoolView::DoStartup() {
   const unsigned int costTags[2] = {kControlTagCos1, kControlTagCos2}; // 'cos1', 'cos2'
   const int costs[2] = {100, 1000};
   for (int costIndex = 0; costIndex < 2; ++costIndex) {
-    TStaticText* costText = static_cast<TStaticText*>(ResolveControlByTag(costTags[costIndex]));
+    TStaticText* costText = static_cast<TStaticText*>(FindSubView(costTags[costIndex]));
     if (costText == 0) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", costIndex == 0 ? 0x9c0 : 0x9c7);
       continue;
@@ -96,7 +96,7 @@ void TTradeSchoolView::UpdateFields() {
 
   TPopulationMgr* population = city->productionSummary;
 #define UPDATE_TRADE_SCHOOL_CONTROL(controlTag, assertLine, enableCondition)                       \
-  control = ResolveControlByTag(controlTag);                                                       \
+  control = FindSubView(controlTag);                                                               \
   if (control == 0) {                                                                              \
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", assertLine);                      \
   }                                                                                                \

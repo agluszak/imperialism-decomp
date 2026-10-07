@@ -57,7 +57,7 @@ TTechMgr::TTechMgr() {}
 TTechMgr::~TTechMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005aeff0
-void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
+void TTechMgr::ITechMgr(void) {
   // Scalar capability defaults (0x180..0x262).
   perTechUnlockFlag[0] = 1;
   perTechUnlockFlag[1] = 1;
@@ -140,7 +140,7 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005af330
-void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
+void TTechMgr::GenerateTables() {
   prioritySlots[1] = 0;
   prioritySlots[2] = 0;
   prioritySlots[0] = 0;
@@ -264,7 +264,7 @@ void TTechMgr::CheckForAdvances() {
   for (int techId = 3; techId < 0x1d; ++techId) {
     if (perTechUnlockFlag[techId] == 0) {
       if (prioritySlots[techId] == economicTurn) {
-        ApplyCityOrderCapabilityUnlockByTechId(techId);
+        UniversalActivation(techId);
         g_pNewsMgr->AddMiscEvent(999, techId, true);
       }
       continue;
@@ -285,20 +285,20 @@ void TTechMgr::CheckForAdvances() {
 }
 
 // FUNCTION: IMPERIALISM 0x005afb10
-void TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int forcedNationSlot) {
-  this->ApplyCityOrderCapabilityUnlockByTechId(techId);
+void TTechMgr::ActivateAdvance(int techId, int forcedNationSlot) {
+  this->UniversalActivation(techId);
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation->diplomacyEligibility == 0 || nationSlot == forcedNationSlot) {
       this->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
           static_cast<short>(g_pSimMgr->economicTurn / 4);
-      this->HandleAbilityUnlock(techId, nationSlot);
+      this->GeneralActivation(techId, nationSlot);
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005afba0
-void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
+void TTechMgr::UniversalActivation(int nTechId) {
   marker262 = static_cast<short>(nTechId);
   perTechUnlockFlag[nTechId] = 1;
   switch (nTechId) {
@@ -339,7 +339,7 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
 }
 
 // FUNCTION: IMPERIALISM 0x005afd00
-void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
+void TTechMgr::GeneralActivation(int techId, int nationSlot) {
   if (orderCapRows277[nationSlot].techStatusByTechId[techId] == 2) {
     return;
   }
@@ -360,8 +360,8 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     capabilityValueByNationAndResource[nationSlot][0x11] = 1;
     break;
   case 9:
-    UpdateSelectionAndRecalculateScores(7, nationSlot);
-    UpdateSelectionAndRecalculateScores(5, nationSlot);
+    ActivateShip(7, nationSlot);
+    ActivateShip(5, nationSlot);
     break;
   case 5:
     capabilityValueByNationAndResource[nationSlot][3] = 2;
@@ -374,7 +374,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     universityRecruitmentAvailabilityByNation[nationSlot].availableByCategory[3] = 1;
     break;
   case 4:
-    UpdateSelectionAndRecalculateScores(6, nationSlot);
+    ActivateShip(6, nationSlot);
     break;
   case 0xa:
     capabilityValueByNationAndResource[nationSlot][0x12] = 2;
@@ -390,7 +390,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     capabilityValueByNationAndResource[nationSlot][1] = 2;
     break;
   case 0xf:
-    UpdateSelectionAndRecalculateScores(8, nationSlot);
+    ActivateShip(8, nationSlot);
     if (g_pSimMgr->GetPlayerCountry() == nationSlot) {
       g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
     }
@@ -408,21 +408,21 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     capabilityValueByNationAndResource[nationSlot][0x14] = 2;
     break;
   case 0xb:
-    ActivateSlotAndUpdateUI(0xc, nationSlot);
-    ActivateSlotAndUpdateUI(9, nationSlot);
-    ActivateSlotAndUpdateUI(0x19, nationSlot);
-    ActivateSlotAndUpdateUI(0x1c, nationSlot);
+    ActivateLandUnit(0xc, nationSlot);
+    ActivateLandUnit(9, nationSlot);
+    ActivateLandUnit(0x19, nationSlot);
+    ActivateLandUnit(0x1c, nationSlot);
     break;
   case 0x10:
     capabilityValueByNationAndResource[nationSlot][0] = 3;
     capabilityValueByNationAndResource[nationSlot][1] = 3;
     break;
   case 0x15:
-    UpdateSelectionAndRecalculateScores(9, nationSlot);
+    ActivateShip(9, nationSlot);
     break;
   case 0xd:
-    ActivateSlotAndUpdateUI(0xe, nationSlot);
-    ActivateSlotAndUpdateUI(0xf, nationSlot);
+    ActivateLandUnit(0xe, nationSlot);
+    ActivateLandUnit(0xf, nationSlot);
     if (eraOffset != 0) {
       TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
       city->cityStockArms = static_cast<short>(city->cityStockArms + eraOffset * 10);
@@ -435,17 +435,17 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     capabilityValueByNationAndResource[nationSlot][0x16] = 3;
     capabilityValueByNationAndResource[nationSlot][0x15] = 3;
     capabilityValueByNationAndResource[nationSlot][2] = 3;
-    ActivateSlotAndUpdateUI(0x1a, nationSlot);
+    ActivateLandUnit(0x1a, nationSlot);
     break;
   case 0x13:
     capabilityValueByNationAndResource[nationSlot][6] = 1;
     universityRecruitmentAvailabilityByNation[nationSlot].availableByCategory[8] = 1;
     break;
   case 0xe:
-    ActivateSlotAndUpdateUI(8, nationSlot);
-    ActivateSlotAndUpdateUI(0xd, nationSlot);
-    ActivateSlotAndUpdateUI(0xa, nationSlot);
-    ActivateSlotAndUpdateUI(0xb, nationSlot);
+    ActivateLandUnit(8, nationSlot);
+    ActivateLandUnit(0xd, nationSlot);
+    ActivateLandUnit(0xa, nationSlot);
+    ActivateLandUnit(0xb, nationSlot);
     if (eraOffset != 0) {
       TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
       city->cityStockArms = static_cast<short>(city->cityStockArms + eraOffset * 10);
@@ -453,8 +453,8 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     }
     break;
   case 0x18:
-    UpdateSelectionAndRecalculateScores(0xb, nationSlot);
-    UpdateSelectionAndRecalculateScores(0xa, nationSlot);
+    ActivateShip(0xb, nationSlot);
+    ActivateShip(0xa, nationSlot);
     if (g_pSimMgr->GetPlayerCountry() == nationSlot) {
       g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
     }
@@ -464,12 +464,12 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     capabilityValueByNationAndResource[nationSlot][0x14] = 3;
     break;
   case 0x1b:
-    UpdateSelectionAndRecalculateScores(0xc, nationSlot);
-    UpdateSelectionAndRecalculateScores(0xd, nationSlot);
+    ActivateShip(0xc, nationSlot);
+    ActivateShip(0xd, nationSlot);
     break;
   case 0x16:
-    ActivateSlotAndUpdateUI(0x16, nationSlot);
-    ActivateSlotAndUpdateUI(0x17, nationSlot);
+    ActivateLandUnit(0x16, nationSlot);
+    ActivateLandUnit(0x17, nationSlot);
     activePrerequisitePair = g_aTechItemPrerequisitePairs[32];
     if (eraOffset != 0) {
       TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
@@ -479,15 +479,15 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     break;
   case 0x1c:
     capabilityValueByNationAndResource[nationSlot][6] = 3;
-    ActivateSlotAndUpdateUI(0x14, nationSlot);
-    ActivateSlotAndUpdateUI(0x15, nationSlot);
+    ActivateLandUnit(0x14, nationSlot);
+    ActivateLandUnit(0x15, nationSlot);
     break;
   case 0x19:
-    ActivateSlotAndUpdateUI(0x10, nationSlot);
-    ActivateSlotAndUpdateUI(0x11, nationSlot);
-    ActivateSlotAndUpdateUI(0x12, nationSlot);
-    ActivateSlotAndUpdateUI(0x13, nationSlot);
-    ActivateSlotAndUpdateUI(0x1d, nationSlot);
+    ActivateLandUnit(0x10, nationSlot);
+    ActivateLandUnit(0x11, nationSlot);
+    ActivateLandUnit(0x12, nationSlot);
+    ActivateLandUnit(0x13, nationSlot);
+    ActivateLandUnit(0x1d, nationSlot);
     if (eraOffset != 0) {
       TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
       city->cityStockArms = static_cast<short>(city->cityStockArms + eraOffset * 20);
@@ -505,8 +505,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     if (record->ownerNationTag == nationSlot && (record->activeFlags & 1) != 0) {
       short maxCap =
           static_cast<char>(g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 0, nationSlot));
-      if (static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(
-              tileIndex, false)) < maxCap) {
+      if (static_cast<char>(g_pGlobalMapState->GetDevelopmentLevel(tileIndex, false)) < maxCap) {
         g_pGlobalMapState->SetDevelopmentLevel(tileIndex, false, static_cast<unsigned char>(maxCap),
                                                true);
       }
@@ -515,7 +514,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b0340
-void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
+void TTechMgr::ActivateLandUnit(int abilityId, int nationSlot) {
   short group = g_awTacticalUnitCategoryCodeBySlot[abilityId];
   abilityActiveRows[nationSlot].abilityActiveById[abilityId] = 1;
   nationCapRows1e8[nationSlot].slots[group] = static_cast<short>(abilityId);
@@ -548,7 +547,7 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b0500
-void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationSlot) {
+void TTechMgr::ActivateShip(int resourceType, int nationSlot) {
   int slotMap[14];
   slotMap[0] = 0;
   slotMap[1] = 0;
@@ -653,7 +652,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
 }
 
 // FUNCTION: IMPERIALISM 0x005b0a20
-bool TTechMgr::AreTechItemPrerequisitePairCompleted(int techId, int nationSlot) {
+bool TTechMgr::HavePreReqs(int techId, int nationSlot) {
   short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].primaryTechId;
   unsigned char* primaryStatusByNation =
       &orderCapRows277[0].techStatusByTechId[primaryPrerequisiteTechId];
@@ -686,7 +685,7 @@ void TTechMgr::GetPreReqs(int techId, int nationSlot, int* missingPrimaryTechId,
 }
 
 // FUNCTION: IMPERIALISM 0x005b0b30
-void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
+void TTechMgr::PurchaseTech(int slot, int nationIndex) {
   g_apNationStates[nationIndex]->AddToTreasury(-g_anTechItemPurchaseCostBySlot[slot]);
   orderCapRows277[nationIndex].techStatusByTechId[slot] = 1;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] =
@@ -694,7 +693,7 @@ void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b0bb0
-void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex) {
+void TTechMgr::CancelPurchase(int slot, int nationIndex) {
   g_apNationStates[nationIndex]->AddToTreasury(g_anTechItemPurchaseCostBySlot[slot]);
   orderCapRows277[nationIndex].techStatusByTechId[slot] = 0;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] = 0;
@@ -704,7 +703,7 @@ void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex
 short TTechMgr::GetNextNewAdvance(short nationSlot) {
   for (int techId = 0; techId < 0x1d; ++techId) {
     if (orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
-      HandleAbilityUnlock(techId, nationSlot);
+      GeneralActivation(techId, nationSlot);
       return static_cast<short>(techId);
     }
   }
@@ -717,7 +716,7 @@ void TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex(int index, int value
 }
 
 // FUNCTION: IMPERIALISM 0x005b0ca0
-int TTechMgr::GetNationFortLevelCap(int nNationId) {
+int TTechMgr::GetBestFort(int nNationId) {
   if (orderCapRows277[nNationId].techStatusByTechId[0x16] != 0) {
     return 3;
   }

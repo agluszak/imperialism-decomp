@@ -32,7 +32,7 @@ class TestIsOssified(unittest.TestCase):
         self.assertFalse(is_ossified("g_NationFlags_006a1000"))
 
     def test_clean_names_not_flagged(self):
-        self.assertFalse(is_ossified("TemporarilyClearAndRestoreUiInvalidationFlag"))
+        self.assertFalse(is_ossified("ReportAssertionFailure"))
         self.assertFalse(is_ossified("AdornerSlot28"))
         self.assertFalse(is_ossified("RefreshMainDialogAfterPaletteChange"))
         # Near-misses that must NOT trip the suffix rule.

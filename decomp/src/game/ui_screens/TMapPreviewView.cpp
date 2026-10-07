@@ -32,7 +32,7 @@ void TMapPreviewView::DoPostCreate(int arg) {
   enabled = 1;
 
   CRect contentBounds;
-  QueryContentBounds(&contentBounds);
+  GetExtent(&contentBounds);
   RECT surfaceBounds = contentBounds;
 
   ++g_nDibOrientationFlag;

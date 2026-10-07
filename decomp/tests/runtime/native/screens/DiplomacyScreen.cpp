@@ -64,7 +64,7 @@ bool DiplomacyScreen::HasMinisterControls() const {
 
 bool DiplomacyScreen::ToolbarButtonShowsSelectedArt() const {
   TView* toolbarDialog = g_pDisplayMgr != 0 ? g_pDisplayMgr->activeDialog : 0;
-  TView* button = toolbarDialog != 0 ? toolbarDialog->ResolveControlByTag(kControlTagDipl) : 0;
+  TView* button = toolbarDialog != 0 ? toolbarDialog->FindSubView(kControlTagDipl) : 0;
   return button != 0 && button->IsKindOf(RUNTIME_CLASS(TPicture)) != 0 &&
          static_cast<TPicture*>(button)->glyphBase == kDiplomacyToolbarSelectedPicture;
 }
@@ -95,7 +95,7 @@ RuntimeActionResult DiplomacyScreen::ShowTreaties() {
   }
   // A topic change is the view's own method rather than a control activation: the original
   // routes both its own DoEvent and the council view's through this one entry point.
-  diplomacyView->ChangeSelectedActionTopic(kTreatiesTopicIndex);
+  diplomacyView->SwitchToPanel(kTreatiesTopicIndex);
   return RuntimeActionResult::Success();
 }
 
@@ -144,7 +144,7 @@ TOffersPanelView* DiplomacyScreen::OffersPanel() const {
 
 bool DiplomacyScreen::ResponsePublishesOfferEvent(int responseTag) const {
   TOffersPanelView* offers = OffersPanel();
-  TView* response = offers != 0 ? offers->ResolveControlByTag(responseTag) : 0;
+  TView* response = offers != 0 ? offers->FindSubView(responseTag) : 0;
   return response != 0 && response->IsKindOf(RUNTIME_CLASS(TControl)) != 0 &&
          static_cast<TControl*>(response)->GetEventNumber() == kOfferResponseEventNumber;
 }

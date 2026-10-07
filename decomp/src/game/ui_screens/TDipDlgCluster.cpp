@@ -18,12 +18,12 @@ TDipDlgCluster::~TDipDlgCluster() {}
 // FUNCTION: IMPERIALISM 0x00584160
 bool TDipDlgCluster::IsTradeControlAtMinimum() {
   TToggleButton* subsidyToggle =
-      static_cast<TToggleButton*>(ownerContext->ResolveControlByTag(kManifestTagSubs));
+      static_cast<TToggleButton*>(ownerContext->FindSubView(kManifestTagSubs));
   if (subsidyToggle == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1cd);
   }
   TToggleButton* sanctionToggle =
-      static_cast<TToggleButton*>(ownerContext->ResolveControlByTag(kControlTagSanc));
+      static_cast<TToggleButton*>(ownerContext->FindSubView(kControlTagSanc));
   if (subsidyToggle->IsSelected()) {
     return true;
   }

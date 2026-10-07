@@ -20,7 +20,7 @@ void LoadGameFlow::Start(RuntimeScenario& scenario) {
 RuntimeFlowStatus LoadGameFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kOpenFixture) {
     CString fixturePath(scenario.FixturePath());
-    if (!g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(fixturePath)) {
+    if (!g_pAssetMgr->LoadTheGame(fixturePath)) {
       scenario.FailScenario("saved-game fixture failed to open through the document path");
       return kRuntimeFlowRunning;
     }

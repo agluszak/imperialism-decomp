@@ -33,12 +33,12 @@ public:
   virtual void CreateCommodityIconsGWorld();          // slot 0x0a 0x50a1a0
   virtual void LoadStrategicMapUnitIconAtlas750();    // slot 0x0b 0x50a3b0
   virtual void LoadStrategicMapUnitOverlayAtlas751(); // slot 0x0c 0x50a3e0
-  virtual void LoadStrategicMapOverlayAtlas8699();    // slot 0x0d 0x50a410
+  virtual void CreateMiniFlagsGWorld();               // slot 0x0d 0x50a410
   virtual void LoadStrategicMapMarkerAtlas1372();     // slot 0x0e 0x50a440
-  virtual void ApplySellOrderRowToNationState(TTradeCluster* orderSource, int orderSlot,
-                                              short nationSlot); // slot 0x0f 0x50bbc0
-  virtual void SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
-                                                         short nationIndex); // slot 0x10 0x50bc50
+  virtual void GetTradeCluster(TTradeCluster* orderSource, int orderSlot,
+                               short nationSlot); // slot 0x0f 0x50bbc0
+  virtual void ShowTradeCluster(TView* view, short orderSlot,
+                                short nationIndex); // slot 0x10 0x50bc50
   virtual void ShowTransportEntry(short resourceSlot, short nationIndex,
                                   TView* hostView); // slot 0x11 0x50bea0
   virtual TView* MakeBookDialog(int dialogId);      // slot 0x12 0x50be30
@@ -56,13 +56,13 @@ public:
                      TCityProductionView* productionView); // slot 0x15 0x50d360
   virtual void OpenConstructionWindow(short buildingSlot, TCity* city,
                                       TCityProductionView* productionView); // slot 0x16 0x50d5b0
-  virtual void RefreshActiveCityBuildingActionAvailabilityIndicators();     // slot 0x17 0x50d8d0
+  virtual void UpdateCityScreen();                                          // slot 0x17 0x50d8d0
   virtual void CloseBuilding(short buildingSlot);                           // slot 0x18 0x50d8f0
   virtual void ClearActiveCityProductionViewAndDiscardRegion();             // slot 0x19 0x50d920
-  virtual void BuildStrategicMapRenderAtlasesAndTileMaskCaches();           // slot 0x1a 0x50a9f0
+  virtual void CreateMapArtStorage();                                       // slot 0x1a 0x50a9f0
   virtual void RefreshActiveGoldControlAndUiRuntimeState();                 // slot 0x1b 0x50d950
-  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();           // slot 0x1c 0x50b640
-  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();        // slot 0x1d 0x50b9e0
+  virtual void GenerateMiniMap();                                           // slot 0x1c 0x50b640
+  virtual void GenerateRegions();                                           // slot 0x1d 0x50b9e0
   virtual void RegenerateCountryRegions();                                  // slot 0x1e 0x50bad0
   virtual void CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, short x,
                            short y); // slot 0x1f 0x50da80
@@ -110,7 +110,7 @@ public:
                                                 short destinationYFromBottom);
   void BuildStrategicMapGaugeAtlasFrom1422And1423();
   void RefreshCityCapabilityUiHandlesForActiveNation();
-  void BuildStrategicMapTileOverlayStripSurfaces800To807();
+  void CreateIndexedGWorlds();
   void ReloadMapArtAtlases();
 };
 ASSERT_SIZE(TMacViewMgr, 0xd84);

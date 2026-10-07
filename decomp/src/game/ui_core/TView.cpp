@@ -37,14 +37,14 @@ void TView::PostRender() {}
 void TView::HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event, CPoint origin) {}
 
 // FUNCTION: IMPERIALISM 0x00427260
-void TView::QueryContentBounds(CRect* boundsOut) {
+void TView::GetExtent(CRect* boundsOut) {
   boundsOut->left = 0;
   boundsOut->top = 0;
   boundsOut->right = frameWidth;
   boundsOut->bottom = frameHeight;
 }
 // FUNCTION: IMPERIALISM 0x00427290
-void TView::QueryBounds(CRect* boundsOut) {
+void TView::GetFrame(CRect* boundsOut) {
   int width = frameWidth;
   int left = ownerLocalX;
   int height = frameHeight;
@@ -202,7 +202,7 @@ void TView::AttachChildControl(class TView* child, int flag) {
 
 // Inlines CList<TView*,TView*>::RemoveAt (frees the list's block chain once empty).
 // FUNCTION: IMPERIALISM 0x0048ae60
-void TView::DetachChildFromOwnerList(class TView* child) {
+void TView::RemoveSubView(class TView* child) {
   TViewChildList* list = childList;
   if (list == 0) {
     child->ownerContext = 0;
@@ -235,13 +235,13 @@ void TView::DetachChildFromOwnerList(class TView* child) {
 // FUNCTION: IMPERIALISM 0x0048af80
 void TView::SwitchActiveChildAndNotify(class TView* child) {
   if (childList != 0 && childList->GetTail() != child) {
-    DetachChildFromOwnerList(child);
+    RemoveSubView(child);
     AttachChildControl(child, 1);
     child->RefreshControl();
   }
 }
 // FUNCTION: IMPERIALISM 0x0048afd0
-class TView* TView::ResolveControlByTag(unsigned int controlTag) {
+class TView* TView::FindSubView(unsigned int controlTag) {
   if (controlTag == static_cast<unsigned int>(this->controlTag)) {
     return this;
   }
@@ -260,7 +260,7 @@ class TView* TView::ResolveControlByTag(unsigned int controlTag) {
   pos = childList->GetHeadPosition();
   while (pos != NULL) {
     TView* child = static_cast<TView*>(childList->GetNext(pos));
-    TView* match = child->ResolveControlByTag(controlTag);
+    TView* match = child->FindSubView(controlTag);
     if (match != 0) {
       return match;
     }
@@ -282,7 +282,7 @@ void TView::Free() {
     child->Free();
   }
   if (ownerContext != 0) {
-    ownerContext->DetachChildFromOwnerList(this);
+    ownerContext->RemoveSubView(this);
     ownerContext = 0;
   }
   if (g_pApplication != 0 &&
@@ -390,7 +390,7 @@ void TView::Resize(const CPoint& size, bool refresh) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048b4b0
-void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
+void TView::InvalidateRegion(RgnHandle region) {
   if (nativeWindow == 0) {
     return;
   }
@@ -442,7 +442,7 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048b690
-void TView::ValidateControlRectIfWindowActive(RECT* rect) {
+void TView::ValidateVRect(RECT* rect) {
   if (nativeWindow != 0 && g_McAppUiActiveFlag != 0) {
     ValidateRect(nativeWindow->m_hWnd, rect);
   }
@@ -496,7 +496,7 @@ void TView::EnsureStylePayload() {
 void TView::PaintOrInvalidateControl(CDC* paintDc) {
   if (paintDc != 0) {
     CRect rect;
-    QueryContentBounds(&rect);
+    GetExtent(&rect);
     PaintVisibleChildrenIntersectingClipRect(&rect, paintDc);
     return;
   }
@@ -510,7 +510,7 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
   }
 
   CRect clippedRect;
-  QueryContentBounds(&clippedRect);
+  GetExtent(&clippedRect);
   if (IntersectRect(&clippedRect, &clippedRect, clipRect) == 0) {
     return;
   }
@@ -748,7 +748,7 @@ void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
     RECT hoverHelpRect;
     CopyRect(&hoverHelpRect, &quickDrawExtent);
     if (g_pCursorControlPanel != NULL) {
-      g_pCursorControlPanel->SetTextAndLayoutRect(hoverHelpText, &hoverHelpRect);
+      g_pCursorControlPanel->HotText(hoverHelpText, &hoverHelpRect);
     }
   }
   short cursorId = GetCursorID();
@@ -764,9 +764,9 @@ void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   SetCursor(hCursor);
 }
 // FUNCTION: IMPERIALISM 0x0048c380
-void TView::ApplyBounds(CRect* newBounds, bool modeFlag) {
+void TView::SetFrame(CRect* newBounds, bool modeFlag) {
   CRect current;
-  QueryBounds(&current);
+  GetFrame(&current);
   if (EqualRect(newBounds, &current) == 0) {
     if (modeFlag && IsActionable()) {
       InvalidateCityDialogRectRegion(0, 1);
@@ -835,7 +835,7 @@ char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint orig
 // FUNCTION: IMPERIALISM 0x0048c6d0
 char TView::PointInBoundsAndActionable(CPoint* point) {
   CRect bounds;
-  QueryContentBounds(&bounds);
+  GetExtent(&bounds);
   if (IsActionable()) {
     POINT p;
     p.x = point->x;
@@ -911,7 +911,7 @@ unsigned short TView::GetHelpState() {
 // FUNCTION: IMPERIALISM 0x0048c990
 short TView::ContainsMouse(const CPoint& point) {
   CRect bounds;
-  QueryContentBounds(&bounds);
+  GetExtent(&bounds);
   POINT p;
   p.x = point.x;
   p.y = point.y;

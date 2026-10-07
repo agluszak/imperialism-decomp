@@ -41,7 +41,7 @@ void TNavyPlayer::ApplyChanges(unsigned char sideWonFlag) {
   CIterator unitIter(unitList);
   for (TNavyTacUnit* unit = static_cast<TNavyTacUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TNavyTacUnit*>(unitIter.Advance())) {
-    TShip* sourceShip = unit->GetSourceShip();
+    TShip* sourceShip = unit->GetRealShip();
     sourceShip->Damage(static_cast<short>(sourceShip->strength - unit->strength));
   }
   taskForce->defeated = 1;
@@ -49,7 +49,7 @@ void TNavyPlayer::ApplyChanges(unsigned char sideWonFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0059ee60
-void TNavyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
+void TNavyPlayer::RemoveCapturedUnit(TTacticalUnit* unit) {
   CPtrList* entries = &unitList->listState;
   POSITION pos = entries->Find(unit, 0);
   if (pos != 0) {
@@ -58,8 +58,8 @@ void TNavyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
 }
 
 // FUNCTION: IMPERIALISM 0x0059eea0
-void TNavyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
+void TNavyPlayer::AddCapturedUnit(TTacticalUnit* unit) {
   unitList->listState.AddHead(unit);
   unit->FlipUnitSideAffiliation();
-  static_cast<TNavyTacUnit*>(unit)->GetSourceShip()->Capture(static_cast<short>(nationIndex));
+  static_cast<TNavyTacUnit*>(unit)->GetRealShip()->Capture(static_cast<short>(nationIndex));
 }

@@ -59,7 +59,7 @@
 namespace {
 
 static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag, int line) {
-  TTransportPicture* panel = static_cast<TTransportPicture*>(hostView->ResolveControlByTag(tag));
+  TTransportPicture* panel = static_cast<TTransportPicture*>(hostView->FindSubView(tag));
   if (panel == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, line);
   }
@@ -67,7 +67,7 @@ static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int
 }
 
 static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag, int line) {
-  TControl* child = static_cast<TControl*>(panel->ResolveControlByTag(tag));
+  TControl* child = static_cast<TControl*>(panel->FindSubView(tag));
   if (child == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, line);
   }
@@ -175,10 +175,10 @@ void TMacViewMgr::IMacViewMgr() {
   CreateCommodityIconsGWorld();
   LoadStrategicMapUnitIconAtlas750();
   LoadStrategicMapUnitOverlayAtlas751();
-  LoadStrategicMapOverlayAtlas8699();
+  CreateMiniFlagsGWorld();
   BuildStrategicMapGaugeAtlasFrom1422And1423();
   RefreshCityCapabilityUiHandlesForActiveNation();
-  BuildStrategicMapTileOverlayStripSurfaces800To807();
+  CreateIndexedGWorlds();
 }
 
 // FUNCTION: IMPERIALISM 0x00509f70
@@ -225,8 +225,8 @@ void TMacViewMgr::Free() {
 void TMacViewMgr::ReadFrom(TStream* stream) {
   activeCityProductionView = 0;
   TObject::ReadFrom(stream);
-  RebuildMapTileNeighborHighlightPolygonsForAllTiles();
-  RenderTurnEventPalettePreviewSurfaceAndProgress();
+  GenerateRegions();
+  GenerateMiniMap();
   RefreshCityCapabilityUiHandlesForActiveNation();
 }
 
@@ -291,7 +291,7 @@ void TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050a410
-void TMacViewMgr::LoadStrategicMapOverlayAtlas8699() {
+void TMacViewMgr::CreateMiniFlagsGWorld() {
   flagWorld = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x21fb);
 }
 
@@ -388,7 +388,7 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
 // Listing 0x0050a820 inlines the loader's exact-type non-virtual destructor.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x0050a820
-void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
+void TMacViewMgr::CreateIndexedGWorlds() {
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
   int stripIndex;
@@ -429,7 +429,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x0050a9f0
-void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
+void TMacViewMgr::CreateMapArtStorage() {
   RECT atlasBounds;
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
@@ -630,11 +630,11 @@ void TMacViewMgr::ReloadMapArtAtlases() {
   if (gaugeWorld != 0) {
     g_pDisplayMgr->RemoveGWorld(gaugeWorld);
   }
-  LoadStrategicMapOverlayAtlas8699();
+  CreateMiniFlagsGWorld();
 }
 
 // FUNCTION: IMPERIALISM 0x0050b640
-void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
+void TMacViewMgr::GenerateMiniMap() {
   RECT fillRect;
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
@@ -757,7 +757,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050b9e0
-void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
+void TMacViewMgr::GenerateRegions() {
   int cityRecordIndex = 0;
   RgnHandle* tileSlot = tileStateSlots;
   while (cityRecordIndex < kProvinceCount) {
@@ -810,13 +810,12 @@ void TMacViewMgr::RegenerateCountryRegions() {
       ++nationIndex;
     }
     DisposeRgn(regionWrapper);
-    RenderTurnEventPalettePreviewSurfaceAndProgress();
+    GenerateMiniMap();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0050bbc0
-void TMacViewMgr::ApplySellOrderRowToNationState(TTradeCluster* orderSource, int orderSlot,
-                                                 short nationSlot) {
+void TMacViewMgr::GetTradeCluster(TTradeCluster* orderSource, int orderSlot, short nationSlot) {
   if (orderSource->IsSelectionAllowed()) {
     g_apNationStates[nationSlot]->SetItemPotentials(static_cast<short>(orderSlot), -1);
     return;
@@ -826,8 +825,7 @@ void TMacViewMgr::ApplySellOrderRowToNationState(TTradeCluster* orderSource, int
 }
 
 // FUNCTION: IMPERIALISM 0x0050bc50
-void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
-                                                            short nationIndex) {
+void TMacViewMgr::ShowTradeCluster(TView* view, short orderSlot, short nationIndex) {
   TTradeCluster* row = static_cast<TTradeCluster*>(view);
   view->DoPostCreate(0);
   row->tradeMetricSlot = orderSlot;
@@ -842,19 +840,19 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
     sellCount = 0;
     effectiveNationIndex = 0;
   }
-  TNumberText* sellControl = static_cast<TNumberText*>(view->ResolveControlByTag(kControlTagSell));
+  TNumberText* sellControl = static_cast<TNumberText*>(view->FindSubView(kControlTagSell));
   if (sellControl == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0x8e4);
   }
   if (sellCount < 0) {
-    row->SetTradeBidControlBitmap();
+    row->ShowBidCard();
     sellControl->SetControlValue(0, 0);
     sellControl->Show(0, 1);
   } else {
     row->DoControlAction();
   }
   if (sellCount > 0) {
-    row->SetTradeOfferControlBitmap();
+    row->ShowOfferCard();
     sellControl->SetControlValue(sellCount, 0);
     sellControl->Show(1, 1);
     return;
@@ -1242,8 +1240,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city, 
                                                TCityProductionView* productionView) {
   TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(
       static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
-  TBuildingView* buildingView =
-      static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
+  TBuildingView* buildingView = static_cast<TBuildingView*>(dialog->FindSubView(kControlTagDialog));
   if (buildingView == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xb4f);
   }
@@ -1267,8 +1264,7 @@ TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
     TCityProductionView* productionView, short savedX, short savedY) {
   TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(
       static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
-  TBuildingView* buildingView =
-      static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
+  TBuildingView* buildingView = static_cast<TBuildingView*>(dialog->FindSubView(kControlTagDialog));
   if (buildingView == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xb62);
   }
@@ -1294,7 +1290,7 @@ void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
   TWindow* dialog =
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericCreator);
   TBuildingConstructionView* constructionView =
-      static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(kControlTagDialog));
+      static_cast<TBuildingConstructionView*>(dialog->FindSubView(kControlTagDialog));
   if (constructionView == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xb98);
   }
@@ -1357,7 +1353,7 @@ void TMacViewMgr::MakeCountryRegion(int country) {
 }
 
 // FUNCTION: IMPERIALISM 0x0050d8d0
-void TMacViewMgr::RefreshActiveCityBuildingActionAvailabilityIndicators() {
+void TMacViewMgr::UpdateCityScreen() {
   if (activeCityProductionView != 0) {
     activeCityProductionView->UpdateToolbar();
   }
@@ -1381,11 +1377,11 @@ void TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion() {
 // FUNCTION: IMPERIALISM 0x0050d950
 void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
   TView* hostView = g_pDisplayMgr->activeDialog;
-  TPicture* goldControl = static_cast<TPicture*>(hostView->ResolveControlByTag(kControlTagDialog));
+  TPicture* goldControl = static_cast<TPicture*>(hostView->FindSubView(kControlTagDialog));
   if (goldControl == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xc27);
   }
-  goldControl->ResetPictureResourceEntry();
+  goldControl->ReleasePicture();
   goldControl->SetPictureRsrcID(0, 0);
   g_pUiAnimator->FreeAllAnis();
 }

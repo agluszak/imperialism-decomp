@@ -94,8 +94,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   g_pSimMgr->GetString(0x271d, static_cast<short>(reportTitleIndex), &reportText);
   reportText += " Report";
 
-  TStaticText* titleControl =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
+  TStaticText* titleControl = static_cast<TStaticText*>(FindSubView(kControlTagTitl)); // 'titl'
   if (titleControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1349);
   }
@@ -140,8 +139,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   g_pSimMgr->GetString(0x2720, static_cast<short>(rand() % 6), &scratchText);
   reportText += scratchText;
 
-  TStaticText* reportControl =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagRepo)); // 'repo'
+  TStaticText* reportControl = static_cast<TStaticText*>(FindSubView(kControlTagRepo)); // 'repo'
   if (reportControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x137c);
   }
@@ -165,16 +163,14 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   scratchText += '\n';
   reportText += scratchText;
 
-  TStaticText* lossControl =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoss)); // 'loss'
+  TStaticText* lossControl = static_cast<TStaticText*>(FindSubView(kControlTagLoss)); // 'loss'
   if (lossControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1394);
   }
   lossControl->SetTextAndMaybeRefresh(&reportText, true);
 
   reportValue = 0;
-  TStaticText* pageControl =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagPage)); // 'page'
+  TStaticText* pageControl = static_cast<TStaticText*>(FindSubView(kControlTagPage)); // 'page'
   if (pageControl != NULL) {
     CString pageText;
     CString pageNumber;
@@ -305,17 +301,17 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         const unsigned int kPageTags[4] = {kControlTagPgup, kControlTagPgdn, kControlTagPage,
                                            kControlTagPict}; // pgup,pgdn,page,pict
         for (int i = 0; i < 4; i++) {
-          TView* widget = ResolveControlByTag(kPageTags[i]);
+          TView* widget = FindSubView(kPageTags[i]);
           if (widget != NULL) {
             widget->Show(1, 1);
           }
         }
-        TView* pgUp = ResolveControlByTag(kControlTagPgup);
+        TView* pgUp = FindSubView(kControlTagPgup);
         if (pgUp == NULL) {
           FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x145d);
         }
         pgUp->Show(0, 1);
-        TView* pgDown = ResolveControlByTag(kControlTagPgdn);
+        TView* pgDown = FindSubView(kControlTagPgdn);
         if (pgDown == NULL) {
           FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1460);
         }
@@ -323,7 +319,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       } else {
         reportValue--;
       }
-      TView* pgDown = ResolveControlByTag(kControlTagPgdn);
+      TView* pgDown = FindSubView(kControlTagPgdn);
       if (pgDown == NULL) {
         FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1460);
       }
@@ -336,17 +332,17 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         const unsigned int kPageTags[4] = {kControlTagPgup, kControlTagPgdn, kControlTagPage,
                                            kControlTagPict}; // pgup,pgdn,page,pict
         for (int i = 0; i < 4; i++) {
-          TView* widget = ResolveControlByTag(kPageTags[i]);
+          TView* widget = FindSubView(kPageTags[i]);
           if (widget != NULL) {
             widget->Show(1, 1);
           }
         }
-        TView* pgUp = ResolveControlByTag(kControlTagPgup);
+        TView* pgUp = FindSubView(kControlTagPgup);
         if (pgUp == NULL) {
           FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1470);
         }
         pgUp->Show(1, 1);
-        TView* pgDown = ResolveControlByTag(kControlTagPgdn);
+        TView* pgDown = FindSubView(kControlTagPgdn);
         if (pgDown == NULL) {
           FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1477);
         }
@@ -355,7 +351,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         reportValue++;
       }
       if (reportValue == totalPages) {
-        TView* pgDown = ResolveControlByTag(kControlTagPgdn);
+        TView* pgDown = FindSubView(kControlTagPgdn);
         if (pgDown == NULL) {
           FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1477);
         }
@@ -365,7 +361,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       InvalidateCityDialogRectRegion(&rect, 1);
     }
 
-    TView* page = ResolveControlByTag(kControlTagPage); // 'page'
+    TView* page = FindSubView(kControlTagPage); // 'page'
     if (page != NULL) {
       CString pageNumber;
       pageNumber.Format(g_szDecimalFormat, reportValue + 1);

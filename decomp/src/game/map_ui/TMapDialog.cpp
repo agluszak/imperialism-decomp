@@ -343,7 +343,7 @@ void TMapDialog::DoPostCreate(int arg) {
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
   g_pDisplayMgr->MakeNewGWorld(quickDrawSurface, 8, surfaceBounds);
 
-  ResetAllTileMarkersToSentinel();
+  FlushCache();
 
   g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
@@ -549,7 +549,7 @@ void TMapDialog::InvalidateTile(short tileIndex) {
 
   CRect invalidateRect(static_cast<short>(tileIndex), projectedY,
                        static_cast<short>(tileIndex) + 0x40, projectedY + 0x40);
-  ReleaseTileMarkerForTile(static_cast<short>(originalTileIndex));
+  DeCache(static_cast<short>(originalTileIndex));
   InvalidateCityDialogRectRegion(&invalidateRect, 1);
 }
 
@@ -589,9 +589,9 @@ void TMapDialog::ConvertPoint(const CPoint& point, short& outRow, short& outCol,
 }
 
 // FUNCTION: IMPERIALISM 0x0051aad0
-void TMapDialog::RefreshMapTile(short tileIndex) {
+void TMapDialog::ImmediateDrawTile(short tileIndex) {
   PrepareForDrawing();
-  ReleaseTileMarkerForTile(tileIndex);
+  DeCache(tileIndex);
 
   short projectedY;
   short projectedX;
@@ -612,7 +612,7 @@ bool TMapDialog::IsTileVisible(short tileIndex) {
 
   CRect tileRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
   CRect contentBounds;
-  QueryContentBounds(&contentBounds);
+  GetExtent(&contentBounds);
   CRect drawableBounds = ViewToQDRect(&contentBounds);
   SectRect(&tileRect, &drawableBounds, &tileRect);
   return ProbeRectEmptyAfterCopyToLocal(&tileRect) == 0;
@@ -698,7 +698,7 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
   clip.top = -0x40;
   clip.right = 0x240;
   clip.bottom = 0x200;
-  g_pUiAnimator->TranslateListRectsAndDropNonIntersectingEntries(dx, dy, clip);
+  g_pUiAnimator->UpdateAniLocs(dx, dy, clip);
 }
 
 // FUNCTION: IMPERIALISM 0x0051af60
@@ -755,7 +755,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
   CString nameText;
   CString cityName;
 
-  TView* titleControl = ResolveControlByTag(kControlTagTitl); // 'titl'
+  TView* titleControl = FindSubView(kControlTagTitl); // 'titl'
   if (titleControl == 0) {
     FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x459);
   }
@@ -765,7 +765,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
   mainText += " (#" + numberText + g_szUiCloseParen;
   static_cast<TStaticText*>(titleControl)->SetTextAndMaybeRefresh(&mainText, true);
 
-  TView* infoControl = ResolveControlByTag(kControlTagInfo); // 'info'
+  TView* infoControl = FindSubView(kControlTagInfo); // 'info'
   if (infoControl == 0) {
     FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x463);
   }
@@ -797,8 +797,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
         g_pSimMgr->GetString(0x2711, resourceType, &nameText);
         numberText.Format(
             g_szDecimalFormat,
-            static_cast<signed char>(
-                g_pGlobalMapState->FindResourceCapabilityRequirementLevel(tileIndex, edge)));
+            static_cast<signed char>(g_pGlobalMapState->GetResourceAmtAt(tileIndex, edge)));
         mainText += numberText + " " + nameText + "\n";
       }
     }
@@ -829,7 +828,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       }
       mainText = mainText + " (formerly of " + nameText + g_szUiCloseParen;
     }
-    locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
+    locationControl = FindSubView(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x4a3);
     }
@@ -837,7 +836,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     TZone* zone = g_pActiveMapOrderContext->Sea(
         g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag);
     zone->AssignZoneDisplayNameToOutputRef(&mainText);
-    locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
+    locationControl = FindSubView(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x4ab);
     }
@@ -861,7 +860,7 @@ void RecomputeMapInteractionPreviewVerticalOffsetFromScale() {
 }
 
 // FUNCTION: IMPERIALISM 0x0051e1a0
-void TMapDialog::ResetAllTileMarkersToSentinel() {
+void TMapDialog::FlushCache() {
   g_pGlobalMapState->ResetAllTileMarkerSlotIndicesToSentinel();
   for (int i = 0; i < 90; i++) {
     tileMarkers[i].flag = false;
@@ -872,7 +871,7 @@ void TMapDialog::ResetAllTileMarkersToSentinel() {
 }
 
 // FUNCTION: IMPERIALISM 0x0051e1f0
-void TMapDialog::ReleaseTileMarkerForTile(short tileIndex) {
+void TMapDialog::DeCache(short tileIndex) {
   short slot = g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex;
   if (slot != -1) {
     g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex = -1;
@@ -970,10 +969,10 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           cachedMarkerIndex = static_cast<signed char>(cacheSearchIndex);
         } else {
           TCivUnit* unit =
-              g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetPlayerCountry());
+              g_pGlobalMapState->GetMyFirstUnit(tileIndex, g_pSimMgr->GetPlayerCountry());
           int animationTag = PointerAddressLong32(unit);
           if (unit != 0 && unit->unitOrder > static_cast<UnitOrder>(4) &&
-              g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
+              g_pUiAnimator->FindAni(animationTag) == 0) {
             short animationY;
             short animationX;
             ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &animationY,
@@ -1003,8 +1002,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         TCivUnit* firstCivilianOrder =
             g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder;
         if (firstCivilianOrder != 0) {
-          TAnimation* animation =
-              g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
+          TAnimation* animation = g_pUiAnimator->FindAni(PointerAddressLong32(firstCivilianOrder));
           if (animation != 0) {
             SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
             RECT animationClip = animation->screenRect;
@@ -1092,28 +1090,22 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         if (transitionSource != 0) {
           switch (direction) {
           case 0:
-            CopyTerrainTransitionMaskDirection0(transitionSource, destinationPixels, sourceStride,
-                                                destinationStride);
+            QuickWedgeNE(transitionSource, destinationPixels, sourceStride, destinationStride);
             break;
           case 1:
-            CopyTerrainTransitionMaskDirection1(transitionSource, destinationPixels, sourceStride,
-                                                destinationStride);
+            QuickWedgeE(transitionSource, destinationPixels, sourceStride, destinationStride);
             break;
           case 2:
-            CopyTerrainTransitionMaskDirection2(transitionSource, destinationPixels, sourceStride,
-                                                destinationStride);
+            QuickWedgeSE(transitionSource, destinationPixels, sourceStride, destinationStride);
             break;
           case 3:
-            CopyTerrainTransitionMaskDirection3(transitionSource, destinationPixels, sourceStride,
-                                                destinationStride);
+            QuickWedgeSW(transitionSource, destinationPixels, sourceStride, destinationStride);
             break;
           case 4:
-            CopyTerrainTransitionMaskDirection4(transitionSource, destinationPixels, sourceStride,
-                                                destinationStride);
+            QuickWedgeW(transitionSource, destinationPixels, sourceStride, destinationStride);
             break;
           case 5:
-            CopyTerrainTransitionMaskDirection5(transitionSource, destinationPixels, sourceStride,
-                                                destinationStride);
+            QuickWedgeNW(transitionSource, destinationPixels, sourceStride, destinationStride);
             break;
           }
         }
@@ -1170,28 +1162,22 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         unsigned char* coastSource = sourcePixels + coastOffset;
         switch (corner) {
         case 0:
-          CopyCoastCornerMaskBetweenDirections5And0(coastSource, destinationPixels, sourceStride,
-                                                    destinationStride);
+          CoastWedgeN(coastSource, destinationPixels, sourceStride, destinationStride);
           break;
         case 1:
-          CopyCoastCornerMaskBetweenDirections0And1(coastSource, destinationPixels, sourceStride,
-                                                    destinationStride);
+          CoastWedgeNE(coastSource, destinationPixels, sourceStride, destinationStride);
           break;
         case 2:
-          CopyCoastCornerMaskBetweenDirections1And2(coastSource, destinationPixels, sourceStride,
-                                                    destinationStride);
+          CoastWedgeSE(coastSource, destinationPixels, sourceStride, destinationStride);
           break;
         case 3:
-          CopyCoastCornerMaskBetweenDirections2And3(coastSource, destinationPixels, sourceStride,
-                                                    destinationStride);
+          CoastWedgeS(coastSource, destinationPixels, sourceStride, destinationStride);
           break;
         case 4:
-          CopyCoastCornerMaskBetweenDirections3And4(coastSource, destinationPixels, sourceStride,
-                                                    destinationStride);
+          CoastWedgeSW(coastSource, destinationPixels, sourceStride, destinationStride);
           break;
         case 5:
-          CopyCoastCornerMaskBetweenDirections4And5(coastSource, destinationPixels, sourceStride,
-                                                    destinationStride);
+          CoastWedgeNW(coastSource, destinationPixels, sourceStride, destinationStride);
           break;
         }
       }
@@ -1210,7 +1196,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       SetQuickDrawFillColor(0);
       if (!isOcean) {
         SetQuickDrawPenSizeAndMarkDirty(2, 2);
-        DrawNationBorderSegmentsByMask(terrain.ownerBorderMask, screenX, screenY, tileIndex);
+        DrawLandBorders(terrain.ownerBorderMask, screenX, screenY, tileIndex);
       } else {
         SetQuickDrawPenSizeAndMarkDirty(1, 1);
         if (terrain.adjacencyMaskB0b != 0) {
@@ -1223,7 +1209,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     }
     if (!isOcean && terrain.cityBorderMask != 0) {
       SetQuickDrawFillColor(0xffffff);
-      DrawCityBorderSegmentsByMask(terrain.cityBorderMask, screenX, screenY, tileIndex);
+      DrawProvinceBorders(terrain.cityBorderMask, screenX, screenY, tileIndex);
       SetQuickDrawFillColor(0);
     }
   }
@@ -1272,7 +1258,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   }
 
   if ((activeFlags & 3) != 0 && terrain.gateFlag != 0) {
-    RenderTacticalStackCountIndicatorAndUnitBadge(tileIndex, &tileRect, 0);
+    DrawGarrison(tileIndex, &tileRect, 0);
     if (terrain.cityRecordIndex >= 0 && terrain.cityRecordIndex < kProvinceCount) {
       int fortLevel = g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].fortLevel;
       if (fortLevel != 0) {
@@ -1284,10 +1270,10 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   }
 
   if ((activeFlags & 3) == 0 || terrain.gateFlag == 0) {
-    const char lowImprovementClass = static_cast<char>(
-        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, false));
-    const char highImprovementClass = static_cast<char>(
-        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true));
+    const char lowImprovementClass =
+        static_cast<char>(g_pGlobalMapState->GetDevelopmentLevel(tileIndex, false));
+    const char highImprovementClass =
+        static_cast<char>(g_pGlobalMapState->GetDevelopmentLevel(tileIndex, true));
     const signed char firstResourceType = terrain.resourceTypeByEdge[0];
     const bool firstResourceIsProspectable =
         firstResourceType == kResourceCoal || firstResourceType == kResourceIron ||
@@ -1475,13 +1461,13 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
   const int activeNation = g_pSimMgr->GetPlayerCountry();
   TCivUnit* civilianOrder =
-      g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, static_cast<short>(activeNation));
+      g_pGlobalMapState->GetMyFirstUnit(tileIndex, static_cast<short>(activeNation));
   if (civilianOrder == 0) {
     civilianOrder = terrain.firstCivilianOrder;
   }
   if (civilianOrder != 0 &&
       (terrain.ownerNationTag == activeNation || terrain.ownerNationTag > 6)) {
-    RenderMapOrderEntryTilePreview(civilianOrder, screenY, screenX, 0, tileIndex);
+    DrawUnit(civilianOrder, screenY, screenX, 0, tileIndex);
   }
 
   if (tileDebugOverlayEnabled) {
@@ -1843,8 +1829,8 @@ void TMapDialog::DrawMapDialogGuidePatternSetI(int originX, int originY, short v
 }
 
 // FUNCTION: IMPERIALISM 0x00521680
-void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
-                                              short tileIndex) {
+void TMapDialog::DrawProvinceBorders(unsigned char borderMask, int screenX, int screenY,
+                                     short tileIndex) {
   const bool direction1 = (borderMask & 2) != 0;
   if (direction1) {
     SetQuickDrawPenSizeAndMarkDirty(1, 1);
@@ -1923,8 +1909,8 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
 }
 
 // FUNCTION: IMPERIALISM 0x00521a40
-void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
-                                                short tileIndex) {
+void TMapDialog::DrawLandBorders(unsigned char borderMask, int screenX, int screenY,
+                                 short tileIndex) {
   const unsigned char direction1 = borderMask & 2;
   short neighborTile;
 
@@ -2159,7 +2145,7 @@ void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00522c10
-void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2) {
+void TMapDialog::DrawRatLine(short col1, int row1, short col2, int row2) {
   if (abs(static_cast<int>(col1) - static_cast<int>(col2)) > 0x6c) {
     if (col1 > kStrategicMapColumns) {
       col1 -= 0xd8;
@@ -2321,7 +2307,7 @@ void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
     short secondColumn = (segment.right - viewportHalfColumn + 0xd8) % 0xd8;
     short secondRow = static_cast<short>(segment.bottom);
     secondRow -= viewportRow;
-    DrawWrappedMapRouteSegment(firstColumn, firstRow, secondColumn, secondRow);
+    DrawRatLine(firstColumn, firstRow, secondColumn, secondRow);
   }
 
   SetQuickDrawFillColor(0);
@@ -2371,8 +2357,7 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
 
   TCivUnit* firstCivilianOrder = g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder;
   if (firstCivilianOrder != 0) {
-    TAnimation* animation =
-        g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
+    TAnimation* animation = g_pUiAnimator->FindAni(PointerAddressLong32(firstCivilianOrder));
     if (animation != 0) {
       SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
       RECT animationClip = animation->screenRect;
@@ -2395,12 +2380,12 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
 }
 
 // FUNCTION: IMPERIALISM 0x00523640
-void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
-                                                int projectedY, int flag, short tileIndex) {
+void TMapDialog::DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, int flag,
+                          short tileIndex) {
   bool belongsToActiveNation = orderEntry->ownerNationSlot == g_pSimMgr->GetPlayerCountry();
   if (orderEntry->unitOrder > static_cast<UnitOrder>(4) && belongsToActiveNation) {
     int animationTag = PointerAddressLong32(orderEntry);
-    if (g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
+    if (g_pUiAnimator->FindAni(animationTag) == 0) {
       short animationY;
       short animationX;
       ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &animationY,
@@ -2467,8 +2452,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
 }
 
 // FUNCTION: IMPERIALISM 0x00523b70
-void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
-                                                               int flag) {
+void TMapDialog::DrawGarrison(short tileIndex, CRect* dstRect, int flag) {
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   short cityRecordIndex = tile.cityRecordIndex;
   TMilitaryUnit* unit = 0;
@@ -2599,8 +2583,8 @@ static inline void CopyMapTilePixelSpan(unsigned char* src, unsigned char* dest,
 }
 
 // FUNCTION: IMPERIALISM 0x005241b0
-void TMapDialog::CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigned char* dest,
-                                                     short srcStride, short destStride) {
+void TMapDialog::QuickWedgeSE(unsigned char* src, unsigned char* dest, short srcStride,
+                              short destStride) {
   for (int rowDirection2 = 0; rowDirection2 < 0x20; ++rowDirection2) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirection2, 0x20,
                          0x20 - rowDirection2);
@@ -2608,8 +2592,8 @@ void TMapDialog::CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigne
 }
 
 // FUNCTION: IMPERIALISM 0x005242f0
-void TMapDialog::CopyTerrainTransitionMaskDirection1(unsigned char* src, unsigned char* dest,
-                                                     short srcStride, short destStride) {
+void TMapDialog::QuickWedgeE(unsigned char* src, unsigned char* dest, short srcStride,
+                             short destStride) {
   for (int upperRowDirection1 = 1; upperRowDirection1 < 0x20; ++upperRowDirection1) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, upperRowDirection1,
                          0x40 - upperRowDirection1, upperRowDirection1);
@@ -2621,8 +2605,8 @@ void TMapDialog::CopyTerrainTransitionMaskDirection1(unsigned char* src, unsigne
 }
 
 // FUNCTION: IMPERIALISM 0x00524540
-void TMapDialog::CopyTerrainTransitionMaskDirection0(unsigned char* src, unsigned char* dest,
-                                                     short srcStride, short destStride) {
+void TMapDialog::QuickWedgeNE(unsigned char* src, unsigned char* dest, short srcStride,
+                              short destStride) {
   for (int rowDirection0 = 0x20; rowDirection0 < 0x40; ++rowDirection0) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirection0, 0x20,
                          rowDirection0 - 0x1f);
@@ -2630,8 +2614,8 @@ void TMapDialog::CopyTerrainTransitionMaskDirection0(unsigned char* src, unsigne
 }
 
 // FUNCTION: IMPERIALISM 0x00524670
-void TMapDialog::CopyTerrainTransitionMaskDirection5(unsigned char* src, unsigned char* dest,
-                                                     short srcStride, short destStride) {
+void TMapDialog::QuickWedgeNW(unsigned char* src, unsigned char* dest, short srcStride,
+                              short destStride) {
   for (int rowDirection5 = 0x21; rowDirection5 < 0x40; ++rowDirection5) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirection5, 0x40 - rowDirection5,
                          rowDirection5 - 0x20);
@@ -2639,8 +2623,8 @@ void TMapDialog::CopyTerrainTransitionMaskDirection5(unsigned char* src, unsigne
 }
 
 // FUNCTION: IMPERIALISM 0x005247a0
-void TMapDialog::CopyTerrainTransitionMaskDirection4(unsigned char* src, unsigned char* dest,
-                                                     short srcStride, short destStride) {
+void TMapDialog::QuickWedgeW(unsigned char* src, unsigned char* dest, short srcStride,
+                             short destStride) {
   for (int upperRowDirection4 = 0; upperRowDirection4 < 0x20; ++upperRowDirection4) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, upperRowDirection4, 0,
                          upperRowDirection4 + 1);
@@ -2652,8 +2636,8 @@ void TMapDialog::CopyTerrainTransitionMaskDirection4(unsigned char* src, unsigne
 }
 
 // FUNCTION: IMPERIALISM 0x005249f0
-void TMapDialog::CopyTerrainTransitionMaskDirection3(unsigned char* src, unsigned char* dest,
-                                                     short srcStride, short destStride) {
+void TMapDialog::QuickWedgeSW(unsigned char* src, unsigned char* dest, short srcStride,
+                              short destStride) {
   for (int rowDirection3 = 0; rowDirection3 < 0x20; ++rowDirection3) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirection3, rowDirection3,
                          0x20 - rowDirection3);
@@ -2661,8 +2645,8 @@ void TMapDialog::CopyTerrainTransitionMaskDirection3(unsigned char* src, unsigne
 }
 
 // FUNCTION: IMPERIALISM 0x00524b30
-void TMapDialog::CopyCoastCornerMaskBetweenDirections1And2(unsigned char* src, unsigned char* dest,
-                                                           short srcStride, short destStride) {
+void TMapDialog::CoastWedgeSE(unsigned char* src, unsigned char* dest, short srcStride,
+                              short destStride) {
   for (int rowDirections1And2 = 0; rowDirections1And2 < 0x20; ++rowDirections1And2) {
     int firstColumn = 0x30 - (rowDirections1And2 / 8) * 4;
     if ((rowDirections1And2 & 2) != 0) {
@@ -2674,8 +2658,8 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections1And2(unsigned char* src, u
 }
 
 // FUNCTION: IMPERIALISM 0x00524c60
-void TMapDialog::CopyCoastCornerMaskBetweenDirections0And1(unsigned char* src, unsigned char* dest,
-                                                           short srcStride, short destStride) {
+void TMapDialog::CoastWedgeNE(unsigned char* src, unsigned char* dest, short srcStride,
+                              short destStride) {
   for (int rowDirections0And1 = 0x20; rowDirections0And1 < 0x40; ++rowDirections0And1) {
     int firstColumn = 0x20 + (rowDirections0And1 - 0x20) / 2;
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirections0And1, firstColumn,
@@ -2684,8 +2668,8 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections0And1(unsigned char* src, u
 }
 
 // FUNCTION: IMPERIALISM 0x00524e70
-void TMapDialog::CopyCoastCornerMaskBetweenDirections2And3(unsigned char* src, unsigned char* dest,
-                                                           short srcStride, short destStride) {
+void TMapDialog::CoastWedgeS(unsigned char* src, unsigned char* dest, short srcStride,
+                             short destStride) {
   for (int rowDirections2And3 = 0; rowDirections2And3 < 0x20; ++rowDirections2And3) {
     int firstColumn = 0x10 + rowDirections2And3 / 2;
     int pairInGroup = (rowDirections2And3 / 2) & 3;
@@ -2696,8 +2680,8 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections2And3(unsigned char* src, u
 }
 
 // FUNCTION: IMPERIALISM 0x005250a0
-void TMapDialog::CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, unsigned char* dest,
-                                                           short srcStride, short destStride) {
+void TMapDialog::CoastWedgeN(unsigned char* src, unsigned char* dest, short srcStride,
+                             short destStride) {
   for (int rowDirections5And0 = 0x20; rowDirections5And0 < 0x40; ++rowDirections5And0) {
     int halfRow = (rowDirections5And0 - 0x20) / 2;
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirections5And0, 0x1f - halfRow,
@@ -2706,8 +2690,8 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, u
 }
 
 // FUNCTION: IMPERIALISM 0x005252d0
-void TMapDialog::CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, unsigned char* dest,
-                                                           short srcStride, short destStride) {
+void TMapDialog::CoastWedgeNW(unsigned char* src, unsigned char* dest, short srcStride,
+                              short destStride) {
   for (int rowDirections4And5 = 0x20; rowDirections4And5 < 0x40; ++rowDirections4And5) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirections4And5, 0,
                          0x20 - (rowDirections4And5 - 0x20) / 2);
@@ -2715,8 +2699,8 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, u
 }
 
 // FUNCTION: IMPERIALISM 0x005254a0
-void TMapDialog::CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, unsigned char* dest,
-                                                           short srcStride, short destStride) {
+void TMapDialog::CoastWedgeSW(unsigned char* src, unsigned char* dest, short srcStride,
+                              short destStride) {
   for (int rowDirections3And4 = 0; rowDirections3And4 < 0x20; ++rowDirections3And4) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirections3And4, 0,
                          0x10 + rowDirections3And4 / 2);
@@ -2755,11 +2739,9 @@ void TMapDialog::NewCopy64(unsigned char* src, unsigned char* dest, short srcStr
 }
 
 // FUNCTION: IMPERIALISM 0x00525730
-void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                     const CPoint* viewportOrigin,
-                                                                     short* outVerticalOffset,
-                                                                     short* outHorizontalOffset,
-                                                                     int projectionScale) {
+void TMapDialog::TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
+                                    short* outVerticalOffset, short* outHorizontalOffset,
+                                    int projectionScale) {
   ProjectTileIndexToWrappedScreenOffsetByScale(static_cast<short>(tileIndex), viewportOrigin,
                                                outVerticalOffset, outHorizontalOffset,
                                                static_cast<short>(projectionScale));

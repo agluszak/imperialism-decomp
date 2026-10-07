@@ -40,7 +40,6 @@ TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 
 IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 
-
 // FUNCTION: IMPERIALISM 0x0058af80
 void TTraderAmtBar::DoPostCreate(int arg) {
   (void)arg;
@@ -80,13 +79,13 @@ void TTraderAmtBar::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b070
-short TTraderAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
+short TTraderAmtBar::AdjustForZero(int baseValue, short requestedValue) {
   short result = static_cast<short>(baseValue);
   if (requestedValue > 0) {
     TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     short merchantCapacity = nationState->merchantCapacity;
     if ((int)requestedValue < (static_cast<int>(this->frameWidth) / (int)merchantCapacity)) {
-      if (this->ownerContext->ResolveControlByTag(kControlTagSell) != 0) {
+      if (this->ownerContext->FindSubView(kControlTagSell) != 0) {
         result = 1;
       }
     }
@@ -104,9 +103,9 @@ void TTraderAmtBar::DrawAmt() {
     control->PrepareForDrawing();
     if (control->IsActionable()) {
       CRect boundsRect(0, 0, 0, 0);
-      control->QueryBounds(&boundsRect);
-      control->ApplyBounds(&boundsRect, true);
-      control->QueryBounds(&boundsRect);
+      control->GetFrame(&boundsRect);
+      control->SetFrame(&boundsRect, true);
+      control->GetFrame(&boundsRect);
       CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
       control->TranslatePointToParentChain4E(&translatedOrigin);
 

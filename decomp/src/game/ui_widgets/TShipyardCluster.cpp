@@ -42,7 +42,7 @@ void TShipyardCluster::DoPostCreate(int styleSeed) {
 
 // FUNCTION: IMPERIALISM 0x0058a690
 void TShipyardCluster::SetMoveAmount(short amount) {
-  TNumberText* moveControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
@@ -51,12 +51,12 @@ void TShipyardCluster::SetMoveAmount(short amount) {
 
   RECT invalidateRect;
   CRect moveRect;
-  moveControl->QueryBounds(&moveRect);
+  moveControl->GetFrame(&moveRect);
   OffsetRect(&moveRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&invalidateRect, &moveRect);
   this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
-  TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(this->FindSubView(kControlTagBar));
   if (barControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
@@ -72,16 +72,16 @@ void TShipyardCluster::SetMoveAmount(short amount) {
   moveControlPosition.x = barControl->ownerLocalX - 2;
   moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
   moveControl->Locate(moveControlPosition, true);
-  moveControl->QueryBounds(&moveRect);
+  moveControl->GetFrame(&moveRect);
   OffsetRect(&moveRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&invalidateRect, &moveRect);
   this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
   TNumberText* turnControl =
-      static_cast<TNumberText*>(this->ownerContext->ResolveControlByTag(kControlTagTurn));
+      static_cast<TNumberText*>(this->ownerContext->FindSubView(kControlTagTurn));
   if (turnControl != 0) {
     turnControl->SetControlValue(0, 0);
-    turnControl->QueryBounds(&moveRect);
+    turnControl->GetFrame(&moveRect);
     CopyRect(&invalidateRect, &moveRect);
     this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);
   }
@@ -93,8 +93,7 @@ void TShipyardCluster::SetMoveAmount(short amount) {
 void TShipyardCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == (int)kControlTagRght) {
-      TNumberText* moveControl =
-          static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
+      TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
       if (moveControl == 0) {
         GAME_FAIL_NIL_POINTER();
       }
@@ -106,8 +105,7 @@ void TShipyardCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
       return;
     }
-    TNumberText* moveControl =
-        static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
+    TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
     if (moveControl == 0) {
       GAME_FAIL_NIL_POINTER();
     }

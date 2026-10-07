@@ -48,7 +48,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   BuildUiTextStyleDescriptor(&styleAt94, 1, 0xc, 0x2b68);
   BuildUiTextStyleDescriptor(&styleAt9e, 0, 0xc, 0x2b6c);
 
-  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
+  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(FindSubView(kControlTagCurs));
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   cursorPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
@@ -58,7 +58,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   CString slotCaption;
   for (int slot = 0; slot < 8; ++slot) {
     TStaticText* slotControl =
-        static_cast<TStaticText*>(ResolveControlByTag(kControlTagSlt0 + slot)); // 'slt0'
+        static_cast<TStaticText*>(FindSubView(kControlTagSlt0 + slot)); // 'slt0'
     slotControl->AssertValid();
     const char* savePrefix = (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone)
                                  ? g_pszMultiplayerSavePrefix
@@ -88,15 +88,15 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   }
 
   if (loadModeFlag) {
-    TPicture* okayControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagOkay));
+    TPicture* okayControl = static_cast<TPicture*>(FindSubView(kControlTagOkay));
     okayControl->AssertValid();
     okayControl->SetPictureRsrcID(static_cast<short>(okayControl->glyphBase + 2), 0);
   } else {
-    TView* plateControl = ResolveControlByTag(0x706c6174); // 'plat'
+    TView* plateControl = FindSubView(0x706c6174); // 'plat'
     plateControl->AssertValid();
     plateControl->Show(1, 1);
     TMapPreviewView* preview =
-        static_cast<TMapPreviewView*>(plateControl->ResolveControlByTag(kControlTagMapP));
+        static_cast<TMapPreviewView*>(plateControl->FindSubView(kControlTagMapP));
     preview->AssertValid();
     preview->TakeSatellitePhoto(0);
     preview->selectedNation = g_pSimMgr->GetPlayerCountry();
@@ -108,23 +108,23 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   // Hover-help strings differ between the load and the save picture.
   if (loadModeFlag) {
     LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xc, this);
-    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x11, ResolveControlByTag(kControlTagOtto));
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(kControlTagCncl));
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, ResolveControlByTag(kControlTagMapP));
-    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x14, ResolveControlByTag(kControlTagOkay));
+    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x11, FindSubView(kControlTagOtto));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, FindSubView(kControlTagCncl));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, FindSubView(kControlTagMapP));
+    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x14, FindSubView(kControlTagOkay));
     for (int slot = 0; slot < 8; ++slot) {
-      TView* slotControl = ResolveControlByTag(kControlTagSlt0 + slot);
+      TView* slotControl = FindSubView(kControlTagSlt0 + slot);
       slotControl->AssertValid();
       LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x12, slotControl);
     }
   } else {
     LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xb, this);
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xb, ResolveControlByTag(kControlTagOtto));
-    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x15, ResolveControlByTag(kControlTagCncl));
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, ResolveControlByTag(kControlTagMapP));
-    LoadUiStringByGroupAndIndexToControlObject(0x2743, 2, ResolveControlByTag(kControlTagOkay));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xb, FindSubView(kControlTagOtto));
+    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x15, FindSubView(kControlTagCncl));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, FindSubView(kControlTagMapP));
+    LoadUiStringByGroupAndIndexToControlObject(0x2743, 2, FindSubView(kControlTagOkay));
     for (int slot = 0; slot < 8; ++slot) {
-      TView* slotControl = ResolveControlByTag(kControlTagSlt0 + slot);
+      TView* slotControl = FindSubView(kControlTagSlt0 + slot);
       slotControl->AssertValid();
       LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x16, slotControl);
     }
@@ -156,7 +156,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   fread(trailingRecord, 1, 0x20, file);
   fclose(file);
 
-  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
+  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(FindSubView(kControlTagMapP));
   mapControl->AssertValid();
   mapControl->Show(1, 1);
   mapControl->TakeSatellitePhoto(tileOwnerTagTable);
@@ -164,8 +164,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   mapControl->EnhancePhoto();
   mapControl->RefreshControl();
 
-  TStaticText* infoControl =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagInfo)); // 'info'
+  TStaticText* infoControl = static_cast<TStaticText*>(FindSubView(kControlTagInfo)); // 'info'
   infoControl->AssertValid();
 
   CString yearText;
@@ -176,7 +175,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   infoControl->SetTextAndMaybeRefresh(&infoText, false);
 
   CRect infoBounds;
-  infoControl->QueryBounds(&infoBounds);
+  infoControl->GetFrame(&infoBounds);
   InvalidateCityDialogRectRegion(&infoBounds, 1);
 }
 
@@ -198,18 +197,18 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       if (loadModeFlag) {
         if (selectedSlot != -1 && selectedSlot != 0xa1) {
           TControl* oldSlotControl =
-              static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot));
+              static_cast<TControl*>(FindSubView(kControlTagSlt0 + selectedSlot));
           oldSlotControl->AssertValid();
           oldSlotControl->InstallTextStyle(styleAt9e, 0);
           CRect oldBounds;
-          oldSlotControl->QueryBounds(&oldBounds);
+          oldSlotControl->GetFrame(&oldBounds);
           InvalidateCityDialogRectRegion(&oldBounds, 1);
         }
         // sourceHandler is the newly-clicked slot control itself.
         TControl* newSlotControl = static_cast<TControl*>(sourceHandler);
         newSlotControl->InstallTextStyle(styleAt94, 0);
         CRect newBounds;
-        newSlotControl->QueryBounds(&newBounds);
+        newSlotControl->GetFrame(&newBounds);
         InvalidateCityDialogRectRegion(&newBounds, 1);
         selectedSlot = newSlot;
         RefreshSlotPreviewFromSaveFile(newSlot);
@@ -233,7 +232,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       }
     }
     if (g_pApplication->screenMode > 1) {
-      TView* okayControl = ResolveControlByTag(kControlTagOkay);
+      TView* okayControl = FindSubView(kControlTagOkay);
       if (okayControl != NULL) {
         QueueDeferredUiEventPacket(this, 0xa, okayControl);
       }
@@ -248,11 +247,11 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     if (loadModeFlag && sourceHandler->controlTag == kControlTagOtto) {
       if (selectedSlot != -1 && selectedSlot != 0xa1) {
         TControl* oldSlotControl =
-            static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot));
+            static_cast<TControl*>(FindSubView(kControlTagSlt0 + selectedSlot));
         oldSlotControl->AssertValid();
         oldSlotControl->InstallTextStyle(styleAt9e, 0);
         CRect oldBounds;
-        oldSlotControl->QueryBounds(&oldBounds);
+        oldSlotControl->GetFrame(&oldBounds);
         InvalidateCityDialogRectRegion(&oldBounds, 1);
       }
       selectedSlot = 0xa1;
@@ -280,13 +279,13 @@ void TLoadSavePicture::HandleTurnFlowStateTickOrShowMainMenu() {
 void TLoadSavePicture::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
   if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
-    TPictureButton* okayButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagOkay));
+    TPictureButton* okayButton = static_cast<TPictureButton*>(FindSubView(kControlTagOkay));
     if (okayButton != 0) {
       g_pSfxPlaybackSystem->PlaySoundEffect(okayButton->clickSoundId, 0, 1);
       QueueDeferredUiEventPacket(this, 0xa, okayButton);
     }
-  } else if (commandCode == kUiKeyEscape && ResolveControlByTag(kControlTagCncl) != 0) {
-    QueueDeferredUiEventPacket(this, 0x14, ResolveControlByTag(kControlTagCncl));
+  } else if (commandCode == kUiKeyEscape && FindSubView(kControlTagCncl) != 0) {
+    QueueDeferredUiEventPacket(this, 0x14, FindSubView(kControlTagCncl));
   }
 }
 
@@ -323,12 +322,12 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
       CString path;
       BuildSavePathStringForMode(&path, slot, prefix);
       if (TryGetFileMetadataForPath(&path) != 0) {
-        g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path);
+        g_pAssetMgr->LoadTheGame(path);
       }
     }
   } else {
     CString enteredName;
-    TEditText* slotNameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagSlot));
+    TEditText* slotNameControl = static_cast<TEditText*>(FindSubView(kControlTagSlot));
     slotNameControl->AssertValid();
     slotNameControl->GetCurrentText(&enteredName);
     if (enteredName.Compare(g_szEmptyString) == 0) {
@@ -344,10 +343,10 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     }
     g_pSimMgr->StartNextPhase();
   }
-  g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+  g_pSfxPlaybackSystem->ResetPlayList();
   g_pSfxPlaybackSystem->AddToPlayList(2);
   g_pSfxPlaybackSystem->AddToPlayList(3);
-  g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+  g_pSfxPlaybackSystem->PlayRandomTrack();
 }
 
 // FUNCTION: IMPERIALISM 0x0056d660
@@ -465,7 +464,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
     savePath += g_pszImpSaveExtension;
   }
 
-  if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(savePath)) {
+  if (g_pAssetMgr->SaveTheGame(savePath)) {
     if (IsMultiplayerFlowHosting()) {
       g_pGameFlowState->networkSavePending = markSaved;
       g_pGameFlowState->SendGameControl(kControlTagSave, markSaved, -2);
@@ -538,5 +537,5 @@ unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* la
   if (TryGetFileMetadataForPath(&path) == 0) {
     return 0;
   }
-  return g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path);
+  return g_pAssetMgr->LoadTheGame(path);
 }

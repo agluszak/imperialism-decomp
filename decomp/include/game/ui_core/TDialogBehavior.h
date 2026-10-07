@@ -21,7 +21,7 @@ public:
   virtual void DoCommandKeyEvent(TToolboxEvent* event); // slot 0x11 0x4875d0
   virtual void PoseModally();                           // slot 0x12 0x487660
 
-  void SetUiColorDescriptorGoldTriplet(bool flag, int colorA, int colorB);
+  void IDialogBehavior(bool flag, int colorA, int colorB);
 
   bool armed; // 0x10 — state/flag byte
   unsigned char padding_11_13[0x03];

@@ -37,18 +37,17 @@ void CaptureRandomGameSetup(RuntimeRun& run, TSetupRandomMapPicture* setup) {
     return;
   }
 
-  TEditText* country = static_cast<TEditText*>(setup->ResolveControlByTag(kControlTagCoun));
+  TEditText* country = static_cast<TEditText*>(setup->FindSubView(kControlTagCoun));
   TRadioTextCluster* difficulty =
-      static_cast<TRadioTextCluster*>(setup->ResolveControlByTag(kControlTagDiff));
-  TRadioTextCluster* names =
-      static_cast<TRadioTextCluster*>(setup->ResolveControlByTag(kControlTagName));
+      static_cast<TRadioTextCluster*>(setup->FindSubView(kControlTagDiff));
+  TRadioTextCluster* names = static_cast<TRadioTextCluster*>(setup->FindSubView(kControlTagName));
   if (country == 0 || difficulty == 0 || names == 0) {
     run.RecordAssertion("capture.random_game_setup", "a random-game setup control is unavailable",
                         true);
     return;
   }
   TControl* selectedDifficulty =
-      static_cast<TControl*>(setup->ResolveControlByTag(difficulty->selectedTag));
+      static_cast<TControl*>(setup->FindSubView(difficulty->selectedTag));
   if (selectedDifficulty == 0) {
     run.RecordAssertion("capture.random_game_setup",
                         "the selected random-game difficulty is unavailable", true);

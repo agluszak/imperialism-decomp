@@ -21,7 +21,7 @@ public:
 
   void Set(int availableCount, int selectedCount);
   void IncrementSelectedShipCount(unsigned char displayOnly); // 0x005690d0
-  void DecrementSelectedShipCount(unsigned char displayOnly); // 0x00569150
+  void Less(unsigned char displayOnly);                       // 0x00569150
 
   short availableShipCount;
   short pad8a;

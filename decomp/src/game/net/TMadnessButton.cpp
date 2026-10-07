@@ -36,7 +36,7 @@ void TMadnessButton::CheckTheLook(unsigned char refreshNow) {
     SetPictureRsrcID(static_cast<short>(pictureId), false);
     if (refreshNow) {
       CRect bounds;
-      QueryContentBounds(&bounds);
+      GetExtent(&bounds);
       ScopedMapQuickDrawContext drawContext(this);
       Draw(&bounds);
     }

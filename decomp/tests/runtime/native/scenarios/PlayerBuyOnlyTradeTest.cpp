@@ -130,14 +130,13 @@ private:
     if (player == 0) {
       return false;
     }
-    short entryCount = player->GetTrackedSlotEntryCountLow(kResourceIron);
+    short entryCount = player->GetNumDealsIn(kResourceIron);
     for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
       short kind = 0;
       short value = 0;
       short targetNation = 0;
       int payload = 0;
-      player->GetDealInfo(kResourceIron, ordinal, &kind, &value, &targetNation,
-                                         &payload);
+      player->GetDealInfo(kResourceIron, ordinal, &kind, &value, &targetNation, &payload);
       if (kind != kTrackedSlotOfferEntry) {
         return false;
       }

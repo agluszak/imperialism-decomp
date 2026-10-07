@@ -67,8 +67,8 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     menuItemIds[count++] = 0x1d;
   }
 
-  if (g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(nTileIndex, false) != 0 ||
-      g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(nTileIndex, true) != 0) {
+  if (g_pGlobalMapState->GetDevelopmentLevel(nTileIndex, false) != 0 ||
+      g_pGlobalMapState->GetDevelopmentLevel(nTileIndex, true) != 0) {
     short itemId = 0x17;
     switch (g_pGlobalMapState->terrainStateTable[nTileIndex].gateFlag) {
     case 2:
@@ -98,7 +98,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   }
   for (CivilianUnitKindStorage civilianUnitKind = 0; civilianUnitKind <= kCivilianUnitDriller;
        ++civilianUnitKind) {
-    if (g_pGlobalMapState->HasCivilianUnitKind(nTileIndex, civilianUnitKind)) {
+    if (g_pGlobalMapState->IsUnitPresent(nTileIndex, civilianUnitKind)) {
       menuItemIds[count++] = static_cast<short>(civilianUnitKind + 0x21);
     }
   }
@@ -139,7 +139,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   // Push the list into the 12 'i00a'..'i00l' item panes.
   InitializeUiTextStyleDescriptor(&itemStyle, 4, 0xc, 0x2b6d, 3);
   for (short i = 0; i < 12; i++) {
-    TStaticText* itemPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagI00a + i));
+    TStaticText* itemPane = static_cast<TStaticText*>(FindSubView(kControlTagI00a + i));
     itemPane->InstallTextStyle(itemStyle, 1);
     short itemId = menuItemIds[i];
     if (itemId != 0) {
@@ -154,18 +154,18 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   }
 
   // Refresh the two lonely-tile preview panes.
-  TLonelyTileView* tilePane = static_cast<TLonelyTileView*>(ResolveControlByTag(kControlTagTile));
+  TLonelyTileView* tilePane = static_cast<TLonelyTileView*>(FindSubView(kControlTagTile));
   tilePane->AssertValid();
   tilePane->tileIndex = nTileIndex;
   tilePane->RefreshControl();
-  TLonelyTileView* tile2Pane = static_cast<TLonelyTileView*>(ResolveControlByTag(kControlTagTil2));
+  TLonelyTileView* tile2Pane = static_cast<TLonelyTileView*>(FindSubView(kControlTagTil2));
   tile2Pane->AssertValid();
   tile2Pane->tileIndex = nTileIndex;
   tile2Pane->RefreshControl();
 
   // Style the 'info' pane.
   InitializeUiTextStyleDescriptor(&itemStyle, 0, 0xc, 0x2b67, 3);
-  infoTextPane = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
+  infoTextPane = static_cast<TDeluxeText*>(FindSubView(kControlTagInfo));
   infoTextPane->SetTextStyle(itemStyle, false);
 
   // Title pane + location text.
@@ -176,14 +176,14 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   CString strOwnerLabel;
   CString strInfoText;
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xc, 0x2b67, 1);
-  TStaticText* titlePane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
+  TStaticText* titlePane = static_cast<TStaticText*>(FindSubView(kControlTagTitl));
   titlePane->Show(1, 1);
   titlePane->ViewEnable(0, 1);
   titlePane->SetJustification(1, false);
   titlePane->InstallTextStyle(titleStyle, 0);
 
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() == kStrategicTerrainWater) {
-    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    TZone* zone = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
     zone->AssignZoneDisplayNameToOutputRef(&strInfoText);
   } else {
     short cityIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
@@ -196,7 +196,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     if (g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode != ownerNation) {
       CString strFormerLine;
       {
-        strOwnerLabel = g_pSimMgr->LoadNormalizedCredentialName(
+        strOwnerLabel = g_pSimMgr->GetCountryName(
             g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode);
       }
       g_pSimMgr->GetString(0x2755, 0x1f, &strTemplate);
@@ -222,7 +222,7 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   InitializeUiTextStyleDescriptor(&highlightStyle, 4, 0xc, 0x2b69, 3);
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 0xc, 0x2b67, 1);
 
-  TStaticText* captionPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagItem));
+  TStaticText* captionPane = static_cast<TStaticText*>(FindSubView(kControlTagItem));
   captionPane->SetTextWithStrListID(0x2755, menuItemIds[selectedIndex], true);
   captionPane->Show(1, 1);
   captionPane->ViewEnable(0, 1);
@@ -230,7 +230,7 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   captionPane->InstallTextStyle(captionStyle, 0);
 
   for (int i = 0; i < 12; i++) {
-    TStaticText* itemPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagI00a + i));
+    TStaticText* itemPane = static_cast<TStaticText*>(FindSubView(kControlTagI00a + i));
     itemPane->InstallTextStyle((selectedIndex == i) ? highlightStyle : normalStyle, 1);
   }
 

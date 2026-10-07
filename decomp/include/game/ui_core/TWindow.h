@@ -88,7 +88,7 @@ extern CList<TWindow*, TWindow*> g_ModalViewStack;
 // FUNCTION: IMPERIALISM 0x0048d500
 inline TWindow::TWindow() : TView(), dialogBehavior(), busyFlag(0) {
   g_LiveViewRegistry.AddHead(this);
-  dialogBehavior.SetUiColorDescriptorGoldTriplet(true, kControlTagSpSpSpSp, kControlTagSpSpSpSp);
+  dialogBehavior.IDialogBehavior(true, kControlTagSpSpSpSp, kControlTagSpSpSpSp);
   activeLinkedWindow = this;
   dialogBehavior.SetOwner(this);
 }

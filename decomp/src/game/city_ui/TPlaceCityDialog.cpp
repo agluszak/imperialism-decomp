@@ -45,30 +45,30 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xdd6);
   } else {
     CRect ownerBounds;
-    owner->QueryBounds(&ownerBounds);
+    owner->GetFrame(&ownerBounds);
     ownerBounds.bottom += extraHeight;
-    owner->ApplyBounds(&ownerBounds, true);
+    owner->SetFrame(&ownerBounds, true);
   }
 
   CRect dialogBounds;
-  QueryBounds(&dialogBounds);
+  GetFrame(&dialogBounds);
   dialogBounds.bottom += extraHeight;
-  ApplyBounds(&dialogBounds, true);
+  SetFrame(&dialogBounds, true);
 
   const unsigned int buttonTags[2] = {kControlTagCncl, kControlTagOkay}; // 'cncl', 'okay'
   const int buttonAssertLines[2] = {0xde2, 0xde8};
   for (int buttonIndex = 0; buttonIndex < 2; ++buttonIndex) {
     // Startup.rsrc:953 declares both 'cncl' and 'okay' as TUpDownPictureButton.
     TUpDownPictureButton* button =
-        static_cast<TUpDownPictureButton*>(ResolveControlByTag(buttonTags[buttonIndex]));
+        static_cast<TUpDownPictureButton*>(FindSubView(buttonTags[buttonIndex]));
     if (button == 0) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", buttonAssertLines[buttonIndex]);
       continue;
     }
     CRect buttonBounds;
-    button->QueryBounds(&buttonBounds);
+    button->GetFrame(&buttonBounds);
     OffsetRect(&buttonBounds, 0, extraHeight);
-    button->ApplyBounds(&buttonBounds, true);
+    button->SetFrame(&buttonBounds, true);
   }
 
   short x = static_cast<short>(frameWidth);
@@ -120,14 +120,13 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   scanBracketExpressions(g_pSimMgr, &summaryText, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(sustainableText), static_cast<LPCSTR>(totalText));
 
-  TStaticText* sustainability =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagSust)); // 'sust'
+  TStaticText* sustainability = static_cast<TStaticText*>(FindSubView(kControlTagSust)); // 'sust'
   sustainability->SetTextAndMaybeRefresh(&summaryText, true);
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
   sustainability->InstallTextStyle(style, 0);
 
-  TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
+  TStaticText* title = static_cast<TStaticText*>(FindSubView(kControlTagTitl)); // 'titl'
   title->AssertValid();
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6a);
   title->InstallTextStyle(style, 0);

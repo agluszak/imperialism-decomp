@@ -48,8 +48,7 @@ void TNewspaperView::StuffValues(int pageNation) {
   InitializeUiTextStyleDescriptor(&featureStyle, 1, 0xe, 0x2b67, 2);
   InitializeUiTextStyleDescriptor(&plainStyle, 0, 0xe, 0x2b67, 2);
 
-  TStaticText* dateControl =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagDate)); // 'date'
+  TStaticText* dateControl = static_cast<TStaticText*>(FindSubView(kControlTagDate)); // 'date'
   dateControl->AssertValid();
   g_pSimMgr->GetSeason(&dateText);
   formatText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->economicTurn / 4) + 0x717);
@@ -57,8 +56,7 @@ void TNewspaperView::StuffValues(int pageNation) {
   dateControl->SetTextAndMaybeRefresh(&panelText, true);
   dateControl->InstallTextStyle(titleStyle, 1);
 
-  TStaticText* specialControl =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagSpec)); // 'spec'
+  TStaticText* specialControl = static_cast<TStaticText*>(FindSubView(kControlTagSpec)); // 'spec'
   specialControl->AssertValid();
   if (g_apNationStates[g_pSimMgr->GetPlayerCountry()] == 0) {
     panelText = CString(g_szEmptyString);
@@ -83,7 +81,7 @@ void TNewspaperView::StuffValues(int pageNation) {
       break;
     }
     case 2:
-      g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+      g_pDiplomacyTurnStateManager->CalculateRatings();
       dateText.Format(
           g_szDecimalFormat,
           g_pDiplomacyTurnStateManager->comparativePowerRows[g_pSimMgr->GetPlayerCountry()][3]);
@@ -92,7 +90,7 @@ void TNewspaperView::StuffValues(int pageNation) {
                              static_cast<LPCSTR>(dateText));
       break;
     case 3:
-      g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+      g_pDiplomacyTurnStateManager->CalculateRatings();
       dateText.Format(
           g_szDecimalFormat,
           g_pDiplomacyTurnStateManager->comparativePowerRows[g_pSimMgr->GetPlayerCountry()][0]);
@@ -178,9 +176,9 @@ void TNewspaperView::ItemParmList(CString* out, int bitmask) {
       continue;
     }
     if (emitted == 0) {
-      itemText = g_pSimMgr->GetSharedText(i);
+      itemText = g_pSimMgr->GetCountryNameWithCode(i);
     } else {
-      itemText = g_pSimMgr->LoadNormalizedCredentialName(i);
+      itemText = g_pSimMgr->GetCountryName(i);
     }
     if (emitted == setCount - 2) {
       CString conjunctionText;
@@ -285,8 +283,8 @@ int TNewspaperView::AddTextView(int column, int y, int recordOffset, int recordL
 
   int consumedHeight = text->MeasureCurrentTextHeightInLayoutRect() + 8;
   CRect bounds;
-  text->QueryBounds(&bounds);
+  text->GetFrame(&bounds);
   bounds.bottom = consumedHeight + bounds.top;
-  text->ApplyBounds(&bounds, false);
+  text->SetFrame(&bounds, false);
   return consumedHeight;
 }

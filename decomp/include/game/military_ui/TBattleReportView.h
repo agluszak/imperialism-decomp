@@ -25,9 +25,9 @@ public:
 
   bool ShouldDisplay(MapContextActionRecord* record) const;
   MapContextActionRecord* GetBattleAt(const CPoint& point) const;
-  void RefreshMapContextSelectionPanelAndInfoLabels(MapContextActionRecord* mapContextRecord);
+  void DisplayBattle(MapContextActionRecord* mapContextRecord);
 
-  void RenderMapContextActionMarkers(RECT* rectBuffer);
+  void DrawBattleNuggets(RECT* rectBuffer);
 
   TBattleReportView() : TDiplomacyMapView(), selectedReportIndex(1), transientRegistryObject(0) {}
 

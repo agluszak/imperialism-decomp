@@ -25,7 +25,7 @@ CString AssignSharedStringFromMidSubstring(CString source, int startPos, int cou
 void TGWorldPartView::Draw(RECT* rectBuffer) {
   if (sourceSurface != 0) {
     CRect destRect;
-    QueryContentBounds(&destRect);
+    GetExtent(&destRect);
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(sourceSurface->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),

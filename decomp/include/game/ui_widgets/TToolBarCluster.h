@@ -16,13 +16,12 @@ public:
                        TEvent* event) override; // slot 0x0f 0x00584ea0
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(
       CPoint* point,
-      RgnHandle hitArg) override;                             // slot 0x35 0x5851c0
-  virtual void AddInfoBehaviors(); // slot 0x73 0x5853f0
-  virtual void
-  UpdateControlTagTreaTextFromNationAndMapContext(short nationId);       // slot 0x74 0x585ba0
+      RgnHandle hitArg) override;                                        // slot 0x35 0x5851c0
+  virtual void AddInfoBehaviors();                                       // slot 0x73 0x5853f0
+  virtual void SetReadouts(short nationId);                              // slot 0x74 0x585ba0
   virtual void SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg); // slot 0x75 0x585ee0
   //
-  // SetMapInteractionMode/RefreshMapOrderEntryPanel/SetActiveMapOrderEntry (previously
+  // SetMapInteractionMode/FocusOnForce/FocusOnZone (previously
   // declared here per symbols.csv's curated class attribution) moved to TMapUberPicture:
   // their own disassembly reads/writes this+0x94/0x96/0x98/0xb0..0xbf at exactly
   // TMapUberPicture's real field offsets (invalidationFlag/activeUnitCategoryIndex/

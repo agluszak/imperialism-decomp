@@ -54,51 +54,51 @@ TOfferDeskPicture::~TOfferDeskPicture() {}
 void TOfferDeskPicture::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
-  TDropShadowText* treasury = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTrea));
+  TDropShadowText* treasury = static_cast<TDropShadowText*>(FindSubView(kControlTagTrea));
   treasury->AssertValid();
   ApplyUiTextStyleAndThemeFlags(treasury, 0, 0xe, 0x2b6c, 0x2b6b);
 
   TDropShadowNumberText* maximum =
-      static_cast<TDropShadowNumberText*>(ResolveControlByTag(kControlTagMCap));
+      static_cast<TDropShadowNumberText*>(FindSubView(kControlTagMCap));
   maximum->AssertValid();
   ApplyUiNumberTextStyleAndThemeColor(maximum, 0, 0xc, 0x2b6c, 0x2b6b);
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, maximum);
   maximum->SetJustification(0, true);
 
-  TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
+  TDealTabControl* tabs = static_cast<TDealTabControl*>(FindSubView(kControlTagTabs));
   tabs->AssertValid();
   tabs->Setup(0x2264, g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]);
   tabs->RefreshControl();
 
-  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
+  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(FindSubView(kControlTagTool));
   toolbar->AssertValid();
   toolbar->AddInfoBehaviors();
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
+  toolbar->SetReadouts(g_pSimMgr->GetPlayerCountry());
 
-  TView* miniPicture = ResolveControlByTag(kControlTagMPic);
+  TView* miniPicture = FindSubView(kControlTagMPic);
   miniPicture->AssertValid();
 
-  TView* offerCluster = ResolveControlByTag(kControlTagClus);
+  TView* offerCluster = FindSubView(kControlTagClus);
   offerCluster->AssertValid();
   offerCluster->ViewEnable(0, 1);
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 2, maximum);
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 5, ResolveControlByTag(kControlTagDone));
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 6, ResolveControlByTag(kControlTagReje));
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 7, ResolveControlByTag(kControlTagAcce));
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 5, FindSubView(kControlTagDone));
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 6, FindSubView(kControlTagReje));
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 7, FindSubView(kControlTagAcce));
 
-  TView* sheet = ResolveControlByTag(kControlTagShee);
+  TView* sheet = FindSubView(kControlTagShee);
   SetControlHoverHelpText(CString(g_szEmptyString), sheet);
-  TView* wait = ResolveControlByTag(kControlTagWait);
+  TView* wait = FindSubView(kControlTagWait);
   SetControlHoverHelpText(CString(g_szEmptyString), wait);
-  TTradeBookView* book = static_cast<TTradeBookView*>(ResolveControlByTag(kControlTagBook));
+  TTradeBookView* book = static_cast<TTradeBookView*>(FindSubView(kControlTagBook));
   SetControlHoverHelpText(CString(g_szEmptyString), book);
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, miniPicture);
-  SetControlHoverHelpText(CString(g_szEmptyString), book->ResolveControlByTag(kControlTagList));
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
+  SetControlHoverHelpText(CString(g_szEmptyString), book->FindSubView(kControlTagList));
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, FindSubView(kControlTagQuer));
 
-  TStaticText* waitText = static_cast<TStaticText*>(wait->ResolveControlByTag(kControlTagText));
+  TStaticText* waitText = static_cast<TStaticText*>(wait->FindSubView(kControlTagText));
   waitText->AssertValid();
   TextStyle waitStyle;
   waitStyle.textColor = 0;
@@ -106,14 +106,14 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   waitText->InstallTextStyle(waitStyle, 0);
   waitText->SetJustification(1, false);
 
-  acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+  acceptButton = static_cast<TPictureButton*>(FindSubView(kControlTagAcce));
   acceptButton->AssertValid();
   acceptButton->clickSoundId = 0x1388;
-  rejectButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+  rejectButton = static_cast<TPictureButton*>(FindSubView(kControlTagReje));
   rejectButton->AssertValid();
   rejectButton->clickSoundId = 0x1388;
 
-  TPictureButton* formatButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagForM));
+  TPictureButton* formatButton = static_cast<TPictureButton*>(FindSubView(kControlTagForM));
   formatButton->AssertValid();
   formatButton->clickSoundId = 0x1b58;
   LoadUiStringByGroupAndIndexToControlObject(0x2764, 0x12, formatButton);
@@ -129,8 +129,8 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
     offeringNation = respondingNation;
   }
 
-  TView* sheet = ResolveControlByTag(kControlTagShee);
-  TView* wait = ResolveControlByTag(kControlTagWait);
+  TView* sheet = FindSubView(kControlTagShee);
+  TView* wait = FindSubView(kControlTagWait);
 
   CString commodityName;
   CString offeringNationName;
@@ -145,7 +145,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   RGBQUAD hiliteColor = {0x7f, 0x7f, 0x7f, 0};
 
   SetControlHoverHelpText(CString(g_szEmptyString), this);
-  g_pCursorControlPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(FindSubView(kControlTagCurs));
   g_pCursorControlPanel->AssertValid();
   if (g_pCursorControlPanel == 0) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x613);
@@ -160,16 +160,16 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   suppressEventFlag = 0;
 
   g_pSimMgr->GetCommodityName(commodityType, &commodityName);
-  offeringNationName = g_pSimMgr->LoadNormalizedCredentialName(offeringNation);
-  respondingNationName = g_pSimMgr->LoadNormalizedCredentialName(respondingNation);
+  offeringNationName = g_pSimMgr->GetCountryName(offeringNation);
+  respondingNationName = g_pSimMgr->GetCountryName(respondingNation);
   g_pSimMgr->NumToCurrency(maxAmount, &maximumAmountText);
   proposedAmountText.Format(g_szDecimalFormat, static_cast<int>(proposedAmount));
 
   if (waitingForLocalReply) {
-    TStaticText* text = static_cast<TStaticText*>(wait->ResolveControlByTag(kControlTagText));
+    TStaticText* text = static_cast<TStaticText*>(wait->FindSubView(kControlTagText));
     text->AssertValid();
     TPicture* commodityIcon =
-        static_cast<TPicture*>(wait->ResolveControlByTag(IMPERIALISM_FOURCC('i', 'c', 'o', 'w')));
+        static_cast<TPicture*>(wait->FindSubView(IMPERIALISM_FOURCC('i', 'c', 'o', 'w')));
     commodityIcon->AssertValid();
 
     CString messageTemplate;
@@ -196,7 +196,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
       sheet->Locate(g_offerDeskSheetPosition, true);
     }
 
-    TView* formatButton = ResolveControlByTag(kControlTagForM);
+    TView* formatButton = FindSubView(kControlTagForM);
     formatButton->AssertValid();
     formatButton->ViewEnable(0, 0);
     GetWindow()->ForceRedraw();
@@ -207,14 +207,14 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   sheet->Locate(g_offerDeskSheetPosition, false);
   wait->Locate(g_offerDeskOffscreenPosition, false);
 
-  TView* acceptButton = ResolveControlByTag(kControlTagAcce);
+  TView* acceptButton = FindSubView(kControlTagAcce);
   acceptButton->AssertValid();
-  TView* rejectButton = ResolveControlByTag(kControlTagReje);
+  TView* rejectButton = FindSubView(kControlTagReje);
   rejectButton->AssertValid();
   acceptButton->ViewEnable(1, 0);
   rejectButton->ViewEnable(1, 0);
 
-  TView* formatButton = ResolveControlByTag(kControlTagForM);
+  TView* formatButton = FindSubView(kControlTagForM);
   formatButton->AssertValid();
   formatButton->ViewEnable(1, 0);
 
@@ -232,7 +232,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   TextStyle style;
   style.textColor = 0;
   TStaticText* offerText =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'f', 'f', 'e')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('o', 'f', 'f', 'e')));
   offerText->AssertValid();
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   offerText->InstallTextStyle(style, 0);
@@ -240,13 +240,13 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   offerText->SetTextAndMaybeRefresh(&displayText, false);
 
   TStaticText* purchaseTitle =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'u', 'r', 'T')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('p', 'u', 'r', 'T')));
   purchaseTitle->AssertValid();
   purchaseTitle->InstallTextStyle(style, 0);
   purchaseTitle->SetJustification(-1, false);
   purchaseTitle->SetTextWithStrListID(0x2740, 0xe, true);
 
-  TStaticText* unitText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit));
+  TStaticText* unitText = static_cast<TStaticText*>(FindSubView(kControlTagUnit));
   unitText->AssertValid();
   unitText->InstallTextStyle(style, 0);
   unitText->SetJustification(-2, false);
@@ -256,7 +256,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(offerTemplate),
                          static_cast<LPCSTR>(commodityName));
   TStaticText* numberOfText =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'o', 'o', 'f')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('n', 'o', 'o', 'f')));
   numberOfText->AssertValid();
   numberOfText->InstallTextStyle(style, 0);
   numberOfText->SetJustification(-2, false);
@@ -265,7 +265,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   short capacity =
       g_apTerrainTypeDescriptorTable[g_pSimMgr->GetPlayerCountry()]->GetMerchantCapacity();
   capacityText.Format(g_szDecimalFormat, static_cast<int>(capacity));
-  TStaticText* maximumText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagMCap));
+  TStaticText* maximumText = static_cast<TStaticText*>(FindSubView(kControlTagMCap));
   maximumText->AssertValid();
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
   maximumText->InstallTextStyle(style, 0);
@@ -273,11 +273,11 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   maximumText->SetTextAndMaybeRefresh(&capacityText, true);
   maximumText->RefreshControl();
 
-  sheet = ResolveControlByTag(kControlTagShee);
+  sheet = FindSubView(kControlTagShee);
   sheet->AssertValid();
   sheet->RefreshControl();
 
-  TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
+  TNumberText* purchaseControl = static_cast<TNumberText*>(FindSubView(kControlTagPurc));
   purchaseControl->AssertValid();
   detailedErrorFlag = true;
   if (proposedAmount > maxAmount) {
@@ -296,33 +296,32 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   SetGlobalBlitTransparentColorRaw(purchaseControl->stylePayload->packedColor);
   g_pDisplayMgr->SetHiliteColor(&hiliteColor);
 
-  TPicture* commodityIcon = static_cast<TPicture*>(ResolveControlByTag(kControlTagIcon));
+  TPicture* commodityIcon = static_cast<TPicture*>(FindSubView(kControlTagIcon));
   commodityIcon->AssertValid();
   commodityIcon->SetPictureRsrcID(static_cast<short>(commodityType + 0x2bc), 0);
 
-  acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+  acceptButton = static_cast<TPictureButton*>(FindSubView(kControlTagAcce));
   acceptButton->AssertValid();
   acceptButton->ViewEnable(1, 0);
-  rejectButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+  rejectButton = static_cast<TPictureButton*>(FindSubView(kControlTagReje));
   rejectButton->AssertValid();
   rejectButton->ViewEnable(1, 0);
 
-  TView* cluster = ResolveControlByTag(kControlTagClus);
+  TView* cluster = FindSubView(kControlTagClus);
   cluster->AssertValid();
-  TToggleButton* noMore =
-      static_cast<TToggleButton*>(cluster->ResolveControlByTag(kControlTagNomo));
+  TToggleButton* noMore = static_cast<TToggleButton*>(cluster->FindSubView(kControlTagNomo));
   noMore->AssertValid();
   noMore->Show(1, 0);
   noMore->Select(false, false);
 
-  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
+  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(FindSubView(kControlTagTool));
   toolbar->AssertValid();
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
+  toolbar->SetReadouts(g_pSimMgr->GetPlayerCountry());
 
   InvalidateCityDialogRectRegion(&offerInvalidRect, 1);
   InvalidateCityDialogRectRegion(&iconInvalidRect, 1);
 
-  TDropShadowText* info = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagInfo));
+  TDropShadowText* info = static_cast<TDropShadowText*>(FindSubView(kControlTagInfo));
   info->AssertValid();
   ApplyUiTextStyleAndThemeFlags(info, 0, 0xc, 0x2b6c, 0x2b6b);
   info->SetJustification(-2, false);
@@ -344,12 +343,11 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
     }
-    TTradeBookView* bookControl =
-        static_cast<TTradeBookView*>(ResolveControlByTag(kControlTagBook));
+    TTradeBookView* bookControl = static_cast<TTradeBookView*>(FindSubView(kControlTagBook));
     bookControl->SetItem(selectionIndex);
   } else if (commandId == 0xa) {
     if (tag == kControlTagAcce || tag == kControlTagReje) {
-      CreateNextTradeCommandAndFormatPrompt(tag);
+      SaveAndDismiss(tag);
     } else if (tag == kControlTagForM) {
       g_pHelpMgr->ToggleTradeAdvice();
       ShowAdvice();
@@ -364,14 +362,14 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 void TOfferDeskPicture::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
   if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
-    TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+    TPictureButton* button = static_cast<TPictureButton*>(FindSubView(kControlTagAcce));
     if (button == 0) {
       return;
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(button->clickSoundId, 0, 1);
     QueueDeferredUiEventPacket(this, 0xa, button);
   } else if (commandCode == kUiKeyEscape) {
-    TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+    TPictureButton* button = static_cast<TPictureButton*>(FindSubView(kControlTagReje));
     if (button == 0) {
       return;
     }
@@ -409,12 +407,12 @@ void TOfferDeskPicture::ShowAdvice() {
   CString strTypeClause;
   CString strTemplate;
 
-  TStaticText* info = static_cast<TStaticText*>(ResolveControlByTag(kControlTagInfo));
+  TStaticText* info = static_cast<TStaticText*>(FindSubView(kControlTagInfo));
   info->AssertValid();
   info->SetJustification(-2, false);
 
   {
-    strTargetNation = g_pSimMgr->LoadNormalizedCredentialName(offeringNationSlot);
+    strTargetNation = g_pSimMgr->GetCountryName(offeringNationSlot);
   }
   g_pSimMgr->GetCommodityName(commodityType, &strCommodity);
 
@@ -494,7 +492,7 @@ void TOfferDeskPicture::ShowAdvice() {
     } else {
       short dominant = g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(offeringNationSlot);
       {
-        strDominantName = g_pSimMgr->LoadNormalizedCredentialName(dominant);
+        strDominantName = g_pSimMgr->GetCountryName(dominant);
       }
       if (dominant == respondingNationSlot) {
         g_pSimMgr->GetString(0x2764, 0xe, &strTemplate);
@@ -528,7 +526,7 @@ void TOfferDeskPicture::ShowAdvice() {
   }
 
   CRect bounds;
-  info->QueryBounds(&bounds);
+  info->GetFrame(&bounds);
   --bounds.left;
   --bounds.top;
   RECT grown = bounds;
@@ -539,20 +537,20 @@ void TOfferDeskPicture::ShowAdvice() {
 }
 
 // FUNCTION: IMPERIALISM 0x005c04f0
-void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
-  TView* clusterControl = ResolveControlByTag(kControlTagClus);
+void TOfferDeskPicture::SaveAndDismiss(int actionCode) {
+  TView* clusterControl = FindSubView(kControlTagClus);
   if (clusterControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x83b);
   }
 
   TAmtBarCluster* noMoreControl =
-      static_cast<TAmtBarCluster*>(clusterControl->ResolveControlByTag(kControlTagNomo));
+      static_cast<TAmtBarCluster*>(clusterControl->FindSubView(kControlTagNomo));
   if (noMoreControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x83d);
   }
   suppressEventFlag = noMoreControl->IsTradeControlAtMinimum();
 
-  TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
+  TNumberText* purchaseControl = static_cast<TNumberText*>(FindSubView(kControlTagPurc));
   if (purchaseControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x842);
   }
@@ -569,15 +567,15 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
     g_pTradeMgr->SetDealResults(respondingNationSlot, offeringNationSlot, proposedAmount, maxAmount,
                                 commodityType, static_cast<char>(suppressEventFlag), false);
 
-    TView* acceptButton = ResolveControlByTag(kControlTagAcce);
+    TView* acceptButton = FindSubView(kControlTagAcce);
     acceptButton->AssertValid();
-    TView* rejectButton = ResolveControlByTag(kControlTagReje);
+    TView* rejectButton = FindSubView(kControlTagReje);
     rejectButton->AssertValid();
     acceptButton->ViewEnable(0, 0);
     rejectButton->ViewEnable(0, 0);
 
     if (proposedAmount != 0) {
-      TView* toolbar = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTool);
+      TView* toolbar = g_pDisplayMgr->activeDialog->FindSubView(kControlTagTool);
       if (toolbar != NULL) {
         static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(
             static_cast<short>(respondingNationSlot));
@@ -623,13 +621,13 @@ void TOfferDeskPicture::SwitchToBook(unsigned char activate) {
   if (activate == selectionActive) {
     return;
   }
-  TView* bookControl = ResolveControlByTag(kControlTagBook);
+  TView* bookControl = FindSubView(kControlTagBook);
   bookControl->AssertValid();
-  TView* sheetControl = ResolveControlByTag(maxAmount == 0 ? kControlTagWait : kControlTagShee);
+  TView* sheetControl = FindSubView(maxAmount == 0 ? kControlTagWait : kControlTagShee);
   if (sheetControl == 0) {
     FailNilPointerInUSmallViews(0x8a2);
   }
-  TView* purchaseControl = ResolveControlByTag(kControlTagPurc);
+  TView* purchaseControl = FindSubView(kControlTagPurc);
   purchaseControl->AssertValid();
   purchaseControl->Show(activate == 0, 0);
   if (activate != 0) {
@@ -638,13 +636,12 @@ void TOfferDeskPicture::SwitchToBook(unsigned char activate) {
     sheetControl->Locate(g_offerDeskOffscreenPosition, false);
     SetPictureRsrcID(0x226f, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
-    TDealTabControl* tabsControl =
-        static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
+    TDealTabControl* tabsControl = static_cast<TDealTabControl*>(FindSubView(kControlTagTabs));
     tabsControl->AssertValid();
     tabsControl->Setup(0x2266, g_pTechMgr->perTechUnlockFlag[0x13]);
     tabsControl->RefreshControl();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
-    TView* listControl = ResolveControlByTag(kControlTagList);
+    TView* listControl = FindSubView(kControlTagList);
     listControl->AssertValid();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 1, listControl);
   } else {
@@ -653,14 +650,13 @@ void TOfferDeskPicture::SwitchToBook(unsigned char activate) {
     SetPictureRsrcID(0x2152, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ef, 0, 1);
     static_cast<TTradeBookView*>(bookControl)->SetItem(-1);
-    TDealTabControl* tabsControl =
-        static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
+    TDealTabControl* tabsControl = static_cast<TDealTabControl*>(FindSubView(kControlTagTabs));
     tabsControl->AssertValid();
     tabsControl->Setup(0x2264, g_pTechMgr->perTechUnlockFlag[0x13]);
     tabsControl->selectedRow = -1;
     tabsControl->RefreshControl();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 2, tabsControl);
-    TView* listControl = ResolveControlByTag(kControlTagList);
+    TView* listControl = FindSubView(kControlTagList);
     listControl->AssertValid();
     SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), listControl);
   }

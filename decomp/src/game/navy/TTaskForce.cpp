@@ -290,7 +290,7 @@ void TTaskForce::OrderEvade() {
     g_pNavyOrderManager->orderQueueHead = this;
   }
 
-  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+  g_pActiveMapOrderContext->CommitForce(this);
 }
 
 // Sibling of OrderEvade for map-order kind 3/4 (see the header comment).
@@ -336,7 +336,7 @@ void TTaskForce::OrderPatrol(bool useType4) {
     g_pNavyOrderManager->orderQueueHead = this;
   }
 
-  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+  g_pActiveMapOrderContext->CommitForce(this);
 }
 
 // FUNCTION: IMPERIALISM 0x00553270
@@ -382,12 +382,12 @@ void TTaskForce::OrderSail(TZone* orderTarget) {
     g_pNavyOrderManager->orderQueueHead = this;
   }
 
-  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+  g_pActiveMapOrderContext->CommitForce(this);
 }
 
 // FUNCTION: IMPERIALISM 0x005533f0
 void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
-  pContextAnchor->PropagateMapActionContextDistanceLevelsRecursive(-1);
+  pContextAnchor->LightDistanceRecursive(-1);
 
   int minPriority = 10000;
   for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
@@ -449,7 +449,7 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
   AssertValid();
 
   if (g_pNavyOrderManager->CommitForce(this)) {
-    g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+    g_pActiveMapOrderContext->CommitForce(this);
   }
 }
 
@@ -497,7 +497,7 @@ void TTaskForce::OrderBlockade(TZone* orderTarget) {
     g_pNavyOrderManager->orderQueueHead = this;
   }
 
-  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+  g_pActiveMapOrderContext->CommitForce(this);
 }
 
 // Sibling of OrderBlockade for map-order kind 5 (see the header comment).
@@ -544,7 +544,7 @@ void TTaskForce::OrderSendInTheMarines(Province* orderTarget) {
     g_pNavyOrderManager->orderQueueHead = this;
   }
 
-  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+  g_pActiveMapOrderContext->CommitForce(this);
 }
 
 // FUNCTION: IMPERIALISM 0x005539c0
@@ -808,7 +808,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
     FreeAvailables();
     AssertValid();
     if (g_pNavyOrderManager->CommitForce(this)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+      g_pActiveMapOrderContext->CommitForce(this);
     }
     return;
 
@@ -817,7 +817,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
     FreeAvailables();
     AssertValid();
     if (g_pNavyOrderManager->CommitForce(this)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+      g_pActiveMapOrderContext->CommitForce(this);
     }
     return;
 
@@ -846,7 +846,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
       queued = true;
     }
     if (queued) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+      g_pActiveMapOrderContext->CommitForce(this);
     }
     return;
   }
@@ -857,7 +857,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
     FreeAvailables();
     AssertValid();
     if (g_pNavyOrderManager->CommitForce(this)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+      g_pActiveMapOrderContext->CommitForce(this);
     }
     return;
 
@@ -884,7 +884,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
     ElectFlagship();
     AssertValid();
     if (g_pNavyOrderManager->CommitForce(this)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+      g_pActiveMapOrderContext->CommitForce(this);
     }
     return;
   }
@@ -894,7 +894,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
     FreeAvailables();
     AssertValid();
     if (g_pNavyOrderManager->CommitForce(this)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+      g_pActiveMapOrderContext->CommitForce(this);
     }
     return;
   }
@@ -904,15 +904,15 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
 int TTaskForce::MouseCodeForTarget(TZone* candidate) const {
   TZone* activeContext = location;
   if (candidate == NULL || activeContext == candidate) {
-    return activeContext->QueryPortZoneCapability() ? 0x0c : 1;
+    return activeContext->IsPortZone() ? 0x0c : 1;
   }
-  if (!candidate->QueryPortZoneCapability()) {
-    return candidate->QueryZoneCapabilityFlagA() ? 0x0f : 1;
+  if (!candidate->IsPortZone()) {
+    return candidate->IsSeaZone() ? 0x0f : 1;
   }
-  if (candidate->QueryZoneCapabilityFlagD(g_pSimMgr->GetPlayerCountry())) {
+  if (candidate->IsFriendlyWith(g_pSimMgr->GetPlayerCountry())) {
     return 0x0d;
   }
-  if (candidate->QueryZoneCapabilityFlagE(g_pSimMgr->GetPlayerCountry())) {
+  if (candidate->IsEnemyOf(g_pSimMgr->GetPlayerCountry())) {
     if (candidate->primaryNeighbors[0] == activeContext) {
       return 0x0e;
     }
@@ -922,8 +922,7 @@ int TTaskForce::MouseCodeForTarget(TZone* candidate) const {
 
 // FUNCTION: IMPERIALISM 0x00554460
 char TTaskForce::MouseCodeForTarget(Province* province) const {
-  bool stale = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-      nation, province->ownerNationCode);
+  bool stale = g_pDiplomacyTurnStateManager->AreInEstablishedWar(nation, province->ownerNationCode);
   return stale ? 0x10 : 1;
 }
 
@@ -962,7 +961,7 @@ bool TTaskForce::IsValidTarget(TZone* candidate) {
     }
   }
 
-  short distance = location->GetCachedMapActionContextDistanceOrRecompute(candidate);
+  short distance = location->GetDistanceTo(candidate);
   short movementLimit = worstSpeed != 10000 ? static_cast<short>(worstSpeed) : 0;
   return distance <= movementLimit;
 }
@@ -1002,7 +1001,7 @@ void TTaskForce::CommitToOrders() {
   TTaskForce* cursor = oldHead;
   while (cursor != 0) {
     if (cursor == this) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+      g_pActiveMapOrderContext->CommitForce(this);
       return;
     }
     cursor = cursor->nextForce;
@@ -1035,7 +1034,7 @@ void TTaskForce::CommitToOrders() {
     oldHead->previousForce = this;
   }
   manager->orderQueueHead = this;
-  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+  g_pActiveMapOrderContext->CommitForce(this);
 }
 
 // Mac oracle: TTaskForce::CancelOrders(unsigned char).
@@ -1068,7 +1067,7 @@ void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   if (cancelsBeachhead) {
     g_pMapContextActionManager->ReassessLanding(g_pSimMgr->GetPlayerCountry(), cityIndex);
   }
-  g_pViewMgr->mapUberPicture->SetActiveMapOrderEntry(previousContext);
+  g_pViewMgr->mapUberPicture->FocusOnZone(previousContext);
 }
 
 // FUNCTION: IMPERIALISM 0x005548e0
@@ -1307,8 +1306,7 @@ TTaskForce* TTaskForce::RemoveStragglers() {
   case 5: {
     int cityIndex = static_cast<Province*>(target)->GetIndex();
     char ownerNation = g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode;
-    if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation,
-                                                                              ownerNation)) {
+    if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(nation, ownerNation)) {
       TTaskForce* result = nextForce->RemoveStragglers();
       Free();
       return result;

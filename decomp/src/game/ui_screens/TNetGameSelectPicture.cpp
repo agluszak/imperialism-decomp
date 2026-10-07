@@ -27,10 +27,10 @@ void TNetGameSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler,
     } else if (sourceHandler->controlTag == kControlTagHost) {
       g_pGameFlowState->Host();
     } else if (sourceHandler->controlTag == kControlTagJoin) {
-      TCluster* gameControl = static_cast<TCluster*>(ResolveControlByTag(kControlTagGame));
+      TCluster* gameControl = static_cast<TCluster*>(FindSubView(kControlTagGame));
       gameControl->AssertValid();
       int selectedGameTag = gameControl->GetCurrentChoice();
-      TView* selectedGameOption = ResolveControlByTag(selectedGameTag);
+      TView* selectedGameOption = FindSubView(selectedGameTag);
       g_pGameFlowState->ApplyJoinGameSelectionAndShowNetworkGameOptions(
           selectedGameOption->controlValue);
     }

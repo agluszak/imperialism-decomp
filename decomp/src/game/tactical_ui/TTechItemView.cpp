@@ -104,7 +104,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
                            static_cast<LPCSTR>(yearText));
     dateControl->UpdateTextEntrySharedString(&assembledText);
     dateControl->CenterVertically(false);
-  } else if (techMgr->AreTechItemPrerequisitePairCompleted(techId, nationSlot)) {
+  } else if (techMgr->HavePreReqs(techId, nationSlot)) {
     short labelIndex;
     if (techMgr->orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
       g_pSimMgr->GetString(0x274f, 3, &labelText);
@@ -165,13 +165,13 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         } else {
           CString label;
           g_pSimMgr->GetString(0x274f, 3, &label);
-          techMgr->ApplyTechItemPurchaseCostAndState(techId, nationSlot);
+          techMgr->PurchaseTech(techId, nationSlot);
           purchaseButton->buttonText = label;
           purchaseButton->RefreshControl();
           LoadUiStringAndDispatchSharedMessageCommand(0x274f, 0xa, purchaseButton);
         }
       } else {
-        techMgr->RefundTechItemPurchaseCostAndClearState(techId, nationSlot);
+        techMgr->CancelPurchase(techId, nationSlot);
         CString label;
         g_pSimMgr->NumToCurrency(g_anTechItemResearchCostByTechId[techId], &label);
         purchaseButton->buttonText = label;
@@ -182,7 +182,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TWindow* node = static_cast<TWindow*>(
           g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTechnologyHistory));
       TTechHistoryView* historyView =
-          static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagDialog));
+          static_cast<TTechHistoryView*>(node->FindSubView(kControlTagDialog));
       historyView->AssertValid();
       historyView->StuffValues(static_cast<short>(techId));
 

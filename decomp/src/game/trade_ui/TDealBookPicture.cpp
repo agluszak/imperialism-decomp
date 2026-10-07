@@ -38,34 +38,32 @@ TDealBookPicture::~TDealBookPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005bac50
 void TDealBookPicture::Startup(short startupValue) {
-  TToolBarCluster* toolControl =
-      static_cast<TToolBarCluster*>(this->ResolveControlByTag(kControlTagTool));
+  TToolBarCluster* toolControl = static_cast<TToolBarCluster*>(this->FindSubView(kControlTagTool));
   toolControl->AssertValid();
   toolControl->AddInfoBehaviors();
-  toolControl->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
+  toolControl->SetReadouts(g_pSimMgr->GetPlayerCountry());
   toolControl->RefreshControl();
 
   // Re-cache the six commodity sub-controls.
   this->boughtTradesView =
-      static_cast<TTradePageBuyView*>(this->ResolveControlByTag(kControlTagBoug)); // 'boug'
+      static_cast<TTradePageBuyView*>(this->FindSubView(kControlTagBoug)); // 'boug'
   this->soldTradesView =
-      static_cast<TTradePageSellView*>(this->ResolveControlByTag(kControlTagSold)); // 'sold'
-  this->buyPageView =
-      static_cast<TTradePageBuyView*>(this->ResolveControlByTag(kControlTagTbou)); // 'tbou'
+      static_cast<TTradePageSellView*>(this->FindSubView(kControlTagSold));                // 'sold'
+  this->buyPageView = static_cast<TTradePageBuyView*>(this->FindSubView(kControlTagTbou)); // 'tbou'
   this->sellPageView =
-      static_cast<TTradePageSellView*>(this->ResolveControlByTag(kControlTagTsol)); // 'tsol'
+      static_cast<TTradePageSellView*>(this->FindSubView(kControlTagTsol)); // 'tsol'
   this->cachedBuyPageView = this->boughtTradesView;
   this->cachedSellPageView = this->soldTradesView;
 
   // 'mark' toggle + label reload.
-  TView* markControl = this->ResolveControlByTag(kControlTagMark); // 'mark'
+  TView* markControl = this->FindSubView(kControlTagMark); // 'mark'
   if (markControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x129);
   }
   markControl->ViewEnable(1, 0);
-  LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->ResolveControlByTag(kControlTagMark));
+  LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->FindSubView(kControlTagMark));
   markControl->ViewEnable(0, 0);
-  TView* tabsControl = this->ResolveControlByTag(kControlTagTabs);
+  TView* tabsControl = this->FindSubView(kControlTagTabs);
   LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, tabsControl);
 
   this->alternatePageMode = false;
@@ -73,22 +71,21 @@ void TDealBookPicture::Startup(short startupValue) {
   g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
 
   // 'titL' title label.
-  TStaticText* titLControl = static_cast<TStaticText*>(this->ResolveControlByTag(kControlTagTitL));
+  TStaticText* titLControl = static_cast<TStaticText*>(this->FindSubView(kControlTagTitL));
   titLControl->AssertValid();
   titLControl->SetTextWithStrListID(0x2740, 0x19, false);
   CRect titLBounds;
-  titLControl->QueryBounds(&titLBounds);
+  titLControl->GetFrame(&titLBounds);
   RECT titLInval;
   CopyRect(&titLInval, &titLBounds);
   this->InvalidateCityDialogRectRegion(&titLInval, 1);
 
   // 'rtil' subtitle label.
-  TDropShadowText* rtilControl =
-      static_cast<TDropShadowText*>(this->ResolveControlByTag(kControlTagRtil));
+  TDropShadowText* rtilControl = static_cast<TDropShadowText*>(this->FindSubView(kControlTagRtil));
   rtilControl->AssertValid();
   rtilControl->SetTextWithStrListID(0x2740, 0x1a, false);
   CRect rtilBounds;
-  rtilControl->QueryBounds(&rtilBounds);
+  rtilControl->GetFrame(&rtilBounds);
   RECT rtilInval;
   CopyRect(&rtilInval, &rtilBounds);
   this->InvalidateCityDialogRectRegion(&rtilInval, 1);
@@ -129,11 +126,11 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
     sellCopy->Show(1, 0);
   }
 
-  TView* leftCtrl = this->ResolveControlByTag(kControlTagLcor);
+  TView* leftCtrl = this->FindSubView(kControlTagLcor);
   if (leftCtrl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x16e);
   }
-  TView* rightCtrl = this->ResolveControlByTag(kControlTagRcor);
+  TView* rightCtrl = this->FindSubView(kControlTagRcor);
   if (rightCtrl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x170);
   }
@@ -173,7 +170,7 @@ void TDealBookPicture::CalculatePages() {
   int buyRow = 0;
   int sellRow = 0;
   for (short commoditySlot = 0; commoditySlot < 17; ++commoditySlot) {
-    short entryCount = nation->GetTrackedSlotEntryCountLow(commoditySlot);
+    short entryCount = nation->GetNumDealsIn(commoditySlot);
     if (entryCount == 0) {
       continue;
     }
@@ -225,7 +222,7 @@ void TDealBookPicture::CalculatePages() {
 
     TextStyle headingStyle;
     BuildUiTextStyleDescriptor(&headingStyle, 0, 14, 0x2b67);
-    heading->SetTextLineStyleDescriptor(&headingStyle);
+    heading->SetTheTextStyle(&headingStyle);
     heading->SetTheJustification(1);
     soldTradesView->AddOrderedEntry(heading);
 
@@ -254,7 +251,7 @@ void TDealBookPicture::CalculatePages() {
         int lineBounds[2] = {200, 30};
         TTextLine* line = new TTextLine();
         line->ITextLine(static_cast<short>(sellRow), 0, lineBounds, -1, 0);
-        nationName = g_pSimMgr->LoadNormalizedCredentialName(minorNation);
+        nationName = g_pSimMgr->GetCountryName(minorNation);
         g_pSimMgr->NumToCurrency(allocation, &allocationText);
         nationName += s_szTurnHistorySeparator + allocationText;
         line->SetCaptionText(&nationName);
@@ -269,14 +266,13 @@ void TDealBookPicture::CalculatePages() {
   totals->nationSlot = selectedNationSlot;
   soldTradesView->AddOrderedEntry(totals);
 
-  boughtTradesView->BuildPageLayout();
-  soldTradesView->BuildPageLayout();
+  boughtTradesView->CalculatePageStarts();
+  soldTradesView->CalculatePageStarts();
   lastPageIndex = boughtTradesView->pageCount > soldTradesView->pageCount
                       ? boughtTradesView->pageCount - 1
                       : soldTradesView->pageCount - 1;
 
-  TDealTabControl* tabs =
-      static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs)); // 'tabs'
+  TDealTabControl* tabs = static_cast<TDealTabControl*>(FindSubView(kControlTagTabs)); // 'tabs'
   tabs->AssertValid();
   tabs->Setup(0x2266, g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]);
 }
@@ -293,8 +289,7 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       if (!alternatePageMode) {
         SwitchPages();
       }
-      TStaticText* titLControl =
-          static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL)); // 'titL'
+      TStaticText* titLControl = static_cast<TStaticText*>(FindSubView(kControlTagTitL)); // 'titL'
       titLControl->AssertValid();
       CString templateText;
       g_pSimMgr->GetString(0x2741, 3, &templateText);
@@ -306,11 +301,10 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       titLControl->SetTextAndMaybeRefresh(&composedTitle, false);
 
       CRect titleBounds;
-      titLControl->QueryBounds(&titleBounds);
+      titLControl->GetFrame(&titleBounds);
       InvalidateCityDialogRectRegion(&titleBounds, 1);
 
-      TDropShadowText* rtilControl =
-          static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagRtil));
+      TDropShadowText* rtilControl = static_cast<TDropShadowText*>(FindSubView(kControlTagRtil));
       rtilControl->AssertValid();
       if (!rtilControl->IsActionable()) {
         ApplyUiTextStyleAndThemeFlags(rtilControl, 0, 0x12, 0x2b6b, 0x2b6c);
@@ -353,11 +347,11 @@ void TDealBookPicture::SwitchPages() {
   short pictureResourceId;
 
   if (!alternatePageMode) {
-    TView* markControl = ResolveControlByTag(kControlTagMark);
+    TView* markControl = FindSubView(kControlTagMark);
     markControl->AssertValid();
     markControl->ViewEnable(1, 0);
 
-    TStaticText* rtilControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagRtil));
+    TStaticText* rtilControl = static_cast<TStaticText*>(FindSubView(kControlTagRtil));
     rtilControl->AssertValid();
 
     CString seasonName;
@@ -368,10 +362,10 @@ void TDealBookPicture::SwitchPages() {
     rtilControl->SetTextAndMaybeRefresh(&headerText, false);
 
     CRect titleBounds;
-    rtilControl->QueryBounds(&titleBounds);
+    rtilControl->GetFrame(&titleBounds);
     InvalidateCityDialogRectRegion(&titleBounds, 1);
 
-    TView* tabsControl = ResolveControlByTag(kControlTagTabs);
+    TView* tabsControl = FindSubView(kControlTagTabs);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
 
     hiddenPage1 = soldTradesView;
@@ -383,30 +377,30 @@ void TDealBookPicture::SwitchPages() {
     buyPageView->SetItem(-1);
     sellPageView->SetItem(-1);
 
-    TView* tabsControl = ResolveControlByTag(kControlTagTabs);
+    TView* tabsControl = FindSubView(kControlTagTabs);
     if (tabsControl == NULL) {
       FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x2a2);
     }
 
-    TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL));
+    TStaticText* titLControl = static_cast<TStaticText*>(FindSubView(kControlTagTitL));
     titLControl->AssertValid();
     titLControl->SetTextWithStrListID(0x2740, 0x19, false);
     CRect titLBounds;
-    titLControl->QueryBounds(&titLBounds);
+    titLControl->GetFrame(&titLBounds);
     InvalidateCityDialogRectRegion(&titLBounds, 1);
 
-    TStaticText* rtilControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagRtil));
+    TStaticText* rtilControl = static_cast<TStaticText*>(FindSubView(kControlTagRtil));
     rtilControl->AssertValid();
     rtilControl->SetTextWithStrListID(0x2740, 0x1a, false);
     CRect rtilBounds;
-    rtilControl->QueryBounds(&rtilBounds);
+    rtilControl->GetFrame(&rtilBounds);
     InvalidateCityDialogRectRegion(&rtilBounds, 1);
 
-    TView* markControl = ResolveControlByTag(kControlTagMark);
+    TView* markControl = FindSubView(kControlTagMark);
     markControl->AssertValid();
     markControl->ViewEnable(0, 0);
 
-    TView* tabsControl2 = ResolveControlByTag(kControlTagTabs);
+    TView* tabsControl2 = FindSubView(kControlTagTabs);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl2);
 
     hiddenPage1 = buyPageView;

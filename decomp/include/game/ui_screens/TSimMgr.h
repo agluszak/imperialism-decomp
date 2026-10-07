@@ -63,7 +63,7 @@ public:
   virtual void DoTrade();                                        // 0x60  0x0057f3c0, Mac oracle
   virtual bool AllHumansFinished();                              // 0x64  0x0057f4f0
   virtual void ResetTurnFlags();                                 // 0x68  0x0057f530
-  void PrepareMultiplayerTurnResume();                           // 0x0057f570
+  void MultiSync();                                              // 0x0057f570
   virtual int PlayerLost();                                      // 0x6c  0x0057f490, Mac oracle
   virtual void SetFlags(unsigned int flags);                     // 0x70  0x0057f4b0
   virtual void NumToCurrency(int value, CString* destString);    // 0x74  0x0057f5b0
@@ -72,8 +72,8 @@ public:
   virtual void GetCommodityName(short offset, CString* destString);           // 0x7c  0x0057fe90
   virtual void ReinitializeRandomSeed();                                      // 0x80  0x0057fec0
   virtual void GetString(short codeGroup, short offset, CString* destString); // 0x84 0x00580760
-  CString LoadNormalizedCredentialName(short slot);
-  CString GetSharedText(short slot);
+  CString GetCountryName(short slot);
+  CString GetCountryNameWithCode(short slot);
   virtual CString
   DiplomacyNoticeString(const DiplomacyNotice* notice); // 0x88 0x00580790, Mac oracle
 

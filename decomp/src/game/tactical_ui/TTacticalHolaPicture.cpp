@@ -25,10 +25,10 @@ IMPLEMENT_DYNCREATE(TTacticalHolaPicture, TPicture)
 // FUNCTION: IMPERIALISM 0x005ad760
 void TTacticalHolaPicture::StuffValues(int nationA, int nationB, int nationAIsLocalSide,
                                        int battleSiteIndex) {
-  TPicture* attackerCoat = static_cast<TPicture*>(ResolveControlByTag(kControlTagAttackerCoat));
+  TPicture* attackerCoat = static_cast<TPicture*>(FindSubView(kControlTagAttackerCoat));
   attackerCoat->AssertValid();
   attackerCoat->SetPictureRsrcID(static_cast<short>(nationA + 0xea6), 1);
-  TPicture* defenderCoat = static_cast<TPicture*>(ResolveControlByTag(kControlTagDefenderCoat));
+  TPicture* defenderCoat = static_cast<TPicture*>(FindSubView(kControlTagDefenderCoat));
   defenderCoat->AssertValid();
   defenderCoat->SetPictureRsrcID(static_cast<short>(nationB + 0xea6), 1);
 
@@ -49,14 +49,13 @@ void TTacticalHolaPicture::StuffValues(int nationA, int nationB, int nationAIsLo
                          static_cast<const char*>(siteCityName),
                          static_cast<const char*>(opponentNationLabel));
 
-  TDeluxeText* infoControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
+  TDeluxeText* infoControl = static_cast<TDeluxeText*>(FindSubView(kControlTagInfo));
   infoControl->AssertValid();
   infoControl->UpdateTextEntrySharedString(&siteLabelText);
   infoControl->SetTextStyle(0, 0xc, 0x2b6a);
   infoControl->CenterVertically(true);
 
-  TMapPreviewView* previewMap =
-      static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
+  TMapPreviewView* previewMap = static_cast<TMapPreviewView*>(FindSubView(kControlTagPreviewMap));
   previewMap->AssertValid();
   previewMap->TakeSatellitePhoto(0);
   previewMap->selectedRegion = battleSiteIndex;

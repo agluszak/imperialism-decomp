@@ -61,7 +61,7 @@ void TGPCheater::DisplayGP(int nationSlot) {
   CString nameText;
 
   TStaticText* name =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   if (name == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xec);
   }
@@ -69,35 +69,35 @@ void TGPCheater::DisplayGP(int nationSlot) {
   name->SetTextAndMaybeRefresh(&nameText, true);
 
   TNumberText* treasury =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'r', 'e', 'a')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('t', 'r', 'e', 'a')));
   if (treasury == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf2);
   }
   treasury->SetControlValue(nation->treasuryValue, 1);
 
   TNumberText* mercenaries =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('m', 'e', 'r', 'c')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('m', 'e', 'r', 'c')));
   if (mercenaries == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf5);
   }
   mercenaries->SetControlValue(nation->merchantCapacity, 1);
 
   TNumberText* tradeCap =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'c', 'a', 'p')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('t', 'c', 'a', 'p')));
   if (tradeCap == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf8);
   }
   tradeCap->SetControlValue(nation != NULL ? nation->transportCapacity : 0, 1);
 
   TNumberText* sale =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'a', 'l', 'e')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('s', 'a', 'l', 'e')));
   if (sale == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xfb);
   }
   sale->SetControlValue(nation->budgetPoolBase, 1);
 
   TNumberText* purchase =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'u', 'r', 'c')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('p', 'u', 'r', 'c')));
   if (purchase == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xfe);
   }

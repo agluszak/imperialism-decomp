@@ -124,8 +124,7 @@ bool TAttackProvinceMission::TryResolveTargetTerrainClass() {
   const short* candidateCursor = targetRecord.adjacentRegionIds;
   for (; candidateIndex < targetRecord.adjacentRegionCount; candidateIndex++, candidateCursor++) {
     short candidateTile = *candidateCursor;
-    short tileOwnerNationCode =
-        g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(candidateTile);
+    short tileOwnerNationCode = g_pGlobalMapState->FindCountry(candidateTile);
     if (tileOwnerNationCode == nationId) {
       if (presentLocation != -1) {
         const Province& candidateRecord = g_pGlobalMapState->cityScoreTable[candidateTile];
@@ -134,8 +133,7 @@ bool TAttackProvinceMission::TryResolveTargetTerrainClass() {
         int adjacentIndex = 0;
         const short* adjacentCursor = candidateRecord.adjacentRegionIds;
         while (adjacentIndex < candidateRecord.adjacentRegionCount) {
-          short adjOwnerNationCode =
-              g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
+          short adjOwnerNationCode = g_pGlobalMapState->FindCountry(*adjacentCursor);
           if (adjOwnerNationCode == nationId) {
             matchCount++;
           }
@@ -163,8 +161,7 @@ bool TAttackProvinceMission::TryResolveTargetTerrainClass() {
       int adjacentIndex = 0;
       const short* adjacentCursor = candidateRecord.adjacentRegionIds;
       while (adjacentIndex < candidateRecord.adjacentRegionCount) {
-        short adjOwnerNationCode =
-            g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
+        short adjOwnerNationCode = g_pGlobalMapState->FindCountry(*adjacentCursor);
         if (adjOwnerNationCode == nationId) {
           matchCount++;
         }
@@ -209,7 +206,7 @@ void TAttackProvinceMission::GiveOrders() {
     } while (remainingWeights != 0);
 
     if (weighted / total > g_AttackProvinceMissionReadinessThreshold) {
-      if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+      if (g_pDiplomacyTurnStateManager->AreInEstablishedWar(
               nationId, g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode)) {
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(targetIter.Reset());
              targetIter.More(); unit = static_cast<TMilitaryUnit*>(targetIter.Advance())) {
@@ -217,7 +214,7 @@ void TAttackProvinceMission::GiveOrders() {
             unit->SetOrders(kUnitOrderRedeploy, targetProvince);
           }
         }
-      } else if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(
+      } else if (!g_pDiplomacyTurnStateManager->AreAtWar(
                      nationId, g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode)) {
         signed char targetOwnerNation =
             g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode;
@@ -264,8 +261,7 @@ TMission* TAttackProvinceMission::GetReplacement() {
       }
     }
   } else if (targetOwnerNation == nationId) {
-    short tileOwnerNationCode =
-        g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
+    short tileOwnerNationCode = g_pGlobalMapState->FindCountry(presentLocation);
     if (tileOwnerNationCode == pathMarker) {
       retarget = true;
     } else {
@@ -277,8 +273,8 @@ TMission* TAttackProvinceMission::GetReplacement() {
     return NULL;
   }
 
-  if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId) &&
-      !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, targetOwnerNation)) {
+  if (g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(nationId) &&
+      !g_pDiplomacyTurnStateManager->AreAtWar(nationId, targetOwnerNation)) {
     return NULL;
   }
   return this;
@@ -301,8 +297,7 @@ void TAttackProvinceMission::CalculateImportance() {
   if (targetRecord.adjacentRegionCount > 0) {
     const short* adjacentCursor = targetRecord.adjacentRegionIds;
     do {
-      short tileOwnerNationCode =
-          g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
+      short tileOwnerNationCode = g_pGlobalMapState->FindCountry(*adjacentCursor);
       if (tileOwnerNationCode == missionNation) {
         matchCount++;
       }

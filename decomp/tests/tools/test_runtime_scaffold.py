@@ -24,7 +24,7 @@ from tools.runtime.scaffold import BASES
 # one would hand every new test a control-tree mechanic instead of a linear script.
 BANNED_IN_SCENARIOS = (
     "g_ModalViewStack",
-    "ResolveControlByTag",
+    "FindSubView",
     "RUNTIME_CLASS",
     "RuntimeUiDriver",
     "EnterScenarioStep",

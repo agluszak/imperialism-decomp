@@ -25,7 +25,7 @@ void TNumberedIcon::INumberedIcon(TView* panel, int* offsetLayout, int* sizeLayo
     numberBounds.bottom = frameHeight;
     numberBounds.left = numberBounds.right - 0x10;
     numberBounds.top = numberBounds.bottom - 0x10;
-    numberText->ApplyBounds(&numberBounds, true);
+    numberText->SetFrame(&numberBounds, true);
   }
 }
 
@@ -38,7 +38,7 @@ void TNumberedIcon::DoPostCreate(int arg) {
     int iconWidth = frameWidth;
     int iconHeight = frameHeight;
     CRect numberBounds(iconWidth - 0x10, iconHeight - 0x10, iconWidth, iconHeight);
-    numberText->ApplyBounds(&numberBounds, true);
+    numberText->SetFrame(&numberBounds, true);
   }
 }
 

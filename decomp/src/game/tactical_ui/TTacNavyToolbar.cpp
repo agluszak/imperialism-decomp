@@ -22,7 +22,7 @@ IMPLEMENT_DYNCREATE(TTacNavyToolbar, TTacticalToolbar)
 // FUNCTION: IMPERIALISM 0x005ad180
 void TTacNavyToolbar::DoPostCreate(int arg) {
   TTacticalToolbar::DoPostCreate(arg);
-  SetSelectedChildTagAndRefresh(kControlTagHull); // 'hull'
+  SetCurrentChoice(kControlTagHull); // 'hull'
 }
 
 // FUNCTION: IMPERIALISM 0x005ad1b0
@@ -53,7 +53,7 @@ void TTacNavyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       battle->HandleTacticalBattleCommandTag(tag);
       break;
     case kControlTagHelp:
-      g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+      g_pHelpMgr->ShowLatestHelp();
       break;
     default:
       break;

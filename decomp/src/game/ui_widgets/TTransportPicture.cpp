@@ -164,7 +164,7 @@ void TTransportPicture::Refresh() {
     SetQuickDrawFillColor(0);
   }
 
-  TStaticText* text = static_cast<TStaticText*>(ResolveControlByTag(kControlTagText));
+  TStaticText* text = static_cast<TStaticText*>(FindSubView(kControlTagText));
   if (text == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a59);
   }
@@ -175,14 +175,14 @@ void TTransportPicture::Refresh() {
 
   // The two money rows caption their allocation in currency rather than units.
   if (resourceMetricSlot == 0x16) {
-    TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
+    TStaticText* value = static_cast<TStaticText*>(FindSubView(kControlTagValu));
     if (value == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a63);
     }
     g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 200, &gaugeText);
     value->SetTextAndMaybeRefresh(&gaugeText, true);
   } else if (resourceMetricSlot == 0x15) {
-    TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
+    TStaticText* value = static_cast<TStaticText*>(FindSubView(kControlTagValu));
     if (value == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a6a);
     }
@@ -193,7 +193,7 @@ void TTransportPicture::Refresh() {
   if (controlTag != static_cast<int>(kControlTagTota)) {
     TGreatPower* nation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     TTransportPicture* totalPicture =
-        static_cast<TTransportPicture*>(ownerContext->ResolveControlByTag(kControlTagTota));
+        static_cast<TTransportPicture*>(ownerContext->FindSubView(kControlTagTota));
     if (totalPicture == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a77);
     }

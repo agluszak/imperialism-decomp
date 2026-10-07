@@ -18,16 +18,15 @@ public:
                                              short nInputHint); // slot 0x0b 0x4d26d0
   virtual void MoveAndRedrawUnit(short nNewTileIndex,
                                  class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
-  virtual void DispatchSelectedUnitToGlobalMapStateHandler(
-      class TCivUnit* pUnitOrderEntry); // slot 0x0d 0x4d2270
-  void ApplyCompletedCivWorkOrderToMapState(class TCivUnit* order);
-  bool HandleEngineerConstructionAction(short nTileIndex);
+  virtual void SetDimming(class TCivUnit* pUnitOrderEntry);       // slot 0x0d 0x4d2270
+  void CompletedOrders(class TCivUnit* order);
+  bool EngineerClick(short nTileIndex);
 
   void SelectUnit(class TCivUnit* entryContext, bool refreshCommandPanel);
 
-  bool QueueProspectingOrderAndPlayFeedback(short nTileIndex);
-  void ClearCivilianSelectionHighlightsForNation(short nationId);
-  class TCivUnit* SelectFirstAvailableCivilianForNation(short nationId);
+  bool ProspectorClick(short nTileIndex);
+  void ResetCycle(short nationId);
+  class TCivUnit* Cycle(short nationId);
   void WakeAll(int nationId);
   void OrderAndCycle(UnitOrder order);
   void DisbandSelected();
@@ -39,7 +38,7 @@ public:
   TCivMgr();
   void ICivMgr();
 
-  bool CanAssignCivilianOrderToTile(short nTileIndex);
+  bool CanDeployUnit(short nTileIndex);
 
   CivilianTileActionCodeStorage ResolveCivilianTileOrderActionCode(short nTileIndex,
                                                                    short nInputHint);
@@ -52,12 +51,12 @@ public:
 
   bool TryQueueCivilianMoveOrderToTile(short nTileIndex);
 
-  void HandleCivilianReportDecision(class TCivUnit* pCivilianOrderEntry);
+  void InfoBox(class TCivUnit* pCivilianOrderEntry);
 
   void ResolveCivilianDisputes();
 
-  bool QueueCivilianWorkOrderWithCostCheck(short nTileIndex);
+  bool ImprovementClick(short nTileIndex);
 
-  bool PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex);
+  bool PurchaseClick(short nTileIndex);
 };
 ASSERT_SIZE(TCivMgr, 0xc);

@@ -28,10 +28,10 @@ void TNetSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     if (sourceHandler->controlTag == kControlTagCncl) {
       g_pGameFlowState->ResetGameFlowStateAndShowMainMenu();
     } else if (sourceHandler->controlTag == kControlTagOkay) {
-      TCluster* protControl = static_cast<TCluster*>(ResolveControlByTag(kControlTagProt));
+      TCluster* protControl = static_cast<TCluster*>(FindSubView(kControlTagProt));
       protControl->AssertValid();
       int selectedProtocolTag = protControl->GetCurrentChoice();
-      TView* protocolOption = ResolveControlByTag(selectedProtocolTag);
+      TView* protocolOption = FindSubView(selectedProtocolTag);
       g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolOption->controlValue, 1);
     }
   }

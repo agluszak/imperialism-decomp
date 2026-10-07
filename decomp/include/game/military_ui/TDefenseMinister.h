@@ -10,7 +10,7 @@ public:
   // FUNCTION: IMPERIALISM 0x004ec140
   virtual ~TDefenseMinister() override {} // slot 0x01 (scalar deleting destructor)
   TDefenseMinister();
-  void InitializeBaseOrderArrayMetrics(TGreatPower* owner);
+  void IDefenseMinister(TGreatPower* owner);
 
   void InitializeOrderArrayPreset50_0_10_50(TGreatPower* owner);  // 0x4ed560
   void InitializeOrderArrayPreset10_10_10_50(TGreatPower* owner); // 0x4ed890
@@ -24,14 +24,14 @@ public:
   short GetRankingCriterionForGP(short nationSlot) override; // 0x0a (0x4ec3d0)
 
   // New virtuals introduced by TDefenseMinister (vtable 0x6549b0, bytes 0x48-0x60).
-  virtual void GoShopping();     // 0x48 (0x4ec450), Mac oracle
-  virtual void DoArmyMovement(); // 0x4c (0x4ec4c0), Mac oracle
+  virtual void GoShopping();            // 0x48 (0x4ec450), Mac oracle
+  virtual void DoArmyMovement();        // 0x4c (0x4ec4c0), Mac oracle
   virtual void DoPeacetimeDeployment(); // 0x50 (0x4ec540), Mac oracle
   virtual unsigned char*
-  CreatePeaceDefenseMap(TLongintList* ownedRegions); // 0x54 (0x4ecbb0), Mac oracle
-  virtual int* CreateHomeValueMap(); // 0x58 (0x4ecf20), Mac oracle
+  CreatePeaceDefenseMap(TLongintList* ownedRegions);                 // 0x54 (0x4ecbb0), Mac oracle
+  virtual int* CreateHomeValueMap();                                 // 0x58 (0x4ecf20), Mac oracle
   virtual int* CreateEnemyPowerMap(unsigned char excludeEnemyTiles); // 0x5c (0x4ed050), Mac oracle
-  virtual double GetStategicEscalationMultiplier(bool flag); // Mac oracle spelling
+  virtual double GetStategicEscalationMultiplier(bool flag);         // Mac oracle spelling
 
   short field10;
   short field12;

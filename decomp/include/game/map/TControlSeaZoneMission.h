@@ -40,7 +40,7 @@ public:
 
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry)
       override; // slot 0x27 0x539640 -- resolve+queue port-zone map order
-  virtual TZone* RefreshMissionPortZoneContextForNation() override; // slot 0x28 0x539780 (shared)
+  virtual TZone* PickAmassingZone() override; // slot 0x28 0x539780 (shared)
 };
 
 ASSERT_SIZE(TControlSeaZoneMission, 0x3c);
@@ -53,7 +53,7 @@ inline void TControlSeaZoneMission::CalculateNeeds() {
     if (node->location != missionTargetZone) {
       continue;
     }
-    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, node->nation)) {
+    if (!g_pDiplomacyTurnStateManager->AreAtWar(nationId, node->nation)) {
       continue;
     }
     short normalizationBase = node->GetMaxStrength();

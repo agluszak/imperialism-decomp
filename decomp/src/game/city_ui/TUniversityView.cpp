@@ -56,26 +56,26 @@ void TUniversityView::DoStartup() {
     int available = g_pTechMgr->universityRecruitmentAvailabilityByNation[activeNation]
                         .availableByCategory[category];
     TControl* selection =
-        static_cast<TControl*>(ResolveControlByTag(kControlTagCiv0 + category)); // 'civ0'+category
+        static_cast<TControl*>(FindSubView(kControlTagCiv0 + category)); // 'civ0'+category
     selection->AssertValid();
     selection->Show(available, 1);
     selection->ViewEnable(available, 0);
 
     TControl* row =
-        static_cast<TControl*>(ResolveControlByTag(kControlTagClu0 + category)); // 'clu0'+category
+        static_cast<TControl*>(FindSubView(kControlTagClu0 + category)); // 'clu0'+category
     row->AssertValid();
     row->Show(available, 1);
     if (!available) {
-      TControl* plus = static_cast<TControl*>(row->ResolveControlByTag(kControlTagPlus)); // 'plus'
+      TControl* plus = static_cast<TControl*>(row->FindSubView(kControlTagPlus)); // 'plus'
       plus->AssertValid();
       plus->ViewEnable(0, 0);
-      TControl* minus = static_cast<TControl*>(row->ResolveControlByTag(kControlTagMinu)); // 'minu'
+      TControl* minus = static_cast<TControl*>(row->FindSubView(kControlTagMinu)); // 'minu'
       minus->AssertValid();
       minus->ViewEnable(0, 0);
     } else {
       TUnitOrder* order = city->buildOrderSlots[9 + category];
       TNumberText* quantity =
-          static_cast<TNumberText*>(row->ResolveControlByTag(kControlTagNumb)); // 'numb'
+          static_cast<TNumberText*>(row->FindSubView(kControlTagNumb)); // 'numb'
       quantity->AssertValid();
       quantity->ViewEnable(0, 0);
       quantity->InstallTextStyle(style.desc, 1);
@@ -84,33 +84,32 @@ void TUniversityView::DoStartup() {
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0x18, 0x2b6b);
-  TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
+  TStaticText* title = static_cast<TStaticText*>(FindSubView(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
   title->SetTextWithStrListID(0x2723, 0xa, true);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
-  TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
+  TStaticText* unit = static_cast<TStaticText*>(FindSubView(kControlTagUnit)); // 'unit'
   unit->AssertValid();
   unit->InstallTextStyle(style.desc, 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   for (short fixedLabelIndex = 0; fixedLabelIndex < 2; ++fixedLabelIndex) {
-    TStaticText* label = static_cast<TStaticText*>(
-        ResolveControlByTag(kControlTagFix0 + fixedLabelIndex)); // 'fix0'/'fix1'
+    TStaticText* label =
+        static_cast<TStaticText*>(FindSubView(kControlTagFix0 + fixedLabelIndex)); // 'fix0'/'fix1'
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
     label->SetTextWithStrListID(0x2723, static_cast<short>(0xb + fixedLabelIndex), true);
   }
 
-  TStaticText* description =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
+  TStaticText* description = static_cast<TStaticText*>(FindSubView(kControlTagDesc)); // 'desc'
   description->AssertValid();
   description->InstallTextStyle(style.desc, 1);
 
   for (short requirementLabelIndex = 0; requirementLabelIndex < 3; ++requirementLabelIndex) {
     TStaticText* label = static_cast<TStaticText*>(
-        ResolveControlByTag(kControlTagFix2 + requirementLabelIndex)); // 'fix2'..'fix4'
+        FindSubView(kControlTagFix2 + requirementLabelIndex)); // 'fix2'..'fix4'
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
     label->SetTextWithStrListID(0x2723, static_cast<short>(0xe + requirementLabelIndex), true);
@@ -122,16 +121,16 @@ void TUniversityView::DoStartup() {
                                                    kControlTagApap, kControlTagCpap,
                                                    kControlTagAexp, kControlTagCexp};
   for (short valueIndex = 0; valueIndex < 6; ++valueIndex) {
-    TControl* value = static_cast<TControl*>(ResolveControlByTag(kStyledValueTags[valueIndex]));
+    TControl* value = static_cast<TControl*>(FindSubView(kStyledValueTags[valueIndex]));
     value->AssertValid();
     value->InstallTextStyle(style.desc, 1);
   }
 
   selectedRecruitmentCategory = -1;
   selectedRecruitmentOrder = 0;
-  TCluster* selection = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
+  TCluster* selection = static_cast<TCluster*>(FindSubView(kControlTagSele)); // 'sele'
   selection->AssertValid();
-  selection->SetSelectedChildTagAndRefresh(kControlTagCiv0); // 'civ0'
+  selection->SetCurrentChoice(kControlTagCiv0); // 'civ0'
   selectedRecruitmentCategory = 0;
   SetUnit(0);
 }
@@ -147,31 +146,29 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
   selectedRecruitmentOrder = order;
 
   CRect invalidRect;
-  TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
+  TStaticText* unit = static_cast<TStaticText*>(FindSubView(kControlTagUnit)); // 'unit'
   unit->AssertValid();
   unit->SetTextWithStrListID(0x2718, static_cast<short>(recruitmentCategory + 1), false);
-  unit->QueryBounds(&invalidRect);
+  unit->GetFrame(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  TNumberText* paperCost =
-      static_cast<TNumberText*>(ResolveControlByTag(kControlTagCpap)); // 'cpap'
+  TNumberText* paperCost = static_cast<TNumberText*>(FindSubView(kControlTagCpap)); // 'cpap'
   paperCost->AssertValid();
   paperCost->SetControlValue(order->primaryInputPerUnit, 0);
-  paperCost->QueryBounds(&invalidRect);
+  paperCost->GetFrame(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  TStaticText* cashCost = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCash)); // 'cash'
+  TStaticText* cashCost = static_cast<TStaticText*>(FindSubView(kControlTagCash)); // 'cash'
   cashCost->AssertValid();
   g_pSimMgr->NumToCurrency(order->cashCostPerUnit, &currencyText);
   cashCost->SetTextAndMaybeRefresh(&currencyText, false);
-  cashCost->QueryBounds(&invalidRect);
+  cashCost->GetFrame(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  TStaticText* description =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
+  TStaticText* description = static_cast<TStaticText*>(FindSubView(kControlTagDesc)); // 'desc'
   description->AssertValid();
   description->SetTextWithStrListID(0x2751, recruitmentCategory, false);
-  description->QueryBounds(&invalidRect);
+  description->GetFrame(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   UpdateFields();
@@ -196,12 +193,12 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
 
     short level;
     for (level = 0; level < highestRequirementLevel; ++level) {
-      TView* label = ResolveControlByTag(kControlTagFix2 + level); // 'fix2'+level
+      TView* label = FindSubView(kControlTagFix2 + level); // 'fix2'+level
       label->AssertValid();
       label->Show(1, 1);
     }
     for (; level < 3; ++level) {
-      TView* label = ResolveControlByTag(kControlTagFix2 + level); // 'fix2'+level
+      TView* label = FindSubView(kControlTagFix2 + level); // 'fix2'+level
       label->AssertValid();
       label->Show(0, 1);
     }
@@ -225,9 +222,9 @@ void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       SetUnit(index);
 
       // 'sele' is a TCluster (see TShipyardView::DoStartup's identical tail).
-      TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
+      TCluster* sele = static_cast<TCluster*>(FindSubView(kControlTagSele)); // 'sele'
       sele->AssertValid();
-      sele->SetSelectedChildTagAndRefresh(kControlTagCiv0 + index); // 'civ0'+index
+      sele->SetCurrentChoice(kControlTagCiv0 + index); // 'civ0'+index
 
       TUnitOrder* order = city->buildOrderSlots[9 + index];
       short quantity = order->quantity;
@@ -237,15 +234,15 @@ void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
         --quantity;
       }
       if (order->SetQuantity(quantity)) {
-        TView* quantityPanel = ResolveControlByTag(kControlTagNum0 + index); // 'num0'+index
+        TView* quantityPanel = FindSubView(kControlTagNum0 + index); // 'num0'+index
         quantityPanel->AssertValid();
-        TNumberText* quantityText = static_cast<TNumberText*>(
-            quantityPanel->ResolveControlByTag(kControlTagNumb)); // 'numb'
+        TNumberText* quantityText =
+            static_cast<TNumberText*>(quantityPanel->FindSubView(kControlTagNumb)); // 'numb'
         quantityText->AssertValid();
         quantityText->SetControlValue(order->quantity, 0);
 
         CRect invalidRect;
-        quantityText->QueryBounds(&invalidRect);
+        quantityText->GetFrame(&invalidRect);
         quantityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
         UpdateFields();
       }
@@ -265,8 +262,7 @@ void TUniversityView::UpdateFields() {
     return;
   }
 
-  TNumberText* paperAvailable =
-      static_cast<TNumberText*>(ResolveControlByTag(kControlTagApap)); // 'apap'
+  TNumberText* paperAvailable = static_cast<TNumberText*>(FindSubView(kControlTagApap)); // 'apap'
   paperAvailable->AssertValid();
   paperAvailable->SetControlValue(city->cityStockPaper, 0);
   paperAvailable->SetTextColorAndMaybeRefresh(
@@ -274,7 +270,7 @@ void TUniversityView::UpdateFields() {
                                                                            : &normalTextColor,
       true);
   CRect invalidRect;
-  paperAvailable->QueryBounds(&invalidRect);
+  paperAvailable->GetFrame(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TPopulationMgr* population = city->productionSummary;
@@ -284,12 +280,12 @@ void TUniversityView::UpdateFields() {
   }
 
   TNumberText* capacityAvailable =
-      static_cast<TNumberText*>(ResolveControlByTag(kControlTagAexp)); // 'aexp'
+      static_cast<TNumberText*>(FindSubView(kControlTagAexp)); // 'aexp'
   capacityAvailable->AssertValid();
   capacityAvailable->SetControlValue(recruitmentCapacity, 0);
   capacityAvailable->SetTextColorAndMaybeRefresh(
       recruitmentCapacity < 1 ? &warningTextColor : &normalTextColor, true);
-  capacityAvailable->QueryBounds(&invalidRect);
+  capacityAvailable->GetFrame(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   CString treasuryText;
@@ -297,13 +293,13 @@ void TUniversityView::UpdateFields() {
   g_pSimMgr->NumToCurrency(treasury, &treasuryText);
 
   TStaticText* treasuryAvailable =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagTrea)); // 'trea'
+      static_cast<TStaticText*>(FindSubView(kControlTagTrea)); // 'trea'
   treasuryAvailable->AssertValid();
   treasuryAvailable->SetTextAndMaybeRefresh(&treasuryText, false);
   treasuryAvailable->SetTextColorAndMaybeRefresh(
       treasury < selectedRecruitmentOrder->cashCostPerUnit ? &warningTextColor : &normalTextColor,
       true);
-  treasuryAvailable->QueryBounds(&invalidRect);
+  treasuryAvailable->GetFrame(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   productionView->UpdateUnits();

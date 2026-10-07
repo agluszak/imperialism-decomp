@@ -18,10 +18,10 @@ IMPLEMENT_DYNCREATE(TScoreGraph, TView)
 // FUNCTION: IMPERIALISM 0x004fe2b0
 void TScoreGraph::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+  g_pDiplomacyTurnStateManager->CalculateRatings();
 
   for (int i = 0; i < 7; ++i) {
-    TView* tabControl = ownerContext->ResolveControlByTag(kControlTagTab0 + i);
+    TView* tabControl = ownerContext->FindSubView(kControlTagTab0 + i);
     tabControl->AssertValid();
     LoadUiStringByGroupAndIndexToControlObject(0x2757, static_cast<short>(i + 9), tabControl);
   }
@@ -29,7 +29,7 @@ void TScoreGraph::DoPostCreate(int arg) {
   SetControlHoverHelpText(CString(g_szEmptyString), ownerContext);
 
   TView* owner = GetWindow();
-  g_pCursorControlPanel = static_cast<TInfoBarText*>(owner->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(owner->FindSubView(kControlTagCurs));
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 }

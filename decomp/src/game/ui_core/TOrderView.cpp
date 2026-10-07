@@ -26,7 +26,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x210);
   }
 
-  TIconSlider* slider = static_cast<TIconSlider*>(ResolveControlByTag(kControlTagSlid));
+  TIconSlider* slider = static_cast<TIconSlider*>(FindSubView(kControlTagSlid));
   if (slider == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x213);
   }
@@ -35,14 +35,14 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   slider->value = order->quantity;
   slider->SetMax(order->MaxOrder());
 
-  TIconBar* supplyPrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSup1));
+  TIconBar* supplyPrimary = static_cast<TIconBar*>(FindSubView(kControlTagSup1));
   if (supplyPrimary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x21c);
   }
   supplyPrimary->SetNumIcons(city->CityStockByType(order->primaryInputResourceId));
   supplyPrimary->SetPictureRsrcID(static_cast<short>(order->primaryInputResourceId + 700), true);
 
-  TIconBar* supplySecondary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSup2));
+  TIconBar* supplySecondary = static_cast<TIconBar*>(FindSubView(kControlTagSup2));
   if (supplySecondary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x221);
   }
@@ -52,21 +52,21 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
                                       true);
   }
 
-  TIconBar* supplyLabor = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSupl));
+  TIconBar* supplyLabor = static_cast<TIconBar*>(FindSubView(kControlTagSupl));
   if (supplyLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x229);
   }
   supplyLabor->SetNumIcons(city->productionSummary->strength);
   supplyLabor->SetPictureRsrcID(0x148, true);
 
-  TIconBar* usePrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse1));
+  TIconBar* usePrimary = static_cast<TIconBar*>(FindSubView(kControlTagUse1));
   if (usePrimary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x22e);
   }
   usePrimary->SetPictureRsrcID(static_cast<short>(order->primaryInputResourceId + 700), true);
   usePrimary->SetNumIcons(order->trackingSlots[order->primaryInputResourceId]);
 
-  TIconBar* useSecondary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse2));
+  TIconBar* useSecondary = static_cast<TIconBar*>(FindSubView(kControlTagUse2));
   if (useSecondary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x233);
   }
@@ -75,31 +75,31 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
     useSecondary->SetPictureRsrcID(static_cast<short>(order->secondaryInputResourceId + 700), true);
   }
 
-  TIconBar* useLabor = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUsel));
+  TIconBar* useLabor = static_cast<TIconBar*>(FindSubView(kControlTagUsel));
   if (useLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x23b);
   }
   useLabor->SetPictureRsrcID(0x148, true);
   useLabor->SetNumIcons(static_cast<short>(order->quantity * 2));
 
-  TIconBar* primaryIcon = static_cast<TIconBar*>(ResolveControlByTag(kControlTagIco1));
+  TIconBar* primaryIcon = static_cast<TIconBar*>(FindSubView(kControlTagIco1));
   primaryIcon->SetPictureRsrcID(static_cast<short>(order->primaryInputResourceId + 700), true);
-  TIconBar* secondaryIcon = static_cast<TIconBar*>(ResolveControlByTag(kControlTagIco2));
+  TIconBar* secondaryIcon = static_cast<TIconBar*>(FindSubView(kControlTagIco2));
   secondaryIcon->SetPictureRsrcID(static_cast<short>(order->secondaryInputResourceId + 700), true);
-  TIconBar* laborIcon = static_cast<TIconBar*>(ResolveControlByTag(kControlTagIco3));
+  TIconBar* laborIcon = static_cast<TIconBar*>(FindSubView(kControlTagIco3));
   laborIcon->SetPictureRsrcID(0x148, true);
 }
 
 // FUNCTION: IMPERIALISM 0x00506f90
 void TOrderView::UpdateFields() {
-  TIconBar* supplyPrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSup1));
+  TIconBar* supplyPrimary = static_cast<TIconBar*>(FindSubView(kControlTagSup1));
   if (supplyPrimary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x255);
   }
   supplyPrimary->SetNumIcons(city->CityStockByType(order->primaryInputResourceId));
   supplyPrimary->RefreshControl();
 
-  TIconBar* supplySecondary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSup2));
+  TIconBar* supplySecondary = static_cast<TIconBar*>(FindSubView(kControlTagSup2));
   if (supplySecondary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x25a);
   }
@@ -108,21 +108,21 @@ void TOrderView::UpdateFields() {
     supplySecondary->RefreshControl();
   }
 
-  TIconBar* supplyLabor = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSupl));
+  TIconBar* supplyLabor = static_cast<TIconBar*>(FindSubView(kControlTagSupl));
   if (supplyLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x262);
   }
   supplyLabor->SetNumIcons(city->productionSummary->strength);
   supplyLabor->RefreshControl();
 
-  TIconBar* usePrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse1));
+  TIconBar* usePrimary = static_cast<TIconBar*>(FindSubView(kControlTagUse1));
   if (usePrimary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x267);
   }
   usePrimary->SetNumIcons(order->trackingSlots[order->primaryInputResourceId]);
   usePrimary->RefreshControl();
 
-  TIconBar* useSecondary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse2));
+  TIconBar* useSecondary = static_cast<TIconBar*>(FindSubView(kControlTagUse2));
   if (useSecondary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x26c);
   }
@@ -131,7 +131,7 @@ void TOrderView::UpdateFields() {
     useSecondary->RefreshControl();
   }
 
-  TIconBar* useLabor = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUsel));
+  TIconBar* useLabor = static_cast<TIconBar*>(FindSubView(kControlTagUsel));
   if (useLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x274);
   }
@@ -142,7 +142,7 @@ void TOrderView::UpdateFields() {
 // FUNCTION: IMPERIALISM 0x00507240
 void TOrderView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x6c) {
-    TIconSlider* slider = static_cast<TIconSlider*>(ResolveControlByTag(kControlTagSlid));
+    TIconSlider* slider = static_cast<TIconSlider*>(FindSubView(kControlTagSlid));
     if (slider == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x285);
     }

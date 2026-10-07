@@ -51,7 +51,7 @@ class RuntimeSourcePolicyTests(unittest.TestCase):
 
     def test_scenario_body_rejects_control_tree_mechanics(self) -> None:
         rules = self.check_source(
-            "auto* view = ResolveControlByTag(root, tag);\n"
+            "auto* view = FindSubView(root, tag);\n"
             "BitBlt(hdc, 0, 0, 1, 1, src, 0, 0, SRCCOPY);\n"
             "auto top = g_ModalViewStack;\n",
             scenario=True,
@@ -63,7 +63,7 @@ class RuntimeSourcePolicyTests(unittest.TestCase):
 
     def test_non_scenario_may_use_control_tree_helpers(self) -> None:
         self.assertEqual(
-            self.check_source("ResolveControlByTag(root, tag);\nBitBlt(hdc, 0, 0, 1, 1, src, 0, 0, SRCCOPY);\n"),
+            self.check_source("FindSubView(root, tag);\nBitBlt(hdc, 0, 0, 1, 1, src, 0, 0, SRCCOPY);\n"),
             [],
         )
 

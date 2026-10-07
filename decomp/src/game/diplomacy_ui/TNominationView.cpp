@@ -25,19 +25,19 @@ void TNominationView::DoPostCreate(int arg) {
   CString text;
   TextStyle style;
 
-  TStaticText* countryControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCoun));
+  TStaticText* countryControl = static_cast<TStaticText*>(FindSubView(kControlTagCoun));
   countryControl->AssertValid();
   countryControl->SetTextWithStrListID(0x2733, 0x5f, true);
   BuildUiTextStyleDescriptor(&style, 0, 0x12, 0x2b6c);
   countryControl->InstallTextStyle(style, 1);
 
-  TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
+  TStaticText* titleControl = static_cast<TStaticText*>(FindSubView(kControlTagTitl));
   titleControl->AssertValid();
   titleControl->SetTextWithStrListID(0x2733, 0x60, true);
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6c);
   titleControl->InstallTextStyle(style, 1);
 
-  TStaticText* candidate0Control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan0));
+  TStaticText* candidate0Control = static_cast<TStaticText*>(FindSubView(kControlTagCan0));
   candidate0Control->AssertValid();
   TGreatPower* nation0 =
       g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot];
@@ -45,7 +45,7 @@ void TNominationView::DoPostCreate(int arg) {
   candidate0Control->SetTextAndMaybeRefresh(&text, true);
   candidate0Control->InstallTextStyle(style, 1);
 
-  TStaticText* candidate1Control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
+  TStaticText* candidate1Control = static_cast<TStaticText*>(FindSubView(kControlTagCan1));
   candidate1Control->AssertValid();
   TGreatPower* nation1 =
       g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot];

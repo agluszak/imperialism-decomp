@@ -160,7 +160,8 @@ private:
       return RuntimeActionResult::Failure(
           "civilian production did not allocate exactly one persistent unit id");
     }
-    *outCivilian = CivilianProbe::CivilianWithPersistentId(ActiveNation(), g_pSimMgr->lastPersistentUnitId);
+    *outCivilian =
+        CivilianProbe::CivilianWithPersistentId(ActiveNation(), g_pSimMgr->lastPersistentUnitId);
     if (*outCivilian == 0) {
       return RuntimeActionResult::Failure("the produced civilian is not in the nation's roster");
     }
@@ -209,20 +210,21 @@ private:
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
       if (terrain.GetTerrainKind() != terrainKind || terrain.firstCivilianOrder != 0 ||
-          tile == spawnedCivilian->tileIndex || tile % kStrategicMapColumns == 0 || tile % kStrategicMapColumns == 0x6b) {
+          tile == spawnedCivilian->tileIndex || tile % kStrategicMapColumns == 0 ||
+          tile % kStrategicMapColumns == 0x6b) {
         continue;
       }
       if ((terrain.recruitSearchVisited == 0) != mustBeEligible) {
         continue;
       }
-      if (mustBeEligible && g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tile) == 0) {
+      if (mustBeEligible && g_pGlobalMapState->AreMineralsPresent(tile) == 0) {
         continue;
       }
       if (mustBeEligible) {
         bool hasUndevelopedResource = false;
         for (int edge = 0; edge < 2; ++edge) {
           if (terrain.resourceTypeByEdge[edge] >= 0 &&
-              g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tile, edge == 0) == 0) {
+              g_pGlobalMapState->GetDevelopmentLevel(tile, edge == 0) == 0) {
             hasUndevelopedResource = true;
           }
         }
@@ -327,7 +329,7 @@ private:
       CRect mapBounds(0, 0, mapDialog->frameWidth, mapDialog->frameHeight);
       mapDialog->Draw(&mapBounds);
     }
-    return g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(spawnedCivilian));
+    return g_pUiAnimator->FindAni(PointerAddressLong32(spawnedCivilian));
   }
 
   int CollectProspectorLegendTargets(short ownerNation, short profile, short* targetTiles) {
@@ -505,8 +507,7 @@ private:
       return RuntimeActionResult::Failure(detail);
     }
 
-    TCivUnit* tileCivilian =
-        g_pGlobalMapState->GetTileUnitEntryByOwner(targetHillTile, ActiveNation());
+    TCivUnit* tileCivilian = g_pGlobalMapState->GetMyFirstUnit(targetHillTile, ActiveNation());
     TAnimation* animation = RenderAndResolveOrderedProspectorAnimation();
     const bool isCivilianSprite = CivilianProbe::IsCivilianSpriteAnimation(animation);
     const bool hasFramePixels = animation != 0 && AnimationFrameBufferHasPixels(animation);
@@ -532,8 +533,7 @@ private:
     }
 
     TAnimation* animation = RenderAndResolveOrderedProspectorAnimation();
-    TCivUnit* tileCivilian =
-        g_pGlobalMapState->GetTileUnitEntryByOwner(targetHillTile, ActiveNation());
+    TCivUnit* tileCivilian = g_pGlobalMapState->GetMyFirstUnit(targetHillTile, ActiveNation());
     const unsigned short reportCursor =
         g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
             targetHillTile, 0);
@@ -576,14 +576,14 @@ private:
     if (spawnedCivilian->unitOrder != kUnitOrderIdle || spawnedCivilian->remainingTurns > 0 ||
         (terrain.pendingDevelopmentFlag & (1 << activeNation)) == 0 ||
         spawnedCivilian->completionMarker != 0x232f ||
-        g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetHillTile) == 0) {
+        g_pGlobalMapState->AreMineralsPresent(targetHillTile) == 0) {
       CString detail;
       detail.Format("prospector completion mismatch: order=%d remaining=%d survey=%d marker=%d "
                     "candidate=%d",
                     spawnedCivilian->unitOrder, spawnedCivilian->remainingTurns,
                     (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0,
                     spawnedCivilian->completionMarker,
-                    g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetHillTile));
+                    g_pGlobalMapState->AreMineralsPresent(targetHillTile));
       return RuntimeActionResult::Failure(detail);
     }
 
@@ -592,7 +592,7 @@ private:
     for (int edge = 0; edge < 2; ++edge) {
       const short resourceType = terrain.resourceTypeByEdge[edge];
       const int improvementClass =
-          g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetHillTile, edge == 0);
+          g_pGlobalMapState->GetDevelopmentLevel(targetHillTile, edge == 0);
       if (resourceType < 0 || improvementClass != 0) {
         continue;
       }
@@ -637,8 +637,9 @@ private:
     int orderableCount = 0;
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
-      if (tile == spawnedCivilian->tileIndex || tile % kStrategicMapColumns == 0 || tile % kStrategicMapColumns == 0x6b ||
-          terrain.firstCivilianOrder != 0 || terrain.recruitSearchVisited != 0 ||
+      if (tile == spawnedCivilian->tileIndex || tile % kStrategicMapColumns == 0 ||
+          tile % kStrategicMapColumns == 0x6b || terrain.firstCivilianOrder != 0 ||
+          terrain.recruitSearchVisited != 0 ||
           (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0) {
         continue;
       }
@@ -647,7 +648,7 @@ private:
         continue;
       }
       ++nonMineralCount;
-      if (g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tile) != 0) {
+      if (g_pGlobalMapState->AreMineralsPresent(tile) != 0) {
         continue;
       }
       ++undiscoveredCount;
@@ -705,7 +706,7 @@ private:
         spawnedCivilian->remainingTurns > 0 ||
         (terrain.pendingDevelopmentFlag & (1 << activeNation)) == 0 ||
         IsProspectableResource(terrain.resourceTypeByEdge[0]) ||
-        g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetSurveyMissTile) != 0) {
+        g_pGlobalMapState->AreMineralsPresent(targetSurveyMissTile) != 0) {
       return RuntimeActionResult::Failure(
           "the unsuccessful survey did not produce the retail surveyed state");
     }
@@ -777,7 +778,7 @@ private:
 
       const int action =
           g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(tileIndex, 0);
-      TCivUnit* clickedUnit = g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, nationSlot);
+      TCivUnit* clickedUnit = g_pGlobalMapState->GetMyFirstUnit(tileIndex, nationSlot);
       const signed char firstResourceType = terrain.resourceTypeByEdge[0];
       const bool firstResourceCanBeImproved =
           firstResourceType >= 0 &&
@@ -815,8 +816,8 @@ private:
     }
 
     targetFarmerTile = workableTile;
-    initialFarmerImprovementClass = static_cast<short>(
-        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetFarmerTile, 0));
+    initialFarmerImprovementClass =
+        static_cast<short>(g_pGlobalMapState->GetDevelopmentLevel(targetFarmerTile, 0));
 
     TMapDialog* mapDialog = MapDialog();
     if (mapDialog == 0) {
@@ -853,8 +854,8 @@ private:
   RuntimeActionResult VerifyFarmerImprovementVisual() {
     TMapDialog* mapDialog = MapDialog();
     const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[targetFarmerTile];
-    const short improvementClass = static_cast<short>(
-        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetFarmerTile, 0));
+    const short improvementClass =
+        static_cast<short>(g_pGlobalMapState->GetDevelopmentLevel(targetFarmerTile, 0));
     const short resourceType = terrain.resourceTypeByEdge[0];
     if (mapDialog == 0 || farmer->unitOrder != kUnitOrderIdle || farmer->remainingTurns > 0 ||
         improvementClass != initialFarmerImprovementClass + 1 || resourceType < 0 ||
@@ -891,7 +892,7 @@ private:
 
     TGreatPower* nation = Player();
     char* connectedTiles = 0;
-    nation->BuildTransportLinkedInfluenceMap(&connectedTiles);
+    nation->TraceSupplyRoutes(&connectedTiles);
     short engineerTile = -1;
     int engineerAction = 0;
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
@@ -942,7 +943,7 @@ private:
       engineer->TickCivWorkOrderCountdownAndComplete();
     }
 
-    TTown* depot = g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(depotTile);
+    TTown* depot = g_pGlobalMapState->GetTown(depotTile);
     if (engineer->unitOrder != kUnitOrderIdle || depot == 0 || depot->activeFlag == 0 ||
         depot->transportLinked == 0 || nation->townMarkerList->GetCount() != expectedTownCount ||
         (g_pGlobalMapState->terrainStateTable[depotTile].activeFlags & 0x10) == 0 ||
@@ -952,8 +953,7 @@ private:
                     "flags=%d marker=%d",
                     engineer->unitOrder, depot != 0, depot != 0 ? depot->activeFlag : -1,
                     depot != 0 ? depot->transportLinked : -1, nation->townMarkerList->GetCount(),
-                    expectedTownCount,
-                    g_pGlobalMapState->terrainStateTable[depotTile].activeFlags,
+                    expectedTownCount, g_pGlobalMapState->terrainStateTable[depotTile].activeFlags,
                     engineer->completionMarker);
       return RuntimeActionResult::Failure(detail);
     }

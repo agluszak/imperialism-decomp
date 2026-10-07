@@ -41,7 +41,7 @@ public:
                                                   int unusedArg2);               // 0x27 -> 0x5e4fb0
   virtual void RequestDirectSoundInitIfAllowed();                                // 0x28 -> 0x5e4f80
   virtual void ClearDirectSoundInitPendingAndResetState();                       // 0x29 -> 0x5e4fd0
-  virtual void StopAllSoundChannels();                                           // 0x2a -> 0x5e4ff0
+  virtual void StopAllSounds();                                                  // 0x2a -> 0x5e4ff0
   virtual void SetMasterVolumeFromPercent(short percent);                        // 0x2b -> 0x5e5020
   virtual void PriorityOverride(short currentPriority, short requestedPriority); // 0x2c -> 0x5e50a0
   virtual int
@@ -50,10 +50,10 @@ public:
                                                        int unusedArg4 = 1); // 0x2d -> 0x5e50c0
   virtual int PlaySoundEffect(short sfxToken, int forwardedArg2 = 0,
                               int forwardedArg3 = 1); // 0x2e -> 0x5e5140
-  virtual int PlaySoundAsynchronously(short soundId, short channel,
-                                      short priority);                              // 0x2f 0x5e5170
-  virtual int PlaySoundSynchronously(short soundId, short channel, short priority); // 0x30 0x5e5190
-  virtual int PlayAiffFile(CString fileName, short channel, short priority);        // 0x31 0x5e51b0
+  virtual int PlaySndAsynchChannel(short soundId, short channel,
+                                   short priority);                              // 0x2f 0x5e5170
+  virtual int PlaySndSynchChannel(short soundId, short channel, short priority); // 0x30 0x5e5190
+  virtual int PlayAiffFile(CString fileName, short channel, short priority);     // 0x31 0x5e51b0
 
   bool FadeCD();
 
@@ -65,10 +65,10 @@ public:
 
   void ScaleAndApplyAuxOutputVolume(short scalar); // 0x593cb0
 
-  void SelectAndScheduleRandomAudioCue(); // 0x593790
-  void UpdateAudioPlaybackStateAndScheduleRandomCue();
+  void PlayRandomTrack(); // 0x593790
+  void CheckMusicStatus();
 
-  void ResetDualAudioCuePools(); // 0x593730
+  void ResetPlayList();          // 0x593730
   void AddToPlayList(int cueId); // 0x593760
 
   void SetActiveAudioCueAndResetQueue(int cueId, bool flag); // 0x593a10

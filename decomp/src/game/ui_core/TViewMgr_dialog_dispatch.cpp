@@ -99,11 +99,11 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine() {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   CString text;
 
-  TView* mainControl = activeDialog->ResolveControlByTag(kControlTagMain); // 'main'
+  TView* mainControl = activeDialog->FindSubView(kControlTagMain); // 'main'
   mainControl->AssertValid();
 
-  TStaticText* labelControl = static_cast<TStaticText*>(
-      activeDialog->ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'l')));
+  TStaticText* labelControl =
+      static_cast<TStaticText*>(activeDialog->FindSubView(IMPERIALISM_FOURCC('l', 'a', 'b', 'l')));
   if (labelControl == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UViewMgr.cpp", 0xeb3);
   }
@@ -116,26 +116,26 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine() {
   g_pSimMgr->GetString(0x2737, 2, &text);
   SetControlHoverHelpText(text, mainControl);
 
-  TView* hostControl = activeDialog->ResolveControlByTag(IMPERIALISM_FOURCC('h', 'o', 's', 't'));
+  TView* hostControl = activeDialog->FindSubView(IMPERIALISM_FOURCC('h', 'o', 's', 't'));
   hostControl->AssertValid();
   g_pSimMgr->GetString(0x2737, 5, &text);
   SetControlHoverHelpText(text, hostControl);
 
-  TView* hostControl2 = activeDialog->ResolveControlByTag(IMPERIALISM_FOURCC('h', 'o', 's', 't'));
+  TView* hostControl2 = activeDialog->FindSubView(IMPERIALISM_FOURCC('h', 'o', 's', 't'));
   g_pSimMgr->GetString(0x2737, 5, &text);
   SetControlHoverHelpText(text, hostControl2);
 
-  TView* joinControl = activeDialog->ResolveControlByTag(IMPERIALISM_FOURCC('j', 'o', 'i', 'n'));
+  TView* joinControl = activeDialog->FindSubView(IMPERIALISM_FOURCC('j', 'o', 'i', 'n'));
   g_pSimMgr->GetString(0x2737, 6, &text);
   SetControlHoverHelpText(text, joinControl);
 
-  TView* nadaControl = activeDialog->ResolveControlByTag(kControlTagNada); // 'nada'
+  TView* nadaControl = activeDialog->FindSubView(kControlTagNada); // 'nada'
   text = CString("These books are for show");
   SetControlHoverHelpText(text, nadaControl);
 }
 
 // FUNCTION: IMPERIALISM 0x005dcdf0
-bool TViewMgr::ShowNewCityDialog(TTown* town) {
+bool TViewMgr::MakeNewTownDialog(TTown* town) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNewCityDialog));
   if (node == 0) {
@@ -143,7 +143,7 @@ bool TViewMgr::ShowNewCityDialog(TTown* town) {
   }
   // MapView.rsrc view 953's 'DLOG' pict is a TPlaceCityDialog (Mac resource oracle).
   TPlaceCityDialog* placeCity =
-      static_cast<TPlaceCityDialog*>(node->ResolveControlByTag(kControlTagDialog));
+      static_cast<TPlaceCityDialog*>(node->FindSubView(kControlTagDialog));
   if (placeCity == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0xc0);
   }
@@ -160,9 +160,9 @@ bool TViewMgr::ShowNewCityDialog(TTown* town) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dcf20
-void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
+void TViewMgr::MakeCombatReport(TCombatReportContext* reportContext) {
   TWorldView* activeMapDialog = static_cast<TWorldView*>(
-      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog)));
+      static_cast<TView*>(g_pDisplayMgr->activeDialog->FindSubView(kControlTagDialog)));
   if (activeMapDialog == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0xe2);
   }
@@ -174,8 +174,8 @@ void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0xe5);
   }
   // MapView.rsrc view 1350's 'DLOG' pict is a TCombatReportView (Mac resource oracle).
-  TCombatReportView* report = static_cast<TCombatReportView*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
+  TCombatReportView* report =
+      static_cast<TCombatReportView*>(static_cast<TView*>(node->FindSubView(kControlTagDialog)));
   if (report == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0xe6);
   }
@@ -191,14 +191,14 @@ void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dd0a0
-int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
+int TViewMgr::MakeEngineeringDialog(int dialogValue) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEngineerBuildMenu));
   if (node == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x100);
   }
   TEngineerDialog* engineerDialog =
-      static_cast<TEngineerDialog*>(node->ResolveControlByTag(kControlTagDialog));
+      static_cast<TEngineerDialog*>(node->FindSubView(kControlTagDialog));
   engineerDialog->StuffValues(static_cast<short>(dialogValue));
   CPoint placement;
   GetTopLeftFor(node, &placement);
@@ -233,13 +233,13 @@ void TViewMgr::ShowTownNameDialog(int stringCode) {
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x14a);
   }
-  TControl* gold = static_cast<TControl*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
+  TControl* gold = static_cast<TControl*>(node->FindSubView(kControlTagDialog)); // 'DLOG'
   CPoint placement;
   this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->PoseModally();
   TDeluxeText* nameText =
-      static_cast<TDeluxeText*>(static_cast<TView*>(gold->ResolveControlByTag(kControlTagName)));
+      static_cast<TDeluxeText*>(static_cast<TView*>(gold->FindSubView(kControlTagName)));
   if (nameText == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x156);
   }
@@ -255,8 +255,7 @@ TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x167);
   }
-  TNavyRoster* page =
-      static_cast<TNavyRoster*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
+  TNavyRoster* page = static_cast<TNavyRoster*>(node->FindSubView(kControlTagPage)); // 'page'
   if (page == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x169);
   }
@@ -278,7 +277,7 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   if (node == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x183);
   }
-  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
+  TControl* page = static_cast<TControl*>(node->FindSubView(kControlTagPage)); // 'page'
   if (page == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x187);
   }
@@ -310,14 +309,14 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
 
   if (selectedTaskForce != 0) {
     if (static_cast<short>(selectedTaskForce->shipOrders) == 0) {
-      mapUberPicture->SetActiveMapOrderEntry(selectedTaskForce->location);
+      mapUberPicture->FocusOnZone(selectedTaskForce->location);
     } else {
-      mapUberPicture->RefreshMapOrderEntryPanel(0);
+      mapUberPicture->FocusOnForce(0);
       mapUberPicture->SetMapInteractionMode(3);
       mapUberPicture->NoticeTile(selectedTaskForce->ingotTileIndex);
     }
   } else if (selectedZone != 0) {
-    mapUberPicture->SetActiveMapOrderEntry(selectedZone);
+    mapUberPicture->FocusOnZone(selectedZone);
   }
 }
 
@@ -327,7 +326,7 @@ void TViewMgr::ShowUnreachableCityDialog(void* selection) {
       static_cast<turn_event_dialog::TurnEventMapSelection*>(selection);
 
   TWorldView* activeMapDialog =
-      static_cast<TWorldView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
+      static_cast<TWorldView*>(g_pDisplayMgr->activeDialog->FindSubView(kControlTagDialog));
   if (activeMapDialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1c5);
   }
@@ -341,7 +340,7 @@ void TViewMgr::ShowUnreachableCityDialog(void* selection) {
   }
   turn_event_dialog::UnreachableTacticalMapPictureControl* gold =
       static_cast<turn_event_dialog::UnreachableTacticalMapPictureControl*>(
-          node->ResolveControlByTag(kControlTagDialog));
+          node->FindSubView(kControlTagDialog));
   if (gold == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1ca);
   }
@@ -362,7 +361,7 @@ void TViewMgr::MakeGarrisonWindow(int tileIndex) {
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1e2);
   }
-  TView* page = node->ResolveControlByTag(kControlTagPage); // 'page'
+  TView* page = node->FindSubView(kControlTagPage); // 'page'
   if (page == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1e3);
   }
@@ -388,7 +387,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x202);
   }
-  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
+  TControl* page = static_cast<TControl*>(node->FindSubView(kControlTagPage)); // 'page'
   if (page == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x203);
   }
@@ -431,7 +430,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x232);
   }
-  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
+  TControl* page = static_cast<TControl*>(node->FindSubView(kControlTagPage)); // 'page'
   if (page == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x233);
   }
@@ -487,8 +486,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
     behavior->defaultCommandCode = kControlTagOkay;
   }
 
-  TStaticText* instructionText =
-      static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagInst));
+  TStaticText* instructionText = static_cast<TStaticText*>(dialog->FindSubView(kControlTagInst));
   instructionText->AssertValid();
   TextStyle instructionStyle;
   instructionStyle.textColor = 0;
@@ -497,7 +495,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   CString instructionString(instruction);
   instructionText->SetTextAndMaybeRefresh(&instructionString, false);
 
-  TEditText* planetEdit = static_cast<TEditText*>(dialog->ResolveControlByTag(kControlTagPlan));
+  TEditText* planetEdit = static_cast<TEditText*>(dialog->FindSubView(kControlTagPlan));
   planetEdit->AssertValid();
   CString editText(planetSeed);
   TextStyle editStyle;
@@ -520,23 +518,21 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   UpdatePaletteIndexWithDefaultFallback(0x3b);
 
   TRadioTextCluster* choiceCluster =
-      static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(kControlTag1or2));
+      static_cast<TRadioTextCluster*>(dialog->FindSubView(kControlTag1or2));
   choiceCluster->AssertValid();
   if (firstChoice != 0) {
     choiceCluster->Show(1, 0);
     choiceCluster->frameThemeCode = 0x2b6b;
     choiceCluster->itemInset = 2;
 
-    TRadioText* first =
-        static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(kControlTagOne1));
+    TRadioText* first = static_cast<TRadioText*>(choiceCluster->FindSubView(kControlTagOne1));
     first->AssertValid();
     CString firstText(firstChoice);
     first->SetTextAndMaybeRefresh(&firstText, false);
     ApplyUiTextStyleAndThemeFlags(first, 0, 0xc, 0x2b6b, 0x2b6c);
     first->SetJustification(1, false);
 
-    TRadioText* second =
-        static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(kControlTagTwo2));
+    TRadioText* second = static_cast<TRadioText*>(choiceCluster->FindSubView(kControlTagTwo2));
     second->AssertValid();
     CString secondText(secondChoice);
     second->SetTextAndMaybeRefresh(&secondText, false);
@@ -548,7 +544,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   }
 
   if (showCancel) {
-    TControl* cancel = static_cast<TControl*>(dialog->ResolveControlByTag(kControlTagCanc));
+    TControl* cancel = static_cast<TControl*>(dialog->FindSubView(kControlTagCanc));
     cancel->AssertValid();
     cancel->Show(1, 0);
     cancel->ViewEnable(1, 0);
@@ -567,7 +563,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
 }
 
 // FUNCTION: IMPERIALISM 0x005de4f0
-bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrderEntry) {
+bool TViewMgr::MakeCivInfoWindow(TCivUnit* pCivilianOrderEntry) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCivilianInfo));
   if (node == NULL) {
@@ -576,7 +572,7 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
   node->SetModality(true);
   // MapView.rsrc view 3012's 'DLOG' pict is a TCivReport (Mac resource oracle).
   TCivReport* report =
-      static_cast<TCivReport*>(static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
+      static_cast<TCivReport*>(static_cast<TView*>(node->FindSubView(kControlTagDialog)));
   report->StuffValues(pCivilianOrderEntry);
   CPoint placement;
   this->GetTopLeftFor(node, &placement);
@@ -588,8 +584,7 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
 }
 
 // FUNCTION: IMPERIALISM 0x005de5d0
-bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
-                                                         int* categoryCounts) {
+bool TViewMgr::MakeArmyInfoWindow(short cityRecordIndex, int* categoryCounts) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyArmyReport));
   if (node == NULL) {
@@ -597,8 +592,8 @@ bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
   }
   node->SetModality(true);
   // MapView.rsrc view 3100's 'DLOG' pict is a TArmyInfoView (Mac resource oracle).
-  TArmyInfoView* report = static_cast<TArmyInfoView*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
+  TArmyInfoView* report =
+      static_cast<TArmyInfoView*>(static_cast<TView*>(node->FindSubView(kControlTagDialog)));
   report->StuffValues(cityRecordIndex, categoryCounts);
   CPoint placement;
   this->GetTopLeftFor(node, &placement);

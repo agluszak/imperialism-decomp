@@ -113,10 +113,10 @@ RuntimeActionResult MainViewScreen::Activate(int tag0, int tag1, CRuntimeClass* 
 }
 
 TView* MainViewScreen::Find(int tag) const {
-  return root != 0 ? root->ResolveControlByTag(static_cast<unsigned int>(tag)) : 0;
+  return root != 0 ? root->FindSubView(static_cast<unsigned int>(tag)) : 0;
 }
 
 TView* MainViewScreen::Find(int tag0, int tag1) const {
   TView* parent = Find(tag0);
-  return parent != 0 ? parent->ResolveControlByTag(static_cast<unsigned int>(tag1)) : 0;
+  return parent != 0 ? parent->FindSubView(static_cast<unsigned int>(tag1)) : 0;
 }

@@ -542,7 +542,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
   }
 
   case kGamePhaseEndTurn: {
-    bool allReachable = g_pNetMgr->ProbeNationReachabilityAndMarkAwolBitmask() == 0;
+    bool allReachable = g_pNetMgr->Ping() == 0;
     if (allReachable) {
       SaveGameWithModeAndOptionalLabel(0xa2, 0);
     }
@@ -836,7 +836,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       int oldSessionId = nationSessionIds[slot9];
       nationSessionIds[slot9] = sessionId;
       bool isLocal;
-      if (sessionId == g_pNetMgr->GetSessionActiveNationId() && sessionId != 0) {
+      if (sessionId == g_pNetMgr->GetPlayerID() && sessionId != 0) {
         isLocal = true;
         activeNationTagIndex = (unsigned char)slot9;
       } else {
@@ -866,30 +866,29 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
         lounge = 0;
       }
       if (lounge != 0) {
-        TStaticText* nameLabel = (TStaticText*)lounge->ResolveControlByTag(kControlTagNam0 + slot9);
+        TStaticText* nameLabel = (TStaticText*)lounge->FindSubView(kControlTagNam0 + slot9);
         nameLabel->AssertValid();
         CString normalizedName = g_pLanguageMgr->StripCodeStr(statusText);
         nameLabel->SetTextAndMaybeRefresh(&normalizedName, true);
         ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameLabel, 0, 0xe,
                                       isLocal ? 0x2b6c : 0x2b6b, isLocal ? 0x2b6b : 0x2b6c);
-        if (oldSessionId == g_pNetMgr->GetSessionActiveNationId() ||
-            sessionId == g_pNetMgr->GetSessionActiveNationId()) {
+        if (oldSessionId == g_pNetMgr->GetPlayerID() || sessionId == g_pNetMgr->GetPlayerID()) {
           int mySlot = 6;
-          while (mySlot >= 0 && nationSessionIds[mySlot] != g_pNetMgr->GetSessionActiveNationId()) {
+          while (mySlot >= 0 && nationSessionIds[mySlot] != g_pNetMgr->GetPlayerID()) {
             --mySlot;
           }
           TMapPreviewView* mapControl =
-              static_cast<TMapPreviewView*>(lounge->ResolveControlByTag(kControlTagMapP));
+              static_cast<TMapPreviewView*>(lounge->FindSubView(kControlTagMapP));
           mapControl->AssertValid();
           mapControl->selectedNation = mySlot;
           mapControl->EnhancePhoto();
           CRect mapRect;
-          mapControl->QueryContentBounds(&mapRect);
+          mapControl->GetExtent(&mapRect);
           {
             ScopedMapQuickDrawContext quickDraw(mapControl);
             mapControl->Draw(&mapRect);
           }
-          TPicture* coatControl = (TPicture*)lounge->ResolveControlByTag(kControlTagCoat);
+          TPicture* coatControl = (TPicture*)lounge->FindSubView(kControlTagCoat);
           coatControl->AssertValid();
           if (mySlot >= 0) {
             coatControl->SetPictureRsrcID((short)(mySlot + 0x120a), 1);
@@ -902,7 +901,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
           for (int liveSlot = 0; liveSlot < 7; ++liveSlot) {
             if (nationSessionIds[liveSlot] != 0) {
               ++liveCount;
-              if (nationSessionIds[liveSlot] == g_pNetMgr->GetSessionActiveNationId()) {
+              if (nationSessionIds[liveSlot] == g_pNetMgr->GetPlayerID()) {
                 localPresent = true;
               }
             }
@@ -914,7 +913,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
             canStart = true;
           }
           TTextPictureButton* okayButton =
-              (TTextPictureButton*)lounge->ResolveControlByTag(kControlTagOkay);
+              (TTextPictureButton*)lounge->FindSubView(kControlTagOkay);
           okayButton->AssertValid();
           CString startText;
           g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&startText, 0x2759, 3);
@@ -927,7 +926,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
           okayButton->themeCode9A = 0x2b6c;
           okayButton->themeCode9C = 0x2b6b;
           okayButton->pointSize = 0xc;
-          TView* messControl = lounge->ResolveControlByTag(kSessionTagMess);
+          TView* messControl = lounge->FindSubView(kSessionTagMess);
           messControl->AssertValid();
           messControl->Show(!canStart, 1);
           LoadUiStringAndDispatchSharedMessageCommand(0x2742, canStart ? 0xa : 0xc, messControl);
@@ -938,7 +937,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       return true;
     }
     if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
-      int sessionId2 = g_pNetMgr->GetSessionActiveNationId();
+      int sessionId2 = g_pNetMgr->GetPlayerID();
       short mySlot2 = (char)activeNationTagIndex;
       LobbyChatEvent9Packet claim2;
       claim2.InitializeEmitEventHeaderWithActiveNation();
@@ -962,7 +961,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     TurnEventCKickMessagePacket* kickView = static_cast<TurnEventCKickMessagePacket*>(packet);
     int localSlot = g_pSimMgr->GetPlayerCountry();
     if (localSlot == -1) {
-      int sessionIdC = g_pNetMgr->GetSessionActiveNationId();
+      int sessionIdC = g_pNetMgr->GetPlayerID();
       int probe;
       for (probe = 0; probe < 7; ++probe) {
         if (g_pGameFlowState->nationSessionIds[probe] == sessionIdC) {
@@ -1001,20 +1000,19 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     CPoint placement;
     g_pViewMgr->GetTopLeftFor(dialog, &placement);
     dialog->Locate(placement, false);
-    TPicture* goldPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
+    TPicture* goldPicture = static_cast<TPicture*>(dialog->FindSubView(kControlTagDialog));
     goldPicture->AssertValid();
     if (goldPicture == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr, 0x7fd);
     }
     goldPicture->SetPictureRsrcID(0x24cd, 0);
-    TPicture* coatPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagCoat));
+    TPicture* coatPicture = static_cast<TPicture*>(dialog->FindSubView(kControlTagCoat));
     coatPicture->AssertValid();
     if (coatPicture == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr, 0x802);
     }
     coatPicture->SetPictureRsrcID(static_cast<short>(kickerNation + 0x251c), 0);
-    TStaticText* titleControl =
-        static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl));
+    TStaticText* titleControl = static_cast<TStaticText*>(dialog->FindSubView(kControlTagTitl));
     titleControl->AssertValid();
     if (titleControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr, 0x807);
@@ -1022,16 +1020,14 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     titleControl->InstallTextStyle(styleDescriptor, 0);
     titleControl->SetJustification(1, false);
     titleControl->SetTextAndMaybeRefresh(&titleText, false);
-    TDeluxeText* infoControl =
-        static_cast<TDeluxeText*>(dialog->ResolveControlByTag(kControlTagInfo));
+    TDeluxeText* infoControl = static_cast<TDeluxeText*>(dialog->FindSubView(kControlTagInfo));
     infoControl->AssertValid();
-    infoControl->SetTextEntryFromChars(static_cast<const char*>(messageTextC),
-                                       messageTextC.GetLength());
+    infoControl->StuffBuffer(static_cast<const char*>(messageTextC), messageTextC.GetLength());
     infoControl->SetTextStyle(styleDescriptor, false);
     unsigned char savedProcessPrimary = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
     if (kickerNation != -1 || localSlot != -1) {
-      TPicture* cancelButton = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagCncl));
+      TPicture* cancelButton = static_cast<TPicture*>(dialog->FindSubView(kControlTagCncl));
       cancelButton->AssertValid();
       cancelButton->controlTag = kSessionTagRsvp; // 'rsvp'
       cancelButton->Show(1, 0);
@@ -1125,7 +1121,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     sessionPhaseTag = kSessionTagGoin; // 'goin'
     resumePhase = kGamePhaseNone;
     syncPhase = kGamePhaseNone;
-    int sessionId3 = g_pNetMgr->GetSessionActiveNationId();
+    int sessionId3 = g_pNetMgr->GetPlayerID();
     int matchSlot = 0;
     int* sessionIdCursor = nationSessionIds;
     do {
@@ -1296,7 +1292,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
         g_pDiplomacyTurnStateManager->TerminateAlliance(action->nation, targetNation, relationMode);
       }
     } else if (action->actionCode == 'i' && action->flag21 != 0) {
-      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation, action->nationB1E)) {
+      if (!g_pDiplomacyTurnStateManager->AreAtWar(action->nation, action->nationB1E)) {
         g_apNationStates[action->nation]->DeclareWarOn(action->nationB1E, 1, action->nationA1D);
       } else {
         TMinor* minor1E = g_apSecondaryNationStateSlots[action->nationA1D];
@@ -1676,16 +1672,14 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     case kControlTagRepo: { // 'repo' - a session reports for a nation slot: seat it or refuse
       int repoSlot = gameState->controlValue & 7;
       bool hostCanSeatEmptySlot = false;
-      if (g_apNationStates[repoSlot] == 0 &&
-          packet->fromNetworkId == g_pNetMgr->GetSessionActiveNationId() &&
+      if (g_apNationStates[repoSlot] == 0 && packet->fromNetworkId == g_pNetMgr->GetPlayerID() &&
           g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
         hostCanSeatEmptySlot = true;
       }
       if (repoSlot >= 0 && repoSlot < 7 &&
           (hostCanSeatEmptySlot ||
-           (g_apNationStates[repoSlot] != 0 &&
-            (packet->fromNetworkId == g_pNetMgr->GetSessionActiveNationId() ||
-             g_apNationStates[repoSlot]->IsRemote())))) {
+           (g_apNationStates[repoSlot] != 0 && (packet->fromNetworkId == g_pNetMgr->GetPlayerID() ||
+                                                g_apNationStates[repoSlot]->IsRemote())))) {
         LobbyChatEvent9Packet seatAnnounce;
         seatAnnounce.messageTag = kControlTagTime; // 'time'
         seatAnnounce.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
@@ -1754,7 +1748,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       return true;
     }
     case kSessionTagTras: // 'tras' - rebuild + discard the transport-influence map
-      g_apNationStates[g_pSimMgr->GetPlayerCountry()]->BuildTransportLinkedInfluenceMap(0);
+      g_apNationStates[g_pSimMgr->GetPlayerCountry()]->TraceSupplyRoutes(0);
       return true;
     default:
       return true;
@@ -1817,7 +1811,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     if (0 < readyCount && busyCount == 1) {
       int busySlot = g_pSimMgr->GetPlayerCountry();
       if (busySlot == -1) {
-        int sessionId25 = g_pNetMgr->GetSessionActiveNationId();
+        int sessionId25 = g_pNetMgr->GetPlayerID();
         int* sessionCursor25 = g_pGameFlowState->nationSessionIds;
         busySlot = 0;
         do {
@@ -1866,19 +1860,19 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     TArmyTacUnit* unit = battle->SeekLinkedListCursorByNestedId(tactical->unitId);
     switch (tactical->commandTag) {
     case kControlTagDepl: // 'depl'
-      battle->HandleTacticalCommandTag_depl(unit, tactical->arg20, true);
+      battle->LaDeploy(unit, tactical->arg20, true);
       return true;
     case kControlTagDigg: // 'digg'
-      battle->HandleTacticalCommandTag_digg(unit, tactical->arg20, true);
+      battle->LaDig(unit, tactical->arg20, true);
       return true;
     case kControlTagMine: // 'mine' - the resolved unit cursor is NOT passed here
-      battle->HandleTacticalCommandTag_mine(tactical->arg20, tactical->arg24, true);
+      battle->LaMine(tactical->arg20, tactical->arg24, true);
       return true;
     case kControlTagMove: // 'move'
-      battle->MoveTacticalUnitBetweenTiles(unit, tactical->arg20, tactical->arg24, true);
+      battle->LaMove(unit, tactical->arg20, tactical->arg24, true);
       return true;
     case kControlTagRaly: // 'raly'
-      battle->HandleTacticalCommandTag_raly(unit, tactical->arg20, tactical->arg24, true);
+      battle->LaRally(unit, tactical->arg20, tactical->arg24, true);
       return true;
     case kControlTagSele: // 'sele'
       battle->LaSelect(unit, true);
@@ -2279,7 +2273,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
   switch (header.eventCode) {
   case 0x2e:
     g_pNavyOrderManager->ReadFromFilterously(stream, nation);
-    g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
+    g_pActiveMapOrderContext->UpdateOccupants();
     break;
   case 0x2f:
     CreateMilitaryRecruitOrdersForSelectedTerrain(stream, nation);
@@ -2295,7 +2289,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
           TTown* town = new TTown();
           town->ITown(g_szEmptyString, 0, false, g_pSimMgr->GetPlayerCountry());
           town->ReadFrom(stream);
-          TTown* existing = g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(town->tileIndex);
+          TTown* existing = g_pGlobalMapState->GetTown(town->tileIndex);
           if (existing != 0) {
             memcpy(existing, town, sizeof(TTown));
             town->Free();
@@ -2547,11 +2541,11 @@ void TMultiplayerMgr::PoseMessageDialog(int unused) {
 
   for (int i = 0; i < 7; ++i) {
     TMadnessButton* boxControl =
-        static_cast<TMadnessButton*>(dialog->ResolveControlByTag(kSessionTagBox0 + i));
+        static_cast<TMadnessButton*>(dialog->FindSubView(kSessionTagBox0 + i));
     boxControl->AssertValid();
     int sessionId = g_pGameFlowState->nationSessionIds[i];
     bool occupied = sessionId != 0 && sessionId != -2;
-    bool isMine = g_pNetMgr->GetSessionActiveNationId() == g_pGameFlowState->nationSessionIds[i];
+    bool isMine = g_pNetMgr->GetPlayerID() == g_pGameFlowState->nationSessionIds[i];
     bool occupiedByOther = occupied && !isMine;
     static_cast<TView*>(boxControl)->ViewEnable(static_cast<int>(occupiedByOther), 0);
     if (mySlotIndex != -1) {
@@ -2567,7 +2561,7 @@ void TMultiplayerMgr::PoseMessageDialog(int unused) {
   TextStyle messageStyle;
   BuildUiTextStyleDescriptor(&messageStyle, 0, 0xc, 0);
   TStaticText* messageControl =
-      static_cast<TStaticText*>(dialog->ResolveControlByTag(kSessionTagMesg)); // 'mesg'
+      static_cast<TStaticText*>(dialog->FindSubView(kSessionTagMesg)); // 'mesg'
   messageControl->AssertValid();
   messageControl->InstallTextStyle(messageStyle, 0);
   messageControl->BecomeTarget();
@@ -2666,7 +2660,7 @@ int TMultiplayerMgr::GetPlayerStatus(int slot) {
   if (slot == -1) {
     slot = g_pSimMgr->GetPlayerCountry();
     if (slot == -1) {
-      int sessionActive = g_pNetMgr->GetSessionActiveNationId();
+      int sessionActive = g_pNetMgr->GetPlayerID();
       slot = 0;
       int* sessionId = g_pGameFlowState->nationSessionIds;
       while (slot < 7 && *sessionId != sessionActive) {
@@ -2865,7 +2859,7 @@ void TMultiplayerMgr::DehumanizePlayer(int nationSlot) {
       g_apTerrainTypeDescriptorTable[nationSlot] = newNation;
       newNation->CreateInitialMissions();
       for (int targetSlot = 0; targetSlot < kNationSlotCount; ++targetSlot) {
-        if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, targetSlot)) {
+        if (g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, targetSlot)) {
           newNation->enemyFlags[targetSlot] = 1;
         }
       }
@@ -3004,7 +2998,7 @@ bool TMultiplayerMgr::HandleActiveNationAwolTransitionOrRecovery() {
   int activeNation = g_pSimMgr->GetPlayerCountry();
   nationSessionIds[activeNation] = -2;
   if (g_pNetMgr->CheckConnectivityOrShowLocalizedWarningAndReturnReady()) {
-    int sessionNation = g_pNetMgr->GetSessionActiveNationId();
+    int sessionNation = g_pNetMgr->GetPlayerID();
     activeNation = g_pSimMgr->GetPlayerCountry();
     nationSessionIds[activeNation] = sessionNation;
     return true;
@@ -3085,14 +3079,14 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
 
 // FUNCTION: IMPERIALISM 0x0054cb80
 bool TMultiplayerMgr::WaitForClients() {
-  return g_pNetMgr->ProbeNationReachabilityAndMarkAwolBitmask() == 0;
+  return g_pNetMgr->Ping() == 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0054cbb0
 bool TMultiplayerMgr::AreAllSessionSlotsOwnedByActiveNation() {
   for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
     if (nationSessionIds[slot] != 0 && nationSessionIds[slot] != -2 &&
-        nationSessionIds[slot] != g_pNetMgr->GetSessionActiveNationId()) {
+        nationSessionIds[slot] != g_pNetMgr->GetPlayerID()) {
       return false;
     }
   }
@@ -3296,7 +3290,7 @@ void TMultiplayerMgr::SendMinorStateMessage(short nationSlot, int destinationSlo
 
 // FUNCTION: IMPERIALISM 0x0054d4e0
 bool TMultiplayerMgr::AttemptSave(int mode, char* label, bool showFailureDialog) {
-  bool allReachable = g_pNetMgr->ProbeNationReachabilityAndMarkAwolBitmask() == 0;
+  bool allReachable = g_pNetMgr->Ping() == 0;
   if (allReachable) {
     SaveGameWithModeAndOptionalLabel(mode, label);
   }

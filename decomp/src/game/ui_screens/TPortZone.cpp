@@ -15,21 +15,21 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/mfc.h"
 
-// slot 0x0d — TZone::QueryZoneCapabilityFlagA override.
+// slot 0x0d — TZone::IsSeaZone override.
 // FUNCTION: IMPERIALISM 0x00561660
-bool TPortZone::QueryZoneCapabilityFlagA() {
+bool TPortZone::IsSeaZone() {
   return true;
 }
 
-// slot 0x0e — TZone::QueryPortZoneCapability override.
+// slot 0x0e — TZone::IsPortZone override.
 // FUNCTION: IMPERIALISM 0x00561680
-bool TPortZone::QueryPortZoneCapability() {
+bool TPortZone::IsPortZone() {
   return true;
 }
 
-// slot 0x0f — TZone::QueryZoneCapabilityFlagC override.
+// slot 0x0f — TZone::IsProvincial override.
 // FUNCTION: IMPERIALISM 0x005616a0
-bool TPortZone::QueryZoneCapabilityFlagC() {
+bool TPortZone::IsProvincial() {
   return false;
 }
 
@@ -100,20 +100,19 @@ void TPortZone::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00561b10
-bool TPortZone::QueryZoneCapabilityFlagD(NationSlot nationSlot) {
+bool TPortZone::IsFriendlyWith(NationSlot nationSlot) {
   return g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag == nationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x00561b50
-bool TPortZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
+bool TPortZone::IsEnemyOf(NationSlot nationSlot) {
   short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag;
-  return g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(ownerNation,
-                                                                              nationSlot);
+  return g_pDiplomacyTurnStateManager->AreInEstablishedWar(ownerNation, nationSlot);
 }
 
 // Returns the signed owner-nation tag for this port's coastal tile.
 // FUNCTION: IMPERIALISM 0x00561bc0
-short TPortZone::GetPortTileFormerOwnerNationSlot() {
+short TPortZone::GetOriginalOwner() {
   return static_cast<short>(
       g_pGlobalMapState->terrainStateTable[portTileIndex].formerOwnerNationTag);
 }
@@ -132,7 +131,7 @@ TPortZone* FindLastPortZoneInMapActionContextList() {
 
 // Finds the preceding port-zone node in the map-action-context chain.
 // FUNCTION: IMPERIALISM 0x00561d80
-TPortZone* TPortZone::FindPreviousPortZone() {
+TPortZone* TPortZone::GetPrevPort() {
   TZone* zone = prev18;
   while (zone != 0 && !zone->IsKindOf(RUNTIME_CLASS(TPortZone))) {
     zone = zone->prev18;
@@ -146,8 +145,7 @@ bool TPortZone::CanBeTargetOf(TTaskForce* force) {
   if (zoneActive && force->location != this) {
     short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag;
     if (force->nation == ownerNation ||
-        g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(ownerNation,
-                                                                             force->nation)) {
+        g_pDiplomacyTurnStateManager->AreInEstablishedWar(ownerNation, force->nation)) {
       return true;
     }
   }

@@ -4278,7 +4278,7 @@ def _drive_turn_stop_technology(
 
 _DISPLAY_MGR = 0x006A2158
 _CONTROL_TAG_MAIN = 0x6D61696E  # 'main'
-# TView::ResolveControlByTag -- vtable index 0x25 -> byte offset 0x94.
+# TView::FindSubView -- vtable index 0x25 -> byte offset 0x94.
 _VT_RESOLVE_CONTROL_BY_TAG = 0x25 * 4
 
 
@@ -4398,9 +4398,9 @@ _TERRAIN_ENCODED_SLOT = 0x0E      # TCountry::encodedNationSlot
 
 # Direct body addresses -- the active nation is always a human TGreatPower, so
 # the TGreatPower override is the correct target for the Apply/Grant virtuals.
-_FN_VALIDATE_DIPLO_ACTION = 0x004EF700  # ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode
+_FN_VALIDATE_DIPLO_ACTION = 0x004EF700  # IsActionAllowed
 _FN_HAS_ALLIANCE_GUARD = 0x004EFC30     # HasAllianceGuardForNationPair
-_FN_APPLY_DIPLO_POLICY = 0x004DDFC0     # ApplyDiplomacyPolicyStateForTargetWithCostChecks
+_FN_APPLY_DIPLO_POLICY = 0x004DDFC0     # SetDiplomacyPolicyTo
 _FN_SET_DIPLO_GRANT = 0x004DE340        # SetDiplomacyGrantEntryForTargetAndUpdateTreasury
 
 # Relationship codes (DiplomacyRelationshipStorage).
@@ -4675,7 +4675,7 @@ _PLAYER_TRADE_POLICY_SPECS: dict[str, tuple] = {
 
 # Colony-boycott tails mirror RunConfiguredPlayerColonyBoycott: decode the
 # target's controlling nation and toggle the boycott flag through the real
-# SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations.
+# TellColoniesToBoycott.
 _PLAYER_COLONY_BOYCOTT_SPECS: dict[str, tuple] = {
     "player_colony_boycott_posts_and_propagates": (
         "m1",
@@ -4704,7 +4704,7 @@ _VT_SET_TRADE_POLICY = 0x12 * 4
 _GNATION_NEED_LEVELS = 0x14       # TCountry::needLevelByNation[23]
 _GNATION_BOYCOTT_FLAGS = 0x918    # colonyBoycottFlags[23]
 _FN_SET_TRADE_POLICY_GP = 0x004DD040  # TGreatPower::SetTradePolicyTo
-_FN_COLONY_BOYCOTT = 0x004DD0C0  # SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations
+_FN_COLONY_BOYCOTT = 0x004DD0C0  # TellColoniesToBoycott
 
 _PLAYER_POLICY_ALL_SCENARIOS = (
     _PLAYER_DIPLOMACY_POLICY_SCENARIOS + _PLAYER_TRADE_BOYCOTT_SCENARIOS
@@ -4904,11 +4904,11 @@ _VT_PURCHASE_ITEM = 0x20 * 4              # TCountry::PurchaseItem index 0x20
 _VT_RECOMPUTE_AID_BUDGET = 0x59 * 4       # RecomputeDiplomacyAidBudgetScoreFromResourceWeights
 _VT_RESET_NEED_SCORES = 0x5A * 4          # ResetDiplomacyNeedScoresAndClearAidAllocationMatrix
 _VT_RECALL_TRADE_BIDS = 0x5B * 4          # RecallTradeBids
-_VT_ADD_AID_CELL = 0x5D * 4               # AddAmountToAidAllocationMatrixCellAndTotal
+_VT_ADD_AID_CELL = 0x5D * 4               # AddOverseasProfitFrom
 _VT_RESET_NEED_SLOTS = 0x61 * 4           # ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
 _VT_SET_ITEM_POTENTIALS = 0x69 * 4        # SetItemPotentials
 _VT_REMEMBER_TRADE_BIDS = 0x6A * 4        # RememberTradeBids
-_VT_RESET_POLICY_GRANTS = 0x73 * 4        # ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants
+_VT_RESET_POLICY_GRANTS = 0x73 * 4        # ResetPolicies
 _VT_DECREMENT_NEED = 0x79 * 4             # DecrementNeedLevelByNationStep index 121
 
 _GNATION_REMEMBERED_OFFERS = 0x250
@@ -6600,7 +6600,7 @@ def _drive_owned_region_development(
 # city (operator new + ctor vptr store + IUnitOrder + quantity + Produce).
 # RunNavyGrowthPending / RunArmyGrowthSelectedGeneral set a pending-action byte
 # and run TSimMgr::DoCityAndTransport, the latter after
-# TTechMgr::ActivateSlotAndUpdateUI(kMilitaryUnitGeneralEra2).
+# TTechMgr::ActivateLandUnit(kMilitaryUnitGeneralEra2).
 
 _UNIT_ORDER_SIZE = 0x5C
 _UNIT_ORDER_CTOR = 0x004B6F70
@@ -8267,7 +8267,7 @@ def _drive_second_turn_diplomacy_phase(
 
 
 def _resolved_tile_owner(session: GdbSession, owner_code: int) -> int:
-    """Mirror TMapMgr::ResolveTileOwnerNationCodeNormalized (0x514120)."""
+    """Mirror TMapMgr::FindCountry (0x514120)."""
     if owner_code < 0:
         return owner_code
     nation = _u32(session, _TERRAIN_TABLE + 4 * owner_code)
@@ -8700,7 +8700,7 @@ def _drive_military_phase_land_combat(
 
     With interactive=True the attacker is made the active nation and the
     battle is pumped to the active nation's input, "Done" is posted via
-    FinishTacticalActionAndPostNextMoveCommand (0x5a0d60), then the rest
+    FinishedMove (0x5a0d60), then the rest
     auto-resolves -- mirroring RunMilitaryPhaseLandInteractive."""
     sim_mgr = _u32(session, _SIM_MGR)
     _invoke_thiscall(
@@ -10676,7 +10676,7 @@ def _drive_navy_ui(
         created = create_force()
         if created == 0:
             raise RuntimeError(
-                "CreateTaskForceFromNavyOrdersForNationIfEligible returned null"
+                "AssembleTaskForce returned null"
             )
         session.assign(f"*(char*)0x{created + 0x26:08x}", 0)
         _invoke_thiscall(
@@ -10722,7 +10722,7 @@ def _drive_navy_ui(
         created = create_force()
         if created == 0:
             raise RuntimeError(
-                "CreateTaskForceFromNavyOrdersForNationIfEligible returned null"
+                "AssembleTaskForce returned null"
             )
         session.assign(f"*(char*)0x{created + 0x26:08x}", 0)
         _invoke_thiscall(

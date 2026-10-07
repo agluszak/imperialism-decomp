@@ -20,35 +20,35 @@ IMPLEMENT_DYNCREATE(TRailheadDialog, TDialogView)
 void TRailheadDialog::StuffValues(TCity* city) {
   this->city = city;
 
-  TCluster* choice = static_cast<TCluster*>(ResolveControlByTag(kControlTagChoi)); // 'choi'
+  TCluster* choice = static_cast<TCluster*>(FindSubView(kControlTagChoi)); // 'choi'
   if (choice == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x732);
   }
-  choice->SetSelectedChildTagAndRefresh(g_pTradeSummarySelectionMap[0]);
+  choice->SetCurrentChoice(g_pTradeSummarySelectionMap[0]);
 
   if (city->serializedState == 0) {
-    TControl* coal = static_cast<TControl*>(ResolveControlByTag(g_pTradeSummarySelectionMap[3]));
+    TControl* coal = static_cast<TControl*>(FindSubView(g_pTradeSummarySelectionMap[3]));
     if (coal == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x73a);
     }
     coal->ViewEnable(0, 1);
     coal->AssertCityProductionGlobalStateInitialized(1, 1);
 
-    TControl* iron = static_cast<TControl*>(ResolveControlByTag(g_pTradeSummarySelectionMap[4]));
+    TControl* iron = static_cast<TControl*>(FindSubView(g_pTradeSummarySelectionMap[4]));
     if (iron == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x73f);
     }
     iron->ViewEnable(0, 1);
     iron->AssertCityProductionGlobalStateInitialized(1, 1);
 
-    TControl* gold = static_cast<TControl*>(ResolveControlByTag(g_pTradeSummarySelectionMap[22]));
+    TControl* gold = static_cast<TControl*>(FindSubView(g_pTradeSummarySelectionMap[22]));
     if (gold == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x744);
     }
     gold->ViewEnable(0, 1);
     gold->AssertCityProductionGlobalStateInitialized(1, 1);
 
-    TControl* oil = static_cast<TControl*>(ResolveControlByTag(g_pTradeSummarySelectionMap[6]));
+    TControl* oil = static_cast<TControl*>(FindSubView(g_pTradeSummarySelectionMap[6]));
     if (oil == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x749);
     }
@@ -59,8 +59,8 @@ void TRailheadDialog::StuffValues(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004bd260
 void TRailheadDialog::DoClosingAction(unsigned long dialogActionTag) {
-  if (dialogActionTag == kControlTagOkay) {                                          // 'okay'
-    TCluster* choice = static_cast<TCluster*>(ResolveControlByTag(kControlTagChoi)); // 'choi'
+  if (dialogActionTag == kControlTagOkay) {                                  // 'okay'
+    TCluster* choice = static_cast<TCluster*>(FindSubView(kControlTagChoi)); // 'choi'
     if (choice == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x75e);
     }

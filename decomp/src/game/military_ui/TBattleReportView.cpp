@@ -45,7 +45,7 @@ IMPLEMENT_DYNCREATE(TBattleReportView, TDiplomacyMapView)
 // FUNCTION: IMPERIALISM 0x004acb60
 void TBattleReportView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  BuildDiplomacyNationOverlayGeometryAndHitMasks();
+  CreateDrawGeometries();
 
   struct {
     TextStyle desc;
@@ -61,28 +61,28 @@ void TBattleReportView::DoPostCreate(int arg) {
   memset(crowdGrid, 0, sizeof(crowdGrid));
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xe, 0x2b67);
-  TControl* control = static_cast<TControl*>(ResolveControlByTag(kControlTagResu)); // 'user'
+  TControl* control = static_cast<TControl*>(FindSubView(kControlTagResu)); // 'user'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 2, 0xe, 0x2b67);
-  control = static_cast<TControl*>(ResolveControlByTag(kControlTagLoca)); // 'acol'
+  control = static_cast<TControl*>(FindSubView(kControlTagLoca)); // 'acol'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
-  control = static_cast<TControl*>(ResolveControlByTag(kControlTagFadm)); // 'mdaf'
+  control = static_cast<TControl*>(FindSubView(kControlTagFadm)); // 'mdaf'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
-  control = static_cast<TControl*>(ResolveControlByTag(kControlTagEadm)); // 'mdae'
+  control = static_cast<TControl*>(FindSubView(kControlTagEadm)); // 'mdae'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
-  control = static_cast<TControl*>(ResolveControlByTag(kControlTagFshp)); // 'phsf'
+  control = static_cast<TControl*>(FindSubView(kControlTagFshp)); // 'phsf'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
-  control = static_cast<TControl*>(ResolveControlByTag(kControlTagEshp)); // 'phse'
+  control = static_cast<TControl*>(FindSubView(kControlTagEshp)); // 'phse'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
 
@@ -203,7 +203,7 @@ void TBattleReportView::DoPostCreate(int arg) {
     selectedOrdinal = 1;
   }
   selectedReportIndex = selectedOrdinal - 1;
-  RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
+  DisplayBattle(static_cast<MapContextActionRecord*>(
       g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
           selectedOrdinal)));
   SetIdleFreq(2);
@@ -220,8 +220,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   animation->IAnimation(this, &animationRect, 0, 0, 0, registryTag);
   g_pUiAnimator->AddAnimation(animation);
 
-  TInfoBarText* cursorPanel =
-      static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs)); // 'surc'
+  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(FindSubView(kControlTagCurs)); // 'surc'
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   g_pCursorControlPanel->SetTextStyle(0, 0xe, 0x2b6b);
@@ -229,30 +228,30 @@ void TBattleReportView::DoPostCreate(int arg) {
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b67, 0x2b6c);
 
   SetControlHoverHelpText(g_pBattleReportSharedText,
-                          ResolveControlByTag(kControlTagMain)); // 'main'
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(kControlTagFadm));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(kControlTagFshp));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(kControlTagFflg));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, ResolveControlByTag(kControlTagEadm));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, ResolveControlByTag(kControlTagEshp));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, ResolveControlByTag(kControlTagEflg));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x18, ResolveControlByTag(kControlTagLoca));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x19, ResolveControlByTag(kControlTagResu));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1a, ResolveControlByTag(kControlTagPrev));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1b, ResolveControlByTag(kControlTagNext));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1c, ResolveControlByTag(kControlTagInfo));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1d, ResolveControlByTag(kControlTagOkay));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1e, ResolveControlByTag(kControlTagQuer));
+                          FindSubView(kControlTagMain)); // 'main'
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, FindSubView(kControlTagFadm));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, FindSubView(kControlTagFshp));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, FindSubView(kControlTagFflg));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, FindSubView(kControlTagEadm));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, FindSubView(kControlTagEshp));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, FindSubView(kControlTagEflg));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x18, FindSubView(kControlTagLoca));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x19, FindSubView(kControlTagResu));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1a, FindSubView(kControlTagPrev));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1b, FindSubView(kControlTagNext));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1c, FindSubView(kControlTagInfo));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1d, FindSubView(kControlTagOkay));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1e, FindSubView(kControlTagQuer));
 
-  g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+  g_pSfxPlaybackSystem->ResetPlayList();
   g_pSfxPlaybackSystem->AddToPlayList(5);
-  g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+  g_pSfxPlaybackSystem->PlayRandomTrack();
 }
 
 // FUNCTION: IMPERIALISM 0x004ad560
 void TBattleReportView::Free() {
   if (transientRegistryObject != 0) {
-    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(transientRegistryObject->registryTag);
+    g_pUiAnimator->FreeAni(transientRegistryObject->registryTag);
   }
   TDiplomacyMapView::Free();
 }
@@ -311,7 +310,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     if (tag == IMPERIALISM_FOURCC('n', 'e', 'x', 't')) {
       int count = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
       if (selectedReportIndex < count) {
-        RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
+        DisplayBattle(static_cast<MapContextActionRecord*>(
             g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
                 selectedReportIndex + 1)));
       }
@@ -326,7 +325,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
       dialog->SetModality(true);
 
-      TBook* book = static_cast<TBook*>(dialog->ResolveControlByTag(kControlTagDialog));
+      TBook* book = static_cast<TBook*>(dialog->FindSubView(kControlTagDialog));
       book->AssertValid();
       BattleRecord* battleRecord = static_cast<BattleRecord*>(
           g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
@@ -334,11 +333,11 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       BattleRecord* eventBattleRecord = reinterpret_cast<BattleRecord*>(event);
 
       TBattleUnitsView* leftPage =
-          static_cast<TBattleUnitsView*>(book->ResolveControlByTag(kControlTagPage));
+          static_cast<TBattleUnitsView*>(book->FindSubView(kControlTagPage));
       leftPage->AssertValid();
       leftPage->StuffValues(*battleRecord, 0);
       TBattleUnitsView* rightPage =
-          static_cast<TBattleUnitsView*>(book->ResolveControlByTag(kControlTagPagf));
+          static_cast<TBattleUnitsView*>(book->FindSubView(kControlTagPagf));
       rightPage->AssertValid();
       rightPage->StuffValues(*eventBattleRecord, 1);
       if (leftPage->pageCount < rightPage->pageCount) {
@@ -348,9 +347,9 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
       book->ShowPage(1);
 
-      TPicture* leftFlag = static_cast<TPicture*>(book->ResolveControlByTag(kControlTagFlgL));
+      TPicture* leftFlag = static_cast<TPicture*>(book->FindSubView(kControlTagFlgL));
       leftFlag->AssertValid();
-      TPicture* rightFlag = static_cast<TPicture*>(book->ResolveControlByTag(kControlTagFlgR));
+      TPicture* rightFlag = static_cast<TPicture*>(book->FindSubView(kControlTagFlgR));
       rightFlag->AssertValid();
       leftFlag->SetPictureRsrcID(
           static_cast<short>(0x1147 + static_cast<signed char>(eventBattleRecord->nationIds[0])),
@@ -360,10 +359,10 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
           0);
 
       TDropShadowText* leftNation =
-          static_cast<TDropShadowText*>(book->ResolveControlByTag(kControlTagNatL));
+          static_cast<TDropShadowText*>(book->FindSubView(kControlTagNatL));
       leftNation->AssertValid();
       TDropShadowText* rightNation =
-          static_cast<TDropShadowText*>(book->ResolveControlByTag(kControlTagNatR));
+          static_cast<TDropShadowText*>(book->FindSubView(kControlTagNatR));
       rightNation->AssertValid();
       ApplyUiTextStyleAndThemeFlags(leftNation, 0, 0xe, 0x2b6b, 0x2b6c);
       ApplyUiTextStyleAndThemeFlags(rightNation, 0, 0xe, 0x2b6b, 0x2b6c);
@@ -379,8 +378,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
 
       SetControlHoverHelpText(CString(g_pBattleReportSharedText), dialog);
-      LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22,
-                                                 book->ResolveControlByTag(kControlTagOkay));
+      LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22, book->FindSubView(kControlTagOkay));
       CPoint placement;
       g_pViewMgr->GetTopLeftFor(dialog, &placement);
       dialog->Locate(placement, false);
@@ -395,7 +393,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     }
     if (tag == IMPERIALISM_FOURCC('p', 'r', 'e', 'v')) {
       if (selectedReportIndex > 1) {
-        RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
+        DisplayBattle(static_cast<MapContextActionRecord*>(
             g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
                 selectedReportIndex - 1)));
       }
@@ -430,7 +428,7 @@ void TBattleReportView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     }
   }
   if (selectedRecord != 0) {
-    RefreshMapContextSelectionPanelAndInfoLabels(selectedRecord);
+    DisplayBattle(selectedRecord);
   }
 }
 
@@ -459,11 +457,11 @@ MapContextActionRecord* TBattleReportView::GetBattleAt(const CPoint& point) cons
 // FUNCTION: IMPERIALISM 0x004ade00
 void TBattleReportView::Draw(RECT* rectBuffer) {
   TDiplomacyMapView::Draw(rectBuffer);
-  RenderMapContextActionMarkers(rectBuffer);
+  DrawBattleNuggets(rectBuffer);
 }
 
 // FUNCTION: IMPERIALISM 0x004ade30
-void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
+void TBattleReportView::DrawBattleNuggets(RECT* rectBuffer) {
   (void)rectBuffer; // ignored stack arg threaded through by the caller
 
   int count = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
@@ -511,8 +509,7 @@ void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004adfc0
-void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
-    MapContextActionRecord* record) {
+void TBattleReportView::DisplayBattle(MapContextActionRecord* record) {
   if (selectedReportIndex == static_cast<short>(record->listOrdinal)) {
     return;
   }
@@ -564,7 +561,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
   case kMapContextReportLandBattle:
   case kMapContextReportPreemptedLandBattle:
   case kMapContextReportUncontestedTakeover: {
-    TStaticText* locaText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
+    TStaticText* locaText = static_cast<TStaticText*>(FindSubView(kControlTagLoca));
     locaText->AssertValid();
     CString strLocation;
     CString strTerrain;
@@ -584,7 +581,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
   }
   case kMapContextReportSeaBattle:
   case kMapContextReportMerchantInterception: {
-    TStaticText* locaText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
+    TStaticText* locaText = static_cast<TStaticText*>(FindSubView(kControlTagLoca));
     locaText->AssertValid();
     CString nameStr;
     static_cast<TZone*>(record->location)->AssignZoneDisplayNameToOutputRef(&nameStr);
@@ -595,13 +592,13 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     break;
   }
 
-  TPicture* friendlyFlag = static_cast<TPicture*>(ResolveControlByTag(kControlTagFflg));
+  TPicture* friendlyFlag = static_cast<TPicture*>(FindSubView(kControlTagFflg));
   friendlyFlag->AssertValid();
   friendlyFlag->SetPictureRsrcID(
       static_cast<short>(0x1130 + static_cast<signed char>(record->nationIds[participantIndex])),
       1);
 
-  TPicture* enemyFlag = static_cast<TPicture*>(ResolveControlByTag(kControlTagEflg));
+  TPicture* enemyFlag = static_cast<TPicture*>(FindSubView(kControlTagEflg));
   enemyFlag->AssertValid();
   enemyFlag->SetPictureRsrcID(
       static_cast<short>(0x1130 +
@@ -665,33 +662,33 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
 
   CString userStr;
   g_pSimMgr->GetString(userStringGroup, static_cast<short>(userStringIndex), &userStr);
-  TStaticText* userText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagResu));
+  TStaticText* userText = static_cast<TStaticText*>(FindSubView(kControlTagResu));
   userText->AssertValid();
   userText->SetTextAndMaybeRefresh(&userStr, true);
 
   {
-    TStaticText* mdafText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagFadm));
+    TStaticText* mdafText = static_cast<TStaticText*>(FindSubView(kControlTagFadm));
     mdafText->AssertValid();
     CString mdafStr(record->nameBuffer[participantIndex].data);
     mdafText->SetTextAndMaybeRefresh(&mdafStr, true);
   }
 
   {
-    TStaticText* phsfText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagFshp));
+    TStaticText* phsfText = static_cast<TStaticText*>(FindSubView(kControlTagFshp));
     phsfText->AssertValid();
     CString phsfStr(record->overlayLabel[participantIndex].data);
     phsfText->SetTextAndMaybeRefresh(&phsfStr, true);
   }
 
   {
-    TStaticText* mdaeText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagEadm));
+    TStaticText* mdaeText = static_cast<TStaticText*>(FindSubView(kControlTagEadm));
     mdaeText->AssertValid();
     CString mdaeStr(record->nameBuffer[otherParticipantIndex].data);
     mdaeText->SetTextAndMaybeRefresh(&mdaeStr, true);
   }
 
   {
-    TStaticText* phseText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagEshp));
+    TStaticText* phseText = static_cast<TStaticText*>(FindSubView(kControlTagEshp));
     phseText->AssertValid();
     CString phseStr(record->overlayLabel[otherParticipantIndex].data);
     phseText->SetTextAndMaybeRefresh(&phseStr, true);
@@ -701,12 +698,12 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
   int count = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
   bool hasNext = selectedReportIndex < count;
 
-  TControl* prevCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagPrev));
+  TControl* prevCtrl = static_cast<TControl*>(FindSubView(kControlTagPrev));
   prevCtrl->AssertValid();
   prevCtrl->ViewEnable(hasPrevious, 0);
   prevCtrl->Show(hasPrevious, 1);
 
-  TControl* nextCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagNext));
+  TControl* nextCtrl = static_cast<TControl*>(FindSubView(kControlTagNext));
   nextCtrl->AssertValid();
   nextCtrl->ViewEnable(hasNext, 0);
   nextCtrl->Show(hasNext, 1);
@@ -714,7 +711,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
   bool enableInfo =
       (static_cast<signed char>(record->nationIds[0]) == g_pSimMgr->GetPlayerCountry() ||
        static_cast<signed char>(record->nationIds[1]) == g_pSimMgr->GetPlayerCountry());
-  TControl* infoCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagInfo));
+  TControl* infoCtrl = static_cast<TControl*>(FindSubView(kControlTagInfo));
   infoCtrl->AssertValid();
   infoCtrl->ViewEnable(enableInfo, 0);
   infoCtrl->Show(enableInfo, 1);

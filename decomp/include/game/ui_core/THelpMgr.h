@@ -50,13 +50,13 @@ public:
   void CheckUnitAdvice(TCivUnit* civilianOrderEntry);
 
   bool ShowPeriodicNationComparisonAdvisoryIfNeeded();
-  bool HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode);
+  bool CheckHelp(TurnEventCodeStorage eventCode);
   void HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCode);
   void ShowHelpSet(HelpSetRecord* pendingEntry);
-  HelpSetRecord* FindHelpSetRecordByResourceBase(short helpResourceBaseId);
+  HelpSetRecord* GetHelpSetPtr(short helpResourceBaseId);
   char GetHelpSetRecordFlagByResourceBase(short helpResourceBaseId);
-  bool IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index);
-  void SelectAndActivatePendingEventForCurrentView();
+  bool NeedAdvice(unsigned int index);
+  void ShowLatestHelp();
   void SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx);
   void SelectAndActivatePendingEventType1A0A();
   void EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex);

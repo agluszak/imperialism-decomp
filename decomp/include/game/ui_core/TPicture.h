@@ -14,7 +14,7 @@ public:
   virtual ~TPicture() override;                 // slot 0x01 (scalar deleting destructor)
   virtual TObject* ShallowClone() override;     // slot 0x08 0x48f640
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x48f3c0
-  virtual void ResetPictureResourceEntry();     // slot 0x71 0x48f520
+  virtual void ReleasePicture();                // slot 0x71 0x48f520
   virtual void SetPictureRsrcID(short nPictureId,
                                 unsigned char fRefreshNow); // slot 0x72 0x48f570
   short glyphBase;

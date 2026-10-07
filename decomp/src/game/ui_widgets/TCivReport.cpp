@@ -66,7 +66,7 @@ void TCivReport::StuffValues(TCivUnit* civilianOrderEntry) {
 
   case kUnitOrderDevelopResource:
     if (civilianOrderEntry->orderType == kCivilianUnitMiner &&
-        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true) == 0) {
+        g_pGlobalMapState->GetDevelopmentLevel(tileIndex, true) == 0) {
       resourceCount = 0;
       for (short edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
         short resourceType =
@@ -126,7 +126,7 @@ void TCivReport::StuffValues(TCivUnit* civilianOrderEntry) {
     reportText += expandedText;
   }
 
-  TDeluxeText* infoControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
+  TDeluxeText* infoControl = static_cast<TDeluxeText*>(FindSubView(kControlTagInfo));
   infoControl->AssertValid();
   infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&reportText, false);
   infoControl->SetTextStyle(0, 12, 0x2b6a);
@@ -141,8 +141,8 @@ void TCivReport::StuffValues(TCivUnit* civilianOrderEntry) {
     } else {
       BuildUiTextStyleDescriptor(&titleStyle, 0, 14, 0x2b6a);
     }
-    TStaticText* titleControl = static_cast<TStaticText*>(
-        ResolveControlByTag(IMPERIALISM_FOURCC('t', 't', 'l', '0') + titleIndex));
+    TStaticText* titleControl =
+        static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('t', 't', 'l', '0') + titleIndex));
     titleControl->AssertValid();
     titleControl->SetTextWithStrListID(0x2724, static_cast<short>(titleIndex + 12), true);
     titleControl->InstallTextStyle(titleStyle, 0);

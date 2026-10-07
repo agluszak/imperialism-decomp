@@ -119,7 +119,7 @@ CString& __stdcall GetProfileStringFromSettingsSection(CString* result, LPCTSTR 
 
 // FUNCTION: IMPERIALISM 0x00549240
 int __cdecl TouchSessionActiveNationId(void) {
-  return g_pNetMgr->GetSessionActiveNationId();
+  return g_pNetMgr->GetPlayerID();
 }
 
 // FUNCTION: IMPERIALISM 0x005621b0
@@ -454,7 +454,7 @@ void TSimMgr::CreateSimObjects(bool flag) {
       g_pDiplomacyTurnStateManager = NULL;
     }
     TDiplomacyMgr* diplomacyManager = new TDiplomacyMgr();
-    diplomacyManager->InitializeTDiplomacyTurnStateManagerDefaults();
+    diplomacyManager->IDiplomacyMgr();
     g_pDiplomacyTurnStateManager = diplomacyManager;
 
     if (g_pTradeMgr != NULL) {
@@ -499,7 +499,7 @@ void TSimMgr::CreateSimObjects(bool flag) {
       g_pTechMgr->Free();
     }
     g_pTechMgr = new TTechMgr();
-    g_pTechMgr->InitializeCityOrderCapabilityStateDefaults();
+    g_pTechMgr->ITechMgr();
   }
 }
 
@@ -536,9 +536,9 @@ void TSimMgr::CreatePlanet(int rebuild, const char* mapName, int wrapHorizontall
 
     if (!g_bMultiplayerScenarioSetupActive) {
       g_pGlobalMapState->hexNeighborWrapHorizontally = static_cast<char>(wrapHorizontally);
-      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(NULL, const_cast<char*>(mapName));
+      g_pGlobalMapState->GenerateMap(NULL, const_cast<char*>(mapName));
     } else {
-      g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
+      g_pGlobalMapState->InitializeMap();
     }
   }
 }
@@ -562,7 +562,7 @@ unsigned char TSimMgr::LoadScenario(int scenarioIndex) {
   g_pGlobalMapState->IMapMgr();
   g_pGlobalMapState->hexNeighborWrapHorizontally = 1;
   return static_cast<unsigned char>(
-      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(g_szEmptyString, g_szEmptyString));
+      g_pGlobalMapState->GenerateMap(g_szEmptyString, g_szEmptyString));
 }
 
 // FUNCTION: IMPERIALISM 0x0057cad0
@@ -614,8 +614,8 @@ void TSimMgr::CreateCountries(int activate) {
 
   if (!g_bMultiplayerScenarioSetupActive) {
     g_pDiplomacyTurnStateManager->RebuildCivilianOrderCompatibilityMatrices();
-    g_pViewMgr->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
-    g_pTechMgr->GenerateRandomCapabilityPrioritySlots();
+    g_pViewMgr->GenerateRegions();
+    g_pTechMgr->GenerateTables();
     g_pGlobalMapState->GenerateProvinceNames();
     RegenerateAllMapActionContextStatusCodes();
     g_pNewsMgr->AddMiscEvent(999, 1, true);
@@ -837,7 +837,7 @@ void TSimMgr::DoPerTurnMissionAIStuff(int replanMode) {
       TCountry* country = g_apTerrainTypeDescriptorTable[nationSlot];
       if (country != NULL && (nationSlot >= 7 || country->encodedNationSlot < 100 ||
                               country->encodedNationSlot >= 200)) {
-        (*nation)->RefreshTrackedEntriesAndReplanAiDevelopment(replanMode);
+        (*nation)->ReassessMissions(replanMode);
       }
     }
     ++nation;
@@ -1257,7 +1257,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseTurnStart: {
     turnStateCode = kGamePhaseEndTurn;
     g_pAssetMgr->OpenFilesFor(0x13);
-    g_pGlobalMapState->ShowStrategicMapForPlayer();
+    g_pGlobalMapState->ShowMap();
     g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     for (short nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
@@ -1270,10 +1270,10 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       nation->InitializeDiplomacyNotices();
       nation->DisplayTurnStartEvents();
     }
-    g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+    g_pSfxPlaybackSystem->ResetPlayList();
     g_pSfxPlaybackSystem->AddToPlayList(2);
     g_pSfxPlaybackSystem->AddToPlayList(3);
-    g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+    g_pSfxPlaybackSystem->PlayRandomTrack();
     if (!IsNationEligibleForOptionalPhase(activeNationSlot)) {
       StartNextPhase();
     }
@@ -1314,7 +1314,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         }
         TGreatPower* nation = g_apNationStates[nationSlot];
         if (nation != NULL) {
-          nation->RefreshTrackedEntriesAndReplanAiDevelopment(0);
+          nation->ReassessMissions(0);
         }
       }
     }
@@ -1575,7 +1575,7 @@ void TSimMgr::DoTrade() {
   }
 
   g_pTradeMgr->ResetNationMetricRowsAndClearCategoryRankLists();
-  g_pTradeMgr->RunNationUpdatePassesAndResetTransitionFlags();
+  g_pTradeMgr->StartTradePhase();
   g_pTradeMgr->SetMinorsTradeBids();
   g_pTradeMgr->TallyTradeBids();
   g_pTradeMgr->CalculateNewWorldPrices();
@@ -1626,7 +1626,7 @@ void TSimMgr::ResetTurnFlags() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f570
-void TSimMgr::PrepareMultiplayerTurnResume() {
+void TSimMgr::MultiSync() {
   bool hasMultiplayerSession = multiplayerSessionRole != kSessionRoleStandalone;
   if (hasMultiplayerSession) {
     g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
@@ -1976,7 +1976,7 @@ void TSimMgr::AddHighScore() {
 // FUNCTION: IMPERIALISM 0x00581870
 void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
   if (g_pHelpMgr != 0) {
-    g_pHelpMgr->HandlePendingEventActivationByCode(kTurnEventMainMenu);
+    g_pHelpMgr->CheckHelp(kTurnEventMainMenu);
   }
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->Free();
@@ -2020,13 +2020,13 @@ void TSimMgr::SelectMapArtSet(short index) {
 }
 
 // FUNCTION: IMPERIALISM 0x00581b20
-CString TSimMgr::LoadNormalizedCredentialName(short slot) {
+CString TSimMgr::GetCountryName(short slot) {
   CString name = g_pLanguageMgr->StripCodeStr(sharedTextSlots[slot]);
   return name;
 }
 
 // FUNCTION: IMPERIALISM 0x00581bc0
-CString TSimMgr::GetSharedText(short slot) {
+CString TSimMgr::GetCountryNameWithCode(short slot) {
   return sharedTextSlots[slot];
 }
 
@@ -2040,12 +2040,12 @@ void TSimMgr::NameCapitals() {
 
     const short cityRecordIndex = static_cast<short>(country->GetCapitolProvince());
     CString capitalNameTemplate;
-    CString countryName = LoadNormalizedCredentialName(nationSlot);
+    CString countryName = GetCountryName(nationSlot);
     CString capitalName;
     GetString(0x272a, 0, &capitalNameTemplate);
     scanBracketExpressions(this, &capitalName, static_cast<LPCSTR>(capitalNameTemplate),
                            static_cast<LPCSTR>(countryName));
-    g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &capitalName);
+    g_pGlobalMapState->SetProvinceName(cityRecordIndex, &capitalName);
   }
 }
 
@@ -2360,7 +2360,7 @@ void TSimMgr::ScAddRailhead(STurnInstructionCursor* instruction) {
   DECODE_SCENARIO_SHORT_TOKEN(token);
   short tileIndex = static_cast<short>(token);
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
-  g_pGlobalMapState->QueueDepotConstructionOrder(tileIndex, static_cast<short>(nationTag));
+  g_pGlobalMapState->BuildRailhead(tileIndex, static_cast<short>(nationTag));
   if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
     g_apNationStates[nationTag]->treasuryValue += 2000;
   }
@@ -2375,7 +2375,7 @@ void TSimMgr::ScAddPort(STurnInstructionCursor* instruction) {
   DECODE_SCENARIO_SHORT_TOKEN(token);
   short tileIndex = static_cast<short>(token);
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
-  g_pGlobalMapState->QueuePortConstructionOrder(tileIndex, static_cast<short>(nationTag));
+  g_pGlobalMapState->BuildPort(tileIndex, static_cast<short>(nationTag));
   if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
     g_apNationStates[nationTag]->treasuryValue += 3000;
   }
@@ -2397,8 +2397,7 @@ void TSimMgr::ScAddTech(STurnInstructionCursor* instruction) {
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(techToken);
 
-  g_pTechMgr->ApplyTechUnlockAndQueueNationAbilityNotices(static_cast<int>(techToken),
-                                                          static_cast<int>(nationToken));
+  g_pTechMgr->ActivateAdvance(static_cast<int>(techToken), static_cast<int>(nationToken));
 }
 
 // FUNCTION: IMPERIALISM 0x00582b70
@@ -2612,7 +2611,7 @@ void TSimMgr::ScSetProvinceName(STurnInstructionCursor* instruction) {
   CString rawText(rawName);
   instruction->tokenCursor += 0x10;
   CString name(rawText);
-  g_pGlobalMapState->SetGlobalMapCellSharedLabel(static_cast<int>(tileToken), &name);
+  g_pGlobalMapState->SetProvinceName(static_cast<int>(tileToken), &name);
 }
 
 // FUNCTION: IMPERIALISM 0x00583360

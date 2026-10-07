@@ -22,7 +22,7 @@ public:
   DECLARE_DYNCREATE(TFileStream)
   TFileStream();
 
-  void SetBackingArchive(ArchiveStreamAdapter* backingArchive);
+  void IFileStream(ArchiveStreamAdapter* backingArchive);
 
   int GetPosition() override;
   void SetPosition(int position) override;

@@ -17,8 +17,8 @@ public:
   virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
                               CPoint origin) override; // slot 0x47 0x58f1a0
   virtual void DrawProspector(RECT* bounds);           // slot 0x68 0x58fec0
-  virtual void DrawEngineer(RECT* bounds);  // slot 0x69 0x58f7b0
-  virtual void DrawDeveloper(RECT* bounds); // slot 0x6a 0x5903c0
+  virtual void DrawEngineer(RECT* bounds);             // slot 0x69 0x58f7b0
+  virtual void DrawDeveloper(RECT* bounds);            // slot 0x6a 0x5903c0
   CivilianUnitKindStorage selectedCivilianClass;
   NationSlot ownerNationId;
   short targetTileCountsBySlot[5];
@@ -27,7 +27,7 @@ public:
   TCivDescription();
 
   void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivUnit* orderState);
-  void UpdateCivilianOrderTargetTileCountsForOwnerNation(class TCivUnit* selectedOrder);
+  void CountWorkableSpaces(class TCivUnit* selectedOrder);
 #ifdef IMPERIALISM_RUNTIME_TESTS
   bool ActivateLegendSlot(short slotIndex);
 #endif

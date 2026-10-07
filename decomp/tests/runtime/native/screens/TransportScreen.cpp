@@ -79,7 +79,7 @@ bool TransportScreen::HasLedgerHeadings() const {
 
 bool TransportScreen::ToolbarIconIsSelected() const {
   TView* toolbarDialog = g_pDisplayMgr != 0 ? g_pDisplayMgr->activeDialog : 0;
-  TView* button = toolbarDialog != 0 ? toolbarDialog->ResolveControlByTag(kControlTagTran) : 0;
+  TView* button = toolbarDialog != 0 ? toolbarDialog->FindSubView(kControlTagTran) : 0;
   if (button == 0 || button->IsKindOf(RUNTIME_CLASS(TPicture)) == 0) {
     return false;
   }
@@ -106,7 +106,7 @@ TTransportPicture* TransportScreen::CapacityGauge() const {
 
 TStaticText* TransportScreen::CapacityLabel() const {
   TTransportPicture* gauge = CapacityGauge();
-  TView* label = gauge != 0 ? gauge->ResolveControlByTag(kControlTagText) : 0;
+  TView* label = gauge != 0 ? gauge->FindSubView(kControlTagText) : 0;
   return label != 0 && label->IsKindOf(RUNTIME_CLASS(TStaticText)) != 0
              ? static_cast<TStaticText*>(label)
              : 0;
@@ -166,14 +166,14 @@ RuntimeActionResult TransportScreen::ClickCommodityArrow(short slot, int arrowTa
   // The ledger refresh replaces each row's generated TSidewaysArrow children with live
   // TRightLeftView widgets; both raise 100/101 on rght/left track, so the click path is the
   // same either way.
-  TView* arrowView = row->ResolveControlByTag(arrowTag);
+  TView* arrowView = row->FindSubView(arrowTag);
   if (arrowView == 0 || arrowView->IsKindOf(RUNTIME_CLASS(TRightLeftView)) == 0) {
     return RuntimeActionResult::Failure("commodity row has no sideways arrow");
   }
   TControl* arrow = static_cast<TControl*>(arrowView);
 
   CRect bounds;
-  arrow->QueryContentBounds(&bounds);
+  arrow->GetExtent(&bounds);
   CPoint zone(bounds.left + bounds.Width() / 2, bounds.top + bounds.Height() / 2);
   CPoint windowPoint(zone); // RUNTIME_COORDINATE_EXPLAINED
   arrow->TranslatePointToParentChain4D(&windowPoint);

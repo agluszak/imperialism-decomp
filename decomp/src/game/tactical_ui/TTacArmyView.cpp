@@ -147,7 +147,7 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
                                                   static_cast<short>(tileWidthPx));
 
     TTacticalToolbar* toolbar =
-        static_cast<TTacticalToolbar*>(ownerContext->ResolveControlByTag(kControlTagTool));
+        static_cast<TTacticalToolbar*>(ownerContext->FindSubView(kControlTagTool));
     if (toolbar == 0) {
       FailNilPointerWithAssert(s_SourcePathUTacViews, 0x497);
     }
@@ -157,8 +157,7 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
     toolbar->SetActionMode(0);
     this->toolbar = toolbar;
 
-    TPicture* coatControl =
-        static_cast<TPicture*>(ownerContext->ResolveControlByTag(kControlTagCoat));
+    TPicture* coatControl = static_cast<TPicture*>(ownerContext->FindSubView(kControlTagCoat));
     coatControl->AssertValid();
     coatControl->SetPictureRsrcID(
         static_cast<short>(tacticalBattle->players[tacticalBattle->currentSide]->nationIndex +
@@ -541,7 +540,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   if (occupant != 0) {
     if (occupant == tacticalBattle->selectedUnit) {
       short selectionPalette[2] = {0x13, 0};
-      TAnimation* blink = g_pUiAnimator->FindRegisteredAnimationByTag(0x2711);
+      TAnimation* blink = g_pUiAnimator->FindAni(0x2711);
       RECT selectionRect = tileScreenRect;
       SetQuickDrawFillColorFromPaletteIndex(blink == 0 ? 0x13
                                                        : selectionPalette[blink->frameIndex]);
@@ -660,7 +659,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   }
 
   if (occupant != 0 || edgeKind != kFortWallEdgeNone) {
-    TAnimation* selectionAnim = g_pUiAnimator->FindRegisteredAnimationByTag(tileIndex);
+    TAnimation* selectionAnim = g_pUiAnimator->FindAni(tileIndex);
     if (selectionAnim != 0) {
       POINT offset = {0, 0};
       selectionAnim->DrawNextFrame(&offset);

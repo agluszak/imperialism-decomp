@@ -96,7 +96,7 @@ void TToggleButton::Select(bool isPressed, bool notifyParent) {
   this->Show(static_cast<char>(isPressed), static_cast<char>(notifyParent));
   if (static_cast<char>(isPressed) != '\0') {
     // The owner panel is a TCluster; notify it which child tag is now active (slot 0x72).
-    static_cast<TCluster*>(this->ownerContext)->SetSelectedChildTagAndRefresh(this->controlTag);
+    static_cast<TCluster*>(this->ownerContext)->SetCurrentChoice(this->controlTag);
   }
   this->PrepareForDrawing();
   this->PaintOrInvalidateControl(0);

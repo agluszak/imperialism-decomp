@@ -187,7 +187,7 @@ TGreatPower::TGreatPower()
 void TGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 
 // FUNCTION: IMPERIALISM 0x004d8be0
-void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {}
+void TGreatPower::ReassessMissions(int unused) {}
 
 // FUNCTION: IMPERIALISM 0x004d8c00
 short TGreatPower::GetMerchantCapacity(void) {
@@ -230,7 +230,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
     this->interiorMinister = interiorMinister;
 
     TDefenseMinister* defenseMinister = new TDefenseMinister();
-    defenseMinister->InitializeBaseOrderArrayMetrics(this);
+    defenseMinister->IDefenseMinister(this);
     this->defenseMinister = defenseMinister;
   }
 
@@ -451,7 +451,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
       if (this->defenseMinister == 0) {
         TDefenseMinister* created = new TDefenseMinister();
         this->defenseMinister = created;
-        created->InitializeBaseOrderArrayMetrics(this);
+        created->IDefenseMinister(this);
       }
       this->defenseMinister->ReadFrom(stream);
     } else {

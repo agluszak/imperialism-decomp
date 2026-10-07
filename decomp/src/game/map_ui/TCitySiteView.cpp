@@ -35,7 +35,7 @@ void TCitySiteView::DoPostCreate(int arg) {
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
   g_pDisplayMgr->MakeNewGWorld(quickDrawSurface, 8, surfaceBounds);
 
-  ResetAllTileMarkersToSentinel();
+  FlushCache();
 
   g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
@@ -75,7 +75,7 @@ void TCitySiteView::DoPostCreate(int arg) {
   minRow -= 1;
 
   g_pCursorControlPanel = static_cast<TInfoBarText*>(
-      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagCurs)));
+      static_cast<TView*>(g_pDisplayMgr->activeDialog->FindSubView(kControlTagCurs)));
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
@@ -227,7 +227,7 @@ void TCitySiteView::NormalClick(short nTileIndex, int nInputFlags) {
   CString cityName;
   g_pGlobalMapState->AssignCityRecordDisplayName(tile.cityRecordIndex, &cityName);
   pendingTown->SetName(cityName);
-  if (!g_pViewMgr->ShowNewCityDialog(pendingTown)) {
+  if (!g_pViewMgr->MakeNewTownDialog(pendingTown)) {
     pendingTown->tileIndex = 0;
     return;
   }

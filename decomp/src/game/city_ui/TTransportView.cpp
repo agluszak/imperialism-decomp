@@ -20,35 +20,35 @@ void TTransportView::StuffValues(TGreatPower* nation) {
   CString scratch;
   this->nation = nation;
 
-  TView* supplyPanel = ResolveControlByTag(kControlTagSupp); // 'supp'
+  TView* supplyPanel = FindSubView(kControlTagSupp); // 'supp'
   if (supplyPanel == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x783);
   }
   for (short currentResourceType = 0; currentResourceType < kResourceKindCount;
        ++currentResourceType) {
     TNumberText* amount = static_cast<TNumberText*>(
-        supplyPanel->ResolveControlByTag(g_pTradeSummarySelectionMap[currentResourceType]));
+        supplyPanel->FindSubView(g_pTradeSummarySelectionMap[currentResourceType]));
     if (amount == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x787);
     }
     amount->SetControlValue(nation->needCurrentByType[currentResourceType], 1);
   }
 
-  TView* transportPanel = ResolveControlByTag(kControlTagTran); // 'tran'
+  TView* transportPanel = FindSubView(kControlTagTran); // 'tran'
   if (transportPanel == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x78d);
   }
   for (short targetResourceType = 0; targetResourceType < kResourceKindCount;
        ++targetResourceType) {
     TNumberText* amount = static_cast<TNumberText*>(
-        transportPanel->ResolveControlByTag(g_pTradeSummarySelectionMap[targetResourceType]));
+        transportPanel->FindSubView(g_pTradeSummarySelectionMap[targetResourceType]));
     if (amount == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x791);
     }
     amount->SetControlValue(nation->needTargetByType[targetResourceType], 1);
   }
 
-  TNumberText* total = static_cast<TNumberText*>(ResolveControlByTag(kControlTagTota)); // 'tota'
+  TNumberText* total = static_cast<TNumberText*>(FindSubView(kControlTagTota)); // 'tota'
   if (total == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x797);
   }
@@ -57,14 +57,14 @@ void TTransportView::StuffValues(TGreatPower* nation) {
 
 // FUNCTION: IMPERIALISM 0x004bd690
 void TTransportView::Close() {
-  TView* transportPanel = ResolveControlByTag(kControlTagTran); // 'tran'
+  TView* transportPanel = FindSubView(kControlTagTran); // 'tran'
   if (transportPanel == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x7a7);
   }
 
   for (int resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     TNumberText* amount = static_cast<TNumberText*>(
-        transportPanel->ResolveControlByTag(g_pTradeSummarySelectionMap[resourceType]));
+        transportPanel->FindSubView(g_pTradeSummarySelectionMap[resourceType]));
     if (amount == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x7ab);
     }

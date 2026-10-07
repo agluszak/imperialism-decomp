@@ -219,8 +219,7 @@ float TArmyMission::ComputeProvinceImportance(short provinceIndex) {
   if (province.adjacentRegionCount > 0) {
     int index = 0;
     do {
-      if (missionNation == g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
-                               province.adjacentRegionIds[index])) {
+      if (missionNation == g_pGlobalMapState->FindCountry(province.adjacentRegionIds[index])) {
         ++ownedNeighbors;
       }
       ++index;
@@ -246,8 +245,7 @@ float ComputeProvinceImportanceForNation(short provinceIndex, short nation) {
   if (province.adjacentRegionCount > 0) {
     int index = 0;
     do {
-      int neighborOwner = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
-          province.adjacentRegionIds[index]);
+      int neighborOwner = g_pGlobalMapState->FindCountry(province.adjacentRegionIds[index]);
       if (targetNation == neighborOwner) {
         ++ownedNeighbors;
       }
@@ -393,8 +391,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit*
 }
 
 // FUNCTION: IMPERIALISM 0x0053d200
-float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
-    TMilitaryUnit* candidateUnit) {
+float TArmyMission::GetWeightedSatifactionWithout(TMilitaryUnit* candidateUnit) {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   AccumulateOrderPriorityVector(vector);
 
@@ -437,7 +434,7 @@ float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
 
   if (candidateUnit->ownerMission == this) {
     float ownScore = GetWeightedSatisfaction();
-    return ownScore - ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(candidateUnit);
+    return ownScore - GetWeightedSatifactionWithout(candidateUnit);
   }
   float withCandidate = ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit);
   return withCandidate - GetWeightedSatisfaction();
@@ -482,7 +479,6 @@ float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVect
 
 // FUNCTION: IMPERIALISM 0x0053d630
 TMission* TArmyMission::GetReplacement() {
-  short tileOwnerNationCode =
-      g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
+  short tileOwnerNationCode = g_pGlobalMapState->FindCountry(presentLocation);
   return (tileOwnerNationCode == nationId) ? this : NULL;
 }

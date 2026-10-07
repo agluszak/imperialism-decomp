@@ -47,9 +47,9 @@ public:
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x50e7a0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x50e620
   virtual void Free() override;                    // slot 0x07 0x50e510
-  virtual void AllocateAndResetTerrainAndCityScoreTables(); // slot 0x0a 0x50e8b0
-  virtual bool BuildOrLoadGlobalMapStateForSession(const char* mapStreamName,
-                                                   char* tuningOverride);   // slot 0x0b 0x50ec90
+  virtual void InitializeMap();                    // slot 0x0a 0x50e8b0
+  virtual bool GenerateMap(const char* mapStreamName,
+                           char* tuningOverride);                           // slot 0x0b 0x50ec90
   virtual void LoadPoliticalMapRegionSubtypeTableFromResourceStream();      // slot 0x0c 0x50f200
   virtual void AssignPictToTile(StrategicTileIndex tileIndex);              // slot 0x0d 0x510210
   virtual void InitializeTileNeighborConnectionMaskIfNeeded(int tileIndex); // slot 0x0e 0x5107e0
@@ -60,12 +60,12 @@ public:
   virtual void GuaranteeResources(); // slot 0x11 0x511a70, Mac oracle
 
   void ReadInRGBMap(const MapPixelSourceView* source);
-  virtual void TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
-  virtual void ShowStrategicMapForPlayer();                                 // slot 0x13 0x511ed0
-  virtual void ResetAllTileMarkerSlotIndicesToSentinel();                   // slot 0x14 0x5178c0
+  virtual void PrepareMap();                              // slot 0x12 0x511e80
+  virtual void ShowMap();                                 // slot 0x13 0x511ed0
+  virtual void ResetAllTileMarkerSlotIndicesToSentinel(); // slot 0x14 0x5178c0
   void GenerateProvinceNames();
-  virtual bool DoNationTerritoriesShareRegionClass(short nationA,
-                                                   short nationB); // slot 0x15 0x511f30
+  virtual bool IsSameContinent(short nationA,
+                               short nationB); // slot 0x15 0x511f30
   void MarkOwnedRegionClasses(TLongintList* regionList, bool* regionClassSeen);
   bool AnyOwnedRegionClassSeen(TLongintList* regionList, const bool* regionClassSeen);
   virtual bool
@@ -78,20 +78,18 @@ public:
                                                         StrategicTileIndex destTile,
                                                         int unusedParam3); // slot 0x1a 0x513f60
   // Both lookup helpers take signed-word discriminants at the listing-proven stack boundary.
-  virtual bool HasCivilianUnitKind(StrategicTileIndex tileIndex,
-                                   CivilianUnitKindStorage unitKind); // slot 0x1b 0x514310
-  virtual bool HasCivilianUnitKindWithOrder(StrategicTileIndex tileIndex,
-                                            CivilianUnitKindStorage unitKind,
-                                            UnitOrderStorage order); // slot 0x1c 0x514360
-  virtual void
-  SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag); // slot 0x1d 0x514e40
+  virtual bool IsUnitPresent(StrategicTileIndex tileIndex,
+                             CivilianUnitKindStorage unitKind); // slot 0x1b 0x514310
+  virtual bool IsUnitPresentWithOrders(StrategicTileIndex tileIndex,
+                                       CivilianUnitKindStorage unitKind,
+                                       UnitOrderStorage order); // slot 0x1c 0x514360
+  virtual void DimByOwner(short ownerNationTag);                // slot 0x1d 0x514e40
   virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(
-      class TCivUnit* unusedOrder);                                       // slot 0x1e 0x514e80
-  virtual void SeedValidCitySiteCandidateTilesForNation(short nationTag); // slot 0x1f 0x514dc0
+      class TCivUnit* unusedOrder);                 // slot 0x1e 0x514e80
+  virtual void DimByValidCitySite(short nationTag); // slot 0x1f 0x514dc0
   // Resets recruitSearchVisited to 0 across all tiles and clears field9 back to idle.
-  virtual void ResetRecruitSearchVisitedState(); // slot 0x20 0x514ef0
-  virtual void SeedRecruitSearchVisitedStateAndClearAlliedTerritory(
-      class TCivUnit* pCivilianOrderEntry); // slot 0x21 0x514f20
+  virtual void ResetRecruitSearchVisitedState();                   // slot 0x20 0x514ef0
+  virtual void DimByUnitMove(class TCivUnit* pCivilianOrderEntry); // slot 0x21 0x514f20
   virtual void DimByMarching(class TMilitaryUnit* const candidates[6],
                              short orderTargetSlot);                  // slot 0x22 0x5150e0
   virtual void DimByProspecting(class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
@@ -104,8 +102,8 @@ public:
   virtual void UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(
       ProvinceIndex cityRecordIndex);                               // slot 0x2a 0x50fca0
   virtual void ApplyUnitMovementClassForTileIfValid(int tileIndex); // slot 0x2b 0x515d60
-  void FloodRegionClass(int recordIndex, int classCode);
-  void AssignSequentialClassesToPopulatedRegions();
+  void FloodContinent(int recordIndex, int classCode);
+  void AssignContinents();
   void RebuildTileOwnerNeighborCachesAndFallbackAssignments();
   bool LoadScenarioMapStateFromTableResource(int scenarioIndex);
 
@@ -119,20 +117,18 @@ public:
                                     ProvinceIndex regionId); // slot 0x2f 0x516090
   virtual void SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam,
                                                                int unused); // slot 0x30 0x516100
-  virtual byte FindResourceCapabilityRequirementLevel(StrategicTileIndex tileIndex,
-                                                      short edgeIndex); // slot 0x31 0x513610
-  virtual char GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIndex,
-                                                       bool fUseHighNibble); // slot 0x32 0x513660
+  virtual byte GetResourceAmtAt(StrategicTileIndex tileIndex,
+                                short edgeIndex); // slot 0x31 0x513610
+  virtual char GetDevelopmentLevel(StrategicTileIndex nTileIndex,
+                                   bool fUseHighNibble); // slot 0x32 0x513660
   virtual void SetDevelopmentLevel(StrategicTileIndex tileIndex, bool selectHighNibble, byte value,
                                    bool markPending); // slot 0x33 0x5136a0
   virtual short GetMaxDevelopmentLevel(StrategicTileIndex tileIndex, char categoryCode,
                                        int nationSlot); // slot 0x34 0x513720
-  virtual byte
-  FindResourceCapabilityRequirementLevelByType(StrategicTileIndex tileIndex,
-                                               char resourceType); // slot 0x35 0x5135a0
-  virtual class TTown*
-  FindTownMarkerForTileByOwnerNation(StrategicTileIndex tileIndex); // slot 0x36 0x513170
-  virtual void SetOwner(short regionId, short newNationTag);        // slot 0x37 0x5133f0
+  virtual byte GetAmountOf(StrategicTileIndex tileIndex,
+                           char resourceType);                // slot 0x35 0x5135a0
+  virtual class TTown* GetTown(StrategicTileIndex tileIndex); // slot 0x36 0x513170
+  virtual void SetOwner(short regionId, short newNationTag);  // slot 0x37 0x5133f0
   virtual short LookupTileSpriteVariantOffsetByTerrainAndGate(
       StrategicTileIndex nTileIndex); // slot 0x38 0x516150
   virtual short LookupTileSpriteVariantOffsetByAdjacencyMaskB(
@@ -162,9 +158,9 @@ public:
   virtual short
   GetMapImprovementTileSpriteOffset(StrategicTileIndex tileIndex); // slot 0x48 0x5177f0
   // ABI: RET 8; every call site passes (tile index, owner nation tag).
-  virtual int QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nNationId);
-  virtual void QueuePortConstructionOrder(StrategicTileIndex nTileIndex,
-                                          short nNationId); // slot 0x4a 0x5147d0
+  virtual int BuildRailhead(StrategicTileIndex nTileIndex, short nNationId);
+  virtual void BuildPort(StrategicTileIndex nTileIndex,
+                         short nNationId);                  // slot 0x4a 0x5147d0
   virtual void BuildFort(ProvinceIndexStorage nProvinceId); // slot 0x4b 0x5149d0
   virtual void FloodFillTileRegionMarker(StrategicTileIndex nTileIndex,
                                          short nOwnerNationId);                // slot 0x4c 0x5143d0
@@ -232,10 +228,10 @@ public:
   // ORACLE: Mac TMapMgr::HasPortInProvince(int). Returns true on the first linked tile
   // whose terrainStateTable activeFlags has the port bit (0x04) set.
   bool HasPortInProvince(int provinceIndex);
-  void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
+  void SetTownSize(short regionId, unsigned char stage);
   void SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
-  void ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTile,
-                                              StrategicTileIndex destTile, short ownerNation);
+  void AddRailSegment(StrategicTileIndex sourceTile, StrategicTileIndex destTile,
+                      short ownerNation);
   void ApplyEngineerRailCostDeltaForConnectedTiles(StrategicTileIndex tileA,
                                                    StrategicTileIndex tileB, short ownerNation);
   StrategicTileIndex
@@ -244,13 +240,13 @@ public:
   StrategicTileIndex SearchOpenTile(StrategicTileIndex tileIndex, short ownerNationTag,
                                     bool allowActiveFlag2); // 0x00514cd0
   void GetProvinceName(int provinceIndex, CString* outName);
-  void SetGlobalMapCellSharedLabel(ProvinceIndex cityRecordIndex, CString* name);
-  int CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex);
+  void SetProvinceName(ProvinceIndex cityRecordIndex, CString* name);
+  int LandPrice(StrategicTileIndex nTileIndex);
 
   int CollectSecondDegreeLinksMatchingNodeType(ProvinceIndex cityRecordIndex, int nationTag,
                                                int* nodeBuffer);
 
-  void MarkDirectionalMapOverlayFlagsForNationOrders();
+  void ConfirmArrows();
 
   int ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex);
 
@@ -259,7 +255,7 @@ public:
   bool CheckTileVariantCodeMembershipSetC(StrategicTileIndex tileIndex);
   bool CheckTileVariantCodeMembershipSetD(StrategicTileIndex tileIndex);
 
-  byte CheckTileProspectingDiscoveryCandidate(StrategicTileIndex nTileIndex);
+  byte AreMineralsPresent(StrategicTileIndex nTileIndex);
   bool CanBuildPortAtTile(StrategicTileIndex tileIndex);
   bool HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTileIndex tileIndex);
   bool HasActiveLinkedTileWithReachableSea(int regionIndex);
@@ -270,7 +266,7 @@ public:
     return terrainStateTable[tileIndex].firstCivilianOrder;
   }
 
-  TCivUnit* GetTileUnitEntryByOwner(StrategicTileIndex tileIndex, short nationId);
+  TCivUnit* GetMyFirstUnit(StrategicTileIndex tileIndex, short nationId);
 
   bool IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileIndex);
 
@@ -283,7 +279,7 @@ public:
 
   void ActivateMarchingArrow(int tileIndex, int contextArg, bool flag);
 
-  short ResolveTileOwnerNationCodeNormalized(int tileIndex);
+  short FindCountry(int tileIndex);
 
   int ClassifyCityGateTerrainComposition(int cityIndex);
 

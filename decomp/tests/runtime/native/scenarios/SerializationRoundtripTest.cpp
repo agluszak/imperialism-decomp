@@ -226,7 +226,7 @@ private:
       CArchive archive(&source, CArchive::load);
       ArchiveStreamAdapter adapter(&archive);
       TFileStream stream;
-      stream.SetBackingArchive(&adapter);
+      stream.IFileStream(&adapter);
       object->ReadFrom(&stream);
       unsigned char probe = 0;
       if (archive.Read(&probe, 1) != 0) {
@@ -277,7 +277,7 @@ private:
       CArchive archive(&file, CArchive::store);
       ArchiveStreamAdapter adapter(&archive);
       TFileStream stream;
-      stream.SetBackingArchive(&adapter);
+      stream.IFileStream(&adapter);
       object->WriteTo(&stream);
       archive.Close();
     }

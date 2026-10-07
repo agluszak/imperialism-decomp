@@ -41,7 +41,7 @@ IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
 TDefenseMinister::TDefenseMinister() : TMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ec160
-void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {
+void TDefenseMinister::IDefenseMinister(TGreatPower* owner) {
   this->IMinister(owner);
   field10 = 0;
   field12 = 0;
@@ -317,7 +317,7 @@ unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegion
     TMapMgr::GetNeighborTileIDArray(regionId, neighbors, wrapHorizontally);
     for (int dir = 0; dir < 6; ++dir) {
       short neighborTile = neighbors[dir];
-      if (g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(neighborTile)) {
+      if (g_pGlobalMapState->AreMineralsPresent(neighborTile)) {
         ++priorityMap[neighborTile];
       }
     }
@@ -366,7 +366,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
   bool atWarWithNation[kNationSlotCount];
   for (int nation = 0; nation < kNationSlotCount; ++nation) {
     atWarWithNation[nation] =
-        g_pDiplomacyTurnStateManager->IsNationPairAtWar(ownNationSlot, static_cast<short>(nation));
+        g_pDiplomacyTurnStateManager->AreAtWar(ownNationSlot, static_cast<short>(nation));
   }
 
   int* weightSum = new int[kStrategicTileCount];
@@ -454,7 +454,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
 // Five personality-specific order-array initializers (0x4ed560/0x4ed890/0x4edb80/
 // 0x4ede60/0x4ee150) called from TNapoleonMinister/TBismarckMinister/TPirateMinister/
 // TDefenderMinister/TBullyMinister's own construction. Each duplicates
-// InitializeBaseOrderArrayMetrics's zeroing prefix inline (the original has no shared
+// IDefenseMinister's zeroing prefix inline (the original has no shared
 // call between them -- every one of the six addresses inlines its own copy), then
 // seeds its own thresholdA-D quad and orderWeightTableB[2]/[4]/[7] prefix.
 

@@ -23,7 +23,7 @@ void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLay
 
   short activeNation = g_pSimMgr->GetPlayerCountry();
   for (int tileIndex = 0; tileIndex < kProvinceCount; ++tileIndex) {
-    if (g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(tileIndex) != activeNation) {
+    if (g_pGlobalMapState->FindCountry(tileIndex) != activeNation) {
       continue;
     }
     for (TMilitaryUnit* unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
@@ -37,7 +37,7 @@ void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLay
   }
 
   visibleColumnCount = 2;
-  BuildPageLayout();
+  CalculatePageStarts();
   ShowPage(1);
   ownerContext->AssertValid();
   static_cast<TBook*>(ownerContext)->ShowPage(currentPage);

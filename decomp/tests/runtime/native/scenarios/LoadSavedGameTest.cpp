@@ -65,14 +65,13 @@ private:
     for (short resource = 0; resource < 0x11; ++resource) {
       bool sawPurchase = false;
       bool sawSale = false;
-      short entryCount = player->GetTrackedSlotEntryCountLow(resource);
+      short entryCount = player->GetNumDealsIn(resource);
       for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
         short kind = 0;
         short value = 0;
         short targetNation = 0;
         int payload = 0;
-        player->GetDealInfo(resource, ordinal, &kind, &value, &targetNation,
-                                           &payload);
+        player->GetDealInfo(resource, ordinal, &kind, &value, &targetNation, &payload);
         sawPurchase = sawPurchase || kind == kTrackedSlotOfferEntry;
         sawSale = sawSale || kind == kTrackedSlotAcceptEntry;
       }

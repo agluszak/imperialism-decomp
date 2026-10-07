@@ -96,7 +96,7 @@ void TMinor::IMinor(NationSlot nationSlot) {
       if (candidateTiles != 0) {
         candidateTiles->Free();
       }
-      g_pActiveMapOrderContext->EnsurePortZoneForTile(static_cast<short>(homeTileIndex));
+      g_pActiveMapOrderContext->BuildPort(static_cast<short>(homeTileIndex));
     }
   }
 
@@ -430,9 +430,8 @@ void TMinor::InitializeTradeStatus(void) {
           char resourceType =
               g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge];
           if (resourceType != -1) {
-            short yieldLevel =
-                static_cast<char>(g_pGlobalMapState->FindResourceCapabilityRequirementLevelByType(
-                    static_cast<short>(tileIndex), resourceType));
+            short yieldLevel = static_cast<char>(
+                g_pGlobalMapState->GetAmountOf(static_cast<short>(tileIndex), resourceType));
             foreignControlledResourceYieldByType[static_cast<int>(resourceType)] += yieldLevel;
             foreignControlledResourceYieldByTypeAndMajorNation[static_cast<int>(resourceType)]
                 .amountByMajorNation[tileGreatPower] += yieldLevel;
@@ -787,8 +786,8 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
         if (majorNation->diplomacyEligibility == 0) {
           majorNation->AddNoticeFrom(this->nationSlot, kDiplomacyProposalDeclareWar);
         }
-        g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(
-            this->nationSlot, majorNationSlot, kDiplomacyRelationshipWar, 0);
+        g_pDiplomacyTurnStateManager->SetTreatyStatus(this->nationSlot, majorNationSlot,
+                                                      kDiplomacyRelationshipWar, 0);
         g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, majorNationSlot, 0x31);
       }
     }
@@ -940,7 +939,7 @@ void TMinor::RegainIndependence(void) {
 // FUNCTION: IMPERIALISM 0x004e5a40
 void TMinor::SetBoycottPoliciesToMatch(int targetNationSlot) {
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNationSlot, nationSlot) &&
+    if (!g_pDiplomacyTurnStateManager->AreAtWar(targetNationSlot, nationSlot) &&
         (nationSlot == this->nationSlot ||
          (g_apNationStates[targetNationSlot] != 0 &&
           g_apNationStates[targetNationSlot]->colonyBoycottFlags[nationSlot] == 0))) {
@@ -1043,7 +1042,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
-        g_pDiplomacyTurnStateManager->IsNationPairAtWar(ownerNationSlot, nationSlot)) {
+        g_pDiplomacyTurnStateManager->AreAtWar(ownerNationSlot, nationSlot)) {
       relationMaskByNation[nationSlot] = 1;
     }
   }

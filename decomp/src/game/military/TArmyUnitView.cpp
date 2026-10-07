@@ -136,7 +136,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       unsigned int arrowTag =
           kControlTagArmyRatioFirst + g_awTacticalUnitCategoryCodeBySlot[militaryUnit->orderType];
       TNumberedArrowButton* arrow =
-          static_cast<TNumberedArrowButton*>(activeToolbar->ResolveControlByTag(arrowTag));
+          static_cast<TNumberedArrowButton*>(activeToolbar->FindSubView(arrowTag));
       arrow->SetValue(static_cast<short>(arrow->number + availableCountDelta), true);
       g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     }
@@ -146,15 +146,14 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       sourceView->Show(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText), sourceView);
 
-      TArmyCheckBox* checkControl =
-          static_cast<TArmyCheckBox*>(ResolveControlByTag(kControlTagChec));
+      TArmyCheckBox* checkControl = static_cast<TArmyCheckBox*>(FindSubView(kControlTagChec));
       checkControl->AssertValid();
       checkControl->iconStripHorizontalOffset =
           (checkControl->checkedFrameOffsetApplied + militaryUnit->orderType * 2) << 6;
       checkControl->RefreshControl();
 
-      TStaticText* tbr1 = static_cast<TStaticText*>(
-          g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
+      TStaticText* tbr1 =
+          static_cast<TStaticText*>(g_pDisplayMgr->activeDialog->FindSubView(kControlTagTbr1));
       tbr1->AssertValid();
       tbr1->SetJustification(static_cast<short>(g_pSimMgr->GetPlayerCountry()), false);
     } else {
@@ -179,12 +178,12 @@ void TArmyUnitView::RenameUnit() {
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
 
-  TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
+  TStaticText* titleControl = static_cast<TStaticText*>(node->FindSubView(kControlTagTitl));
   titleControl->AssertValid();
   titleControl->SetTextWithStrListID(0x2746, 1, true);
   titleControl->textStyle = style;
 
-  TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
+  TEditText* nameControl = static_cast<TEditText*>(node->FindSubView(kControlTagName));
   nameControl->AssertValid();
   nameControl->maxCharacterCount = 0x18;
   CString editedName;

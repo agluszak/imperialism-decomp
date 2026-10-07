@@ -19,9 +19,9 @@ IMPLEMENT_DYNCREATE(TBook, TPicture)
 // FUNCTION: IMPERIALISM 0x0056f560
 void TBook::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
-  previousPageButton = ResolveControlByTag(kControlTagLcor);
+  previousPageButton = FindSubView(kControlTagLcor);
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xc, previousPageButton);
-  nextPageButton = ResolveControlByTag(kControlTagRcor);
+  nextPageButton = FindSubView(kControlTagRcor);
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xb, nextPageButton);
 }
 
@@ -33,7 +33,7 @@ void TBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) 
   }
   if (commandId == 10) {
     for (int tag = kControlTagPage; tag <= kControlTagPagf; ++tag) {
-      TPageView* pageControl = static_cast<TPageView*>(ResolveControlByTag(tag));
+      TPageView* pageControl = static_cast<TPageView*>(FindSubView(tag));
       if (pageControl != NULL) {
         pageControl->AssertValid();
         short currentPage = pageControl->currentPage;
@@ -53,7 +53,7 @@ void TBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) 
 
 // FUNCTION: IMPERIALISM 0x0056f6c0
 void TBook::ShowPage(int currentPage) {
-  TPageView* pageControl = static_cast<TPageView*>(ResolveControlByTag(kControlTagPage));
+  TPageView* pageControl = static_cast<TPageView*>(FindSubView(kControlTagPage));
   pageControl->AssertValid();
 
   if (currentPage == 1) {

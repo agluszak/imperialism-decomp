@@ -147,7 +147,7 @@ void TControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previous
 // FUNCTION: IMPERIALISM 0x0048e940
 char TControl::PointInBoundsAndActionable(CPoint* point) {
   CRect rect;
-  QueryContentBounds(&rect);
+  GetExtent(&rect);
   POINT p;
   p.x = point->x;
   p.y = point->y;
@@ -156,7 +156,7 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
 
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::BuildInsetContentRect(CRect* boundsBuffer) {
-  QueryContentBounds(boundsBuffer);
+  GetExtent(boundsBuffer);
   boundsBuffer->DeflateRect(&contentInsets);
 }
 
@@ -188,7 +188,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
 
   bool enabled = selectedNation == 0;
   for (int i = 0; i < 7; i++) {
-    TView* child = mapKey.ResolveControlByTag(kControlTagNam0 + i);
+    TView* child = mapKey.FindSubView(kControlTagNam0 + i);
     child->AssertValid();
     child->Show(enabled, 0);
   }

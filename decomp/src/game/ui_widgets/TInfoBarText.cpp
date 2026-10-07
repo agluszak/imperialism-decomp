@@ -16,7 +16,7 @@ TInfoBarText::~TInfoBarText() {}
 IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
 
 // FUNCTION: IMPERIALISM 0x005b66b0
-void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
+void TInfoBarText::HotText(CString text, RECT* layoutRect) {
   if (EqualRect(layoutRect, &this->layoutRect) == 0) {
     this->layoutRect.left = layoutRect->left;
     this->layoutRect.top = layoutRect->top;

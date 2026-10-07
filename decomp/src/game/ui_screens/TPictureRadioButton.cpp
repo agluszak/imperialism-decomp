@@ -36,10 +36,10 @@ void TPictureRadioButton::DefaultSize(bool refreshNow) {
   bottomRight.x = ownerLocalX + dimensions->x;
   bottomRight.y = ownerLocalY + dimensions->y;
   CRect bounds;
-  QueryBounds(&bounds);
+  GetFrame(&bounds);
   bounds.right = bounds.left + bottomRight.x - ownerLocalX;
   bounds.bottom = bounds.top + bottomRight.y - ownerLocalY;
-  ApplyBounds(&bounds, true);
+  SetFrame(&bounds, true);
 }
 
 // FUNCTION: IMPERIALISM 0x00570f40
@@ -47,7 +47,7 @@ void TPictureRadioButton::Select(bool isPressed, bool notifyParent) {
   if (IsEnabled()) {
     Show(isPressed, notifyParent);
     if (isPressed) {
-      static_cast<TCluster*>(ownerContext)->SetSelectedChildTagAndRefresh(controlTag);
+      static_cast<TCluster*>(ownerContext)->SetCurrentChoice(controlTag);
     }
     PrepareForDrawing();
     PaintOrInvalidateControl(0);

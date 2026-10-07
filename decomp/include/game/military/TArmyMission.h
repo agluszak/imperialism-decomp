@@ -60,8 +60,7 @@ public:
   void GetWeightedEquipage(float* vector) const; // 0x53cda0
 
   float ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit* candidateUnit); // 0x53d020
-  float
-  ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(TMilitaryUnit* candidateUnit); // 0x53d200
+  float GetWeightedSatifactionWithout(TMilitaryUnit* candidateUnit);                 // 0x53d200
 
 protected:
   void AccumulateOrderPriorityVector(float* vector) const;

@@ -54,7 +54,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   // 'name' localized building title (string group 0x2719, indexed by slot).
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
   TStaticText* nameCtrl =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   if (nameCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa78);
   }
@@ -65,7 +65,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
 
   // 'cost' localized label (string group 0x2738, index 0x14).
   TStaticText* costCtrl =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', 't')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('c', 'o', 's', 't')));
   if (costCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa7f);
   }
@@ -76,7 +76,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
 
   // 'capT' capacity label: expand the bracket template (0x2738/0x10) with the numeric value.
   TStaticText* capTCtrl =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'a', 'p', 'T')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('c', 'a', 'p', 'T')));
   capacityValue.Format(g_szDecimalFormat, currentCapacity);
   g_pSimMgr->GetString(0x2738, 0x10, &capacityTemplate);
   scanBracketExpressions(g_pSimMgr, &textBuffer, static_cast<LPCSTR>(capacityTemplate),
@@ -87,7 +87,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
 
   // 'warn' label — configured (or hidden) below depending on the upgrade-queued check.
   TStaticText* warnCtrl =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('w', 'a', 'r', 'n')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('w', 'a', 'r', 'n')));
   if (warnCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa95);
   }
@@ -115,7 +115,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
     warnCtrl->Show(1, 0);
 
     TControl* okayCtrl =
-        static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
+        static_cast<TControl*>(FindSubView(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
     if (okayCtrl == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xaac);
     }
@@ -127,15 +127,14 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   }
 
   // Route the cancel button and OK button through command tag 0x22.
-  TControl* cnclCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'n', 'c', 'l')));
+  TControl* cnclCtrl = static_cast<TControl*>(FindSubView(IMPERIALISM_FOURCC('c', 'n', 'c', 'l')));
   if (cnclCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xab7);
   }
   cnclCtrl->eventNumber = 0x22;
 
   TPictureButton* okButton =
-      static_cast<TPictureButton*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
+      static_cast<TPictureButton*>(FindSubView(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
   okButton->AssertValid();
   okButton->eventNumber = 0x22;
   okButton->clickSoundId = 0xbc7;

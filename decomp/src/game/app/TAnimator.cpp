@@ -45,10 +45,10 @@ void TAnimator::Install() {
 // FUNCTION: IMPERIALISM 0x004a0c30
 bool TAnimator::DoIdle(int action) {
   if (action == 1) {
-    if (mapUberPicture != 0 && mapUberPicture->HasActiveMapInteractionSelection()) {
+    if (mapUberPicture != 0 && mapUberPicture->IsAUnitSelected()) {
       ++overlayPhaseTickCount;
       if (overlayPhaseTickCount >= 15) {
-        mapUberPicture->PrepareAndRenderMapOverlayMode(g_bStrategicMapSelectionOverlayPhase);
+        mapUberPicture->DisplayInfo(g_bStrategicMapSelectionOverlayPhase);
         g_bStrategicMapSelectionOverlayPhase = !g_bStrategicMapSelectionOverlayPhase;
         overlayPhaseTickCount = 0;
       }
@@ -75,7 +75,7 @@ void TAnimator::AddAnimation(TAnimation* animationObject) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0d30
-TAnimation* TAnimator::FindRegisteredAnimationByTag(int tag) {
+TAnimation* TAnimator::FindAni(int tag) {
   if (this != 0) {
     CIterator cursor(registryList);
     TAnimation* animation = static_cast<TAnimation*>(cursor.Reset());
@@ -114,7 +114,7 @@ void TAnimator::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0e90
-void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, RECT clipRect) {
+void TAnimator::UpdateAniLocs(int dx, int dy, RECT clipRect) {
   if (this != 0) {
     CIterator cursor(registryList);
     TAnimation* entry = static_cast<TAnimation*>(cursor.Reset());
@@ -148,8 +148,8 @@ void TAnimator::FreeAllAnis() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0fa0
-void TAnimator::RemoveUiTransientRegistryObjectByTag(int tag) {
-  TAnimation* animation = FindRegisteredAnimationByTag(tag);
+void TAnimator::FreeAni(int tag) {
+  TAnimation* animation = FindAni(tag);
   if (animation != 0) {
     POSITION pos = registryList->listState.Find(animation, 0);
     if (pos != 0) {

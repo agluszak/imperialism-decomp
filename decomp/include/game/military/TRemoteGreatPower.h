@@ -25,10 +25,10 @@ public:
   void InitializeDiplomacyNotices(void) override;
   void ReplyToDiplomacyOffers(void) override;
   void SetEnemy(int targetNation) override;
-  void DeclareWarOnTargetForAlignedMinors(int targetNation) override;
+  void TellColoniesAboutNewEnemy(int targetNation) override;
   void SorryYouLose(void) override;
   void RecomputeAiExpansionAndMissionPressureScores(void) override;
-  void RefreshTrackedEntriesAndReplanAiDevelopment(int unused) override;
+  void ReassessMissions(int unused) override;
   bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   // Remote-only vtable slot 0x2c8; Mac symbol oracle: DoMovePhase().
   virtual void DoMovePhase(void);

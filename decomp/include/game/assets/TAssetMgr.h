@@ -23,9 +23,8 @@ public:
   // The third argument is unused by the Windows body but is part of the retail virtual ABI:
   // the caller pushes it before the movie-view and CString-reference arguments, and the callee
   // returns with RET 0x0c.
-  virtual void PlayMovieClipAndDispatchTurnStateFollowup(const CString& movieName,
-                                                         TMovieView* movieView,
-                                                         int unused); // slot 0x0e 0x5dfc10
+  virtual void OpenMovie(const CString& movieName, TMovieView* movieView,
+                         int unused); // slot 0x0e 0x5dfc10
 
   void GetScenarioFileName(int scenarioIndex, int mode, CString* outPath);
   CFile* LoadTableResourceStreamByName(CString name);
@@ -43,10 +42,10 @@ public:
   TAssetMgr();
   void EnsurePictWvDataGobLoadedBySlot(int languageTag);
   void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
-  unsigned char SaveMainDocumentToPathAndMarkSaved(const CString& savePath);
-  bool OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
+  unsigned char SaveTheGame(const CString& savePath);
+  bool LoadTheGame(const CString& loadPath);
   void SetPreferenceString(CString* value, const char* key);
-  void LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue);
+  void GetPreferenceInt(int* out, LPCSTR key, int defaultValue);
   void SetPreferenceInt(int value, LPCSTR key); // 0x005e02c0
   bool AreThereStrayClientSaves();
   int DeleteStrayClientSaves();

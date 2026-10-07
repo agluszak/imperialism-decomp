@@ -19,9 +19,9 @@ public:
   virtual POSITION AddOrderedEntry(TLineData* item); // slot 0x68 0x56fbb0
   virtual POSITION AddOptionEntry(TLineData* item);  // slot 0x69 0x56fbd0
   virtual void ResetSelectableOptionEntriesExceptColorAndOkay(); // slot 0x6a 0x56fbf0
-  virtual void BuildPageLayout();                                // slot 0x6b 0x56fc80
+  virtual void CalculatePageStarts();                            // slot 0x6b 0x56fc80
   virtual void ShowPage(short pageNumber);                       // slot 0x6c 0x56fdb0
-  virtual void ResetPageLayout();                                // slot 0x6d 0x56ff90
+  virtual void Clear();                                          // slot 0x6d 0x56ff90
 
   short pageCount;                // +0x60
   short currentPage;              // +0x62, ctor writes -1

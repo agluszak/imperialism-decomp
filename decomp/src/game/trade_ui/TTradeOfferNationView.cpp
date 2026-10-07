@@ -31,7 +31,7 @@ void TTradeOfferNationView::Draw(RECT* rectBuffer) {
   CString finalText;
   CString templateText;
   CString valueText;
-  CString offerNationName = g_pSimMgr->LoadNormalizedCredentialName(nationSlot);
+  CString offerNationName = g_pSimMgr->GetCountryName(nationSlot);
 
   short cellValue = g_pTradeMgr->categoryRows[categorySlot].tradeOfferCells[nationSlot];
   if (cellValue == 1) {

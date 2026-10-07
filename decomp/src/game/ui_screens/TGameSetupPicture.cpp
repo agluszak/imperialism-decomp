@@ -73,7 +73,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         g_pGlobalMapState->IMapMgr();
       }
       g_pSimMgr->CreateSimObjects(true);
-      g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
+      g_pGlobalMapState->InitializeMap();
       g_pGlobalMapState->LoadPoliticalMapRegionSubtypeTableFromResourceStream();
       for (short tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
         g_pGlobalMapState->AssignPictToTile(tileIndex);

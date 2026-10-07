@@ -195,7 +195,7 @@ void TTradeMgr::CalculateDealOrder() {
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
                 (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target)) &&
-                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target))) {
+                (!g_pDiplomacyTurnStateManager->AreAtWar(source, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
@@ -226,7 +226,7 @@ void TTradeMgr::CalculateDealOrder() {
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
                 (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget)) &&
-                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget))) {
+                (!g_pDiplomacyTurnStateManager->AreAtWar(source, secTarget))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(secTarget);
@@ -263,7 +263,7 @@ void TTradeMgr::CalculateDealOrder() {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
                 (cells[midRow * 0x50 + source] < 0) &&
                 (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target)) &&
-                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target))) {
+                (!g_pDiplomacyTurnStateManager->AreAtWar(source, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
@@ -294,7 +294,7 @@ void TTradeMgr::CalculateDealOrder() {
             do {
               if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[7 * 0x50 + source] < 0) &&
                   (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget)) &&
-                  (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget))) {
+                  (!g_pDiplomacyTurnStateManager->AreAtWar(source, secTarget))) {
                 TradeDealEntry event;
                 event.sourceNationSlot = static_cast<short>(source);
                 event.targetNationSlot = static_cast<short>(secTarget);
@@ -333,7 +333,7 @@ void TTradeMgr::CalculateDealOrder() {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
                 (cells[lastRow * 0x50 + source] < 0) &&
                 (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target)) &&
-                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target))) {
+                (!g_pDiplomacyTurnStateManager->AreAtWar(source, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
@@ -355,7 +355,7 @@ void TTradeMgr::CalculateDealOrder() {
                 (cells[lastRow * 0x50 + secondarySource] < 0) &&
                 (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(secondarySource,
                                                                           target)) &&
-                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(secondarySource, target))) {
+                (!g_pDiplomacyTurnStateManager->AreAtWar(secondarySource, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(secondarySource);
               event.targetNationSlot = static_cast<short>(target);
@@ -453,7 +453,7 @@ short TTradeMgr::GetAmtOffered(short item) {
 
 // FUNCTION: IMPERIALISM 0x005b8da0
 int TTradeMgr::GetDealPrice(short sourceSlot, short targetSlot, short scoreA, short scoreB) {
-  if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(sourceSlot, targetSlot)) {
+  if (g_pDiplomacyTurnStateManager->AreAtWar(sourceSlot, targetSlot)) {
     return -1;
   }
 
@@ -742,7 +742,7 @@ void TTradeMgr::UpdatePrice(short item, short value) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b97c0
-void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
+void TTradeMgr::StartTradePhase() {
   int slot = 0;
   TGreatPower** np = g_apNationStates;
   do {

@@ -27,12 +27,12 @@ void TMinisterView::StuffValues(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004f2d10
 char TMinisterView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  TView* backControl = ResolveControlByTag(kControlTagBack);
+  TView* backControl = FindSubView(kControlTagBack);
   if (backControl == 0) {
     FailNilPointerWithAssert(s_SourcePathUDiplomacyViews, 0xb7);
   }
 
-  TView* okayControl = backControl->ResolveControlByTag(kControlTagOkay);
+  TView* okayControl = backControl->FindSubView(kControlTagOkay);
   if (okayControl == 0) {
     FailNilPointerWithAssert(s_SourcePathUDiplomacyViews, 0xb9);
   }
@@ -78,7 +78,7 @@ TView* TMinisterView::OpenBook(int bookId) {
 
 // FUNCTION: IMPERIALISM 0x004f2ef0
 void TMinisterView::FreeDisplayArea() {
-  TView* dispControl = ResolveControlByTag(kControlTagDisp);
+  TView* dispControl = FindSubView(kControlTagDisp);
   if (dispControl != NULL) {
     dispControl->Free();
   }

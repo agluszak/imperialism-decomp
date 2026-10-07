@@ -104,7 +104,7 @@ bool TSoundPlayer::DoIdle(int action) {
     if (g_randomAudioCuePollCounter > kRandomCuePollInterval) {
       g_randomAudioCuePollCounter = 0;
       if (!g_cdAudioDevice.IsPlaybackActive()) {
-        this->SelectAndScheduleRandomAudioCue();
+        this->PlayRandomTrack();
       }
     }
   }
@@ -133,7 +133,7 @@ bool TSoundPlayer::FadeCD() {
 }
 
 // FUNCTION: IMPERIALISM 0x005935c0
-void TSoundPlayer::UpdateAudioPlaybackStateAndScheduleRandomCue() {
+void TSoundPlayer::CheckMusicStatus() {
   if (clearCuePoolsAfterFade && fadeStartTick == 0) {
     int n = audioCuePool->GetSize();
     if (n > 0) {
@@ -177,14 +177,14 @@ void TSoundPlayer::UpdateAudioPlaybackStateAndScheduleRandomCue() {
     if (g_randomAudioCuePollCounter > kRandomCuePollInterval) {
       g_randomAudioCuePollCounter = 0;
       if (!g_cdAudioDevice.IsPlaybackActive()) {
-        SelectAndScheduleRandomAudioCue();
+        PlayRandomTrack();
       }
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00593730
-void TSoundPlayer::ResetDualAudioCuePools() {
+void TSoundPlayer::ResetPlayList() {
   audioCuePool->RemoveAll();
   remainingRandomAudioCues->RemoveAll();
 }
@@ -196,7 +196,7 @@ void TSoundPlayer::AddToPlayList(int cueId) {
 }
 
 // FUNCTION: IMPERIALISM 0x00593790
-void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
+void TSoundPlayer::PlayRandomTrack() {
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0 ||
       IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return;
@@ -291,7 +291,7 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
   if (this->clearCuePoolsAfterFade && this->fadeStartTick == 0) {
     int pending = this->audioCuePool->GetSize();
     if (pending > 0) {
-      this->ResetDualAudioCuePools();
+      this->ResetPlayList();
     }
     if (this->cdAudioPlaybackActive) {
       g_cdAudioDevice.StopPlayback();
@@ -309,7 +309,7 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
       if (g_randomAudioCuePollCounter > kRandomCuePollInterval) {
         g_randomAudioCuePollCounter = 0;
         if (!g_cdAudioDevice.IsPlaybackActive()) {
-          this->SelectAndScheduleRandomAudioCue();
+          this->PlayRandomTrack();
         }
       }
     }
@@ -446,7 +446,7 @@ void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
 // Slot 0x2a — stop playback on all six global DirectSound channels.
 
 // FUNCTION: IMPERIALISM 0x005e4ff0
-void TSoundPlayer::StopAllSoundChannels() {
+void TSoundPlayer::StopAllSounds() {
   for (int i = 0; i < kDirectSoundChannelCount; ++i) {
     g_soundResourceManager.m_channels[i]->Stop();
   }
@@ -498,12 +498,12 @@ int TSoundPlayer::PlaySoundEffect(short sfxToken, int forwardedArg2, int forward
 }
 
 // FUNCTION: IMPERIALISM 0x005e5170
-int TSoundPlayer::PlaySoundAsynchronously(short soundId, short channel, short priority) {
+int TSoundPlayer::PlaySndAsynchChannel(short soundId, short channel, short priority) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e5190
-int TSoundPlayer::PlaySoundSynchronously(short soundId, short channel, short priority) {
+int TSoundPlayer::PlaySndSynchChannel(short soundId, short channel, short priority) {
   return 0;
 }
 

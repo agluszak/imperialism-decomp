@@ -22,7 +22,7 @@ public:
 
   // Picks a random cell of regionClassGrid[15][27] using two LCG values.
   // ABI: two pointer arguments, void return. slot 10 / 0x28
-  virtual void PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* outRow);
+  virtual void RandomZone(unsigned int* outColumn, unsigned int* outRow);
   virtual void RunMapGenerationAttempt();
   virtual int SelectGPZone(int cellIndex, int mode, int classIndex, int retryBudget);
   // Merges major-nation region groups; false on an incompatible neighbor group. slot 13 / 0x34
@@ -70,7 +70,7 @@ public:
     }
   }
   // Resolves the region-grid cell adjacent to cell in hex direction 0..5. slot 29 / 0x74
-  virtual int GetAdjacentRegionGridCell(int cell, int direction);
+  virtual int AdjacentZone(int cell, int direction);
   // Runs between region-grid expansion and terrain-feature placement. slot 30 / 0x78
   virtual void RandomizeRegionTemplatesAndSmoothOwnership();
   // Copies a region-template bank using a random source variant. slot 31 / 0x7c
@@ -113,7 +113,7 @@ public:
   void GenerateWaterRegionIdsBySeedAndNeighborPropagation();
 
   // Rotates the map columns so the peak city-tile-density band is recentred. 0x00529960.
-  void RotateMapColumnsByPeakWaterTileDensity();
+  void RepositionDateline();
 
   unsigned int RandomizeRegionTemplateBanksForMismatchedNeighborClasses(int coarseIndex,
                                                                         unsigned short baseClass,
@@ -167,7 +167,7 @@ public:
   char unusedHole25c[0x29c - 0x25c];
   int lastMinorSeedCandidate;
   char pad_2a0[0x2a1 - 0x2a0]; // +0x2a0
-  // +0x2a1 mode byte copied in by the BuildOrLoadGlobalMapStateForSession caller.
+  // +0x2a1 mode byte copied in by the GenerateMap caller.
   unsigned char modeByte2a1;
   char pad_2a2[2];
   int cityRegionCount; // +0x2a4 number of active city regions

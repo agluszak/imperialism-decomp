@@ -47,7 +47,7 @@ void TBattleUnitsView::StuffValues(BattleRecord& battleRecord, int participantIn
   }
 
   visibleColumnCount = 1;
-  BuildPageLayout();
+  CalculatePageStarts();
   ShowPage(1);
 }
 

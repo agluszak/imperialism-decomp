@@ -57,13 +57,13 @@ void TRemoteGreatPower::ReplyToDiplomacyOffers(void) {
 void TRemoteGreatPower::SetEnemy(int targetNation) {}
 
 // FUNCTION: IMPERIALISM 0x00541a20
-void TRemoteGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNation) {}
+void TRemoteGreatPower::TellColoniesAboutNewEnemy(int targetNation) {}
 
 // FUNCTION: IMPERIALISM 0x00541a40
 void TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541a60
-void TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {}
+void TRemoteGreatPower::ReassessMissions(int unused) {}
 
 // FUNCTION: IMPERIALISM 0x00541ab0
 TRemoteGreatPower::~TRemoteGreatPower() {}
@@ -76,7 +76,7 @@ void TRemoteGreatPower::PlopDownCity(short selectedRegion, const char* mapCellLa
   CString label(mapCellLabel);
   short cityRecordIndex =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(homeTileIndex)].cityRecordIndex;
-  g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &label);
+  g_pGlobalMapState->SetProvinceName(cityRecordIndex, &label);
 }
 
 // FUNCTION: IMPERIALISM 0x00541be0

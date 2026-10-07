@@ -15,8 +15,7 @@ IMPLEMENT_DYNCREATE(TAutomatedPlayDialog, TDialogView)
 
 // FUNCTION: IMPERIALISM 0x005b46c0
 void TAutomatedPlayDialog::Close() {
-  TNumberText* turnCount =
-      static_cast<TNumberText*>(ResolveControlByTag(kControlTagNumSp)); // 'num '
+  TNumberText* turnCount = static_cast<TNumberText*>(FindSubView(kControlTagNumSp)); // 'num '
   if (turnCount == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x34e);
   }

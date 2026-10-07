@@ -33,13 +33,13 @@ void TLandSaleEvent::Execute() {
   if (buyer == 0) {
     buyerName = g_szEmptyString;
   } else {
-    buyerName = g_pSimMgr->LoadNormalizedCredentialName(buyer->nationSlot);
+    buyerName = g_pSimMgr->GetCountryName(buyer->nationSlot);
   }
   TCountry* seller = g_apTerrainTypeDescriptorTable[sellerNationTag];
   if (seller == 0) {
     sellerName = g_szEmptyString;
   } else {
-    sellerName = g_pSimMgr->LoadNormalizedCredentialName(seller->nationSlot);
+    sellerName = g_pSimMgr->GetCountryName(seller->nationSlot);
   }
 
   if (g_pAmbitApplication->edgeScrollTarget != 0) {

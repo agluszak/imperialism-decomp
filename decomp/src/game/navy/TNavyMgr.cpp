@@ -384,7 +384,7 @@ void TNavyMgr::ScuttleEverything() {
     orderQueueHead->Free();
   }
   orderQueueHead = NULL;
-  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(NULL);
+  g_pActiveMapOrderContext->AssembleUIForce(NULL);
 }
 
 // FUNCTION: IMPERIALISM 0x00557040
@@ -511,7 +511,7 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
 
 // FUNCTION: IMPERIALISM 0x00557560
 void TNavyMgr::MakeSureAllShipsHaveOrders() {
-  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  g_pActiveMapOrderContext->AssembleUIForce(0);
   TZone* zone = g_pMapActionContextListHead;
   if (zone == 0) {
     return;
@@ -521,11 +521,11 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
       if (g_apTerrainTypeDescriptorTable[nation] == 0) {
         continue;
       }
-      TTaskForce* entry = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(nation);
+      TTaskForce* entry = zone->AssembleTaskForce(nation);
       if (entry == 0) {
         continue;
       }
-      if (zone->QueryPortZoneCapability()) {
+      if (zone->IsPortZone()) {
         TMapOrderChildLinkNode* node = entry->shipList;
         if (node != 0) {
           do {
@@ -536,7 +536,7 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
         }
         entry->shipOrders = 8;
         entry->CommitToOrders();
-        entry = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(nation);
+        entry = zone->AssembleTaskForce(nation);
       }
       if (entry == 0) {
         continue;
@@ -548,12 +548,12 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
           node = node->next;
         } while (node != 0);
       }
-      if (entry->location->QueryPortZoneCapability()) {
+      if (entry->location->IsPortZone()) {
         entry->shipOrders = 7;
         entry->FreeAvailables();
         entry->AssertValid();
         if (g_pNavyOrderManager->CommitForce(entry)) {
-          g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+          g_pActiveMapOrderContext->CommitForce(entry);
         }
       } else {
         node = entry->shipList;
@@ -580,7 +580,7 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
         }
         entry->AssertValid();
         if (g_pNavyOrderManager->CommitForce(entry)) {
-          g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+          g_pActiveMapOrderContext->CommitForce(entry);
         }
       }
     }
@@ -630,8 +630,7 @@ void TNavyMgr::CarryOutOrders() {
       for (TTaskForce* other = orderQueueHead; other != NULL; other = other->nextForce) {
         if (other->location != entry->location)
           continue;
-        if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(other->nation,
-                                                                                  entry->nation)) {
+        if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(other->nation, entry->nation)) {
           continue;
         }
         if (other->shipOrders != 6)
@@ -657,8 +656,7 @@ void TNavyMgr::CarryOutOrders() {
       if (entry->defeated != 0)
         continue;
       for (TTaskForce* other = orderQueueHead; other != NULL; other = other->nextForce) {
-        if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(other->nation,
-                                                                                  entry->nation)) {
+        if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(other->nation, entry->nation)) {
           continue;
         }
         bool ownerMatch =
@@ -695,8 +693,7 @@ void TNavyMgr::CarryOutOrders() {
       if (entry->defeated != 0)
         continue;
       for (TTaskForce* other = orderQueueHead; other != NULL; other = other->nextForce) {
-        if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(other->nation,
-                                                                                  entry->nation)) {
+        if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(other->nation, entry->nation)) {
           continue;
         }
         if (other->location != entry->location)
@@ -723,8 +720,7 @@ void TNavyMgr::CarryOutOrders() {
       if (entry->defeated != 0)
         continue;
       for (TTaskForce* other = orderQueueHead; other != NULL; other = other->nextForce) {
-        if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(other->nation,
-                                                                                  entry->nation)) {
+        if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(other->nation, entry->nation)) {
           continue;
         }
         if (other->location != entry->location)
@@ -780,7 +776,7 @@ void TNavyMgr::CarryOutOrders() {
     }
   }
 
-  g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
+  g_pActiveMapOrderContext->UpdateOccupants();
 }
 
 // FUNCTION: IMPERIALISM 0x00557e10
@@ -866,12 +862,11 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
       activeContextMatch = (entry->location == *slot);
     }
 
-    bool relatedToNation =
-        entry->nation != nation &&
-        g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(entry->nation, nation);
-    bool relatedToPortOwner = portOwnerNation >= 7 && entry->shipOrders == 6 &&
-                              g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-                                  entry->nation, portOwnerNation);
+    bool relatedToNation = entry->nation != nation &&
+                           g_pDiplomacyTurnStateManager->AreInEstablishedWar(entry->nation, nation);
+    bool relatedToPortOwner =
+        portOwnerNation >= 7 && entry->shipOrders == 6 &&
+        g_pDiplomacyTurnStateManager->AreInEstablishedWar(entry->nation, portOwnerNation);
 
     if (!(contextMatch || activeContextMatch) || !(relatedToNation || relatedToPortOwner)) {
       continue;
@@ -921,8 +916,7 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
 
     if (nationEntryUnavailable) {
       eligible = true;
-    } else if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-                   nation, entry->nation)) {
+    } else if (g_pDiplomacyTurnStateManager->AreInEstablishedWar(nation, entry->nation)) {
       int candidateStrength = 0;
       for (TMapOrderChildLinkNode* candidateNode = entry->shipList; candidateNode != NULL;
            candidateNode = candidateNode->next) {
@@ -981,8 +975,7 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
     outResult->offerNationCode = entry->nation;
     outResult->selectedEntry = entry;
     outResult->directionFlags = flags;
-    if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation,
-                                                                              entry->nation)) {
+    if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(nation, entry->nation)) {
       return true;
     }
     short roll = static_cast<short>(rand() % 100);
@@ -1012,7 +1005,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
       continue;
     }
     for (short slot = 0; slot < 0x11; ++slot) {
-      short entryCount = state->GetTrackedSlotEntryCountLow(slot);
+      short entryCount = state->GetNumDealsIn(slot);
       for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
         short entryKind = 0;
         short entryValue = 0;
@@ -1259,16 +1252,16 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
 
         if (acceptNation < kMajorNationCount) {
           if (movedTrackedCounter) {
-            g_apNationStates[acceptNation]->SetDealPayloadForTarget(slot, offerNation, -123456);
+            g_apNationStates[acceptNation]->DealInterupted(slot, offerNation, -123456);
           } else if (matchesOfferPass) {
-            g_apNationStates[acceptNation]->SetDealPayloadForTarget(slot, offerNation, -123457);
+            g_apNationStates[acceptNation]->DealInterupted(slot, offerNation, -123457);
           }
         }
         if (offerNation < kMajorNationCount) {
           if (movedTrackedCounter) {
-            g_apNationStates[offerNation]->SetDealPayloadForTarget(slot, acceptNation, -123456);
+            g_apNationStates[offerNation]->DealInterupted(slot, acceptNation, -123456);
           } else if (matchesOfferPass) {
-            g_apNationStates[offerNation]->SetDealPayloadForTarget(slot, acceptNation, -123459);
+            g_apNationStates[offerNation]->DealInterupted(slot, acceptNation, -123459);
           }
         }
       }
@@ -1295,7 +1288,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
   }
 
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() == kStrategicTerrainWater) {
-    TZone* context = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    TZone* context = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
     bool canResolve = false;
     if (context != NULL && !entry->IsEmpty()) {
       bool hasActiveChild = false;
@@ -1317,7 +1310,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
           }
         }
         short threshold = minimumWeight != 10000 ? static_cast<short>(minimumWeight) : 0;
-        short distance = entry->location->GetCachedMapActionContextDistanceOrRecompute(context);
+        short distance = entry->location->GetDistanceTo(context);
         canResolve = distance <= threshold;
       }
     }
@@ -1340,7 +1333,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
       }
     }
     if (canResolve) {
-      bool relationOutOfDate = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+      bool relationOutOfDate = g_pDiplomacyTurnStateManager->AreInEstablishedWar(
           entry->nation, province->ownerNationCode);
       return g_awMapContextActionLabelTokenByCommand[relationOutOfDate ? 16 : 1];
     }
@@ -1358,8 +1351,8 @@ bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags) {
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
   switch (actionCode) {
   case 9: {
-    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    mapUberPicture->SetActiveMapOrderEntry(zone);
+    TZone* zone = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
+    mapUberPicture->FocusOnZone(zone);
     return true;
   }
   case 2:
@@ -1369,7 +1362,7 @@ bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags) {
   case 6:
   case 7:
   case 8: {
-    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    TZone* zone = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
     mapUberPicture->NavalIntelligenceDialog(zone, static_cast<short>(actionCode - 2),
                                             g_pCachedMapActionContext);
     return true;
@@ -1403,12 +1396,12 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
     commandId = 0;
   } else if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() ==
              kStrategicTerrainWater) {
-    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    TZone* ctx = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
     bool queueable;
     if (ctx == NULL) {
       queueable = false;
     } else if (!entry->NoSelection()) {
-      short dist = entry->location->GetCachedMapActionContextDistanceOrRecompute(ctx);
+      short dist = entry->location->GetDistanceTo(ctx);
       queueable = dist <= static_cast<short>(entry->GetWorstSpeed());
     } else {
       queueable = false;
@@ -1430,34 +1423,34 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
     entry->shipOrders = 3;
     entry->FreeAvailables();
     if (g_pNavyOrderManager->CommitForce(entry)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      g_pActiveMapOrderContext->CommitForce(entry);
       return 1;
     }
     break;
   case 0x0d: {
-    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    TZone* ctx = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
     entry->shipOrders = 1;
     entry->target = ctx;
     entry->FreeAvailables();
     if (g_pNavyOrderManager->CommitForce(entry)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      g_pActiveMapOrderContext->CommitForce(entry);
       return 1;
     }
     break;
   }
   case 0x0e: {
-    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    TZone* ctx = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
     entry->shipOrders = 6;
     entry->target = ctx;
     entry->FreeAvailables();
     if (g_pNavyOrderManager->CommitForce(entry)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      g_pActiveMapOrderContext->CommitForce(entry);
       return 1;
     }
     break;
   }
   case 0x0f: {
-    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    TZone* ctx = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
     entry->shipOrders = 1;
     entry->target = ctx;
     entry->FreeAvailables();
@@ -1481,7 +1474,7 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
       committed = true;
     }
     if (committed) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      g_pActiveMapOrderContext->CommitForce(entry);
       return 1;
     }
     break;
@@ -1491,7 +1484,7 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
     entry->target = GetProvinceByTileIndex(nTileIndex);
     entry->FreeAvailables();
     if (g_pNavyOrderManager->CommitForce(entry)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      g_pActiveMapOrderContext->CommitForce(entry);
       return 1;
     }
     break;

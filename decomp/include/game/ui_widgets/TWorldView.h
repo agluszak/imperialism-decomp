@@ -38,18 +38,15 @@ public:
 
   virtual void SetMapOverlayModeAndRenderPreview(unsigned char overlayMode);
   virtual void RenderMapContextOverlayWithScopedClipAndSurface();
-  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,
-                                              int flag, short tileIndex);
-  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
-                                                             int flag);
+  virtual void DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, int flag,
+                        short tileIndex);
+  virtual void DrawGarrison(short tileIndex, CRect* dstRect, int flag);
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              bool altOverlay);
   virtual void FrameCursorArea();
-  virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                   const CPoint* viewportOrigin,
-                                                                   short* outVerticalOffset,
-                                                                   short* outHorizontalOffset,
-                                                                   int projectionScale);
+  virtual void TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
+                                  short* outVerticalOffset, short* outHorizontalOffset,
+                                  int projectionScale);
   virtual short PointToTileID(int unusedArg);
   virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
                             short& outRegionBand);
@@ -64,7 +61,7 @@ public:
   virtual short GetCentertile();
   virtual void SetMapViewTileIndex(int tileIndex);
   virtual void SetMapViewCellCoordinates(int column, int row);
-  virtual void RefreshMapTile(short tileIndex);
+  virtual void ImmediateDrawTile(short tileIndex);
   virtual bool IsTileVisible(short tileIndex);
   virtual void NoticeTile(int tileIndex);
 };

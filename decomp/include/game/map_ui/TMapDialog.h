@@ -50,18 +50,15 @@ public:
 
   void Draw(RECT* rectBuffer) override;
 
-  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,
-                                              int flag, short tileIndex) override;
-  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
-                                                             int flag) override;
+  virtual void DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, int flag,
+                        short tileIndex) override;
+  virtual void DrawGarrison(short tileIndex, CRect* dstRect, int flag) override;
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              bool altOverlay) override;
   virtual void FrameCursorArea() override;
-  virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                   const CPoint* viewportOrigin,
-                                                                   short* outVerticalOffset,
-                                                                   short* outHorizontalOffset,
-                                                                   int projectionScale) override;
+  virtual void TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
+                                  short* outVerticalOffset, short* outHorizontalOffset,
+                                  int projectionScale) override;
   virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
                             short& outRegionBand) override;
   virtual void CenterOn(int tileIndex) override;
@@ -70,20 +67,19 @@ public:
 
   virtual void DoPostCreate(int arg) override;
 
-  void RefreshMapTile(short tileIndex) override;
+  void ImmediateDrawTile(short tileIndex) override;
   bool IsTileVisible(short tileIndex) override;
   void SetMapViewTileIndex(int tileIndex) override;
   void SetMapViewCellCoordinates(int column, int row) override;
   virtual void FrameNeighbors(short* neighborTiles);
   // Resets the map-tile sprite variants and all 90 transient tile-marker slots to sentinels.
-  virtual void ResetAllTileMarkersToSentinel(); // 0x0051e1a0
-  virtual void ReleaseTileMarkerForTile(short tileIndex);
+  virtual void FlushCache(); // 0x0051e1a0
+  virtual void DeCache(short tileIndex);
   virtual void InvalidateTile(short tileIndex);
   virtual void DrawOneTile(short tileIndex, short screenY, short screenX);
-  virtual void DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
-                                              short tileIndex);
-  virtual void DrawCityBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
-                                            short tileIndex);
+  virtual void DrawLandBorders(unsigned char borderMask, int screenX, int screenY, short tileIndex);
+  virtual void DrawProvinceBorders(unsigned char borderMask, int screenX, int screenY,
+                                   short tileIndex);
   virtual void DrawBorder(short relationLevel, int originX, int originY, int nationA, int nationB);
   virtual void DrawMapDialogGuidePatternSetA(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetB(int originX, int originY, short variant);
@@ -99,38 +95,38 @@ public:
   // Mac CodeWarrior identity: the argument-taking TMapDialog::DrawSeaZoneBorders overload.
   virtual void DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int screenY,
                                   short tileIndex);
-  virtual void DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2);
+  virtual void DrawRatLine(short col1, int row1, short col2, int row2);
   virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
                                              short tileIndex);
   virtual void DrawGeneratedMapRouteSegmentsAndResetFillColor();
   // Mac CodeWarrior identity: TMapDialog::DrawTile(short, short, short).
   virtual void DrawTile(short tileIndex, short screenX, short screenY);
   // Exact 64x64 pixel wedges used to blend a neighboring terrain sprite into the base tile.
-  virtual void CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigned char* dest,
-                                                   short srcStride, short destStride);
-  virtual void CopyTerrainTransitionMaskDirection1(unsigned char* src, unsigned char* dest,
-                                                   short srcStride, short destStride);
-  virtual void CopyTerrainTransitionMaskDirection0(unsigned char* src, unsigned char* dest,
-                                                   short srcStride, short destStride);
-  virtual void CopyTerrainTransitionMaskDirection5(unsigned char* src, unsigned char* dest,
-                                                   short srcStride, short destStride);
-  virtual void CopyTerrainTransitionMaskDirection4(unsigned char* src, unsigned char* dest,
-                                                   short srcStride, short destStride);
-  virtual void CopyTerrainTransitionMaskDirection3(unsigned char* src, unsigned char* dest,
-                                                   short srcStride, short destStride);
+  virtual void QuickWedgeSE(unsigned char* src, unsigned char* dest, short srcStride,
+                            short destStride);
+  virtual void QuickWedgeE(unsigned char* src, unsigned char* dest, short srcStride,
+                           short destStride);
+  virtual void QuickWedgeNE(unsigned char* src, unsigned char* dest, short srcStride,
+                            short destStride);
+  virtual void QuickWedgeNW(unsigned char* src, unsigned char* dest, short srcStride,
+                            short destStride);
+  virtual void QuickWedgeW(unsigned char* src, unsigned char* dest, short srcStride,
+                           short destStride);
+  virtual void QuickWedgeSW(unsigned char* src, unsigned char* dest, short srcStride,
+                            short destStride);
   // Coast joins occupy the corner between two adjacent hex directions.
-  virtual void CopyCoastCornerMaskBetweenDirections1And2(unsigned char* src, unsigned char* dest,
-                                                         short srcStride, short destStride);
-  virtual void CopyCoastCornerMaskBetweenDirections0And1(unsigned char* src, unsigned char* dest,
-                                                         short srcStride, short destStride);
-  virtual void CopyCoastCornerMaskBetweenDirections2And3(unsigned char* src, unsigned char* dest,
-                                                         short srcStride, short destStride);
-  virtual void CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, unsigned char* dest,
-                                                         short srcStride, short destStride);
-  virtual void CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, unsigned char* dest,
-                                                         short srcStride, short destStride);
-  virtual void CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, unsigned char* dest,
-                                                         short srcStride, short destStride);
+  virtual void CoastWedgeSE(unsigned char* src, unsigned char* dest, short srcStride,
+                            short destStride);
+  virtual void CoastWedgeNE(unsigned char* src, unsigned char* dest, short srcStride,
+                            short destStride);
+  virtual void CoastWedgeS(unsigned char* src, unsigned char* dest, short srcStride,
+                           short destStride);
+  virtual void CoastWedgeN(unsigned char* src, unsigned char* dest, short srcStride,
+                           short destStride);
+  virtual void CoastWedgeNW(unsigned char* src, unsigned char* dest, short srcStride,
+                            short destStride);
+  virtual void CoastWedgeSW(unsigned char* src, unsigned char* dest, short srcStride,
+                            short destStride);
   // Mac CodeWarrior identity: TMapDialog::NewCopy64(unsigned char*, unsigned char*, short, short).
   virtual void NewCopy64(unsigned char* src, unsigned char* dest, short srcStride,
                          short destStride);

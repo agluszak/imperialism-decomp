@@ -22,7 +22,7 @@ TFileStream::TFileStream() {
 TFileStream::~TFileStream() {}
 
 // FUNCTION: IMPERIALISM 0x00489160
-void TFileStream::SetBackingArchive(ArchiveStreamAdapter* backingArchive) {
+void TFileStream::IFileStream(ArchiveStreamAdapter* backingArchive) {
   backingArchiveOrStream = backingArchive;
 }
 

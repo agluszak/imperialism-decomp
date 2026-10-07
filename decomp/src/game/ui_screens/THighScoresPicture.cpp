@@ -24,9 +24,9 @@ IMPLEMENT_DYNCREATE(THighScoresPicture, TNoHilitePicture)
 void THighScoresPicture::DoPostCreate(int arg) {
   TNoHilitePicture::DoPostCreate(arg);
 
-  g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+  g_pSfxPlaybackSystem->ResetPlayList();
   g_pSfxPlaybackSystem->AddToPlayList(0xb);
-  g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+  g_pSfxPlaybackSystem->PlayRandomTrack();
 
   CString path;
   AssignScoresDatPathToSharedString(&path);
@@ -101,8 +101,8 @@ void THighScoresPicture::Draw(RECT* rectBuffer) {
 void THighScoresPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
     g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
-    g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+    g_pSfxPlaybackSystem->ResetPlayList();
     g_pSfxPlaybackSystem->AddToPlayList(0xb);
-    g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+    g_pSfxPlaybackSystem->PlayRandomTrack();
   }
 }

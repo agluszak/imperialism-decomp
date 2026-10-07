@@ -49,7 +49,7 @@ TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 void TSetupRandomMapPicture::PickCountry(short nationSlot) {
   selectedNationSlot = nationSlot;
 
-  TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
+  TGWorldPartView* flagView = static_cast<TGWorldPartView*>(FindSubView(kControlTagFlag));
   flagView->AssertValid();
   int flagStripRight = (selectedNationSlot + 1) * flagView->frameWidth;
   flagView->sourceRect.left = selectedNationSlot * flagView->frameWidth;
@@ -58,14 +58,14 @@ void TSetupRandomMapPicture::PickCountry(short nationSlot) {
   flagView->sourceRect.bottom = flagView->frameHeight;
   flagView->RefreshControl();
 
-  TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
+  TPicture* coatView = static_cast<TPicture*>(FindSubView(kControlTagCoat));
   coatView->AssertValid();
   coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot + 0x11c6), true);
 
   if (!countryControlReady) {
     bool sessionInactive = g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone;
     if (sessionInactive) {
-      TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
+      TEditText* countryControl = static_cast<TEditText*>(FindSubView(kControlTagCoun));
       countryControl->AssertValid();
     }
   }
@@ -76,7 +76,7 @@ void TSetupRandomMapPicture::RecheckCountryName() {
   if (!countryControlReady) {
     bool sessionInactive = g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone;
     if (sessionInactive) {
-      TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
+      TEditText* countryControl = static_cast<TEditText*>(FindSubView(kControlTagCoun));
       countryControl->AssertValid();
     }
   }
@@ -101,22 +101,21 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
       // LIBRARY: rand (0x005e83f0)
       selectedNationSlot = static_cast<short>(rand() % 7);
     }
-    TMapPreviewView* mapPreview =
-        static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
+    TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(FindSubView(kControlTagMapP));
     mapPreview->AssertValid();
     mapPreview->pendingNation = selectedNationSlot;
   }
 
   RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagCoun, 0, 0xc, 0x2b6b, 1,
                                                     g_szEmptyString);
-  TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
+  TEditText* countryControl = static_cast<TEditText*>(FindSubView(kControlTagCoun));
   countryControl->AssertValid();
   countryControl->maxCharacterCount = 0xc;
 
   g_bMultiplayerScenarioSetupActive = false;
   g_pSimMgr->CreateSimObjects(true);
 
-  g_pCursorControlPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagHot));
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(FindSubView(kControlTagHot));
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->SetTextStyle(0, 0xe, 0x2b6b);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
@@ -139,20 +138,19 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x1b, kControlTagFlag);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x1c, kControlTagCoat);
 
-  TDropShadowText* countryTitle =
-      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTcou));
+  TDropShadowText* countryTitle = static_cast<TDropShadowText*>(FindSubView(kControlTagTcou));
   countryTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(countryTitle, 0, 0xe, 0x2b6a, 0x2b6c);
   countryTitle->SetTextWithStrListID(0x2737, 0x1e, false);
 
-  TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
+  TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(FindSubView(kControlTagMapP));
   mapPreview->AssertValid();
   mapPreview->selectedNation = selectedNationSlot;
 
   GroundControlToMajorTom(1);
   g_pCursorControlPanel->SetJustification(1, false);
 
-  TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
+  TGWorldPartView* flagView = static_cast<TGWorldPartView*>(FindSubView(kControlTagFlag));
   flagView->AssertValid();
   flagView->sourceSurface = g_pMacViewMgr->flagWorld;
   flagView->sourceRect.left = selectedNationSlot * flagView->frameWidth;
@@ -176,35 +174,33 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
                                                     g_cstrCountryNameSettingValue);
 
   TRadioTextCluster* difficultyCluster =
-      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagDiff));
+      static_cast<TRadioTextCluster*>(FindSubView(kControlTagDiff));
   difficultyCluster->AssertValid();
   difficultyCluster->SetSelectedTextOptionByTag(kControlTagDif0 + g_pSimMgr->preferenceValues[11],
                                                 false);
   difficultyCluster->frameThemeCode = 0x2b6b;
 
-  TDropShadowText* difficultyTitle =
-      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagDift));
+  TDropShadowText* difficultyTitle = static_cast<TDropShadowText*>(FindSubView(kControlTagDift));
   difficultyTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(difficultyTitle, 0, 0xe, 0x2b6a, 0x2b6c);
   CString labelText;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 2);
   difficultyTitle->SetTextAndMaybeRefresh(&labelText, false);
 
-  TDropShadowText* namesTitle = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTnam));
+  TDropShadowText* namesTitle = static_cast<TDropShadowText*>(FindSubView(kControlTagTnam));
   namesTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(namesTitle, 0, 0xe, 0x2b6a, 0x2b6c);
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 3);
   namesTitle->SetTextAndMaybeRefresh(&labelText, false);
 
-  TRadioTextCluster* namesCluster =
-      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagName));
+  TRadioTextCluster* namesCluster = static_cast<TRadioTextCluster*>(FindSubView(kControlTagName));
   namesCluster->AssertValid();
   namesCluster->SetSelectedTextOptionByTag(
       g_pSimMgr->preferenceValues[13] != 0 ? kControlTagHist : kControlTagRand, false);
   namesCluster->frameThemeCode = 0x2b6b;
 
   TRadioText* historicalNames =
-      static_cast<TRadioText*>(namesCluster->ResolveControlByTag(kControlTagHist));
+      static_cast<TRadioText*>(namesCluster->FindSubView(kControlTagHist));
   historicalNames->AssertValid();
   ApplyUiTextStyleAndThemeFlags(historicalNames, 0, 0xc, 0x2b6b, 0x2b6c);
   historicalNames->SetJustification(1, false);
@@ -212,8 +208,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   historicalNames->SetTextAndMaybeRefresh(&labelText, false);
   historicalNames->controlValue = kControlTagHist;
 
-  TRadioText* randomNames =
-      static_cast<TRadioText*>(namesCluster->ResolveControlByTag(kControlTagRand));
+  TRadioText* randomNames = static_cast<TRadioText*>(namesCluster->FindSubView(kControlTagRand));
   randomNames->AssertValid();
   ApplyUiTextStyleAndThemeFlags(randomNames, 0, 0xc, 0x2b6b, 0x2b6c);
   randomNames->SetJustification(1, false);
@@ -222,8 +217,8 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   randomNames->controlValue = kControlTagRand;
 
   for (int difficulty = 0; difficulty < 5; ++difficulty) {
-    TRadioText* option = static_cast<TRadioText*>(
-        difficultyCluster->ResolveControlByTag(kControlTagDif0 + difficulty));
+    TRadioText* option =
+        static_cast<TRadioText*>(difficultyCluster->FindSubView(kControlTagDif0 + difficulty));
     option->AssertValid();
     ApplyUiTextStyleAndThemeFlags(option, 0, 0xc, 0x2b6b, 0x2b6c);
     option->SetJustification(1, false);
@@ -244,12 +239,12 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     selectedNationSlot = static_cast<short>(mapPreview->selectedNation);
 
-    TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
+    TGWorldPartView* flagView = static_cast<TGWorldPartView*>(FindSubView(kControlTagFlag));
     flagView->AssertValid();
     flagView->SetSourceRectFromGridCell(selectedNationSlot, 0);
     flagView->RefreshControl();
 
-    TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
+    TPicture* coatView = static_cast<TPicture*>(FindSubView(kControlTagCoat));
     coatView->AssertValid();
     coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot + 0x11c6), true);
 
@@ -257,7 +252,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
     mapPreview->EnhancePhoto();
 
     CRect previewBounds;
-    mapPreview->QueryContentBounds(&previewBounds);
+    mapPreview->GetExtent(&previewBounds);
     ScopedMapQuickDrawContext mapContext(mapPreview);
     mapPreview->Draw(&previewBounds);
   }
@@ -302,7 +297,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
 
 // FUNCTION: IMPERIALISM 0x00577e40
 void TSetupRandomMapPicture::StartGame() {
-  TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
+  TEditText* countryControl = static_cast<TEditText*>(FindSubView(kControlTagCoun));
   countryControl->AssertValid();
 
   CString countryText;
@@ -329,17 +324,16 @@ void TSetupRandomMapPicture::StartGame() {
   g_cstrCountryNameSettingValue += countryText;
 
   TRadioTextCluster* difficultyCluster =
-      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagDiff));
+      static_cast<TRadioTextCluster*>(FindSubView(kControlTagDiff));
   difficultyCluster->AssertValid();
   TControl* selectedDifficulty =
-      static_cast<TControl*>(ResolveControlByTag(difficultyCluster->selectedTag));
+      static_cast<TControl*>(FindSubView(difficultyCluster->selectedTag));
   selectedDifficulty->AssertValid();
   eDifficulty difficulty = static_cast<eDifficulty>(selectedDifficulty->controlValue);
   g_pSimMgr->SetDifficultyLevel(difficulty);
   g_pSimMgr->preferenceValues[11] = static_cast<short>(difficulty);
 
-  TRadioTextCluster* nameCluster =
-      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagName));
+  TRadioTextCluster* nameCluster = static_cast<TRadioTextCluster*>(FindSubView(kControlTagName));
   nameCluster->AssertValid();
   g_pSimMgr->useLocalizedNameTables = nameCluster->selectedTag != kControlTagRand;
   g_pSimMgr->preferenceValues[13] = static_cast<short>(g_pSimMgr->useLocalizedNameTables);
@@ -399,25 +393,25 @@ void TSetupRandomMapPicture::DoKeyEvent(TToolboxEvent* event) {
 
 // FUNCTION: IMPERIALISM 0x00578330
 void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
-  TInfoBarText* infoBar = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagHot));
+  TInfoBarText* infoBar = static_cast<TInfoBarText*>(FindSubView(kControlTagHot));
   infoBar->AssertValid();
   CString generatingText;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&generatingText, 0x2758, 7);
   infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&generatingText, true);
   infoBar->CenterVertically(true);
 
-  TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
+  TEditText* countryControl = static_cast<TEditText*>(FindSubView(kControlTagCoun));
   countryControl->AssertValid();
   countryControl->Show(0, 0);
 
-  TView* settingsPanel = ResolveControlByTag(kControlTagStuf);
+  TView* settingsPanel = FindSubView(kControlTagStuf);
   settingsPanel->AssertValid();
   CPoint hiddenSettingsPanelPosition(0x7d0, 0x898);
   CPoint visibleSettingsPanelPosition(0x120, 4);
   settingsPanel->Locate(hiddenSettingsPanelPosition, false);
 
   SetPictureRsrcID(0x1195, true);
-  TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
+  TPicture* coatView = static_cast<TPicture*>(FindSubView(kControlTagCoat));
   coatView->AssertValid();
   coatView->SetPictureRsrcID(0x11cd, true);
 
@@ -433,7 +427,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   g_pActiveRandomMapSetupPicture = 0;
   SpinYourGlobe();
 
-  TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
+  TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(FindSubView(kControlTagMapP));
   mapPreview->AssertValid();
   mapPreview->TakeSatellitePhoto(0);
   mapPreview->EnhancePhoto();
@@ -462,13 +456,13 @@ void TSetupRandomMapPicture::SpinYourGlobe() {
     globeFrame = 0;
   }
 
-  TNoHilitePicture* globe = static_cast<TNoHilitePicture*>(ResolveControlByTag(kControlTagGlob));
+  TNoHilitePicture* globe = static_cast<TNoHilitePicture*>(FindSubView(kControlTagGlob));
   globe->AssertValid();
   globe->SetPictureRsrcID(static_cast<short>(globeFrame + 0x11d0), false);
 
   ScopedMapQuickDrawContext globeContext(globe);
   globe->PrepareForDrawing();
   CRect bounds;
-  globe->QueryBounds(&bounds);
+  globe->GetFrame(&bounds);
   globe->Draw(&bounds);
 }

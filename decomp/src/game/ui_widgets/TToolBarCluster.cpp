@@ -107,14 +107,14 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
         g_pSimMgr->mode == kGamePhaseEndTurn) {
       g_pViewMgr->DispatchUiRuntimeMessage101AAndRefreshActiveView();
     } else {
-      g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+      g_pHelpMgr->ShowLatestHelp();
     }
     break;
   case kControlTagDefe:
   case kControlTagMove:
   case kControlTagOpt1:
   case kControlTagOpt2: {
-    TView* dialogRoot = ownerContext->ResolveControlByTag(kControlTagDialog);
+    TView* dialogRoot = ownerContext->FindSubView(kControlTagDialog);
     dialogRoot->AssertValid();
     dialogRoot->DoEvent(10, sourceHandler, event);
     break;
@@ -125,14 +125,14 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 // FUNCTION: IMPERIALISM 0x005851c0
 void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                           RgnHandle hitArg) {
-  if (ResolveControlByTag(kManifestTagCivi) != 0) {
+  if (FindSubView(kManifestTagCivi) != 0) {
     CString label(g_pSmallViewsEmptyText);
 
-    TView* mainControl = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
+    TView* mainControl = g_pDisplayMgr->activeDialog->FindSubView(kControlTagMain);
     if (mainControl == 0) {
       FailNilPointerInUSmallViews(0x406);
     }
-    if (mainControl->ResolveControlByTag(kControlTagGOLD) == 0) {
+    if (mainControl->FindSubView(kControlTagGOLD) == 0) {
       FailNilPointerInUSmallViews(0x409);
     }
 
@@ -154,7 +154,7 @@ void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint
       }
     }
 
-    TView* cursControl = mainControl->ResolveControlByTag(kControlTagCurs);
+    TView* cursControl = mainControl->FindSubView(kControlTagCurs);
     if (cursControl == 0) {
       FailNilPointerInUSmallViews(0x448);
     }
@@ -167,51 +167,51 @@ void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint
 void TToolBarCluster::AddInfoBehaviors() {
   CString text;
 
-  TView* mainControl = GetWindow()->ResolveControlByTag(kControlTagMain);
+  TView* mainControl = GetWindow()->FindSubView(kControlTagMain);
   mainControl->AssertValid();
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
-  TView* control = ResolveControlByTag(kControlTagFlagCaps);
+  TView* control = FindSubView(kControlTagFlagCaps);
   if (control != 0) {
     g_pSimMgr->GetString(0x2730, 0, &text);
     SetControlHoverHelpText(text, control);
   }
 
-  control = ResolveControlByTag(kControlTagQuer);
+  control = FindSubView(kControlTagQuer);
   if (control != 0) {
     g_pSimMgr->GetString(0x2730, 2, &text);
     SetControlHoverHelpText(text, control);
   }
 
-  control = ResolveControlByTag(kControlTagTrad);
+  control = FindSubView(kControlTagTrad);
   if (control != 0 && control->IsEnabled()) {
     g_pSimMgr->GetString(0x2730, 0x13, &text);
     SetControlHoverHelpText(text, control);
   }
 
-  control = ResolveControlByTag(kControlTagCity);
+  control = FindSubView(kControlTagCity);
   if (control != 0 && control->IsEnabled()) {
     g_pSimMgr->GetString(0x2730, 0x15, &text);
     SetControlHoverHelpText(text, control);
   }
 
-  control = ResolveControlByTag(kControlTagTran);
+  control = FindSubView(kControlTagTran);
   if (control != 0 && control->IsEnabled()) {
     g_pSimMgr->GetString(0x2730, 0x16, &text);
     SetControlHoverHelpText(text, control);
   }
 
-  control = ResolveControlByTag(kControlTagDipl);
+  control = FindSubView(kControlTagDipl);
   if (control != 0 && control->IsEnabled()) {
     g_pSimMgr->GetString(0x2730, 0x14, &text);
     SetControlHoverHelpText(text, control);
   }
 
-  control = ResolveControlByTag(kControlTagEnd);
+  control = FindSubView(kControlTagEnd);
   if (control == 0) {
-    TView* thirdToolbar = ownerContext->ResolveControlByTag(kControlTagToo3);
+    TView* thirdToolbar = ownerContext->FindSubView(kControlTagToo3);
     if (thirdToolbar != 0) {
-      control = thirdToolbar->ResolveControlByTag(kControlTagEnd);
+      control = thirdToolbar->FindSubView(kControlTagEnd);
     }
   }
   if (control != 0) {
@@ -242,14 +242,13 @@ void TToolBarCluster::AddInfoBehaviors() {
     SetControlHoverHelpText(text, control);
   }
 
-  control = ResolveControlByTag(kControlTagTree);
+  control = FindSubView(kControlTagTree);
   if (control != 0) {
     g_pSimMgr->GetSeason(&text);
     SetControlHoverHelpText(text, control);
   }
 
-  TDropShadowText* seasonControl =
-      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagSeas));
+  TDropShadowText* seasonControl = static_cast<TDropShadowText*>(FindSubView(kControlTagSeas));
   if (seasonControl != 0) {
     CString seasonLabel;
     CString yearLabel;
@@ -261,7 +260,7 @@ void TToolBarCluster::AddInfoBehaviors() {
     seasonControl->SetJustification(-2, false);
   } else {
     TDropShadowNumberText* yearControl =
-        static_cast<TDropShadowNumberText*>(ResolveControlByTag(kControlTagYear));
+        static_cast<TDropShadowNumberText*>(FindSubView(kControlTagYear));
     if (yearControl != 0) {
       g_pSimMgr->GetString(0x2730, 8, &text);
       SetControlHoverHelpText(text, yearControl);
@@ -270,8 +269,7 @@ void TToolBarCluster::AddInfoBehaviors() {
     }
   }
 
-  TDropShadowText* treasuryControl =
-      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTrea));
+  TDropShadowText* treasuryControl = static_cast<TDropShadowText*>(FindSubView(kControlTagTrea));
   if (treasuryControl != 0) {
     g_pSimMgr->GetString(0x2730, 9, &text);
     SetControlHoverHelpText(text, treasuryControl);
@@ -279,8 +277,7 @@ void TToolBarCluster::AddInfoBehaviors() {
     treasuryControl->SetJustification(1, false);
   }
 
-  TDropShadowText* wordControl =
-      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagWord));
+  TDropShadowText* wordControl = static_cast<TDropShadowText*>(FindSubView(kControlTagWord));
   if (wordControl != 0) {
     ApplyUiTextStyleAndThemeFlags(wordControl, 0, 0xc, 0x2b6c, 0x2b67);
     wordControl->SetJustification(1, false);
@@ -290,18 +287,18 @@ void TToolBarCluster::AddInfoBehaviors() {
 }
 
 // FUNCTION: IMPERIALISM 0x00585ba0
-void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nationId) {
+void TToolBarCluster::SetReadouts(short nationId) {
   CString treaText;
   if (g_pSimMgr->ReallyInTheGame(nationId)) {
     g_pSimMgr->NumToCurrency(g_apNationStates[nationId]->treasuryValue, &treaText);
   }
-  TView* treaControl = this->ResolveControlByTag(kControlTagTrea); // 'trea'
+  TView* treaControl = this->FindSubView(kControlTagTrea); // 'trea'
   if (treaControl != NULL) {
     static_cast<TStaticText*>(treaControl)->SetTextAndMaybeRefresh(&treaText, true);
   }
 
   // 'seas' tag: "<season>, <year>" turn-status text (present on the main map toolbar).
-  TView* seasControl = this->ResolveControlByTag(kControlTagSeas); // 'seas'
+  TView* seasControl = this->FindSubView(kControlTagSeas); // 'seas'
   if (seasControl != NULL) {
     CString seasonText;
     g_pSimMgr->GetSeason(&seasonText);
@@ -313,7 +310,7 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
     return;
   }
 
-  TView* forcControl = this->ResolveControlByTag(kControlTagForc); // 'forc'
+  TView* forcControl = this->FindSubView(kControlTagForc); // 'forc'
   if (forcControl == NULL) {
     return;
   }

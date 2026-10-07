@@ -160,7 +160,7 @@ bool TShipOrder::SetQuantity(short quantity) {
       ownerCity->cityStockFuel -
       ReadWeight(g_industryActionCostWeightResCode0C, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
-  g_pViewMgr->RefreshCityProductionUi();
+  g_pViewMgr->UpdateCityScreen();
   return true;
 }
 

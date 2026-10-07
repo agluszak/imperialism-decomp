@@ -145,8 +145,8 @@ RuntimeActionResult RunConfiguredPlayerColonyBoycott(NativeTransition& transitio
     controllingNation = targetNation->nationSlot;
   }
   if (controllingNation != nation->nationSlot) {
-    nation->SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
-        targetNationSlot, nation->colonyBoycottFlags[targetNationSlot] == 0);
+    nation->TellColoniesToBoycott(targetNationSlot,
+                                  nation->colonyBoycottFlags[targetNationSlot] == 0);
   }
   return transition.Finish(1);
 }

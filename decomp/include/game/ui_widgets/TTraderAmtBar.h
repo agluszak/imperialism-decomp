@@ -14,7 +14,7 @@ public:
   // ~TTraderAmtBar is compiler-generated (implicit virtual dtor).
   DECLARE_DYNCREATE(TTraderAmtBar)
   void DoPostCreate(int arg) override;
-  short ApplyMoveClamp(int baseValue, short requestedValue) override;
+  short AdjustForZero(int baseValue, short requestedValue) override;
   void DrawAmt() override;
 };
 ASSERT_SIZE(TTraderAmtBar, 0x68);

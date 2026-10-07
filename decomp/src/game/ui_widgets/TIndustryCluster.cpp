@@ -73,7 +73,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, bool updateControls) {
     return;
   }
 
-  TNumberText* moveControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xb42);
   }
@@ -82,12 +82,12 @@ void TIndustryCluster::SetMoveAmount(short dragValue, bool updateControls) {
 
   CRect moveBoundsRect;
   RECT moveInvalidRect;
-  moveControl->QueryBounds(&moveBoundsRect);
+  moveControl->GetFrame(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
   this->ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
 
-  TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(this->FindSubView(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(0xb49);
   }
@@ -112,7 +112,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, bool updateControls) {
   moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
   moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
   moveControl->Locate(moveControlPosition, true);
-  moveControl->QueryBounds(&moveBoundsRect);
+  moveControl->GetFrame(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
   this->ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
@@ -122,7 +122,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, bool updateControls) {
 
 // FUNCTION: IMPERIALISM 0x00588f60
 void TIndustryCluster::UpdateMax() {
-  TIndustryAmtBar* barControl = static_cast<TIndustryAmtBar*>(ResolveControlByTag(kControlTagBar));
+  TIndustryAmtBar* barControl = static_cast<TIndustryAmtBar*>(FindSubView(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, kAssertLineRatioB);
   }
@@ -136,8 +136,7 @@ void TIndustryCluster::UpdateMax() {
 // FUNCTION: IMPERIALISM 0x00588ff0
 void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 100) {
-    TNumberText* moveControl =
-        static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
+    TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
     if (moveControl == 0) {
       GAME_FAIL_NIL_POINTER();
     }
@@ -149,7 +148,7 @@ void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  TNumberText* moveControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }

@@ -25,13 +25,13 @@ IMPLEMENT_DYNCREATE(TJoinSelectorDialog, TNoHilitePicture)
 void TJoinSelectorDialog::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
-  TStaticText* tnamControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTnam));
+  TStaticText* tnamControl = static_cast<TStaticText*>(FindSubView(kControlTagTnam));
   tnamControl->AssertValid();
-  TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagName));
+  TEditText* nameControl = static_cast<TEditText*>(FindSubView(kControlTagName));
   nameControl->AssertValid();
-  TStaticText* tgamControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTgam));
+  TStaticText* tgamControl = static_cast<TStaticText*>(FindSubView(kControlTagTgam));
   tgamControl->AssertValid();
-  TStaticText* gameControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagGame));
+  TStaticText* gameControl = static_cast<TStaticText*>(FindSubView(kControlTagGame));
   gameControl->AssertValid();
 
   ConfigureUiControlStyleValueAndCaptionFromStringResource(tnamControl, 0, 0xc, 0x2b6b, -2, 0x2742,
@@ -53,8 +53,7 @@ void TJoinSelectorDialog::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x0054e8e0
 void TJoinSelectorDialog::AddJoinableGameOptionEntry(const char* label,
                                                      WNetSelectionRecord* record) {
-  TRadioTextCluster* gameControl =
-      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagGame));
+  TRadioTextCluster* gameControl = static_cast<TRadioTextCluster*>(FindSubView(kControlTagGame));
   gameControl->AssertValid();
   unsigned long recordTag = (unsigned long)record;
   TRadioText* item = gameControl->AddItem(recordTag, (int)record, label, 0x12, -1);
@@ -65,8 +64,7 @@ void TJoinSelectorDialog::AddJoinableGameOptionEntry(const char* label,
 
 // FUNCTION: IMPERIALISM 0x0054e970
 WNetSelectionRecord* TJoinSelectorDialog::GetSelectedJoinableGame() {
-  TRadioTextCluster* gameControl =
-      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagGame));
+  TRadioTextCluster* gameControl = static_cast<TRadioTextCluster*>(FindSubView(kControlTagGame));
   gameControl->AssertValid();
   return (WNetSelectionRecord*)gameControl->selectedTag;
 }

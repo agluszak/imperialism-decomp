@@ -27,5 +27,5 @@ TView* TSwapperDaddyView::SelectSwapperItemByTag(int tag) {
     selectedTag = tag;
     return matched;
   }
-  return ResolveControlByTag(tag);
+  return FindSubView(tag);
 }

@@ -325,7 +325,7 @@ void TCountry::FormatOverlayTerrainLabelText(CString* out) {
     CString defaultName(g_pszDescriptorDefaultName);
     *out = defaultName;
   } else {
-    *out = g_pSimMgr->LoadNormalizedCredentialName(nationSlot);
+    *out = g_pSimMgr->GetCountryName(nationSlot);
   }
 }
 
@@ -335,7 +335,7 @@ void TCountry::AssignSharedStringFromDescriptorNameOrDefault(CString* out) {
     CString defaultName(g_pszDescriptorDefaultName);
     *out = defaultName;
   } else {
-    *out = g_pSimMgr->GetSharedText(this->nationSlot);
+    *out = g_pSimMgr->GetCountryNameWithCode(this->nationSlot);
   }
 }
 

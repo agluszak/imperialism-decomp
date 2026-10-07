@@ -89,8 +89,8 @@ void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourS
     g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(
         static_cast<int>(rand()) % 3 + 6, false); // battle cue 6..8
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTacticalView), 0);
-    TTacArmyView* battleView = static_cast<TTacArmyView*>(
-        g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
+    TTacArmyView* battleView =
+        static_cast<TTacArmyView*>(g_pDisplayMgr->activeDialog->FindSubView(kControlTagDialog));
     battleView->AssertValid();
     this->battleView = battleView;
     battleView->StuffValues(compositionClass, this);
@@ -167,7 +167,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     } else {
       targetStack = enemyBattleStack;
     }
-    targetStack->AddUnitToChainHead(deployRecord->sourceUnit);
+    targetStack->AddUnit(deployRecord->sourceUnit);
   }
 
   InitializeBattleSetupAndMaybeShowTacticalView(ourBattleStack, enemyBattleStack, compositionClass,
@@ -297,9 +297,9 @@ void TArmyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
       return;
     }
   }
-  HandleTacticalCommandTag_depl(static_cast<TArmyTacUnit*>(unit), tileIndex, false);
+  LaDeploy(static_cast<TArmyTacUnit*>(unit), tileIndex, false);
   TTacticalPlayer* sidePlayer = (currentSide == 0) ? players[0] : players[1];
-  ApplyTacticalDoneSelectionAndRefreshUi(sidePlayer->SelectNextTacticalUnitForDoneCommand());
+  ApplyTacticalDoneSelectionAndRefreshUi(sidePlayer->GetNextUnit());
   for (int planeIndex = 0; planeIndex < tacticalTileCount; ++planeIndex) {
     tileMoveCostArray[planeIndex] = -1;
   }
@@ -309,8 +309,8 @@ void TArmyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
     return;
   }
   if (battleView != 0) {
-    TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
-        battleView->ownerContext->ResolveControlByTag(kControlTagTool));
+    TTacticalToolbar* toolbar =
+        static_cast<TTacticalToolbar*>(battleView->ownerContext->FindSubView(kControlTagTool));
     toolbar->AssertValid();
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit);
   }
@@ -324,8 +324,8 @@ void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
   g_pSfxPlaybackSystem->StopMusic(false);
 
   if (battleView != 0) {
-    TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
-        battleView->ownerContext->ResolveControlByTag(kControlTagTool));
+    TTacticalToolbar* toolbar =
+        static_cast<TTacticalToolbar*>(battleView->ownerContext->FindSubView(kControlTagTool));
     toolbar->AssertValid();
     toolbar->UpdateTacticalOtherSideUnitControl(0);
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(0);

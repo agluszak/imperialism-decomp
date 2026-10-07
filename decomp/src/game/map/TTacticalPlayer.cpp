@@ -55,7 +55,7 @@ void TTacticalPlayer::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059af20
-TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
+TTacticalUnit* TTacticalPlayer::GetNextUnit() {
   int startCursor = cursorIndex;
   TTacticalUnit* unit;
   do {
@@ -77,7 +77,7 @@ TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059afa0
-void TTacticalPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
+void TTacticalPlayer::RemoveCapturedUnit(TTacticalUnit* unit) {
   CPtrList* entries = &unitList->listState;
   POSITION pos = entries->Find(unit, 0);
   if (pos != 0) {
@@ -86,13 +86,13 @@ void TTacticalPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
 }
 
 // FUNCTION: IMPERIALISM 0x0059afe0
-void TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
+void TTacticalPlayer::AddCapturedUnit(TTacticalUnit* unit) {
   unitList->listState.AddHead(unit);
   unit->FlipUnitSideAffiliation();
 }
 
 // FUNCTION: IMPERIALISM 0x0059b010
-bool TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
+bool TTacticalPlayer::IsPlayer() {
   return nationIndex == g_pSimMgr->GetPlayerCountry();
 }
 
@@ -100,7 +100,7 @@ bool TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
 void TTacticalPlayer::HandleTacticalCommandTag_skip() {
   if (g_awTacticalUnitCategoryCodeBySlot[battle->selectedUnit->unitType] != 8) {
     skipRequested = true;
-    battle->FinishTacticalActionAndPostNextMoveCommand();
+    battle->FinishedMove();
   }
 }
 

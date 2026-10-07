@@ -201,7 +201,7 @@ void THelpMgr::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x005010b0
-void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
+void THelpMgr::ShowLatestHelp() {
   HelpSetRecord* best = NULL;             // lowest-rank unflagged match
   HelpSetRecord* flaggedCandidate = NULL; // context match with flagByte set
   HelpSetRecord* zeroIdCandidate =
@@ -658,8 +658,7 @@ bool ShowTurnAlertsForActiveNation() {
 #ifdef IMPERIALISM_RUNTIME_TESTS
   bool nationAtWar = false;
   for (int otherNation = 0; otherNation < kMajorNationCount; ++otherNation) {
-    if (otherNation != nationId &&
-        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, otherNation)) {
+    if (otherNation != nationId && g_pDiplomacyTurnStateManager->AreAtWar(nationId, otherNation)) {
       nationAtWar = true;
     }
   }
@@ -782,7 +781,7 @@ bool ShowTurnAlertsForActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x005031c0
-bool THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode) {
+bool THelpMgr::CheckHelp(TurnEventCodeStorage eventCode) {
   bool activateCandidate = false;
   bool nationAlreadyCurrent = false;
   HelpSetRecord* pendingEntry = 0;
@@ -886,7 +885,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
   }
 
   THelpPicture* helpPicture =
-      static_cast<THelpPicture*>(pendingDialogView8->ResolveControlByTag(kControlTagDialog));
+      static_cast<THelpPicture*>(pendingDialogView8->FindSubView(kControlTagDialog));
   helpPicture->currentHelpSet = pendingEntry;
 
   CString emptyTitle(g_pszEmptyTextPointer);
@@ -902,8 +901,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
   }
   helpPicture->SetPictureRsrcID(static_cast<short>(helpBookIndex + 0xbb8), 0);
 
-  TPicture* coatPicture =
-      static_cast<TPicture*>(pendingDialogView8->ResolveControlByTag(kControlTagCoat));
+  TPicture* coatPicture = static_cast<TPicture*>(pendingDialogView8->FindSubView(kControlTagCoat));
   coatPicture->AssertValid();
   if (coatPicture == 0) {
     FailNilPointerWithAssert(s_SourcePathUHelpMgr, 0x5f0);
@@ -915,7 +913,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
     coatPicture->Show(0, 0);
   }
 
-  TStaticText* title = static_cast<TStaticText*>(helpPicture->ResolveControlByTag(kControlTagTitl));
+  TStaticText* title = static_cast<TStaticText*>(helpPicture->FindSubView(kControlTagTitl));
   title->Show(1, 1);
   title->ViewEnable(0, 1);
   title->SetJustification(1, false);
@@ -945,7 +943,7 @@ char THelpMgr::GetHelpSetRecordFlagByResourceBase(short helpResourceBaseId) {
 }
 
 // FUNCTION: IMPERIALISM 0x005037e0
-HelpSetRecord* THelpMgr::FindHelpSetRecordByResourceBase(short helpResourceBaseId) {
+HelpSetRecord* THelpMgr::GetHelpSetPtr(short helpResourceBaseId) {
   HelpSetRecord* record;
   bool found = false;
   int index = 1;
@@ -963,7 +961,7 @@ HelpSetRecord* THelpMgr::FindHelpSetRecordByResourceBase(short helpResourceBaseI
 }
 
 // FUNCTION: IMPERIALISM 0x00503830
-bool THelpMgr::IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index) {
+bool THelpMgr::NeedAdvice(unsigned int index) {
   short* counters = &civilianCompletionCounts[0];
   short threshold = -1;
   switch (index) {
@@ -1042,7 +1040,7 @@ void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextI
   }
 
   TTerrainHelpPicture* terrainHelp =
-      static_cast<TTerrainHelpPicture*>(pendingDialogViewC->ResolveControlByTag(kControlTagDialog));
+      static_cast<TTerrainHelpPicture*>(pendingDialogViewC->FindSubView(kControlTagDialog));
   terrainHelp->BuildMapTileActionContextMenu(static_cast<short>(mapContextIndex));
 }
 

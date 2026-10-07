@@ -104,10 +104,8 @@ TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNod
     if (candidate->active == 0) {
       TShip* bestShip = best->payload;
       TShip* candidateShip = candidate->payload;
-      short bestDistance =
-          bestShip->location->GetCachedMapActionContextDistanceOrRecompute(*targetZone);
-      short candidateDistance =
-          candidateShip->location->GetCachedMapActionContextDistanceOrRecompute(*targetZone);
+      short bestDistance = bestShip->location->GetDistanceTo(*targetZone);
+      short candidateDistance = candidateShip->location->GetDistanceTo(*targetZone);
       if (candidateDistance < bestDistance) {
         best = candidate;
       }
@@ -129,7 +127,7 @@ void TScatteredShipsMission::GiveOrders() {
 
   TZone* zone = g_pMapActionContextListHead;
   while (zone != NULL) {
-    if (!zone->QueryPortZoneCapability() && zone->HasSecondaryNeighborWithNationTag(nationId)) {
+    if (!zone->IsPortZone() && zone->IsAdjacentToCountry(nationId)) {
       break;
     }
     zone = zone->prev18;
@@ -145,8 +143,7 @@ void TScatteredShipsMission::GiveOrders() {
   }
 
   while (true) {
-    if (!current->QueryPortZoneCapability() &&
-        current->HasSecondaryNeighborWithNationTag(nationId)) {
+    if (!current->IsPortZone() && current->IsAdjacentToCountry(nationId)) {
       TMapOrderChildLinkNode* best = orderList;
       while (best != NULL && best->active != 0) {
         best = best->next;
@@ -160,9 +157,8 @@ void TScatteredShipsMission::GiveOrders() {
         if (candidate->active == 0) {
           TZone* candidateZone = candidate->payload->location;
           TZone* bestZone = best->payload->location;
-          short candidateDistance =
-              candidateZone->GetCachedMapActionContextDistanceOrRecompute(current);
-          short bestDistance = bestZone->GetCachedMapActionContextDistanceOrRecompute(current);
+          short candidateDistance = candidateZone->GetDistanceTo(current);
+          short bestDistance = bestZone->GetDistanceTo(current);
           if (candidateDistance < bestDistance) {
             best = candidate;
           }
@@ -185,6 +181,6 @@ void TScatteredShipsMission::GiveOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053bf90
-TZone* TScatteredShipsMission::RefreshMissionPortZoneContextForNation() {
+TZone* TScatteredShipsMission::PickAmassingZone() {
   return NULL;
 }

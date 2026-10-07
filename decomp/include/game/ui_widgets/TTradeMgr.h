@@ -43,7 +43,7 @@ public:
                               unsigned char shortfallFlag,
                               bool remoteReplay);                   // 0x18 0x5b94d0
   virtual void UpdatePrice(short item, short value);                // 0x19 0x5b9790
-  virtual void RunNationUpdatePassesAndResetTransitionFlags();      // 0x1a 0x5b97c0
+  virtual void StartTradePhase();                                   // 0x1a 0x5b97c0
   virtual void SetMinorsTradeBids();                                // 0x1b 0x5b9890
   virtual void TallyMinorsTradeBids();                              // 0x1c 0x5b9b30
   virtual void TallyTradeBids();                                    // 0x1d 0x5b98d0

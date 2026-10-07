@@ -476,7 +476,7 @@ short TShip::GetBattleSpeed() const {
 
 // FUNCTION: IMPERIALISM 0x00550550
 short TShip::GetTurnDistanceTo(TZone* otherZone) const {
-  short hopDistance = location->GetCachedMapActionContextDistanceOrRecompute(otherZone);
+  short hopDistance = location->GetDistanceTo(otherZone);
   short descriptorWeight = g_NavyOrderResourceDescriptorTable[type].SailingSpeed();
   return static_cast<short>((descriptorWeight - 1 + hopDistance) / descriptorWeight);
 }
@@ -703,7 +703,7 @@ short TShip::GetTypeSlot(short shipType) {
 
 // FUNCTION: IMPERIALISM 0x00550f60
 bool TShip::IsInHomePort() const {
-  return location->QueryPortZoneCapability();
+  return location->IsPortZone();
 }
 
 // FUNCTION: IMPERIALISM 0x00550f80

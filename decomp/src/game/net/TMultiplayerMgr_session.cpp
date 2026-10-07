@@ -86,7 +86,7 @@ int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId) {
 
 // FUNCTION: IMPERIALISM 0x005421a0
 int FindActiveNationSlotIndexInGameFlowList() {
-  int activeId = g_pNetMgr->GetSessionActiveNationId();
+  int activeId = g_pNetMgr->GetPlayerID();
   for (int i = 0; i < 7; ++i) {
     if (g_pGameFlowState->nationSessionIds[i] == activeId) {
       return i;
@@ -287,7 +287,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
 
   g_pNetMgr->ReadFrom(stream);
 
-  int sessionActiveNationId = g_pNetMgr->GetSessionActiveNationId();
+  int sessionActiveNationId = g_pNetMgr->GetPlayerID();
   nationSessionIds[g_pSimMgr->GetPlayerCountry()] = sessionActiveNationId;
 
   int reportingNationSlot = g_pSimMgr->GetPlayerCountry();
@@ -525,12 +525,11 @@ bool TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView* provide
   lobbyDialogView = provider;
   if (g_pNetMgr->ResetRuntimeProtocolOptionsAndRebuildSelectionSource(provider)) {
     int defaultProtocolTag;
-    g_pAssetMgr->LoadSettingValueByKeyIntoOut(&defaultProtocolTag, "DefaultProtocol",
-                                              kControlTagPro0);
+    g_pAssetMgr->GetPreferenceInt(&defaultProtocolTag, "DefaultProtocol", kControlTagPro0);
     TRadioTextCluster* protControl =
-        static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt));
+        static_cast<TRadioTextCluster*>(provider->FindSubView(kControlTagProt));
     protControl->AssertValid();
-    TView* defaultOption = protControl->ResolveControlByTag(defaultProtocolTag);
+    TView* defaultOption = protControl->FindSubView(defaultProtocolTag);
     if (defaultOption != 0) {
       protControl->SetSelectedTextOptionByTag(defaultProtocolTag, true);
     } else {
@@ -557,8 +556,7 @@ bool TMultiplayerMgr::ResetGameFlowStateAndShowMainMenu() {
 
 // FUNCTION: IMPERIALISM 0x00544fc0
 bool TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int protocolValue, int flag) {
-  return g_pNetMgr->OpenRuntimeSelectionSourceByIndexAndCopyPath(
-      protocolValue, flag, static_cast<LPCSTR>(gameNameString));
+  return g_pNetMgr->SelectProtocol(protocolValue, flag, static_cast<LPCSTR>(gameNameString));
 }
 
 // FUNCTION: IMPERIALISM 0x00544ff0
@@ -589,12 +587,12 @@ TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TVi
   ReturnTrueRuntimeCredentialInitStub();
   lobbyDialogView = provider;
 
-  TEditText* nameControl = static_cast<TEditText*>(provider->ResolveControlByTag(kControlTagName));
+  TEditText* nameControl = static_cast<TEditText*>(provider->FindSubView(kControlTagName));
   nameControl->AssertValid();
   CString normalizedPlayerName = g_pLanguageMgr->StripCodeStr(playerNameString);
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&normalizedPlayerName, 0);
 
-  TEditText* passControl = static_cast<TEditText*>(provider->ResolveControlByTag(kControlTagPass));
+  TEditText* passControl = static_cast<TEditText*>(provider->FindSubView(kControlTagPass));
   passControl->AssertValid();
   CString emptyCaption(g_szEmptyString);
   passControl->InitDialogWindowAndSyncTitleIfChanged(&emptyCaption, 0);
@@ -648,12 +646,12 @@ bool TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(TView* pan
     nationStatusTags[i] = kSessionTagUnas; // 'unas'
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
     TStaticText* nameControl =
-        static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagNam0 + i)); // 'nam0'-'nam6'
+        static_cast<TStaticText*>(panel->FindSubView(kControlTagNam0 + i)); // 'nam0'-'nam6'
     nameControl->AssertValid();
     nameControl->SetTextAndMaybeRefresh(&loadedString, true);
   }
 
-  TView* okayControl = panel->ResolveControlByTag(kControlTagOkay); // 'okay'
+  TView* okayControl = panel->FindSubView(kControlTagOkay); // 'okay'
   okayControl->AssertValid();
   okayControl->Show(0, 0);
 
@@ -714,7 +712,7 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
       if (!ProcessDiplomacyTurnStateEventStateMachine(packet)) {
         g_pNetMgr->DefaultUnhandledTurnEventHookReturnsFalse(packet);
       }
-      g_pNetMgr->FreeTurnEventPacketBuffer(packet);
+      g_pNetMgr->ReleaseMessage(packet);
     }
   }
 
@@ -725,11 +723,11 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
       if (!ProcessDiplomacyTurnStateEventStateMachine(packet)) {
         g_pNetMgr->DefaultUnhandledTurnEventHookReturnsFalse(packet);
       }
-      g_pNetMgr->FreeTurnEventPacketBuffer(packet);
+      g_pNetMgr->ReleaseMessage(packet);
     }
   }
 
-  TurnEventQueuePacket* packet = g_pNetMgr->PopNextTurnEventPacketOrProcessSpecialQueueRecords();
+  TurnEventQueuePacket* packet = g_pNetMgr->GetMessage();
   while (packet != 0) {
     bool deferUntilTurnEvent = false;
     if (syncPhase == kGamePhaseNone) {
@@ -769,9 +767,9 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
       if (!ProcessDiplomacyTurnStateEventStateMachine(packet)) {
         g_pNetMgr->DefaultUnhandledTurnEventHookReturnsFalse(packet);
       }
-      g_pNetMgr->FreeTurnEventPacketBuffer(packet);
+      g_pNetMgr->ReleaseMessage(packet);
     }
-    packet = g_pNetMgr->PopNextTurnEventPacketOrProcessSpecialQueueRecords();
+    packet = g_pNetMgr->GetMessage();
   }
 }
 

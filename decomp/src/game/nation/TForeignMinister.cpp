@@ -236,8 +236,7 @@ void TForeignMinister::ArrangeMaterialsOffers() {
       }
       fallbackNationSlot = rand() % 7;
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(fallbackNationSlot))) {
-        if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(fallbackNationSlot,
-                                                             owner->nationSlot) &&
+        if (!g_pDiplomacyTurnStateManager->AreAtWar(fallbackNationSlot, owner->nationSlot) &&
             fallbackNationSlot != owner->nationSlot) {
           foundFallbackNation = true;
         }
@@ -325,11 +324,11 @@ void TForeignMinister::ReplyToTradeOffer(short targetNation, short amount, short
     if (interiorBidAmount < static_cast<short>(dispatchAmount)) {
       dispatchAmount = static_cast<unsigned short>(interiorBidAmount);
     }
-    short availableAmount = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
+    short availableAmount = static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
       g_pTradeMgr->SetDealResults(
           owner->nationSlot, targetNation,
-          static_cast<int>(owner->GetMerchantCapacityForProposal(resourceCode)), maximumAmount,
+          static_cast<int>(owner->GetUnreservedMerchantCapacity(resourceCode)), maximumAmount,
           resourceCode, 0, false);
       return;
     }
@@ -342,10 +341,10 @@ void TForeignMinister::ReplyToTradeOffer(short targetNation, short amount, short
     } else if (static_cast<short>(ledgerAmount) < static_cast<short>(dispatchAmount)) {
       dispatchAmount = ledgerAmount;
     }
-    short availableAmount = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
+    short availableAmount = static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
       dispatchAmount =
-          static_cast<unsigned int>(owner->GetMerchantCapacityForProposal(resourceCode));
+          static_cast<unsigned int>(owner->GetUnreservedMerchantCapacity(resourceCode));
     }
     *ledgerEntry = static_cast<short>(*ledgerEntry - static_cast<short>(dispatchAmount));
   }
@@ -408,9 +407,9 @@ void TForeignMinister::GoodsMatchShipping() {
             g_pDiplomacyTurnStateManager
                     ->relationStandingScores[owner->nationSlot * kNationSlotCount + nation] <
                 0x96) {
-          owner->SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(nation, 1);
+          owner->TellColoniesToBoycott(nation, 1);
         } else {
-          owner->SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(nation, 0);
+          owner->TellColoniesToBoycott(nation, 0);
         }
       }
     }
@@ -497,8 +496,8 @@ void TForeignMinister::DoProposeTreaties() {
                                                                        greatPower->nationSlot)) {
         greatPower->SetDiplomacyPolicyTo(minorNation, kDiplomacyProposalJoinEmpire);
       }
-    } else if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-                   greatPower->nationSlot, minorNation) == kDiplomacyRelationshipPeace) {
+    } else if (g_pDiplomacyTurnStateManager->GetTreatyStatus(greatPower->nationSlot, minorNation) ==
+               kDiplomacyRelationshipPeace) {
       greatPower->SetDiplomacyPolicyTo(minorNation, kDiplomacyProposalNonAggressionPact);
     }
   }
@@ -566,8 +565,8 @@ void TForeignMinister::DoProposeTreaties() {
       RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
           relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
       int candidateNation = entry->nationSlot;
-      if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-              greatPower->nationSlot, static_cast<short>(candidateNation)) !=
+      if (g_pDiplomacyTurnStateManager->GetTreatyStatus(greatPower->nationSlot,
+                                                        static_cast<short>(candidateNation)) !=
               kDiplomacyRelationshipAlliance &&
           !g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(candidateNation,
                                                                        greatPower->nationSlot)) {
@@ -584,8 +583,8 @@ void TForeignMinister::DoProposeTreaties() {
   for (int policyTargetNation = 0; policyTargetNation < kMajorNationCount; ++policyTargetNation) {
     if (policyTargetNation == greatPower->nationSlot ||
         !g_pSimMgr->ReallyInTheGame(static_cast<short>(policyTargetNation)) ||
-        !g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-            greatPower->nationSlot, policyTargetNation)) {
+        !g_pDiplomacyTurnStateManager->AreInEstablishedWar(greatPower->nationSlot,
+                                                           policyTargetNation)) {
       continue;
     }
 
@@ -685,8 +684,7 @@ void TForeignMinister::DoSelectEnemy() {
 void TForeignMinister::SetEmpirePolicies() {
   TGreatPower* owner = greatPower;
 
-  if (abs(g_pSimMgr->economicTurn) % 4 == 0 &&
-      !owner->AreAdvancedManufacturedTradeOffersExhausted()) {
+  if (abs(g_pSimMgr->economicTurn) % 4 == 0 && !owner->WereAllOfferedGoodsSold()) {
     bool keepSearching = true;
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
     relationshipList->ISortedByRelationshipList();
@@ -783,8 +781,8 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
       valid = 0;
       break;
     case kDiplomacyProposalAlliance:
-      if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-              gp->nationSlot, targetNation) != kDiplomacyRelationshipPeace) {
+      if (g_pDiplomacyTurnStateManager->GetTreatyStatus(gp->nationSlot, targetNation) !=
+          kDiplomacyRelationshipPeace) {
         valid = 0;
       } else {
         valid = gp->PassesDiplomacyStrengthThresholdForTarget(targetNation);

@@ -26,7 +26,7 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
   if (commandId == 0xc) {
     unsigned int idx = sourceHandler->controlTag - kControlTagAgr0;
     if (idx < 3) {
-      TView* main = GetWindow()->ResolveControlByTag(kControlTagMain);
+      TView* main = GetWindow()->FindSubView(kControlTagMain);
       main->AssertValid();
       TTaskForce* order = GetActiveMapOrderEntry();
       if (order != NULL) {
@@ -68,7 +68,7 @@ bool TNavyToolbarCluster::IsTradeControlAtMinimum() {
 }
 
 // FUNCTION: IMPERIALISM 0x005696f0
-void TNavyToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
+void TNavyToolbarCluster::SetCurrentChoice(int childTag) {
   CSubViewIterator iterator(this);
   TView* selectedChild = 0;
   TView* child = iterator.FirstSubView();
@@ -84,7 +84,7 @@ void TNavyToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
 
   selectedChildTag = childTag;
   if (selectedChild != 0) {
-    TView* oceanDialog = GetWindow()->ResolveControlByTag(kControlTagDOOG); // 'DOOG'
+    TView* oceanDialog = GetWindow()->FindSubView(kControlTagDOOG); // 'DOOG'
     oceanDialog->AssertValid();
     oceanDialog->DoEvent(0xc, selectedChild, 0);
   }

@@ -56,38 +56,38 @@ void TMapUberPicture::DoPostCreate(int arg) {
 
   g_pAmbitApplication->edgeScrollTarget = this;
 
-  subview2A8 = static_cast<TMapDialog*>(ResolveControlByTag(kControlTagDialog));
+  subview2A8 = static_cast<TMapDialog*>(FindSubView(kControlTagDialog));
   subview2A8->AssertValid();
 
   TOceanDialog* alternateMapDialog =
-      static_cast<TOceanDialog*>(ResolveControlByTag(kControlTagDOOG)); // 'DOOG'
+      static_cast<TOceanDialog*>(FindSubView(kControlTagDOOG)); // 'DOOG'
   if (alternateMapDialog != NULL) {
     goodGoldTagControl = alternateMapDialog;
     alternateMapDialog->AssertValid();
   }
 
   subview = subview2A8;
-  categoryPages[0] = ResolveControlByTag(kControlTagUciv); // 'uciv'
-  categoryPages[1] = ResolveControlByTag(kControlTagUarm); // 'uarm'
-  categoryPages[2] = ResolveControlByTag(kControlTagUnav); // 'unav'
+  categoryPages[0] = FindSubView(kControlTagUciv); // 'uciv'
+  categoryPages[1] = FindSubView(kControlTagUarm); // 'uarm'
+  categoryPages[2] = FindSubView(kControlTagUnav); // 'unav'
   categoryPages[3] = NULL;
 
   CRect mapBounds;
-  subview2A8->QueryBounds(&mapBounds);
+  subview2A8->GetFrame(&mapBounds);
   RECT mapRegionBounds = mapBounds;
   RgnHandle mapRegion = NewRgn();
   RectRgn(mapRegion, &mapRegionBounds);
-  ForwardCopyRgn(mapRegion);
+  SetRgn(mapRegion);
   DisposeRgn(mapRegion);
 
   g_pViewMgr->mapUberPicture = this;
   g_pUiAnimator->mapUberPicture = this;
-  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(NULL);
-  g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
+  g_pActiveMapOrderContext->AssembleUIForce(NULL);
+  g_pActiveMapOrderContext->UpdateOccupants();
 
   bool multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (multiplayerSessionActive) {
-    TView* sendControl = ResolveControlByTag(kControlTagSend); // 'send'
+    TView* sendControl = FindSubView(kControlTagSend); // 'send'
     sendControl->AssertValid();
     sendControl->ViewEnable(1, 0);
     sendControl->Show(1, 0);
@@ -123,10 +123,10 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
     }
 
     TToolBarCluster* toolbar =
-        static_cast<TToolBarCluster*>(GetWindow()->ResolveControlByTag(kControlTagTbr1)); // 'tbr1'
+        static_cast<TToolBarCluster*>(GetWindow()->FindSubView(kControlTagTbr1)); // 'tbr1'
     if (toolbar != NULL) {
       if (previousMode == 1) {
-        TView* caption = toolbar->ResolveControlByTag(kControlTagForc); // 'forc'
+        TView* caption = toolbar->FindSubView(kControlTagForc); // 'forc'
         caption->AssertValid();
         caption->controlTag = kControlTagSeas; // 'seas'
 
@@ -138,14 +138,14 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
         SetControlHoverHelpTextAltEntry(hoverHelp, caption);
       } else if (nMode == 1) {
         CString hoverHelp;
-        TView* caption = toolbar->ResolveControlByTag(kControlTagSeas); // 'seas'
+        TView* caption = toolbar->FindSubView(kControlTagSeas); // 'seas'
         caption->AssertValid();
         caption->controlTag = kControlTagForc; // 'forc'
         g_pSimMgr->GetString(0x2732, 0x11, &hoverHelp);
         SetControlHoverHelpTextAltEntry(hoverHelp, caption);
       }
 
-      toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
+      toolbar->SetReadouts(g_pSimMgr->GetPlayerCountry());
     }
 
     if (nMode == 0) {
@@ -296,14 +296,14 @@ void TMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
 }
 
 // FUNCTION: IMPERIALISM 0x00597810
-void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
+void TMapUberPicture::FocusOnForce(TTaskForce* pMapOrderEntry) {
   this->SetMapInteractionMode(2);
   ResetMapActionContextActivityAndNationFlags();
 
   if (pMapOrderEntry == NULL) {
     for (int i = 0; i < 4; ++i) {
-      TShipFractionCluster* shipClass = static_cast<TShipFractionCluster*>(
-          ResolveControlByTag(kControlTagCls0 + i)); // 'cls0'..'cls3'
+      TShipFractionCluster* shipClass =
+          static_cast<TShipFractionCluster*>(FindSubView(kControlTagCls0 + i)); // 'cls0'..'cls3'
       shipClass->AssertValid();
       shipClass->Set(0, -1);
     }
@@ -311,41 +311,39 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
   }
 
   TZone* context = pMapOrderEntry->location;
-  context->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(pMapOrderEntry->GetWorstSpeed(), true);
+  context->LightUp(pMapOrderEntry->GetWorstSpeed(), true);
   CenterOn(static_cast<short>(context->tileOrTerrainId));
 
   for (int i = 0; i < 4; ++i) {
-    TShipFractionCluster* shipClass = static_cast<TShipFractionCluster*>(
-        ResolveControlByTag(kControlTagCls0 + i)); // 'cls0'..'cls3'
+    TShipFractionCluster* shipClass =
+        static_cast<TShipFractionCluster*>(FindSubView(kControlTagCls0 + i)); // 'cls0'..'cls3'
     shipClass->AssertValid();
     shipClass->Set(pMapOrderEntry->shipCountsByToolbarSlot[i],
                    pMapOrderEntry->GetSelected(static_cast<short>(i)));
   }
 
   TNavyToolbarCluster* navyToolbar =
-      static_cast<TNavyToolbarCluster*>(ResolveControlByTag(kControlTagUnav)); // 'unav'
+      static_cast<TNavyToolbarCluster*>(FindSubView(kControlTagUnav)); // 'unav'
   navyToolbar->AssertValid();
-  navyToolbar->SetSelectedChildTagAndRefresh(kControlTagAgr0 + pMapOrderEntry->aggression);
+  navyToolbar->SetCurrentChoice(kControlTagAgr0 + pMapOrderEntry->aggression);
 }
 
 // FUNCTION: IMPERIALISM 0x00597950
-void TMapUberPicture::SetActiveMapOrderEntry(TZone* pMapOrderContextZone) {
+void TMapUberPicture::FocusOnZone(TZone* pMapOrderContextZone) {
   this->SetMapInteractionMode(2);
   goodGoldTagControl->InvalidateZone(orderEntryContext);
   this->orderEntryContext = pMapOrderContextZone;
   goodGoldTagControl->InvalidateZone(pMapOrderContextZone);
   if (pMapOrderContextZone == NULL) {
-    this->RefreshMapOrderEntryPanel(NULL);
+    this->FocusOnForce(NULL);
     return;
   }
-  TTaskForce* refreshedTaskForce =
-      g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(
-          pMapOrderContextZone);
-  this->RefreshMapOrderEntryPanel(refreshedTaskForce);
+  TTaskForce* refreshedTaskForce = g_pActiveMapOrderContext->AssembleUIForce(pMapOrderContextZone);
+  this->FocusOnForce(refreshedTaskForce);
 }
 
 // FUNCTION: IMPERIALISM 0x00597a10
-bool TMapUberPicture::HasActiveMapInteractionSelection() {
+bool TMapUberPicture::IsAUnitSelected() {
   switch (this->activeUnitCategoryIndex) {
   case 0:
     return g_pSelectedCivilianOrderState->selectedEntry != NULL;
@@ -374,13 +372,11 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     switch (modeCursor) {
     case 0: {
       if (previousMode != 0) {
-        g_pSelectedCivilianOrderState->ClearCivilianSelectionHighlightsForNation(
-            g_pSimMgr->GetPlayerCountry());
+        g_pSelectedCivilianOrderState->ResetCycle(g_pSimMgr->GetPlayerCountry());
         visitedModes |= 1;
       }
 
-      TCivUnit* civilian = g_pSelectedCivilianOrderState->SelectFirstAvailableCivilianForNation(
-          g_pSimMgr->GetPlayerCountry());
+      TCivUnit* civilian = g_pSelectedCivilianOrderState->Cycle(g_pSimMgr->GetPlayerCountry());
       if (civilian != NULL) {
         selectionResolved = true;
         if (activeUnitCategoryIndex != 0) {
@@ -402,13 +398,11 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
 
     case 1: {
       if (previousMode != 1) {
-        g_pMapContextActionManager->ClearProvinceSelectionHighlightsForNation(
-            g_pSimMgr->GetPlayerCountry());
+        g_pMapContextActionManager->ResetCycle(g_pSimMgr->GetPlayerCountry());
         visitedModes |= 2;
       }
 
-      short province = g_pMapContextActionManager->FindNextSelectableProvinceForNation(
-          g_pSimMgr->GetPlayerCountry());
+      short province = g_pMapContextActionManager->Cycle(g_pSimMgr->GetPlayerCountry());
       if (province != -1) {
         if (activeUnitCategoryIndex != 1) {
           SetMapInteractionMode(1);
@@ -464,7 +458,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     InvalidateMapRegionForEntryIfUiPassive(orderEntryContext);
     orderEntryContext = NULL;
     InvalidateMapRegionForEntryIfUiPassive(NULL);
-    RefreshMapOrderEntryPanel(NULL);
+    FocusOnForce(NULL);
     SetMapInteractionMode(3);
     return;
   }
@@ -493,14 +487,13 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   CString text;
   CString value;
   CString reportTemplate;
-  TStaticText* control =
-      static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagZone)); // zone
+  TStaticText* control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagZone)); // zone
   control->AssertValid();
   taskForce->location->AssignZoneDisplayNameToOutputRef(&text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAdam)); // adam
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagAdam)); // adam
   control->AssertValid();
   taskForce->GetAuthority(&value);
   g_pSimMgr->GetString(0x2762, 0, &reportTemplate);
@@ -509,13 +502,13 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagWhom)); // whom
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagWhom)); // whom
   control->AssertValid();
   taskForce->GetCompositionDescription(&text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagOrds)); // ords
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagOrds)); // ords
   control->AssertValid();
   switch (taskForce->shipOrders) {
   case 1:
@@ -546,31 +539,31 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAgro)); // agro
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagAgro)); // agro
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(taskForce->aggression + 4), &text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(attributionStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // titl
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagTitl)); // titl
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 7, &text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(titleStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab1)); // lab1
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagLab1)); // lab1
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 8, &text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab2)); // lab2
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagLab2)); // lab2
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 9, &text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab3)); // lab3
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagLab3)); // lab3
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 0xa, &text);
   control->SetTextAndMaybeRefresh(&text, false);
@@ -592,11 +585,8 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
     orderEntryContext = previousContext;
     goodGoldTagControl->InvalidateZone(previousContext);
     TTaskForce* refreshed =
-        previousContext != 0
-            ? g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(
-                  previousContext)
-            : 0;
-    RefreshMapOrderEntryPanel(refreshed);
+        previousContext != 0 ? g_pActiveMapOrderContext->AssembleUIForce(previousContext) : 0;
+    FocusOnForce(refreshed);
   }
 }
 
@@ -618,14 +608,14 @@ void TMapUberPicture::InvalidateTile(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005988c0
 void TMapUberPicture::RedrawTile(short tileIndex) {
-  this->subview->RefreshMapTile(tileIndex);
+  this->subview->ImmediateDrawTile(tileIndex);
   if (!this->invalidationFlag) {
-    this->subview2A8->ReleaseTileMarkerForTile(tileIndex);
+    this->subview2A8->DeCache(tileIndex);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00598910
-void TMapUberPicture::PrepareAndRenderMapOverlayMode(unsigned char overlayMode) {
+void TMapUberPicture::DisplayInfo(unsigned char overlayMode) {
   this->PrepareForDrawing();
   subview->SetMapOverlayModeAndRenderPreview(overlayMode);
 }
@@ -685,7 +675,7 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
   // Label the 30 army-name slots from the localized army-name string group.
   for (int slot = 0; slot < 0x1e; ++slot) {
     TStaticText* nameLabel = static_cast<TStaticText*>(
-        dialog->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'a') + slot));
+        dialog->FindSubView(IMPERIALISM_FOURCC('n', 'a', 'm', 'a') + slot));
     nameLabel->AssertValid();
     nameLabel->SetTextWithStrListID(0x2717, static_cast<short>(slot + 1), true);
   }
@@ -694,7 +684,7 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
   // Read the per-slot unit counts the player entered and spawn that many units each.
   for (int countSlot = 0; countSlot < 0x1e; ++countSlot) {
     TNumberText* countField = static_cast<TNumberText*>(
-        dialog->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', 'a') + countSlot));
+        dialog->FindSubView(IMPERIALISM_FOURCC('n', 'u', 'm', 'a') + countSlot));
     countField->AssertValid();
     int unitCount = countField->UpdateControlCachedIntFromWindowText();
     for (int made = 0; made < unitCount; ++made) {
@@ -735,7 +725,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   short index;
   for (index = 0; index < 29; ++index) {
     TStaticText* nameControl =
-        static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagNama + index)); // 'nama'
+        static_cast<TStaticText*>(dialog->FindSubView(kControlTagNama + index)); // 'nama'
     if (nameControl != 0) {
       nameControl->SetTextWithStrListID(0x2716, static_cast<short>(index + 1), true);
     }
@@ -744,14 +734,14 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   dialog->PoseModally();
 
   TNumberText* ownerControl =
-      static_cast<TNumberText*>(dialog->ResolveControlByTag(kControlTagOwne)); // 'owne'
+      static_cast<TNumberText*>(dialog->FindSubView(kControlTagOwne)); // 'owne'
   ownerControl->AssertValid();
   int ownerNation = ownerControl->UpdateControlCachedIntFromWindowText();
 
   bool createdOrders = false;
   for (index = 0; index < 14; ++index) {
     TNumberText* countControl =
-        static_cast<TNumberText*>(dialog->ResolveControlByTag(kControlTagNuma + index)); // 'numa'
+        static_cast<TNumberText*>(dialog->FindSubView(kControlTagNuma + index)); // 'numa'
     if (countControl != 0) {
       short count = static_cast<short>(countControl->UpdateControlCachedIntFromWindowText());
       if (count != 0) {
@@ -769,7 +759,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   dialog->Free();
 
   if (createdOrders) {
-    g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
+    g_pActiveMapOrderContext->UpdateOccupants();
   }
 
   SetMapInteractionMode(2);
@@ -782,12 +772,11 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   }
 
   if (portZone == 0) {
-    RefreshMapOrderEntryPanel(0);
+    FocusOnForce(0);
     return;
   }
-  TTaskForce* taskForce =
-      g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(portZone);
-  RefreshMapOrderEntryPanel(taskForce);
+  TTaskForce* taskForce = g_pActiveMapOrderContext->AssembleUIForce(portZone);
+  FocusOnForce(taskForce);
 }
 
 // FUNCTION: IMPERIALISM 0x00599090
@@ -812,20 +801,19 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
 
   CString text;
   CString reportTemplate;
-  TStaticText* control =
-      static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagGpee)); // gpee
+  TStaticText* control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagGpee)); // gpee
   control->AssertValid();
   g_apTerrainTypeDescriptorTable[nation]->FormatOverlayTerrainLabelText(&text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagZone)); // zone
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagZone)); // zone
   control->AssertValid();
   zone->AssignZoneDisplayNameToOutputRef(&text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAdam)); // adam
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagAdam)); // adam
   control->AssertValid();
   if (cachedTaskForce != 0) {
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x34);
@@ -838,43 +826,43 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(attributionStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagShip)); // ship
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagShip)); // ship
   control->AssertValid();
   if (cachedTaskForce != 0) {
     cachedTaskForce->GetCompositionDescription(&text);
   } else {
-    TAdmiral* observer = zone->FindReportingAdmiralForNation(g_pSimMgr->GetPlayerCountry());
+    TAdmiral* observer = zone->GetSeniorOfficerOf(g_pSimMgr->GetPlayerCountry());
     observer->GetFleetReport(&text, zone, nation);
   }
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
   int stringIndex = cachedTaskForce != 0 ? 0x2e : 0x29;
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // titl
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagTitl)); // titl
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(titleStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab1)); // lab1
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagLab1)); // lab1
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab2)); // lab2
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagLab2)); // lab2
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab3)); // lab3
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagLab3)); // lab3
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab4)); // lab4
+  control = static_cast<TStaticText*>(dialog->FindSubView(kControlTagLab4)); // lab4
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex), &text);
   control->SetTextAndMaybeRefresh(&text, false);
@@ -890,12 +878,12 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
 }
 
 // FUNCTION: IMPERIALISM 0x00599770
-void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent) {
+void TMapUberPicture::NextSeaZonePlease(char includeCurrent) {
   if (activeUnitCategoryIndex != 2) {
     return;
   }
 
-  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(NULL);
+  g_pActiveMapOrderContext->AssembleUIForce(NULL);
   TZone* candidate = orderEntryContext;
   if (candidate != NULL && includeCurrent == 0) {
     candidate = candidate->prev18;
@@ -905,18 +893,17 @@ void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent
   }
 
   while (candidate != NULL) {
-    if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, false)) {
+    if (candidate->HasFreeShipsOfPlayer(-1, false)) {
       SetMapInteractionMode(2);
       InvalidateMapRegionForEntryIfUiPassive(orderEntryContext);
       orderEntryContext = candidate;
       InvalidateMapRegionForEntryIfUiPassive(candidate);
       if (candidate == NULL) {
-        RefreshMapOrderEntryPanel(NULL);
+        FocusOnForce(NULL);
         return;
       }
-      TTaskForce* taskForce =
-          g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(candidate);
-      RefreshMapOrderEntryPanel(taskForce);
+      TTaskForce* taskForce = g_pActiveMapOrderContext->AssembleUIForce(candidate);
+      FocusOnForce(taskForce);
       return;
     }
     candidate = candidate->prev18;
@@ -926,7 +913,7 @@ void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent
 
 // FUNCTION: IMPERIALISM 0x005998a0
 bool TMapUberPicture::TrySelectNextValidMapOrderEntry(bool includeCurrent) {
-  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(NULL);
+  g_pActiveMapOrderContext->AssembleUIForce(NULL);
 
   TZone* candidate = orderEntryContext;
   if (candidate != NULL && !includeCurrent) {
@@ -937,18 +924,17 @@ bool TMapUberPicture::TrySelectNextValidMapOrderEntry(bool includeCurrent) {
   }
 
   while (candidate != NULL) {
-    if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, false)) {
+    if (candidate->HasFreeShipsOfPlayer(-1, false)) {
       SetMapInteractionMode(2);
       InvalidateMapRegionForEntryIfUiPassive(orderEntryContext);
       orderEntryContext = candidate;
       InvalidateMapRegionForEntryIfUiPassive(candidate);
       if (candidate == NULL) {
-        RefreshMapOrderEntryPanel(NULL);
+        FocusOnForce(NULL);
         return true;
       }
-      TTaskForce* taskForce =
-          g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(candidate);
-      RefreshMapOrderEntryPanel(taskForce);
+      TTaskForce* taskForce = g_pActiveMapOrderContext->AssembleUIForce(candidate);
+      FocusOnForce(taskForce);
       return true;
     }
     candidate = candidate->prev18;
@@ -968,7 +954,7 @@ void TMapUberPicture::GrandCycle() {
 }
 
 // FUNCTION: IMPERIALISM 0x005999f0
-void TMapUberPicture::ResetMapInteractionToCivilianMode() {
+void TMapUberPicture::SwitchToCivilianMode() {
   EnterMapInteractionOverlayMode(NULL);
   SetMapInteractionMode(0);
 }
@@ -986,7 +972,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
     return;
   }
   TView* zoomControl =
-      (controlOverride != NULL) ? controlOverride : this->ResolveControlByTag(kControlTagZmIn);
+      (controlOverride != NULL) ? controlOverride : this->FindSubView(kControlTagZmIn);
   zoomControl->AssertValid();
   if (zoomControl != NULL) {
     zoomControl->controlTag = kControlTagZmOt; // "ZmOt" ("Zoom Out")
@@ -1014,8 +1000,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
 void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride) {
   if (invalidationFlag) {
     g_pUiAnimator->FreeAllAnis();
-    TView* zoomControl =
-        (controlOverride != NULL) ? controlOverride : ResolveControlByTag(kControlTagZmOt);
+    TView* zoomControl = (controlOverride != NULL) ? controlOverride : FindSubView(kControlTagZmOt);
     zoomControl->AssertValid();
     if (zoomControl != NULL) {
       zoomControl->controlTag = kControlTagZmIn;
@@ -1039,7 +1024,7 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
 
 // FUNCTION: IMPERIALISM 0x00599cf0
 void TMapUberPicture::DisplayMiniMap() {
-  TView* toolControl = this->ResolveControlByTag(kControlTagTool); // "tool"
+  TView* toolControl = this->FindSubView(kControlTagTool); // "tool"
   if (toolControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xa56);
   }
@@ -1089,16 +1074,16 @@ void TMapUberPicture::InvalidateMiniMap() {
 
 // FUNCTION: IMPERIALISM 0x00599fd0
 void TMapUberPicture::RemoveMiniMap() {
-  TView* toolControl = ResolveControlByTag(kControlTagTool); // 'tool'
+  TView* toolControl = FindSubView(kControlTagTool); // 'tool'
   if (toolControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xa97);
   }
 
   CRect mapBounds;
-  subview->QueryBounds(&mapBounds);
+  subview->GetFrame(&mapBounds);
   RgnHandle mapRegion = NewRgn();
   RectRgn(mapRegion, &mapBounds);
-  ForwardCopyRgn(mapRegion);
+  SetRgn(mapRegion);
   DisposeRgn(mapRegion);
 
   RECT toolRect;
@@ -1114,7 +1099,7 @@ void TMapUberPicture::RemoveMiniMap() {
   miniMapView = NULL;
 
   TPicture* miniMapButton =
-      static_cast<TPicture*>(toolControl->ResolveControlByTag(kControlTagInfo)); // 'info'
+      static_cast<TPicture*>(toolControl->FindSubView(kControlTagInfo)); // 'info'
   if (miniMapButton == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xab4);
   }
@@ -1125,24 +1110,24 @@ void TMapUberPicture::RemoveMiniMap() {
 
 // FUNCTION: IMPERIALISM 0x0059a180
 void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
-  TView* toolControl = this->ResolveControlByTag(kControlTagTool); // "tool"
+  TView* toolControl = this->FindSubView(kControlTagTool); // "tool"
   if (toolControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xac7);
   }
 
-  TView* seasControl = toolControl->ResolveControlByTag(kControlTagSeas); // "seas"
+  TView* seasControl = toolControl->FindSubView(kControlTagSeas); // "seas"
   if (seasControl != NULL) {
     seasControl->Show(enabledState, 1);
   }
-  TView* yearControl = toolControl->ResolveControlByTag(kControlTagYear); // "year"
+  TView* yearControl = toolControl->FindSubView(kControlTagYear); // "year"
   if (yearControl != NULL) {
     yearControl->Show(enabledState, 1);
   }
-  TView* treaControl = toolControl->ResolveControlByTag(kControlTagTrea); // "trea"
+  TView* treaControl = toolControl->FindSubView(kControlTagTrea); // "trea"
   if (treaControl != NULL) {
     treaControl->Show(enabledState, 1);
   }
-  TView* treeControl = toolControl->ResolveControlByTag(kControlTagTree); // "tree"
+  TView* treeControl = toolControl->FindSubView(kControlTagTree); // "tree"
   if (treeControl != NULL) {
     treeControl->Show(enabledState, 1);
   }

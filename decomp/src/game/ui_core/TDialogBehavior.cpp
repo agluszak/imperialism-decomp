@@ -27,7 +27,7 @@ TDialogBehavior::TDialogBehavior()
       dismissPending(1) {}
 
 // FUNCTION: IMPERIALISM 0x00487400
-void TDialogBehavior::SetUiColorDescriptorGoldTriplet(bool flag, int colorA, int colorB) {
+void TDialogBehavior::IDialogBehavior(bool flag, int colorA, int colorB) {
   behaviorTag = kControlTagDlog; // 'gold'
   armed = flag;
   defaultCommandCode = colorA;
@@ -73,7 +73,7 @@ void TDialogBehavior::DoKeyEvent(TToolboxEvent* event) {
     return;
   }
 
-  TView* control = ownerView->ResolveControlByTag(commandCode);
+  TView* control = ownerView->FindSubView(commandCode);
   if (control == 0) {
     ownerView->HandleEvent(fallbackCommand, ownerView, 0);
   } else if (control->IsEnabled() != 0) {
@@ -89,7 +89,7 @@ void TDialogBehavior::DoCommandKeyEvent(TToolboxEvent* event) {
     return;
   }
 
-  TView* control = ownerView->ResolveControlByTag(cancelCommandCode);
+  TView* control = ownerView->FindSubView(cancelCommandCode);
   if (control == 0) {
     ownerView->HandleEvent(0x15, ownerView, 0);
   } else if (control->IsEnabled() != 0) {

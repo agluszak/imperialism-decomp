@@ -13,9 +13,9 @@ public:
   virtual ~TCluster() override;             // slot 0x01 (scalar deleting destructor)
   virtual TObject* ShallowClone() override; // slot 0x08 0x4918a0
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;             // slot 0x0f 0x00491650
-  virtual int GetCurrentChoice();                           // slot 0x71 0x491770
-  virtual void SetSelectedChildTagAndRefresh(int childTag); // slot 0x72 0x491790 (1 arg; RET 4)
+                       TEvent* event) override; // slot 0x0f 0x00491650
+  virtual int GetCurrentChoice();               // slot 0x71 0x491770
+  virtual void SetCurrentChoice(int childTag);  // slot 0x72 0x491790 (1 arg; RET 4)
   int selectedChildTag;
 
   TCluster();

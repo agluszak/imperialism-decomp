@@ -26,7 +26,6 @@ IMPLEMENT_DYNCREATE(TIndustryAmtBar, TAmtBar)
 // FUNCTION: IMPERIALISM 0x005891d0
 TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 
-
 // FUNCTION: IMPERIALISM 0x00589260
 void TIndustryAmtBar::DoPostCreate(int arg) {
   // ORIG_CALLCONV: __thiscall
@@ -66,9 +65,9 @@ void TIndustryAmtBar::DrawAmt() {
     control->PrepareForDrawing();
     if (control->IsActionable()) {
       CRect boundsRect(0, 0, 0, 0);
-      control->QueryBounds(&boundsRect);
+      control->GetFrame(&boundsRect);
       ClipRect(&boundsRect);
-      control->QueryBounds(&boundsRect);
+      control->GetFrame(&boundsRect);
       CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
       control->TranslatePointToParentChain4E(&translatedOrigin);
 

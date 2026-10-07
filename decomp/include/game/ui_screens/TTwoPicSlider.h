@@ -27,6 +27,6 @@ public:
 
   TTwoPicSlider();
 
-  void InitializePictureSurfaces(int baseBitmapId); // 0x0056e200
+  void SetPicture(int baseBitmapId); // 0x0056e200
 };
 ASSERT_SIZE(TTwoPicSlider, 0x98);

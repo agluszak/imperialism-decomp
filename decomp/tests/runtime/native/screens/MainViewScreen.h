@@ -17,7 +17,7 @@ struct CRuntimeClass;
 //
 // Every screen driver needs the same three things, and writing them per screen is how the
 // suite ended up with 22 hand-copied "is this screen idle" predicates and 92 raw
-// ResolveControlByTag calls in test bodies:
+// FindSubView calls in test bodies:
 //
 //   1. Identity: the right main-view class, at the right turn event, with no modal above it.
 //      The modal check matters -- an activation resolves against the modal head first, so

@@ -28,7 +28,7 @@ TTwoPicSlider::TTwoPicSlider()
 TTwoPicSlider::~TTwoPicSlider() {}
 
 // FUNCTION: IMPERIALISM 0x0056e200
-void TTwoPicSlider::InitializePictureSurfaces(int baseBitmapId) {
+void TTwoPicSlider::SetPicture(int baseBitmapId) {
   lowerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId + 1);
   upperSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId);
   RECT bounds = {0, 0, frameWidth, frameHeight};

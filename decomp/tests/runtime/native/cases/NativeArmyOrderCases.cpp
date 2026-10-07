@@ -183,8 +183,7 @@ RuntimeActionResult RunArmySelectCategory(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  remaining =
-      g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(2, province);
+  remaining = g_pMapContextActionManager->SelectUnitType(2, province);
   JsonObject selectResult;
   selectResult.Set("remaining", static_cast<int>(remaining));
   selectResult.Set("pending_index",
@@ -344,8 +343,7 @@ RuntimeActionResult RunArmySelectionCycling(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  nextProvince =
-      g_pMapContextActionManager->FindNextSelectableProvinceForNation(ActiveNationSlot());
+  nextProvince = g_pMapContextActionManager->Cycle(ActiveNationSlot());
   JsonObject cycleResult;
   cycleResult.Set("next", static_cast<int>(nextProvince));
   cycleResult.Set("pending_index",

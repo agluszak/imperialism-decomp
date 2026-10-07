@@ -23,14 +23,14 @@ IMPLEMENT_DYNCREATE(TTradeBookView, TView)
 void TTradeBookView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
-  previousPageButton = static_cast<TControl*>(ResolveControlByTag(kControlTagLcor));
-  nextPageButton = static_cast<TControl*>(ResolveControlByTag(kControlTagRcor));
-  buyPanel = static_cast<TTradePageBuyView*>(ResolveControlByTag(kControlTagTbou));
-  sellPanel = static_cast<TTradePageSellView*>(ResolveControlByTag(kControlTagTsol));
+  previousPageButton = static_cast<TControl*>(FindSubView(kControlTagLcor));
+  nextPageButton = static_cast<TControl*>(FindSubView(kControlTagRcor));
+  buyPanel = static_cast<TTradePageBuyView*>(FindSubView(kControlTagTbou));
+  sellPanel = static_cast<TTradePageSellView*>(FindSubView(kControlTagTsol));
 
-  TStaticText* rtilControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagRtil));
+  TStaticText* rtilControl = static_cast<TStaticText*>(FindSubView(kControlTagRtil));
   rtilControl->AssertValid();
-  TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL));
+  TStaticText* titLControl = static_cast<TStaticText*>(FindSubView(kControlTagTitL));
   titLControl->AssertValid();
 
   ApplyUiTextStyleAndThemeFlags(static_cast<TDropShadowText*>(rtilControl), 0, 0x12, 0x2b6b,
@@ -59,7 +59,7 @@ void TTradeBookView::SetItem(short categorySlot) {
     pageCount =
         buyPanel->pageCount > sellPanel->pageCount ? buyPanel->pageCount : sellPanel->pageCount;
 
-    TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL));
+    TStaticText* title = static_cast<TStaticText*>(FindSubView(kControlTagTitL));
     title->AssertValid();
 
     CString composedTitle;
@@ -72,7 +72,7 @@ void TTradeBookView::SetItem(short categorySlot) {
     title->SetTextAndMaybeRefresh(&composedTitle, false);
 
     CRect titleBounds;
-    title->QueryBounds(&titleBounds);
+    title->GetFrame(&titleBounds);
     InvalidateCityDialogRectRegion(&titleBounds, 1);
   } else {
     pageCount = 0;

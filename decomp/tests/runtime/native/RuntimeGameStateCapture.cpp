@@ -834,7 +834,7 @@ JSON_Value* CaptureTechnology() {
     cityCapabilities.Set("primary_civilian_distance_terrain", primaryTerrain.Release());
     cityCapabilities.Set("secondary_civilian_hills", technologyStatus.techStatusByTechId[11] == 2);
     cityCapabilities.Set("secondary_civilian_swamp", technologyStatus.techStatusByTechId[5] == 2);
-    cityCapabilities.Set("fort_level_cap", g_pTechMgr->GetNationFortLevelCap(nationSlot));
+    cityCapabilities.Set("fort_level_cap", g_pTechMgr->GetBestFort(nationSlot));
     cityCapabilitiesByNation.Add(cityCapabilities.Release());
   }
   JsonArray selectedCapabilitySlotsByNation;
@@ -1540,7 +1540,7 @@ JSON_Value* CaptureDealBook(TGreatPower* nation) {
   JsonObject dealBook;
   for (short commodity = kResourceCotton; commodity < kResourceManufacturedEnd; ++commodity) {
     JsonArray entries;
-    const short entryCount = nation->GetTrackedSlotEntryCountLow(commodity);
+    const short entryCount = nation->GetNumDealsIn(commodity);
     if (entryCount < 0) {
       FailSemanticCapture("deal-book entry count is negative");
     }
@@ -3759,7 +3759,7 @@ bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
 
   char saveRelative[260];
   sprintf(saveRelative, "save/rt_native_%s.imp", name);
-  if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(CString(saveRelative)) == 0) {
+  if (g_pAssetMgr->SaveTheGame(CString(saveRelative)) == 0) {
     return false;
   }
 

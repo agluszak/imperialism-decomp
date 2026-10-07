@@ -63,17 +63,17 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
     battleView->InvalidateUnit(unit);
   }
 
-  selectedUnit = players[currentSide]->SelectNextTacticalUnitForDoneCommand();
+  selectedUnit = players[currentSide]->GetNextUnit();
   if (!players[currentSide]->sideReadyFlag) {
     return;
   }
 
   currentSide = (currentSide == 0);
-  selectedUnit = players[currentSide]->SelectNextTacticalUnitForDoneCommand();
+  selectedUnit = players[currentSide]->GetNextUnit();
 
   if (battleView != 0) {
-    TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
-        battleView->ownerContext->ResolveControlByTag(kControlTagTool));
+    TTacticalToolbar* toolbar =
+        static_cast<TTacticalToolbar*>(battleView->ownerContext->FindSubView(kControlTagTool));
     toolbar->AssertValid();
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit);
     toolbar->ForceRedraw();
@@ -87,8 +87,7 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a5730
-void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
-    TTacticalUnit* attackerUnit, TacticalTileIndex targetTileIndex) {
+void TNavyBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targetTileIndex) {
   TNavyTacUnit* defenderUnit = static_cast<TNavyTacUnit*>(tileGrid[targetTileIndex].occupant);
   defenderUnit->AssertValid();
 
@@ -145,7 +144,7 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   }
 
   attackerUnit->selectedFlag = false;
-  EvaluateTacticalSideStateAndShowBattleSummaryDialog();
+  CheckForVictory();
 }
 
 // FUNCTION: IMPERIALISM 0x005a59a0
@@ -208,9 +207,8 @@ void TNavyBattle::SetTargeting(NavyTargeting targeting) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a5bc0
-void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
-    TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
-  EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
+void TNavyBattle::FireAndCycle(TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
+  FireOn(unit, targetTileIndex);
   if (battleOutcome == kTacticalBattleInProgress) {
     TacticalTileIndex neighborTiles[6];
     GetNeighborList(selectedUnit->tileIndex, neighborTiles);
@@ -225,12 +223,11 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
       }
     }
   }
-  FinishTacticalActionAndPostNextMoveCommand();
+  FinishedMove();
 }
 
 // FUNCTION: IMPERIALISM 0x005a5c50
-void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
-    TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
+void TNavyBattle::MoveAndCycle(TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
   MoveTacticalUnitTowardTile(unit, targetTileIndex);
   if (!unit->selectedFlag) {
     TacticalTileIndex neighborTiles[6];
@@ -246,12 +243,12 @@ void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       }
     }
     if (direction == 6) {
-      FinishTacticalActionAndPostNextMoveCommand();
+      FinishedMove();
       return;
     }
   }
   if (unit->state1c == 0 && battleOutcome == kTacticalBattleInProgress) {
     return;
   }
-  FinishTacticalActionAndPostNextMoveCommand();
+  FinishedMove();
 }

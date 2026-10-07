@@ -40,7 +40,7 @@ TTaskForce* CreateCommittedEvadeForce(TZone* zone) {
   SpawnShip(7, zone, "navy-cls2");
   SpawnShip(9, zone, "navy-cls0");
   SpawnShip(12, zone, "navy-cls3");
-  TTaskForce* force = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(ActiveNationSlot());
+  TTaskForce* force = zone->AssembleTaskForce(ActiveNationSlot());
   if (force != 0) {
     force->defeated = 0;
     force->SubmitOrders(9, 0);
@@ -85,9 +85,9 @@ RuntimeActionResult RunNavyCreateForce(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  TTaskForce* force = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(ActiveNationSlot());
+  TTaskForce* force = zone->AssembleTaskForce(ActiveNationSlot());
   if (force == 0) {
-    return RuntimeActionResult::Failure("CreateTaskForceFromNavyOrdersForNationIfEligible returned null");
+    return RuntimeActionResult::Failure("AssembleTaskForce returned null");
   }
   force->defeated = 0;
   force->SubmitOrders(9, 0);
@@ -174,9 +174,9 @@ RuntimeActionResult RunNavySubmitOrder(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  TTaskForce* force = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(ActiveNationSlot());
+  TTaskForce* force = zone->AssembleTaskForce(ActiveNationSlot());
   if (force == 0) {
-    return RuntimeActionResult::Failure("CreateTaskForceFromNavyOrdersForNationIfEligible returned null");
+    return RuntimeActionResult::Failure("AssembleTaskForce returned null");
   }
   force->defeated = 0;
   force->SubmitOrders(9, 0);
@@ -243,9 +243,7 @@ RuntimeActionResult RunNavyZoneTarget(NativeTransition& transition) {
   result.Set("illegal", illegal);
   result.Set("actives", actives.Release());
   result.Set("child_types", childTypes.Release());
-  result.Set("distance",
-             static_cast<int>(
-                 zone->GetCachedMapActionContextDistanceOrRecompute(other)));
+  result.Set("distance", static_cast<int>(zone->GetDistanceTo(other)));
   result.Set("zone_ord", ZoneIndex(zone));
   result.Set("force_loc_ord", ZoneIndex(force->location));
   result.Set("other_ord", ZoneIndex(other));
@@ -301,7 +299,7 @@ RuntimeActionResult RunNavySelectionCycling(NativeTransition& transition) {
   }
   next = 0;
   for (TZone* candidate = zone->prev18; candidate != 0; candidate = candidate->prev18) {
-    if (candidate->CanDisplayMapOrderEntryInCurrentContext(ActiveNationSlot(), 0)) {
+    if (candidate->HasFreeShipsOfPlayer(ActiveNationSlot(), 0)) {
       next = candidate;
       break;
     }

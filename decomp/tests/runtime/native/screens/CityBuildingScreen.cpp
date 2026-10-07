@@ -181,13 +181,13 @@ RuntimeActionResult CityBuildingScreen::VerifyRetailFloatingFrame() const {
   const LRESULT hitResult = SendMessageA(frame, WM_NCHITTEST, 0, captionPoint);
   if (hitResult != HTCAPTION) {
     CString detail;
-    detail.Format("the frame does not expose a movable caption: frame=%p cmc=%p hit=0x%lx rect=(%ld,%ld,%ld,%ld) "
+    detail.Format("the frame does not expose a movable caption: frame=%p cmc=%p hit=0x%lx "
+                  "rect=(%ld,%ld,%ld,%ld) "
                   "clientOrigin=(%ld,%ld) point=(%ld,%ld)",
-                  (void*)frame, (void*)window->nativeWindow,
-                  static_cast<long>(hitResult), static_cast<long>(windowRect.left),
-                  static_cast<long>(windowRect.top), static_cast<long>(windowRect.right),
-                  static_cast<long>(windowRect.bottom), static_cast<long>(clientOrigin.x),
-                  static_cast<long>(clientOrigin.y),
+                  (void*)frame, (void*)window->nativeWindow, static_cast<long>(hitResult),
+                  static_cast<long>(windowRect.left), static_cast<long>(windowRect.top),
+                  static_cast<long>(windowRect.right), static_cast<long>(windowRect.bottom),
+                  static_cast<long>(clientOrigin.x), static_cast<long>(clientOrigin.y),
                   static_cast<long>((windowRect.left + windowRect.right) / 2),
                   static_cast<long>((windowRect.top + clientOrigin.y) / 2));
     return PageFailure("verify the building window frame", detail);
@@ -196,7 +196,7 @@ RuntimeActionResult CityBuildingScreen::VerifyRetailFloatingFrame() const {
 }
 
 TView* CityBuildingScreen::Row(short row) const {
-  return buildingView != 0 ? buildingView->ResolveControlByTag(kControlTagClu0 + row) : 0;
+  return buildingView != 0 ? buildingView->FindSubView(kControlTagClu0 + row) : 0;
 }
 
 TNumberText* CityBuildingScreen::RowCount(short row) const {
@@ -204,8 +204,8 @@ TNumberText* CityBuildingScreen::RowCount(short row) const {
   // the same cluster that carries the arrows.
   const int countRowTag =
       kind == kCityBuildingArmory ? kControlTagNum0 + row : kControlTagClu0 + row;
-  TView* countRow = buildingView != 0 ? buildingView->ResolveControlByTag(countRowTag) : 0;
-  TView* count = countRow != 0 ? countRow->ResolveControlByTag(kControlTagNumb) : 0;
+  TView* countRow = buildingView != 0 ? buildingView->FindSubView(countRowTag) : 0;
+  TView* count = countRow != 0 ? countRow->FindSubView(kControlTagNumb) : 0;
   return count != 0 && count->IsKindOf(RUNTIME_CLASS(TNumberText)) != 0
              ? static_cast<TNumberText*>(count)
              : 0;
@@ -216,24 +216,23 @@ TView* CityBuildingScreen::Cluster() const {
     return 0;
   }
   if (kind == kCityBuildingTradeSchool) {
-    return buildingView->ResolveControlByTag(kSummaryTagTrai);
+    return buildingView->FindSubView(kSummaryTagTrai);
   }
   if (kind == kCityBuildingRailyard) {
-    return buildingView->ResolveControlByTag(kSummaryTagRail);
+    return buildingView->FindSubView(kSummaryTagRail);
   }
   const short unitType = IndustryUnitType();
-  return unitType >= 0 ? buildingView->ResolveControlByTag(g_pTradeSummarySelectionMap[unitType])
-                       : 0;
+  return unitType >= 0 ? buildingView->FindSubView(g_pTradeSummarySelectionMap[unitType]) : 0;
 }
 
 TView* CityBuildingScreen::ClusterArrow(bool raise) const {
   TView* cluster = Cluster();
-  return cluster != 0 ? cluster->ResolveControlByTag(raise ? kControlTagRght : kControlTagLeft) : 0;
+  return cluster != 0 ? cluster->FindSubView(raise ? kControlTagRght : kControlTagLeft) : 0;
 }
 
 TNumberText* CityBuildingScreen::ClusterCount() const {
   TView* cluster = Cluster();
-  TView* count = cluster != 0 ? cluster->ResolveControlByTag(kControlTagMove) : 0;
+  TView* count = cluster != 0 ? cluster->FindSubView(kControlTagMove) : 0;
   return count != 0 && count->IsKindOf(RUNTIME_CLASS(TNumberText)) != 0
              ? static_cast<TNumberText*>(count)
              : 0;
@@ -293,10 +292,10 @@ bool CityBuildingScreen::CountIsPresentedCorrectly(TNumberText* count,
   // Not editable, styled as this page's own number, positioned by its owner and given a real
   // size. A count that fails any of these was rebuilt wrongly by the refresh, whatever its
   // digits say.
-  return count != 0 && count->enabled == 0 && count->viewEnabled != 0 &&
-         count->stylePayload == 0 && count->textStyle.fontFamily == 3 &&
-         count->textStyle.fontStyleFlags == 0 && count->textStyle.fontSize == kCountFontSize &&
-         count->textStyle.textColor == textColor && count->ownerContext != 0 &&
+  return count != 0 && count->enabled == 0 && count->viewEnabled != 0 && count->stylePayload == 0 &&
+         count->textStyle.fontFamily == 3 && count->textStyle.fontStyleFlags == 0 &&
+         count->textStyle.fontSize == kCountFontSize && count->textStyle.textColor == textColor &&
+         count->ownerContext != 0 &&
          count->absoluteX == count->ownerContext->absoluteX + count->ownerLocalX &&
          count->absoluteY == count->ownerContext->absoluteY + count->ownerLocalY &&
          count->frameWidth > 0 && count->frameHeight > 0;
@@ -374,7 +373,7 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
   for (short category = 0; category < kArmoryCategoryCount; ++category) {
     TUnitOrder* order = UnitOrder(category);
     TNumberText* count = RowCount(category);
-    TView* button = buildingView->ResolveControlByTag(kControlTagCiv0 + category);
+    TView* button = buildingView->FindSubView(kControlTagCiv0 + category);
     // The armory's unit pictures are radio buttons -- picking one is what selects the unit the
     // detail panel describes. CityScreenTest read them as TCivilianButton, which is a *derived*
     // class the objects are not: the cast happened to work only because the picture id it read
@@ -430,7 +429,7 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
       return matched;
     }
     TView* row = Row(category);
-    TView* raise = row != 0 ? row->ResolveControlByTag(kControlTagPlus) : 0;
+    TView* raise = row != 0 ? row->FindSubView(kControlTagPlus) : 0;
     if (raise != 0 && raise->IsActionable() && order->MaxOrder() > order->quantity) {
       foundRaisableOrder = true;
     }
@@ -441,7 +440,7 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
   if (!foundRaisableOrder) {
     TUnitOrder* firstOrder = UnitOrder(0);
     TView* firstRow = Row(0);
-    TView* firstRaise = firstRow != 0 ? firstRow->ResolveControlByTag(kControlTagPlus) : 0;
+    TView* firstRaise = firstRow != 0 ? firstRow->FindSubView(kControlTagPlus) : 0;
     CString detail;
     detail.Format("no unit order can be raised: plus=%d enabled=%d actionable=%d quantity=%d "
                   "max=%d primary_stock=%d treasury=%d",
@@ -459,8 +458,8 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
   // The detail panel describes the selected unit: its name comes from the string table and its
   // firepower from the retail data table, not from a placeholder.
   const short selectedUnitType = armory->selectedUnitOrder->resourceTypeIndex;
-  TView* unitName = buildingView->ResolveControlByTag(kControlTagUnit);
-  TView* firepower = buildingView->ResolveControlByTag(kControlTagSta0);
+  TView* unitName = buildingView->FindSubView(kControlTagUnit);
+  TView* firepower = buildingView->FindSubView(kControlTagSta0);
   CString expectedUnitName;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&expectedUnitName, kUnitNameStringGroup,
                                                       static_cast<short>(selectedUnitType + 1));
@@ -543,7 +542,7 @@ RuntimeActionResult CityBuildingScreen::VerifyTradeSchoolState() const {
       cluster != 0 && cluster->IsKindOf(RUNTIME_CLASS(TRailCluster)) != 0
           ? static_cast<TRailCluster*>(cluster)
           : 0;
-  TView* barView = cluster != 0 ? cluster->ResolveControlByTag(kControlTagBar) : 0;
+  TView* barView = cluster != 0 ? cluster->FindSubView(kControlTagBar) : 0;
   TAmtBar* bar = barView != 0 && barView->IsKindOf(RUNTIME_CLASS(TAmtBar)) != 0
                      ? static_cast<TAmtBar*>(barView)
                      : 0;
@@ -634,7 +633,7 @@ short CityBuildingScreen::FirstRaisableRow() const {
       continue;
     }
     TView* rowView = Row(row);
-    TView* raise = rowView != 0 ? rowView->ResolveControlByTag(kControlTagPlus) : 0;
+    TView* raise = rowView != 0 ? rowView->FindSubView(kControlTagPlus) : 0;
     if (raise != 0 && raise->IsActionable() && raise->IsEnabled() != 0) {
       return row;
     }

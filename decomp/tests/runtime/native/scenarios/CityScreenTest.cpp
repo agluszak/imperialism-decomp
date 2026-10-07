@@ -72,8 +72,7 @@ protected:
 
     // The main frame starts offscreen and only gets its real placement when the splash
     // backdrop's timer tears it down. Float-window frame geometry is meaningless until then.
-    RT_AWAIT(g_pActiveBackdropWindow == 0,
-             kObserveUiStateChanged | kObserveApplicationIdle);
+    RT_AWAIT(g_pActiveBackdropWindow == 0, kObserveUiStateChanged | kObserveApplicationIdle);
     RT_REQUIRE_NOT_NULL(PlayerCity());
     RT_OPEN_TO("open the city production screen", StrategicMap().OpenCity(), CityScreen);
     RT_REQUIRE(City().HasProductionControls());
@@ -166,7 +165,7 @@ protected:
     RT_RUN(CloseBuilding(*this));
 
     RT_CLOSE_TO_MAP("leave the city production screen", City().Close());
-    g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
+    g_pActiveMapOrderContext->UpdateOccupants();
     RT_REQUIRE(LiveZoneMasksCountOnlyNationsAtWar());
     RT_PASS();
 
@@ -264,8 +263,7 @@ private:
     shipOrder->Produce();
     owner->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     const short expectedCapacity = static_cast<short>(
-        shipBefore.merchantCapacity +
-        TShip::GetTypeCargoHold(resourceType) * completedQuantity);
+        shipBefore.merchantCapacity + TShip::GetTypeCargoHold(resourceType) * completedQuantity);
     const int expectedArms =
         shipBefore.armsInNavy +
         GetIndustryActionCostWeightByResourceType(resourceType) * completedQuantity;
@@ -352,8 +350,7 @@ private:
                  itemBefore.secondaryTracking)) &&
            order->productionSummary->strength == itemBefore.strength &&
            order->reservedWorkforce == itemBefore.reservedWorkforce &&
-           order->ownerCity->productionAccum[order->productionSlot] ==
-               itemBefore.productionAccum;
+           order->ownerCity->productionAccum[order->productionSlot] == itemBefore.productionAccum;
   }
 
   // --- Seeding. A fresh Easy game does not always start with enough of everything to place one
@@ -411,7 +408,7 @@ private:
           if (g_apTerrainTypeDescriptorTable[slot] != 0 &&
               (zone->nationKeyMask & (1 << slot)) != 0) {
             ++examinedRelations;
-            if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nation, slot)) {
+            if (g_pDiplomacyTurnStateManager->AreAtWar(nation, slot)) {
               ++expected;
             }
           }

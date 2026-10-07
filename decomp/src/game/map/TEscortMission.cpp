@@ -55,7 +55,7 @@ void TEscortMission::CalculateImportance() {
   TZone* homePortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId);
   TZone** cachedOwnerSlot = &homePortZone->primaryNeighbors[0];
   TZone* cachedOwner = *cachedOwnerSlot;
-  float score = static_cast<float>(cachedOwner->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(cachedOwner->GetStrategicValue());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
     TZone** zoneOwnerSlot = &zone->primaryNeighbors[0];
@@ -110,7 +110,7 @@ void TEscortMission::CalculateNeeds() {
       if (node->location != targetContext) {
         continue;
       }
-      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, node->nation)) {
+      if (!g_pDiplomacyTurnStateManager->AreAtWar(nationId, node->nation)) {
         continue;
       }
       short normalizationBase = node->GetMaxStrength();
@@ -165,5 +165,5 @@ void TEscortMission::GiveOrders() {
     orderList->active = 0;
     orderList->next->SetChainActiveFlag(0);
   }
-  ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
+  GiveTravelOrders(missionTargetZone);
 }

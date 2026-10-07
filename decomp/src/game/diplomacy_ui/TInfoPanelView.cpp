@@ -36,7 +36,7 @@ void TInfoPanelView::DoPostCreate(int arg) {
 
   const short kOvrTagOffsets[4] = {0, 4, 1, 2};
   for (int i = 0; i < 4; i++) {
-    TView* child = ResolveControlByTag(kControlTagOvr0 + kOvrTagOffsets[i]);
+    TView* child = FindSubView(kControlTagOvr0 + kOvrTagOffsets[i]);
     child->AssertValid();
     CString text;
     g_pSimMgr->GetString(0x2733, (short)(0x4e + i), &text);
@@ -220,15 +220,15 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004facc0
 void TInfoPanelView::Setup() {
-  TCluster* overlayCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagClus)); // 'clus'
+  TCluster* overlayCluster = static_cast<TCluster*>(FindSubView(kControlTagClus)); // 'clus'
   overlayCluster->AssertValid();
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText), overlayCluster);
-  overlayCluster->SetSelectedChildTagAndRefresh(kControlTagOvr0); // 'ovr0'
+  overlayCluster->SetCurrentChoice(kControlTagOvr0); // 'ovr0'
 
   diplomacyMapView->actionCode = kDipActionInspectNation;
   selectedOverlayMode = 0;
 
-  TControl* mapKey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey)); // 'mkey'
+  TControl* mapKey = static_cast<TControl*>(FindSubView(kControlTagMkey)); // 'mkey'
   mapKey->AssertValid();
   mapKey->SetDiplomacyNationSelectionFilterAndRefreshRows(0);
 }
@@ -240,7 +240,7 @@ void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
     diplomacyMapView->interactionMode = selectedOverlayMode;
     diplomacyMapView->InvalidateCityDialogRectRegion(&diplomacyMapView->mapViewportRect, 1);
     this->selectedOverlayMode = selectedOverlayMode;
-    TControl* mkey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey));
+    TControl* mkey = static_cast<TControl*>(FindSubView(kControlTagMkey));
     mkey->AssertValid();
     mkey->SetDiplomacyNationSelectionFilterAndRefreshRows(selectedOverlayMode);
   }

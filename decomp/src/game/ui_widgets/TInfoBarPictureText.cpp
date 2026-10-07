@@ -6,7 +6,7 @@ IMPLEMENT_DYNCREATE(TInfoBarPictureText, TInfoBarText)
 TInfoBarPictureText::~TInfoBarPictureText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5cb0
-void TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
+void TInfoBarPictureText::HotText(CString text, RECT* layoutRect) {
   if (EqualRect(layoutRect, &this->layoutRect) == 0) {
     CopyRect(&this->layoutRect, layoutRect);
     CRect clipRect;
@@ -25,7 +25,7 @@ void TInfoBarPictureText::ClearTextAndLayoutRect(int) {
   layoutRect.bottom = 0;
 
   CRect bounds;
-  QueryBounds(&bounds);
+  GetFrame(&bounds);
   CRect clipRect;
   CopyRect(&clipRect, &bounds);
   ownerContext->InvalidateCityDialogRectRegion(&clipRect, 1);

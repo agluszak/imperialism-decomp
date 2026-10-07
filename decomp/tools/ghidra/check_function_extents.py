@@ -6,7 +6,7 @@ call), or int3 padding. When Ghidra's bounds are short the range ends on somethi
 `push 0x198`, which is the middle of an assert call. Two of those have already cost real
 work:
 
-  0x50e8b0 TMapMgr::AllocateAndResetTerrainAndCityScoreTables -- recorded 81 bytes,
+  0x50e8b0 TMapMgr::InitializeMap -- recorded 81 bytes,
     actually 747. reccmp compared the function through an 81-byte keyhole; repairing the
     size took it 18.99% -> 27.30%.
   0x4cb8a0 TUniversityView::DoEvent -- recorded 301 bytes, actually 506. The missing tail

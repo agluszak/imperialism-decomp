@@ -99,14 +99,14 @@ void TArmyStack::AddUnitByRosterId(short rosterID) {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset()); cursor.More();
        unit = static_cast<TMilitaryUnit*>(cursor.Advance())) {
     if (unit->unitRosterId == rosterID) {
-      AddUnitToChainHead(unit);
+      AddUnit(unit);
       break;
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004a7b20
-void TArmyStack::AddUnitToChainHead(TMilitaryUnit* unit) {
+void TArmyStack::AddUnit(TMilitaryUnit* unit) {
   TArmyStackUnitNode* node = new TArmyStackUnitNode();
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUArmyMgr, 0xbeb);
@@ -118,7 +118,7 @@ void TArmyStack::AddUnitToChainHead(TMilitaryUnit* unit) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a7ba0
-void TArmyStack::RemoveUnitFromChain(TMilitaryUnit* unit) {
+void TArmyStack::RemoveUnit(TMilitaryUnit* unit) {
   TArmyStackUnitNode* prev = head14;
   if (prev != NULL) {
     TArmyStackUnitNode* node = prev->next;
@@ -171,7 +171,7 @@ void TArmyStack::ComputeStackCompositionClassCode() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a7d20
-void TArmyStack::ReseatChainUnitsAndClearOrders() {
+void TArmyStack::MoveAll() {
   for (TMilitaryUnit* unit = ResetCursorAndGetHeadUnit(); unit != 0;
        unit = AdvanceCursorAndGetUnit()) {
     unit->MoveTo(unit->orderTargetIndex);

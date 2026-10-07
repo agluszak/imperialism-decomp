@@ -64,11 +64,11 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
 
   for (int category = 0; category < 10; ++category) {
     TArmyPlacard* placard =
-        static_cast<TArmyPlacard*>(ResolveControlByTag(kControlTagArmyPlacardFirst + category));
+        static_cast<TArmyPlacard*>(FindSubView(kControlTagArmyPlacardFirst + category));
     placard->SetValue(static_cast<short>(totalUnitCounts[category]), true);
 
-    TNumberedArrowButton* arrow = static_cast<TNumberedArrowButton*>(
-        ResolveControlByTag(kControlTagArmyRatioFirst + category));
+    TNumberedArrowButton* arrow =
+        static_cast<TNumberedArrowButton*>(FindSubView(kControlTagArmyRatioFirst + category));
     if (totalUnitCounts[category] != 0 && category != 0) {
       arrow->SetValue(static_cast<short>(availableUnitCounts[category]), true);
       arrow->Show(1, 1);
@@ -78,7 +78,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   }
 
   short upgradePictureId = hasUpgradeableUnit ? 0x24d5 : 0x04b5;
-  TPicture* upgradePicture = static_cast<TPicture*>(ResolveControlByTag(kControlTagGarr));
+  TPicture* upgradePicture = static_cast<TPicture*>(FindSubView(kControlTagGarr));
   upgradePicture->AssertValid();
   upgradePicture->SetPictureRsrcID(upgradePictureId, true);
   g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
@@ -94,12 +94,10 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     short selectedRatioOrMode = 0;
     if (commandId == 100) {
       selectedRatioOrMode =
-          g_pMapContextActionManager->ActivateFirstActiveTacticalUnitByCategoryAtTile(
-              categoryId, selectedProvinceIndex);
+          g_pMapContextActionManager->DeSelectUnitType(categoryId, selectedProvinceIndex);
     } else {
       selectedRatioOrMode =
-          g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(
-              categoryId, selectedProvinceIndex);
+          g_pMapContextActionManager->SelectUnitType(categoryId, selectedProvinceIndex);
     }
     static_cast<TNumberedArrowButton*>(sourceHandler)->SetValue(selectedRatioOrMode, true);
     g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();

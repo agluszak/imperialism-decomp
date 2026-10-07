@@ -23,17 +23,16 @@ void TTechHistoryView::StuffValues(short techId) {
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
 
-  TDropShadowText* titleControl =
-      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTitl));
+  TDropShadowText* titleControl = static_cast<TDropShadowText*>(FindSubView(kControlTagTitl));
   titleControl->AssertValid();
   titleControl->SetTextWithStrListID(0x2712, static_cast<short>(techId + 1), true);
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x12, 0x2b6a, 0x2b68);
 
-  TPicture* pictControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagPict));
+  TPicture* pictControl = static_cast<TPicture*>(FindSubView(kControlTagPict));
   pictControl->AssertValid();
   pictControl->SetPictureRsrcID(static_cast<short>(techId + 0x944), 1);
 
-  TScrollView* scrollView = static_cast<TScrollView*>(ResolveControlByTag(kControlTagScvw));
+  TScrollView* scrollView = static_cast<TScrollView*>(FindSubView(kControlTagScvw));
   scrollView->AssertValid();
 
   TDeluxeText* descText = new TDeluxeText();
@@ -46,9 +45,9 @@ void TTechHistoryView::StuffValues(short techId) {
 
   int measuredHeight = descText->MeasureCurrentTextHeightInLayoutRect();
   CRect descBounds;
-  descText->QueryBounds(&descBounds);
+  descText->GetFrame(&descBounds);
   descBounds.bottom = descBounds.top + static_cast<short>(measuredHeight);
-  descText->ApplyBounds(&descBounds, true);
+  descText->SetFrame(&descBounds, true);
 
   scrollView->contentView = descText;
   scrollView->Reset();

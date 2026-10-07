@@ -35,7 +35,7 @@ void TBuildingView::DoStartup() {}
 void TBuildingView::SetUniversityDialogTextAndRefresh(TStaticText* label, CString text) {
   label->SetTextAndMaybeRefresh(&text, false);
   CRect labelBounds;
-  label->QueryBounds(&labelBounds);
+  label->GetFrame(&labelBounds);
   RECT invalidateRect;
   CopyRect(&invalidateRect, &labelBounds);
   InvalidateCityDialogRectRegion(&invalidateRect, 1);
@@ -45,7 +45,7 @@ void TBuildingView::SetUniversityDialogTextAndRefresh(TStaticText* label, CStrin
 void TBuildingView::SetTextBox(TStaticText* label, short stringGroup, short stringIndex) {
   label->SetTextWithStrListID(stringGroup, stringIndex, false);
   CRect labelBounds;
-  label->QueryBounds(&labelBounds);
+  label->GetFrame(&labelBounds);
   RECT invalidateRect;
   CopyRect(&invalidateRect, &labelBounds);
   InvalidateCityDialogRectRegion(&invalidateRect, 1);

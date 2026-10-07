@@ -29,7 +29,7 @@ void TGrantsView::DoPostCreate(int arg) {
   diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
 
   for (int grantSlot = 0; grantSlot < 8; ++grantSlot) {
-    TView* grantControl = ResolveControlByTag(kControlTagDoc0 + grantSlot); // 'doc0'..
+    TView* grantControl = FindSubView(kControlTagDoc0 + grantSlot); // 'doc0'..
     g_pSimMgr->GetString(0x2733, static_cast<short>(grantSlot + 0x3e), &hoverText);
     SetControlHoverHelpText(hoverText, grantControl);
   }
@@ -99,10 +99,9 @@ void TGrantsView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004f85d0
 void TGrantsView::Setup() {
-  TCluster* documentCluster =
-      static_cast<TCluster*>(ResolveControlByTag(kControlTagDocs)); // 'docs'
+  TCluster* documentCluster = static_cast<TCluster*>(FindSubView(kControlTagDocs)); // 'docs'
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText), documentCluster);
-  documentCluster->SetSelectedChildTagAndRefresh(kControlTagDoc0); // 'doc0'
+  documentCluster->SetCurrentChoice(kControlTagDoc0); // 'doc0'
   diplomacyMapView->selectedGrantRow = 0;
   diplomacyMapView->actionCode = kDipActionOneTimeGrant;
 }

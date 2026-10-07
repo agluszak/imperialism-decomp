@@ -26,14 +26,12 @@ void TColorKeyPicture::Draw(RECT* rectBuffer) {
   g_pColorKeyCompositeDib = new CDib(*cachedBitmap);
 
   TPicture* background =
-      static_cast<TPicture*>(GetWindow()->ResolveControlByTag(kControlTagMain)); // 'main'
+      static_cast<TPicture*>(GetWindow()->FindSubView(kControlTagMain)); // 'main'
   if (background == 0) {
-    background =
-        static_cast<TPicture*>(GetWindow()->ResolveControlByTag(kControlTagBack)); // 'back'
+    background = static_cast<TPicture*>(GetWindow()->FindSubView(kControlTagBack)); // 'back'
   }
   if (background == 0) {
-    background =
-        static_cast<TPicture*>(GetWindow()->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
+    background = static_cast<TPicture*>(GetWindow()->FindSubView(kControlTagDialog)); // 'GOLD'
   }
 
   CPoint position;

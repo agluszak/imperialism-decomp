@@ -105,7 +105,7 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
   homeTown->transportLinked = false;
 
   char* linkedTiles = 0;
-  nation->BuildTransportLinkedInfluenceMap(&linkedTiles);
+  nation->TraceSupplyRoutes(&linkedTiles);
   if (linkedTiles == 0) {
     return RuntimeActionResult::Failure("the transport influence map was not returned");
   }

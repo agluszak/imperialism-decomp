@@ -68,16 +68,14 @@ void TArmyPlacard::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   if (sourceHandler->controlTag == kControlTagPlus) { // "plus"
     short categoryId = this->controlTag - 0x6330;
     short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
-    short unitCount = g_pMapContextActionManager->ActivateFirstActiveTacticalUnitByCategoryAtTile(
-        categoryId, tileIndex);
+    short unitCount = g_pMapContextActionManager->DeSelectUnitType(categoryId, tileIndex);
     this->SetValue(unitCount, true);
     return;
   }
   if (sourceHandler->controlTag == kControlTagMinu) { // "minu"
     short categoryId = this->controlTag - 0x6330;
     short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
-    short unitCount = g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(
-        categoryId, tileIndex);
+    short unitCount = g_pMapContextActionManager->SelectUnitType(categoryId, tileIndex);
     this->SetValue(unitCount, true);
   }
 }

@@ -69,27 +69,27 @@ TZone::TZone() : displayName(), primaryNeighbors(), secondaryNeighbors() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055e820
-bool TZone::QueryZoneCapabilityFlagA() {
+bool TZone::IsSeaZone() {
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e840
-bool TZone::QueryPortZoneCapability() {
+bool TZone::IsPortZone() {
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e860
-bool TZone::QueryZoneCapabilityFlagC() {
+bool TZone::IsProvincial() {
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e880
-bool TZone::QueryZoneCapabilityFlagD(NationSlot nationSlot) {
+bool TZone::IsFriendlyWith(NationSlot nationSlot) {
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e8a0
-bool TZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
+bool TZone::IsEnemyOf(NationSlot nationSlot) {
   return false;
 }
 
@@ -248,8 +248,8 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f140
-int TZone::ComputeMapActionContextNodeValueAverage() {
-  if (QueryPortZoneCapability()) {
+int TZone::GetStrategicValue() {
+  if (IsPortZone()) {
     AssertValid();
     int ownerTag =
         g_pGlobalMapState->terrainStateTable[static_cast<TPortZone*>(this)->portTileIndex]
@@ -272,7 +272,7 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f300
-void TZone::AppendUniquePrimaryNeighbor(TZone* zone) {
+void TZone::AddNeighbor(TZone* zone) {
   primaryNeighbors.Add(zone);
 }
 
@@ -306,7 +306,7 @@ bool TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f4d0
-bool TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
+bool TZone::IsAdjacentToCountry(short nationTag) {
   unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
   if (entryCount == 0) {
     return false;
@@ -346,7 +346,7 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
     return; // status code already assigned
   }
   short category;
-  if (QueryPortZoneCapability()) {
+  if (IsPortZone()) {
     category = 5; // port zones are always the highest status band
   } else {
     category = static_cast<short>(primaryNeighbors.Count());
@@ -449,7 +449,7 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
   }
   tileOrTerrainId = static_cast<short>(resolvedTile);
   activeTileIndex = static_cast<short>(tileOrTerrainId);
-  if (QueryPortZoneCapability()) {
+  if (IsPortZone()) {
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         activeTileIndex, -kMapTileActionStatePortZoneMarkerFrame);
     return;
@@ -466,7 +466,7 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
       activeTileIndex, -kMapTileActionStateZoneNorthEastMarkerFrame);
 }
 
-// 0x00564570 (FindMapActionContextContainingNodeByIndex) is a real TOcean __thiscall
+// 0x00564570 (GetSeaZoneAdjacentTo) is a real TOcean __thiscall
 // method; body lives in TOcean.cpp.
 
 // FUNCTION: IMPERIALISM 0x0055fc40
@@ -599,7 +599,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
   }
   TZone* zoneForTile = 0;
   if (g_pActiveMapOrderContext != 0) {
-    zoneForTile = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(static_cast<short>(tileIndex));
+    zoneForTile = g_pActiveMapOrderContext->GetZoneAt(static_cast<short>(tileIndex));
   }
   if (zoneForTile != contextZone) {
     return 0x3e8;
@@ -777,7 +777,7 @@ void TZone::ShowFocusIngot(unsigned char flag) {
        (g_pViewMgr != 0)) &&
       (g_pViewMgr->mapUberPicture != 0)) {
     char sign = static_cast<char>((-(static_cast<int>(flag)) & 2) - 1);
-    if (QueryPortZoneCapability()) {
+    if (IsPortZone()) {
       g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
           activeTileIndex, static_cast<int>(sign) * kMapTileActionStatePortZoneMarkerFrame);
       g_pViewMgr->mapUberPicture->InvalidateTile(activeTileIndex);
@@ -835,7 +835,7 @@ void TZone::GetNavalAuthority(CString* out, short nation) {
 }
 
 // FUNCTION: IMPERIALISM 0x00560970
-TAdmiral* TZone::FindReportingAdmiralForNation(int nation) {
+TAdmiral* TZone::GetSeniorOfficerOf(int nation) {
   TShip* selected = 0;
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this && ship->nation == nation) {
@@ -846,7 +846,7 @@ TAdmiral* TZone::FindReportingAdmiralForNation(int nation) {
 }
 
 // FUNCTION: IMPERIALISM 0x005609e0
-TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation) {
+TTaskForce* TZone::AssembleTaskForce(short nation) {
   int resolvedNation = nation;
   if (resolvedNation == -1) {
     resolvedNation = g_pSimMgr->GetPlayerCountry();
@@ -867,7 +867,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
 }
 
 // FUNCTION: IMPERIALISM 0x00560b00
-bool TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check) {
+bool TZone::HasFreeShipsOfPlayer(int nation, bool skipField34Check) {
   if (nation == -1) {
     nation = g_pSimMgr->GetPlayerCountry();
   }
@@ -892,8 +892,7 @@ bool TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34
 }
 
 // FUNCTION: IMPERIALISM 0x00560ba0
-void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth,
-                                                              bool markAdjacentCities) {
+void TZone::LightUp(int remainingDepth, bool markAdjacentCities) {
   short depth = static_cast<short>(remainingDepth);
   if (distanceLevel > depth) {
     return;
@@ -903,8 +902,8 @@ void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth
   if (depth > 0) {
     for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
       TZone* neighbor = primaryNeighbors.GetAt(i);
-      if (markAdjacentCities || neighbor->QueryZoneCapabilityFlagA()) {
-        neighbor->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(depth - 1, false);
+      if (markAdjacentCities || neighbor->IsSeaZone()) {
+        neighbor->LightUp(depth - 1, false);
       }
     }
 
@@ -933,12 +932,12 @@ TZone* TZone::GetSafestNearbyZoneFor(short nationSlot) const {
   int bestWarCount = -1;
   for (int neighborIndex = 0; neighborIndex < primaryNeighbors.GetSize(); ++neighborIndex) {
     TZone* neighbor = primaryNeighbors.GetAt(neighborIndex);
-    if (!neighbor->QueryPortZoneCapability() || neighbor->QueryZoneCapabilityFlagD(nationSlot)) {
+    if (!neighbor->IsPortZone() || neighbor->IsFriendlyWith(nationSlot)) {
       int warCount = 0;
       for (int otherNation = 0; otherNation < kMajorNationCount; ++otherNation) {
         if (g_apTerrainTypeDescriptorTable[otherNation] != 0 &&
             (neighbor->nationKeyMask & (1 << otherNation)) != 0 &&
-            g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, otherNation)) {
+            g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, otherNation)) {
           ++warCount;
         }
       }
@@ -952,7 +951,7 @@ TZone* TZone::GetSafestNearbyZoneFor(short nationSlot) const {
 }
 
 // FUNCTION: IMPERIALISM 0x00560f80
-void TZone::PropagateMapActionContextDistanceLevelsRecursive(short level) {
+void TZone::LightDistanceRecursive(short level) {
   if (level == -1) {
     for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
       node->distanceLevel = 0x29a;
@@ -963,13 +962,13 @@ void TZone::PropagateMapActionContextDistanceLevelsRecursive(short level) {
     distanceLevel = level;
     for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
       TZone* neighbor = primaryNeighbors[static_cast<unsigned int>(i)];
-      neighbor->PropagateMapActionContextDistanceLevelsRecursive(static_cast<short>(level + 1));
+      neighbor->LightDistanceRecursive(static_cast<short>(level + 1));
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005610b0
-short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
+short TZone::GetDistanceTo(TZone* other) {
   if (other == this) {
     return 0;
   }
@@ -999,7 +998,7 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
       distanceLevel = 0;
       for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
         TZone* neighbor = primaryNeighbors[static_cast<unsigned int>(i)];
-        neighbor->PropagateMapActionContextDistanceLevelsRecursive(1);
+        neighbor->LightDistanceRecursive(1);
       }
     }
 
@@ -1027,7 +1026,7 @@ int TZone::CountDiplomaticallyRelatedNationsInKeyMask(int nation) {
     if (g_apTerrainTypeDescriptorTable[slot] != 0) {
       unsigned char nationBit = static_cast<unsigned char>(1 << static_cast<short>(slot));
       if ((static_cast<unsigned char>(nationKeyMask) & nationBit) != 0 &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nation, slot)) {
+          g_pDiplomacyTurnStateManager->AreAtWar(nation, slot)) {
         ++count;
       }
     }
@@ -1052,7 +1051,7 @@ unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(uns
 }
 
 // FUNCTION: IMPERIALISM 0x00561490
-unsigned int TZone::BuildNationBitmaskForActiveType3Or4Orders() {
+unsigned int TZone::GetPatrolMask() {
   unsigned int mask = 0;
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this) {
@@ -1083,7 +1082,7 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
   }
   int candidate = 0;
   while ((mask & (1u << (candidate & 0x1f))) == 0 ||
-         !g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(candidate, nation)) {
+         !g_pDiplomacyTurnStateManager->AreInEstablishedWar(candidate, nation)) {
     ++candidate;
     if (candidate > 6) {
       return 0;
@@ -1281,7 +1280,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
       zone = 0;
     }
 
-    if (zone != 0 && zone->QueryPortZoneCapability()) {
+    if (zone != 0 && zone->IsPortZone()) {
       if (zone->primaryNeighbors.Count() == 0) {
         short tileIdx = static_cast<short>(zone->tileOrTerrainId);
         short ownerNation = g_pGlobalMapState->terrainStateTable[tileIdx].ownerNationTag;
@@ -1326,8 +1325,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
           candidateContext = 0;
         }
 
-        if (candidateContext != 0 && candidateContext != zone &&
-            !candidateContext->QueryPortZoneCapability() &&
+        if (candidateContext != 0 && candidateContext != zone && !candidateContext->IsPortZone() &&
             !zone->primaryNeighbors.ContainsEntry(candidateContext)) {
           zone->primaryNeighbors.Add(candidateContext);
         }

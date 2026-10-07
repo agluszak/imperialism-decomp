@@ -60,10 +60,9 @@ void TCouncilView::DoPostCreate(int arg) {
   tickerSlots[8] = 0;
   tickerSlots[9] = 0;
 
-  this->BuildDiplomacyNationOverlayGeometryAndHitMasks();
+  this->CreateDrawGeometries();
 
-  TDropShadowText* titleControl =
-      static_cast<TDropShadowText*>(this->ResolveControlByTag(kControlTagTitl));
+  TDropShadowText* titleControl = static_cast<TDropShadowText*>(this->FindSubView(kControlTagTitl));
   titleControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x10, 0x2b6c, 0x2b67);
   titleControl->SetJustification(-2, false);
@@ -92,10 +91,10 @@ void TCouncilView::DoPostCreate(int arg) {
 
     ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
 
-    TView* endControl = this->ResolveControlByTag(kControlTagEnd);
+    TView* endControl = this->FindSubView(kControlTagEnd);
     LoadUiStringByGroupAndIndexToControlObject(0x2746, 6, endControl);
 
-    TView* querControl = this->ResolveControlByTag(kControlTagQuer);
+    TView* querControl = this->FindSubView(kControlTagQuer);
     LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, querControl);
   }
 }
@@ -119,7 +118,7 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
       tagIndex += 1;
     } while (tagTable < g_aDiplomacyActionTopicTabTags + 6);
     if (tagIndex < 6) {
-      this->ChangeSelectedActionTopic(tagIndex);
+      this->SwitchToPanel(tagIndex);
       return;
     }
   } else {
@@ -166,16 +165,16 @@ void TCouncilView::DisplayStats() {
   }
 
   for (int row = 0; row < 4; ++row) {
-    TStaticText* titleLabel = static_cast<TStaticText*>(
-        this->ResolveControlByTag(IMPERIALISM_FOURCC('t', 't', 'l', '0') + row));
+    TStaticText* titleLabel =
+        static_cast<TStaticText*>(this->FindSubView(IMPERIALISM_FOURCC('t', 't', 'l', '0') + row));
     titleLabel->AssertValid();
     titleLabel->SetTextWithStrListID(0x2733, static_cast<short>(0x5a + row), true);
     titleLabel->InstallTextStyle(style, 0);
     titleLabel->SetJustification(1, false);
     titleLabel->Show(1, 0);
 
-    TStaticText* majorField = static_cast<TStaticText*>(
-        this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '0') + row));
+    TStaticText* majorField =
+        static_cast<TStaticText*>(this->FindSubView(IMPERIALISM_FOURCC('n', 'u', 'm', '0') + row));
     majorField->AssertValid();
     text.Format(g_szDecimalFormat, categoryCounts[row]);
     majorField->SetTextAndMaybeRefresh(&text, true);
@@ -183,8 +182,8 @@ void TCouncilView::DisplayStats() {
     majorField->SetJustification(-1, false);
     majorField->Show(1, 1);
 
-    TStaticText* minorField = static_cast<TStaticText*>(
-        this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '4') + row));
+    TStaticText* minorField =
+        static_cast<TStaticText*>(this->FindSubView(IMPERIALISM_FOURCC('n', 'u', 'm', '4') + row));
     minorField->AssertValid();
     text.Format(g_szDecimalFormat, categoryCounts[row + 4]);
     minorField->SetTextAndMaybeRefresh(&text, true);
@@ -199,7 +198,7 @@ void TCouncilView::DisplayStats() {
   ResolveUiThemeColor(0x2b6a, &scoreShadowColor);
 
   TDropShadowText* sourceScore =
-      static_cast<TDropShadowText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'c', 'o', '0')));
+      static_cast<TDropShadowText*>(FindSubView(IMPERIALISM_FOURCC('s', 'c', 'o', '0')));
   sourceScore->AssertValid();
   scoreText.Format(g_szDecimalFormat,
                    g_pDiplomacyTurnStateManager->congressSupport.chairmanSupportCount);
@@ -209,7 +208,7 @@ void TCouncilView::DisplayStats() {
   sourceScore->Show(1, 1);
 
   TDropShadowText* targetScore =
-      static_cast<TDropShadowText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'c', 'o', '1')));
+      static_cast<TDropShadowText*>(FindSubView(IMPERIALISM_FOURCC('s', 'c', 'o', '1')));
   targetScore->AssertValid();
   scoreText.Format(g_szDecimalFormat,
                    g_pDiplomacyTurnStateManager->congressSupport.counterpartSupportCount);
@@ -229,27 +228,27 @@ void TCouncilView::StartVoting() {
 
   councilNationCount = 0;
 
-  TStaticText* can0 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan0));
+  TStaticText* can0 = static_cast<TStaticText*>(FindSubView(kControlTagCan0));
   can0->AssertValid();
   g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot]->GetName(
       &candidateName);
   can0->SetTextAndMaybeRefresh(&candidateName, true);
   can0->InstallTextStyle(councilTextStyle, 0);
 
-  TStaticText* can1 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
+  TStaticText* can1 = static_cast<TStaticText*>(FindSubView(kControlTagCan1));
   can1->AssertValid();
   g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot]->GetName(
       &candidateName);
   can1->SetTextAndMaybeRefresh(&candidateName, true);
   can1->InstallTextStyle(councilTextStyle, 0);
 
-  TPicture* coat0 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa0));
+  TPicture* coat0 = static_cast<TPicture*>(FindSubView(kControlTagCoa0));
   coat0->AssertValid();
   coat0->SetPictureRsrcID(
       static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot +
                          kCouncilCoatOfArmsPictureBase),
       1);
-  TPicture* coat1 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa1));
+  TPicture* coat1 = static_cast<TPicture*>(FindSubView(kControlTagCoa1));
   coat1->AssertValid();
   coat1->SetPictureRsrcID(
       static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot +
@@ -265,7 +264,7 @@ void TCouncilView::StartVoting() {
     }
     visibleVoteTier = kCouncilTickerIntervalMapMode;
 
-    TControl* endControl = static_cast<TControl*>(ResolveControlByTag(kControlTagEnd));
+    TControl* endControl = static_cast<TControl*>(FindSubView(kControlTagEnd));
     if (endControl != NULL) {
       endControl->AssertValid();
       endControl->controlTag =
@@ -294,7 +293,7 @@ void TCouncilView::StartVoting() {
 
   SetCursor(g_pViewMgr->turnEventCursors[26]);
 
-  TControl* endControl = static_cast<TControl*>(ResolveControlByTag(kControlTagEnd));
+  TControl* endControl = static_cast<TControl*>(FindSubView(kControlTagEnd));
   if (endControl != NULL) {
     endControl->AssertValid();
     endControl->ViewEnable(0, 0);
@@ -321,7 +320,7 @@ void TCouncilView::NextTick() {
     PrepareForDrawing();
     DrawVoteNuggets();
     RECT rect = {0, 0, frameWidth, 300};
-    ValidateControlRectIfWindowActive(&rect);
+    ValidateVRect(&rect);
   }
 
   bool unusedFlag = false; // never set true in the observed binary
@@ -331,7 +330,7 @@ void TCouncilView::NextTick() {
 
   if (visibleVoteTier == councilNationCount + 2) {
     SetCursor(LoadCursorA(NULL, IDC_ARROW));
-    TView* endControlTarget = ResolveControlByTag(kControlTagEnd);
+    TView* endControlTarget = FindSubView(kControlTagEnd);
     endControlTarget->AssertValid();
     endControlTarget->ViewEnable(1, 0);
 

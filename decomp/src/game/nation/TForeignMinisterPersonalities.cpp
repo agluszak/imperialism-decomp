@@ -66,7 +66,7 @@ static inline short GetSortedResourceCode(TSortByPriceList* prices, int oneBased
 static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, short threshold) {
   TGreatPower* owner = minister->greatPower;
   if (g_pTradeMgr->GetPrice(0x10) > threshold &&
-      !g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot)) {
+      !g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(owner->nationSlot)) {
     short available = owner->GetStockpile(kResourceArms);
     short amount = static_cast<short>(available / 10);
     if (amount > 2) {
@@ -183,7 +183,7 @@ void TTedForeignMinister::ReplyToTradeOffer(short targetNation, short requestedA
   TGreatPower* owner = greatPower;
   if (resourceCode == kResourceCoal) {
     if (tradePartnerEnabled[3] != 0) {
-      specialOfferQuota = static_cast<short>(owner->GetMerchantCapacityForProposal(3) / 2);
+      specialOfferQuota = static_cast<short>(owner->GetUnreservedMerchantCapacity(3) / 2);
       tradePartnerEnabled[3] = 0;
     }
     if (specialOfferQuota >= requestedAmount) {
@@ -199,14 +199,14 @@ void TTedForeignMinister::ReplyToTradeOffer(short targetNation, short requestedA
   }
   if (resourceCode == kResourceTimber || resourceCode == kResourceIron ||
       resourceCode == kResourceOil) {
-    short available = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
+    short available = static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode));
     if (available >= requestedAmount) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, requestedAmount, maximumAmount,
                                   resourceCode, 0, false);
     } else {
       g_pTradeMgr->SetDealResults(
           owner->nationSlot, targetNation,
-          static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)), maximumAmount,
+          static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode)), maximumAmount,
           resourceCode, 0, false);
     }
     return;
@@ -214,13 +214,13 @@ void TTedForeignMinister::ReplyToTradeOffer(short targetNation, short requestedA
   if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
     short amount = owner->merchantCapacity < 15 ? 1 : (owner->merchantCapacity >= 30 ? 3 : 2);
     amount = MinShort(amount, requestedAmount);
-    if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) >= amount) {
+    if (static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode)) >= amount) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, amount, maximumAmount,
                                   resourceCode, 0, false);
     } else {
       g_pTradeMgr->SetDealResults(
           owner->nationSlot, targetNation,
-          static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)), maximumAmount,
+          static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode)), maximumAmount,
           resourceCode, 0, false);
     }
   }
@@ -243,9 +243,7 @@ void TTedForeignMinister::DoFirstTurnDiplomacy() {
         duplicate = true;
       }
     }
-    if (!duplicate &&
-        !g_pGlobalMapState->DoNationTerritoriesShareRegionClass(greatPower->nationSlot,
-                                                                candidate) &&
+    if (!duplicate && !g_pGlobalMapState->IsSameContinent(greatPower->nationSlot, candidate) &&
         g_apTerrainTypeDescriptorTable[candidate] != 0) {
       selectedNations[selectedCount] = candidate;
       greatPower->SetDiplomacyPolicyTo(candidate, 0x133);
@@ -439,8 +437,7 @@ void TBillForeignMinister::DoFirstTurnDiplomacy() {
     ++attempts;
     short candidate = static_cast<short>(abs(rand()) % 0x10 + 7);
     if ((selectedCount == 0 || selectedNations[0] != candidate) &&
-        !g_pGlobalMapState->DoNationTerritoriesShareRegionClass(greatPower->nationSlot,
-                                                                candidate) &&
+        !g_pGlobalMapState->IsSameContinent(greatPower->nationSlot, candidate) &&
         g_apTerrainTypeDescriptorTable[candidate] != 0) {
       selectedNations[selectedCount] = candidate;
       greatPower->SetDiplomacyPolicyTo(candidate, 0x133);
@@ -617,7 +614,7 @@ void TDiplomatForeignMinister::SetTradeBids() {
   }
   prices->ReleasePtrList();
   if (g_pTradeMgr->GetPrice(0x10) > 1200 && owner->GetStockpile(kResourceArms) > 6 &&
-      !g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot)) {
+      !g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(owner->nationSlot)) {
     owner->SetItemPotentials(kResourceArms, 2);
   }
 }
@@ -631,8 +628,8 @@ void TDiplomatForeignMinister::ReplyToTradeOffer(short targetNation, short reque
   }
   TGreatPower* owner = greatPower;
   short amount = owner->merchantCapacity < 12 ? 1 : (owner->merchantCapacity >= 25 ? 3 : 2);
-  if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) < amount) {
-    amount = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
+  if (static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode)) < amount) {
+    amount = static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode));
   }
   amount = MinShort(amount, requestedAmount);
   g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, amount, maximumAmount, resourceCode,
@@ -725,14 +722,14 @@ void TTextileForeignMinister::ReplyToTradeOffer(short targetNation, short reques
     return;
   }
   TGreatPower* owner = greatPower;
-  if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) >= requestedAmount) {
+  if (static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode)) >= requestedAmount) {
     g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, requestedAmount, maximumAmount,
                                 resourceCode, 0, false);
     return;
   }
   g_pTradeMgr->SetDealResults(
       owner->nationSlot, targetNation,
-      static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)), maximumAmount,
+      static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode)), maximumAmount,
       resourceCode, 0, false);
 }
 
@@ -810,7 +807,7 @@ void TTraderForeignMinister::SetTradeBids() {
   }
   prices->ReleasePtrList();
   if (g_pTradeMgr->GetPrice(0x10) > 1200 && owner->GetStockpile(kResourceArms) > 6 &&
-      !g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot)) {
+      !g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(owner->nationSlot)) {
     owner->SetItemPotentials(kResourceArms, 2);
   }
 }
@@ -823,14 +820,14 @@ void TTraderForeignMinister::ReplyToTradeOffer(short targetNation, short request
     return;
   }
   TGreatPower* owner = greatPower;
-  short available = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
+  short available = static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode));
   if (available >= requestedAmount) {
     g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, requestedAmount, maximumAmount,
                                 resourceCode, 0, false);
   } else {
     g_pTradeMgr->SetDealResults(
         owner->nationSlot, targetNation,
-        static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)), maximumAmount,
+        static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode)), maximumAmount,
         resourceCode, 1, false);
   }
 }
@@ -921,7 +918,7 @@ void TArmsForeignMinister::SetTradeBids() {
   }
   prices->ReleasePtrList();
   if (owner->treasuryValue < 0 &&
-      !g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot)) {
+      !g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(owner->nationSlot)) {
     short available = owner->GetStockpile(kResourceArms);
     short amount = static_cast<short>(available / 10);
     if (amount > 10) {

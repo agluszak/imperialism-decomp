@@ -21,7 +21,7 @@ SCENARIO_BOUNDARY_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("modal stack", re.compile(r"\bg_ModalViewStack\b")),
     ("turn-event code", re.compile(r"\bcurrentTurnEventCode\b")),
     ("main view lookup", re.compile(r"\bCurrentMainView\s*\(")),
-    ("tag resolution", re.compile(r"\bResolveControlByTag\s*\(")),
+    ("tag resolution", re.compile(r"\bFindSubView\s*\(")),
     ("runtime class", re.compile(r"\bRUNTIME_CLASS\s*\(")),
     ("ui driver", re.compile(r"\bRuntimeUiDriver::")),
     ("raw await", re.compile(r"\b(?:AwaitUiChange|Await)\s*\(")),

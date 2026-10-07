@@ -90,8 +90,7 @@ void TFlagOptionsPicture::DoPostCreate(int arg) {
   CString text;
   for (int i = 0; i < 8; ++i) {
     g_pSimMgr->GetString(0x2743, static_cast<short>(i), &text);
-    TDropShadowText* control =
-        static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTxt0 + i));
+    TDropShadowText* control = static_cast<TDropShadowText*>(FindSubView(kControlTagTxt0 + i));
     control->AssertValid();
     if (i == 0) {
       ApplyUiTextStyleAndThemeFlags(control, 0, 0xc, 0x2b6c, 0x2b6a);

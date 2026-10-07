@@ -42,7 +42,7 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
   if (selectedTag == tag) {
     return;
   }
-  if (tag != static_cast<int>(kControlTagNada) && ResolveControlByTag(tag) == 0) {
+  if (tag != static_cast<int>(kControlTagNada) && FindSubView(tag) == 0) {
     return;
   }
   selectedTag = tag;

@@ -30,7 +30,7 @@ TProductionCluster::~TProductionCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005869c0
 void TProductionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TNumberText* valueControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagValu));
+  TNumberText* valueControl = static_cast<TNumberText*>(this->FindSubView(kControlTagValu));
   if (valueControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }

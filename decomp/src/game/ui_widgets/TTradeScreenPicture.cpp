@@ -65,7 +65,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
   const unsigned int* tagPtr = g_tradeCommodityRowTagTable;
   do {
     CString cellText;
-    TView* ctrl = this->ResolveControlByTag(*tagPtr);
+    TView* ctrl = this->FindSubView(*tagPtr);
     if (ctrl == NULL) {
       FailNilPointerWithAssert(s_SourcePathUTradeViews, 0xbf);
     }

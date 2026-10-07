@@ -66,23 +66,23 @@ public:
   void DoMouseCommand(CPoint& point, TToolboxEvent* event,
                       CPoint origin) override; // slot 0x47 0x4f5410
 
-  virtual void RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect); // slot 0x73
-  virtual void BuildCombinedTerrainTypeRegionMaskAndDispatch();           // slot 0x74
-  virtual void RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot,
-                                                         const RECT* presentRect); // slot 0x75
-  virtual void VisitNationSlotsForOverlay(int unusedMode);                         // slot 0x76
-  virtual void RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot,
-                                                         const RECT* presentRect); // slot 0x77
-  virtual void BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex,
-                                                         int bmpId); // slot 0x78
+  virtual void DrawCountries(RECT* presentRect); // slot 0x73
+  virtual void InvalidateCountries();            // slot 0x74
+  virtual void ShowTreaties(int activeNationSlot,
+                            const RECT* presentRect);      // slot 0x75
+  virtual void VisitNationSlotsForOverlay(int unusedMode); // slot 0x76
+  virtual void ShowRelations(int activeNationSlot,
+                             const RECT* presentRect); // slot 0x77
+  virtual void FillRegionWithPict(short maskIndex,
+                                  int bmpId); // slot 0x78
   virtual void PoseOffer(short sourceNation, short targetNation,
                          short offerType); // slot 0x79 0x4f7080
-  void BuildDiplomacyNationOverlayGeometryAndHitMasks();
+  void CreateDrawGeometries();
 
   TDiplomacyMapView();
 
-  eDipAction ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint);
-  void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
+  eDipAction GetAction(CPoint* clickPoint);
+  void PaintRegion(int maskIndex, int eventCode);
   // Mac CodeWarrior: TDiplomacyMapView::PoseWarOffer(short, long, long, long).
   char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
                     int promptCode);
@@ -95,11 +95,11 @@ public:
     selectedTerrainIndex = terrainIndex;
   }
 
-  void InitializeDiplomacyMinisterActionControlsAndLabels();
+  void PrepVariousSubviews();
 
   bool CheckEntanglements(int targetNationSlot, eDipAction action);
 
-  void ChangeSelectedActionTopic(int topicIndex);
+  void SwitchToPanel(int topicIndex);
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
   void ActivateNation(short nationSlot);

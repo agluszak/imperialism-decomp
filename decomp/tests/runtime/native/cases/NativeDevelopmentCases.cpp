@@ -21,8 +21,7 @@ bool FindUnoccupiedRailSection(StrategicTileIndex* sourceTile,
                                StrategicTileIndex* destinationTile) {
   for (StrategicTileIndex candidate = 0; candidate < kStrategicTileCount; ++candidate) {
     const TTerrainStateRecord& source = g_pGlobalMapState->terrainStateTable[candidate];
-    if (source.firstCivilianOrder != 0 || source.adjacencyBits != 0 ||
-        source.railFlags != 0) {
+    if (source.firstCivilianOrder != 0 || source.adjacencyBits != 0 || source.railFlags != 0) {
       continue;
     }
 
@@ -164,8 +163,7 @@ JSON_Value* CaptureTouchedTiles(const StrategicTileIndex* tiles, int count) {
     object.Set("owner", static_cast<int>(tile.ownerNationTag));
     object.Set("adjacency", static_cast<int>(tile.adjacencyBits));
     object.Set("dev_nibbles",
-               static_cast<int>(
-                   static_cast<unsigned char>(tile.developmentClassNibbles)));
+               static_cast<int>(static_cast<unsigned char>(tile.developmentClassNibbles)));
     object.Set("pending", static_cast<int>(tile.pendingDevelopmentFlag));
     object.Set("rail_flags", static_cast<int>(tile.railFlags));
     object.Set("active_flags", static_cast<int>(tile.activeFlags));
@@ -188,8 +186,7 @@ RuntimeActionResult RunCompletedRailSection(NativeTransition& transition) {
 
   TCivUnit* civilian = new TCivUnit();
   civilian->ICivUnit(kCivilianUnitEngineer, sourceTile, nationSlot);
-  g_pGlobalMapState->ApplyRailSectionEndpointDirectionFlags(sourceTile, destinationTile,
-                                                            nationSlot);
+  g_pGlobalMapState->AddRailSegment(sourceTile, destinationTile, nationSlot);
   civilian->SetOrders(kUnitOrderLayRail, sourceTile);
   civilian->MoveTo(destinationTile);
   civilian->remainingTurns = 1;
@@ -232,13 +229,12 @@ RuntimeActionResult RunIssuedRailSection(NativeTransition& transition) {
     return started;
   }
 
-  // HandleEngineerConstructionAction also plays UI feedback; these are the
+  // EngineerClick also plays UI feedback; these are the
   // state mutations it performs for an adjacent rail click.
   const StrategicTerrainKind terrainKind =
       g_pGlobalMapState->terrainStateTable[destinationTile].GetTerrainKind();
   nation->treasuryValue -= g_adwEngineerRailBuildCostByTerrainType[terrainKind];
-  g_pGlobalMapState->ApplyRailSectionEndpointDirectionFlags(sourceTile, destinationTile,
-                                                            nationSlot);
+  g_pGlobalMapState->AddRailSegment(sourceTile, destinationTile, nationSlot);
   civilian->SetOrders(kUnitOrderLayRail, sourceTile);
   civilian->MoveTo(destinationTile);
   JsonObject result;
@@ -311,8 +307,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   }
   TCivUnit* engineer = new TCivUnit();
   engineer->ICivUnit(kCivilianUnitEngineer, sourceTile, nationSlot);
-  g_pGlobalMapState->ApplyRailSectionEndpointDirectionFlags(sourceTile, destinationTile,
-                                                            nationSlot);
+  g_pGlobalMapState->AddRailSegment(sourceTile, destinationTile, nationSlot);
   engineer->SetOrders(kUnitOrderLayRail, sourceTile);
   engineer->MoveTo(destinationTile);
   engineer->remainingTurns = 1;
@@ -386,7 +381,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   }
   // beginning_of_game.imp has no owned BASE_TRANSPORT tiles that are not cities.
   // Ordinary port orders run on a connected coastal tile; stamp that flag so
-  // EnsurePortZoneForTile takes the live path instead of the early-out.
+  // BuildPort takes the live path instead of the early-out.
   g_pGlobalMapState->terrainStateTable[portTile].activeFlags |= 1;
   TCivUnit* portEngineer = new TCivUnit();
   portEngineer->ICivUnit(kCivilianUnitEngineer, portTile, nationSlot);
@@ -413,8 +408,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   // state; existing marker state remains part of the differential.
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     TSortedList* towns = g_apNationStates[nationIndex]->townMarkerList;
-    for (int ordinal = townCountsBefore[nationIndex] + 1; ordinal <= towns->GetCount();
-         ++ordinal) {
+    for (int ordinal = townCountsBefore[nationIndex] + 1; ordinal <= towns->GetCount(); ++ordinal) {
       static_cast<TTown*>(towns->GetEntryByOrdinal(ordinal))->hasAdjacentCity = 0;
     }
   }

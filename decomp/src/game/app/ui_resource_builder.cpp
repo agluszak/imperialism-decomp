@@ -154,7 +154,7 @@ void __cdecl ApplyUiResourceColorTripletFromContext(bool nFlag0C, bool nTripletF
                                                     int colorB) {
   TWindow* window = static_cast<TWindow*>(g_pUiResourceContext);
   window->GetDialogBehavior()->SetEnabled(nFlag0C);
-  window->GetDialogBehavior()->SetUiColorDescriptorGoldTriplet(nTripletFlag, colorA, colorB);
+  window->GetDialogBehavior()->IDialogBehavior(nTripletFlag, colorA, colorB);
 }
 
 // FUNCTION: IMPERIALISM 0x00427060

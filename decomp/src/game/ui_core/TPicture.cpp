@@ -125,7 +125,7 @@ void TPicture::Draw(RECT* rectBuffer) {
 // Slot 0x08 override: allocate via slot 0x09 then copy city-dialog and picture-resource tail.
 
 // FUNCTION: IMPERIALISM 0x0048f520
-void TPicture::ResetPictureResourceEntry() {
+void TPicture::ReleasePicture() {
   if (this->glyphBase != -1) {
     g_pResourceMgr->ReleaseRecordById(this->glyphBase);
   }
@@ -137,7 +137,7 @@ void TPicture::ResetPictureResourceEntry() {
 
 // FUNCTION: IMPERIALISM 0x0048f570
 void TPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
-  this->ResetPictureResourceEntry();
+  this->ReleasePicture();
   this->glyphBase = nPictureId;
   if (nPictureId != -1) {
     this->cachedBitmap = g_pResourceMgr->LoadBmpResourceByIdCached(nPictureId);

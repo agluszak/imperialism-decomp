@@ -501,7 +501,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   dialog->Resize(placement, false);
 
   TJoinSelectorDialog* selector =
-      static_cast<TJoinSelectorDialog*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
+      static_cast<TJoinSelectorDialog*>(dialog->FindSubView(kControlTagDialog)); // 'GOLD'
   selector->AssertValid();
   for (int index = 0; index < g_WNetSerializedPtrArrayB.GetSize(); ++index) {
     WNetSelectionRecord* record = g_WNetSerializedPtrArrayB[index];
@@ -509,7 +509,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   }
 
   TEditText* nameControl =
-      static_cast<TEditText*>(selector->ResolveControlByTag(kControlTagName)); // 'name'
+      static_cast<TEditText*>(selector->FindSubView(kControlTagName)); // 'name'
   nameControl->AssertValid();
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&joinGamePlayerName, 0);
 

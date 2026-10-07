@@ -68,7 +68,7 @@ void TMegaPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow)
     g_pDisplayMgr->RemoveGWorld(surfaceContext);
   }
   surfaceContext = 0;
-  ResetPictureResourceEntry();
+  ReleasePicture();
 
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(nPictureId);
   QDLoadResource(loaderHandle);

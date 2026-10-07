@@ -26,7 +26,7 @@ void TQueryFloater::DoPostCreate(int arg) {
 
   TextStyle style;
 
-  TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
+  TStaticText* titleControl = static_cast<TStaticText*>(FindSubView(kControlTagTitl));
   titleControl->AssertValid();
   titleControl->SetTextWithStrListID(0x2757, 1, true);
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
@@ -35,7 +35,7 @@ void TQueryFloater::DoPostCreate(int arg) {
 
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6c);
   for (int i = 0; i < 7; ++i) {
-    TStaticText* lineControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTex0 + i));
+    TStaticText* lineControl = static_cast<TStaticText*>(FindSubView(kControlTagTex0 + i));
     lineControl->AssertValid();
     lineControl->SetTextWithStrListID(0x2757, static_cast<short>(i + 2), true);
     lineControl->InstallTextStyle(style, 0);
@@ -55,7 +55,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   if (tag == kControlTagAdvi) {
     TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, false);
-    g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+    g_pHelpMgr->ShowLatestHelp();
   } else if (tag == kControlTagBatt) {
     short activeNationId = g_pSimMgr->GetPlayerCountry();
     if (!g_pMapContextActionManager->HasBattlesInvolvingGP(activeNationId)) {

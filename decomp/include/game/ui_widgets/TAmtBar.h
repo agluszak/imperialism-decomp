@@ -22,7 +22,7 @@ public:
   void Draw(RECT* rectBuffer) override;
   void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
-  virtual short ApplyMoveClamp(int baseValue, short requestedValue);
+  virtual short AdjustForZero(int baseValue, short requestedValue);
   virtual void SetAmt(short valueAt60, short valueAt62);
   virtual void DrawAmt();
 };

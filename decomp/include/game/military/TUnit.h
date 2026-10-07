@@ -42,8 +42,7 @@ public:
     militaryRegistrationFlag = false;
   }
 
-  void RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
-                                         short nOrderOwnerNationId, short arg3);
+  void IUnit(short nOrderType, int anchorIndex, short nOrderOwnerNationId, short arg3);
 };
 
 ASSERT_SIZE(TUnit, 0x24);

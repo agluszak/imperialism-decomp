@@ -36,7 +36,7 @@ public:
 
   void ShowAdvice();
 
-  void CreateNextTradeCommandAndFormatPrompt(int actionCode); // 0x5c04f0
+  void SaveAndDismiss(int actionCode); // 0x5c04f0
 
   void SwitchToBook(unsigned char activate);
 };

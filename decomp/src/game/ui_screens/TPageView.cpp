@@ -64,7 +64,7 @@ void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
 }
 
 // FUNCTION: IMPERIALISM 0x0056fc80
-void TPageView::BuildPageLayout() {
+void TPageView::CalculatePageStarts() {
   pageStartIndices->RemoveAll();
 
   // ABI: line bounds are ints, but retail pagination keeps signed-short coordinates
@@ -142,7 +142,7 @@ void TPageView::ShowPage(short pageNumber) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056ff90
-void TPageView::ResetPageLayout() {
+void TPageView::Clear() {
   this->ResetSelectableOptionEntriesExceptColorAndOkay();
   this->optionEntries->RemoveAll();
   this->orderedEntries->RemoveAll();

@@ -10,9 +10,9 @@ class TUnitToolbarCluster : public TUberCluster {
 public:
   virtual ~TUnitToolbarCluster() override; // slot 0x01 (scalar deleting destructor)
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;                      // slot 0x0f 0x00586090
-  virtual void SetSelectedChildTagAndRefresh(int childTag) override; // slot 0x72 0x586170
-  virtual bool IsTradeControlAtMinimum() override;                   // slot 0x73 0x586150
+                       TEvent* event) override;         // slot 0x0f 0x00586090
+  virtual void SetCurrentChoice(int childTag) override; // slot 0x72 0x586170
+  virtual bool IsTradeControlAtMinimum() override;      // slot 0x73 0x586150
   // Source evidence: unreferenced retained COMDAT in retail.
   TUnitToolbarCluster() : TUberCluster() {}
   DECLARE_DYNCREATE(TUnitToolbarCluster)

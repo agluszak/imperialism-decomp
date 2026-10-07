@@ -492,7 +492,7 @@ void ExecuteDoTradeWithoutPhaseAdvance() {
   }
 
   g_pTradeMgr->ResetNationMetricRowsAndClearCategoryRankLists();
-  g_pTradeMgr->RunNationUpdatePassesAndResetTransitionFlags();
+  g_pTradeMgr->StartTradePhase();
   g_pTradeMgr->SetMinorsTradeBids();
   g_pTradeMgr->TallyTradeBids();
   g_pTradeMgr->CalculateNewWorldPrices();
@@ -580,7 +580,7 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
   TOfferDeskPicture* sheet =
       activeDialog == 0
           ? 0
-          : static_cast<TOfferDeskPicture*>(activeDialog->ResolveControlByTag(kControlTagMain));
+          : static_cast<TOfferDeskPicture*>(activeDialog->FindSubView(kControlTagMain));
   if (sheet == 0 || sheet->respondingNationSlot < 0) {
     return RuntimeActionResult::Failure("trade phase did not pose an Offer Sheet");
   }

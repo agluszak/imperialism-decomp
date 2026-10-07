@@ -92,8 +92,7 @@ int TAssetMgr::GetResourceStreamSize(CFile* stream) {
 void TAssetMgr::OpenFilesForView(short fileSet) {}
 
 // FUNCTION: IMPERIALISM 0x005dfc10
-void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(const CString& movieName,
-                                                          TMovieView* movieView, int unused) {
+void TAssetMgr::OpenMovie(const CString& movieName, TMovieView* movieView, int unused) {
   CString moviePath = CString("Movies/") + movieName;
   moviePath = moviePath + ".avi";
 
@@ -155,7 +154,7 @@ void TAssetMgr::EnsurePictWvDataGobLoadedBySlot(int languageTag) {
 namespace {} // namespace
 
 // FUNCTION: IMPERIALISM 0x005e0030
-unsigned char TAssetMgr::SaveMainDocumentToPathAndMarkSaved(const CString& savePath) {
+unsigned char TAssetMgr::SaveTheGame(const CString& savePath) {
   CString path(savePath);
   CFrameWnd* frame = static_cast<CFrameWnd*>(AfxGetMainWnd());
   frame->AssertValid();
@@ -168,7 +167,7 @@ unsigned char TAssetMgr::SaveMainDocumentToPathAndMarkSaved(const CString& saveP
 }
 
 // FUNCTION: IMPERIALISM 0x005e0150
-bool TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath) {
+bool TAssetMgr::LoadTheGame(const CString& loadPath) {
   CDocument* document = g_pImperialismApp->OpenDocumentFile(loadPath);
   if (document == 0) {
     return false;
@@ -183,7 +182,7 @@ void TAssetMgr::SetPreferenceString(CString* value, const char* key) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e0290
-void TAssetMgr::LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue) {
+void TAssetMgr::GetPreferenceInt(int* out, LPCSTR key, int defaultValue) {
   *out = g_pImperialismApp->GetSettingValueFromSettingsSection(key, defaultValue);
 }
 

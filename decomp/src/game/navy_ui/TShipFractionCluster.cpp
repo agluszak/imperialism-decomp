@@ -25,11 +25,10 @@ IMPLEMENT_DYNCREATE(TShipFractionCluster, TCluster)
 void TShipFractionCluster::DoPostCreate(int arg) {
   TCluster::DoPostCreate(arg);
 
-  mainSelectionView =
-      static_cast<TMapUberPicture*>(GetWindow()->ResolveControlByTag(kControlTagMain));
+  mainSelectionView = static_cast<TMapUberPicture*>(GetWindow()->FindSubView(kControlTagMain));
   mainSelectionView->AssertValid();
 
-  TPicture* shipControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagShip));
+  TPicture* shipControl = static_cast<TPicture*>(FindSubView(kControlTagShip));
   shipControl->AssertValid();
 
   short slot = GetEnabledIndustryCapabilitySlotByClass(static_cast<short>(controlTag - 0x7330));
@@ -43,7 +42,7 @@ void TShipFractionCluster::DoPostCreate(int arg) {
     SetControlHoverHelpText(CString(g_pShipFractionSharedText), this);
   }
 
-  shipCountButton = static_cast<TNumberedArrowButton*>(ResolveControlByTag(kControlTagArro));
+  shipCountButton = static_cast<TNumberedArrowButton*>(FindSubView(kControlTagArro));
   availableShipCount = 1;
   Set(0, -1);
 }
@@ -73,7 +72,7 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
 
 // FUNCTION: IMPERIALISM 0x00568f90
 void TShipFractionCluster::Set(int availableCount, int selectedCount) {
-  TView* shipControl = ResolveControlByTag(kControlTagShip);
+  TView* shipControl = FindSubView(kControlTagShip);
   if (availableCount != 0) {
     if (availableShipCount == 0) {
       short slot = GetEnabledIndustryCapabilitySlotByClass(static_cast<short>(controlTag - 0x7330));
@@ -113,7 +112,7 @@ void TShipFractionCluster::IncrementSelectedShipCount(unsigned char displayOnly)
 }
 
 // FUNCTION: IMPERIALISM 0x00569150
-void TShipFractionCluster::DecrementSelectedShipCount(unsigned char displayOnly) {
+void TShipFractionCluster::Less(unsigned char displayOnly) {
   if (selectedShipCount > 0) {
     selectedShipCount = static_cast<short>(selectedShipCount - 1);
     shipCountButton->SetValue(selectedShipCount, true);

@@ -47,19 +47,19 @@ void TStatusPicture::DoPostCreate(int arg) {
   }
 
   for (unsigned int tabIndex = 0; tabIndex < 10; ++tabIndex) {
-    TView* tabControl = ResolveControlByTag(kControlTagTab0 + tabIndex); // 'tab0'-'tab9'
+    TView* tabControl = FindSubView(kControlTagTab0 + tabIndex); // 'tab0'-'tab9'
     LoadUiStringByGroupAndIndexToControlObject(0x2757, static_cast<short>(tabIndex + 9),
                                                tabControl);
   }
   ApplySharedStringToGlobalControlTag(g_pStatusPictureMainSharedText, kControlTagMain);
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xd, ResolveControlByTag(kControlTagEnd));
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xd, FindSubView(kControlTagEnd));
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, FindSubView(kControlTagQuer));
 
   comparisonMode = 0;
   RefreshControl();
   CalcStandardGraph();
 
-  TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
+  TInfoBarText* cursControl = static_cast<TInfoBarText*>(FindSubView(kControlTagCurs));
   g_pCursorControlPanel = cursControl;
   cursControl->AssertValid();
   cursControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
@@ -73,7 +73,7 @@ void TStatusPicture::SwitchStatusMode(int comparisonMode) {
     CalcStandardGraph();
     return;
   }
-  RecomputeNationComparisonValuesAndNormalizeScale();
+  CalcCouncilGraph();
 }
 
 // FUNCTION: IMPERIALISM 0x005942f0
@@ -83,7 +83,7 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
     if (tag >= kControlTagTab0 && tag <= kControlTagTab9) {
       int newIndex = static_cast<int>(tag - kControlTagTab0);
       if (newIndex != comparisonMode) {
-        TView* newTab = ResolveControlByTag(kControlTagTab0 + newIndex);
+        TView* newTab = FindSubView(kControlTagTab0 + newIndex);
         newTab->AssertValid();
         newTab->Show(0, 1);
         static_cast<TView*>(sourceHandler)->AssertValid();
@@ -93,7 +93,7 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
         if (newIndex == 0) {
           CalcStandardGraph();
         } else {
-          RecomputeNationComparisonValuesAndNormalizeScale();
+          CalcCouncilGraph();
         }
       } else if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0) {
         // Already-selected tab, shift-held: a debug shortcut into the help-index records.
@@ -159,7 +159,7 @@ void TStatusPicture::DrawBar(short rowY, short width, short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x00594900
-void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
+void TStatusPicture::CalcCouncilGraph() {
   for (int i = 0; i < 7; ++i) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(i))) {
       TGreatPower* nation = g_apNationStates[i];
@@ -208,13 +208,13 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
     }
   }
 
-  SortSevenEntriesAndUpdatePictureWidgets();
+  SortByBarLength();
 
   NormalizeAsNeeded();
 }
 
 // FUNCTION: IMPERIALISM 0x00594c00
-void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
+void TStatusPicture::SortByBarLength() {
   int* valOuter = values;
   short* idOuter = pictureIds;
   int outer = 1;
@@ -249,8 +249,7 @@ void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
   int index = 0;
   do {
     if (*idPtr != -1) {
-      TPicture* widget =
-          static_cast<TPicture*>(ResolveControlByTag(index + kControlTagArmyPlacardFirst));
+      TPicture* widget = static_cast<TPicture*>(FindSubView(index + kControlTagArmyPlacardFirst));
       widget->AssertValid();
       widget->SetPictureRsrcID(static_cast<short>(*idPtr + 0x10d7), true);
     }

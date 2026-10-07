@@ -36,29 +36,29 @@ void TNewTownView::StuffValues(TTown* town) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x7fa);
   }
   CRect bounds;
-  owner->QueryBounds(&bounds);
+  owner->GetFrame(&bounds);
   bounds.bottom += extraHeight;
-  owner->ApplyBounds(&bounds, true);
+  owner->SetFrame(&bounds, true);
 
-  QueryBounds(&bounds);
+  GetFrame(&bounds);
   bounds.bottom += extraHeight;
-  ApplyBounds(&bounds, true);
+  SetFrame(&bounds, true);
 
-  TView* cancel = ResolveControlByTag(kControlTagCncl); // 'cncl'
+  TView* cancel = FindSubView(kControlTagCncl); // 'cncl'
   if (cancel == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x806);
   }
-  cancel->QueryBounds(&bounds);
+  cancel->GetFrame(&bounds);
   OffsetRect(&bounds, 0, extraHeight);
-  cancel->ApplyBounds(&bounds, true);
+  cancel->SetFrame(&bounds, true);
 
-  TView* okay = ResolveControlByTag(kControlTagOkay); // 'okay'
+  TView* okay = FindSubView(kControlTagOkay); // 'okay'
   if (okay == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x80c);
   }
-  okay->QueryBounds(&bounds);
+  okay->GetFrame(&bounds);
   OffsetRect(&bounds, 0, extraHeight);
-  okay->ApplyBounds(&bounds, true);
+  okay->SetFrame(&bounds, true);
 
   int y = 0x40;
   for (short iconResourceType = 0; iconResourceType < kResourceKindCount; ++iconResourceType) {
@@ -74,7 +74,7 @@ void TNewTownView::StuffValues(TTown* town) {
     }
   }
 
-  TEditText* name = static_cast<TEditText*>(ResolveControlByTag(kControlTagName)); // 'name'
+  TEditText* name = static_cast<TEditText*>(FindSubView(kControlTagName)); // 'name'
   if (name == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x821);
   }
@@ -86,7 +86,7 @@ void TNewTownView::StuffValues(TTown* town) {
 // FUNCTION: IMPERIALISM 0x004bdc10
 void TNewTownView::Close() {
   CString townName;
-  TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagName)); // 'name'
+  TEditText* nameControl = static_cast<TEditText*>(FindSubView(kControlTagName)); // 'name'
   if (nameControl == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x82e);
   }

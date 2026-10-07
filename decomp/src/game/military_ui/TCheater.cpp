@@ -37,10 +37,10 @@ void TCheater::ICheater(TView* panel, int unusedArg) {
 void TCheater::ResizeWindow(const CPoint* size) {
   TWindow* window = GetWindow();
   CRect bounds;
-  window->QueryBounds(&bounds);
+  window->GetFrame(&bounds);
   bounds.top = 0xf0 - size->y / 2;
   bounds.left = 0x140 - size->x / 2;
   bounds.bottom = bounds.top + size->y;
   bounds.right = bounds.left + size->x;
-  window->ApplyBounds(&bounds, true);
+  window->SetFrame(&bounds, true);
 }

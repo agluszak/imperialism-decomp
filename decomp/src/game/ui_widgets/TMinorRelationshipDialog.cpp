@@ -25,7 +25,7 @@ void TMinorRelationshipDialog::Close() {
       continue;
     }
 
-    TView* nationPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
+    TView* nationPanel = FindSubView(g_minorTreatyPanelTags[minorIndex]);
     if (nationPanel == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x229);
     }
@@ -34,8 +34,8 @@ void TMinorRelationshipDialog::Close() {
       if (g_apTerrainTypeDescriptorTable[majorNation] == 0) {
         continue;
       }
-      TNumberText* standingControl = static_cast<TNumberText*>(
-          nationPanel->ResolveControlByTag(g_majorTreatyCellTags[majorNation]));
+      TNumberText* standingControl =
+          static_cast<TNumberText*>(nationPanel->FindSubView(g_majorTreatyCellTags[majorNation]));
       if (standingControl == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x22f);
       }
@@ -56,7 +56,7 @@ void TMinorRelationshipDialog::StuffValues() {
     if (g_apTerrainTypeDescriptorTable[minorIndex + 7] == 0) {
       continue;
     }
-    TView* minorPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
+    TView* minorPanel = FindSubView(g_minorTreatyPanelTags[minorIndex]);
     if (minorPanel == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x252);
     }
@@ -64,8 +64,8 @@ void TMinorRelationshipDialog::StuffValues() {
       if (g_apTerrainTypeDescriptorTable[majorNation] == 0) {
         continue;
       }
-      TNumberText* cell = static_cast<TNumberText*>(
-          minorPanel->ResolveControlByTag(g_majorTreatyCellTags[majorNation]));
+      TNumberText* cell =
+          static_cast<TNumberText*>(minorPanel->FindSubView(g_majorTreatyCellTags[majorNation]));
       if (cell == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x258);
       }
@@ -78,11 +78,11 @@ void TMinorRelationshipDialog::StuffValues() {
   }
 
   // Major-nation name strips.
-  TView* majorNames1 = ResolveControlByTag(kControlTagWor1);
+  TView* majorNames1 = FindSubView(kControlTagWor1);
   if (majorNames1 == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x261);
   }
-  TView* majorNames2 = ResolveControlByTag(kControlTagWor2);
+  TView* majorNames2 = FindSubView(kControlTagWor2);
   if (majorNames2 == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x263);
   }
@@ -92,13 +92,12 @@ void TMinorRelationshipDialog::StuffValues() {
     }
     g_apTerrainTypeDescriptorTable[majorNation]->FormatOverlayTerrainLabelText(&label);
     TStaticText* nameControl =
-        static_cast<TStaticText*>(majorNames1->ResolveControlByTag(nameTags[majorNation]));
+        static_cast<TStaticText*>(majorNames1->FindSubView(nameTags[majorNation]));
     if (nameControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x26c);
     }
     nameControl->SetTextAndMaybeRefresh(&label, false);
-    nameControl =
-        static_cast<TStaticText*>(majorNames2->ResolveControlByTag(nameTags[majorNation]));
+    nameControl = static_cast<TStaticText*>(majorNames2->FindSubView(nameTags[majorNation]));
     if (nameControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x26f);
     }
@@ -106,19 +105,18 @@ void TMinorRelationshipDialog::StuffValues() {
   }
 
   // Minor-nation name columns: 'col1' lists minors 7..14, 'col2' minors 15..22.
-  TView* minorNames1 = ResolveControlByTag(kControlTagCol1);
+  TView* minorNames1 = FindSubView(kControlTagCol1);
   if (minorNames1 == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x274);
   }
-  TView* minorNames2 = ResolveControlByTag(kControlTagCol2);
+  TView* minorNames2 = FindSubView(kControlTagCol2);
   if (minorNames2 == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x276);
   }
   for (short row = 0; row < 8; ++row) {
     if (g_apTerrainTypeDescriptorTable[row + 7] != 0) {
       g_apTerrainTypeDescriptorTable[row + 7]->FormatOverlayTerrainLabelText(&label);
-      TStaticText* rowControl =
-          static_cast<TStaticText*>(minorNames1->ResolveControlByTag(nameTags[row]));
+      TStaticText* rowControl = static_cast<TStaticText*>(minorNames1->FindSubView(nameTags[row]));
       if (rowControl == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x27f);
       }
@@ -126,8 +124,7 @@ void TMinorRelationshipDialog::StuffValues() {
     }
     if (g_apTerrainTypeDescriptorTable[row + 15] != 0) {
       g_apTerrainTypeDescriptorTable[row + 15]->FormatOverlayTerrainLabelText(&label);
-      TStaticText* rowControl =
-          static_cast<TStaticText*>(minorNames2->ResolveControlByTag(nameTags[row]));
+      TStaticText* rowControl = static_cast<TStaticText*>(minorNames2->FindSubView(nameTags[row]));
       if (rowControl == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x287);
       }

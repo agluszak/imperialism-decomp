@@ -38,21 +38,20 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   CString text;
   this->TView::DoPostCreate(arg);
 
-  g_pCursorControlPanel =
-      static_cast<TInfoBarText*>(activeDialog->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(activeDialog->FindSubView(kControlTagCurs));
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
   ApplySharedStringToGlobalControlTag(CString(g_pGamePreferencesSharedText), kControlTagMain);
 
-  LoadUiStringByGroupAndIndexToControlObject(0x2743, 0x25, ResolveControlByTag(kControlTagOkay));
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
+  LoadUiStringByGroupAndIndexToControlObject(0x2743, 0x25, FindSubView(kControlTagOkay));
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, FindSubView(kControlTagQuer));
 
   for (int row = 0; row < 5; ++row) {
     int prefIndex = g_anGamePreferenceIndexByRow[row];
-    TCzechBox* checkbox = static_cast<TCzechBox*>(ResolveControlByTag(kControlTagOpta + row));
+    TCzechBox* checkbox = static_cast<TCzechBox*>(FindSubView(kControlTagOpta + row));
     if (checkbox == 0) {
-      TDeluxeText* label = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));
+      TDeluxeText* label = static_cast<TDeluxeText*>(FindSubView(kControlTagTxta + row));
       label->AssertValid();
       label->Show(1, 0);
       g_pSimMgr->GetString(0x2743, static_cast<short>(row * 2 + 0x10), &text);
@@ -68,10 +67,10 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
         prefIndex == 0) {
       enabled = false;
     }
-    TDeluxeText* label = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));
+    TDeluxeText* label = static_cast<TDeluxeText*>(FindSubView(kControlTagTxta + row));
     label->AssertValid();
     label->Show(enabled, 0);
-    checkbox = static_cast<TCzechBox*>(ResolveControlByTag(kControlTagOpta + row));
+    checkbox = static_cast<TCzechBox*>(FindSubView(kControlTagOpta + row));
     checkbox->AssertValid();
     checkbox->Show(enabled, 0);
     static_cast<TView*>(checkbox)->ViewEnable(enabled, 0);
@@ -81,7 +80,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
                          static_cast<unsigned char>(0));
       unsigned char isOn = checkbox->IsOn();
       g_pSimMgr->GetString(0x2743, static_cast<short>(row * 2 + 0x10 + (isOn ? 0 : 1)), &text);
-      TDeluxeText* caption = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));
+      TDeluxeText* caption = static_cast<TDeluxeText*>(FindSubView(kControlTagTxta + row));
       caption->AssertValid();
       caption->SetTextStyle(0, 0xc, 0x38);
       label->SetJustification(1, false);
@@ -91,18 +90,18 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   }
 
   originalSoundVolumePercent = g_pSimMgr->preferenceValues[3];
-  TTwoPicSlider* musicSlider = static_cast<TTwoPicSlider*>(ResolveControlByTag(kControlTagMusi));
+  TTwoPicSlider* musicSlider = static_cast<TTwoPicSlider*>(FindSubView(kControlTagMusi));
   musicSlider->AssertValid();
-  musicSlider->InitializePictureSurfaces(0x1036);
+  musicSlider->SetPicture(0x1036);
   short musicSpan = static_cast<short>(musicSlider->frameHeight - 0xc);
   short musicSplit = static_cast<short>(g_pSimMgr->preferenceValues[3] * musicSpan / 0xff);
   musicSlider->splitPosition = static_cast<short>((musicSplit == 0) ? 0 : musicSplit + 0xc);
   musicSlider->mode = 1;
   LoadUiStringByGroupAndIndexToControlObject(0x2743, 0x27, musicSlider);
 
-  TTwoPicSlider* soundSlider = static_cast<TTwoPicSlider*>(ResolveControlByTag(kControlTagSoun));
+  TTwoPicSlider* soundSlider = static_cast<TTwoPicSlider*>(FindSubView(kControlTagSoun));
   soundSlider->AssertValid();
-  soundSlider->InitializePictureSurfaces(0x1038);
+  soundSlider->SetPicture(0x1038);
   short soundSpan = static_cast<short>(soundSlider->frameHeight - 0xc);
   short soundSplit = static_cast<short>(g_pSimMgr->preferenceValues[2] * soundSpan / 100);
   soundSlider->splitPosition = static_cast<short>((soundSplit == 0) ? 0 : soundSplit + 0xc);
@@ -114,10 +113,9 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
     g_pHelpMgr->IHelpMgr();
   }
 
-  TView* autoResPrompt = ResolveControlByTag(kControlTagTpca);
+  TView* autoResPrompt = FindSubView(kControlTagTpca);
   autoResPrompt->AssertValid();
-  TRadioTextCluster* autoResCluster =
-      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagOpca));
+  TRadioTextCluster* autoResCluster = static_cast<TRadioTextCluster*>(FindSubView(kControlTagOpca));
   autoResCluster->AssertValid();
   autoResPrompt->Show(1, 0);
 
@@ -129,13 +127,13 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   promptLabel->UpdateTextEntrySharedStringAndMaybeNotify(&promptText, false);
   promptLabel->CenterVertically(false);
 
-  TDropShadowText* yesOption = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagYess));
+  TDropShadowText* yesOption = static_cast<TDropShadowText*>(FindSubView(kControlTagYess));
   yesOption->AssertValid();
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x16);
   yesOption->SetTextAndMaybeRefresh(&promptText, false);
   ApplyUiTextStyleAndThemeFlags(yesOption, 0, 0xc, 0x2b6a, 0x2b6c);
 
-  TDropShadowText* noOption = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagNooo));
+  TDropShadowText* noOption = static_cast<TDropShadowText*>(FindSubView(kControlTagNooo));
   noOption->AssertValid();
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x17);
   noOption->SetTextAndMaybeRefresh(&promptText, false);
@@ -147,7 +145,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   autoResCluster->ViewEnable(1, 0);
 
   int autoResEnabled = 0;
-  g_pAssetMgr->LoadSettingValueByKeyIntoOut(&autoResEnabled, g_pGamePreferencesAutoResKey, 1);
+  g_pAssetMgr->GetPreferenceInt(&autoResEnabled, g_pGamePreferencesAutoResKey, 1);
   autoResCluster->SetSelectedTextOptionByTag(
       autoResEnabled != 0 ? kControlTagYess : kControlTagNooo, false);
 }
@@ -168,15 +166,14 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       }
     } else if (tag == kControlTagOkay) {
       for (int i = 0; i < 5; ++i) {
-        TCzechBox* checkbox = static_cast<TCzechBox*>(ResolveControlByTag(kControlTagOpta + i));
+        TCzechBox* checkbox = static_cast<TCzechBox*>(FindSubView(kControlTagOpta + i));
         if (checkbox != NULL) {
           checkbox->AssertValid();
           g_pSimMgr->preferenceValues[i] = checkbox->IsOn();
         }
       }
 
-      TTwoPicSlider* musicSlider =
-          static_cast<TTwoPicSlider*>(ResolveControlByTag(kControlTagMusi));
+      TTwoPicSlider* musicSlider = static_cast<TTwoPicSlider*>(FindSubView(kControlTagMusi));
       musicSlider->AssertValid();
       short musicPosition = musicSlider->splitPosition;
       if (musicPosition < 0xc) {
@@ -187,8 +184,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       g_pSimMgr->preferenceValues[3] = static_cast<short>(
           (musicPosition * 0xff) / static_cast<short>(musicSlider->frameHeight - 0xc));
 
-      TTwoPicSlider* soundSlider =
-          static_cast<TTwoPicSlider*>(ResolveControlByTag(kControlTagSoun));
+      TTwoPicSlider* soundSlider = static_cast<TTwoPicSlider*>(FindSubView(kControlTagSoun));
       soundSlider->AssertValid();
       short soundPosition = soundSlider->splitPosition;
       if (soundPosition < 0xc) {
@@ -207,7 +203,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       }
 
       TRadioTextCluster* autoResolutionCluster =
-          static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagOpca));
+          static_cast<TRadioTextCluster*>(FindSubView(kControlTagOpca));
       autoResolutionCluster->AssertValid();
       bool autoResolve = autoResolutionCluster->selectedTag == kControlTagYess; // 'yess'
       if (!g_pImperialismApp->ApplyAutoResolutionModeAndPersist(autoResolve)) {
@@ -228,7 +224,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       bool checked = static_cast<TCzechBox*>(sourceHandler)->IsOn() != 0;
       CString text;
       g_pSimMgr->GetString(0x2743, static_cast<short>((checked ? 0 : 1) + idx * 2 + 0x10), &text);
-      TDeluxeText* tooltip = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + idx));
+      TDeluxeText* tooltip = static_cast<TDeluxeText*>(FindSubView(kControlTagTxta + idx));
       tooltip->AssertValid();
       tooltip->UpdateTextEntrySharedStringAndMaybeNotify(&text, true);
       tooltip->CenterVertically(true);

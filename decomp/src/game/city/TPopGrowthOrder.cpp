@@ -60,7 +60,7 @@ bool TPopGrowthOrder::SetQuantity(short quantity) {
   ownerCity->cityStockCannedFood = static_cast<short>(ownerCity->cityStockCannedFood - delta);
   ownerCity->VerifyStocks();
   ownerCity->productionAccum[0x0f] = static_cast<short>(ownerCity->productionAccum[0x0f] - delta);
-  g_pViewMgr->RefreshCityProductionUi();
+  g_pViewMgr->UpdateCityScreen();
   return true;
 }
 

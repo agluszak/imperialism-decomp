@@ -62,7 +62,7 @@ void TMiniCivView::InitializeForCivilianUnit(TView* panel, int* offsetLayout, in
     break;
   case kUnitOrderDevelopResource:
     if (civUnit->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) &&
-        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tile, true) == 0) {
+        g_pGlobalMapState->GetDevelopmentLevel(tile, true) == 0) {
       // Undeveloped tile: name the (up to two) improvable edge resources.
       int matchCount = 0;
       short edge;

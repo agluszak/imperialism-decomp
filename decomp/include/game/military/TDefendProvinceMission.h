@@ -35,7 +35,7 @@ public:
 
   static float ComputeLocalSupportVectorScore(int nodeContext);
   static float ComputeCrossNationSupportVectorScore(int nodeContext);
-  float ComputePresentLocationCrossNationSupportScore();
+  float AssessImmediateThreat();
 
   void PropagateTargetTileToLinkedUnitsIfDifferent(short newTile);
 };

@@ -237,7 +237,7 @@ bool StrategicMapScreen::CivilianToolbarIsPlaced() const {
 namespace {
 
 TPicture* CivilianPortrait(TCivToolbar* toolbar) {
-  TView* portrait = toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagUnit) : 0;
+  TView* portrait = toolbar != 0 ? toolbar->FindSubView(kControlTagUnit) : 0;
   return portrait != 0 && portrait->IsKindOf(RUNTIME_CLASS(TPicture)) != 0
              ? static_cast<TPicture*>(portrait)
              : 0;
@@ -246,7 +246,7 @@ TPicture* CivilianPortrait(TCivToolbar* toolbar) {
 } // namespace
 
 short StrategicMapScreen::ToolbarStatusGlyph(int tag) const {
-  TView* button = mapView != 0 ? mapView->ResolveControlByTag(tag) : 0;
+  TView* button = mapView != 0 ? mapView->FindSubView(tag) : 0;
   return button != 0 && button->IsKindOf(RUNTIME_CLASS(TPicture)) != 0
              ? static_cast<TPicture*>(button)->glyphBase
              : -1;
@@ -264,7 +264,7 @@ bool StrategicMapScreen::CivilianPortraitIsLoaded() const {
 
 TCivDescription* StrategicMapScreen::CivilianLegend() const {
   TCivToolbar* toolbar = CivilianToolbar();
-  TView* legend = toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagBack) : 0;
+  TView* legend = toolbar != 0 ? toolbar->FindSubView(kControlTagBack) : 0;
   return legend != 0 && legend->IsKindOf(RUNTIME_CLASS(TCivDescription)) != 0
              ? static_cast<TCivDescription*>(legend)
              : 0;
@@ -302,8 +302,7 @@ TArmyToolbar* StrategicMapScreen::ArmyToolbar() const {
 
 TArmyPlacard* StrategicMapScreen::ArmyPlacard(int category) const {
   TArmyToolbar* toolbar = ArmyToolbar();
-  TView* placard =
-      toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagArmyPlacardFirst + category) : 0;
+  TView* placard = toolbar != 0 ? toolbar->FindSubView(kControlTagArmyPlacardFirst + category) : 0;
   return placard != 0 && placard->IsKindOf(RUNTIME_CLASS(TArmyPlacard)) != 0
              ? static_cast<TArmyPlacard*>(placard)
              : 0;
@@ -311,8 +310,7 @@ TArmyPlacard* StrategicMapScreen::ArmyPlacard(int category) const {
 
 TNumberedArrowButton* StrategicMapScreen::ArmyRatioArrow(int category) const {
   TArmyToolbar* toolbar = ArmyToolbar();
-  TView* arrow =
-      toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagArmyRatioFirst + category) : 0;
+  TView* arrow = toolbar != 0 ? toolbar->FindSubView(kControlTagArmyRatioFirst + category) : 0;
   return arrow != 0 && arrow->IsKindOf(RUNTIME_CLASS(TNumberedArrowButton)) != 0
              ? static_cast<TNumberedArrowButton*>(arrow)
              : 0;
@@ -327,7 +325,7 @@ RuntimeActionResult ClickArrowZone(TNumberedArrowButton* arrow, bool lowerHalf, 
     return RuntimeActionResult::Failure("no numbered arrow to click");
   }
   CRect bounds;
-  arrow->QueryContentBounds(&bounds);
+  arrow->GetExtent(&bounds);
   const int offsetY = lowerHalf ? arrow->frameHeight * 3 / 4 : arrow->frameHeight / 4;
   CPoint zone(bounds.left + 1, bounds.top + offsetY); // RUNTIME_COORDINATE_EXPLAINED
   CPoint windowPoint(zone);
@@ -415,7 +413,7 @@ TShipFractionCluster* StrategicMapScreen::NavyClassCluster(short navyClass) cons
     return 0;
   }
   TNavyToolbarCluster* toolbar = NavyToolbar();
-  TView* cluster = toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagCls0 + navyClass) : 0;
+  TView* cluster = toolbar != 0 ? toolbar->FindSubView(kControlTagCls0 + navyClass) : 0;
   return cluster != 0 && cluster->IsKindOf(RUNTIME_CLASS(TShipFractionCluster)) != 0
              ? static_cast<TShipFractionCluster*>(cluster)
              : 0;
@@ -439,7 +437,7 @@ RuntimeActionResult StrategicMapScreen::SelectNavyZone(TZone* zone) {
   }
   // Zone selection is a model call, not a control activation: the map's own click path
   // resolves a tile to this zone and then does exactly this.
-  mapView->SetActiveMapOrderEntry(zone);
+  mapView->FocusOnZone(zone);
   return RuntimeActionResult::Success();
 }
 

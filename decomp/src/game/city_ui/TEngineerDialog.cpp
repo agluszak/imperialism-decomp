@@ -131,13 +131,13 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   // Panel title.
   TextStyle titleStyle;
   BuildUiTextStyleDescriptor(&titleStyle, 0, 0xa, 0x2b6a);
-  TStaticText* title = static_cast<TStaticText*>(this->ResolveControlByTag(kControlTagTitl));
+  TStaticText* title = static_cast<TStaticText*>(this->FindSubView(kControlTagTitl));
   title->AssertValid();
   ConfigureUiControlStyleValueAndCaptionFromStringResource(title, 0, 0xe, 0x2b6a, 1, 0x1c20, 6);
 
   // Active nation, its city influence map, and the anchor tile's six hex neighbours.
   short activeNation = g_pSimMgr->GetPlayerCountry();
-  char* influenceMap = g_apNationStates[activeNation]->BuildCityInfluenceLevelMap();
+  char* influenceMap = g_apNationStates[activeNation]->MakeConnectionMap();
   StrategicTileIndex neighborTiles[6];
   TMapMgr::GetNeighborTileIDArray(nBuildingSlotId, neighborTiles,
                                   mapState->hexNeighborWrapHorizontally);
@@ -176,8 +176,8 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
         if (rt == -1) {
           continue;
         }
-        fortAccum[4 + rt] = static_cast<short>(
-            fortAccum[4 + rt] + mapState->FindResourceCapabilityRequirementLevel(tile, edge));
+        fortAccum[4 + rt] =
+            static_cast<short>(fortAccum[4 + rt] + mapState->GetResourceAmtAt(tile, edge));
       }
       Province* p = &mapState->cityScoreTable[t->cityRecordIndex];
       if (p->cityTileIndex == tile) {
@@ -214,7 +214,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   // Fort up/down button: only when the anchor province can still raise its fort level.
   short homeProvIndex = mapState->terrainStateTable[nBuildingSlotId].cityRecordIndex;
   Province* homeProv = &mapState->cityScoreTable[homeProvIndex];
-  short fortCap = g_pTechMgr->GetNationFortLevelCap(g_pSimMgr->GetPlayerCountry());
+  short fortCap = g_pTechMgr->GetBestFort(g_pSimMgr->GetPlayerCountry());
   if (homeProv->fortLevel < fortCap && homeProv->cityTileIndex == nBuildingSlotId) {
     TUpDownPictureButton* fortBtn = new TUpDownPictureButton();
     int fortOff[2] = {0x11, 0x29};
@@ -310,13 +310,13 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   }
 
   CRect bounds;
-  window->QueryBounds(&bounds);
+  window->GetFrame(&bounds);
   bounds.bottom = bounds.top + layoutY;
-  window->ApplyBounds(&bounds, true);
+  window->SetFrame(&bounds, true);
 
-  QueryBounds(&bounds);
+  GetFrame(&bounds);
   bounds.bottom = bounds.top + layoutY;
-  ApplyBounds(&bounds, true);
+  SetFrame(&bounds, true);
 
   TDialogBehavior* behavior = window->GetDialogBehavior();
   if (behavior != 0) {

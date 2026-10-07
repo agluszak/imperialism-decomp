@@ -376,13 +376,13 @@ This confirms production orders are persisted in city state and survive save/loa
 ### Newly Renamed Helpers
 
 - `InitializeStrategicMapTileIconStateCache @ 0x0051CC60`
-- `SelectNextValidMapOrderEntryFromCursor @ 0x00599770`
+- `NextSeaZonePlease @ 0x00599770`
 - `TrySelectNextValidMapOrderEntry @ 0x005998A0`
-- `ResetMapInteractionToCivilianMode @ 0x005999F0`
+- `SwitchToCivilianMode @ 0x005999F0`
 
 ### Order Entry Persistence Fields (Code-Confirmed)
 
-From `TryQueueMapOrderFromTileAction @ 0x0055A160` and `RefreshMapOrderEntryPanel @ 0x00597810`:
+From `TryQueueMapOrderFromTileAction @ 0x0055A160` and `FocusOnForce @ 0x00597810`:
 
 - `entry + 0x08` (`entry[2]`): order type code written during queue selection (`1/3/5/6` observed).
 - `entry + 0x0C` (`entry[3]`): action/province context pointer.
@@ -427,7 +427,7 @@ In contrast, runtime order commit path remains:
 - `TryQueueMapOrderFromTileAction @ 0x0055A160`
 - `RebuildMapOrderEntryChildren @ 0x00553F10`
 - `MoveMapOrderEntryToQueueHeadIfValid @ 0x00557080`
-- `FinalizeQueuedMapOrderEntry @ 0x005642E0`
+- `CommitForce @ 0x005642E0`
 
 This path writes order-entry structure fields (`+0x08/+0x0C/+0x1E..+0x24`) rather than directly mutating tile icon cache bytes.
 
@@ -533,14 +533,14 @@ Both queue helpers only update order-entry type/context and queue linkage before
 
 - Active map-order entry pointer:
   - `GetActiveMapOrderEntry @ 0x005979f0` returns `*(DAT_006A3FBC + 0x14)`.
-  - `SetActiveMapOrderEntry @ 0x00597950` updates active pointer and refreshes panel.
+  - `FocusOnZone @ 0x00597950` updates active pointer and refreshes panel.
 - In `TryQueueMapOrderFromTileAction`, selected command is written into active entry:
   - `entry + 0x08` = command type (`piVar5[2]`)
   - `entry + 0x0C` = command target/context pointer (`piVar5[3]`)
 - Commit helpers (renamed):
   - `RebuildMapOrderEntryChildren @ 0x00553f10`
   - `MoveMapOrderEntryToQueueHeadIfValid @ 0x00557080`
-  - `FinalizeQueuedMapOrderEntry @ 0x005642e0`
+  - `CommitForce @ 0x005642e0`
 - Global queue head used by commit/reorder:
   - `*(DAT_006A43E4 + 0x04)` (entry linked-list head)
   - Entry queue link fields used in commit path:
@@ -637,7 +637,7 @@ These all operate on the same queue-head field at:
 ### Confirmed Bit Semantics (Code-Confirmed)
 
 - `tileFlags bit 0x04` -> **port marker/pending**
-  - `QueuePortConstructionOrder` sets this bit.
+  - `BuildPort` sets this bit.
   - `SetTileTransportFlags` treats this as port-zone membership trigger.
   - `DumpAndResetMapScriptState` logs this as `port %d` and clears it.
 - `tileFlags bit 0x10` -> **rail marker/pending**
@@ -647,10 +647,10 @@ These all operate on the same queue-head field at:
 ### Function Renames Applied
 
 - `QueueRailConstructionOrder @ 0x005145B0`
-- `QueuePortConstructionOrder @ 0x005147D0`
+- `BuildPort @ 0x005147D0`
 - `SetTileTransportFlags @ 0x00513200`
-- `EnsurePortZoneForTile @ 0x005635E0`
-- `RemovePortZoneByTile @ 0x00564240`
+- `BuildPort @ 0x005635E0`
+- `NukePort @ 0x00564240`
 - `FindPortZoneByTile @ 0x00561BF0`
 - `GetFirstPortZone @ 0x00561C80`
 - `GetNextPortZone @ 0x00561D40`
@@ -662,7 +662,7 @@ These all operate on the same queue-head field at:
 - `QueueRailConstructionOrder`:
   - deducts `2000` for player nation
   - sets bit `0x10`
-- `QueuePortConstructionOrder`:
+- `BuildPort`:
   - deducts `3000` for player nation
   - sets bit `0x04`
 
@@ -713,7 +713,7 @@ Decoded from `g_anMapActionClassToImprovementOpIndex`:
 
 This table is consistent with the known operation table at `0x006588F0` where:
 - op index `5` routes to `QueueRailConstructionOrder` (tile bit `0x10`, cost `2000`)
-- op index `6` routes to `QueuePortConstructionOrder` (tile bit `0x04`, cost `3000`)
+- op index `6` routes to `BuildPort` (tile bit `0x04`, cost `3000`)
 
 ### Additional Operation Helpers Renamed
 
@@ -872,11 +872,11 @@ Result:
 
 Additional helper renames in the map click mode-cycler branch:
 
-- `ClearCivilianSelectionHighlightsForNation @ 0x004D20E0`
-- `SelectFirstAvailableCivilianForNation @ 0x004D2160`
+- `ResetCycle @ 0x004D20E0`
+- `Cycle @ 0x004D2160`
 - `SetActiveCivilianSelection @ 0x004D2C60`
-- `ClearProvinceSelectionHighlightsForNation @ 0x004A46D0`
-- `FindNextSelectableProvinceForNation @ 0x004A4760`
+- `ResetCycle @ 0x004A46D0`
+- `Cycle @ 0x004A4760`
 - `SetActiveProvinceSelection @ 0x004A45E0`
 
 Interpretation:
@@ -925,7 +925,7 @@ Interpretation:
   - Merges undersized regions and rewrites region-link metadata.
 - `UpdateMapOrderEntryTilePreviewSlot @ 0x00523170`
   - Assigns/updates preview slot, caches tile->slot mapping (`tile + 0x10`), and redraws preview atlas.
-- `RenderMapOrderEntryTilePreview @ 0x00523640`
+- `DrawUnit @ 0x00523640`
   - Draws tile preview with faction-sensitive overlay/icon behavior.
 - `DrawHexNeighborConnectionMask @ 0x00522CF0`
   - Renders hex-edge connection strips from a bitmask + neighbor tile class checks.
@@ -962,7 +962,7 @@ These functions improve readability of the strategic-map cache pipeline and conf
 ### tile+0x17 runtime writer identified (2026-07-06)
 
 `tile+0x17` is `TTerrainStateRecordView::railFlags17` (`include/game/TMapMgr.h:38`). Its
-only runtime writer is **`TMapMgr::ApplyRailSectionEndpointDirectionFlags`
+only runtime writer is **`TMapMgr::AddRailSegment`
 (0x00513ff0)** — the rail-section endpoint pass accumulates per-tile hex-direction bits
 into the field (`terrainStateTable[sourceTile].railFlags17 += pTable2[(dir+3)*2]` /
 `terrainStateTable[destTile].railFlags17 += pTable8[((dir+3)%6)*2]`,
@@ -1083,16 +1083,16 @@ Engineer has two distinct issue patterns:
     - `entry+0x08` = order type (`1/3/5/6` in observed branches)
     - `entry+0x0C` = target context pointer (action context or province)
   - Calls `RebuildMapOrderEntryChildren` and queue insertion helpers.
-  - Final commit call: `FinalizeQueuedMapOrderEntry(entry)`.
+  - Final commit call: `CommitForce(entry)`.
 
 - `ApplyMapOrderTypeAndQueue @ 0x00554050`
   - Shared setter/queue helper for type-based map orders.
   - Confirms same storage fields:
     - `this+0x08` = selected order type
     - `this+0x0C` = selected order target argument
-  - Uses `MoveMapOrderEntryToQueueHeadIfValid` then `FinalizeQueuedMapOrderEntry`.
+  - Uses `MoveMapOrderEntryToQueueHeadIfValid` then `CommitForce`.
 
-- `FinalizeQueuedMapOrderEntry @ 0x005642E0`
+- `CommitForce @ 0x005642E0`
   - Post-queue synchronization step (active-nation check, input-state node checks, notify map interaction object).
   - Invokes map interaction notify vfunc `+0x1E8` when `entry+0x30` tile notify index is valid.
   - Clears manager current-entry pointer when finalized entry matches.
@@ -1174,7 +1174,7 @@ Renamed and documented:
 - `0x00599A50` -> `EnterMapInteractionOverlayMode`
   - Switches interaction into overlay-oriented UI state and syncs linked view/cursor widgets.
 
-- `0x00560B00` -> `CanDisplayMapOrderEntryInCurrentContext`
+- `0x00560B00` -> `HasFreeShipsOfPlayer`
   - Eligibility predicate used by mode-2 traversal in `CycleMapInteractionSelectionAfterHandledClick`.
 
 Result: `CycleMapInteractionSelectionAfterHandledClick` now decompiles with substantially more readable intent in mode-switch and panel-refresh branches.
@@ -1358,7 +1358,7 @@ Interpretation:
 ## Recruit Object Creation + Civ Work Execution Bridge (2026-02-15, deeper pass)
 
 ### New bridge identified
-- `RegisterUnitOrderWithOwnerManager @ 0x005C2530` is a key constructor helper in the recruit path.
+- `IUnit @ 0x005C2530` is a key constructor helper in the recruit path.
   - Called from both civilian and military recruit object initializers.
   - Resolves owner manager pointer and inserts object via manager vfunc `+0x30`.
   - Initializes owner index fields and unique id.
@@ -1373,7 +1373,7 @@ Recovered civ-order methods (renamed):
 - `SetCivWorkOrderTypeAndDuration` (`0x005C29F0`)
 - `AdvanceCivWorkOrderAndApplyCompletion` (`0x005C2A90`)
 - `RelinkCivUnitByTileIndex` (`0x005C2B70`)
-- `ApplyCompletedCivWorkOrderToMapState` (`0x004D4390`)
+- `CompletedOrders` (`0x004D4390`)
 
 What this proves:
 - Civ work orders are timed (`+0x24` turns remaining), processed each update tick, and on completion apply map-side effects then reset to idle.
@@ -1425,13 +1425,13 @@ Selected confirmed slots:
 - `0x0066EE8C` -> `AdvanceCivWorkOrderAndApplyCompletion`
 - `0x0066EE90` -> `ClearCivUnitTileLink`
 - `0x0066EE94` -> `SetCivWorkOrderTypeAndDuration`
-- `0x0066EE98` -> `ResetCivWorkOrderAndRefreshCounters`
+- `0x0066EE98` -> `ClearOrders`
 
 ### Civ work countdown and completion (reconfirmed)
 
 - `TickCivWorkOrderCountdownAndComplete` decrements remaining turns at `+0x24`.
 - On completion:
-  - calls `ApplyCompletedCivWorkOrderToMapState`
+  - calls `CompletedOrders`
   - resets order type/state to idle (`this+0x08 = 0`).
 
 This aligns with user-confirmed semantics:
@@ -1609,8 +1609,8 @@ This is now the principal turn-rollover execution chain for city production/recr
   - allocates capability object (`0x63C` bytes)
   - calls:
     - `ConstructCityOrderCapabilityStateVtable @ 0x005AEF80`
-    - `InitializeCityOrderCapabilityStateDefaults @ 0x005AEFF0`
-- `InitializeCityOrderCapabilityStateDefaults` initializes multiple era/slot matrices, including blocks rooted near offsets `+0x467`, `+0x338`, `+0x395`.
+    - `ITechMgr @ 0x005AEFF0`
+- `ITechMgr` initializes multiple era/slot matrices, including blocks rooted near offsets `+0x467`, `+0x338`, `+0x395`.
 
 ### Why this matters for university unlocks
 
@@ -1631,8 +1631,8 @@ This is now the principal turn-rollover execution chain for city production/recr
 ### Resolved function mapping
 - `0x00404BBA` -> `Thunk_RebuildNationStateSlotsAndAvailability`
 - `0x0057CAD0` -> `RebuildNationStateSlotsAndAvailability`
-- `0x0057CDA0` -> `RebuildPrimaryNationStateForSlot`
-- `0x0057D520` -> `RebuildSecondaryNationStateForSlot`
+- `0x0057CDA0` -> `CreateGreatPower`
+- `0x0057D520` -> `CreateMinor`
 
 ### Vtable offset note (important)
 - Constructor (`thunk_FUN_0057b9e0`) writes vtable pointer `PTR_LAB_00662A58` (not `0x00662A60`).

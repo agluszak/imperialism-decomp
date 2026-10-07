@@ -254,8 +254,8 @@ void TOceanDialog::FrameCursorArea() {
 
   short projectedY;
   short projectedX;
-  ForwardProjectTileIndexToWrappedScreenOffsetByScale(paintedHoverTileIndex, &viewportOrigin,
-                                                      &projectedY, &projectedX, projectionScale);
+  TileID2TileTopLeft(paintedHoverTileIndex, &viewportOrigin, &projectedY, &projectedX,
+                     projectionScale);
   CRect tileRect(projectedX, projectedY, projectedX + previewSquareRadius,
                  projectedY + previewSquareRadius);
   BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -263,8 +263,8 @@ void TOceanDialog::FrameCursorArea() {
                                    &tileRect, 0, 0);
 
   if (frameHoveredTile) {
-    ForwardProjectTileIndexToWrappedScreenOffsetByScale(hoveredTileIndex, &viewportOrigin,
-                                                        &projectedY, &projectedX, projectionScale);
+    TileID2TileTopLeft(hoveredTileIndex, &viewportOrigin, &projectedY, &projectedX,
+                       projectionScale);
     tileRect.SetRect(projectedX, projectedY, projectedX + previewSquareRadius,
                      projectedY + previewSquareRadius);
     QDFrameRect(&tileRect);
@@ -272,7 +272,7 @@ void TOceanDialog::FrameCursorArea() {
 }
 
 // FUNCTION: IMPERIALISM 0x00566750
-void TOceanDialog::RefreshMapTile(short tileIndex) {
+void TOceanDialog::ImmediateDrawTile(short tileIndex) {
   if (tileIndex < 0) {
     return;
   }
@@ -806,7 +806,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
         continue;
       }
 
-      SetQuickDrawFillColorFromPaletteIndex(zone->QueryPortZoneCapability() ? 0 : 0x13);
+      SetQuickDrawFillColorFromPaletteIndex(zone->IsPortZone() ? 0 : 0x13);
       CString label;
       zone->AssignZoneDisplayNameToOutputRef(&label);
       SetQuickDrawTextOriginWithContextOffset(
@@ -887,8 +887,8 @@ void DrawOceanRouteSegment(short sourceColumn, int sourceRow, short destinationC
 }
 
 // FUNCTION: IMPERIALISM 0x00567fa0
-void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
-                                                  int projectedY, int flag, short tileIndex) {
+void TOceanDialog::DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, int flag,
+                            short tileIndex) {
   (void)tileIndex;
 
   CRect destinationRect(projectedY, projectedX, projectedY + 0x10, projectedX + 0x10);
@@ -915,8 +915,7 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int proj
 }
 
 // FUNCTION: IMPERIALISM 0x00568120
-void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
-                                                                 int flag) {
+void TOceanDialog::DrawGarrison(short tileIndex, CRect* dstRect, int flag) {
 
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   TMilitaryUnit* stationedUnit = 0;
@@ -1011,11 +1010,9 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
 }
 
 // FUNCTION: IMPERIALISM 0x00568640
-void TOceanDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                       const CPoint* viewportOrigin,
-                                                                       short* outVerticalOffset,
-                                                                       short* outHorizontalOffset,
-                                                                       int projectionScale) {
+void TOceanDialog::TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
+                                      short* outVerticalOffset, short* outHorizontalOffset,
+                                      int projectionScale) {
 
   short mapTileIndex = static_cast<short>(tileIndex);
   int row = mapTileIndex / kStrategicMapColumns;

@@ -25,5 +25,5 @@ void TRemoteMinor::PlopDownCity(short selectedRegion, const char* mapCellLabel) 
   CString label(mapCellLabel);
   short cityRecordIndex =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(homeTileIndex)].cityRecordIndex;
-  g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &label);
+  g_pGlobalMapState->SetProvinceName(cityRecordIndex, &label);
 }

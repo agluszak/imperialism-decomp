@@ -37,7 +37,7 @@ void TTextLine::SetCaptionText(CString* caption) {
 }
 
 // FUNCTION: IMPERIALISM 0x00570440
-void TTextLine::SetTextLineStyleDescriptor(const TextStyle* descriptor) {
+void TTextLine::SetTheTextStyle(const TextStyle* descriptor) {
   styleDescriptor = *descriptor;
 }
 

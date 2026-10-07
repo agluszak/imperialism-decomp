@@ -24,7 +24,7 @@ namespace {
 // Deliberately Normal difficulty rather than Easy. TCountry's starting-army setup gives every
 // garrison unit SetOrders(2) when difficultyLevel < 2, so on Easy no unit is idle on turn 1 and the
 // ratio arrows -- whose value is the idle count -- can only ever read zero. At difficulty 2 and
-// above the same units keep the idle order RegisterUnitOrderWithOwnerManager gave them, which is
+// above the same units keep the idle order IUnit gave them, which is
 // the state this scenario is about.
 //
 // The whole sequence is synchronous, so the script has no waits.

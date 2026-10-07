@@ -324,7 +324,7 @@ void TWindow::Free() {
     static_cast<TView*>(childList->GetHead())->Free();
   }
   if (ownerContext != 0) {
-    ownerContext->DetachChildFromOwnerList(this);
+    ownerContext->RemoveSubView(this);
     ownerContext = 0;
   }
   if (g_pApplication != 0 &&

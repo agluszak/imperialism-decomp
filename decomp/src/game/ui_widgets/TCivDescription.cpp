@@ -83,7 +83,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
     case kCivilianUnitDeveloper:
     case kCivilianUnitDriller:
       context->targetTileCountsBySlot[4] = 0;
-      context->UpdateCivilianOrderTargetTileCountsForOwnerNation(orderState);
+      context->CountWorkableSpaces(orderState);
       break;
     }
     context->RefreshControl();
@@ -201,7 +201,7 @@ bool TCivDescription::ActivateLegendSlot(short slotIndex) {
 #endif
 
 // FUNCTION: IMPERIALISM 0x0058f3c0
-void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit* orderState) {
+void TCivDescription::CountWorkableSpaces(TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   NationSlot ownerNationId;

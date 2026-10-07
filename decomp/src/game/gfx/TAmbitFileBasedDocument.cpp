@@ -44,7 +44,7 @@ void TAmbitFileBasedDocument::DoMakeViews(unsigned char) {}
 void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char flags) {
 
   TFileStream* stream = new TFileStream();
-  stream->SetBackingArchive(file);
+  stream->IFileStream(file);
 
   int fileMagic;
   int savedSessionSlot;
@@ -110,7 +110,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
         !g_apNationStates[nationSlot]->IsRemote()) {
-      g_apNationStates[nationSlot]->BuildTransportLinkedInfluenceMap(0);
+      g_apNationStates[nationSlot]->TraceSupplyRoutes(0);
     }
   }
   g_nSaveFormatVersion = -1;
@@ -120,7 +120,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
 void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char flags) {
 
   TFileStream* stream = new TFileStream();
-  stream->SetBackingArchive(file);
+  stream->IFileStream(file);
 
   stream->WriteBytes(const_cast<int*>(&g_nAmbitSaveFileMagic), 4);
   stream->WriteBytes(const_cast<int*>(&g_nCurrentAmbitSaveFormatVersion), 4);

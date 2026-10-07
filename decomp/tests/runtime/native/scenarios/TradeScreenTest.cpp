@@ -75,7 +75,7 @@ RuntimeActionResult CheckPagePagination() {
   grouped->AddOptionEntry(CreatePaginationLine("Header", 0, 30));
   grouped->AddOrderedEntry(CreatePaginationLine("First", 1, 0));
   grouped->AddOrderedEntry(CreatePaginationLine("Second", 1, 0));
-  grouped->BuildPageLayout();
+  grouped->CalculatePageStarts();
   grouped->ShowPage(1);
   bool groupedCorrect = grouped->pageCount == 1 && grouped->childList != 0 &&
                         grouped->childList->GetCount() == 3 &&
@@ -91,7 +91,7 @@ RuntimeActionResult CheckPagePagination() {
   for (int index = 0; index < 6; ++index) {
     ungrouped->AddOrderedEntry(CreatePaginationLine(captions[index], 0, 0));
   }
-  ungrouped->BuildPageLayout();
+  ungrouped->CalculatePageStarts();
   bool breaksCorrect = ungrouped->pageCount == 2 && ungrouped->pageStartIndices->GetSize() == 2 &&
                        ungrouped->pageStartIndices->At(1) == 1 &&
                        ungrouped->pageStartIndices->At(2) == 4;

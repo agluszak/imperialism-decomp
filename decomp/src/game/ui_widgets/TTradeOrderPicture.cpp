@@ -37,7 +37,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
     tradeRow->HandleEvent(0x68, this, 0);
-    tradeRow->SetTradeBidControlBitmap();
+    tradeRow->ShowBidCard();
     tradeRow->SetTradeOfferSecondaryBitmap();
     tradeRow->HandleEvent(0x6a, this, 0);
     return;
@@ -52,7 +52,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
     tradeRow->HandleEvent(0x69, this, 0);
-    tradeRow->SetTradeOfferControlBitmap();
+    tradeRow->ShowOfferCard();
     if (tradeRow->IsSelectionAllowed()) {
       tradeRow->DoControlAction();
       tradeRow->HandleEvent(0x67, this, 0);
@@ -72,7 +72,7 @@ void TTradeOrderPicture::ActivateOrderSemantically() {
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
     tradeRow->HandleEvent(0x68, this, 0);
-    tradeRow->SetTradeBidControlBitmap();
+    tradeRow->ShowBidCard();
     tradeRow->SetTradeOfferSecondaryBitmap();
     tradeRow->HandleEvent(0x6a, this, 0);
     return;
@@ -87,7 +87,7 @@ void TTradeOrderPicture::ActivateOrderSemantically() {
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
     tradeRow->HandleEvent(0x69, this, 0);
-    tradeRow->SetTradeOfferControlBitmap();
+    tradeRow->ShowOfferCard();
     if (tradeRow->IsSelectionAllowed()) {
       tradeRow->DoControlAction();
       tradeRow->HandleEvent(0x67, this, 0);

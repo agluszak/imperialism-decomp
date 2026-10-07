@@ -140,7 +140,7 @@ RuntimeActionResult RunTechnologyNavalCapabilityUpgrade(NativeTransition& transi
   if (!started.Succeeded()) {
     return started;
   }
-  g_pTechMgr->HandleAbilityUnlock(technologyId, nationSlot);
+  g_pTechMgr->GeneralActivation(technologyId, nationSlot);
   return transition.Finish();
 }
 
@@ -175,7 +175,7 @@ RuntimeActionResult RunTechnologyNavalCapabilitySequence(NativeTransition& trans
     return started;
   }
   for (int unlockIndex = 0; unlockIndex < 6; ++unlockIndex) {
-    g_pTechMgr->HandleAbilityUnlock(technologyIds[unlockIndex], nationSlot);
+    g_pTechMgr->GeneralActivation(technologyIds[unlockIndex], nationSlot);
   }
   return transition.Finish();
 }
@@ -196,8 +196,7 @@ RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition) {
     return started;
   }
   g_pSimMgr->AdvanceGlobalTurnStateMachine();
-  RuntimeActionResult finished =
-      transition.Finish(json_value_init_string("technology_advance"));
+  RuntimeActionResult finished = transition.Finish(json_value_init_string("technology_advance"));
   if (!finished.Succeeded()) {
     return finished;
   }

@@ -33,11 +33,11 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
     short regionId = static_cast<short>(ownedRegions->At(regionOrdinal));
     Province* region = &g_pGlobalMapState->cityScoreTable[regionId];
 
-    if (region->fortLevel < g_pTechMgr->GetNationFortLevelCap(nationSlot)) {
+    if (region->fortLevel < g_pTechMgr->GetBestFort(nationSlot)) {
       float developmentPressure = averageUnitDivergence;
       if (IsMapTileCompatibleWithCurrentTerrainOrActionContext(regionId)) {
         developmentPressure = nation->expansionPressurePerCompatibleRegion + averageUnitDivergence;
-        if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationSlot)) {
+        if (g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(nationSlot)) {
           developmentPressure +=
               TDefendProvinceMission::ComputeCrossNationSupportVectorScore(regionId) *
               g_DefendProvinceMissionCrossSupportFloorScale;
@@ -49,8 +49,8 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
         int sameOwnerAdjacentRegionCount = 0;
         int adjacentOrdinal = 0;
         while (adjacentOrdinal < region->adjacentRegionCount) {
-          if (g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
-                  region->adjacentRegionIds[adjacentOrdinal]) == nationSlot) {
+          if (g_pGlobalMapState->FindCountry(region->adjacentRegionIds[adjacentOrdinal]) ==
+              nationSlot) {
             ++sameOwnerAdjacentRegionCount;
           }
           ++adjacentOrdinal;

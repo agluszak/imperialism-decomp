@@ -77,7 +77,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   // 'tex1' — headline text (string group buildingSlotId + 0x2422).
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
   TStaticText* tex1 =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'e', 'x', '1')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('t', 'e', 'x', '1')));
   if (tex1 == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x47b);
   }
@@ -87,7 +87,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
 
   // 'tex2' — sub text. Retail passes the low word of the third argument as the group.
   TStaticText* tex2 =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'e', 'x', '2')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('t', 'e', 'x', '2')));
   if (tex2 == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x481);
   }
@@ -97,16 +97,16 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
                              true);
   if (buildingSlotId == 0xb) {
     CRect tex2Bounds;
-    tex2->QueryBounds(&tex2Bounds);
+    tex2->GetFrame(&tex2Bounds);
     tex2Bounds.top += 5;
     tex2Bounds.bottom += 5;
-    tex2->ApplyBounds(&tex2Bounds, true);
+    tex2->SetFrame(&tex2Bounds, true);
   }
 
   // 'name' — localized building title (string group 0x2719, indexed by slot).
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
   TStaticText* nameCtrl =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   if (nameCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x493);
   }
@@ -117,7 +117,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
 
   // 'cost' — localized cost label (string group 0x2738, index 0x14).
   TStaticText* costCtrl =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', 't')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('c', 'o', 's', 't')));
   if (costCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x49a);
   }
@@ -127,7 +127,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   costCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
   TStaticText* capTCtrl =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'a', 'p', 'T')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('c', 'a', 'p', 'T')));
   short slot = this->buildingSlotId;
   if (slot == 0 || slot == 2 || slot == 4 || slot == 6) {
     capValue.Format(g_szDecimalFormat, 2);
@@ -145,7 +145,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
 
   // 'or  ' — connective label, hidden except for slots 0/3/4 where it is repositioned.
   TStaticText* orCtrl =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'r', ' ', ' ')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('o', 'r', ' ', ' ')));
   if (orCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4b7);
   }
@@ -158,7 +158,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     orCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
     CRect orBounds;
-    orCtrl->QueryBounds(&orBounds);
+    orCtrl->GetFrame(&orBounds);
     short width = static_cast<short>(orBounds.right - orBounds.left);
     short height = static_cast<short>(orBounds.bottom - orBounds.top);
     short offset = 0;
@@ -172,13 +172,13 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     orBounds.left = offset;
     orBounds.right = offset + width;
     orBounds.bottom = orBounds.top + height;
-    orCtrl->ApplyBounds(&orBounds, false);
+    orCtrl->SetFrame(&orBounds, false);
     orCtrl->Show(1, 0);
   }
 
   // 'warn' — warning text, filled in by the eligibility branch below.
   TStaticText* warnCtrl =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('w', 'a', 'r', 'n')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('w', 'a', 'r', 'n')));
   if (warnCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4d6);
   }
@@ -194,7 +194,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     }
     eligible = availableBudget >= 0x1388;
     TStaticText* buckCtrl =
-        static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('b', 'u', 'c', 'k')));
+        static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('b', 'u', 'c', 'k')));
     buckCtrl->AssertValid();
     buckCtrl->Show(1, 0);
     buckCtrl->InstallTextStyle(style.desc, 0);
@@ -216,7 +216,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
 
   // 'okay' — enabled only when eligible; otherwise show the warning + expansion prompt.
   TPictureButton* okButton =
-      static_cast<TPictureButton*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
+      static_cast<TPictureButton*>(FindSubView(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
   okButton->AssertValid();
   if (!eligible) {
     BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b69);

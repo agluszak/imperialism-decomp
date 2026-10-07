@@ -94,9 +94,9 @@ void TRailAmtBar::DrawAmt() {
     control->PrepareForDrawing();
     if (control->IsActionable()) {
       CRect boundsRect(0, 0, 0, 0);
-      control->QueryBounds(&boundsRect);
+      control->GetFrame(&boundsRect);
       ClipRect(&boundsRect);
-      control->QueryBounds(&boundsRect);
+      control->GetFrame(&boundsRect);
       CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
       control->TranslatePointToParentChain4E(&translatedOrigin);
 

@@ -17,7 +17,7 @@ TInfoBarBehavior::~TInfoBarBehavior() {}
 // FUNCTION: IMPERIALISM 0x004b0e20
 void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
   behaviorTag = kControlTagInfB;
-  ownerView->QueryBounds(&layoutRect);
+  ownerView->GetFrame(&layoutRect);
   text = newText;
 
   if (!ownerView->EvaluateControlInputGate()) {
@@ -34,7 +34,7 @@ void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
 // FUNCTION: IMPERIALISM 0x004b0f50
 bool TInfoBarBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
   if (g_pCursorControlPanel != 0) {
-    g_pCursorControlPanel->SetTextAndLayoutRect(text, &layoutRect);
+    g_pCursorControlPanel->HotText(text, &layoutRect);
     static_cast<TView*>(owner)->PrepareForDrawing();
     if (EmptyRgn(region) != 0) {
       SetRectRgn(region, 0, 0, 0x280, 0x1e0);

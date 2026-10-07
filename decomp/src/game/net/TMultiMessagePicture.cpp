@@ -34,8 +34,7 @@ void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, 
       return;
     }
 
-    TEditText* messageControl =
-        static_cast<TEditText*>(ResolveControlByTag(kSessionTagMesg)); // 'mesg'
+    TEditText* messageControl = static_cast<TEditText*>(FindSubView(kSessionTagMesg)); // 'mesg'
     messageControl->AssertValid();
     CString message;
     messageControl->GetCurrentText(&message);
@@ -43,7 +42,7 @@ void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, 
     unsigned int recipientMask = 0;
     for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       TCzechBox* nationBox =
-          static_cast<TCzechBox*>(ResolveControlByTag(kSessionTagBox0 + nationSlot)); // 'box0'..
+          static_cast<TCzechBox*>(FindSubView(kSessionTagBox0 + nationSlot)); // 'box0'..
       nationBox->AssertValid();
       if (nationBox->IsEnabled() != 0 && nationBox->IsOn() != 0) {
         recipientMask |= 1 << nationSlot;

@@ -45,7 +45,7 @@ void TGWorldButton::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
 void TGWorldButton::Draw(RECT* rectBuffer) {
   if (frameSurface != 0) {
     CRect destRect;
-    QueryContentBounds(&destRect);
+    GetExtent(&destRect);
     RECT srcRect = {frameOffsetX, 0, static_cast<int>(frameOffsetX + frameWidth), frameHeight};
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(frameSurface->GetBlitSurface(),

@@ -75,9 +75,8 @@ public:
       override; // slot 0x98 0x536740 -- clears queued order links/owner pointers, returns true
 
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry); // slot 0x27 0x5354c0
-  virtual TZone* RefreshMissionPortZoneContextForNation();  // slot 0x28 0x536fa0
-  virtual void
-  ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* location); // slot 0x29 0x5371d0
+  virtual TZone* PickAmassingZone();                        // slot 0x28 0x536fa0
+  virtual void GiveTravelOrders(TZone* location);           // slot 0x29 0x5371d0
   virtual void GiveReconOrders(TZone* location,
                                TShip** selectedOrder); // slot 0x2a 0x537090
   // Selects the active target zone from lifecycle state28 (0 -> zone18, 1..2 -> zone14).
@@ -93,8 +92,8 @@ public:
                                                                           TZone* nodeContext);
   float ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext);
   float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
-  float ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder);
-  float ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(TShip* candidateOrder);
+  float GetWeightedSatifactionWith(TShip* candidateOrder);
+  float GetWeightedSatifactionWithout(TShip* candidateOrder);
   float ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone);
   void ProjectEquipage(float* vector, TZone* nearZone, short distanceThreshold, TZone* farZone);
   void BuildMissionQueuedOrderCategoryVector(float* vector);

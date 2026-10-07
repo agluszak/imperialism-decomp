@@ -77,7 +77,7 @@ void TDeluxeText::SetTextStyle(int fontStyleFlags, int pointSize, int themeCode)
 }
 
 // FUNCTION: IMPERIALISM 0x005b6360
-void TDeluxeText::SetTextEntryFromChars(const char* textChars, int textLength) {
+void TDeluxeText::StuffBuffer(const char* textChars, int textLength) {
   (void)textLength; // accepted but never read by the original body
   CString text(textChars);
   UpdateTextEntrySharedString(&text);

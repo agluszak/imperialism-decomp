@@ -34,7 +34,7 @@ void TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pOf
   }
 
   visibleColumnCount = 2;
-  BuildPageLayout();
+  CalculatePageStarts();
   ShowPage(1);
   TBook* ownerBook = static_cast<TBook*>(ownerContext);
   ownerBook->AssertValid();

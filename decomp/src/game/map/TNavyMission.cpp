@@ -196,7 +196,7 @@ int TNavyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack)
 // Mac oracle: ComputeSeaZoneImportance.
 // FUNCTION: IMPERIALISM 0x00536a40
 float TNavyMission::ComputeSeaZoneImportance(TZone* zone) {
-  float importance = static_cast<float>(zone->ComputeMapActionContextNodeValueAverage());
+  float importance = static_cast<float>(zone->GetStrategicValue());
 
   for (TZone* port = TZone::GetFirstPortZone(); port != 0; port = port->GetNextPortZone()) {
     if (port->primaryNeighbors[0] == zone) {
@@ -259,7 +259,7 @@ void TNavyMission::Reassess() {
     }
     if (numerator / denominator < 0.8f) {
       navyState = 0;
-      resolvedPortZone = RefreshMissionPortZoneContextForNation();
+      resolvedPortZone = PickAmassingZone();
     }
   }
 }
@@ -292,7 +292,7 @@ void TNavyMission::GiveOrders() {
   }
 
   if (navyState == 2) {
-    ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
+    GiveTravelOrders(missionTargetZone);
     CombineForce(missionTargetZone, taskForce);
     if (taskForce != NULL) {
       GiveActionOrders(taskForce);
@@ -301,7 +301,7 @@ void TNavyMission::GiveOrders() {
   }
 
   if (navyState == 1) {
-    ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
+    GiveTravelOrders(missionTargetZone);
     CombineForce(missionTargetZone, taskForce);
     if (taskForce != NULL) {
       taskForce->OrderEvade();
@@ -311,10 +311,10 @@ void TNavyMission::GiveOrders() {
 
   if (navyState == 0) {
     if (resolvedPortZone == NULL) {
-      resolvedPortZone = RefreshMissionPortZoneContextForNation();
+      resolvedPortZone = PickAmassingZone();
     }
     GiveReconOrders(missionTargetZone, &selectedOrder);
-    ConsolidateMissionOrderEntriesByTargetAndQueue(resolvedPortZone);
+    GiveTravelOrders(resolvedPortZone);
     CombineForce(resolvedPortZone, taskForce);
     if (taskForce != NULL) {
       taskForce->SetAggression(0);
@@ -324,16 +324,16 @@ void TNavyMission::GiveOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x00536fa0
-TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
+TZone* TNavyMission::PickAmassingZone() {
   return missionTargetZone->GetSafestNearbyZoneFor(nationId);
 }
 
 // FUNCTION: IMPERIALISM 0x00536fc0
 TMission* TNavyMission::GetReplacement() {
   if (resolvedPortZone != NULL) {
-    if (resolvedPortZone->QueryPortZoneCapability()) {
-      if (!resolvedPortZone->QueryZoneCapabilityFlagD(nationId)) {
-        resolvedPortZone = RefreshMissionPortZoneContextForNation();
+    if (resolvedPortZone->IsPortZone()) {
+      if (!resolvedPortZone->IsFriendlyWith(nationId)) {
+        resolvedPortZone = PickAmassingZone();
       }
     }
   }
@@ -417,7 +417,7 @@ void TNavyMission::GiveReconOrders(TZone* location, TShip** selectedOrder) {
 }
 
 // FUNCTION: IMPERIALISM 0x005371d0
-void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* location) {
+void TNavyMission::GiveTravelOrders(TZone* location) {
   for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     if (node->active == 0) {
       node->active = 1;
@@ -743,7 +743,7 @@ float TNavyMission::GetWeightedSatisfaction() {
   return numerator / denominator;
 }
 // FUNCTION: IMPERIALISM 0x00538120
-float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder) {
+float TNavyMission::GetWeightedSatifactionWith(TShip* candidateOrder) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
@@ -800,8 +800,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
 }
 
 // FUNCTION: IMPERIALISM 0x005383f0
-float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
-    TShip* candidateOrder) {
+float TNavyMission::GetWeightedSatifactionWithout(TShip* candidateOrder) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
@@ -863,8 +862,8 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
-        g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(sourceNation),
-                                                        orderNode->nation)) {
+        g_pDiplomacyTurnStateManager->AreAtWar(static_cast<short>(sourceNation),
+                                               orderNode->nation)) {
       short normalizationBase = orderNode->GetMaxStrength();
       if (normalizationBase != 0) {
         float scale =
@@ -961,7 +960,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfil
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
-        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, orderNode->nation)) {
+        g_pDiplomacyTurnStateManager->AreAtWar(nationId, orderNode->nation)) {
       float scale = static_cast<float>(orderNode->strength / orderNode->GetMaxStrength()) *
                     static_cast<float>(1.0);
       vector[0] +=
@@ -999,7 +998,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
-        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, orderNode->nation)) {
+        g_pDiplomacyTurnStateManager->AreAtWar(nationId, orderNode->nation)) {
       float scale = static_cast<float>(orderNode->strength / orderNode->GetMaxStrength()) *
                     static_cast<float>(1.0);
       vector[0] +=
@@ -1086,7 +1085,7 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
 
   for (short allyIdx = 0; allyIdx < 7; ++allyIdx) {
     if (g_apNationStates[allyIdx] != NULL &&
-        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, allyIdx)) {
+        g_pDiplomacyTurnStateManager->AreAtWar(nationId, allyIdx)) {
       short scoreNation = portZone->GetPortOwnerNation();
       float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
       for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {

@@ -488,7 +488,7 @@ void TCity::EndCityPhase() {
   }
   productionAccum[0x0f] = capacity;
   productionAccum[0x0e] = productionOrderTable[0x0e];
-  g_pViewMgr->RefreshCityProductionUi();
+  g_pViewMgr->UpdateCityScreen();
 }
 
 // FUNCTION: IMPERIALISM 0x004b3de0

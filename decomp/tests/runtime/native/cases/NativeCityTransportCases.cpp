@@ -131,7 +131,8 @@ RuntimeActionResult RunNavyGrowthPending(NativeTransition& transition) {
   }
   if (g_pActiveMapOrderContext == 0 ||
       g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(ActiveNationSlot()) == 0) {
-    return RuntimeActionResult::Failure("the loaded fixture has no port zone for the active nation");
+    return RuntimeActionResult::Failure(
+        "the loaded fixture has no port zone for the active nation");
   }
 
   nation->pendingActionStatus.byAction[0] = 0x32;
@@ -160,7 +161,7 @@ RuntimeActionResult RunArmyGrowthSelectedGeneral(NativeTransition& transition) {
     return started;
   }
 
-  g_pTechMgr->ActivateSlotAndUpdateUI(kMilitaryUnitGeneralEra2, ActiveNationSlot());
+  g_pTechMgr->ActivateLandUnit(kMilitaryUnitGeneralEra2, ActiveNationSlot());
   g_pSimMgr->DoCityAndTransport();
   return transition.Finish();
 }

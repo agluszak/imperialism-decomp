@@ -139,7 +139,7 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
                                                                        int themeCode,
                                                                        int themeCode2,
                                                                        const char* caption) {
-  TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
+  TView* control = g_pDisplayMgr->activeDialog->FindSubView(controlTag);
   control->AssertValid();
   return ApplyControlThemeStyleAndOptionalCaption(static_cast<TStaticText*>(control), unused2,
                                                   pointSize, themeCode, themeCode2, caption);
@@ -148,7 +148,7 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
 // Dead helper (no live callers): the bare tag-resolve form the siblings above wrap.
 // FUNCTION: IMPERIALISM 0x005c4380
 TView* __cdecl ResolveControlByTagInActiveDialog(unsigned int controlTag) {
-  return g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
+  return g_pDisplayMgr->activeDialog->FindSubView(controlTag);
 }
 
 // FUNCTION: IMPERIALISM 0x005c43b0
@@ -216,7 +216,7 @@ void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short in
                                                            unsigned int controlTag) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
-  TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
+  TView* control = g_pDisplayMgr->activeDialog->FindSubView(controlTag);
   SetControlHoverHelpText(text, control);
 }
 
@@ -225,7 +225,7 @@ void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index,
                                                    unsigned int controlTag) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
-  TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
+  TView* control = g_pDisplayMgr->activeDialog->FindSubView(controlTag);
   SetControlHoverHelpTextAltEntry(text, control);
 }
 
@@ -255,7 +255,7 @@ void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control) {
 
 // FUNCTION: IMPERIALISM 0x005c4ab0
 TView* __cdecl ApplySharedStringToGlobalControlTag(CString sharedString, unsigned int controlTag) {
-  TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
+  TView* control = g_pDisplayMgr->activeDialog->FindSubView(controlTag);
   control->AssertValid();
   SetControlHoverHelpText(sharedString, control);
   return control;
@@ -265,7 +265,7 @@ TView* __cdecl ApplySharedStringToGlobalControlTag(CString sharedString, unsigne
 TView* __cdecl AssignSharedStringToTaggedControlAndProcessState(const char* text,
                                                                 unsigned int controlTag) {
   CString sharedString(text);
-  TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
+  TView* control = g_pDisplayMgr->activeDialog->FindSubView(controlTag);
   control->AssertValid();
   SetControlHoverHelpTextAltEntry(sharedString, control);
   return control;

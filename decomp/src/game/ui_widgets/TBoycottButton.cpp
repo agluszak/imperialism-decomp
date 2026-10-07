@@ -16,13 +16,12 @@ TBoycottButton::~TBoycottButton() {}
 // FUNCTION: IMPERIALISM 0x00584800
 void TBoycottButton::Select(bool isPressed, bool notifyParent) {
   if (static_cast<char>(isPressed) != '\0') {
-    // GetWindow() (slot 0x16) -> the 'clus' control via ResolveControlByTag (slot 0x25).
-    TCluster* clusControl =
-        static_cast<TCluster*>(this->GetWindow()->ResolveControlByTag(kControlTagClus));
+    // GetWindow() (slot 0x16) -> the 'clus' control via FindSubView (slot 0x25).
+    TCluster* clusControl = static_cast<TCluster*>(this->GetWindow()->FindSubView(kControlTagClus));
     if (clusControl == NULL) {
       GAME_FAIL_NIL_POINTER();
     }
-    clusControl->SetSelectedChildTagAndRefresh(kControlTagSpSpSpSp);
+    clusControl->SetCurrentChoice(kControlTagSpSpSpSp);
   }
   TToggleButton::Select(isPressed, notifyParent);
 }

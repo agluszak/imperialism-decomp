@@ -27,7 +27,7 @@ TAmtBarCluster::~TAmtBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00586d60
 void TAmtBarCluster::DoPostCreate(int styleSeed) {
-  TNumberText* moveControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(FindSubView(kControlTagMove));
   TextStyle styleDescriptor = {0, 0, 0, 0};
   if (moveControl != 0) {
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -35,7 +35,7 @@ void TAmtBarCluster::DoPostCreate(int styleSeed) {
     moveControl->SetJustification(-2, false);
   }
 
-  TAmtBar* barControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(FindSubView(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineMoveBarInitNil);
   }
@@ -47,13 +47,13 @@ void TAmtBarCluster::DoPostCreate(int styleSeed) {
 void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   int normalizedCommand = commandId - 100;
   if (normalizedCommand == 0) {
-    TNumberText* moveControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagMove));
+    TNumberText* moveControl = static_cast<TNumberText*>(FindSubView(kControlTagMove));
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineMoveAdjustMove);
     }
     short moveValue = static_cast<short>(moveControl->UpdateControlCachedIntFromWindowText());
 
-    TNumberText* availableControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagAvai));
+    TNumberText* availableControl = static_cast<TNumberText*>(FindSubView(kControlTagAvai));
     if (availableControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineMoveAdjustAvailable);
     }
@@ -63,7 +63,7 @@ void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
       SetMoveAmount(static_cast<short>(moveValue + 1));
     }
   } else if (normalizedCommand == 1) {
-    TNumberText* moveControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagMove));
+    TNumberText* moveControl = static_cast<TNumberText*>(FindSubView(kControlTagMove));
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineMoveAdjustMoveMinus);
     }

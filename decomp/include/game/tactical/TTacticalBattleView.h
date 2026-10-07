@@ -76,7 +76,7 @@ public:
   void SyncStatusPanelBounds(); // 0x5a8790
   void KillSelectionBlink();    // 0x5a9cc0
   // Writes the on-screen RECT of a bare hex tile (no unit growth). 0x5a87d0.
-  void ComputeTacticalHexTileScreenRect(RECT* rectOut, TacticalTileIndex tileIndex);
+  void Tile2Rect(RECT* rectOut, TacticalTileIndex tileIndex);
   void ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit, RECT* rectOut);
   short
   ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(TacticalTileIndex tileIndex);

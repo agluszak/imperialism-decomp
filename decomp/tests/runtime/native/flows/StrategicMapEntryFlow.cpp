@@ -89,7 +89,8 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
     }
     if (!g_ModalViewStack.IsEmpty() || g_pGlobalMapState == 0 ||
         g_pSimMgr->difficultyLevel != scenario.DifficultyLevel() ||
-        g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone || !NationModesMatchSelectedNation(run)) {
+        g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone ||
+        !NationModesMatchSelectedNation(run)) {
       scenario.FailScenario("direct strategic-map navigation prerequisites are invalid");
       return kRuntimeFlowRunning;
     }
@@ -106,7 +107,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
     }
     TWindow* modal = g_ModalViewStack.GetHead();
     TDialogBehavior* behavior = modal->GetDialogBehavior();
-    TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
+    TControl* okay = static_cast<TControl*>(modal->FindSubView(kControlTagOkay));
     if (behavior == 0 || behavior->defaultCommandCode != kControlTagOkay || okay == 0) {
       scenario.FailScenario("unexpected modal while entering capital selection");
       return kRuntimeFlowRunning;
@@ -132,8 +133,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
                                    : 0;
     if (g_pViewMgr->currentTurnEventCode != 0x3b8 || mapView == 0 || g_pGlobalMapState == 0 ||
         mapView->subview2A8 == 0 || mapView->miniMapView == 0 ||
-        mapView->ResolveControlByTag(kControlTagCanc) == 0 ||
-        mapView->ResolveControlByTag(kControlTagQuer) == 0) {
+        mapView->FindSubView(kControlTagCanc) == 0 || mapView->FindSubView(kControlTagQuer) == 0) {
       scenario.FailScenario("capital-selection map is missing navigation prerequisites");
       return kRuntimeFlowRunning;
     }
@@ -178,8 +178,8 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
       return kRuntimeFlowRunning;
     }
     TWindow* modal = g_ModalViewStack.GetHead();
-    TView* dialog = modal->ResolveControlByTag(kControlTagDialog);
-    TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
+    TView* dialog = modal->FindSubView(kControlTagDialog);
+    TControl* okay = static_cast<TControl*>(modal->FindSubView(kControlTagOkay));
     if (dialog == 0 || okay == 0 || !modal->IsActionable() || !okay->IsActionable() ||
         modal->nativeWindow == 0 || okay->nativeWindow != modal->nativeWindow) {
       scenario.FailScenario("capital-site confirmation tree is incomplete or detached");

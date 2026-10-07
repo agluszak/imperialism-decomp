@@ -19,7 +19,7 @@ public:
 
   TTextLine();
   void ITextLine(short rowArg, short colArg, int* bounds, short styleGroupCode, short styleIndex);
-  void SetTextLineStyleDescriptor(const TextStyle* descriptor);
+  void SetTheTextStyle(const TextStyle* descriptor);
   void SetTextLineStyleComponents(short fontCode, short styleCode, short sizeCode,
                                   unsigned char red, unsigned char green,
                                   unsigned char blue); // 0x570470

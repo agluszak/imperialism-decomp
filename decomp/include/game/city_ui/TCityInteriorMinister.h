@@ -53,15 +53,14 @@ public:
   virtual void PleaseBuildCivilian(short commandIndex); // slot 0x2d 0x4bef10
   virtual short AttemptTransport(short resourceType, short requestedAmount,
                                  short allocationLimit); // slot 0x2e 0x4c0de0
-  virtual short
-  RebuildNeedTargetsAndQueueProductionShortfalls(TCity* city,
-                                                 TTaskList* commandQueue); // slot 0x2f 0x4c0e50
-  virtual int SelectBestSecondaryHomeTileByFrogCityScore();                // slot 0x30 0x4c11c0
-  virtual void RebuildMapTileNeighborBucketsForInteriorMinister();         // slot 0x31 0x4c1ac0
-  virtual void RequestMissingCivilianOrderTypes();                         // slot 0x32 0x4c2010
-  virtual void AutoAssignProspectingOrdersByTileHeuristics();              // slot 0x33 0x4c2120
-  virtual void AutoAssignProspectingOrdersFromSeedTileNeighbors();         // slot 0x34 0x4c2a30
-  virtual void ProcessUnitOrders(); // slot 0x35 0x4c1510; Mac oracle
+  virtual short DoTransport(TCity* city,
+                            TTaskList* commandQueue);              // slot 0x2f 0x4c0e50
+  virtual int SelectCitySite();                                    // slot 0x30 0x4c11c0
+  virtual void RebuildMapTileNeighborBucketsForInteriorMinister(); // slot 0x31 0x4c1ac0
+  virtual void ShopForCivilians();                                 // slot 0x32 0x4c2010
+  virtual void ProspectAndDevelop();                               // slot 0x33 0x4c2120
+  virtual void AutoAssignProspectingOrdersFromSeedTileNeighbors(); // slot 0x34 0x4c2a30
+  virtual void ProcessUnitOrders();                                // slot 0x35 0x4c1510; Mac oracle
   virtual void SeekLostTowns(char* primaryDistanceMap,
                              char* secondaryDistanceMap); // slot 0x36 0x4c2d50
   virtual void ContinueRailheadProject(TUnit* order, char* primaryDistanceMap,
@@ -82,9 +81,9 @@ public:
   virtual void ComputeCityProductionCommandLimitsFromBuildingOutputs(); // slot 0x41 0x4c4690
   virtual void RebuildCityOrderCommandAvailabilityAndPriorityCycle();   // slot 0x42 0x4c4840
   virtual void
-  UpdateMinisterProductionMetricsForResourceIndex(short orderSlot);        // slot 0x43 0x4c49f0
-  virtual short RaisePowerPlantOrderToReachLaborTarget(short targetLabor); // slot 0x44 0x4c4d40
-  virtual void FillRemainingNeedCapacityAndReducePowerPlantOrder();        // slot 0x45 0x4c4e60
+  UpdateMinisterProductionMetricsForResourceIndex(short orderSlot); // slot 0x43 0x4c49f0
+  virtual short RequestLabor(short targetLabor);                    // slot 0x44 0x4c4d40
+  virtual void FillRemainingNeedCapacityAndReducePowerPlantOrder(); // slot 0x45 0x4c4e60
   virtual short RequestResource(short resourceType, short requestedAmount,
                                 short flags); // slot 0x46 0x4c4fe0; Mac oracle
   virtual void SeekResources(TShortintList* ownedTiles,
@@ -94,7 +93,7 @@ public:
   void InitializeCityInteriorState(TGreatPower* owner);
   float GetAiDevelopmentResourceBudgetScale(int* resourcePools);
   int GetAverageDevelopmentOrderAllocation();
-  bool TryApplyCityOrderCapabilitySelectionBySlot(short capabilitySlot); // 0x004c56e0
+  bool AttemptUpgrade(short capabilitySlot); // 0x004c56e0
 
   DECLARE_DYNCREATE(TCityInteriorMinister)
   void WriteTo(TStream* stream) override;  // slot 0x14

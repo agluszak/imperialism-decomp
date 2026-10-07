@@ -59,7 +59,7 @@ char TGameWindow::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoin
 // FUNCTION: IMPERIALISM 0x004ffd70
 void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
   TToolboxEvent* commandEvent = event;
-  TControl* mainControl = static_cast<TControl*>(ResolveControlByTag(kControlTagMain));
+  TControl* mainControl = static_cast<TControl*>(FindSubView(kControlTagMain));
   if (mainControl == 0) {
     return;
   }
@@ -73,14 +73,14 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
 
   if (commandEvent->commandCode == kUiKeyHelpLowerCase ||
       commandEvent->commandCode == kUiKeyHelpUpperCase) {
-    if (mainControl->ResolveControlByTag(kControlTagQuer) != 0) {
+    if (mainControl->FindSubView(kControlTagQuer) != 0) {
       if (g_pHelpMgr != 0) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
         if (g_pViewMgr->currentTurnEventCode == kTurnEventStrategicMap) {
           g_pViewMgr->DispatchUiRuntimeMessage101AAndRefreshActiveView();
           return;
         }
-        g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+        g_pHelpMgr->ShowLatestHelp();
         return;
       }
     }
@@ -89,7 +89,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
   if (commandEvent->commandCode == kUiKeyEnter || commandEvent->commandCode == kUiKeyReturn ||
       commandEvent->commandCode == kUiKeyEscape || commandEvent->commandCode == kUiKeySpace) {
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap &&
-        mainControl->ResolveControlByTag(kControlTagEnd) != 0) { // 'end '
+        mainControl->FindSubView(kControlTagEnd) != 0) { // 'end '
       g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
       if (g_pSimMgr->mode != kGamePhaseTechnology) {
         g_pSimMgr->StartNextPhase();
@@ -166,7 +166,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
 void TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
   if (g_pDisplayMgr->eventCode == kTurnEventSphereWindow) {
     CRect boundsRect;
-    QueryBounds(&boundsRect);
+    GetFrame(&boundsRect);
     GlobalViewportRectDefaultsRecord** rectDefaultsHandle =
         InitializeGlobalRectDefaultsIfUninitialized();
     GlobalViewportRectDefaultsRecord* rectRecord = *rectDefaultsHandle;
@@ -176,7 +176,7 @@ void TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
     boundsRect.top = globalRect.top;
     boundsRect.right = globalRect.right;
     boundsRect.bottom = globalRect.bottom;
-    ApplyBounds(&boundsRect, true);
+    SetFrame(&boundsRect, true);
   }
   NoOpTurnOrderNavigationVtableSlotA();
 }

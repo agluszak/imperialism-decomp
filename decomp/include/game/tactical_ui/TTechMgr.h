@@ -56,22 +56,22 @@ public:
   };
   CapRowE capRowsE4a6[7];
 
-  void InitializeCityOrderCapabilityStateDefaults();
-  void GenerateRandomCapabilityPrioritySlots();
+  void ITechMgr();
+  void GenerateTables();
   void CheckForAdvances();
-  void ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int forcedNationSlot);
-  void ApplyCityOrderCapabilityUnlockByTechId(int nTechId);
-  void ApplyTechItemPurchaseCostAndState(int slot, int nationIndex);
-  void RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex);
+  void ActivateAdvance(int techId, int forcedNationSlot);
+  void UniversalActivation(int nTechId);
+  void PurchaseTech(int slot, int nationIndex);
+  void CancelPurchase(int slot, int nationIndex);
   // Stores value*4 into prioritySlots[index] (the "Tyer" turn-instruction handler). 0x5b0c70
   void SetCityOrderCapabilityTierScaledValueByIndex(int index, int value);
-  int GetNationFortLevelCap(int nNationId);
-  bool AreTechItemPrerequisitePairCompleted(int techId, int nationSlot);
+  int GetBestFort(int nNationId);
+  bool HavePreReqs(int techId, int nationSlot);
   void GetPreReqs(int techId, int nationSlot, int* missingPrimaryTechId,
                   int* missingSecondaryTechId);
-  void ActivateSlotAndUpdateUI(int abilityId, int nationSlot);
-  void UpdateSelectionAndRecalculateScores(int resourceType, int nationSlot);
-  void HandleAbilityUnlock(int techId, int nationSlot);
+  void ActivateLandUnit(int abilityId, int nationSlot);
+  void ActivateShip(int resourceType, int nationSlot);
+  void GeneralActivation(int techId, int nationSlot);
   short GetNextNewAdvance(short nationSlot);
 
   ~TTechMgr() override;

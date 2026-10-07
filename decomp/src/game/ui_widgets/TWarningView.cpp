@@ -56,7 +56,7 @@ void TWarningView::DoPostCreate(int arg) {
   TView* panel = GetWindow();
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b67);
 
-  TStaticText* title = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagTitl));
+  TStaticText* title = static_cast<TStaticText*>(panel->FindSubView(kControlTagTitl));
   title->AssertValid();
   title->InstallTextStyle(style, 0);
   {
@@ -66,7 +66,7 @@ void TWarningView::DoPostCreate(int arg) {
   title->SetJustification(1, false);
   title->Show(1, 0);
 
-  TStaticText* endTurn = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagMsg5));
+  TStaticText* endTurn = static_cast<TStaticText*>(panel->FindSubView(kControlTagMsg5));
   endTurn->AssertValid();
   endTurn->InstallTextStyle(style, 0);
   {
@@ -75,14 +75,14 @@ void TWarningView::DoPostCreate(int arg) {
   }
   endTurn->Show(1, 0);
 
-  TView* endTurnPicture = panel->ResolveControlByTag(kControlTagPic5);
+  TView* endTurnPicture = panel->FindSubView(kControlTagPic5);
   endTurnPicture->AssertValid();
   endTurnPicture->ViewEnable(1, 0);
   endTurnPicture->Show(1, 0);
 
   unsigned int pendingAlerts = g_pSimMgr->alertsPendingFlag;
   if ((pendingAlerts & 1) != 0) {
-    TStaticText* diplomacy = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagMsg1));
+    TStaticText* diplomacy = static_cast<TStaticText*>(panel->FindSubView(kControlTagMsg1));
     diplomacy->AssertValid();
     diplomacy->InstallTextStyle(style, 0);
     {
@@ -90,14 +90,14 @@ void TWarningView::DoPostCreate(int arg) {
       diplomacy->SetTextAndMaybeRefresh(&diplomacyText, false);
     }
     diplomacy->Show(1, 0);
-    TView* picture = panel->ResolveControlByTag(kControlTagPic1);
+    TView* picture = panel->FindSubView(kControlTagPic1);
     picture->AssertValid();
     picture->ViewEnable(1, 0);
     picture->Show(1, 0);
   }
 
   if ((pendingAlerts & 0x1000) != 0) {
-    TStaticText* transport = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagMsg4));
+    TStaticText* transport = static_cast<TStaticText*>(panel->FindSubView(kControlTagMsg4));
     transport->AssertValid();
     transport->InstallTextStyle(style, 0);
     {
@@ -105,14 +105,14 @@ void TWarningView::DoPostCreate(int arg) {
       transport->SetTextAndMaybeRefresh(&transportText, false);
     }
     transport->Show(1, 0);
-    TView* picture = panel->ResolveControlByTag(kControlTagPic1 + 3);
+    TView* picture = panel->FindSubView(kControlTagPic1 + 3);
     picture->AssertValid();
     picture->ViewEnable(1, 0);
     picture->Show(1, 0);
   }
 
   if ((pendingAlerts & 0x100) != 0) {
-    TStaticText* trade = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagMsg2));
+    TStaticText* trade = static_cast<TStaticText*>(panel->FindSubView(kControlTagMsg2));
     trade->AssertValid();
     trade->InstallTextStyle(style, 0);
     {
@@ -120,14 +120,14 @@ void TWarningView::DoPostCreate(int arg) {
       trade->SetTextAndMaybeRefresh(&tradeText, false);
     }
     trade->Show(1, 0);
-    TView* picture = panel->ResolveControlByTag(kControlTagPic1 + 1);
+    TView* picture = panel->FindSubView(kControlTagPic1 + 1);
     picture->AssertValid();
     picture->ViewEnable(1, 0);
     picture->Show(1, 0);
   }
 
   if ((pendingAlerts & 0x10) != 0) {
-    TStaticText* industry = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagMsg3));
+    TStaticText* industry = static_cast<TStaticText*>(panel->FindSubView(kControlTagMsg3));
     industry->AssertValid();
     industry->InstallTextStyle(style, 0);
     {
@@ -135,7 +135,7 @@ void TWarningView::DoPostCreate(int arg) {
       industry->SetTextAndMaybeRefresh(&industryText, false);
     }
     industry->Show(1, 0);
-    TView* picture = panel->ResolveControlByTag(kControlTagPic1 + 2);
+    TView* picture = panel->FindSubView(kControlTagPic1 + 2);
     picture->AssertValid();
     picture->ViewEnable(1, 0);
     picture->Show(1, 0);

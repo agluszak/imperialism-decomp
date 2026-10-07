@@ -28,8 +28,7 @@ void TStatusButton::DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEv
       g_bCityDialogLegendSelectionInitialized = 0;
     }
 
-    TControl* backControl =
-        static_cast<TControl*>(ownerContext->ResolveControlByTag(kControlTagBack));
+    TControl* backControl = static_cast<TControl*>(ownerContext->FindSubView(kControlTagBack));
     if (backControl != NULL) {
       backControl->Free();
       ownerContext->RefreshControl();

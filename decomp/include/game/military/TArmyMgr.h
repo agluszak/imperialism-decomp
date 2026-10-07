@@ -123,8 +123,8 @@ public:
 
   // Select the first matching unit and return how many remain in the other state.
   // ABI: thiscall on the singleton; the bodies ignore `this`.
-  short ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
-  short ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
+  short SelectUnitType(short categoryId, short tileIndex);
+  short DeSelectUnitType(short categoryId, short tileIndex);
 
   // Whether the province holds an idle military unit. 0x004a4550.
   bool AnySelectableUnits(short regionId);
@@ -133,8 +133,8 @@ public:
 
   // Selects a province (-1 clears), resetting its units' order modes. 0x004a45e0.
   void SetSelectedProvince(short cityRecordIndex);
-  void ClearProvinceSelectionHighlightsForNation(short nationId);
-  short FindNextSelectableProvinceForNation(short nationId);
+  void ResetCycle(short nationId);
+  short Cycle(short nationId);
 
   // ABI: thiscall on the singleton; the bodies ignore `this`.
   unsigned short LookupMapCursorTokenByStateIndex(short tileIndex, short mode); // 0x4a4930

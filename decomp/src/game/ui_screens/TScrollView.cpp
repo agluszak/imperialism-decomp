@@ -19,7 +19,7 @@ void TScrollView::IScrollView(TView* panel, int* offsetLayout, int* sizeLayout) 
 // FUNCTION: IMPERIALISM 0x00573ce0
 void TScrollView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  contentView = ResolveControlByTag(kControlTagScro); // 'scro'
+  contentView = FindSubView(kControlTagScro); // 'scro'
   TScrollBarView* bar = new TScrollBarView();
   int barOffset[2];
   int barSize[2];

@@ -917,8 +917,7 @@ void TTacticalBattleView::Free() {
 void TTacticalBattleView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
-  TInfoBarText* cursorPanel =
-      static_cast<TInfoBarText*>(GetWindow()->ResolveControlByTag(kControlTagCurs));
+  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(GetWindow()->FindSubView(kControlTagCurs));
   cursorPanel->AssertValid();
   g_pCursorControlPanel = cursorPanel;
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
@@ -932,7 +931,7 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
   switch (commandCode) {
   case 0x20:
-    tacticalBattle->HandleTacticalCommandTag_targ();
+    tacticalBattle->CycleTarget();
     break;
   case 0x44:
   case 0x64:
@@ -940,7 +939,7 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
     break;
   case 0x48:
   case 0x68:
-    g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+    g_pHelpMgr->ShowLatestHelp();
     break;
   case 0x53:
   case 0x73:
@@ -989,12 +988,11 @@ void TTacticalBattleView::ConvertPoint(POINT* screenPoint, int* outRow, int* out
 // FUNCTION: IMPERIALISM 0x005a8790
 void TTacticalBattleView::SyncStatusPanelBounds() {
   RECT bounds = {0, 0, frameWidth, frameHeight};
-  ValidateControlRectIfWindowActive(&bounds);
+  ValidateVRect(&bounds);
 }
 
 // FUNCTION: IMPERIALISM 0x005a87d0
-void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut,
-                                                           TacticalTileIndex tileIndex) {
+void TTacticalBattleView::Tile2Rect(RECT* rectOut, TacticalTileIndex tileIndex) {
   int row = tileIndex / tileColumnsPerRow;
   int x = (tileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
   rectOut->left = x;
@@ -1253,7 +1251,7 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
   modalAnimWaitDoneFlag = true;
   EndModalAnimationWait();
   InvalidateCityDialogRectRegion(rect, 1);
-  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(tileIndex);
+  g_pUiAnimator->FreeAni(tileIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005a9240
@@ -1466,8 +1464,7 @@ void __stdcall DrawHexSelectionOutlineSegments(RECT* rect) {
 // FUNCTION: IMPERIALISM 0x005a9b40
 void TTacticalBattleView::SetCurrentPlayer(unsigned char side) {
   (void)side; // parameter is dead in the original: the side is read from the battle state
-  TPicture* coatControl =
-      static_cast<TPicture*>(ownerContext->ResolveControlByTag(kControlTagCoat));
+  TPicture* coatControl = static_cast<TPicture*>(ownerContext->FindSubView(kControlTagCoat));
   coatControl->AssertValid();
   TTacticalBattle* battle = tacticalBattle;
   TTacticalPlayer* currentPlayer = battle->players[battle->currentSide];
@@ -1476,7 +1473,7 @@ void TTacticalBattleView::SetCurrentPlayer(unsigned char side) {
 
 // FUNCTION: IMPERIALISM 0x005a9bb0
 void TTacticalBattleView::UpdateSelectionBlink() {
-  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(0x2711);
+  g_pUiAnimator->FreeAni(0x2711);
   TTacticalUnit* selectedUnit = tacticalBattle->selectedUnit;
   if (selectedUnit == 0) {
     return;
@@ -1506,7 +1503,7 @@ void TTacticalBattleView::UpdateSelectionBlink() {
 
 // FUNCTION: IMPERIALISM 0x005a9cc0
 void TTacticalBattleView::KillSelectionBlink() {
-  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(0x2711);
+  g_pUiAnimator->FreeAni(0x2711);
 }
 
 // FUNCTION: IMPERIALISM 0x005aa670

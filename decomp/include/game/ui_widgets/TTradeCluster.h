@@ -27,8 +27,8 @@ public:
   virtual bool IsSelectionAllowed();
   virtual int IsSellOffer();
   virtual void DoControlAction();
-  virtual void SetTradeBidControlBitmap();
-  virtual void SetTradeOfferControlBitmap();
+  virtual void ShowBidCard();
+  virtual void ShowOfferCard();
   virtual void SetTradeOfferSecondaryBitmap();
 };
 ASSERT_SIZE(TTradeCluster, 0x8c);

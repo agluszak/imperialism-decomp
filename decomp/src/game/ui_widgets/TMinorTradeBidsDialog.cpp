@@ -19,7 +19,7 @@ IMPLEMENT_DYNCREATE(TMinorTradeBidsDialog, TDialogView)
 
 // FUNCTION: IMPERIALISM 0x005b2aa0
 void TMinorTradeBidsDialog::StuffValues() {
-  TView* costPanel = ResolveControlByTag(kControlTagCost); // 'Cost'
+  TView* costPanel = FindSubView(kControlTagCost); // 'Cost'
   if (costPanel == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x179);
   }
@@ -27,7 +27,7 @@ void TMinorTradeBidsDialog::StuffValues() {
   short nationSlot;
   for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     TNumberText* amountControl = static_cast<TNumberText*>(
-        costPanel->ResolveControlByTag(g_tradeBidNationMetricControlTags[nationSlot]));
+        costPanel->FindSubView(g_tradeBidNationMetricControlTags[nationSlot]));
     if (amountControl != 0) {
       amountControl->SetControlValue(g_pTradeMgr->GetPrice(nationSlot), 0);
     }
@@ -39,14 +39,14 @@ void TMinorTradeBidsDialog::StuffValues() {
        ++remainingMinorCount) {
     int minorIndex = minorTableByteOffset / sizeof(TMinor*);
     if (g_apTerrainTypeDescriptorTable[7 + minorIndex] != 0) {
-      TView* minorPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
+      TView* minorPanel = FindSubView(g_minorTreatyPanelTags[minorIndex]);
       if (minorPanel == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x189);
       }
 
       for (short metricSlot = 0; metricSlot < kResourceKindCount; ++metricSlot) {
         TNumberText* amountControl = static_cast<TNumberText*>(
-            minorPanel->ResolveControlByTag(g_tradeBidNationMetricControlTags[metricSlot]));
+            minorPanel->FindSubView(g_tradeBidNationMetricControlTags[metricSlot]));
         if (amountControl != 0) {
           amountControl->SetEnable(0);
           amountControl->minimumValue = -1;

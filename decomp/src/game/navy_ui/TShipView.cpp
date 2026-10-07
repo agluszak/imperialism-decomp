@@ -109,7 +109,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
     if (categoryControl != NULL) {
       short resourceType = shipNode->GetToolbarSlot();
       TShipFractionCluster* shipFraction = static_cast<TShipFractionCluster*>(
-          categoryControl->ResolveControlByTag(kControlTagCls0 + resourceType));
+          categoryControl->FindSubView(kControlTagCls0 + resourceType));
       if (delta > 0) {
         if (shipFraction->selectedShipCount < shipFraction->availableShipCount) {
           short newValue = static_cast<short>(shipFraction->selectedShipCount + 1);
@@ -139,12 +139,12 @@ void TShipView::RenameShip() {
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
 
-  TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
+  TStaticText* titleControl = static_cast<TStaticText*>(node->FindSubView(kControlTagTitl));
   titleControl->AssertValid();
   titleControl->SetTextWithStrListID(0x2746, 5, true);
   titleControl->textStyle = style;
 
-  TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
+  TEditText* nameControl = static_cast<TEditText*>(node->FindSubView(kControlTagName));
   nameControl->AssertValid();
   CString editedName;
   editedName = shipNode->name;

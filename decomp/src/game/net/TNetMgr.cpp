@@ -188,7 +188,7 @@ void TNetMgr::HandleError(int errorCode) {
 // FUNCTION: IMPERIALISM 0x005e39a0
 unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
   g_NetworkSessionManager006a5f60.activeProtocolControl =
-      static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt)); // 'prot'
+      static_cast<TRadioTextCluster*>(provider->FindSubView(kControlTagProt)); // 'prot'
   g_NetworkSessionManager006a5f60.activeProtocolControl->AssertValid();
 
   for (int index = 0; index < g_WNetSerializedPtrArrayA.GetSize(); ++index) {
@@ -201,7 +201,7 @@ unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TVie
 }
 
 // FUNCTION: IMPERIALISM 0x005e3a60
-bool TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag, const char* seed) {
+bool TNetMgr::SelectProtocol(int index, int flag, const char* seed) {
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seed, 0x20);
   const GUID* sessionGuid = &g_WNetSerializedPtrArrayA[index]->providerGuid;
   bool result =
@@ -302,12 +302,12 @@ void TNetMgr::ResetTurnEventQueueRuntimeRecordBuffer() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e3f10
-void TNetMgr::FreeTurnEventPacketBuffer(TurnEventQueuePacket* packet) {
+void TNetMgr::ReleaseMessage(TurnEventQueuePacket* packet) {
   GlobalFree(packet);
 }
 
 // FUNCTION: IMPERIALISM 0x005e3f30
-TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecords() {
+TurnEventQueuePacket* TNetMgr::GetMessage() {
   if (g_NetworkSessionManager006a5f60.directPlayInterface == 0) {
     return 0;
   }
@@ -362,7 +362,7 @@ TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecord
 }
 
 // FUNCTION: IMPERIALISM 0x005e4280
-int TNetMgr::GetSessionActiveNationId() {
+int TNetMgr::GetPlayerID() {
   return g_NetworkSessionManager006a5f60.localPlayerId;
 }
 
@@ -389,7 +389,7 @@ bool TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e43e0
-int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
+int TNetMgr::Ping() {
   int awolBitmask = 0;
   TurnEvent2BPresenceMaskPacket probe;
   probe.messageTag = kControlTagTime;

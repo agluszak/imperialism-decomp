@@ -38,7 +38,7 @@ void TUnitToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
   }
 
   TWindow* ownerPanel = GetWindow();
-  TView* mainControl = ownerPanel->ResolveControlByTag(kControlTagMain);
+  TView* mainControl = ownerPanel->FindSubView(kControlTagMain);
   if (mainControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;
@@ -53,7 +53,7 @@ bool TUnitToolbarCluster::IsTradeControlAtMinimum() {
 }
 
 // FUNCTION: IMPERIALISM 0x00586170
-void TUnitToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
+void TUnitToolbarCluster::SetCurrentChoice(int childTag) {
   CSubViewIterator iterator(this);
   TView* selectedChild = 0;
   TView* child = iterator.FirstSubView();
@@ -69,7 +69,7 @@ void TUnitToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
 
   selectedChildTag = childTag;
   if (selectedChild != 0) {
-    TView* dialog = GetWindow()->ResolveControlByTag(kControlTagDialog);
+    TView* dialog = GetWindow()->FindSubView(kControlTagDialog);
     dialog->AssertValid();
     dialog->DoEvent(0xc, selectedChild, 0);
   }

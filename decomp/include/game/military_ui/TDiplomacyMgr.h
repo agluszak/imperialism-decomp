@@ -33,12 +33,12 @@ public:
   virtual void ConveneCouncil(char forceOrMode);                    // 14 (0x38)
   virtual void InitializeDiplomacyStandingBaselineRandom();         // 15 (0x3c)
   virtual void ChooseCandidates(int* topNationSlot,
-                                int* secondNationSlot);                             // 16 (0x40)
-  virtual bool IsNationPairAtWar(NationSlot sourceNation, NationSlot targetNation); // 17 (0x44)
-  virtual bool IsNationPairRelationTurnStampOutOfDate(NationSlot sourceNation,
-                                                      NationSlot targetNation);       // 18 (0x48)
-  virtual bool HasAnyWarRelationForNation(NationSlot sourceNation);                   // 19 (0x4c)
-  virtual bool HasAnyWarRelationTurnStampOutOfDateForNation(NationSlot sourceNation); // 20 (0x50)
+                                int* secondNationSlot);                    // 16 (0x40)
+  virtual bool AreAtWar(NationSlot sourceNation, NationSlot targetNation); // 17 (0x44)
+  virtual bool AreInEstablishedWar(NationSlot sourceNation,
+                                   NationSlot targetNation);           // 18 (0x48)
+  virtual bool IsAtWarWithAnybody(NationSlot sourceNation);            // 19 (0x4c)
+  virtual bool IsInEstablishedWarWithAnybody(NationSlot sourceNation); // 20 (0x50)
   virtual bool IsSpecialRelationSourceForMinorNationSlot(NationSlot nationSlot,
                                                          NationSlot minorNationSlot); // 21 (0x54)
   virtual bool IsSpecialRelationTargetForMinorNationSlot(NationSlot nationSlot,
@@ -53,12 +53,11 @@ public:
                                                           NationSlot targetNation); // 26 (0x68)
   virtual void GetTreatyStatusText(NationSlot sourceNationSlot, NationSlot targetNationSlot,
                                    CString* treatyName); // 27 (0x6c)
-  virtual DiplomacyRelationshipStorage
-  GetNationPairDiplomacyRelationCode(NationSlot sourceNation,
-                                     NationSlot targetNation); // 28 (0x70)
-  virtual void SetNationPairDiplomacyRelationCode(NationSlot sourceNation, NationSlot targetNation,
-                                                  DiplomacyRelationshipStorage relationship,
-                                                  unsigned char updateMode); // 29 (0x74)
+  virtual DiplomacyRelationshipStorage GetTreatyStatus(NationSlot sourceNation,
+                                                       NationSlot targetNation); // 28 (0x70)
+  virtual void SetTreatyStatus(NationSlot sourceNation, NationSlot targetNation,
+                               DiplomacyRelationshipStorage relationship,
+                               unsigned char updateMode); // 29 (0x74)
   virtual void
   SetNationPairDiplomacyRelationCodeFinal(NationSlot sourceNation, NationSlot targetNation,
                                           DiplomacyRelationshipStorage relationship); // 30
@@ -109,7 +108,7 @@ public:
   DiplomacyRelationshipStorage relationPropagationMatrix[kNationPairMatrixEntries];
   short relationTurnStampMatrix[kNationPairMatrixEntries];
   DiplomaticMissionLevelStorage relationSideEffectMatrix[kNationPairMatrixEntries];
-  void RecomputeNationComparativePowerMetrics();
+  void CalculateRatings();
 
   int comparativePowerRows[7][4];
   NationSlot specialRelationSourceSlots[0x10];
@@ -119,11 +118,11 @@ public:
   unsigned char padding18da[2];
 
   TDiplomacyMgr();
-  void InitializeTDiplomacyTurnStateManagerDefaults();
+  void IDiplomacyMgr();
   void RebuildCivilianOrderCompatibilityMatrices();
-  void QueueNationPairWarTransition(NationSlot sourceNationSlot, NationSlot targetNationSlot);
+  void AddDeclarationOfWar(NationSlot sourceNationSlot, NationSlot targetNationSlot);
   short GetEmbassyStatus(int sourceNationSlot, int targetNationSlot);
-  void ProcessQueuedWarTransitions();
+  void IssueDeclarationsOfWar();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot);
   void RemoveNationSlotAndNotifyPeers_Impl(NationSlot nationSlot);
   // ORACLE: Mac names TDiplomacyMgr::SetLastDiploEffort(). Mirrors the current turn.

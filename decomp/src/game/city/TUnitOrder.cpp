@@ -114,7 +114,7 @@ bool TUnitOrder::SetQuantity(short quantity) {
   }
   ownerCity->ownerNation->treasuryValue -=
       static_cast<int>(cashCostPerUnit) * static_cast<int>(delta);
-  g_pViewMgr->RefreshCityProductionUi();
+  g_pViewMgr->UpdateCityScreen();
   return true;
 }
 

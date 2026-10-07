@@ -54,14 +54,14 @@ bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneCo
 void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   signed char ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission->targetProvince].ownerNationCode;
-  if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nationId, ownerCode)) {
+  if (g_pDiplomacyTurnStateManager->AreInEstablishedWar(nationId, ownerCode)) {
     mapOrderEntry->OrderSendInTheMarines(
         &g_pGlobalMapState->cityScoreTable[parentMission->targetProvince]);
     return;
   }
 
   ownerCode = g_pGlobalMapState->cityScoreTable[parentMission->targetProvince].ownerNationCode;
-  if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, ownerCode)) {
+  if (g_pDiplomacyTurnStateManager->AreAtWar(nationId, ownerCode)) {
     return;
   }
 

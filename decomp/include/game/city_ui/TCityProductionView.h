@@ -26,9 +26,9 @@ public:
                       CPoint origin) override; // slot 0x47 0x4bc660
   void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint, CPoint& currentPoint,
                   bool commandFlag) override; // slot 0x68 0x4bc870
-  virtual void BlitBitmapResourceRectWithScreenOffsetAndPalette(
-      RECT* destRect, TQuickDrawSurfaceContext* destContext, short offsetY, short offsetX,
-      short resourceId, TQuickDrawSurfaceContext* restoreContext, int restoreFlags);
+  virtual void DrawToGWorld(RECT* destRect, TQuickDrawSurfaceContext* destContext, short offsetY,
+                            short offsetX, short resourceId,
+                            TQuickDrawSurfaceContext* restoreContext, int restoreFlags);
   virtual void DrawTopLevel(); // slot 0x75 0x4badd0
   // RET 0x8 = 2 stack dwords (int + int*), not 0. slot 0x76 0x4bb7a0
   virtual void InitializeCityProductionDialog(TCity* city, TView* dialogRoot);

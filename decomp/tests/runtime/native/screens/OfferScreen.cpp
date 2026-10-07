@@ -95,25 +95,25 @@ RuntimeActionResult OfferScreen::PoseOfferToSelf(short nationSlot, short resourc
 }
 
 bool OfferScreen::OfferTextNamesNation(short nationSlot) const {
-  TView* paragraph = offerDesk != 0 ? offerDesk->ResolveControlByTag(kControlTagOffe) : 0;
+  TView* paragraph = offerDesk != 0 ? offerDesk->FindSubView(kControlTagOffe) : 0;
   if (paragraph == 0 || paragraph->IsKindOf(RUNTIME_CLASS(TStaticText)) == 0 || g_pSimMgr == 0) {
     return false;
   }
   CString displayed;
   static_cast<TStaticText*>(paragraph)->CopyTextTo(&displayed);
-  CString sellerName = g_pSimMgr->LoadNormalizedCredentialName(nationSlot);
+  CString sellerName = g_pSimMgr->GetCountryName(nationSlot);
   return displayed.GetLength() != 0 && sellerName.GetLength() != 0 &&
          displayed.Find(static_cast<LPCSTR>(sellerName)) >= 0;
 }
 
 bool OfferScreen::SeasonLabelIsWhite() const {
-  TView* season = offerDesk != 0 ? offerDesk->ResolveControlByTag(kControlTagSeas) : 0;
+  TView* season = offerDesk != 0 ? offerDesk->FindSubView(kControlTagSeas) : 0;
   return season != 0 && season->IsKindOf(RUNTIME_CLASS(TDropShadowText)) != 0 &&
          static_cast<TDropShadowText*>(season)->textStyle.textColor == kSeasonLabelColor;
 }
 
 bool OfferScreen::PurchaseDefaultsTo(int amount) const {
-  TView* purchase = offerDesk != 0 ? offerDesk->ResolveControlByTag(kControlTagPurc) : 0;
+  TView* purchase = offerDesk != 0 ? offerDesk->FindSubView(kControlTagPurc) : 0;
   if (purchase == 0 || purchase->IsKindOf(RUNTIME_CLASS(TNumberText)) == 0) {
     return false;
   }
@@ -123,7 +123,7 @@ bool OfferScreen::PurchaseDefaultsTo(int amount) const {
 }
 
 TDealTabControl* OfferScreen::Bookmarks() const {
-  TView* strip = offerDesk != 0 ? offerDesk->ResolveControlByTag(kControlTagTabs) : 0;
+  TView* strip = offerDesk != 0 ? offerDesk->FindSubView(kControlTagTabs) : 0;
   return strip != 0 && strip->IsKindOf(RUNTIME_CLASS(TDealTabControl)) != 0
              ? static_cast<TDealTabControl*>(strip)
              : 0;

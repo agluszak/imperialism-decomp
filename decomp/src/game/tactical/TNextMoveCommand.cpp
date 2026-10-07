@@ -33,6 +33,6 @@ void TNextMoveCommand::DoIt() {
     battle->EndBattle(static_cast<unsigned char>(sideWonFlag));
   } else {
     battle->pendingEndOfActionFlag = true;
-    battle->AdvanceToNextTacticalUnitTurnStep();
+    battle->Cycle();
   }
 }

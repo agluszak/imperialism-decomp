@@ -34,7 +34,7 @@ void TTradeBidNationView::Draw(RECT* rectBuffer) {
                                    &dstRect, 0x24, 0);
   SetQuickDrawStrokeColor(0xffffff);
 
-  CString label = g_pSimMgr->LoadNormalizedCredentialName(nationSlot);
+  CString label = g_pSimMgr->GetCountryName(nationSlot);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b6a);
   SetQuickDrawTextOriginWithContextOffset(0x28, 0xc);
   DrawTextWithCachedQuickDrawStyleState(&label);

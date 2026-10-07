@@ -481,8 +481,8 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
       break;
     }
     if (g_pSimMgr->ReallyInTheGame(nation) && nation != this->nationSlot) {
-      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nation) &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNation, nation)) {
+      if (!g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, nation) &&
+          g_pDiplomacyTurnStateManager->AreAtWar(targetNation, nation)) {
         bool borderLinked =
             g_pGlobalMapState->AreNationsBorderLinked(targetNation, this->nationSlot);
         float combinedScore;
@@ -534,11 +534,11 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
 int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) {
   bool hasPolicy = false;
   if (swapRoles == 0) {
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, sourceNation)) {
+    if (g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, sourceNation)) {
       hasPolicy = true;
     }
   } else {
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, targetNation)) {
+    if (g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, targetNation)) {
       hasPolicy = true;
     }
   }
@@ -849,7 +849,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
     }
   }
 
-  if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(this->nationSlot)) {
+  if (g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(this->nationSlot)) {
     // At war: purge the interior minister's queues for each advisory order type.
     int t;
     for (t = 0; t < 4; ++t) {
@@ -877,12 +877,12 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         if (owner == -1) {
           continue;
         }
-        if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-                this->nationSlot, owner) == kDiplomacyRelationshipAlliance) {
+        if (g_pDiplomacyTurnStateManager->GetTreatyStatus(this->nationSlot, owner) ==
+            kDiplomacyRelationshipAlliance) {
           continue;
         }
         if (g_apTerrainTypeDescriptorTable[owner]->encodedNationSlot >= 200) {
-          if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+          if (g_pDiplomacyTurnStateManager->GetTreatyStatus(
                   this->nationSlot,
                   g_apTerrainTypeDescriptorTable[owner]->DecodeOwnerNationSlot()) ==
               kDiplomacyRelationshipAlliance) {
@@ -906,7 +906,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
                        rec, this->nationSlot, nodeBuffer, true) != 0) {
           linkBonus = 0x14;
-        } else if (g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(rec) != 0) {
+        } else if (g_pActiveMapOrderContext->GetSeaZoneAdjacentTo(rec) != 0) {
           linkBonus = 0x28;
         } else {
           continue;
@@ -1008,7 +1008,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
       linkRegion = nodeBuffer[0];
       score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 1, linkRegion);
       tier = 1;
-    } else if (g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(region) != 0) {
+    } else if (g_pActiveMapOrderContext->GetSeaZoneAdjacentTo(region) != 0) {
       score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 2, -1);
       tier = 2;
     } else {
@@ -1036,7 +1036,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
         bestPortZone = zone;
         zone->GetContextOrdinalOrInvalid(); // dead call kept from the original
         bestScore = zoneScore;
-        bestTier = zone->QueryPortZoneCapability() ? 4 : 2;
+        bestTier = zone->IsPortZone() ? 4 : 2;
       }
     }
   }
@@ -1047,7 +1047,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
     if (g_afAdvisoryMissionTierThresholdByMinisterSkill[defenseMinister->skillIndex][tier] <
         bestScore) {
       acceptMission = true;
-    } else if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationSlot)) {
+    } else if (g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(nationSlot)) {
       CIterator missionIter(missionQueue);
       for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
            mission = static_cast<TMission*>(missionIter.Advance())) {
@@ -1063,8 +1063,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
     if (acceptMission) {
       if (bestPortZone == 0) {
         if (tier == 2) {
-          TZone* contextZone =
-              g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(bestRegion);
+          TZone* contextZone = g_pActiveMapOrderContext->GetSeaZoneAdjacentTo(bestRegion);
           if (contextZone != 0) {
             CreateMission(static_cast<eMissionType>(tier), -1, contextZone, bestRegion);
           } else {
@@ -1087,7 +1086,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
   bool anyEligibleAtWar = false;
   int n;
   for (n = 0; n < 7 && !anyEligibleAtWar; ++n) {
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(n), nationSlot) &&
+    if (g_pDiplomacyTurnStateManager->AreAtWar(static_cast<short>(n), nationSlot) &&
         g_pSimMgr->ReallyInTheGame(static_cast<short>(n))) {
       anyEligibleAtWar = true;
     }
@@ -1096,10 +1095,10 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
     for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       short contextOrdinal = zone->GetContextOrdinalOrInvalid();
       if (zoneStatus[contextOrdinal] != kMissionDesirabilityQueued &&
-          zone->HasSecondaryNeighborWithNationTag(nationSlot)) {
+          zone->IsAdjacentToCountry(nationSlot)) {
         for (n = 0; n < 7; ++n) {
           if (n != nationSlot &&
-              g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, static_cast<short>(n)) &&
+              g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, static_cast<short>(n)) &&
               (zone->nationKeyMask & static_cast<unsigned char>(1 << n)) != 0) {
             zoneStatus[contextOrdinal] = kMissionDesirabilityCandidate;
             CreateMission(kMissionTypeDefendProvince, -1, zone, -1);
@@ -1132,7 +1131,7 @@ bool TAutoGreatPower::HasEnemy(void) {
     if (this->enemyFlags[candidate] != 0) {
       if ((*minorCursor)->ownedRegionList->GetSize() == 0) {
         this->enemyFlags[candidate] = 0;
-        if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, candidate)) {
+        if (g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, candidate)) {
           g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
               this->nationSlot, candidate, kDiplomacyRelationshipPeace);
         }
@@ -1153,8 +1152,7 @@ void TAutoGreatPower::SetEnemy(int targetNation) {
     TCountry** descriptorCursor = g_apTerrainTypeDescriptorTable;
     do {
       if (*descriptorCursor != 0 && nation != static_cast<short>(this->nationSlot)) {
-        if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-                nation, static_cast<short>(this->nationSlot))) {
+        if (!g_pDiplomacyTurnStateManager->AreAtWar(nation, static_cast<short>(this->nationSlot))) {
           this->StopBeingEnemiesWith(nation);
         }
       }
@@ -1424,8 +1422,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
     }
 
     float militaryScore;
-    if (g_pGlobalMapState->DoNationTerritoriesShareRegionClass(nationSlot,
-                                                               static_cast<short>(peerNation))) {
+    if (g_pGlobalMapState->IsSameContinent(nationSlot, static_cast<short>(peerNation))) {
       militaryScore = g_afNationMobileUnitScore[peerNation];
     } else {
       militaryScore = g_afNationWeightedMilitaryOrderScore[peerNation];
@@ -1483,7 +1480,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004eae70
-void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
+void TAutoGreatPower::ReassessMissions(int unused) {
   if (city == NULL) {
     return;
   }

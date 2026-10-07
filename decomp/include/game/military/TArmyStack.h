@@ -36,7 +36,7 @@ public:
   TArmyStackUnitNode* head14; // +0x14 -- head of the owned node chain
   TArmyStackUnitNode* cursor; // +0x18 -- traversal cursor over the chain
 
-  void ReseatChainUnitsAndClearOrders();
+  void MoveAll();
 
   void ComputeStackCompositionClassCode();
 
@@ -51,8 +51,8 @@ public:
   void StrategicFirepower(int* outWeightedSum, int* outCount, int counter);
   void ApplyStrategicDamage(int weightedSum, int count, int counter);
   void IArmyStack(char ownerNationIndex, short ownerNationCode, short tileIndex);
-  void AddUnitToChainHead(TMilitaryUnit* unit);
-  void RemoveUnitFromChain(TMilitaryUnit* unit);
+  void AddUnit(TMilitaryUnit* unit);
+  void RemoveUnit(TMilitaryUnit* unit);
 
   TArmyStack();
 };

@@ -33,7 +33,7 @@ only the header and second detail row.
 
 ## A page break counts its first ungrouped row once
 
-`BuildPageLayout` resets Y to the page top and adds the overflowing line's height
+`CalculatePageStarts` resets Y to the page top and adds the overflowing line's height
 at `0x0056fd19` and `0x0056fd25`. When that line has no header, the branch at
 `0x0056fd32` skips the common addition at `0x0056fd44`. With a header, the added
 height is the header's height instead (`0x0056fd3d` and `0x0056fd40`).

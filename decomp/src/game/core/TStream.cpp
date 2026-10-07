@@ -9,7 +9,7 @@
 
 IMPLEMENT_DYNCREATE(TStream, TObject)
 // FUNCTION: IMPERIALISM 0x00488a80
-bool TStream::IsAtEnd() {
+bool TStream::AtEnd() {
   int position = GetPosition();
   return position >= GetLength();
 }

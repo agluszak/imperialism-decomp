@@ -34,7 +34,7 @@ void TTechStorePage::StuffValues(int nationSlot) {
       AddOrderedEntry(line);
     }
   }
-  BuildPageLayout();
+  CalculatePageStarts();
   ShowPage(1);
   static_cast<TBook*>(ownerContext)->ShowPage(currentPage);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), controlTag);

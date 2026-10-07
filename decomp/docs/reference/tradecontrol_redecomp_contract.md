@@ -78,8 +78,8 @@
 | `0x0048b250` | `void __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0048b250(TControl * this, int arg1, int arg2)` |
 | `0x0048b2d0` | `void __thiscall WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0(TControl * this)` |
 | `0x0048b3f0` | `void __thiscall UpdateControlPositionAndInvalidateUnionRect(TControl * this, int arg1, int arg2)` |
-| `0x0048b4b0` | `void __thiscall InvalidateOffsetRegionUsingChildClipRect(TControl * this, int * clipState)` |
-| `0x0048b690` | `void __thiscall ValidateControlRectIfWindowActive(TControl * this, int * pRect)` |
+| `0x0048b4b0` | `void __thiscall InvalidateRegion(TControl * this, int * clipState)` |
+| `0x0048b690` | `void __thiscall ValidateVRect(TControl * this, int * pRect)` |
 | `0x0048b6d0` | `void __thiscall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0(TControl * this)` |
 | `0x0048b700` | `void __thiscall ResetUiInputCaptureState(TControl * this)` |
 | `0x0048b770` | `bool __thiscall SetGlobalUiSelectionIfChangedAndNotify(TControl * this)` |

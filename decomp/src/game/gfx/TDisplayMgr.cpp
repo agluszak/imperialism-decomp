@@ -215,7 +215,7 @@ void TDisplayMgr::UpdateTheGWorld(short eventCode) {
   SetGWorld(g_pPrimaryRenderSurfaceContext, savedFlags);
   LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
 
-  TView* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
+  TView* mainControl = activeDialog->FindSubView(kControlTagMain);
   if (mainControl == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x28a);
     return;
@@ -223,7 +223,7 @@ void TDisplayMgr::UpdateTheGWorld(short eventCode) {
 
   TView* mainView = mainControl;
   CRect queryBounds;
-  mainView->QueryBounds(&queryBounds);
+  mainView->GetFrame(&queryBounds);
 
   RECT clipRect;
   clipRect.left = queryBounds.left;

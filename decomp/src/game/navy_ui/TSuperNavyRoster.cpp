@@ -37,7 +37,7 @@ void TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TView* panel, in
   }
 
   visibleColumnCount = 2;
-  BuildPageLayout();
+  CalculatePageStarts();
   ShowPage(1);
   ownerContext->AssertValid();
   static_cast<TBook*>(ownerContext)->ShowPage(currentPage);

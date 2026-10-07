@@ -18,8 +18,8 @@ TCivUnit::TCivUnit() {
 
 // FUNCTION: IMPERIALISM 0x005c2940
 void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOwnerNationId) {
-  this->RegisterUnitOrderWithOwnerManager(EncodeCivilianUnitKind(unitKind), anchorIndex,
-                                          static_cast<short>(nOrderOwnerNationId), 0);
+  this->IUnit(EncodeCivilianUnitKind(unitKind), anchorIndex,
+              static_cast<short>(nOrderOwnerNationId), 0);
   this->remainingTurns = 0;
   this->completionMarker = static_cast<short>(-1);
 }
@@ -37,7 +37,7 @@ bool TCivUnit::IsInIdleSelectionState() {
 void TCivUnit::TickCivWorkOrderCountdownAndComplete() {
   --remainingTurns;
   if (remainingTurns < 1) {
-    g_pSelectedCivilianOrderState->ApplyCompletedCivWorkOrderToMapState(this);
+    g_pSelectedCivilianOrderState->CompletedOrders(this);
     unitOrder = kUnitOrderIdle;
   }
 }
@@ -67,7 +67,7 @@ void TCivUnit::ContinueOrders() {
     if (remainingTurns >= 1) {
       return;
     }
-    g_pSelectedCivilianOrderState->ApplyCompletedCivWorkOrderToMapState(this);
+    g_pSelectedCivilianOrderState->CompletedOrders(this);
   }
   unitOrder = kUnitOrderIdle;
 }

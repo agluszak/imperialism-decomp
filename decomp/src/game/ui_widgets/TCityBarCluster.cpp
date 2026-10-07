@@ -35,26 +35,25 @@ void TCityBarCluster::StuffValues(TCity* city) {
   TGreatPower* nation = city->ownerNation;
   TPopulationMgr* population = city->productionSummary;
 
-  TNumberText* areaControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagTrea));
+  TNumberText* areaControl = static_cast<TNumberText*>(this->FindSubView(kControlTagTrea));
   if (areaControl != 0) {
     areaControl->SetControlValue(nation->treasuryValue, 1);
     areaControl->Show(0, 1);
   }
 
-  TNumberText* returnControl =
-      static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagUntr));
+  TNumberText* returnControl = static_cast<TNumberText*>(this->FindSubView(kControlTagUntr));
   if (returnControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
   }
   returnControl->SetControlValue(population->baselineSlots->lowSkillCount, 1);
 
-  TNumberText* airControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagTrai));
+  TNumberText* airControl = static_cast<TNumberText*>(this->FindSubView(kSummaryTagTrai));
   if (airControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
   }
   airControl->SetControlValue(population->baselineSlots->mediumSkillCount, 1);
 
-  TNumberText* profControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagProf));
+  TNumberText* profControl = static_cast<TNumberText*>(this->FindSubView(kSummaryTagProf));
   if (profControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
   }

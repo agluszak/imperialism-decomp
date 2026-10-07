@@ -64,18 +64,17 @@ void TArmoryView::DoStartup() {
     }
 
     TCivilianButton* button =
-        static_cast<TCivilianButton*>(ResolveControlByTag(kControlTagCiv0 + row)); // 'civ0'+row
+        static_cast<TCivilianButton*>(FindSubView(kControlTagCiv0 + row)); // 'civ0'+row
     if (button == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb19);
     }
     button->SetPictureRsrcID(static_cast<short>(0x1d60 + 2 * pictureVariant), 1);
 
-    TView* numRow = ResolveControlByTag(kControlTagNum0 + row); // 'num0'+row
+    TView* numRow = FindSubView(kControlTagNum0 + row); // 'num0'+row
     if (numRow == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb1c);
     }
-    TNumberText* numb =
-        static_cast<TNumberText*>(numRow->ResolveControlByTag(kControlTagNumb)); // 'numb'
+    TNumberText* numb = static_cast<TNumberText*>(numRow->FindSubView(kControlTagNumb)); // 'numb'
     if (numb == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb1d);
     }
@@ -85,62 +84,60 @@ void TArmoryView::DoStartup() {
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0x18, 0x2b6b);
-  TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
+  TStaticText* title = static_cast<TStaticText*>(FindSubView(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
   title->SetTextWithStrListID(0x271c, 0x20, true);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
-  TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
+  TStaticText* unit = static_cast<TStaticText*>(FindSubView(kControlTagUnit)); // 'unit'
   unit->AssertValid();
   unit->InstallTextStyle(style.desc, 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
-  TStaticText* cost =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagCostLower)); // 'cost'
+  TStaticText* cost = static_cast<TStaticText*>(FindSubView(kControlTagCostLower)); // 'cost'
   cost->AssertValid();
   cost->InstallTextStyle(style.desc, 1);
   cost->SetTextWithStrListID(0x271c, 0x1e, true);
 
-  TStaticText* avai = static_cast<TStaticText*>(ResolveControlByTag(kControlTagAvai)); // 'avai'
+  TStaticText* avai = static_cast<TStaticText*>(FindSubView(kControlTagAvai)); // 'avai'
   avai->AssertValid();
   avai->InstallTextStyle(style.desc, 1);
   avai->SetTextWithStrListID(0x271c, 0x1f, true);
 
   for (short column = 0; column < 4; ++column) {
     TStaticText* current = static_cast<TStaticText*>(
-        ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '0') + column)); // 'cos0'+column
+        FindSubView(IMPERIALISM_FOURCC('c', 'o', 's', '0') + column)); // 'cos0'+column
     current->AssertValid();
     current->InstallTextStyle(style.desc, 1);
 
     TStaticText* available =
-        static_cast<TStaticText*>(ResolveControlByTag(kControlTagAva0 + column)); // 'ava0'+column
+        static_cast<TStaticText*>(FindSubView(kControlTagAva0 + column)); // 'ava0'+column
     available->AssertValid();
     available->InstallTextStyle(style.desc, 1);
 
     TStaticText* status =
-        static_cast<TStaticText*>(ResolveControlByTag(kControlTagSta0 + column)); // 'sta0'+column
+        static_cast<TStaticText*>(FindSubView(kControlTagSta0 + column)); // 'sta0'+column
     status->AssertValid();
     status->InstallTextStyle(style.desc, 1);
 
     TStaticText* label = static_cast<TStaticText*>(
-        ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', '0') + column)); // 'lab0'+column
+        FindSubView(IMPERIALISM_FOURCC('l', 'a', 'b', '0') + column)); // 'lab0'+column
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
     label->SetTextWithStrListID(0x271c, static_cast<short>(column + 1), true);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
-  TStaticText* description =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
+  TStaticText* description = static_cast<TStaticText*>(FindSubView(kControlTagDesc)); // 'desc'
   description->AssertValid();
   description->InstallTextStyle(style.desc, 1);
 
   selectedRowIndex = -1;
   selectedUnitOrder = 0;
-  TCluster* selection = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
+  TCluster* selection = static_cast<TCluster*>(FindSubView(kControlTagSele)); // 'sele'
   selection->AssertValid();
-  selection->SetSelectedChildTagAndRefresh(kControlTagCiv0); // 'civ0'
+  selection->SetCurrentChoice(kControlTagCiv0); // 'civ0'
   SetUnit(0);
 }
 
@@ -161,9 +158,9 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
         SetUnit(index);
 
         // 'sele' is a TCluster (see TUniversityView::DoEvent's identical tail).
-        TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
+        TCluster* sele = static_cast<TCluster*>(FindSubView(kControlTagSele)); // 'sele'
         sele->AssertValid();
-        sele->SetSelectedChildTagAndRefresh(kControlTagCiv0 + index); // 'civ0'+index
+        sele->SetCurrentChoice(kControlTagCiv0 + index); // 'civ0'+index
       }
 
       short newValue = selectedUnitOrder->quantity;
@@ -173,19 +170,19 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
         newValue--;
       }
       if (selectedUnitOrder->SetQuantity(newValue)) {
-        TView* numXControl = ResolveControlByTag(kControlTagNum0 + selectedRowIndex); // 'num0'+idx
+        TView* numXControl = FindSubView(kControlTagNum0 + selectedRowIndex); // 'num0'+idx
         if (numXControl == NULL) {
           FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb87);
         }
         TNumberText* numbControl =
-            static_cast<TNumberText*>(numXControl->ResolveControlByTag(kControlTagNumb)); // 'numb'
+            static_cast<TNumberText*>(numXControl->FindSubView(kControlTagNumb)); // 'numb'
         if (numbControl == NULL) {
           FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb88);
         }
         numbControl->SetControlValue(newValue, 0);
 
         CRect bounds;
-        numbControl->QueryBounds(&bounds);
+        numbControl->GetFrame(&bounds);
         RECT boundsCopy;
         CopyRect(&boundsCopy, &bounds);
         numXControl->InvalidateCityDialogRectRegion(&boundsCopy, 1);
@@ -200,7 +197,7 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
 // FUNCTION: IMPERIALISM 0x004cf5c0
 void TArmoryView::UpdateFields() {
   CString treasuryText;
-  TView* availabilityPanel = ResolveControlByTag(kControlTagPlaq); // 'plaq'
+  TView* availabilityPanel = FindSubView(kControlTagPlaq); // 'plaq'
   availabilityPanel->AssertValid();
 
   COLORREF normalTextColor;
@@ -212,8 +209,7 @@ void TArmoryView::UpdateFields() {
     return;
   }
 
-  TNumberText* primaryAvailable =
-      static_cast<TNumberText*>(ResolveControlByTag(kControlTagAva1)); // 'ava1'
+  TNumberText* primaryAvailable = static_cast<TNumberText*>(FindSubView(kControlTagAva1)); // 'ava1'
   primaryAvailable->AssertValid();
   short primaryResource = selectedUnitOrder->primaryInputResourceId;
   if (primaryResource != -1) {
@@ -224,11 +220,11 @@ void TArmoryView::UpdateFields() {
         false);
   }
   CRect invalidRect;
-  primaryAvailable->QueryBounds(&invalidRect);
+  primaryAvailable->GetFrame(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TNumberText* secondaryAvailable =
-      static_cast<TNumberText*>(ResolveControlByTag(kControlTagAva2)); // 'ava2'
+      static_cast<TNumberText*>(FindSubView(kControlTagAva2)); // 'ava2'
   secondaryAvailable->AssertValid();
   short secondaryResource = selectedUnitOrder->secondaryInputResourceId;
   if (secondaryResource != -1) {
@@ -238,18 +234,18 @@ void TArmoryView::UpdateFields() {
         available < selectedUnitOrder->primaryInputPerUnit ? &warningTextColor : &normalTextColor,
         false);
   }
-  secondaryAvailable->QueryBounds(&invalidRect);
+  secondaryAvailable->GetFrame(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   int treasury = city->ownerNation->treasuryValue;
   g_pSimMgr->NumToCurrency(treasury, &treasuryText);
   TStaticText* treasuryAvailable =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagAva3)); // 'ava3'
+      static_cast<TStaticText*>(FindSubView(kControlTagAva3)); // 'ava3'
   treasuryAvailable->AssertValid();
   treasuryAvailable->SetTextAndMaybeRefresh(&treasuryText, false);
   treasuryAvailable->SetTextColorAndMaybeRefresh(
       treasury < selectedUnitOrder->cashCostPerUnit ? &warningTextColor : &normalTextColor, false);
-  treasuryAvailable->QueryBounds(&invalidRect);
+  treasuryAvailable->GetFrame(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TPopulationMgr* population = city->productionSummary;
@@ -271,13 +267,12 @@ void TArmoryView::UpdateFields() {
     }
   }
 
-  TNumberText* workforceControl =
-      static_cast<TNumberText*>(ResolveControlByTag(kControlTagAva0)); // 'ava0'
+  TNumberText* workforceControl = static_cast<TNumberText*>(FindSubView(kControlTagAva0)); // 'ava0'
   workforceControl->AssertValid();
   workforceControl->SetControlValue(workforceAvailable, 0);
   workforceControl->SetTextColorAndMaybeRefresh(
       workforceAvailable == 0 ? &warningTextColor : &normalTextColor, false);
-  workforceControl->QueryBounds(&invalidRect);
+  workforceControl->GetFrame(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   productionView->UpdateUnits();
@@ -304,20 +299,19 @@ void TArmoryView::SetUnit(short nBuildingSlotId) {
   style.tail[2] = 0;
   style.tail[3] = 0;
 
-  TPicture* plaq =
-      static_cast<TPicture*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'l', 'a', 'q')));
+  TPicture* plaq = static_cast<TPicture*>(FindSubView(IMPERIALISM_FOURCC('p', 'l', 'a', 'q')));
   plaq->AssertValid();
   plaq->SetPictureRsrcID(static_cast<short>(order->resourceTypeIndex + 0x1d9c), 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TStaticText* unit =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('u', 'n', 'i', 't')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('u', 'n', 'i', 't')));
   if (unit == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc1a);
   }
   unit->SetTextWithStrListID(0x2717, static_cast<short>(order->resourceTypeIndex + 1), false);
   CRect bounds;
-  unit->QueryBounds(&bounds);
+  unit->GetFrame(&bounds);
   RECT copiedBounds;
   CopyRect(&copiedBounds, &bounds);
   InvalidateCityDialogRectRegion(&copiedBounds, 1);
@@ -328,20 +322,20 @@ void TArmoryView::SetUnit(short nBuildingSlotId) {
   unusedDescription = amountText + s_szSpaceSeparator + resourceName + s_szLineBreak;
 
   TNumberText* cos0 =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '0')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('c', 'o', 's', '0')));
   cos0->AssertValid();
   cos0->SetControlValue(1, 1);
 
   TNumberText* cos1 =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '1')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('c', 'o', 's', '1')));
   cos1->AssertValid();
   cos1->SetControlValue(order->primaryInputPerUnit, 1);
 
   TNumberText* cos2 =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '2')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('c', 'o', 's', '2')));
   cos2->AssertValid();
   TNumberText* ava2 =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('a', 'v', 'a', '2')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('a', 'v', 'a', '2')));
   ava2->AssertValid();
   if (order->secondaryInputResourceId != -1) {
     cos2->Show(1, 1);
@@ -353,54 +347,54 @@ void TArmoryView::SetUnit(short nBuildingSlotId) {
   }
 
   TStaticText* cos3 =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '3')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('c', 'o', 's', '3')));
   cos3->AssertValid();
   g_pSimMgr->NumToCurrency(selectedUnitOrder->cashCostPerUnit, &currencyText);
   cos3->SetTextAndMaybeRefresh(&currencyText, true);
 
   short resourceType = order->resourceTypeIndex;
   TNumberText* stat0 =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '0')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('s', 't', 'a', '0')));
   stat0->AssertValid();
   stat0->SetControlValue(static_cast<int>(g_afArmoryUnitFirepowerByType[resourceType] *
                                           g_fArmoryFirepowerDisplayScale),
                          1);
-  stat0->QueryBounds(&bounds);
+  stat0->GetFrame(&bounds);
   CopyRect(&copiedBounds, &bounds);
   plaq->InvalidateCityDialogRectRegion(&copiedBounds, 1);
 
   TNumberText* stat1 =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '1')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('s', 't', 'a', '1')));
   stat1->AssertValid();
   stat1->SetControlValue(g_awArmoryUnitActionPointsByType[resourceType] / 10, 1);
-  stat1->QueryBounds(&bounds);
+  stat1->GetFrame(&bounds);
   CopyRect(&copiedBounds, &bounds);
   plaq->InvalidateCityDialogRectRegion(&copiedBounds, 1);
 
   TNumberText* stat2 =
-      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '2')));
+      static_cast<TNumberText*>(FindSubView(IMPERIALISM_FOURCC('s', 't', 'a', '2')));
   stat2->AssertValid();
   stat2->SetControlValue(g_anArmoryUnitRangeByType[resourceType], 1);
-  stat2->QueryBounds(&bounds);
+  stat2->GetFrame(&bounds);
   CopyRect(&copiedBounds, &bounds);
   plaq->InvalidateCityDialogRectRegion(&copiedBounds, 1);
 
   TStaticText* stat3 =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '3')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('s', 't', 'a', '3')));
   stat3->AssertValid();
   stat3->SetTextWithStrListID(
       0x271c, static_cast<short>(g_MapContextStaticTable_00695448[resourceType] + 0x21), true);
-  stat3->QueryBounds(&bounds);
+  stat3->GetFrame(&bounds);
   CopyRect(&copiedBounds, &bounds);
   plaq->InvalidateCityDialogRectRegion(&copiedBounds, 1);
 
   TStaticText* description =
-      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('d', 'e', 's', 'c')));
+      static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('d', 'e', 's', 'c')));
   if (description == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc57);
   }
   description->SetTextWithStrListID(0x2750, static_cast<short>(resourceType + 1), false);
-  description->QueryBounds(&bounds);
+  description->GetFrame(&bounds);
   CopyRect(&copiedBounds, &bounds);
   InvalidateCityDialogRectRegion(&copiedBounds, 1);
 

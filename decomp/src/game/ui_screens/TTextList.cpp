@@ -96,7 +96,7 @@ void TTextList::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origi
     RefreshControl(); // slot 0x39 (was facade OnSelectionChangeSlotE4)
 
     CRect rect;
-    QueryBounds(&rect); // slot 0x4b (was facade GetRectSlot12C)
+    GetFrame(&rect); // slot 0x4b (was facade GetRectSlot12C)
 
     RECT localRect;
     CopyRect(&localRect, &rect);

@@ -28,15 +28,15 @@ IMPLEMENT_DYNCREATE(TTacticalToolbar, TCluster)
 void TTacticalToolbar::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
-  TView* helpControl = ResolveControlByTag(kControlTagHelp);
+  TView* helpControl = FindSubView(kControlTagHelp);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x20, helpControl);
-  TView* targControl = ResolveControlByTag(kControlTagTarg);
+  TView* targControl = FindSubView(kControlTagTarg);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x21, targControl);
-  TView* doneControl = ResolveControlByTag(kControlTagDone);
+  TView* doneControl = FindSubView(kControlTagDone);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x22, doneControl);
-  TView* retrControl = ResolveControlByTag(kControlTagRetr);
+  TView* retrControl = FindSubView(kControlTagRetr);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x23, retrControl);
-  TView* autoControl = ResolveControlByTag(kControlTagAuto);
+  TView* autoControl = FindSubView(kControlTagAuto);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x24, autoControl);
 
   CString empty1(g_szEmptyString);
@@ -91,7 +91,7 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x005acb50
 void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
   currentUnit = unit;
-  TPicture* currControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCurr));
+  TPicture* currControl = static_cast<TPicture*>(FindSubView(kControlTagCurr));
   currControl->AssertValid();
   if (unit != 0) {
     currControl->SetPictureRsrcID(static_cast<short>(unit->unitType * 2 + 0xf1e + unit->side), 1);
@@ -117,7 +117,7 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
 // FUNCTION: IMPERIALISM 0x005acc90
 void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
   otherSideCurrentUnit = unit;
-  TPicture* tpicControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagTpic));
+  TPicture* tpicControl = static_cast<TPicture*>(FindSubView(kControlTagTpic));
   tpicControl->AssertValid();
   if (unit != 0) {
     tpicControl->SetPictureRsrcID(static_cast<short>(unit->unitType * 2 + 0xf1e + unit->side), 1);
@@ -136,39 +136,39 @@ void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
 // FUNCTION: IMPERIALISM 0x005acd60
 void TTacticalToolbar::SetActionMode(int mode) {
   if (mode == 0) {
-    TView* targControl = ResolveControlByTag(kControlTagTarg);
+    TView* targControl = FindSubView(kControlTagTarg);
     targControl->AssertValid();
     targControl->Show(0, 1);
     targControl->ViewEnable(0, 1);
-    TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagDone));
+    TPicture* doneControl = static_cast<TPicture*>(FindSubView(kControlTagDone));
     doneControl->AssertValid();
     doneControl->SetPictureRsrcID(0xed4, 1);
-    TPicture* retrControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagRetr));
+    TPicture* retrControl = static_cast<TPicture*>(FindSubView(kControlTagRetr));
     retrControl->AssertValid();
     retrControl->SetPictureRsrcID(0xed2, 1);
-    TView* autoControl = ResolveControlByTag(kControlTagAuto);
+    TView* autoControl = FindSubView(kControlTagAuto);
     autoControl->AssertValid();
     autoControl->Show(0, 1);
     autoControl->ViewEnable(0, 1);
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2e, ResolveControlByTag(kControlTagDone));
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2f, ResolveControlByTag(kControlTagRetr));
+    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2e, FindSubView(kControlTagDone));
+    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2f, FindSubView(kControlTagRetr));
   } else {
-    TView* targControl = ResolveControlByTag(kControlTagTarg);
+    TView* targControl = FindSubView(kControlTagTarg);
     targControl->AssertValid();
     targControl->Show(1, 1);
     targControl->ViewEnable(1, 1);
-    TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagDone));
+    TPicture* doneControl = static_cast<TPicture*>(FindSubView(kControlTagDone));
     doneControl->AssertValid();
     doneControl->SetPictureRsrcID(0xece, 1);
-    TPicture* retrControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagRetr));
+    TPicture* retrControl = static_cast<TPicture*>(FindSubView(kControlTagRetr));
     retrControl->AssertValid();
     retrControl->SetPictureRsrcID(0xed0, 1);
-    TView* autoControl = ResolveControlByTag(kControlTagAuto);
+    TView* autoControl = FindSubView(kControlTagAuto);
     autoControl->AssertValid();
     autoControl->Show(1, 1);
     autoControl->ViewEnable(1, 1);
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x22, ResolveControlByTag(kControlTagDone));
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x23, ResolveControlByTag(kControlTagRetr));
+    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x22, FindSubView(kControlTagDone));
+    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x23, FindSubView(kControlTagRetr));
   }
 }
 
@@ -184,7 +184,7 @@ void TTacticalToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       battle->HandleTacticalBattleCommandTag(tag);
       break;
     case kControlTagHelp:
-      g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+      g_pHelpMgr->ShowLatestHelp();
       break;
     default:
       break;

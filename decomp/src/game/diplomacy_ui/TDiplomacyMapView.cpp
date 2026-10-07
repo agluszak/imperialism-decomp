@@ -148,20 +148,20 @@ DiplomacyMaskBufferRun::DiplomacyMaskBufferRun() {
 // FUNCTION: IMPERIALISM 0x004f3d60
 void TDiplomacyMapView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  BuildDiplomacyNationOverlayGeometryAndHitMasks();
-  InitializeDiplomacyMinisterActionControlsAndLabels();
+  CreateDrawGeometries();
+  PrepVariousSubviews();
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
   if (g_pSimMgr->mode == kGamePhaseDiplomacy) {
-    TView* endControl = ResolveControlByTag(kControlTagEnd);
+    TView* endControl = FindSubView(kControlTagEnd);
     if (endControl != NULL) {
       endControl->Free();
     }
-    TView* querControl = ResolveControlByTag(kControlTagQuer);
+    TView* querControl = FindSubView(kControlTagQuer);
     if (querControl != NULL) {
       querControl->Free();
     }
-    TView* topBControl = ResolveControlByTag(kControlTagTopB);
+    TView* topBControl = FindSubView(kControlTagTopB);
     if (topBControl != NULL) {
       topBControl->Free();
     }
@@ -185,7 +185,7 @@ void TDiplomacyMapView::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f3ea0
-void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
+void TDiplomacyMapView::CreateDrawGeometries() {
   short labelWidths[23];
   short labelXs[23];
   short labelYs[23];
@@ -344,11 +344,11 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f4620
-void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
+void TDiplomacyMapView::PrepVariousSubviews() {
   CString text;
 
   for (int buttonIndex = 0; buttonIndex < 6; ++buttonIndex) {
-    TView* button = ResolveControlByTag(g_diplomacyActionButtonTagTable[buttonIndex]);
+    TView* button = FindSubView(g_diplomacyActionButtonTagTable[buttonIndex]);
     actionButtons[buttonIndex] = button;
     AssertActionButtonResolved(button);
   }
@@ -358,23 +358,23 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
   infoActionButton->Setup();
 
   for (short i = 0; i < 6; ++i) {
-    TView* hoverControl = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[i]);
+    TView* hoverControl = FindSubView(g_aDiplomacyActionTopicTabTags[i]);
     g_pSimMgr->GetString(0x2733, static_cast<short>(i + 0x52), &text);
     SetControlHoverHelpText(text, hoverControl);
   }
 
   if (g_pSimMgr->mode == kGamePhaseDiplomacy) {
-    TView* trtyHover = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[1]);
+    TView* trtyHover = FindSubView(g_aDiplomacyActionTopicTabTags[1]);
     g_pSimMgr->GetString(0x274a, 5, &text);
     SetControlHoverHelpTextAltEntry(text, trtyHover);
 
-    TView* granHover = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[2]);
+    TView* granHover = FindSubView(g_aDiplomacyActionTopicTabTags[2]);
     SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), granHover);
 
-    TView* tradHover = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[3]);
+    TView* tradHover = FindSubView(g_aDiplomacyActionTopicTabTags[3]);
     SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), tradHover);
   } else {
-    TView* offrControl = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[5]);
+    TView* offrControl = FindSubView(g_aDiplomacyActionTopicTabTags[5]);
     SetControlHoverHelpText(CString(g_szEmptyString), offrControl);
     offrControl->Locate(g_diplomacyPopupOffscreenPosition, false);
   }
@@ -385,13 +385,13 @@ void TDiplomacyMapView::Draw(RECT* rectBuffer) {
   CString unusedScratch;
 
   if (interactionMode == 1) {
-    RebuildDiplomacyLegendPaletteMode1AndBlit(frameRegionSelector, rectBuffer);
+    ShowRelations(frameRegionSelector, rectBuffer);
   } else if (interactionMode == 2) {
-    RenderDiplomacyLegendSurfaceAndPresent(rectBuffer);
+    DrawCountries(rectBuffer);
   } else if (interactionMode == 4) {
-    RebuildDiplomacyLegendPaletteMode4AndBlit(frameRegionSelector, rectBuffer);
+    ShowTreaties(frameRegionSelector, rectBuffer);
   } else {
-    RenderDiplomacyLegendSurfaceAndPresent(rectBuffer);
+    DrawCountries(rectBuffer);
   }
 
   SetQuickDrawFillColor(0xffffff);
@@ -624,7 +624,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   bool rejectAction = false;
   bool clearAction = false;
   bool refreshToolbar = false;
-  eDipAction action = ResolveDiplomacyActionFromClickAndUpdateTarget(&point);
+  eDipAction action = GetAction(&point);
 
   switch (action) {
   case kDipActionJoinEmpire: {
@@ -860,8 +860,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     }
     if (controllingNation != selectedTerrainIndex) {
       TGreatPower* sourceNation = g_apNationStates[selectedTerrainIndex];
-      sourceNation->SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
-          activeNation, sourceNation->colonyBoycottFlags[activeNation] == 0);
+      sourceNation->TellColoniesToBoycott(activeNation,
+                                          sourceNation->colonyBoycottFlags[activeNation] == 0);
     }
     break;
   }
@@ -876,9 +876,9 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     action = kDipActionNone;
   }
   if (refreshToolbar) {
-    TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
+    TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(FindSubView(kControlTagTool));
     toolbar->AssertValid();
-    toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
+    toolbar->SetReadouts(g_pSimMgr->GetPlayerCountry());
   }
   if (action != kDipActionNone && activeNation != -1) {
     invalidRect = nationTextHitRects[activeNation];
@@ -889,7 +889,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x004f5e00
-eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint) {
+eDipAction TDiplomacyMapView::GetAction(CPoint* clickPoint) {
 #ifdef IMPERIALISM_RUNTIME_TESTS
   if (g_runtimeSemanticDiplomacyNation >= 0) {
     int terrainIndex = g_runtimeSemanticDiplomacyNation;
@@ -985,7 +985,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   HCURSOR hCursor;
   bool applyCursor = false;
   if (hit) {
-    eDipAction action = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
+    eDipAction action = GetAction(clickPoint);
     bool valid =
         g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation, action);
 
@@ -1016,10 +1016,10 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x004f6170
-void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect) {
+void TDiplomacyMapView::DrawCountries(RECT* presentRect) {
   CTemporaryRegion surface;
   CRect bounds;
-  QueryBounds(&bounds);
+  GetFrame(&bounds);
 
   if (legendSurfaceMode != 0) {
     COLORREF savedBackgroundColor = g_pActiveQuickDrawSurfaceContext->blitSurface.backgroundColor;
@@ -1040,7 +1040,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
     short terrainIndex = 0;
     do {
       if (*terrainDescriptors != 0) {
-        this->BlitDiplomacyMapEventPaletteMaskToSurface(terrainIndex, terrainIndex + 0x258);
+        this->FillRegionWithPict(terrainIndex, terrainIndex + 0x258);
       }
       terrainIndex = static_cast<short>(terrainIndex + 1);
       ++terrainDescriptors;
@@ -1052,7 +1052,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
     terrainDescriptors = g_apTerrainTypeDescriptorTable + 7;
     do {
       if (*terrainDescriptors != 0) {
-        this->BlitDiplomacyMapEventPaletteMaskToSurface(terrainIndex, 0x2bb);
+        this->FillRegionWithPict(terrainIndex, 0x2bb);
       }
       terrainIndex = static_cast<short>(terrainIndex + 1);
       ++terrainDescriptors;
@@ -1087,7 +1087,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
 }
 
 // FUNCTION: IMPERIALISM 0x004f6440
-void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
+void TDiplomacyMapView::InvalidateCountries() {
   RgnHandle region = NewRgn();
 
   short terrainIndex = 0;
@@ -1106,8 +1106,7 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f64c0
-void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot,
-                                                                  const RECT* presentRect) {
+void TDiplomacyMapView::ShowTreaties(int activeNationSlot, const RECT* presentRect) {
   TQuickDrawSurfaceContext* previousSurface = 0;
   CPoint maskOrigin;
   int contextFlags = 0;
@@ -1129,8 +1128,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
         eventCode = 0x40;
       } else {
         DiplomacyRelationshipStorage relationship =
-            g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(activeNationSlot,
-                                                                             nationIndex);
+            g_pDiplomacyTurnStateManager->GetTreatyStatus(activeNationSlot, nationIndex);
         eventCode = g_aDiplomacyRelationPaletteColorCodes[relationship];
       }
 
@@ -1234,8 +1232,7 @@ void TDiplomacyMapView::VisitNationSlotsForOverlay(int unusedMode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f6840
-void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNationSlot,
-                                                                  const RECT* presentRect) {
+void TDiplomacyMapView::ShowRelations(int activeNationSlot, const RECT* presentRect) {
   CString str1;
   CString str2;
   CString str3;
@@ -1293,7 +1290,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
 }
 
 // FUNCTION: IMPERIALISM 0x004f6b10
-void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode) {
+void TDiplomacyMapView::PaintRegion(int maskIndex, int eventCode) {
   CPoint maskOrigin;
   maskOrigin.x = 0;
   maskOrigin.y = 0;
@@ -1310,7 +1307,7 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
 }
 
 // FUNCTION: IMPERIALISM 0x004f6bd0
-void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex, int bmpId) {
+void TDiplomacyMapView::FillRegionWithPict(short maskIndex, int bmpId) {
   TQuickDrawSurfaceContext* surface = g_pActiveQuickDrawSurfaceContext;
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
   CDib* bmpHandle = g_pResourceMgr->LoadBmpResourceByIdCached(static_cast<unsigned short>(bmpId));
@@ -1378,7 +1375,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
 }
 
 // FUNCTION: IMPERIALISM 0x004f6d90
-void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
+void TDiplomacyMapView::SwitchToPanel(int topicIndex) {
   int newTopic = topicIndex;
   if (g_pSimMgr->mode == kGamePhaseDiplomacy) {
     if (newTopic == 2 || newTopic == 3) {
@@ -1398,9 +1395,9 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   layoutPosition.y = 0x162;
   actionButtons[newTopic]->Locate(layoutPosition, true);
 
-  TPicture* ltabControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagLtab));
+  TPicture* ltabControl = static_cast<TPicture*>(this->FindSubView(kControlTagLtab));
   ltabControl->AssertValid();
-  TPicture* rtabControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagRtab));
+  TPicture* rtabControl = static_cast<TPicture*>(this->FindSubView(kControlTagRtab));
   rtabControl->AssertValid();
 
   if (newTopic == 0 || newTopic == 4) {
@@ -1458,14 +1455,14 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
 // FUNCTION: IMPERIALISM 0x004f7040
 char TDiplomacyMapView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
                                      int enemyNationSlot, int promptCode) {
-  ChangeSelectedActionTopic(5);
+  SwitchToPanel(5);
   return static_cast<TOffersPanelView*>(actionButtons[5])
       ->PoseWarOffer(sourceNationSlot, minorNationSlot, enemyNationSlot, promptCode);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
 void TDiplomacyMapView::PoseOffer(short sourceNation, short targetNation, short offerType) {
-  ChangeSelectedActionTopic(5);
+  SwitchToPanel(5);
   static_cast<TOffersPanelView*>(actionButtons[5])
       ->PoseOffer(sourceNation, targetNation, offerType);
 }
@@ -1483,7 +1480,7 @@ void TDiplomacyMapView::DoEvent(int commandId, TEventHandler* panelEvent, TEvent
       tabIndex += 1;
     } while (tagTable < g_aDiplomacyActionTopicTabTags + 6);
     if (tabIndex < 6) {
-      ChangeSelectedActionTopic(tabIndex);
+      SwitchToPanel(tabIndex);
       return;
     }
   } else {
@@ -1599,8 +1596,8 @@ bool TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction acti
 
     entangledNations = CString(g_pDiplomacyPanelEmptyText);
     for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(targetNationSlot),
-                                                          static_cast<short>(nationSlot))) {
+      if (g_pDiplomacyTurnStateManager->AreAtWar(static_cast<short>(targetNationSlot),
+                                                 static_cast<short>(nationSlot))) {
         CString nationName;
         g_apTerrainTypeDescriptorTable[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
         entangledNations += "   " + nationName + "\n";

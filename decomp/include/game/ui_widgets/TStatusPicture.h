@@ -25,10 +25,10 @@ public:
 
   void DrawBar(short rowY, short width, short nationSlot);
   void SwitchStatusMode(int comparisonMode); // 0x005941e0
-  void SortSevenEntriesAndUpdatePictureWidgets();
-  void RecomputeNationComparisonValuesAndNormalizeScale();
+  void SortByBarLength();
+  void CalcCouncilGraph();
   void CalcStandardGraph() {
-    g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+    g_pDiplomacyTurnStateManager->CalculateRatings();
     for (int i = 0; i < 7; ++i) {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(i))) {
         int sum = 0;
@@ -45,7 +45,7 @@ public:
         pictureIds[i] = -1;
       }
     }
-    SortSevenEntriesAndUpdatePictureWidgets();
+    SortByBarLength();
   }
   // Retained VC5 copy of a method inlined at its only live callsite.
   void NormalizeAsNeeded() {

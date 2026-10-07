@@ -14,7 +14,7 @@ namespace {
 const int kControlTagDead = IMPERIALISM_FOURCC('d', 'e', 'a', 'd');
 
 TPlacard* PlacardAt(TView* root, int tag) {
-  TView* placard = root != 0 ? root->ResolveControlByTag(tag) : 0;
+  TView* placard = root != 0 ? root->FindSubView(tag) : 0;
   return placard != 0 && placard->IsKindOf(RUNTIME_CLASS(TPlacard)) != 0
              ? static_cast<TPlacard*>(placard)
              : 0;

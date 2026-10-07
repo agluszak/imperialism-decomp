@@ -362,7 +362,7 @@ void TArmyMgr::FormStacks() {
         }
       }
 
-      stack->AddUnitToChainHead(unit);
+      stack->AddUnit(unit);
     }
   }
 
@@ -374,8 +374,7 @@ void TArmyMgr::FormStacks() {
 
   this->pendingUnitPool->Sort();
   for (int i = 0; i < kProvinceCount; ++i) {
-    this->perTileOwnerNationCodeCache[i] =
-        g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(i);
+    this->perTileOwnerNationCodeCache[i] = g_pGlobalMapState->FindCountry(i);
   }
 }
 
@@ -409,7 +408,7 @@ void TArmyMgr::ResolveNextMove() {
       stack->AssertValid();
       if (this->perTileOwnerNationCodeCache[stack->ownerNationCode] ==
           static_cast<short>(stack->categoryFlag)) {
-        stack->ReseatChainUnitsAndClearOrders();
+        stack->MoveAll();
       } else {
         battleViewCreated = this->ResolveConflict(stack, stack->ownerNationCode);
       }
@@ -539,8 +538,8 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.reportKind = kMapContextReportLandBattle;
   record.displayedParticipantIndex = 0;
 
-  if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-          ourStack->categoryFlag, enemyStack->categoryFlag)) {
+  if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(ourStack->categoryFlag,
+                                                         enemyStack->categoryFlag)) {
     record.reportKind = kMapContextReportPreemptedLandBattle;
   } else if (enemyStack->ResetCursorAndGetHeadUnit() == 0) {
     record.reportKind = kMapContextReportUncontestedTakeover;
@@ -674,7 +673,7 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
 
   while (curUnit != NULL) {
     if (curUnit->orderTargetIndex == ownerNationCode) {
-      ourStack->AddUnitToChainHead(curUnit);
+      ourStack->AddUnit(curUnit);
     }
     curUnit = stack->AdvanceCursorAndGetUnit();
   }
@@ -692,11 +691,11 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
       enemyUnit = g_pGlobalMapState->cityScoreTable[ownerNationCodeInt].stationedUnitChain;
     }
     for (; enemyUnit != NULL; enemyUnit = static_cast<TMilitaryUnit*>(enemyUnit->nextAtLocation)) {
-      enemyStack->AddUnitToChainHead(enemyUnit);
+      enemyStack->AddUnit(enemyUnit);
     }
 
-    if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-            ourStack->categoryFlag, cachedOwnerAtTile)) {
+    if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(ourStack->categoryFlag,
+                                                           cachedOwnerAtTile)) {
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
       this->RetreatAttacker(ourStack);
     } else if (enemyStack->unitCount != 0) {
@@ -705,7 +704,7 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
                                                              ownerNationCodeInt);
     } else {
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 1, ownerNationCodeInt, 0);
-      ourStack->ReseatChainUnitsAndClearOrders();
+      ourStack->MoveAll();
       this->perTileOwnerNationCodeCache[ownerNationCodeInt] = ourStack->categoryFlag;
     }
   }
@@ -760,7 +759,7 @@ void TArmyMgr::RetreatDefender(TArmyStack* stack, short tileIndex) {
     }
   }
 
-  stack->ReseatChainUnitsAndClearOrders();
+  stack->MoveAll();
 }
 
 // FUNCTION: IMPERIALISM 0x004a37b0
@@ -1006,7 +1005,7 @@ void TArmyMgr::DoTacticalCombat(TArmyStack* ourStack, TArmyStack* enemyStack, in
 }
 
 // FUNCTION: IMPERIALISM 0x004a43f0
-short TArmyMgr::ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId, short tileIndex) {
+short TArmyMgr::SelectUnitType(short categoryId, short tileIndex) {
   TMilitaryUnit* unit = NULL;
   if (tileIndex >= 0 && tileIndex < kProvinceCount) {
     unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
@@ -1028,7 +1027,7 @@ short TArmyMgr::ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId, 
 }
 
 // FUNCTION: IMPERIALISM 0x004a4490
-short TArmyMgr::ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex) {
+short TArmyMgr::DeSelectUnitType(short categoryId, short tileIndex) {
   TMilitaryUnit* unit = NULL;
   if (tileIndex >= 0 && tileIndex < kProvinceCount) {
     unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
@@ -1095,7 +1094,7 @@ void TArmyMgr::SetSelectedProvince(short cityRecordIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a46d0
-void TArmyMgr::ClearProvinceSelectionHighlightsForNation(short nationId) {
+void TArmyMgr::ResetCycle(short nationId) {
   TSortedList* unitList = g_apNationStates[nationId]->militaryUnitList;
   for (short ordinal = 1; ordinal <= unitList->GetCount(); ++ordinal) {
     TUnit* unit = static_cast<TUnit*>(unitList->GetEntryByOrdinal(ordinal));
@@ -1107,7 +1106,7 @@ void TArmyMgr::ClearProvinceSelectionHighlightsForNation(short nationId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a4760
-short TArmyMgr::FindNextSelectableProvinceForNation(short nationId) {
+short TArmyMgr::Cycle(short nationId) {
   short candidate = this->pendingMapActionIndex;
   if (candidate == -1) {
     candidate = 0;
@@ -1172,7 +1171,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
     return 6;
   }
   if (mode != 2) {
-    if (g_pViewMgr->mapUberPicture->HasActiveMapInteractionSelection()) {
+    if (g_pViewMgr->mapUberPicture->IsAUnitSelected()) {
       return 0;
     }
     if (mode != 2 && rec->firstCivilianOrder != NULL) {
@@ -1258,9 +1257,8 @@ int TArmyMgr::GetTileSelection(short tileIndex, short mode) {
     return 1;
   }
 
-  short pendingSlot =
-      g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(this->pendingMapActionIndex);
-  short citySlot = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(cityRecordIndex);
+  short pendingSlot = g_pGlobalMapState->FindCountry(this->pendingMapActionIndex);
+  short citySlot = g_pGlobalMapState->FindCountry(cityRecordIndex);
 
   TMilitaryUnit* unit = NULL;
   if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
@@ -1303,7 +1301,7 @@ int TArmyMgr::GetTileSelection(short tileIndex, short mode) {
   if (!hasMovableUnit) {
     return 1;
   }
-  if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(pendingSlot, citySlot)) {
+  if (!g_pDiplomacyTurnStateManager->AreAtWar(pendingSlot, citySlot)) {
     return 1;
   }
   if (g_pGlobalMapState->IsProvinceAdjacentTo(this->pendingMapActionIndex, cityRecordIndex)) {
@@ -1456,7 +1454,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
     ++flagCursor;
   }
 
-  if (!g_pViewMgr->DispatchProvinceOrderOverlayConfirmDialog(cityRecordIndex, categoryCounts)) {
+  if (!g_pViewMgr->MakeArmyInfoWindow(cityRecordIndex, categoryCounts)) {
     short activeNationId2 = g_pSimMgr->GetPlayerCountry();
     bool sameOwner =
         g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode == activeNationId2;
@@ -1497,7 +1495,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
       }
     }
 
-    g_pGlobalMapState->MarkDirectionalMapOverlayFlagsForNationOrders();
+    g_pGlobalMapState->ConfirmArrows();
     if (this->pendingMapActionIndex != -1) {
       this->SetSelectedProvince(this->pendingMapActionIndex);
     }
@@ -1557,7 +1555,7 @@ void TArmyMgr::EndTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
 
   if (sideWonFlag != 0) {
     this->RetreatDefender(enemyStack, static_cast<short>(battleSiteIndex));
-    ourStack->ReseatChainUnitsAndClearOrders();
+    ourStack->MoveAll();
     this->perTileOwnerNationCodeCache[battleSiteIndex] = ourStack->categoryFlag;
     ourStack->RaiseExperience(true);
     enemyStack->RaiseExperience(false);
@@ -1580,8 +1578,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
     int i = 0;
     do {
       short regionId = g_pGlobalMapState->cityScoreTable[cityRecordIndex].adjacentRegionIds[i];
-      if (g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(regionId) ==
-          g_pSimMgr->GetPlayerCountry()) {
+      if (g_pGlobalMapState->FindCountry(regionId) == g_pSimMgr->GetPlayerCountry()) {
         TMilitaryUnit* unit = NULL;
         if (regionId >= 0 && regionId < kProvinceCount) {
           unit = static_cast<TMilitaryUnit*>(
@@ -1753,16 +1750,14 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
 
   // MapView.rsrc view 9475's children, in the order the original fills them.
   CString scratchText;
-  TStaticText* ownerLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagGpee)); // 'gpee'
+  TStaticText* ownerLabel = static_cast<TStaticText*>(node->FindSubView(kControlTagGpee)); // 'gpee'
   ownerLabel->AssertValid();
   g_apTerrainTypeDescriptorTable[g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode]
       ->FormatOverlayTerrainLabelText(&scratchText);
   ownerLabel->SetTextAndMaybeRefresh(&scratchText, false);
   ownerLabel->InstallTextStyle(styleB, 0);
 
-  TStaticText* zoneLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagZone)); // 'zone'
+  TStaticText* zoneLabel = static_cast<TStaticText*>(node->FindSubView(kControlTagZone)); // 'zone'
   zoneLabel->AssertValid();
   CString cityDisplayName;
   g_pGlobalMapState->AssignCityRecordDisplayName(static_cast<ProvinceIndex>(cityRecordIndex),
@@ -1772,40 +1767,39 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   zoneLabel->InstallTextStyle(styleB, 0);
 
   TStaticText* defenderLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagAdam)); // 'adam'
+      static_cast<TStaticText*>(node->FindSubView(kControlTagAdam)); // 'adam'
   defenderLabel->AssertValid();
   defenderLabel->SetTextAndMaybeRefresh(&defenderSummary, false);
   defenderLabel->InstallTextStyle(styleC, 0);
 
   TStaticText* garrisonLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagShip)); // 'ship'
+      static_cast<TStaticText*>(node->FindSubView(kControlTagShip)); // 'ship'
   garrisonLabel->AssertValid();
   CString quotedGarrison = CString(g_szDoubleQuote) + garrisonSummary + g_szDoubleQuote;
   garrisonLabel->SetTextAndMaybeRefresh(&quotedGarrison, false);
   garrisonLabel->InstallTextStyle(styleC, 0);
 
-  TStaticText* titleLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl)); // 'titl'
+  TStaticText* titleLabel = static_cast<TStaticText*>(node->FindSubView(kControlTagTitl)); // 'titl'
   titleLabel->AssertValid();
   titleLabel->SetTextWithStrListID(0x2744, 5, false);
   titleLabel->InstallTextStyle(styleA, 0);
 
-  TStaticText* label1 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab1));
+  TStaticText* label1 = static_cast<TStaticText*>(node->FindSubView(kControlTagLab1));
   label1->AssertValid();
   label1->SetTextWithStrListID(0x2744, 6, false);
   label1->InstallTextStyle(styleC, 0);
 
-  TStaticText* label2 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab2));
+  TStaticText* label2 = static_cast<TStaticText*>(node->FindSubView(kControlTagLab2));
   label2->AssertValid();
   label2->SetTextWithStrListID(0x2744, 7, false);
   label2->InstallTextStyle(styleC, 0);
 
-  TStaticText* label3 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab3));
+  TStaticText* label3 = static_cast<TStaticText*>(node->FindSubView(kControlTagLab3));
   label3->AssertValid();
   label3->Show(0, 0);
   label3->InstallTextStyle(styleB, 0);
 
-  TStaticText* label4 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab4));
+  TStaticText* label4 = static_cast<TStaticText*>(node->FindSubView(kControlTagLab4));
   label4->AssertValid();
   label4->SetTextWithStrListID(0x2744, 8, false);
   label4->InstallTextStyle(styleD, 0);
@@ -1990,7 +1984,7 @@ void TArmyMgr::ReassessLanding(int nationSlot, int zone) {
         unit->SetOrders(kUnitOrderIdle, -1);
       }
     }
-    g_pGlobalMapState->MarkDirectionalMapOverlayFlagsForNationOrders();
+    g_pGlobalMapState->ConfirmArrows();
   }
 }
 
@@ -2012,7 +2006,7 @@ void TArmyMgr::WakeAll(int nationId) {
   }
 
   TMapUberPicture* mapView = g_pViewMgr->mapUberPicture;
-  if (mapView != 0 && !mapView->HasActiveMapInteractionSelection()) {
+  if (mapView != 0 && !mapView->IsAUnitSelected()) {
     mapView->CycleMapInteractionSelectionAfterHandledClick();
   }
 }

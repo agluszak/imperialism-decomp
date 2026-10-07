@@ -47,7 +47,7 @@ void TBlockadePortMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053ace0
 void TBlockadePortMission::Initialize() {
-  float score = static_cast<float>(missionTargetZone->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(missionTargetZone->GetStrategicValue());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
@@ -74,9 +74,9 @@ TMission* TBlockadePortMission::GetReplacement() {
     return NULL;
   }
 
-  if (resolvedPortZone != NULL && resolvedPortZone->QueryPortZoneCapability() &&
-      !resolvedPortZone->QueryZoneCapabilityFlagD(nationId)) {
-    resolvedPortZone = RefreshMissionPortZoneContextForNation();
+  if (resolvedPortZone != NULL && resolvedPortZone->IsPortZone() &&
+      !resolvedPortZone->IsFriendlyWith(nationId)) {
+    resolvedPortZone = PickAmassingZone();
   }
 
   return (resolvedPortZone != NULL) ? this : NULL;
@@ -110,7 +110,7 @@ void TBlockadePortMission::CalculateNeeds() {
       if (g_apNationStates[nation] == NULL) {
         continue;
       }
-      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, nation)) {
+      if (!g_pDiplomacyTurnStateManager->AreAtWar(nationId, nation)) {
         continue;
       }
       short targetNationCode = portZoneContext->GetPortOwnerNation();

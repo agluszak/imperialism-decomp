@@ -38,7 +38,7 @@ TGarrisonView* ArmyBookScreen::GarrisonPage() const {
   if (book == 0) {
     return 0;
   }
-  TView* page = book->ResolveControlByTag(kControlTagPage);
+  TView* page = book->FindSubView(kControlTagPage);
   return page != 0 && page->IsKindOf(RUNTIME_CLASS(TGarrisonView)) != 0
              ? static_cast<TGarrisonView*>(page)
              : 0;

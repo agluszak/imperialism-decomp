@@ -50,7 +50,7 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
   g_apNationStates[ownerNationSlot]->GetDealInfo(commoditySlot, entryOrdinal, &dealKind, &amount,
                                                  &counterpartyNationSlot, &unitPriceOrStatus);
 
-  counterpartyName = g_pSimMgr->LoadNormalizedCredentialName(counterpartyNationSlot);
+  counterpartyName = g_pSimMgr->GetCountryName(counterpartyNationSlot);
   g_pSimMgr->GetCommodityName(commoditySlot, &commodityName);
 
   if (amount != 0) {

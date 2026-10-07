@@ -36,7 +36,7 @@ TCivToolbar::~TCivToolbar() {}
 void TCivToolbar::SetSelectedUnit(TCivUnit* selectedOrder) {
   this->civilianClassId = selectedOrder ? selectedOrder->orderType : -1;
 
-  TControl* unitControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagUnit));
+  TControl* unitControl = static_cast<TControl*>(this->FindSubView(kControlTagUnit));
   if (unitControl == 0) {
     return;
   }
@@ -49,8 +49,8 @@ void TCivToolbar::SetSelectedUnit(TCivUnit* selectedOrder) {
     unitControl->Show(1, 1);
   }
 
-  TCivDescription* backControl = static_cast<TCivDescription*>(
-      static_cast<TView*>(this->ResolveControlByTag(kControlTagBack)));
+  TCivDescription* backControl =
+      static_cast<TCivDescription*>(static_cast<TView*>(this->FindSubView(kControlTagBack)));
   if (backControl == 0) {
     return;
   }
@@ -72,7 +72,7 @@ void TCivToolbar::SetSelectedUnit(TCivUnit* selectedOrder) {
     case 7:
     case 8:
       backControl->targetTileCountsBySlot[4] = 0;
-      backControl->UpdateCivilianOrderTargetTileCountsForOwnerNation(selectedOrder);
+      backControl->CountWorkableSpaces(selectedOrder);
       break;
     }
 
@@ -98,8 +98,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   selectedCivilianState = g_pSelectedCivilianOrderState;
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); ++slotIndex) {
-    stackButton =
-        static_cast<TControl*>(this->ResolveControlByTag(kControlTagStackSlotFirst + slotIndex));
+    stackButton = static_cast<TControl*>(this->FindSubView(kControlTagStackSlotFirst + slotIndex));
     if (stackButton == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15d1);
     }
@@ -112,8 +111,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     selectedTileEntry = static_cast<TCivUnit*>(selectedTileEntry->nextAtLocation);
   }
   while (slotIndex < 6) {
-    stackButton =
-        static_cast<TControl*>(this->ResolveControlByTag(kControlTagStackSlotFirst + slotIndex));
+    stackButton = static_cast<TControl*>(this->FindSubView(kControlTagStackSlotFirst + slotIndex));
     if (stackButton == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15df);
     }
@@ -125,20 +123,20 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   if (selectedStackButton != 0) {
     selectedSlotTag = selectedStackButton->controlTag;
   }
-  this->SetSelectedChildTagAndRefresh(selectedSlotTag);
+  this->SetCurrentChoice(selectedSlotTag);
 
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
-  stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagDfnd));
+  stackButton = static_cast<TControl*>(this->FindSubView(kControlTagDfnd));
   if (stackButton == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15eb);
   }
   stackButton->ViewEnable(commandEnabled, 1);
-  stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagLatr));
+  stackButton = static_cast<TControl*>(this->FindSubView(kControlTagLatr));
   if (stackButton == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15ed);
   }
   stackButton->ViewEnable(commandEnabled, 1);
-  stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagDone));
+  stackButton = static_cast<TControl*>(this->FindSubView(kControlTagDone));
   if (stackButton == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15ef);
   }

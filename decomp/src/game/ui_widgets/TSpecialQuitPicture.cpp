@@ -23,31 +23,31 @@ IMPLEMENT_DYNCREATE(TSpecialQuitPicture, TPicture)
 void TSpecialQuitPicture::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
-  TDeluxeText* saleControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagSale));
+  TDeluxeText* saleControl = static_cast<TDeluxeText*>(FindSubView(kControlTagSale));
   saleControl->AssertValid();
   saleControl->LoadTextResource(0x4e20);
   saleControl->SetTextStyle(0, 0x18, 0x2b6c);
   CRect saleBounds;
-  saleControl->QueryBounds(&saleBounds);
+  saleControl->GetFrame(&saleBounds);
   saleBounds.right = 0x28;
   saleBounds.bottom = 0x11;
-  saleControl->ApplyBounds(&saleBounds, true);
+  saleControl->SetFrame(&saleBounds, true);
 
-  TDeluxeText* shotControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTsho));
+  TDeluxeText* shotControl = static_cast<TDeluxeText*>(FindSubView(kControlTagTsho));
   shotControl->AssertValid();
   CString shotCaption;
   g_pSimMgr->GetString(0x274c, 0x18, &shotCaption);
   ApplyControlThemeStyleAndOptionalCaption(shotControl, 0, 0xc, 0x2b6c, 1,
                                            static_cast<const char*>(shotCaption));
 
-  TDeluxeText* equiControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTqui));
+  TDeluxeText* equiControl = static_cast<TDeluxeText*>(FindSubView(kControlTagTqui));
   equiControl->AssertValid();
   CString equiCaption;
   g_pSimMgr->GetString(0x2737, 9, &equiCaption);
   ApplyControlThemeStyleAndOptionalCaption(equiControl, 0, 0xc, 0x2b6c, 1,
                                            static_cast<const char*>(equiCaption));
 
-  TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
+  TDeluxeText* titlControl = static_cast<TDeluxeText*>(FindSubView(kControlTagTitl));
   titlControl->AssertValid();
   titlControl->SetTextStyle(0, 0xe, 0x2b6c);
   titlControl->SetJustification(1, true);
@@ -61,13 +61,13 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       g_pAmbitApplication->PostWmCloseToMainThreadWindow();
     }
     if (sourceHandler->controlTag == kControlTagShow) {
-      ResolveControlByTag(kControlTagQuit)->ViewEnable(0, 1);
-      ResolveControlByTag(kControlTagShow)->ViewEnable(0, 1);
-      ResolveControlByTag(kControlTagSale)->Show(0, 1);
-      ResolveControlByTag(kControlTagRequ)->Show(0, 1);
-      ResolveControlByTag(kControlTagTsho)->Show(0, 1);
-      ResolveControlByTag(kControlTagTqui)->Show(0, 1);
-      TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
+      FindSubView(kControlTagQuit)->ViewEnable(0, 1);
+      FindSubView(kControlTagShow)->ViewEnable(0, 1);
+      FindSubView(kControlTagSale)->Show(0, 1);
+      FindSubView(kControlTagRequ)->Show(0, 1);
+      FindSubView(kControlTagTsho)->Show(0, 1);
+      FindSubView(kControlTagTqui)->Show(0, 1);
+      TDeluxeText* titlControl = static_cast<TDeluxeText*>(FindSubView(kControlTagTitl));
       titlControl->AssertValid();
       titlControl->Show(1, 1);
       quitAnimationFrame = 1;
@@ -78,20 +78,20 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       ++quitAnimationFrame;
       if (quitAnimationFrame < 10) {
         SetPictureRsrcID(static_cast<short>(quitAnimationFrame + 0x3e8), 1);
-        TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
+        TDeluxeText* titlControl = static_cast<TDeluxeText*>(FindSubView(kControlTagTitl));
         titlControl->AssertValid();
         g_pSimMgr->GetString(0x1770, static_cast<short>(quitAnimationFrame - 1), &titlText);
         titlControl->UpdateTextEntrySharedString(&titlText);
       } else {
         quitAnimationFrame = 0;
         SetPictureRsrcID(0x4e20, 1);
-        ResolveControlByTag(kControlTagQuit)->ViewEnable(1, 1);
-        ResolveControlByTag(kControlTagShow)->ViewEnable(1, 1);
-        ResolveControlByTag(kControlTagSale)->Show(1, 1);
-        ResolveControlByTag(kControlTagRequ)->Show(1, 1);
-        ResolveControlByTag(kControlTagTsho)->Show(1, 1);
-        ResolveControlByTag(kControlTagTqui)->Show(1, 1);
-        ResolveControlByTag(kControlTagTitl)->Show(0, 1);
+        FindSubView(kControlTagQuit)->ViewEnable(1, 1);
+        FindSubView(kControlTagShow)->ViewEnable(1, 1);
+        FindSubView(kControlTagSale)->Show(1, 1);
+        FindSubView(kControlTagRequ)->Show(1, 1);
+        FindSubView(kControlTagTsho)->Show(1, 1);
+        FindSubView(kControlTagTqui)->Show(1, 1);
+        FindSubView(kControlTagTitl)->Show(0, 1);
       }
     }
   }

@@ -80,7 +80,7 @@ TTradeCluster* TradeScreen::Row(short resource) const {
 
 TTradeOrderPicture* TradeScreen::BuyCard(short resource) const {
   TTradeCluster* row = Row(resource);
-  TView* card = row != 0 ? row->ResolveControlByTag(kControlTagCard) : 0;
+  TView* card = row != 0 ? row->FindSubView(kControlTagCard) : 0;
   return card != 0 && card->IsKindOf(RUNTIME_CLASS(TTradeOrderPicture)) != 0
              ? static_cast<TTradeOrderPicture*>(card)
              : 0;
@@ -88,7 +88,7 @@ TTradeOrderPicture* TradeScreen::BuyCard(short resource) const {
 
 TTradeOrderPicture* TradeScreen::OfferCard(short resource) const {
   TTradeCluster* row = Row(resource);
-  TView* card = row != 0 ? row->ResolveControlByTag(kControlTagOffr) : 0;
+  TView* card = row != 0 ? row->FindSubView(kControlTagOffr) : 0;
   return card != 0 && card->IsKindOf(RUNTIME_CLASS(TTradeOrderPicture)) != 0
              ? static_cast<TTradeOrderPicture*>(card)
              : 0;
@@ -233,7 +233,7 @@ short TradeScreen::FirstSellableCommodityOtherThan(short excludedResource) const
 
 TNumberText* TradeScreen::SellLabel(short resource) const {
   TTradeCluster* row = Row(resource);
-  TView* label = row != 0 ? row->ResolveControlByTag(kControlTagSell) : 0;
+  TView* label = row != 0 ? row->FindSubView(kControlTagSell) : 0;
   return label != 0 && label->IsKindOf(RUNTIME_CLASS(TNumberText)) != 0
              ? static_cast<TNumberText*>(label)
              : 0;
@@ -241,7 +241,7 @@ TNumberText* TradeScreen::SellLabel(short resource) const {
 
 TAmtBar* TradeScreen::SellBar(short resource) const {
   TTradeCluster* row = Row(resource);
-  TView* bar = row != 0 ? row->ResolveControlByTag(kControlTagBar) : 0;
+  TView* bar = row != 0 ? row->FindSubView(kControlTagBar) : 0;
   return bar != 0 && bar->IsKindOf(RUNTIME_CLASS(TAmtBar)) != 0 ? static_cast<TAmtBar*>(bar) : 0;
 }
 
@@ -266,22 +266,21 @@ bool TradeScreen::SellRowIsAdjustable(short resource) const {
 bool TradeScreen::SellLabelHasOwnLayout(short resource) const {
   TTradeCluster* row = Row(resource);
   TNumberText* label = SellLabel(resource);
-  TView* decrease = row != 0 ? row->ResolveControlByTag(kControlTagLeft) : 0;
-  TView* increase = row != 0 ? row->ResolveControlByTag(kControlTagRght) : 0;
+  TView* decrease = row != 0 ? row->FindSubView(kControlTagLeft) : 0;
+  TView* increase = row != 0 ? row->FindSubView(kControlTagRght) : 0;
   if (row == 0 || label == 0 || decrease == 0 || increase == 0) {
     return false;
   }
   CRect labelBounds;
   CRect decreaseBounds;
   CRect increaseBounds;
-  label->QueryBounds(&labelBounds);
-  decrease->QueryBounds(&decreaseBounds);
-  increase->QueryBounds(&increaseBounds);
+  label->GetFrame(&labelBounds);
+  decrease->GetFrame(&decreaseBounds);
+  increase->GetFrame(&increaseBounds);
   // The label sits inside the row and left of both arrows, and the arrows are in order. The
   // two-pixel slack at the top is the label's own ascent overhang in the retail layout.
-  return labelBounds.left >= 0 && labelBounds.top >= -2 &&
-         labelBounds.bottom <= row->frameHeight && labelBounds.right <= decreaseBounds.left &&
-         decreaseBounds.right <= increaseBounds.left;
+  return labelBounds.left >= 0 && labelBounds.top >= -2 && labelBounds.bottom <= row->frameHeight &&
+         labelBounds.right <= decreaseBounds.left && decreaseBounds.right <= increaseBounds.left;
 }
 
 RuntimeActionResult TradeScreen::SeedAdjustableCapacity(short resource) {
@@ -317,7 +316,7 @@ RuntimeActionResult TradeScreen::SeedAdjustableCapacity(short resource) {
 RuntimeActionResult TradeScreen::AdjustSell(short resource, int rowCommand, int arrowTag,
                                             const char* what) {
   TTradeCluster* row = Row(resource);
-  TView* arrow = row != 0 ? row->ResolveControlByTag(arrowTag) : 0;
+  TView* arrow = row != 0 ? row->FindSubView(arrowTag) : 0;
   if (row == 0 || arrow == 0) {
     if (!IsValid()) {
       return InvalidScreen(what);

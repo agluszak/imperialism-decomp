@@ -28,37 +28,37 @@ public:
   TTaskForce* selectedTaskForce; // +0x14
 
   // Reallocate routeSegments to hold `count` 0x10-byte route records. 0x0052e7b0.
-  void AllocateRouteNodeStateBufferByCount(short count);
+  void SetNumSeaZones(short count);
 
   // Map-action context (TZone, stride 0x48) at the given index in contextArray. 0x00563330.
-  TZone* GetMapActionContextEntryByIndex(short index);
+  TZone* Seath(short index);
 
-  void EnsurePortZoneForTile(short nTileIndex);
+  void BuildPort(short nTileIndex);
 
-  void RemovePortZoneByTile(short nTileIndex);
+  void NukePort(short nTileIndex);
 
   TZone* FindFirstPortZoneContextByNation(short nationSlot);
 
-  TZone* FindMapActionContextContainingNodeByIndex(int cityRecordIndex);
+  TZone* GetSeaZoneAdjacentTo(int cityRecordIndex);
 
-  int ComputeGlobalMapActionContextNodeValueAverage();
+  int GetAverageSeaZoneValue();
 
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 
-  void RefreshMapActionContextNationOverlaysAndOrderRanks();
+  void UpdateOccupants();
 
   TZone* Sea(short nationCode);
 
   // Resolves port-zone or per-nation map-action context for a sea/coastal tile. 0x5633b0.
-  TZone* GetLinkedZoneForSeaTile(short seaTileIndex);
+  TZone* GetZoneAt(short seaTileIndex);
 
   TZone* FindPortZoneBySelectedTile(TCity* city);
 
-  void FinalizeQueuedMapOrderEntry(TTaskForce* entry); // 0x5642e0
+  void CommitForce(TTaskForce* entry); // 0x5642e0
 
   void ForgetForce(TTaskForce* entry); // 0x564400
 
-  TTaskForce* EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone);
+  TTaskForce* AssembleUIForce(TZone* pMapOrderContextZone);
 };
 
 ASSERT_SIZE(TOcean, 0x18);

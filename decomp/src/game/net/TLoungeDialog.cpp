@@ -47,7 +47,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
 
   g_pGameFlowState->InstallCohandler(this, true);
 
-  TInfoBarText* lablControl = static_cast<TInfoBarText*>(ResolveControlByTag(kSessionTagLabl));
+  TInfoBarText* lablControl = static_cast<TInfoBarText*>(FindSubView(kSessionTagLabl));
   g_pCursorControlPanel = lablControl;
   lablControl->AssertValid();
   lablControl->SetTextStyle(0, 0xe, 0x2b6b);
@@ -88,7 +88,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
         kControlTagCncl);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xc, kSessionTagMess);
 
-    TPicture* coatControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat)); // 'coat'
+    TPicture* coatControl = static_cast<TPicture*>(FindSubView(kControlTagCoat)); // 'coat'
     coatControl->AssertValid();
     coatControl->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x120a), 0);
     coatControl->Show(1, 0);
@@ -108,7 +108,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
     messageStringIndex = static_cast<short>(g_pSimMgr->mode == kGamePhaseStartup ? 0x10 : 0x18);
   }
   ConfigureUiControlStyleValueAndCaptionFromStringResource(
-      static_cast<TStaticText*>(ResolveControlByTag(kSessionTagMess)), 0, 0xe, 0x2b6c, 1, 0x2742,
+      static_cast<TStaticText*>(FindSubView(kSessionTagMess)), 0, 0xe, 0x2b6c, 1, 0x2742,
       messageStringIndex);
   TNoHilitePicture::DoPostCreate(arg);
 }
@@ -147,8 +147,7 @@ bool TLoungeDialog::DoIdle(int action) {
       }
     }
 
-    TPicture* statusLamp =
-        static_cast<TPicture*>(ResolveControlByTag(kSessionTagRad0 + nationSlot));
+    TPicture* statusLamp = static_cast<TPicture*>(FindSubView(kSessionTagRad0 + nationSlot));
     statusLamp->AssertValid();
     if (statusLamp->glyphBase != kLoungeStatusGlyphIds[statusIndex]) {
       statusLamp->SetPictureRsrcID(kLoungeStatusGlyphIds[statusIndex], 1);
@@ -162,7 +161,7 @@ bool TLoungeDialog::DoIdle(int action) {
     }
 
     TDropShadowText* nameLabel =
-        static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagNam0 + nationSlot));
+        static_cast<TDropShadowText*>(FindSubView(kControlTagNam0 + nationSlot));
     nameLabel->AssertValid();
     CString desiredName;
     CString currentName;
@@ -203,7 +202,7 @@ bool TLoungeDialog::DoIdle(int action) {
 
   CString messageText;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742, messageStringIndex);
-  TStaticText* messageControl = static_cast<TStaticText*>(ResolveControlByTag(kSessionTagMess));
+  TStaticText* messageControl = static_cast<TStaticText*>(FindSubView(kSessionTagMess));
   messageControl->AssertValid();
   messageControl->SetTextAndMaybeRefresh(&messageText, true);
   return false;
@@ -245,7 +244,7 @@ void TLoungeDialog::NationalClick(int nationSlot) {
 // FUNCTION: IMPERIALISM 0x0054e1f0
 void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x29a) {
-    TView* okayControl = ResolveControlByTag(kControlTagOkay);
+    TView* okayControl = FindSubView(kControlTagOkay);
     okayControl->AssertValid();
     okayControl->ViewEnable(0, 0);
     okayControl->Show(0, 0);
@@ -311,15 +310,15 @@ void TLoungeDialog::YouHaveNewGameData() {
       static_cast<const char*>(g_pGameFlowState->gameNameString));
   nameControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameControl, 0, 0xc, 0x2b6b, 0x2b6c);
-  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
+  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(FindSubView(kControlTagMapP));
   mapControl->AssertValid();
   mapControl->TakeSatellitePhoto(0);
   mapControl->EnhancePhoto();
   CRect mapBounds;
-  mapControl->QueryBounds(&mapBounds);
+  mapControl->GetFrame(&mapBounds);
   RECT invalidBounds = mapBounds;
   InvalidateCityDialogRectRegion(&invalidBounds, 1);
-  TStaticText* messControl = (TStaticText*)ResolveControlByTag(kSessionTagMess);
+  TStaticText* messControl = (TStaticText*)FindSubView(kSessionTagMess);
   messControl->AssertValid();
   CString messageText;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742, 0x10);

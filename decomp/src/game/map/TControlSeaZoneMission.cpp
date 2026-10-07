@@ -28,7 +28,7 @@ bool TControlSeaZoneMission::IsDefensiveSeaZoneMission() const {
 
 // FUNCTION: IMPERIALISM 0x005387f0
 void TControlSeaZoneMission::Initialize() {
-  float score = static_cast<float>(missionTargetZone->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(missionTargetZone->GetStrategicValue());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
@@ -53,7 +53,7 @@ TMission* TControlSeaZoneMission::GetReplacement() {
     if (terrainIndex != nationId && !nation->IsColonyOf(nationId)) {
       continue;
     }
-    if (missionTargetZone->HasSecondaryNeighborWithNationTag(static_cast<short>(terrainIndex))) {
+    if (missionTargetZone->IsAdjacentToCountry(static_cast<short>(terrainIndex))) {
       foundCoverage = true;
       break;
     }
@@ -68,9 +68,9 @@ TMission* TControlSeaZoneMission::GetReplacement() {
     return NULL;
   }
 
-  if (resolvedPortZone != NULL && resolvedPortZone->QueryPortZoneCapability() &&
-      !resolvedPortZone->QueryZoneCapabilityFlagD(nationId)) {
-    resolvedPortZone = RefreshMissionPortZoneContextForNation();
+  if (resolvedPortZone != NULL && resolvedPortZone->IsPortZone() &&
+      !resolvedPortZone->IsFriendlyWith(nationId)) {
+    resolvedPortZone = PickAmassingZone();
   }
 
   return (resolvedPortZone != NULL) ? this : NULL;
@@ -85,7 +85,7 @@ void TControlSeaZoneMission::SetStateByte8To2() {
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
       if (ship->location != missionTargetZone ||
-          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, ship->nation)) {
+          !g_pDiplomacyTurnStateManager->AreAtWar(nationId, ship->nation)) {
         continue;
       }
 
@@ -129,7 +129,7 @@ void TControlSeaZoneMission::SetStateByte8To2() {
 // Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).
 // FUNCTION: IMPERIALISM 0x00539290
 void TControlSeaZoneMission::CalculateImportance() {
-  float score = static_cast<float>(missionTargetZone->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(missionTargetZone->GetStrategicValue());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
@@ -155,7 +155,7 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   int nationBitmask = 0;
   TZone* firstMatchContext = NULL;
   for (int nation = 0; nation < kMajorNationCount; ++nation) {
-    if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation, nationId)) {
+    if (g_pDiplomacyTurnStateManager->AreInEstablishedWar(nation, nationId)) {
       nationBitmask |= 1 << nation;
       TZone* portZone =
           g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(nation));
@@ -176,7 +176,7 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 }
 
 // FUNCTION: IMPERIALISM 0x00539780
-TZone* TControlSeaZoneMission::RefreshMissionPortZoneContextForNation() {
+TZone* TControlSeaZoneMission::PickAmassingZone() {
   TZone* firstPortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId);
   TZone** cachedOwnerSlot = &firstPortZone->primaryNeighbors[0];
   if (*cachedOwnerSlot == missionTargetZone) {

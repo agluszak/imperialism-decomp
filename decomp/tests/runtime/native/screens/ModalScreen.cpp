@@ -54,7 +54,7 @@ bool ModalScreen::IsRecognised() const {
     return false;
   }
   // The command code alone is not enough: the control it names has to be there to activate.
-  return modal->ResolveControlByTag(static_cast<unsigned int>(DefaultCommand())) != 0;
+  return modal->FindSubView(static_cast<unsigned int>(DefaultCommand())) != 0;
 }
 
 CString ModalScreen::Describe() const {

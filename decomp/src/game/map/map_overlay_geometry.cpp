@@ -322,7 +322,7 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
     if (g_pViewMgr->mapUberPicture->activeUnitCategoryIndex == 2) {
       activeOrderContext = g_pViewMgr->mapUberPicture->orderEntryContext;
     }
-    TZone* resolvedZone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    TZone* resolvedZone = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
     return resolvedZone == activeOrderContext ? 10 : 9;
   }
   return 0;
@@ -336,7 +336,7 @@ int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlag
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainKindStorage ==
       kStrategicTerrainWater) {
-    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    TZone* zone = g_pActiveMapOrderContext->GetZoneAt(nTileIndex);
     bool reachable = false;
     if (zone != 0 && entry->shipCountsByToolbarSlot[0] + entry->shipCountsByToolbarSlot[1] +
                              entry->shipCountsByToolbarSlot[2] +
@@ -356,7 +356,7 @@ int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlag
             }
           }
         }
-        short distance = entry->location->GetCachedMapActionContextDistanceOrRecompute(zone);
+        short distance = entry->location->GetDistanceTo(zone);
         reachable = distance <= (minWeight == 10000 ? static_cast<short>(0) : minWeight);
       }
     }
@@ -379,8 +379,8 @@ int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlag
       }
     }
     if (eligible != 0) {
-      return g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-                 entry->nation, province->ownerNationCode)
+      return g_pDiplomacyTurnStateManager->AreInEstablishedWar(entry->nation,
+                                                               province->ownerNationCode)
                  ? 0x10
                  : 1;
     }

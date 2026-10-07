@@ -32,8 +32,7 @@ TGameSetupMultiplayerPicture::~TGameSetupMultiplayerPicture() {}
 void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
-  TRadioTextCluster* protControl =
-      static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagProt));
+  TRadioTextCluster* protControl = static_cast<TRadioTextCluster*>(FindSubView(kControlTagProt));
   protControl->AssertValid();
   protControl->selectedColorCode = 0x4c;
   protControl->unselectedColorCode = 0x4d;
@@ -52,7 +51,7 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
     g_pGameFlowState->ResetDiplomacyRuntimeSelectionAndSetModeNada();
   }
 
-  TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
+  TInfoBarText* cursControl = static_cast<TInfoBarText*>(FindSubView(kControlTagCurs));
   cursControl->AssertValid();
   TextStyle styleDescriptor;
   styleDescriptor.fontFamily = 0;
@@ -73,7 +72,7 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x24, kControlTagProt);
 
   if (g_pAssetMgr->AreThereStrayClientSaves()) {
-    TControl* spitControl = static_cast<TControl*>(ResolveControlByTag(kControlTagSpit));
+    TControl* spitControl = static_cast<TControl*>(FindSubView(kControlTagSpit));
     spitControl->AssertValid();
     spitControl->ViewEnable(1, 0);
     LoadUiStringByGroupAndIndexToControlObject(0x2759, 7, spitControl);
@@ -89,9 +88,9 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
     if (tag == kControlTagLoad || tag == kControlTagJoin || tag == kControlTagRand ||
         tag == kControlTagScen) {
       TRadioTextCluster* protControl =
-          static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagProt));
+          static_cast<TRadioTextCluster*>(FindSubView(kControlTagProt));
       protControl->AssertValid();
-      TView* selectedProtocolControl = protControl->ResolveControlByTag(protControl->selectedTag);
+      TView* selectedProtocolControl = protControl->FindSubView(protControl->selectedTag);
       selectedProtocolControl->AssertValid();
 
       bool isNotJoin = (tag != kControlTagJoin);
@@ -151,7 +150,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
                                deletedCount);
         g_pViewMgr->ModalMessage(formattedMessage, g_ptGameSetupModalMessage, 0, 0);
 
-        TView* spitControl = ResolveControlByTag(kControlTagSpit);
+        TView* spitControl = FindSubView(kControlTagSpit);
         spitControl->AssertValid();
         spitControl->ViewEnable(0, 0);
         SetControlHoverHelpText(CString(g_szEmptyString), spitControl);

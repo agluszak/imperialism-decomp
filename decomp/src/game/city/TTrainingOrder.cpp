@@ -86,7 +86,7 @@ bool TTrainingOrder::SetQuantity(short quantity) {
     owner->treasuryValue -= static_cast<int>(delta) * 1000;
   }
   productionSummary->MakeUnavailable(resourceTypeIndex, delta);
-  g_pViewMgr->RefreshCityProductionUi();
+  g_pViewMgr->UpdateCityScreen();
   return true;
 }
 

@@ -17,7 +17,7 @@
 #include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x00586e50
-short TAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
+short TAmtBar::AdjustForZero(int baseValue, short requestedValue) {
   return baseValue;
 }
 
@@ -63,10 +63,10 @@ void TAmtBar::DrawAmt() {
     return;
   }
 
-  this->QueryContentBounds(&contentBounds);
+  this->GetExtent(&contentBounds);
   ClipRect(&contentBounds);
 
-  this->QueryBounds(&frameBounds);
+  this->GetFrame(&frameBounds);
 
   CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
   this->TranslatePointToParentChain4E(&translatedOrigin);
@@ -121,13 +121,12 @@ void TAmtBar::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin)
     baseValue = 0;
   }
 
-  short appliedValue = ApplyMoveClamp(baseValue, static_cast<short>(point.x));
+  short appliedValue = AdjustForZero(baseValue, static_cast<short>(point.x));
   TView* owner = this->ownerContext;
   if ((appliedValue == 0) && point.x != 0) {
-    TNumberText* fallbackControl =
-        static_cast<TNumberText*>(owner->ResolveControlByTag(kControlTagMove));
+    TNumberText* fallbackControl = static_cast<TNumberText*>(owner->FindSubView(kControlTagMove));
     if (fallbackControl == 0) {
-      fallbackControl = static_cast<TNumberText*>(owner->ResolveControlByTag(kControlTagSell));
+      fallbackControl = static_cast<TNumberText*>(owner->FindSubView(kControlTagSell));
     }
     if (fallbackControl != 0 &&
         static_cast<short>(fallbackControl->UpdateControlCachedIntFromWindowText()) == 0) {

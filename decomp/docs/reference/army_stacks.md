@@ -21,7 +21,7 @@ The short overload at `0x004a7a40`, named `AddUnitByRosterId` in this source,
 compares the short argument with `TUnit::unitRosterId`, not the unit kind at
 `+0x04`. It prepends the first matching country military unit and leaves the
 stack unchanged if none matches. Its allocation and failure reporting are the
-same as `AddUnitToChainHead`.
+same as `AddUnit`.
 
 `ReadFrom` (`0x004a77b0`) reads a signed word count, then that many roster IDs
 with an integer loop counter. It resolves each ID and prepends each match.
@@ -63,7 +63,7 @@ The declaration and definition use that same width; four-byte stack slots and
 
 Two superficially similar paths stay separate:
 
-- `ReseatChainUnitsAndClearOrders` (`0x004a7d20`) calls `MoveTo` before clearing
+- `MoveAll` (`0x004a7d20`) calls `MoveTo` before clearing
   orders. `RelocateStackUnitsToStackTile` (`0x004a37b0`) clears orders first,
   and calls `MoveTo` only when the tile differs.
 - `InitializeStrategicBattle` (`0x004a7d90`) caches the first unit's fort

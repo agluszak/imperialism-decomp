@@ -31,9 +31,9 @@ void TGameScorePicture::DoPostCreate(int arg) {
   TextStyle scoreStyle = {0, 0, 0, 0};
   COLORREF shadowColor = 0;
 
-  g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+  g_pSfxPlaybackSystem->ResetPlayList();
   g_pSfxPlaybackSystem->AddToPlayList(11);
-  g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+  g_pSfxPlaybackSystem->PlayRandomTrack();
 
   BuildUiTextStyleDescriptor(&scoreStyle, 0, 14, 0x2b68);
   ResolveUiThemeColor(0x2b6a, &shadowColor);
@@ -42,7 +42,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
 
   for (int row = 0; row < 12; ++row) {
     TDropShadowText* label =
-        static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagScra + row)); // 'scra'..
+        static_cast<TDropShadowText*>(FindSubView(kControlTagScra + row)); // 'scra'..
     label->AssertValid();
     if (row == 11) {
       BuildUiTextStyleDescriptor(&scoreStyle, 0, 18, 0x2b68);
@@ -61,7 +61,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
     label->SetTextAndMaybeRefresh(&displayText, true);
 
     TDropShadowText* value =
-        static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagNuma + row)); // 'numa'..
+        static_cast<TDropShadowText*>(FindSubView(kControlTagNuma + row)); // 'numa'..
     value->AssertValid();
     value->InstallTextStyle(scoreStyle, 1);
     value->shadowColor = shadowColor;
@@ -83,8 +83,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
     value->SetTextAndMaybeRefresh(&displayText, true);
   }
 
-  TDropShadowText* victory =
-      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagVict)); // 'vict'
+  TDropShadowText* victory = static_cast<TDropShadowText*>(FindSubView(kControlTagVict)); // 'vict'
   victory->AssertValid();
   g_pSimMgr->GetString(0x2761, 0, &templateText);
   g_apNationStates[g_pSimMgr->GetPlayerCountry()]->FormatOverlayTerrainLabelText(&argumentText);
@@ -96,7 +95,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   victory->shadowColor = shadowColor;
 
   TDropShadowText* pointsFor =
-      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagPtfr)); // 'ptfr'
+      static_cast<TDropShadowText*>(FindSubView(kControlTagPtfr)); // 'ptfr'
   pointsFor->AssertValid();
   g_pSimMgr->GetString(0x2761, 1, &displayText);
   pointsFor->SetTextAndMaybeRefresh(&displayText, true);

@@ -24,22 +24,22 @@ public:
   bool Send(NetMessage* message, bool queueOnly);
 
   bool DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet);
-  void FreeTurnEventPacketBuffer(TurnEventQueuePacket* packet);
-  TurnEventQueuePacket* PopNextTurnEventPacketOrProcessSpecialQueueRecords();
+  void ReleaseMessage(TurnEventQueuePacket* packet);
+  TurnEventQueuePacket* GetMessage();
   bool CheckConnectivityOrShowLocalizedWarningAndReturnReady();
-  int GetSessionActiveNationId(); // 0x5e4280
+  int GetPlayerID(); // 0x5e4280
 
   void NoOpDialogModeTagChangedHook(int arg); // 0x5e42a0 (empty)
   void NotifyIfNationMatchesSessionActiveNation(int nationId);
 
-  int ProbeNationReachabilityAndMarkAwolBitmask();
+  int Ping();
 
   void ResetTurnEventQueueRuntimeRecordBuffer();         // 0x5e3ef0
   bool ResetRuntimeSelectionRecordBufferAndReturnTrue(); // 0x5e34d0
   bool ReturnTrueRuntimeCredentialFinalizeStub();        // 0x5e3c00
 
-  bool OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
-                                                    const char* seed); // 0x5e3a60
+  bool SelectProtocol(int index, int flag,
+                      const char* seed); // 0x5e3a60
 
   unsigned char Host(const char* seedPath, const char* localPlayerName,
                      const char* emptyOrSeed); // 0x5e3ad0

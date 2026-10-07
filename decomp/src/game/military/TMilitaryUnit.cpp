@@ -42,7 +42,7 @@ void TMilitaryUnit::IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeCont
                                   short nationSlot, short registerArg3) {
   militaryRegistrationFlag = true;
   tileIndex = static_cast<short>(-1);
-  RegisterUnitOrderWithOwnerManager(unitKind, nodeContext, nationSlot, registerArg3);
+  IUnit(unitKind, nodeContext, nationSlot, registerArg3);
   eraIndex = static_cast<short>(
       (static_cast<int>(unitKind) + (static_cast<int>(unitKind) >> 31 & 7)) >> 3);
   if (unitKind >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {

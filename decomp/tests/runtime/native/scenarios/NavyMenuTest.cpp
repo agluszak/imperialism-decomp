@@ -18,7 +18,7 @@ namespace {
 // screen queues the okay dismiss before activating bomb.
 //
 // Starting games have no player fleet. Spawning through TShip::IShip is the same model path
-// NativeNavyOrderCases uses; SetActiveMapOrderEntry then builds the task force.
+// NativeNavyOrderCases uses; FocusOnZone then builds the task force.
 class NavyMenuTestCase : public EasyMapScriptScenario {
 public:
   NavyMenuTestCase() : portZone(0), initialSelected(0) {}
@@ -66,7 +66,8 @@ private:
     if (g_pActiveMapOrderContext == 0 || g_pSimMgr == 0) {
       return 0;
     }
-    return g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(g_pSimMgr->GetPlayerCountry());
+    return g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
+        g_pSimMgr->GetPlayerCountry());
   }
 
   void SpawnTwoFrigates(TZone* zone) {

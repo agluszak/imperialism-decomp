@@ -36,7 +36,7 @@ void TMapEditView::DoPostCreate(int arg) {
 
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
   g_pDisplayMgr->MakeNewGWorld(quickDrawSurface, 8, surfaceBounds);
-  ResetAllTileMarkersToSentinel();
+  FlushCache();
 
   g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
@@ -45,7 +45,7 @@ void TMapEditView::DoPostCreate(int arg) {
   TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
   mapOwner->SetMapInteractionMode(5);
   g_pGlobalMapState->field24 = true;
-  g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
+  g_pViewMgr->GenerateMiniMap();
   mapOwner->DisplayMiniMap();
 
   const short defaultResourceByProfile[15] = {-1, -1, 0,  20, 5,  17, 18, 1,
@@ -59,14 +59,14 @@ void TMapEditView::DoPostCreate(int arg) {
   }
 
   TNumberText* provinceNumber =
-      static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+      static_cast<TNumberText*>(ownerContext->FindSubView(kControlTagPrnu));
   provinceNumber->AssertValid();
   provinceNumber->maximumValue = 0x17f;
 }
 
 // FUNCTION: IMPERIALISM 0x0051ce60
 void TMapEditView::NormalClick(short tileIndex, int inputFlags) {
-  ownerContext->ResolveControlByTag(kControlTagEcon)->AssertValid();
+  ownerContext->FindSubView(kControlTagEcon)->AssertValid();
 
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   if (tile.GetTerrainKind() == kStrategicTerrainWater && editorActionMode != 5) {
@@ -112,7 +112,7 @@ void TMapEditView::ControlClick(int tileIndex, int dispatchContext) {
 
   g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2);
   TNumberText* provinceNumber =
-      static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+      static_cast<TNumberText*>(ownerContext->FindSubView(kControlTagPrnu));
   provinceNumber->AssertValid();
   provinceNumber->SetControlValue(provinceId, 1);
   editorActionValue = provinceId;
@@ -123,7 +123,7 @@ void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
   short provinceId =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].cityRecordIndex;
   TNumberText* provinceNumber =
-      static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+      static_cast<TNumberText*>(ownerContext->FindSubView(kControlTagPrnu));
   provinceNumber->AssertValid();
   int nationTag = provinceNumber->UpdateControlCachedIntFromWindowText();
   if (nationTag < 0 || nationTag > 0x17) {
@@ -157,7 +157,7 @@ void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
       InvalidateTile(neighbor);
     }
   }
-  g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
+  g_pViewMgr->GenerateMiniMap();
 }
 
 // FUNCTION: IMPERIALISM 0x0051d210
@@ -275,7 +275,7 @@ void TMapEditView::PlaceProvince(short tileIndex) {
 
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   TNumberText* provinceNumber =
-      static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+      static_cast<TNumberText*>(ownerContext->FindSubView(kControlTagPrnu));
   provinceNumber->AssertValid();
   tile.cityRecordIndex = static_cast<short>(provinceNumber->UpdateControlCachedIntFromWindowText());
   tile.ownerBorderMask = 0;
@@ -355,14 +355,14 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
 
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvinceEditor));
-  TEditText* nameControl = static_cast<TEditText*>(dialog->ResolveControlByTag(kControlTagName));
+  TEditText* nameControl = static_cast<TEditText*>(dialog->FindSubView(kControlTagName));
   nameControl->AssertValid();
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&cityName, 0);
   dialog->PoseModally();
   nameControl->GetCurrentText(&cityName);
   g_pGlobalMapState->cityScoreTable[provinceId].cityName = cityName;
 
-  TCluster* typeControl = static_cast<TCluster*>(dialog->ResolveControlByTag(kControlTagType));
+  TCluster* typeControl = static_cast<TCluster*>(dialog->FindSubView(kControlTagType));
   typeControl->AssertValid();
   if (typeControl->GetCurrentChoice() == static_cast<int>(kControlTagCity)) {
     tile.activeFlags |= 1;
@@ -386,7 +386,7 @@ void TMapEditView::DoKeyEvent(TToolboxEvent* event) {
   case 0x3c: {
     g_pSfxPlaybackSystem->PlaySoundEffect(7000);
     TNumberText* provinceNumber =
-        static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+        static_cast<TNumberText*>(ownerContext->FindSubView(kControlTagPrnu));
     provinceNumber->AssertValid();
     provinceNumber->SetControlValue(provinceNumber->UpdateControlCachedIntFromWindowText() - 1, 1);
     return;
@@ -395,7 +395,7 @@ void TMapEditView::DoKeyEvent(TToolboxEvent* event) {
   case 0x3e: {
     g_pSfxPlaybackSystem->PlaySoundEffect(7000);
     TNumberText* provinceNumber =
-        static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+        static_cast<TNumberText*>(ownerContext->FindSubView(kControlTagPrnu));
     provinceNumber->AssertValid();
     provinceNumber->SetControlValue(provinceNumber->UpdateControlCachedIntFromWindowText() + 1, 1);
     return;

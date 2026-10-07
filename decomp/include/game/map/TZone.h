@@ -42,11 +42,11 @@ public:
                            const char* overrideName);                     // slot 0x0a 0x55f780
   virtual void AssignZoneDisplayNameToOutputRef(CString* outputRef);      // slot 0x0b 0x55f070
   virtual void AssignZoneDisplayNameAliasToOutputRef(CString* outputRef); // slot 0x0c 0x55f090
-  virtual bool QueryZoneCapabilityFlagA();                                // slot 0x0d 0x55e820
-  virtual bool QueryPortZoneCapability();                                 // slot 0x0e 0x55e840
-  virtual bool QueryZoneCapabilityFlagC();                                // slot 0x0f 0x55e860
-  virtual bool QueryZoneCapabilityFlagD(NationSlot nationSlot);           // slot 0x10 0x55e880
-  virtual bool QueryZoneCapabilityFlagE(NationSlot nationSlot);           // slot 0x11 0x55e8a0
+  virtual bool IsSeaZone();                                               // slot 0x0d 0x55e820
+  virtual bool IsPortZone();                                              // slot 0x0e 0x55e840
+  virtual bool IsProvincial();                                            // slot 0x0f 0x55e860
+  virtual bool IsFriendlyWith(NationSlot nationSlot);                     // slot 0x10 0x55e880
+  virtual bool IsEnemyOf(NationSlot nationSlot);                          // slot 0x11 0x55e8a0
   virtual bool CanBeTargetOf(TTaskForce* force);                          // slot 0x12 0x55e8c0
   virtual short FindNearestActiveSeaContextTileFromOffset216();           // slot 0x13 0x55fe60
   virtual short GetActiveNationSlotTile();                                // slot 0x14 0x55fef0
@@ -58,22 +58,22 @@ public:
   short GetContextOrdinalOrInvalid();
   void GenerateZoneStatusCodeIfUnset(); // 0x55f5c0
   void ReconsiderFocusIngot();          // 0x5604e0
-  void AppendUniquePrimaryNeighbor(TZone* zone);
+  void AddNeighbor(TZone* zone);
   void AppendUniqueSecondaryNeighbor(Province* province);
   bool HasNeighbor(TZone* zone);        // 0x55f320, Mac oracle
   bool HasNeighbor(Province* province); // 0x55f3c0, Mac oracle
   TZone* GetSafestNearbyZoneFor(short nationSlot) const;
-  void PropagateMapActionContextDistanceLevelsRecursive(short level); // 0x560f80
-  short GetCachedMapActionContextDistanceOrRecompute(TZone* other);   // 0x5610b0
-  bool HasSecondaryNeighborWithNationTag(short nationTag);
+  void LightDistanceRecursive(short level); // 0x560f80
+  short GetDistanceTo(TZone* other);        // 0x5610b0
+  bool IsAdjacentToCountry(short nationTag);
   int IsZoneMaskOrArrayEntryPresentForKey(short key);
   bool ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
-  bool CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check);
-  void ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth,
-                                                         bool markAdjacentCities); // 0x560ba0
-  TAdmiral* FindReportingAdmiralForNation(int nation);
+  bool HasFreeShipsOfPlayer(int nation, bool skipField34Check);
+  void LightUp(int remainingDepth,
+               bool markAdjacentCities); // 0x560ba0
+  TAdmiral* GetSeniorOfficerOf(int nation);
   void GetNavalAuthority(CString* out, short nation);
-  int ComputeMapActionContextNodeValueAverage();
+  int GetStrategicValue();
 
   short statusCode;                             // +0x04
   char pad06[2];                                // +0x06
@@ -103,7 +103,7 @@ public:
   TZone* GetNextPortZone();
   static TZone* FindPortZoneByTile(short nTileIndex);
 
-  unsigned int BuildNationBitmaskForActiveType3Or4Orders();
+  unsigned int GetPatrolMask();
   unsigned int BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation);
   unsigned int HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation);
 
@@ -113,7 +113,7 @@ public:
 
   void ResolvePortZoneOwnerContextAndDispatch();
 
-  TTaskForce* CreateTaskForceFromNavyOrdersForNationIfEligible(short nation);
+  TTaskForce* AssembleTaskForce(short nation);
 };
 
 ASSERT_SIZE(TZonePrimaryNeighborStretch, 0x10);
@@ -125,5 +125,5 @@ TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
 
 void ResetMapActionContextActivityAndNationFlags(); // 0x560e20
 
-// 0x564570 moved to TOcean::FindMapActionContextContainingNodeByIndex — every original
+// 0x564570 moved to TOcean::GetSeaZoneAdjacentTo — every original
 // callsite loads ecx = g_pActiveMapOrderContext before the call (thiscall, this unused).

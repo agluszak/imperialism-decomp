@@ -19,23 +19,20 @@ public:
   virtual void DoPostCreate(int arg) override;
   virtual void Draw(RECT* rectBuffer) override;
 
-  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,
-                                              int flag, short tileIndex) override;
-  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
-                                                             int flag) override;
+  virtual void DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, int flag,
+                        short tileIndex) override;
+  virtual void DrawGarrison(short tileIndex, CRect* dstRect, int flag) override;
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              bool altOverlay) override;
   virtual void FrameCursorArea() override;
-  virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                   const CPoint* viewportOrigin,
-                                                                   short* outVerticalOffset,
-                                                                   short* outHorizontalOffset,
-                                                                   int projectionScale) override;
+  virtual void TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
+                                  short* outVerticalOffset, short* outHorizontalOffset,
+                                  int projectionScale) override;
   virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
                             short& outRegionBand) override;
   virtual void CenterOn(int tileIndex) override;
   virtual void SetMapViewCellCoordinates(int column, int row) override;
-  virtual void RefreshMapTile(short tileIndex) override;
+  virtual void ImmediateDrawTile(short tileIndex) override;
   virtual bool IsTileVisible(short tileIndex) override;
   void BuildTileViewportRect(short tileIndex, CRect* outRect);       // 0x5686d0
   int ComputeWrappedTileIndexFromViewportPoint(const CPoint* point); // 0x568840

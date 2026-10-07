@@ -37,7 +37,7 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
 
   unsigned int classTag = kControlTagCls0; // 'cls0'
   for (int i = 0; i < 4; ++i, ++classTag) {
-    TView* classControl = g_pDisplayMgr->activeDialog->ResolveControlByTag(classTag);
+    TView* classControl = g_pDisplayMgr->activeDialog->FindSubView(classTag);
     if (classControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUOceanViews, 0x114);
     }
@@ -64,6 +64,6 @@ void TNavyRoster::Close() {
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
   TMapDialog* mapDialog = mapUberPicture->subview2A8;
   mapDialog->suppressMarkerOverlay = false;
-  mapDialog->ResetAllTileMarkersToSentinel();
+  mapDialog->FlushCache();
   mapUberPicture->navyRoster = 0;
 }

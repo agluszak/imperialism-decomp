@@ -32,9 +32,9 @@ TOffersPanelView::~TOffersPanelView() {}
 void TOffersPanelView::DoPostCreate(int arg) {
   TPanelView::DoPostCreate(arg);
 
-  acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+  acceptButton = static_cast<TPictureButton*>(FindSubView(kControlTagAcce));
   acceptButton->AssertValid();
-  rejectButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+  rejectButton = static_cast<TPictureButton*>(FindSubView(kControlTagReje));
   rejectButton->AssertValid();
   acceptButton->clickSoundId = 0x1388;
   rejectButton->clickSoundId = 0x1388;
@@ -42,14 +42,14 @@ void TOffersPanelView::DoPostCreate(int arg) {
   TextStyle sharedStyle;
   BuildUiTextStyleDescriptor(&sharedStyle, 0, 0, 0x2b68);
 
-  TDeluxeText* propControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
+  TDeluxeText* propControl = static_cast<TDeluxeText*>(FindSubView(kControlTagProp));
   propControl->AssertValid();
   propControl->SetTextStyle(sharedStyle, false);
   propControl->shadowTextColor = sharedStyle.textColor;
   propControl->dropShadowEnabled = true;
   propControl->SetJustification(1, false);
 
-  TDeluxeText* textControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
+  TDeluxeText* textControl = static_cast<TDeluxeText*>(FindSubView(kControlTagText));
   textControl->AssertValid();
   textControl->SetTextStyle(sharedStyle, false);
   textControl->shadowTextColor = sharedStyle.textColor;
@@ -81,14 +81,14 @@ void TOffersPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 void TOffersPanelView::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
   if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
-    TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+    TPictureButton* button = static_cast<TPictureButton*>(FindSubView(kControlTagAcce));
     if (button == 0) {
       return;
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(button->clickSoundId, 0, 1);
     QueueDeferredUiEventPacket(this, 0xa, button);
   } else if (commandCode == kUiKeyEscape) {
-    TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+    TPictureButton* button = static_cast<TPictureButton*>(FindSubView(kControlTagReje));
     if (button == 0) {
       return;
     }
@@ -105,7 +105,7 @@ char TOffersPanelView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, 
 
 // FUNCTION: IMPERIALISM 0x004f9450
 bool TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short offerType) {
-  ResolveControlByTag(kControlTagOffr);
+  FindSubView(kControlTagOffr);
   CString templateText;
   CString proposalText;
   CString targetNationName;
@@ -129,10 +129,10 @@ bool TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
     case kDiplomacyProposalAlliance: {
       for (int nation = 0; nation < 7 && !hasEntanglements; ++nation) {
         if (nation != sourceNation && nation != targetNation &&
-            g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-                static_cast<NationSlot>(nation), static_cast<NationSlot>(targetNation)) &&
-            !g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<NationSlot>(sourceNation),
-                                                             static_cast<NationSlot>(nation))) {
+            g_pDiplomacyTurnStateManager->AreAtWar(static_cast<NationSlot>(nation),
+                                                   static_cast<NationSlot>(targetNation)) &&
+            !g_pDiplomacyTurnStateManager->AreAtWar(static_cast<NationSlot>(sourceNation),
+                                                    static_cast<NationSlot>(nation))) {
           hasEntanglements = true;
         }
       }
@@ -153,11 +153,11 @@ bool TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
     case kDiplomacyProposalPeaceTreaty: {
       for (int nation = 0; nation < 7 && !hasEntanglements; ++nation) {
         if (nation != sourceNation && nation != targetNation &&
-            g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-                static_cast<NationSlot>(sourceNation), static_cast<NationSlot>(nation)) ==
+            g_pDiplomacyTurnStateManager->GetTreatyStatus(static_cast<NationSlot>(sourceNation),
+                                                          static_cast<NationSlot>(nation)) ==
                 kDiplomacyRelationshipAlliance &&
-            g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-                static_cast<NationSlot>(nation), static_cast<NationSlot>(targetNation))) {
+            g_pDiplomacyTurnStateManager->AreAtWar(static_cast<NationSlot>(nation),
+                                                   static_cast<NationSlot>(targetNation))) {
           hasEntanglements = true;
         }
       }
@@ -180,16 +180,16 @@ bool TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
   }
 
   bool isNotice = offerType == 0x29a;
-  TView* sheet = ResolveControlByTag(kControlTagShee);
-  TView* wait = ResolveControlByTag(kControlTagWait);
+  TView* sheet = FindSubView(kControlTagShee);
+  TView* wait = FindSubView(kControlTagWait);
   TDeluxeText* message;
   if (isNotice) {
-    message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
+    message = static_cast<TDeluxeText*>(FindSubView(kControlTagText));
     message->AssertValid();
     sheet->Locate(g_diplomacyPopupOffscreenPosition, true);
     wait->Locate(g_diplomacyPopupVisiblePosition, true);
   } else {
-    message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
+    message = static_cast<TDeluxeText*>(FindSubView(kControlTagProp));
     message->AssertValid();
     wait->Locate(g_diplomacyPopupOffscreenPosition, true);
     sheet->Locate(g_diplomacyPopupVisiblePosition, true);
@@ -219,7 +219,7 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   CString minorNationName;
   CString enemyNationName;
 
-  TDeluxeText* proposalText = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
+  TDeluxeText* proposalText = static_cast<TDeluxeText*>(FindSubView(kControlTagProp));
   if (proposalText == 0) {
     FailNilPointerWithAssert(s_SourcePathUDiplomacyViews, 0xca0);
   }
@@ -232,8 +232,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   if (promptCode == 0x0a) {
     for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
       if (nationSlot != enemyNationSlot &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, minorNationSlot) &&
-          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot)) {
+          g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, minorNationSlot) &&
+          !g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, sourceNationSlot)) {
         addsEntanglements = true;
       }
     }
@@ -244,10 +244,10 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
                            static_cast<LPCSTR>(enemyNationName));
   } else if (promptCode == 0x14) {
     for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
-      if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-              static_cast<short>(enemyNationSlot), static_cast<short>(nationSlot)) ==
+      if (g_pDiplomacyTurnStateManager->GetTreatyStatus(static_cast<short>(enemyNationSlot),
+                                                        static_cast<short>(nationSlot)) ==
               kDiplomacyRelationshipAlliance &&
-          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot)) {
+          !g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, sourceNationSlot)) {
         addsEntanglements = true;
       }
     }
@@ -259,8 +259,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   } else if (promptCode == 0x0b) {
     for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
       if (nationSlot != enemyNationSlot &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, minorNationSlot) &&
-          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot)) {
+          g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, minorNationSlot) &&
+          !g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, sourceNationSlot)) {
         addsEntanglements = true;
       }
     }
@@ -271,10 +271,10 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
         static_cast<LPCSTR>(minorNationName), static_cast<LPCSTR>(minorNationName));
   } else {
     for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
-      if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-              static_cast<short>(minorNationSlot), static_cast<short>(nationSlot)) ==
+      if (g_pDiplomacyTurnStateManager->GetTreatyStatus(static_cast<short>(minorNationSlot),
+                                                        static_cast<short>(nationSlot)) ==
               kDiplomacyRelationshipAlliance &&
-          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot)) {
+          !g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, sourceNationSlot)) {
         addsEntanglements = true;
       }
     }
@@ -285,8 +285,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
         static_cast<LPCSTR>(enemyNationName), static_cast<LPCSTR>(minorNationName));
   }
 
-  TView* sheet = ResolveControlByTag(kControlTagShee);
-  TView* wait = ResolveControlByTag(kControlTagWait);
+  TView* sheet = FindSubView(kControlTagShee);
+  TView* wait = FindSubView(kControlTagWait);
   wait->Locate(g_diplomacyPopupOffscreenPosition, false);
   sheet->Locate(g_diplomacyPopupVisiblePosition, true);
   proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, true);

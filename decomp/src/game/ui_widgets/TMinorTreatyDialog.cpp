@@ -30,7 +30,7 @@ void TMinorTreatyDialog::StuffValues() {
       continue;
     }
 
-    TView* minorPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
+    TView* minorPanel = FindSubView(g_minorTreatyPanelTags[minorIndex]);
     if (minorPanel == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2fe);
     }
@@ -41,23 +41,21 @@ void TMinorTreatyDialog::StuffValues() {
       }
 
       TNumberText* relationControl = static_cast<TNumberText*>(
-          minorPanel->ResolveControlByTag(g_majorTreatyCellTags[majorNationSlot]));
+          minorPanel->FindSubView(g_majorTreatyCellTags[majorNationSlot]));
       if (relationControl == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x304);
       }
       relationControl->SetControlValue(
-          g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(majorNationSlot,
-                                                                           minorNationSlot),
-          0);
+          g_pDiplomacyTurnStateManager->GetTreatyStatus(majorNationSlot, minorNationSlot), 0);
       relationControl->ViewEnable(0, 0);
     }
   }
 
-  TView* firstMajorNameRow = ResolveControlByTag(kControlTagRow1); // 'row1'
+  TView* firstMajorNameRow = FindSubView(kControlTagRow1); // 'row1'
   if (firstMajorNameRow == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x30c);
   }
-  TView* secondMajorNameRow = ResolveControlByTag(kControlTagRow2); // 'row2'
+  TView* secondMajorNameRow = FindSubView(kControlTagRow2); // 'row2'
   if (secondMajorNameRow == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x30e);
   }
@@ -69,25 +67,25 @@ void TMinorTreatyDialog::StuffValues() {
 
     g_apTerrainTypeDescriptorTable[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
     TStaticText* firstRowName =
-        static_cast<TStaticText*>(firstMajorNameRow->ResolveControlByTag(nameTags[nationSlot]));
+        static_cast<TStaticText*>(firstMajorNameRow->FindSubView(nameTags[nationSlot]));
     if (firstRowName == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x316);
     }
     firstRowName->SetTextAndMaybeRefresh(&nationName, false);
 
     TStaticText* secondRowName =
-        static_cast<TStaticText*>(secondMajorNameRow->ResolveControlByTag(nameTags[nationSlot]));
+        static_cast<TStaticText*>(secondMajorNameRow->FindSubView(nameTags[nationSlot]));
     if (secondRowName == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x319);
     }
     secondRowName->SetTextAndMaybeRefresh(&nationName, false);
   }
 
-  TView* firstMinorNameColumn = ResolveControlByTag(kControlTagCol1); // 'col1'
+  TView* firstMinorNameColumn = FindSubView(kControlTagCol1); // 'col1'
   if (firstMinorNameColumn == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x31e);
   }
-  TView* secondMinorNameColumn = ResolveControlByTag(kControlTagCol2); // 'col2'
+  TView* secondMinorNameColumn = FindSubView(kControlTagCol2); // 'col2'
   if (secondMinorNameColumn == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x320);
   }
@@ -97,7 +95,7 @@ void TMinorTreatyDialog::StuffValues() {
     if (g_apTerrainTypeDescriptorTable[firstNationSlot] != 0) {
       g_apTerrainTypeDescriptorTable[firstNationSlot]->FormatOverlayTerrainLabelText(&nationName);
       TStaticText* firstColumnName =
-          static_cast<TStaticText*>(firstMinorNameColumn->ResolveControlByTag(nameTags[row]));
+          static_cast<TStaticText*>(firstMinorNameColumn->FindSubView(nameTags[row]));
       if (firstColumnName == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x329);
       }
@@ -108,7 +106,7 @@ void TMinorTreatyDialog::StuffValues() {
     if (g_apTerrainTypeDescriptorTable[secondNationSlot] != 0) {
       g_apTerrainTypeDescriptorTable[secondNationSlot]->FormatOverlayTerrainLabelText(&nationName);
       TStaticText* secondColumnName =
-          static_cast<TStaticText*>(secondMinorNameColumn->ResolveControlByTag(nameTags[row]));
+          static_cast<TStaticText*>(secondMinorNameColumn->FindSubView(nameTags[row]));
       if (secondColumnName == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x331);
       }

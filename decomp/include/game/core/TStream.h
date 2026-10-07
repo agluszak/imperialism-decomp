@@ -27,7 +27,7 @@ public:
   virtual void SetPosition(int position);                   // 11 (0x2c) 0x00488e30
   virtual int GetLength();                                  // 12 (0x30) 0x00488af0
   virtual void SetLength(int length);                       // 13 (0x34) 0x00488e50
-  virtual bool IsAtEnd();                                   // 14 (0x38) 0x00488a80
+  virtual bool AtEnd();                                     // 14 (0x38) 0x00488a80
   virtual void ReadBytes(void* buffer, int sizeBytes);      // 15 (0x3c) primitive, no-op base
   virtual char ReadByte();                                  // 16 (0x40) 1 byte
   virtual char ReadBoolean();                               // 17 (0x44) 1 byte

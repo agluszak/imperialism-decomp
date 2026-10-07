@@ -38,7 +38,7 @@ TOcean g_anchorTOceanInstance;
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0052e7b0
-void TOcean::AllocateRouteNodeStateBufferByCount(short count) {
+void TOcean::SetNumSeaZones(short count) {
   routeNodeCount = count;
   delete[] routeSegments;
   routeSegments = new CRect[count];
@@ -112,7 +112,7 @@ void TOcean::ReadFrom(TStream* stream) {
   }
 
   TObject::ReadFrom(stream);
-  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  AssembleUIForce(0);
 
   short i;
   for (i = 0; i < nationCount; ++i) {
@@ -363,7 +363,7 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
 }
 
 // FUNCTION: IMPERIALISM 0x00562f20
-void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
+void TOcean::UpdateOccupants() {
   // 1) IFuzzySet every map-action context's per-nation key mask.
   for (TZone* maskZone = g_pMapActionContextListHead; maskZone != 0; maskZone = maskZone->prev18) {
     maskZone->nationKeyMask = 0;
@@ -396,10 +396,9 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     unsigned char activeNationBit = static_cast<unsigned char>(1 << activeNationId);
     for (TZone* ctxZone = g_pMapActionContextListHead; ctxZone != 0; ctxZone = ctxZone->prev18) {
       bool nationFlagged = (ctxZone->nationKeyMask & activeNationBit) != 0 ||
-                           ctxZone->HasSecondaryNeighborWithNationTag(activeNationId);
+                           ctxZone->IsAdjacentToCountry(activeNationId);
       if (nationFlagged) {
-        ctxZone->ShowFocusIngot(
-            ctxZone->CanDisplayMapOrderEntryInCurrentContext(g_pSimMgr->GetPlayerCountry(), true));
+        ctxZone->ShowFocusIngot(ctxZone->HasFreeShipsOfPlayer(g_pSimMgr->GetPlayerCountry(), true));
         int slotCursor = activeNationId + 1;
         for (int slotsRemaining = 0; slotsRemaining < 6; ++slotsRemaining) {
           int slotWrapped = slotCursor % 7;
@@ -447,12 +446,12 @@ TZone* TOcean::Sea(short nationCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x00563330
-TZone* TOcean::GetMapActionContextEntryByIndex(short index) {
+TZone* TOcean::Seath(short index) {
   return contextArray + index;
 }
 
 // FUNCTION: IMPERIALISM 0x005633b0
-TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
+TZone* TOcean::GetZoneAt(short seaTileIndex) {
   TTerrainStateRecord& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
   signed char terrainClass = static_cast<signed char>(terrainRecord.tileActionState);
   if (terrainClass == kMapTileActionStateAnchor || terrainClass == kMapTileActionStateDockedFleet) {
@@ -552,7 +551,7 @@ TZone* TOcean::FindFirstPortZoneContextByNation(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005635e0
-void TOcean::EnsurePortZoneForTile(short nTileIndex) {
+void TOcean::BuildPort(short nTileIndex) {
   if (g_pGlobalMapState == 0) {
     return;
   }
@@ -660,7 +659,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00564240
-void TOcean::RemovePortZoneByTile(short nTileIndex) {
+void TOcean::NukePort(short nTileIndex) {
   TZone* zone = g_pMapActionContextListHead;
   while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
     zone = zone->prev18;
@@ -680,7 +679,7 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005642e0
-void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
+void TOcean::CommitForce(TTaskForce* entry) {
   short entryNation = entry->nation;
   if (entryNation != g_pSimMgr->GetPlayerCountry()) {
     return;
@@ -755,18 +754,18 @@ void TOcean::ForgetForce(TTaskForce* entry) {
 
 // FUNCTION: IMPERIALISM 0x005644f0
 TView* __cdecl ResolveDoogControlInActiveDialog() {
-  TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDOOG);
+  TView* control = g_pDisplayMgr->activeDialog->FindSubView(kControlTagDOOG);
   control->AssertValid();
   return control;
 }
 
 // FUNCTION: IMPERIALISM 0x00564530
-int TOcean::ComputeGlobalMapActionContextNodeValueAverage() {
+int TOcean::GetAverageSeaZoneValue() {
   int sum = 0;
   int count = 0;
 
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-    sum += zone->ComputeMapActionContextNodeValueAverage();
+    sum += zone->GetStrategicValue();
     ++count;
   }
 
@@ -774,7 +773,7 @@ int TOcean::ComputeGlobalMapActionContextNodeValueAverage() {
 }
 
 // FUNCTION: IMPERIALISM 0x00564570
-TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
+TZone* TOcean::GetSeaZoneAdjacentTo(int cityRecordIndex) {
   Province* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
     if (zone->secondaryNeighbors.ContainsEntry(target)) {
@@ -785,7 +784,7 @@ TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00564600
-TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone) {
+TTaskForce* TOcean::AssembleUIForce(TZone* pMapOrderContextZone) {
   if (selectedTaskForce != NULL && selectedTaskForce->location != pMapOrderContextZone) {
     selectedTaskForce->RegainVirginity(g_pSimMgr->GetPlayerCountry(), pMapOrderContextZone);
     if (pMapOrderContextZone == NULL) {
@@ -796,8 +795,7 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
   }
   if (selectedTaskForce == NULL) {
     if (pMapOrderContextZone != NULL) {
-      selectedTaskForce = pMapOrderContextZone->CreateTaskForceFromNavyOrdersForNationIfEligible(
-          g_pSimMgr->GetPlayerCountry());
+      selectedTaskForce = pMapOrderContextZone->AssembleTaskForce(g_pSimMgr->GetPlayerCountry());
       return selectedTaskForce;
     }
   } else if (pMapOrderContextZone != NULL) {

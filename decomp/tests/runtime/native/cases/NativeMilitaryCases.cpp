@@ -485,7 +485,7 @@ bool FindHostileRedeployExcluding(TMilitaryUnit* skipUnit, short skipDest, TMili
               g_pGlobalMapState->cityScoreTable[dest].stationedUnitChain == 0) {
             continue;
           }
-          defender = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(dest);
+          defender = g_pGlobalMapState->FindCountry(dest);
           if (defender < 0) {
             continue;
           }
@@ -538,7 +538,7 @@ TTaskForce* CreateFrigateForce(TZone* zone, short nation, int shipCount, int ord
     TShip* ship = new TShip();
     ship->IShip(3, zone, nation, "navy-tactical");
   }
-  force = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(nation);
+  force = zone->AssembleTaskForce(nation);
   if (force != 0) {
     force->SubmitOrders(orders, orderTarget);
   }
@@ -785,7 +785,7 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounterImpl(NativeTransition& transit
 
   TShip* attackerShip = new TShip();
   attackerShip->IShip(attackerType, zone, activeNation, "military-encounter-attacker");
-  TTaskForce* attacker = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(activeNation);
+  TTaskForce* attacker = zone->AssembleTaskForce(activeNation);
   if (attacker == 0) {
     return RuntimeActionResult::Failure("could not create the attacking task force");
   }
@@ -793,7 +793,7 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounterImpl(NativeTransition& transit
 
   TShip* defenderShip = new TShip();
   defenderShip->IShip(defenderType, zone, hostileNation, "military-encounter-defender");
-  TTaskForce* defender = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(hostileNation);
+  TTaskForce* defender = zone->AssembleTaskForce(hostileNation);
   if (defender == 0) {
     return RuntimeActionResult::Failure("could not create the defending task force");
   }
@@ -899,7 +899,7 @@ RuntimeActionResult RunMilitaryPhaseNavalTierExhaustion(NativeTransition& transi
   attackerShip->IShip(3, zone, activeNation, "tier-exhaustion-attacker");
   attackerShip->strength = 100;
   attackerShip->experience = 0;
-  TTaskForce* attacker = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(activeNation);
+  TTaskForce* attacker = zone->AssembleTaskForce(activeNation);
   if (attacker == 0) {
     return RuntimeActionResult::Failure("could not create the tier-exhaustion attacker");
   }
@@ -914,7 +914,7 @@ RuntimeActionResult RunMilitaryPhaseNavalTierExhaustion(NativeTransition& transi
   defenderShip->IShip(3, zone, hostileNation, "tier-exhaustion-defender");
   defenderShip->strength = 100;
   defenderShip->experience = 0;
-  TTaskForce* defender = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(hostileNation);
+  TTaskForce* defender = zone->AssembleTaskForce(hostileNation);
   if (defender == 0) {
     return RuntimeActionResult::Failure("could not create the tier-exhaustion defender");
   }
@@ -1085,7 +1085,7 @@ RuntimeActionResult RunMilitaryPhaseLandInteractive(NativeTransition& transition
   // Same hostile redeploy as RunMilitaryPhaseLandCombat, but with the attacker
   // made the active nation and the real TArmyMgr::DoCombatMoves entry. The
   // battle is then pumped to the active nation's input, "Done" is posted via
-  // FinishTacticalActionAndPostNextMoveCommand, and the rest auto-resolves.
+  // FinishedMove, and the rest auto-resolves.
   srand(0x1234);
   ClearAllMilitaryOrders();
   TMilitaryUnit* unit = 0;
@@ -1115,7 +1115,7 @@ RuntimeActionResult RunMilitaryPhaseLandInteractive(NativeTransition& transition
   if (!PumpArmyBattleToActiveNationInput(battle)) {
     return RuntimeActionResult::Failure("tactical battle did not reach active-nation input");
   }
-  battle->FinishTacticalActionAndPostNextMoveCommand();
+  battle->FinishedMove();
   if (!PumpArmyBattleToActiveNationInput(battle)) {
     return RuntimeActionResult::Failure("Done did not reach the next active-nation input");
   }
@@ -1162,7 +1162,7 @@ RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
       static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0] : battle->players[1]);
   player->retreatOrdered = 1;
   player->notWatchedFlag = 1;
-  player->SelectAndApplyTacticalCursorModeProfile(0);
+  player->SelectStrategy(0);
   player->NextMove();
   if (!AutoArmyBattleToCommit(battle)) {
     return RuntimeActionResult::Failure("retreat did not terminate");
@@ -1421,7 +1421,7 @@ RuntimeActionResult RunInteractiveArmyBattleDone(NativeTransition& transition) {
     return RuntimeActionResult::Failure("tactical battle did not reach active-nation input");
   }
   snapshots.Add(CaptureArmyBattleSnapshot(battle));
-  battle->FinishTacticalActionAndPostNextMoveCommand();
+  battle->FinishedMove();
   if (!PumpArmyBattleToActiveNationInput(battle)) {
     return RuntimeActionResult::Failure("Done did not reach the next active-nation input");
   }
@@ -1507,7 +1507,7 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
       return RuntimeActionResult::Failure(
           "selected tactical unit did not reach a reaction-fire move target");
     }
-    battle->MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(moving, target);
+    battle->MoveAndCycle(moving, target);
     targets.Add(target);
     actuals.Add(moving->tileIndex);
     reactionStopped = moving->tileIndex != target;
@@ -1574,7 +1574,7 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
     int target = -1;
     int tile;
     for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
-      if (battle->ComputeTacticalHoverCursorStateIndex(tile) == hoverState) {
+      if (battle->GetTileCursor(tile) == hoverState) {
         target = tile;
         break;
       }
@@ -1586,7 +1586,7 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
       actuals.Add(-1);
       attacked = 1;
     } else if (hoverState == 5) {
-      battle->FinishTacticalActionAndPostNextMoveCommand();
+      battle->FinishedMove();
       kinds.Add(0);
       targets.Add(-1);
       actuals.Add(-1);
@@ -1613,12 +1613,12 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
         }
       }
       if (target < 0) {
-        battle->FinishTacticalActionAndPostNextMoveCommand();
+        battle->FinishedMove();
         kinds.Add(0);
         targets.Add(-1);
         actuals.Add(-1);
       } else {
-        battle->MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(moving, target);
+        battle->MoveAndCycle(moving, target);
         kinds.Add(1);
         targets.Add(target);
         actuals.Add(moving->tileIndex);
@@ -1686,7 +1686,7 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
       static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0] : battle->players[1]);
   player->retreatOrdered = 1;
   player->notWatchedFlag = 1;
-  player->SelectAndApplyTacticalCursorModeProfile(0);
+  player->SelectStrategy(0);
   player->NextMove();
   if (!AutoArmyBattleToCommit(battle)) {
     JsonFreeValue(initial);
@@ -1831,7 +1831,7 @@ RuntimeActionResult RunSecondTurnMilitaryCleanup(NativeTransition& transition) {
       TGreatPower* nation = g_apNationStates[slot];
       if (country != 0 && nation != 0 &&
           (country->encodedNationSlot < 100 || country->encodedNationSlot > 199)) {
-        nation->RefreshTrackedEntriesAndReplanAiDevelopment(0);
+        nation->ReassessMissions(0);
       }
     }
   }

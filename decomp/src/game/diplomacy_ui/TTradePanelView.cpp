@@ -27,13 +27,13 @@ void TTradePanelView::DoPostCreate(int arg) {
   CString text;
   TView::DoPostCreate(arg);
   diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
-  TView* cluster = ResolveControlByTag(kControlTagClus);
+  TView* cluster = FindSubView(kControlTagClus);
   for (int row = 0; row < 7; ++row) {
-    TView* rowControl = cluster->ResolveControlByTag(kControlTagTraa + row);
+    TView* rowControl = cluster->FindSubView(kControlTagTraa + row);
     g_pSimMgr->GetString(0x2733, static_cast<short>(row + 0x46), &text);
     SetControlHoverHelpText(text, rowControl);
   }
-  TView* linkControl = ResolveControlByTag(kControlTagLink);
+  TView* linkControl = FindSubView(kControlTagLink);
   g_pSimMgr->GetString(0x2733, 0x4d, &text);
   SetControlHoverHelpText(text, linkControl);
   text += s_szSpaceSeparator;
@@ -100,9 +100,9 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004f8d50
 void TTradePanelView::Setup() {
-  TCluster* tradeCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagClus)); // 'clus'
+  TCluster* tradeCluster = static_cast<TCluster*>(FindSubView(kControlTagClus)); // 'clus'
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText), tradeCluster);
-  tradeCluster->SetSelectedChildTagAndRefresh(kControlTagTraa); // 'traa'
+  tradeCluster->SetCurrentChoice(kControlTagTraa); // 'traa'
   diplomacyMapView->selectedGrantRow = 0;
   diplomacyMapView->actionCode = kDipActionTradeSubsidy;
 }

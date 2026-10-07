@@ -925,8 +925,7 @@ short TCityInteriorMinister::AttemptTransport(short resourceType, short requeste
 }
 
 // FUNCTION: IMPERIALISM 0x004c0e50
-short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
-    TCity* city, TTaskList* commandQueue) {
+short TCityInteriorMinister::DoTransport(TCity* city, TTaskList* commandQueue) {
   TGreatPower* owner = greatPower;
   short* citySummary = city->GetUnmetNeeds();
   short remainingNeedCapacity = owner != 0 ? owner->transportCapacity : 0;
@@ -1012,7 +1011,7 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
 }
 
 // FUNCTION: IMPERIALISM 0x004c11c0
-int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
+int TCityInteriorMinister::SelectCitySite() {
   short nationSlot = greatPower->nationSlot;
   TTown* candidateTown = new TTown();
   candidateTown->ITown("Bleah", 0, true, nationSlot);
@@ -1191,7 +1190,7 @@ void TCityInteriorMinister::ProcessUnitOrders() {
   }
 
   RebuildMapTileNeighborBucketsForInteriorMinister();
-  AutoAssignProspectingOrdersByTileHeuristics();
+  ProspectAndDevelop();
   delete[] secondaryDistanceMap;
   delete[] primaryDistanceMap;
 }
@@ -1226,7 +1225,7 @@ void TCityInteriorMinister::DispatchBuilders() {
 
 // FUNCTION: IMPERIALISM 0x004c1ac0
 void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
-  RequestMissingCivilianOrderTypes();
+  ShopForCivilians();
 
   TShortintList candidateTiles;
   TSortedList* towns = greatPower->townMarkerList;
@@ -1280,8 +1279,8 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
     for (int candidateOrdinal = 0; candidateOrdinal < candidateTiles.GetSize() && !assigned;
          ++candidateOrdinal) {
       short tileIndex = candidateTiles.GetAt(candidateOrdinal);
-      if (g_pGlobalMapState->HasCivilianUnitKindWithOrder(
-              tileIndex, order->orderType, EncodeUnitOrder(kUnitOrderDevelopResource))) {
+      if (g_pGlobalMapState->IsUnitPresentWithOrders(tileIndex, order->orderType,
+                                                     EncodeUnitOrder(kUnitOrderDevelopResource))) {
         continue;
       }
       TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
@@ -1296,8 +1295,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
              static_cast<short>(tile->ownerNationTag) == greatPower->nationSlot)) {
           short availableClass = g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, useHighNibble,
                                                                            greatPower->nationSlot);
-          char currentClass =
-              g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, useHighNibble);
+          char currentClass = g_pGlobalMapState->GetDevelopmentLevel(tileIndex, useHighNibble);
           if (availableClass > currentClass) {
             order->MoveTo(tileIndex);
             order->SetOrders(kUnitOrderDevelopResource, tileIndex);
@@ -1312,7 +1310,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c2010
-void TCityInteriorMinister::RequestMissingCivilianOrderTypes() {
+void TCityInteriorMinister::ShopForCivilians() {
   bool hasOrderType[9];
   memset(hasOrderType, 0, sizeof(hasOrderType));
   TSortedList* trackedOrders = greatPower->trackedObjectList;
@@ -1344,7 +1342,7 @@ void TCityInteriorMinister::RequestMissingCivilianOrderTypes() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c2120
-void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
+void TCityInteriorMinister::ProspectAndDevelop() {
   if (g_pSimMgr->GetEconomicTurn() < 4) {
     return;
   }
@@ -1353,7 +1351,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
   float relationScale[23];
   memset(relationScale, 0, sizeof(relationScale));
   for (short minorNation = 7; minorNation < 23; ++minorNation) {
-    if (!g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(minorNation)) {
+    if (!g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(minorNation)) {
       float strongestStanding = 0.1f;
       for (short majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
         if (majorNation != nationSlot &&
@@ -1507,7 +1505,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
       short tileIndex = developerTiles[developerIndex++];
       order->SetOrders(kUnitOrderPurchaseLand, tileIndex);
       order->MoveTo(tileIndex);
-      greatPower->treasuryValue -= g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(tileIndex);
+      greatPower->treasuryValue -= g_pGlobalMapState->LandPrice(tileIndex);
     }
   }
 
@@ -1540,11 +1538,10 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
           continue;
         }
 
-        char currentClass =
-            g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true);
-        if (!g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tileIndex) ||
-            g_pGlobalMapState->HasCivilianUnitKind(tileIndex,
-                                                   EncodeCivilianUnitKind(kCivilianUnitMiner))) {
+        char currentClass = g_pGlobalMapState->GetDevelopmentLevel(tileIndex, true);
+        if (!g_pGlobalMapState->AreMineralsPresent(tileIndex) ||
+            g_pGlobalMapState->IsUnitPresent(tileIndex,
+                                             EncodeCivilianUnitKind(kCivilianUnitMiner))) {
           continue;
         }
         short availableClass = g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 1, nationSlot);
@@ -1623,7 +1620,7 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
     short previousTile;
     short sourceTile = TraceDescendingTileScoreGradientToSource(
         railheadTargetTile, secondaryDistanceMap, &previousTile);
-    if (g_pGlobalMapState->GetTileUnitEntryByOwner(sourceTile, greatPower->nationSlot) == 0) {
+    if (g_pGlobalMapState->GetMyFirstUnit(sourceTile, greatPower->nationSlot) == 0) {
       builderOrder->MoveTo(sourceTile);
       builderOrder->SetOrders(kUnitOrderBuildPort, sourceTile);
     }
@@ -1813,7 +1810,7 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
   char* distanceMap = new char[kStrategicTileCount];
   memset(distanceMap, 0, kStrategicTileCount);
   char* transportMap = 0;
-  greatPower->BuildTransportLinkedInfluenceMap(&transportMap);
+  greatPower->TraceSupplyRoutes(&transportMap);
 
   int remaining = ownedTiles->GetSize();
   int ordinal;
@@ -2021,7 +2018,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
         short requestedCapability = static_cast<short>(list190->At(ordinal));
         short matchedOrderSlot = -1;
         if (requestedCapability < 0x1e) {
-          if (TryApplyCityOrderCapabilitySelectionBySlot(requestedCapability)) {
+          if (AttemptUpgrade(requestedCapability)) {
             ++ordinal;
             continue;
           }
@@ -2352,7 +2349,7 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
   order->FillOrderSheet(&orderSheet, requestedQuantity);
 
   short laborShortfall = 0;
-  short availableLabor = RaisePowerPlantOrderToReachLaborTarget(orderSheet.ForResourceCode(61));
+  short availableLabor = RequestLabor(orderSheet.ForResourceCode(61));
   if (availableLabor < orderSheet.ForResourceCode(61)) {
     laborShortfall = static_cast<short>(orderSheet.ForResourceCode(61) - availableLabor);
     requestedQuantity = static_cast<short>(availableLabor / 2);
@@ -2422,7 +2419,7 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
 }
 
 // FUNCTION: IMPERIALISM 0x004c4d40
-short TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget(short targetLabor) {
+short TCityInteriorMinister::RequestLabor(short targetLabor) {
   TCity* city = greatPower->city;
   short currentLabor = city->productionSummary->strength;
   if (currentLabor < targetLabor) {
@@ -2584,12 +2581,10 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
       short nationSlot = greatPower->nationSlot;
       short developedCapability =
           g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 1, nationSlot);
-      short developedCost =
-          g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true);
+      short developedCost = g_pGlobalMapState->GetDevelopmentLevel(tileIndex, true);
       short currentCapability =
           g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 0, greatPower->nationSlot);
-      short currentCost =
-          g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, false);
+      short currentCost = g_pGlobalMapState->GetDevelopmentLevel(tileIndex, false);
       for (int edge = 0; edge < 2; ++edge) {
         short edgeResource = tile.resourceTypeByEdge[edge];
         if (edgeResource != -1) {
@@ -2657,7 +2652,7 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
 }
 
 // FUNCTION: IMPERIALISM 0x004c56e0
-bool TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot(short capabilitySlot) {
+bool TCityInteriorMinister::AttemptUpgrade(short capabilitySlot) {
   CIterator unitCursor(greatPower->militaryUnitList);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitCursor.Reset());
   while (unitCursor.More()) {

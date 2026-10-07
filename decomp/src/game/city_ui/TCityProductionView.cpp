@@ -222,20 +222,17 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
 
     short drawX = g_anCityBuildingSlotCoords[g_nCityBuildingDrawXOffsetIndex + slot * 2];
     short drawY = g_anCityBuildingSlotCoords[g_nCityBuildingDrawYOffsetIndex + slot * 2];
-    BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, drawX, drawY,
-                                                     pictureId, savedContext, savedFlags);
+    DrawToGWorld(&scratchBounds, scratchContext, drawX, drawY, pictureId, savedContext, savedFlags);
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeTestDriver::Pulse();
 #endif
 
     if (slot == 0xf && city->ownerNation->pendingActionStatus.byAction[10] > '2') {
       SetGWorld(scratchContext, savedFlags);
-      BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0xa6, 0x3c,
-                                                       0x1b9e, savedContext, savedFlags);
+      DrawToGWorld(&scratchBounds, scratchContext, 0xa6, 0x3c, 0x1b9e, savedContext, savedFlags);
     } else if (slot == 0xe && city->ownerNation->pendingActionStatus.byAction[11] >= '3') {
       SetGWorld(scratchContext, savedFlags);
-      BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0x6d, 0x143,
-                                                       0x1b9f, savedContext, savedFlags);
+      DrawToGWorld(&scratchBounds, scratchContext, 0x6d, 0x143, 0x1b9f, savedContext, savedFlags);
     }
   }
 
@@ -257,9 +254,9 @@ IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x004bac50
-void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
-    RECT* destRect, TQuickDrawSurfaceContext* destContext, short offsetY, short offsetX,
-    short resourceId, TQuickDrawSurfaceContext* restoreContext, int restoreFlags) {
+void TCityProductionView::DrawToGWorld(RECT* destRect, TQuickDrawSurfaceContext* destContext,
+                                       short offsetY, short offsetX, short resourceId,
+                                       TQuickDrawSurfaceContext* restoreContext, int restoreFlags) {
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(resourceId));
   TBitmapResourceLoader* loader = *loaderHandle;
@@ -424,18 +421,17 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
         }
         hoverText = assembledText;
       }
-      g_pCursorControlPanel->SetTextAndLayoutRect(hoverText,
-                                                  &g_aCityBuildingHoverSelectionRects[slot]);
+      g_pCursorControlPanel->HotText(hoverText, &g_aCityBuildingHoverSelectionRects[slot]);
     }
 
     if (restrictedSlot && technologyAvailable) {
-      g_pCursorControlPanel->SetTextAndLayoutRect(CString(g_pCityBuildingHoverEmptyText),
-                                                  &g_aCityBuildingHoverSelectionRects[slot]);
+      g_pCursorControlPanel->HotText(CString(g_pCityBuildingHoverEmptyText),
+                                     &g_aCityBuildingHoverSelectionRects[slot]);
     }
 
     if (available) {
       if (selectedBuildingSlot != slot && selectedBuildingSlot != -1) {
-        InvalidateOffsetRegionUsingChildClipRect(buildingClipRegions[selectedBuildingSlot]);
+        InvalidateRegion(buildingClipRegions[selectedBuildingSlot]);
       }
       if (city->GetNextBuildingType(slot) == 0) {
         ScopedMapQuickDrawContext drawContext(this);
@@ -452,10 +448,10 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
   }
 
   if (!handled) {
-    g_pCursorControlPanel->SetTextAndLayoutRect(CString(g_pCityBuildingHoverEmptyText),
-                                                &g_cityBuildingHoverFallbackRect);
+    g_pCursorControlPanel->HotText(CString(g_pCityBuildingHoverEmptyText),
+                                   &g_cityBuildingHoverFallbackRect);
     if (selectedBuildingSlot != -1) {
-      InvalidateOffsetRegionUsingChildClipRect(buildingClipRegions[selectedBuildingSlot]);
+      InvalidateRegion(buildingClipRegions[selectedBuildingSlot]);
       selectedBuildingSlot = -1;
     }
   }
@@ -489,8 +485,8 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
 
   short* summary = city->GetUnmetNeeds();
 
-  TStaticText* control = static_cast<TStaticText*>(
-      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('m', 'e', 'a', 't')));
+  TStaticText* control =
+      static_cast<TStaticText*>(dialogRoot->FindSubView(IMPERIALISM_FOURCC('m', 'e', 'a', 't')));
   if (control == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x440);
   }
@@ -505,8 +501,8 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
                          static_cast<LPCSTR>(value3));
   SetControlHoverHelpText(assembled, control);
 
-  control = static_cast<TStaticText*>(
-      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('p', 'r', 'o', 'd')));
+  control =
+      static_cast<TStaticText*>(dialogRoot->FindSubView(IMPERIALISM_FOURCC('p', 'r', 'o', 'd')));
   if (control == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x44e);
   }
@@ -518,8 +514,8 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
                          static_cast<LPCSTR>(value3));
   SetControlHoverHelpText(assembled, control);
 
-  control = static_cast<TStaticText*>(
-      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('g', 'r', 'a', 'i')));
+  control =
+      static_cast<TStaticText*>(dialogRoot->FindSubView(IMPERIALISM_FOURCC('g', 'r', 'a', 'i')));
   if (control == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x459);
   }
@@ -531,36 +527,36 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
                          static_cast<LPCSTR>(value3));
   SetControlHoverHelpText(assembled, control);
 
-  TView* flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('u', 'n', 't', 'r'));
+  TView* flagControl = dialogRoot->FindSubView(IMPERIALISM_FOURCC('u', 'n', 't', 'r'));
   if (flagControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x465);
   }
   g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0xd : 0xe, &assembled);
   SetControlHoverHelpText(assembled, flagControl);
 
-  flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('t', 'r', 'a', 'i'));
+  flagControl = dialogRoot->FindSubView(IMPERIALISM_FOURCC('t', 'r', 'a', 'i'));
   if (flagControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x46d);
   }
   g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0xf : 0x10, &assembled);
   SetControlHoverHelpText(assembled, flagControl);
 
-  flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('p', 'r', 'o', 'f'));
+  flagControl = dialogRoot->FindSubView(IMPERIALISM_FOURCC('p', 'r', 'o', 'f'));
   if (flagControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x475);
   }
   g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0x11 : 0x12, &assembled);
   SetControlHoverHelpText(assembled, flagControl);
 
-  flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e'));
+  flagControl = dialogRoot->FindSubView(IMPERIALISM_FOURCC('p', 'o', 'w', 'e'));
   if (flagControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x47d);
   }
   g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0x13 : 0x14, &assembled);
   SetControlHoverHelpText(assembled, flagControl);
 
-  TPlacard* placard = static_cast<TPlacard*>(
-      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('s', 'i', 'c', 'k')));
+  TPlacard* placard =
+      static_cast<TPlacard*>(dialogRoot->FindSubView(IMPERIALISM_FOURCC('s', 'i', 'c', 'k')));
   if (placard == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x489);
   }
@@ -568,8 +564,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   g_pSimMgr->GetString(0x2734, foodSubstitutionCount != 0 ? 1 : 2, &assembled);
   SetControlHoverHelpText(assembled, placard);
 
-  placard = static_cast<TPlacard*>(
-      dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('d', 'e', 'a', 'd')));
+  placard = static_cast<TPlacard*>(dialogRoot->FindSubView(IMPERIALISM_FOURCC('d', 'e', 'a', 'd')));
   if (placard == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x492);
   }
@@ -577,7 +572,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   g_pSimMgr->GetString(0x2734, starvationPopulationLoss != 0 ? 3 : 4, &assembled);
   SetControlHoverHelpText(assembled, placard);
 
-  flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'P'));
+  flagControl = dialogRoot->FindSubView(IMPERIALISM_FOURCC('l', 'a', 'b', 'P'));
   if (flagControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x49e);
   }
@@ -590,25 +585,25 @@ void TCityProductionView::UpdateUnits() {
   g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
   TPopulationMgr* population = city->productionSummary;
 
-  TPlacard* placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagUntr)); // 'rtnu'
+  TPlacard* placard = static_cast<TPlacard*>(FindSubView(kControlTagUntr)); // 'rtnu'
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x4b9);
   }
   placard->SetValue(population->baselineSlots->lowSkillCount, true);
 
-  placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagTrai)); // 'iart'
+  placard = static_cast<TPlacard*>(FindSubView(kSummaryTagTrai)); // 'iart'
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x4bc);
   }
   placard->SetValue(population->baselineSlots->mediumSkillCount, true);
 
-  placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagProf)); // 'forp'
+  placard = static_cast<TPlacard*>(FindSubView(kSummaryTagProf)); // 'forp'
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x4bf);
   }
   placard->SetValue(population->baselineSlots->highSkillCount, true);
 
-  placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagPowe)); // 'ewop'
+  placard = static_cast<TPlacard*>(FindSubView(kSummaryTagPowe)); // 'ewop'
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x4c2);
   }
@@ -620,7 +615,7 @@ void TCityProductionView::UpdateUnits() {
   const short resourceIds[6] = {17, 18, 20, 15, 13, 14};
   const int assertionLines[6] = {0x4c8, 0x4cc, 0x4d0, 0x4d5, 0x4d8, 0x4db};
   for (int i = 0; i < 6; ++i) {
-    placard = static_cast<TPlacard*>(ResolveControlByTag(tags[i]));
+    placard = static_cast<TPlacard*>(FindSubView(tags[i]));
     if (placard == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       ReportAssertionFailure(s_SourcePathUCityDialogs, assertionLines[i]);
@@ -628,7 +623,7 @@ void TCityProductionView::UpdateUnits() {
     placard->SetValue(predictedNeeds[resourceIds[i]], true);
   }
 
-  placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagLabP)); // 'Pbal'
+  placard = static_cast<TPlacard*>(FindSubView(kControlTagLabP)); // 'Pbal'
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x4e0);
   }
@@ -795,7 +790,7 @@ void TCityProductionView::SetBuildingPicture(short buildingSlot, short buildingT
   CTemporaryRegion surface;
 
   CRect boundsRecord;
-  this->QueryBounds(&boundsRecord);
+  this->GetFrame(&boundsRecord);
 
   RECT clipRect;
   clipRect.left = boundsRecord.left;
@@ -832,7 +827,7 @@ void TCityProductionView::UpdateFields() {
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionShipyardPrefix + numberText;
   TStaticText* summary =
-      static_cast<TStaticText*>(ResolveControlByTag(kControlTagUshi)); // shipyard summary
+      static_cast<TStaticText*>(FindSubView(kControlTagUshi)); // shipyard summary
   if (summary == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x5ea);
   }
@@ -848,7 +843,7 @@ void TCityProductionView::UpdateFields() {
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionArmoryPrefix + numberText;
-  summary = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUarm)); // armory summary
+  summary = static_cast<TStaticText*>(FindSubView(kControlTagUarm)); // armory summary
   if (summary == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x5f8);
   }
@@ -864,7 +859,7 @@ void TCityProductionView::UpdateFields() {
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionUniversityPrefix + numberText;
-  summary = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUuni)); // university summary
+  summary = static_cast<TStaticText*>(FindSubView(kControlTagUuni)); // university summary
   if (summary == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x606);
   }

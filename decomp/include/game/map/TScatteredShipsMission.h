@@ -33,8 +33,7 @@ public:
   virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x535660 -- returns true
   virtual bool IsHospitalMission() const override;         // slot 0x19 0x535640 -- returns true
 
-  virtual TZone*
-  RefreshMissionPortZoneContextForNation() override; // slot 0x28 0x53bf90 -- returns null
+  virtual TZone* PickAmassingZone() override; // slot 0x28 0x53bf90 -- returns null
 };
 
 ASSERT_SIZE(TScatteredShipsMission, 0x3c);

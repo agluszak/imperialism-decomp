@@ -82,8 +82,7 @@ void TNavyAutoPlayer::NextMove() {
   // March there one echoed step at a time while this ship stays selected.
   if (destinationTileIndex != currentTileIndex && battle->selectedUnit == unit) {
     while (unit->tileIndex != destinationTileIndex) {
-      battle->MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(unit,
-                                                                           destinationTileIndex);
+      battle->MoveAndCycle(unit, destinationTileIndex);
       if (battle->selectedUnit != unit) {
         break;
       }
@@ -93,12 +92,12 @@ void TNavyAutoPlayer::NextMove() {
   // Fire if the target ended up within range.
   int unitRange = unit->GetUnitRange();
   if (bestApproachDistance <= unitRange && battle->selectedUnit == unit) {
-    battle->EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
+    battle->FireOn(unit, targetTileIndex);
   }
 
   delete[] distances;
 
   if (battle->selectedUnit == unit) {
-    battle->FinishTacticalActionAndPostNextMoveCommand();
+    battle->FinishedMove();
   }
 }

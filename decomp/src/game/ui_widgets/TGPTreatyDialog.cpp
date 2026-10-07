@@ -28,7 +28,7 @@ void TGPTreatyDialog::StuffValues() {
       continue;
     }
 
-    TView* rowPanel = ResolveControlByTag(g_majorTreatyPanelTags[row]);
+    TView* rowPanel = FindSubView(g_majorTreatyPanelTags[row]);
     if (rowPanel == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2b3);
     }
@@ -39,14 +39,14 @@ void TGPTreatyDialog::StuffValues() {
       }
 
       TNumberText* relationControl =
-          static_cast<TNumberText*>(rowPanel->ResolveControlByTag(g_majorTreatyCellTags[column]));
+          static_cast<TNumberText*>(rowPanel->FindSubView(g_majorTreatyCellTags[column]));
       if (relationControl == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2b9);
       }
 
       if (column < row) {
-        relationControl->SetControlValue(
-            g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(column, row), 0);
+        relationControl->SetControlValue(g_pDiplomacyTurnStateManager->GetTreatyStatus(column, row),
+                                         0);
         relationControl->ViewEnable(0, 0);
       } else {
         relationControl->Show(0, 1);
@@ -54,11 +54,11 @@ void TGPTreatyDialog::StuffValues() {
     }
   }
 
-  TView* horizontalNames = ResolveControlByTag(kControlTagHori); // 'hori'
+  TView* horizontalNames = FindSubView(kControlTagHori); // 'hori'
   if (horizontalNames == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2c6);
   }
-  TView* verticalNames = ResolveControlByTag(kControlTagVert); // 'vert'
+  TView* verticalNames = FindSubView(kControlTagVert); // 'vert'
   if (verticalNames == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2c8);
   }
@@ -70,14 +70,14 @@ void TGPTreatyDialog::StuffValues() {
 
     g_apTerrainTypeDescriptorTable[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
     TStaticText* horizontalName =
-        static_cast<TStaticText*>(horizontalNames->ResolveControlByTag(nameTags[nationSlot]));
+        static_cast<TStaticText*>(horizontalNames->FindSubView(nameTags[nationSlot]));
     if (horizontalName == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2d0);
     }
     horizontalName->SetTextAndMaybeRefresh(&nationName, false);
 
     TStaticText* verticalName =
-        static_cast<TStaticText*>(verticalNames->ResolveControlByTag(nameTags[nationSlot]));
+        static_cast<TStaticText*>(verticalNames->FindSubView(nameTags[nationSlot]));
     if (verticalName == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2d3);
     }

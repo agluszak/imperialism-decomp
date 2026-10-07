@@ -244,8 +244,7 @@ float TInvadeMission::ValueOf(TMilitaryUnit* candidateUnit) {
   if (flag10 != 0) {
     delta = 0.0f;
   } else if (candidateUnit->ownerMission == this) {
-    delta = GetWeightedSatisfaction() -
-            ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(candidateUnit);
+    delta = GetWeightedSatisfaction() - GetWeightedSatifactionWithout(candidateUnit);
   } else {
     delta =
         ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit) - GetWeightedSatisfaction();

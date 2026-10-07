@@ -141,7 +141,7 @@ LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
     break;
   case 1:
     m_activeDialogContext->PropagateUiResourceContextRecursive(this);
-    m_activeDialogContext->ResolveControlByTag(kControlTagMain); // 'main'
+    m_activeDialogContext->FindSubView(kControlTagMain); // 'main'
     break;
   default:
     ReportAssertionFailure(g_szIncludeViewSourcePath, 0x84);
@@ -324,13 +324,13 @@ void CIncludeView::BeginTracking(CPoint* startPoint, TControl* tracker) {
 void CIncludeView::SetUiRuntimeContextAndActivateMain(TView* activeDialog) {
   m_activeDialogContext = activeDialog;
   m_activeDialogContext->PropagateUiResourceContextRecursive(this);
-  m_activeDialogContext->ResolveControlByTag(kControlTagMain); // 'main'
+  m_activeDialogContext->FindSubView(kControlTagMain); // 'main'
 }
 
 // FUNCTION: IMPERIALISM 0x00483380
 void CIncludeView::RefreshActiveDialogHost(int unusedArg) {
   m_activeDialogContext->PropagateUiResourceContextRecursive(this);
-  m_activeDialogContext->ResolveControlByTag(kControlTagMain);
+  m_activeDialogContext->FindSubView(kControlTagMain);
 }
 
 // FUNCTION: IMPERIALISM 0x004833b0
@@ -349,8 +349,7 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
     ReportAssertionFailure(g_szIncludeViewSourcePath, 0x1d2);
   }
 
-  TPicture* mainPane =
-      static_cast<TPicture*>(m_activeDialogContext->ResolveControlByTag(kControlTagMain));
+  TPicture* mainPane = static_cast<TPicture*>(m_activeDialogContext->FindSubView(kControlTagMain));
   m_pMainPaneDib = mainPane->cachedBitmap;
 
   CPoint bitmapSize;

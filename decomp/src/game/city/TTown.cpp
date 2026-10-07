@@ -121,9 +121,8 @@ void TTown::CalculateRawResources() {
     }
 
     for (short resource = 0; resource < kResourceKindCount; ++resource) {
-      short amount =
-          static_cast<short>(g_pGlobalMapState->FindResourceCapabilityRequirementLevelByType(
-              tileIndex, static_cast<char>(resource)));
+      short amount = static_cast<short>(
+          g_pGlobalMapState->GetAmountOf(tileIndex, static_cast<char>(resource)));
       if (resource != kResourceFish || enabledFlag) {
         resourceYieldByType[resource] = static_cast<short>(resourceYieldByType[resource] + amount);
       }
@@ -162,21 +161,18 @@ void TTown::CalculateResources() {
       bool temporarilyRaisedDevelopment = false;
       if (resource == kResourceCoal || resource == kResourceIron || resource == kResourceOil ||
           resource == kResourceGems || resource == kResourceGold) {
-        temporarilyRaisedDevelopment =
-            g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true) == 0;
+        temporarilyRaisedDevelopment = g_pGlobalMapState->GetDevelopmentLevel(tileIndex, true) == 0;
         if (temporarilyRaisedDevelopment) {
           g_pGlobalMapState->SetDevelopmentLevel(tileIndex, true, 1, false);
         }
         resourceYieldByType[resource] = static_cast<short>(
-            resourceYieldByType[resource] +
-            g_pGlobalMapState->FindResourceCapabilityRequirementLevel(tileIndex, edge));
+            resourceYieldByType[resource] + g_pGlobalMapState->GetResourceAmtAt(tileIndex, edge));
         if (temporarilyRaisedDevelopment) {
           g_pGlobalMapState->SetDevelopmentLevel(tileIndex, true, 0, false);
         }
       } else {
         resourceYieldByType[resource] = static_cast<short>(
-            resourceYieldByType[resource] +
-            g_pGlobalMapState->FindResourceCapabilityRequirementLevel(tileIndex, edge));
+            resourceYieldByType[resource] + g_pGlobalMapState->GetResourceAmtAt(tileIndex, edge));
       }
     }
     AddAdjacentCityDevelopment(this, tileIndex);
@@ -199,9 +195,8 @@ void TTown::CalculateCityResources() {
     }
 
     for (short resource = 0; resource < kResourceKindCount; ++resource) {
-      short amount =
-          static_cast<short>(g_pGlobalMapState->FindResourceCapabilityRequirementLevelByType(
-              tileIndex, static_cast<char>(resource)));
+      short amount = static_cast<short>(
+          g_pGlobalMapState->GetAmountOf(tileIndex, static_cast<char>(resource)));
       if (amount != 0 && g_abResourceTypeUsesHighNibbleFlag[tile->gateFlag] != 0) {
         short capability = g_pTechMgr->capabilityValueByNationAndResource[ownerNation][resource];
         amount = static_cast<short>(g_abUniversityRequirementLevelById[resource][capability]);

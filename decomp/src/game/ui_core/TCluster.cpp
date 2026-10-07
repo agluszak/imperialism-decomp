@@ -94,7 +94,7 @@ int TCluster::GetCurrentChoice() {
 }
 
 // FUNCTION: IMPERIALISM 0x00491790
-void TCluster::SetSelectedChildTagAndRefresh(int childTag) {
+void TCluster::SetCurrentChoice(int childTag) {
   selectedChildTag = childTag;
   if (childList == 0) {
     return;

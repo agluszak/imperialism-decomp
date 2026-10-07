@@ -30,7 +30,7 @@ TView* RuntimeMainView() {
   if (g_pDisplayMgr == 0 || g_pDisplayMgr->activeDialog == 0) {
     return 0;
   }
-  return g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
+  return g_pDisplayMgr->activeDialog->FindSubView(kControlTagMain);
 }
 
 const char* RuntimeClassName(TView* view) {
@@ -285,28 +285,22 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
     unsigned char* coastSource = sourceSurface->pixelBits + coastOffset;
     switch (corner) {
     case 0:
-      mapDialog->CopyCoastCornerMaskBetweenDirections5And0(coastSource, expected, sourceStride,
-                                                           0x40);
+      mapDialog->CoastWedgeN(coastSource, expected, sourceStride, 0x40);
       break;
     case 1:
-      mapDialog->CopyCoastCornerMaskBetweenDirections0And1(coastSource, expected, sourceStride,
-                                                           0x40);
+      mapDialog->CoastWedgeNE(coastSource, expected, sourceStride, 0x40);
       break;
     case 2:
-      mapDialog->CopyCoastCornerMaskBetweenDirections1And2(coastSource, expected, sourceStride,
-                                                           0x40);
+      mapDialog->CoastWedgeSE(coastSource, expected, sourceStride, 0x40);
       break;
     case 3:
-      mapDialog->CopyCoastCornerMaskBetweenDirections2And3(coastSource, expected, sourceStride,
-                                                           0x40);
+      mapDialog->CoastWedgeS(coastSource, expected, sourceStride, 0x40);
       break;
     case 4:
-      mapDialog->CopyCoastCornerMaskBetweenDirections3And4(coastSource, expected, sourceStride,
-                                                           0x40);
+      mapDialog->CoastWedgeSW(coastSource, expected, sourceStride, 0x40);
       break;
     case 5:
-      mapDialog->CopyCoastCornerMaskBetweenDirections4And5(coastSource, expected, sourceStride,
-                                                           0x40);
+      mapDialog->CoastWedgeNW(coastSource, expected, sourceStride, 0x40);
       break;
     }
   }

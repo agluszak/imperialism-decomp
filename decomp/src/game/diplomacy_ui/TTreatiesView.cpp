@@ -27,7 +27,7 @@ void TTreatiesView::DoPostCreate(int arg) {
   TPanelView::DoPostCreate(arg);
   CString text;
   for (int i = 0; i < 7; ++i) {
-    TView* control = ResolveControlByTag(kControlTagScr0 + i);
+    TView* control = FindSubView(kControlTagScr0 + i);
     g_pSimMgr->GetString(0x2733, static_cast<short>(0x37 + i), &text);
     SetControlHoverHelpText(text, control);
   }
@@ -81,9 +81,9 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004f7f10
 void TTreatiesView::Setup() {
-  TCluster* scrollCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagScro)); // 'scro'
+  TCluster* scrollCluster = static_cast<TCluster*>(FindSubView(kControlTagScro)); // 'scro'
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText), scrollCluster);
-  scrollCluster->SetSelectedChildTagAndRefresh(kControlTagScr5); // 'scr5'
+  scrollCluster->SetCurrentChoice(kControlTagScr5); // 'scr5'
   diplomacyMapView->actionCode = kDipActionBuildConsulate;
 }
 

@@ -26,7 +26,7 @@ void TTownNameDialog::DoPostCreate(int arg) {
 
   TView::DoPostCreate(arg);
 
-  TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagName));
+  TEditText* nameControl = static_cast<TEditText*>(FindSubView(kControlTagName));
   if (nameControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x4d3);
   }
@@ -43,10 +43,10 @@ void TTownNameDialog::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x0051bcc0
 void TTownNameDialog::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
-  TView* nameControl = ResolveControlByTag(kControlTagName);
+  TView* nameControl = FindSubView(kControlTagName);
   if (nameControl != NULL) {
     CRect bounds;
-    nameControl->QueryBounds(&bounds);
+    nameControl->GetFrame(&bounds);
     g_pViewMgr->SetForeColor(0xf);
     FillRectWithQuickDrawBrushAndContextOffset(&bounds);
   }
