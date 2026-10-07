@@ -1,4 +1,3 @@
-// Manual decompilation file.
 
 #include "game/ui_core/TStaticText.h"
 

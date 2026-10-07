@@ -253,7 +253,7 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   selectedScenarioIndex = static_cast<short>(scenarioIndex);
   g_pAssetMgr->GetScenarioFileName(scenarioIndex, 0, &path);
 
-  char* fieldBuffer = new char[0x1950];
+  char* fieldBuffer = new char[kStrategicTileCount];
   FILE* metadataStream = fopen(path, "rb");
 
   // Skip everything before the first field separator.
@@ -328,13 +328,13 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   nationDescription->Show(1, 0);
   nationDescription->RefreshControl();
 
-  ScenarioTileDiskRecord* tileRecords = new ScenarioTileDiskRecord[0x1950];
+  ScenarioTileDiskRecord* tileRecords = new ScenarioTileDiskRecord[kStrategicTileCount];
   g_pAssetMgr->GetScenarioFileName(scenarioIndex, 1, &path);
   FILE* mapStream = fopen(path, "rb");
-  fread(tileRecords, sizeof(ScenarioTileDiskRecord), 0x1950, mapStream);
+  fread(tileRecords, sizeof(ScenarioTileDiskRecord), kStrategicTileCount, mapStream);
   ByteSwapScenarioTileRecordWords(tileRecords);
   fclose(mapStream);
-  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     fieldBuffer[tileIndex] = tileRecords[tileIndex].ownerNationTag;
   }
 

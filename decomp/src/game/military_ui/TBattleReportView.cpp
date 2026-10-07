@@ -106,8 +106,8 @@ void TBattleReportView::DoPostCreate(int arg) {
     }
 
     // Spiral outward from the record's cell until a free crowding-grid cell is found.
-    int row = cell / 0x6c;
-    int col = cell % 0x6c;
+    int row = cell / kStrategicMapColumns;
+    int col = cell % kStrategicMapColumns;
     int ringLeg = 1;
     int legStep = 0;
     int radius = 0;
@@ -116,14 +116,14 @@ void TBattleReportView::DoPostCreate(int arg) {
     TMapMgr::StepHexRowColByDirectionWithWrapRules(&row, &col, ringLeg);
     while (radius < 10) {
       int probe;
-      if (row >= 0 && row < 0x3c && col >= 0 && col < 0x6c) {
-        probe = col + row * 0x6c;
+      if (row >= 0 && row < kStrategicMapRows && col >= 0 && col < kStrategicMapColumns) {
+        probe = col + row * kStrategicMapColumns;
       } else {
         probe = -1;
       }
       if (probe != -1 && crowdGrid[probe] == 0) {
-        if (row >= 0 && row < 0x3c && col >= 0 && col < 0x6c) {
-          foundCell = col + row * 0x6c;
+        if (row >= 0 && row < kStrategicMapRows && col >= 0 && col < kStrategicMapColumns) {
+          foundCell = col + row * kStrategicMapColumns;
         } else {
           foundCell = -1;
         }
@@ -143,18 +143,18 @@ void TBattleReportView::DoPostCreate(int arg) {
     }
 
     // Mark a radius-3 neighborhood around the found cell as crowded.
-    row = foundCell / 0x6c;
-    col = foundCell % 0x6c;
+    row = foundCell / kStrategicMapColumns;
+    col = foundCell % kStrategicMapColumns;
     int ring = 0;
     int markLeg = 1;
     int markStep = 0;
-    int markLegLen = foundCell % 0x6c;
+    int markLegLen = foundCell % kStrategicMapColumns;
     TMapMgr::StepHexRowColByDirectionWithWrapRules(&row, &col, 4);
     TMapMgr::StepHexRowColByDirectionWithWrapRules(&row, &col, markLeg);
     while (ring < 3) {
       int probe;
-      if (row >= 0 && row < 0x3c && col >= 0 && col < 0x6c) {
-        probe = col + row * 0x6c;
+      if (row >= 0 && row < kStrategicMapRows && col >= 0 && col < kStrategicMapColumns) {
+        probe = col + row * kStrategicMapColumns;
       } else {
         probe = -1;
       }

@@ -48,7 +48,7 @@ void TCitySiteView::DoPostCreate(int arg) {
   maxRow = -1000;
 
   short activeNationId = g_pSimMgr->GetPlayerCountry();
-  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     if (activeNationId != g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag) {
       continue;
     }

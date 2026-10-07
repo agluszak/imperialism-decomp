@@ -1,9 +1,3 @@
-// SeapointStretch / SeaSegmentStretch -- two concrete instantiations of the project-local
-// stretch<T> growable-array family used by the UMapper coastline/region builder.
-//
-// The single vtable slot of each (Add) is the by-value append. The two adjacent
-// single-slot vtables are distinct from TMapMaker's. See sea_geometry.h.
-
 #include "game/map/sea_geometry.h"
 
 #include <math.h>
@@ -44,7 +38,7 @@ void LoadRegionBorderLinkTableFromCoordsFile() {
     if (clampedRow1 < 0) {
       clampedRow1 = 0;
     }
-    if (clampedRow1 > 0x3c) {
+    if (clampedRow1 > kStrategicMapRows) {
       clampedRow1 = 0x3c;
     }
     int coord1 = (clampedRow1 & 1) + column1 * 2;
@@ -57,7 +51,7 @@ void LoadRegionBorderLinkTableFromCoordsFile() {
     if (clampedRow0 < 0) {
       clampedRow0 = 0;
     }
-    if (clampedRow0 > 0x3c) {
+    if (clampedRow0 > kStrategicMapRows) {
       clampedRow0 = 0x3c;
     }
     int coord0 = (clampedRow0 & 1) + column0 * 2;
@@ -181,7 +175,7 @@ void RebuildRegionBorderLinkLattice() {
       if (clampedEdgeRow < 0) {
         clampedEdgeRow = 0;
       }
-      if (clampedEdgeRow > 0x3c) {
+      if (clampedEdgeRow > kStrategicMapRows) {
         clampedEdgeRow = 0x3c;
       }
       Seapoint edgePoint;
@@ -198,7 +192,7 @@ void RebuildRegionBorderLinkLattice() {
       if (clampedSpanRow < 0) {
         clampedSpanRow = 0;
       }
-      if (clampedSpanRow > 0x3c) {
+      if (clampedSpanRow > kStrategicMapRows) {
         clampedSpanRow = 0x3c;
       }
       int spanCoord = (clampedSpanRow & 1) + column * 2 + 0xc;
@@ -225,7 +219,7 @@ void RebuildRegionBorderLinkLattice() {
       ++index;
 
       row += 0xc;
-    } while (row < 0x3c);
+    } while (row < kStrategicMapRows);
     column += 0xc;
     edgeBase += 0x18;
   } while (column - 2 < 0x6c);
@@ -261,7 +255,7 @@ int OverlayCoordFromTileColumnRowAndSide(int column, int row, char side) {
   if (row < 0) {
     row = 0;
   }
-  if (row > 0x3c) {
+  if (row > kStrategicMapRows) {
     row = 0x3c;
   }
   int overlayX = (row & 1) + column * 2;
@@ -457,8 +451,8 @@ unsigned short SeaSegment::SelectAttrByAngle() const {
 
 // FUNCTION: IMPERIALISM 0x0052ca20
 void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra) {
-  unsigned int row = tileIndex / 0x6c;
-  int overlayX = (row & 1) + (tileIndex % 0x6c) * 2;
+  unsigned int row = tileIndex / kStrategicMapColumns;
+  int overlayX = (row & 1) + (tileIndex % kStrategicMapColumns) * 2;
   if (side == '\0') {
     overlayX += 2;
     ++row;

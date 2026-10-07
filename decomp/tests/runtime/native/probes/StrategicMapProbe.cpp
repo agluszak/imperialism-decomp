@@ -19,7 +19,7 @@ namespace {
 
 bool FindVisibleTileCenters(TMapDialog* mapDialog, CPoint* first, CPoint* second) {
   bool foundFirst = false;
-  for (short tile = 0; tile < 0x1950; ++tile) {
+  for (short tile = 0; tile < kStrategicTileCount; ++tile) {
     short projectedY;
     short projectedX;
     ProjectTileIndexToWrappedScreenOffsetByScale(tile, &mapDialog->viewportOrigin, &projectedY,

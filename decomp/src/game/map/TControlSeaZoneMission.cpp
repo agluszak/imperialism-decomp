@@ -1,16 +1,4 @@
-// TControlSeaZoneMission implementations.
-//
-// TBeachheadMission and TBlockadePortMission both derive from this class
-// (confirmed via RTTI CRuntimeClass ancestry), not from TNavyMission directly.
-// Several overrides here (Initialize, SetStateByte8To2, CalculateImportance,
-// GetReplacement, RefreshMissionPortZoneContextForNation) are therefore
-// inherited unchanged by TBeachheadMission and/or TBlockadePortMission rather
-// than being separately overridden there -- this file owns the `//
-// FUNCTION:` marker for each.
-//
-// RefreshMissionPortZoneContextForNation's per-nation owner cache reuses
-// TZone::primaryNeighbors slot 0 (TZone::field_0x28/0x2c/0x30 in the Ghidra
-// decompile), now modeled as a real TZonePrimaryNeighborStretch member.
+// TBeachheadMission and TBlockadePortMission inherit several of these bodies unchanged.
 
 #include "game/map/TControlSeaZoneMission.h"
 #include "game/nation/TAutoGreatPower.h"

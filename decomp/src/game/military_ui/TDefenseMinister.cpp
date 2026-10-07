@@ -134,7 +134,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
   short ownNationSlot = owner->nationSlot;
 
   TLongintList* ownedRegionsList = new TLongintList();
-  for (int tile = 0; tile < 0x1950; ++tile) {
+  for (int tile = 0; tile < kStrategicTileCount; ++tile) {
     if (g_pGlobalMapState->terrainStateTable[tile].ownerNationTag == ownNationSlot) {
       ownedRegionsList->InsertLast(tile);
     }
@@ -245,11 +245,11 @@ unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegion
   int ownNationSlot = greatPower->nationSlot;
   int regionCount = ownedRegions->GetSize();
 
-  unsigned char* priorityMap = new unsigned char[0x1950];
+  unsigned char* priorityMap = new unsigned char[kStrategicTileCount];
   if (priorityMap == nullptr) {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x1a9);
   }
-  memset(priorityMap, 0, 0x1950);
+  memset(priorityMap, 0, kStrategicTileCount);
 
   short neighbors[6];
   char wrapHorizontally = g_pGlobalMapState->hexNeighborWrapHorizontally;
@@ -328,10 +328,10 @@ unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegion
 int* TDefenseMinister::CreateHomeValueMap() {
   short ownNationSlot = greatPower->nationSlot;
 
-  int* heatmap = new int[0x1950];
-  memset(heatmap, 0, 0x1950 * sizeof(int));
+  int* heatmap = new int[kStrategicTileCount];
+  memset(heatmap, 0, kStrategicTileCount * sizeof(int));
 
-  for (int tile = 0; tile < 0x1950; ++tile) {
+  for (int tile = 0; tile < kStrategicTileCount; ++tile) {
     TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tile];
     if (record->ownerNationTag == ownNationSlot) {
       if ((record->activeFlags & 3) != 0 && record->gateFlag != 0) {
@@ -367,22 +367,22 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
         g_pDiplomacyTurnStateManager->IsNationPairAtWar(ownNationSlot, static_cast<short>(nation));
   }
 
-  int* weightSum = new int[0x1950];
+  int* weightSum = new int[kStrategicTileCount];
   if (weightSum == nullptr) {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x24a);
   }
 
-  int* maxWeight = new int[0x1950];
+  int* maxWeight = new int[kStrategicTileCount];
   if (weightSum == nullptr) {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x24e);
   }
 
-  for (int fillIdx = 0; fillIdx < 0x1950; ++fillIdx) {
+  for (int fillIdx = 0; fillIdx < kStrategicTileCount; ++fillIdx) {
     weightSum[fillIdx] = 0;
     maxWeight[fillIdx] = 1;
   }
 
-  for (int tile = 0; tile < 0x1950; ++tile) {
+  for (int tile = 0; tile < kStrategicTileCount; ++tile) {
     TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tile];
     short ownerTag = record->ownerNationTag;
     if ((atWarWithNation[ownerTag] && excludeEnemyTiles == 0) || ownerTag == ownNationSlot) {
@@ -439,7 +439,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
     }
   }
 
-  for (int i = 0; i < 0x1950; ++i) {
+  for (int i = 0; i < kStrategicTileCount; ++i) {
     if (weightSum[0] != 0 && maxWeight[i] > 1) {
       weightSum[0] = maxWeight[i] * weightSum[0];
     }

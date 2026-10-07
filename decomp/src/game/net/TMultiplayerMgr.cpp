@@ -1786,13 +1786,11 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       // 10-short copy 0x82..0x95 (explicit word loop in the original, not rep movs).
       short* cityWordCursor = &city24->resourceDevelopmentCounts[0];
       short* recordWordCursor = cityRecord->record.resourceDevelopmentCounts;
-      int wordCountdown = 10;
-      do {
+      for (int wordCountdown = 0; wordCountdown < 10; ++wordCountdown) {
         *cityWordCursor = *recordWordCursor;
         ++recordWordCursor;
         ++cityWordCursor;
-        --wordCountdown;
-      } while (wordCountdown != 0);
+      }
     }
     city24->exploredByNationMask = cityRecord->record.exploredByNationMask;
     city24->resourcePresenceMask = cityRecord->record.resourcePresenceMask;
@@ -1805,8 +1803,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     {
       int* incomingTagCursor = statusBoard->statusTags;
       int* ownTagCursor = nationStatusTags;
-      int tagCountdown = 7;
-      do {
+      for (int tagCountdown = 0; tagCountdown < 7; ++tagCountdown) {
         if (*incomingTagCursor != kSessionTagUnkn) {
           *ownTagCursor = *incomingTagCursor;
         }
@@ -1817,8 +1814,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
         }
         ++incomingTagCursor;
         ++ownTagCursor;
-        --tagCountdown;
-      } while (tagCountdown != 0);
+      }
     }
     if (0 < readyCount && busyCount == 1) {
       int busySlot = g_pSimMgr->GetPlayerCountry();

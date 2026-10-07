@@ -17,7 +17,7 @@ void ByteSwapCityScoreTableShortFields(Province* table);
 
 void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short* outColX2,
                                              unsigned short* outRow);
-// 0x5125a0: tileIndex -> (row = tileIndex/0x6c, col = tileIndex%0x6c).
+// 0x5125a0: tileIndex -> (row = tileIndex/kStrategicMapColumns, col = tileIndex%kStrategicMapColumns).
 // ABI: genuine __cdecl free function.
 void SplitTileIndexToRowAndColumn(StrategicTileIndex tileIndex, short* outRow, short* outCol);
 int ComputeStrategicHexTileDistance(StrategicTileIndex tileA, StrategicTileIndex tileB);
@@ -177,9 +177,6 @@ public:
   // Global map session state (g_pGlobalMapState @ 0x006A43D4). LAYOUT: TObject occupies
   // the head; four stream-read scalars fill +0x04..+0x09, terrainStateTable is +0x0c,
   // cityScoreTable is +0x10, and the complete object is 0x28 bytes.
-  // Only ever written, and only as a single byte (MOV byte ptr [this+4],0 in ReadFrom's
-  // decompile) -- not a genuine short; a real 2-byte field there would leave its high byte
-  // unaccounted for.
   // Set after the strategic-map palette preview surface has been rendered; cleared by
   // construction/stream load so the map-data readiness path rebuilds it once.
   bool strategicMapPalettePreviewReady;   // +0x04
@@ -297,7 +294,7 @@ public:
   // 0x004a4190, __thiscall, one stack argument.
   TMilitaryUnit* GetMilitaryMaster(short provinceIndex);
 
-  // ORACLE: Mac TMapMgr::DimmingOff(). Clears perTileVisitedFlag for all 0x1950
+  // ORACLE: Mac TMapMgr::DimmingOff(). Clears perTileVisitedFlag for all kStrategicTileCount
   // strategic-map tiles. 0x00515db0, __thiscall, no args.
   void DimmingOff();
 

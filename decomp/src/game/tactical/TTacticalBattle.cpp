@@ -958,8 +958,7 @@ int TTacticalBattle::SeekPath(TacticalTileIndex walkTileIndex, int pathDepth,
   GetNeighborList(walkTileIndex, neighborTiles);
   TacticalTileIndex* neighborCursor = neighborTiles;
   int* candidateCursor = candidateTiles;
-  int remainingDirections = 6;
-  do {
+  for (int remainingDirections = 0; remainingDirections < 6; ++remainingDirections) {
     TacticalTileIndex neighborTile = *neighborCursor;
     int neighborCost = tileMoveCostArray[neighborTile];
     if (neighborCost != -1 && neighborCost < walkCost) {
@@ -968,8 +967,7 @@ int TTacticalBattle::SeekPath(TacticalTileIndex walkTileIndex, int pathDepth,
       ++candidateCursor;
     }
     ++neighborCursor;
-    --remainingDirections;
-  } while (remainingDirections != 0);
+  }
   if (candidateCount == 0) {
     return -1;
   }
@@ -2151,14 +2149,12 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, Tactical
     if (battleView != 0) {
       GetNeighborList(tileIndex, neighborTiles);
       TacticalTileIndex* neighborCursor = neighborTiles;
-      int remaining = 6;
-      do {
+      for (int remaining = 0; remaining < 6; ++remaining) {
         if (*neighborCursor != -1) {
           battleView->InvalidateTile(*neighborCursor);
         }
         ++neighborCursor;
-        --remaining;
-      } while (remaining != 0);
+      }
     }
   }
   if (battleView != 0) {

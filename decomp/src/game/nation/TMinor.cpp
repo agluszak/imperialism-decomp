@@ -51,23 +51,17 @@ void TMinor::IMinor(NationSlot nationSlot) {
            sizeof(TMinorForeignResourceYieldByMajorNation));
   }
 
-  int tileCount;
-  int tileIndex = 0;
-  for (tileCount = 0x1950; tileCount != 0; --tileCount) {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag == this->nationSlot) {
-      int edgeCount;
-      int edge = 0;
-      for (edgeCount = 2; edgeCount != 0; --edgeCount) {
+      for (int edge = 0; edge < 2; ++edge) {
         int resourceType = static_cast<char>(
             g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge]);
         if (g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0xf && resourceType != -1) {
           ++needCurrentByType[resourceType];
           ++independentResourceCountByType[resourceType];
         }
-        ++edge;
       }
     }
-    ++tileIndex;
   }
 
   if (!g_bMultiplayerScenarioSetupActive) {
@@ -76,7 +70,7 @@ void TMinor::IMinor(NationSlot nationSlot) {
       TLongintList* candidateTiles = new TLongintList();
       short selectedTile = -1;
       short tile;
-      for (tile = 0; tile < 0x1950; ++tile) {
+      for (tile = 0; tile < kStrategicTileCount; ++tile) {
         if (g_pGlobalMapState->terrainStateTable[tile].ownerNationTag == nationSlot) {
           TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tile];
           if (record->activeFlags & 1) {
@@ -415,14 +409,12 @@ void TMinor::InitializeTradeStatus(void) {
   needCurrentByType[7] = 2;
 
   int tileIndex;
-  for (tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {
+  for (tileIndex = 0; static_cast<short>(tileIndex) < kStrategicTileCount; ++tileIndex) {
     if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag == this->nationSlot) {
       short tileGreatPower =
           g_pGlobalMapState->terrainStateTable[tileIndex].secondaryOwnerNationTag;
       if (tileGreatPower == -1) {
-        int edgeCount;
-        int edge = 0;
-        for (edgeCount = 2; edgeCount != 0; --edgeCount) {
+        for (int edge = 0; edge < 2; ++edge) {
           char resourceType =
               g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge];
           if (g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0xf &&
@@ -430,12 +422,9 @@ void TMinor::InitializeTradeStatus(void) {
             ++needCurrentByType[static_cast<int>(resourceType)];
             ++independentResourceCountByType[static_cast<int>(resourceType)];
           }
-          ++edge;
         }
       } else {
-        int edgeCount;
-        int edge = 0;
-        for (edgeCount = 2; edgeCount != 0; --edgeCount) {
+        for (int edge = 0; edge < 2; ++edge) {
           char resourceType =
               g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge];
           if (resourceType != -1) {
@@ -447,15 +436,12 @@ void TMinor::InitializeTradeStatus(void) {
                 .amountByMajorNation[tileGreatPower] += yieldLevel;
             needCurrentByType[static_cast<int>(resourceType)] += yieldLevel;
           }
-          ++edge;
         }
       }
     }
   }
 
-  int powerCount;
-  int power = 0;
-  for (powerCount = 7; powerCount != 0; --powerCount) {
+  for (int power = 0; power < 7; ++power) {
     if (g_apTerrainTypeDescriptorTable[power] != 0) {
       short goldYieldControlledByPower =
           foreignControlledResourceYieldByTypeAndMajorNation[kResourceGold]
@@ -478,7 +464,6 @@ void TMinor::InitializeTradeStatus(void) {
             kResourceGems, this->nationSlot);
       }
     }
-    ++power;
   }
 }
 

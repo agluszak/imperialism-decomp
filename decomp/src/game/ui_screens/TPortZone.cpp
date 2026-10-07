@@ -159,8 +159,8 @@ bool TPortZone::CanBeTargetOf(TTaskForce* force) {
 short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
   short originTile = static_cast<short>(tileOrTerrainId);
   HexSpiralSearchState spiral;
-  spiral.row = originTile / 0x6c;
-  spiral.col = originTile % 0x6c;
+  spiral.row = originTile / kStrategicMapColumns;
+  spiral.col = originTile % kStrategicMapColumns;
   spiral.ring = 0;
   spiral.direction = 5;
   spiral.stepInRing = 1;
@@ -171,7 +171,7 @@ short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
     if (spiral.row >= 0 && spiral.row < 60 && spiral.col >= 0 && spiral.col < 108) {
       candidateTile = static_cast<short>(spiral.col + spiral.row * 108);
     }
-    if (candidateTile >= 0 && candidateTile < 0x1950) {
+    if (candidateTile >= 0 && candidateTile < kStrategicTileCount) {
       TTerrainStateRecord& candidateRecord = g_pGlobalMapState->terrainStateTable[candidateTile];
       TZone* candidateContext = 0;
       if (candidateRecord.tileActionState == kMapTileActionStateAnchor ||

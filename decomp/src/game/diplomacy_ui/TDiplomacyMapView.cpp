@@ -238,8 +238,8 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     if (nation != 0) {
       if (EmptyRgn(g_pMacViewMgr->GetCountryRegion(nationIndex)) == 0) {
         short anchorTile = nation->GetOrComputeOverlayAnchorTileIndex();
-        int labelCenterX = (anchorTile % 0x6c) * 5 + 0x31;
-        int labelY = (anchorTile / 0x6c + 9) * 5;
+        int labelCenterX = (anchorTile % kStrategicMapColumns) * 5 + 0x31;
+        int labelY = (anchorTile / kStrategicMapColumns + 9) * 5;
         nation->GetName(&nationName);
         short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&nationName);
         labelY -= 6;
@@ -286,7 +286,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         labelRect->bottom = labelY + 0xc;
         ClampRectWithinBoundsPreservingSize(labelRect, &mapViewportRect);
 
-        CPoint labelProbe(labelCenterX, (anchorTile / 0x6c + 9) * 5 + 8);
+        CPoint labelProbe(labelCenterX, (anchorTile / kStrategicMapColumns + 9) * 5 + 8);
         RECT* hitRect = &nationTextHitRects[nationIndex];
         hitRect->left = labelCenterX - 8;
         hitRect->right = labelCenterX + 8;
@@ -299,8 +299,8 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         }
         ClampRectWithinBoundsPreservingSize(hitRect, &mapViewportRect);
 
-        int markerX = (static_cast<short>(nation->homeTileIndex) % 0x6c) * 5;
-        int markerY = (static_cast<short>(nation->homeTileIndex) / 0x6c + 9) * 5;
+        int markerX = (static_cast<short>(nation->homeTileIndex) % kStrategicMapColumns) * 5;
+        int markerY = (static_cast<short>(nation->homeTileIndex) / kStrategicMapColumns + 9) * 5;
         RECT* anchorRect = &nationAnchorRects[nationIndex];
         anchorRect->left = markerX + 0x29;
         anchorRect->top = markerY - 8;

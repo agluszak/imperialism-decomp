@@ -198,11 +198,9 @@ int TSoundResourceManager::InitializeDirectSoundDeviceAndChannels() {
   }
   m_field34 = m_device->SetCooperativeLevel(hwnd, DSSCL_NORMAL);
   IDirectSoundBuffer** ppChannel = m_channels;
-  int i = 6;
-  do {
+  for (int i = 0; i < 6; ++i) {
     CreateChannelBuffer(ppChannel);
     ++ppChannel;
-    --i;
-  } while (i != 0);
+  }
   return 1;
 }

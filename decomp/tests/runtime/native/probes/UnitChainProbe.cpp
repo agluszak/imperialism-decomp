@@ -11,7 +11,7 @@
 
 namespace {
 
-enum { kProvinceRecordCount = 0x180, kMapTileCount = 0x1950 };
+enum { kProvinceRecordCount = 0x180, kMapTileCount = kStrategicTileCount };
 
 // No unit chain in a real game is anywhere near this long; a longer walk means a cycle.
 enum { kMaxChainLength = 4096 };

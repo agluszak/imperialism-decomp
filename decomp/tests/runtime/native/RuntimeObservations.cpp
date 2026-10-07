@@ -227,7 +227,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
     return false;
   }
   short coastTile = -1;
-  for (short tile = 0; tile < 0x1950 && coastTile == -1; ++tile) {
+  for (short tile = 0; tile < kStrategicTileCount && coastTile == -1; ++tile) {
     const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
     if (terrain.GetTerrainKind() != kStrategicTerrainWater || terrain.adjacencyMaskB0b == 0 ||
         tile % 108 == 0 || tile % 108 == 107) {
@@ -532,7 +532,7 @@ void CaptureRuntimeMapState(RuntimeRun& run) {
   long ownedTiles[7];
   memset(terrainCounts, 0, sizeof(terrainCounts));
   memset(ownedTiles, 0, sizeof(ownedTiles));
-  for (short tile = 0; tile < 0x1950; ++tile) {
+  for (short tile = 0; tile < kStrategicTileCount; ++tile) {
     const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
     int kind = static_cast<int>(terrain.GetTerrainKind());
     if (kind < 0 || kind >= kStrategicTerrainCount) {

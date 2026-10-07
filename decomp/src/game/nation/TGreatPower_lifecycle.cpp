@@ -1,11 +1,5 @@
-// TGreatPower lifecycle, stream serialization, and pending-action dispatch
-// (ctor, Free, ReadFrom/WriteTo, status prompts, pending-action state
-// machine). Split from TGreatPower.cpp along the address-contiguous
-// 0x4d84b0-0x4db6xx region preceding the UCountry module sample
-//; the remaining TGreatPower.cpp holds the
-// diplomacy/order/advisory bodies of the original Cross/UCountry.cpp.
-// TGreatPower — nation-state object for the seven playable great powers
-// Mac source: UCountry.cpp / UCountryAuto.cpp.
+// TGreatPower construction, serialization and pending-action dispatch. Mac source:
+// UCountry.cpp / UCountryAuto.cpp.
 
 #include <math.h>
 #include <stddef.h>
@@ -302,15 +296,13 @@ void TGreatPower::Free(void) {
   }
   this->defenseMinister = 0;
   TPtrList** trackedSlots = this->diplomacyTrackedSlots;
-  int trackedSlotCount = 0x11;
-  do {
+  for (int trackedSlotCount = 0; trackedSlotCount < 0x11; ++trackedSlotCount) {
     if (*trackedSlots != 0) {
       (*trackedSlots)->ReleasePtrList();
     }
     *trackedSlots = 0;
     ++trackedSlots;
-    --trackedSlotCount;
-  } while (trackedSlotCount != 0);
+  }
   if (this->townMarkerList != 0) {
     this->townMarkerList->FreePayloadsAndDestroy();
   }

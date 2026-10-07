@@ -107,7 +107,7 @@ protected:
   }
 
 private:
-  enum { kGlobalMapTileCount = 0x1950 };
+  enum { kGlobalMapTileCount = kStrategicTileCount };
   enum { kProvinceRecordCount = 0x180 };
   // Every turn-event cursor resource, which the classifier indexes into.
   enum { kTurnEventCursorCount = 0x36 };
@@ -209,7 +209,7 @@ private:
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
       if (terrain.GetTerrainKind() != terrainKind || terrain.firstCivilianOrder != 0 ||
-          tile == spawnedCivilian->tileIndex || tile % 0x6c == 0 || tile % 0x6c == 0x6b) {
+          tile == spawnedCivilian->tileIndex || tile % kStrategicMapColumns == 0 || tile % kStrategicMapColumns == 0x6b) {
         continue;
       }
       if ((terrain.recruitSearchVisited == 0) != mustBeEligible) {
@@ -637,7 +637,7 @@ private:
     int orderableCount = 0;
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
-      if (tile == spawnedCivilian->tileIndex || tile % 0x6c == 0 || tile % 0x6c == 0x6b ||
+      if (tile == spawnedCivilian->tileIndex || tile % kStrategicMapColumns == 0 || tile % kStrategicMapColumns == 0x6b ||
           terrain.firstCivilianOrder != 0 || terrain.recruitSearchVisited != 0 ||
           (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0) {
         continue;

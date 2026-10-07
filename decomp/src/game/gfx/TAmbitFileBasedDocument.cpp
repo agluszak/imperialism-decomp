@@ -75,11 +75,11 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   }
 
   if (!invalidSaveFile) {
-    unsigned char* discardedMapMetadata = new unsigned char[0x1950];
+    unsigned char* discardedMapMetadata = new unsigned char[kStrategicTileCount];
     if (discardedMapMetadata == 0) {
       FailNilPointerWithAssert(g_szUAmbitSourcePath, 0x482);
     }
-    stream->ReadBytes(discardedMapMetadata, 0x1950);
+    stream->ReadBytes(discardedMapMetadata, kStrategicTileCount);
     stream->ReadBytes(discardedMapMetadata, 0x24);
     delete[] discardedMapMetadata;
 
@@ -129,15 +129,15 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   stream->WriteBytes(&savedSessionSlot, 4);
   stream->WriteBytes(g_ScenarioSaveNameBuffer, 0x20);
 
-  char* tileOwnerTags = new char[0x1950];
+  char* tileOwnerTags = new char[kStrategicTileCount];
   if (tileOwnerTags == 0) {
     FailNilPointerWithAssert(g_szUAmbitSourcePath, 0x4e7);
   }
   char* nextTileOwnerTag = tileOwnerTags;
-  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     *nextTileOwnerTag++ = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   }
-  stream->WriteBytes(tileOwnerTags, 0x1950);
+  stream->WriteBytes(tileOwnerTags, kStrategicTileCount);
   delete[] tileOwnerTags;
 
   int economicQuarter = g_pSimMgr->economicTurn / 4;

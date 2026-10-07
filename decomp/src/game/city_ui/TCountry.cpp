@@ -37,18 +37,10 @@ static const unsigned int kAddrClassDescTCountry = 0x00653670;
 
 static bool IsRecruitQuarterTickGate(short tickRaw) {
   int tick = static_cast<int>(tickRaw);
-  int quarterIndex = (tick + ((tick >> 0x1f) & 3)) >> 2;
-  if ((quarterIndex & 1) == 0) {
+  if (((tick / 4) & 1) == 0) {
     return false;
   }
-  int sign = tick >> 0x1f;
-  int mod4 = tick;
-  mod4 ^= sign;
-  mod4 -= sign;
-  mod4 &= 3;
-  mod4 ^= sign;
-  mod4 -= sign;
-  return static_cast<short>(mod4) == 2;
+  return tick % 4 == 2;
 }
 
 // FUNCTION: IMPERIALISM 0x004d6730
@@ -322,7 +314,7 @@ void TCountry::AddMilitia(int nodeContext) {
       capabilityBonus = 0x10;
     } else {
       char capabilityFlag = static_cast<char>(capabilityRow.abilityActiveById[8]);
-      capabilityBonus = (static_cast<int>(-capabilityFlag) >> 0x1f) & 8;
+      capabilityBonus = capabilityFlag > 0 ? 8 : 0;
     }
   }
   TMilitaryUnit* militaryOrder = new TMilitaryUnit();

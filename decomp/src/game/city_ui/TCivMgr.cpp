@@ -289,7 +289,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
   TCivUnit* pClickedTileUnit = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
 
   if ((g_pGlobalMapState->hexNeighborWrapHorizontally != 0) &&
-      ((nTileIndex % 0x6c == 0) || (nTileIndex % 0x6c == 0x6b))) {
+      ((nTileIndex % kStrategicMapColumns == 0) || (nTileIndex % kStrategicMapColumns == 0x6b))) {
     return kCivilianTileActionBlocked;
   }
 
@@ -943,7 +943,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
 
 // FUNCTION: IMPERIALISM 0x004d4740
 void TCivMgr::ResolveCivilianDisputes() {
-  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     TCivUnit* order = tile.firstCivilianOrder;
     if (order == 0 || order->nextAtLocation == 0) {

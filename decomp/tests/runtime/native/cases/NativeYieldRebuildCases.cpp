@@ -110,7 +110,7 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
     return RuntimeActionResult::Failure("the transport influence map was not returned");
   }
   StrategicTileIndex outpostTile = -1;
-  for (int tile = 0; tile < 0x1950; ++tile) {
+  for (int tile = 0; tile < kStrategicTileCount; ++tile) {
     if (linkedTiles[tile] == 0 &&
         static_cast<short>(g_pGlobalMapState->terrainStateTable[tile].ownerNationTag) ==
             nationSlot) {

@@ -1,8 +1,3 @@
-// Real definitions for read-only global data referenced by hand-written code.
-//
-// Symbol names below are taken verbatim from config/symbols.csv (including the few
-// historically double-named float tables) so the address mapping resolves.
-
 class TControl;
 class TView;
 class TInfoBarText;

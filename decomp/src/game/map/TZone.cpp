@@ -32,10 +32,10 @@ static int SignedRemainderByFour(int value) {
 }
 
 static short TileIndexFromRowCol(int row, int col) {
-  if (row < 0 || row >= 0x3c || col < 0 || col >= 0x6c) {
+  if (row < 0 || row >= kStrategicMapRows || col < 0 || col >= kStrategicMapColumns) {
     return -1;
   }
-  return static_cast<short>(col + row * 0x6c);
+  return static_cast<short>(col + row * kStrategicMapColumns);
 }
 
 enum { kFirstMapRegionNationTag = 0x17 };
@@ -692,12 +692,12 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
       }
     }
     tileCandidate = static_cast<short>(tileCandidate + 1);
-    if (tileCandidate >= 0x1950) {
+    if (tileCandidate >= kStrategicTileCount) {
       break;
     }
   }
 
-  if (tileCandidate >= 0x1950) {
+  if (tileCandidate >= kStrategicTileCount) {
     tileCandidate = static_cast<short>(tileOrTerrainId + 0x6c);
   }
 
@@ -707,8 +707,8 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
       ScoreCoastalTileForContextAndCityStateAffinity(bestTileIndex, this, contextProvince);
 
   HexSpiralSearchState spiral;
-  spiral.row = bestTileIndex / 0x6c;
-  spiral.col = bestTileIndex % 0x6c;
+  spiral.row = bestTileIndex / kStrategicMapColumns;
+  spiral.col = bestTileIndex % kStrategicMapColumns;
   spiral.ring = 0;
   spiral.direction = 5;
   spiral.stepInRing = 1;
@@ -1266,12 +1266,12 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
     }
 
     ++tileIndex;
-  } while (static_cast<short>(tileIndex) < 0x1950);
+  } while (static_cast<short>(tileIndex) < kStrategicTileCount);
 }
 
 // FUNCTION: IMPERIALISM 0x00563f50
 void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
-  for (int tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {
+  for (int tileIndex = 0; static_cast<short>(tileIndex) < kStrategicTileCount; ++tileIndex) {
     TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
     TZone* zone;
     if (tileRecord.tileActionState == kMapTileActionStateAnchor ||

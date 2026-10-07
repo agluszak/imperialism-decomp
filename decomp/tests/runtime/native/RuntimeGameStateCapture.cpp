@@ -971,7 +971,7 @@ JSON_Value* CaptureZone(TZone* zone, int liveCount) {
   object.Set("display_name", static_cast<LPCSTR>(zone->displayName));
   object.SetOptional("status_code", static_cast<int>(zone->statusCode));
   const int targetTile = zone->tileOrTerrainId;
-  if (targetTile < -1 || targetTile >= 0x1950) {
+  if (targetTile < -1 || targetTile >= kStrategicTileCount) {
     FailSemanticCapture("ocean target tile is outside the strategic map");
   }
   object.SetOptional("target_tile", targetTile);
@@ -981,7 +981,7 @@ JSON_Value* CaptureZone(TZone* zone, int liveCount) {
   }
   object.SetOptional("seed_owner", seedOwner);
   const int activeTile = static_cast<int>(zone->activeTileIndex);
-  if (activeTile < -1 || activeTile >= 0x1950) {
+  if (activeTile < -1 || activeTile >= kStrategicTileCount) {
     FailSemanticCapture("ocean active tile is outside the strategic map");
   }
   object.SetOptional("active_tile", activeTile);
@@ -1037,7 +1037,7 @@ JSON_Value* CaptureOcean() {
     if (zone->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
       TPortZone* port = static_cast<TPortZone*>(zone);
       const int portTile = static_cast<int>(port->portTileIndex);
-      if (portTile < 0 || portTile >= 0x1950) {
+      if (portTile < 0 || portTile >= kStrategicTileCount) {
         FailSemanticCapture("port-zone tile is outside the strategic map");
       }
       const int formerOwner =
@@ -1341,7 +1341,7 @@ JSON_Value* CaptureMap() {
   object.Set("recruit_search_active", g_pGlobalMapState->recruitSearchActive != 0);
   object.Set("city_score_total", g_pGlobalMapState->cityScoreTotal);
   object.Set("scenario_tag", static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText));
-  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     JsonObject tileObject;
     char tileFlags[192];
@@ -1403,7 +1403,7 @@ JSON_Value* CaptureMap() {
   object.Set("tiles", tiles.Release());
   object.Set("provinces", CaptureProvinces());
   if (g_pGlobalMapState->pendingRiverMouthTile < -1 ||
-      g_pGlobalMapState->pendingRiverMouthTile >= 0x1950) {
+      g_pGlobalMapState->pendingRiverMouthTile >= kStrategicTileCount) {
     FailSemanticCapture("pending river-mouth tile is outside the strategic map");
   }
   object.SetOptional("pending_river_mouth_tile",
@@ -1435,7 +1435,7 @@ JSON_Value* CaptureProvinces() {
     if ((province.exploredByNationMask & 0x80) != 0) {
       FailSemanticCapture("province exploration mask has an unsupported upper bit set");
     }
-    if (province.cityTileIndex < -1 || province.cityTileIndex >= 0x1950) {
+    if (province.cityTileIndex < -1 || province.cityTileIndex >= kStrategicTileCount) {
       FailSemanticCapture("province city tile is outside the strategic map");
     }
     const int linkedTileCount = static_cast<int>(province.linkedRegionCount);
@@ -1443,8 +1443,8 @@ JSON_Value* CaptureProvinces() {
       FailSemanticCapture("province linked-tile count is outside the retail record range");
     }
     if (province.secondaryNeighborTileIndex < -1 ||
-        province.secondaryNeighborTileIndex >= 0x1950 ||
-        province.primaryNeighborTileIndex < -1 || province.primaryNeighborTileIndex >= 0x1950) {
+        province.secondaryNeighborTileIndex >= kStrategicTileCount ||
+        province.primaryNeighborTileIndex < -1 || province.primaryNeighborTileIndex >= kStrategicTileCount) {
       FailSemanticCapture("province neighbor tile is outside the strategic map");
     }
     if (province.navyOrderReachable > 1) {
@@ -1465,7 +1465,7 @@ JSON_Value* CaptureProvinces() {
       }
       adjacency.Add(adjacentProvince);
       const int anchorTile = static_cast<int>(province.adjacentRegionAnchorTiles[neighborIndex]);
-      if (anchorTile < 0 || anchorTile >= 0x1950) {
+      if (anchorTile < 0 || anchorTile >= kStrategicTileCount) {
         FailSemanticCapture("active province adjacency anchor is outside the strategic map");
       }
       adjacencyAnchorTiles.Add(anchorTile);
@@ -1482,7 +1482,7 @@ JSON_Value* CaptureProvinces() {
                        static_cast<int>(province.primaryNeighborTileIndex));
     for (int linkedTileIndex = 0; linkedTileIndex < linkedTileCount; ++linkedTileIndex) {
       const int linkedTile = static_cast<int>(province.linkedTileIndices[linkedTileIndex]);
-      if (linkedTile < 0 || linkedTile >= 0x1950) {
+      if (linkedTile < 0 || linkedTile >= kStrategicTileCount) {
         FailSemanticCapture("active province linked tile is outside the strategic map");
       }
       linkedTiles.Add(linkedTile);
@@ -1708,7 +1708,7 @@ JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
   state.Set("pending_development_actions", CapturePendingDevelopmentActions(minister));
   state.Set("average_development_order_allocation",
             minister->GetAverageDevelopmentOrderAllocation());
-  if (minister->railheadTargetTile < -1 || minister->railheadTargetTile >= 0x1950) {
+  if (minister->railheadTargetTile < -1 || minister->railheadTargetTile >= kStrategicTileCount) {
     FailSemanticCapture("interior-minister railhead target is outside the strategic map");
   }
   state.SetOptional("railhead_target", static_cast<int>(minister->railheadTargetTile));
@@ -1863,7 +1863,7 @@ JSON_Value* CaptureTowns(TGreatPower* nation, bool freshRandomStart) {
     if (memchr(town->name, '\0', sizeof(town->name)) == 0) {
       FailSemanticCapture("major nation town name is not terminated");
     }
-    if (town->tileIndex < 0 || town->tileIndex >= 0x1950) {
+    if (town->tileIndex < 0 || town->tileIndex >= kStrategicTileCount) {
       FailSemanticCapture("major nation town tile is outside the strategic map");
     }
     if (town->ownerNation < 0 || town->ownerNation >= kNationSlotCount) {
@@ -2864,7 +2864,7 @@ JSON_Value* CaptureTurnStartEvents(TSortedList* queue) {
     if (event->IsKindOf(RUNTIME_CLASS(TLandSaleEvent))) {
       TLandSaleEvent* landSale = static_cast<TLandSaleEvent*>(event);
       ASSERT(landSale->nationCode >= 0 && landSale->nationCode < kNationSlotCount);
-      if (landSale->tileIndex < 0 || landSale->tileIndex >= 0x1950) {
+      if (landSale->tileIndex < 0 || landSale->tileIndex >= kStrategicTileCount) {
         FailSemanticCapture("land-sale event tile is outside the strategic map");
       }
       JsonObject landSaleObject;
@@ -3078,7 +3078,7 @@ static bool BuildRuntimeGameStateWithFreshObjectDefaults(const RuntimeRun& run, 
   object.Set("turn", CaptureTurn(run));
   object.Set("unit_ids", g_pSimMgr->lastPersistentUnitId);
   object.Set("map", CaptureMap());
-  if (g_pGlobalMapState->mapViewOriginTile < 0 || g_pGlobalMapState->mapViewOriginTile >= 0x1950) {
+  if (g_pGlobalMapState->mapViewOriginTile < 0 || g_pGlobalMapState->mapViewOriginTile >= kStrategicTileCount) {
     FailSemanticCapture("strategic map view origin is outside the map");
   }
   object.Set("map_view_origin", static_cast<int>(g_pGlobalMapState->mapViewOriginTile));
@@ -3371,7 +3371,7 @@ JSON_Value* CaptureCiviliansEphemeral() {
   JsonObject object;
   JsonArray units;
   if (g_pGlobalMapState != 0 && g_pGlobalMapState->terrainStateTable != 0) {
-    for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
       TUnit* unit = g_pGlobalMapState->terrainStateTable[tileIndex]
                         .firstCivilianOrder;
       while (unit != 0) {

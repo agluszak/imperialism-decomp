@@ -360,15 +360,13 @@ void TCity::Free() {
   }
   this->productionSummary = 0;
   TProductionOrder** orderSlot = this->orderSlots;
-  int remaining = 0x3d;
-  do {
+  for (int remaining = 0; remaining < 0x3d; ++remaining) {
     if (*orderSlot != 0) {
       (*orderSlot)->Free();
     }
     *orderSlot = 0;
     ++orderSlot;
-    --remaining;
-  } while (remaining != 0);
+  }
   if (this->trackedOrderList != 0) {
     this->trackedOrderList->FreePayloadsAndDestroy();
   }
@@ -540,14 +538,12 @@ void TCity::ProduceUnits() {
   } while (remaining != 0);
 
   TUnitOrder** buildCursor = this->buildOrderSlots;
-  int buildRemaining = 0x12;
-  do {
+  for (int buildRemaining = 0; buildRemaining < 0x12; ++buildRemaining) {
     if (*buildCursor != 0) {
       (*buildCursor)->Produce();
     }
     ++buildCursor;
-    --buildRemaining;
-  } while (buildRemaining != 0);
+  }
 
   shipCursor = this->shipOrderSlots;
   remaining = 8;
@@ -594,14 +590,12 @@ void TCity::AddPurchasedItems(short* needVector) {
 // FUNCTION: IMPERIALISM 0x004b4040
 void TCity::AddTransportedItems(short* amounts) {
   short* needCursor = &this->cityStockCotton;
-  int count = 0x17;
-  do {
+  for (int count = 0; count < 0x17; ++count) {
     short amount = *amounts;
     ++amounts;
     *needCursor = static_cast<short>(*needCursor + amount);
     ++needCursor;
-    --count;
-  } while (count != 0);
+  }
   this->cityStockGold = 0;
   this->cityStockGems = 0;
 }

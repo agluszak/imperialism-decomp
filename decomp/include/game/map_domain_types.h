@@ -7,6 +7,12 @@ typedef int TacticalTileIndex;
 typedef int ProvinceIndex;
 typedef short ProvinceIndexStorage;
 
+enum {
+  kStrategicMapColumns = 108,
+  kStrategicMapRows = 60,
+  kStrategicTileCount = kStrategicMapColumns * kStrategicMapRows
+};
+
 enum StrategicHexDirection {
   kStrategicHexDirectionNorthEast = 0,
   kStrategicHexDirectionEast = 1,

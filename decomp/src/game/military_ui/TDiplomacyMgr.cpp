@@ -806,14 +806,12 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
     } while (remaining != 0);
   } else {
     TGreatPower** nationCursor = g_apNationStates;
-    int remaining = 7;
-    do {
+    for (int remaining = 0; remaining < 7; ++remaining) {
       if (*nationCursor != 0) {
         (*nationCursor)->FinishDiplomacyPhase();
       }
       ++nationCursor;
-      --remaining;
-    } while (remaining != 0);
+    }
 
     int row = 0;     // major nation
     int rowBase = 0; // row * kNationSlotCount

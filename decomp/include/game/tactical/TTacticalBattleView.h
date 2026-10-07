@@ -36,8 +36,7 @@ public:
   virtual void PlayAni(RECT* rect, int effectId, int frameCount, TacticalTileIndex tileIndex,
                        int mode); // slot 0x6e 0x5a9170 (ret 0x14)
   virtual void GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
-                         TacticalTileIndex toTileIndex); // slot 0x6f 0x5a9240
-  // Takes no args (bare ret; a decompiler-synthesized pointer argument was spurious).
+                         TacticalTileIndex toTileIndex);   // slot 0x6f 0x5a9240
   virtual void DoGlideAni();                               // slot 0x70 0x5a9550
   TTacticalBattle* tacticalBattle;                         // +0x60 the battle this view renders
   struct TQuickDrawSurfaceContext* battlefieldSurface;     // +0x64 0x5dc x 0x1c2 backdrop

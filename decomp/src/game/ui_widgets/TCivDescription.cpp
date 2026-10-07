@@ -1,4 +1,3 @@
-// TCivDescription wrapper class pair extracted from Ghidra autogen.
 
 #include "decomp_types.h"
 #include "game/ui_widgets/TCivDescription.h"

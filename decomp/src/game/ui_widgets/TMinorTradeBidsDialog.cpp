@@ -33,8 +33,7 @@ void TMinorTradeBidsDialog::StuffValues() {
 
   TMinor** auxiliaryNationSlot = g_apNationAuxRuntimeStateSlots;
   int minorTableByteOffset = 0;
-  int remainingMinorCount = 16;
-  do {
+  for (int remainingMinorCount = 0; remainingMinorCount < 16; ++remainingMinorCount) {
     int minorIndex = minorTableByteOffset / sizeof(TMinor*);
     if (g_apTerrainTypeDescriptorTable[7 + minorIndex] != 0) {
       TView* minorPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
@@ -54,6 +53,5 @@ void TMinorTradeBidsDialog::StuffValues() {
     }
     minorTableByteOffset += sizeof(TMinor*);
     ++auxiliaryNationSlot;
-    --remainingMinorCount;
-  } while (remainingMinorCount != 0);
+  }
 }

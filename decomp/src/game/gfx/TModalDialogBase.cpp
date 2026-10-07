@@ -1,4 +1,3 @@
-// Manual decompilation file.
 
 #include "game/gfx/TModalDialogBase.h"
 

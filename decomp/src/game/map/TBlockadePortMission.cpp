@@ -1,12 +1,3 @@
-// TBlockadePortMission implementations.
-//
-// Real base is TControlSeaZoneMission (RTTI ancestry: TBlockadePortMission ->
-// TControlSeaZoneMission -> TNavyMission -> TMission -> TObject -> CObject).
-// CalculateImportance and RefreshMissionPortZoneContextForNation are NOT
-// overridden here -- they're inherited unchanged from TControlSeaZoneMission,
-// which owns their `// FUNCTION:` markers. Initialize here is a genuinely distinct
-// own override (RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB).
-
 #include "game/tactical/TArmyPlayer.h"
 #include "game/nation/TAutoGreatPower.h"
 #include "game/map/TBlockadePortMission.h"

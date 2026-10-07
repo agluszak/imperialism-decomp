@@ -18,7 +18,7 @@ public:
   void ReadFrom(TStream* stream) override;
   short GetRankingCriterionForGP(short nationSlot) override;
   void MakeNewCity(TCity* city) override;
-  // Two stack args (RET 0x8; Ghidra reads two shorts). Mac oracle: SetParameters.
+  // Mac oracle: SetParameters.
   virtual void SetParameters(short firstParameter, short secondParameter); // slot 0x12 0x4be450
   // Zeroes persistedReservedTable (+0x18..0x25, 7 shorts). 0x4be4f0, __thiscall, no args.
   virtual void ClearPersistedReservedTable();

@@ -138,13 +138,13 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
     return;
   }
 
-  char* tileOwnerTagTable = new char[0x1950];
+  char* tileOwnerTagTable = new char[kStrategicTileCount];
   FILE* file = fopen(path, g_szLiteralRb);
   char headerSkip[0xc];
   fread(headerSkip, 1, 0xc, file);
   unsigned char slotMetadata[0x20];
   fread(slotMetadata, 1, 0x20, file);
-  fread(tileOwnerTagTable, 1, 0x1950, file);
+  fread(tileOwnerTagTable, 1, kStrategicTileCount, file);
   short turnNumber;
   fread(&turnNumber, 1, 2, file);
   unsigned char oneByteFieldA;

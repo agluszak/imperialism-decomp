@@ -32,7 +32,7 @@ bool NationModesMatchSelectedNation(const RuntimeRun& run) {
 }
 
 short FindCapitalSite(short nationSlot) {
-  for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (short tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     StrategicTerrainKind terrainKind = tile.GetTerrainKind();
     bool supportsCity =

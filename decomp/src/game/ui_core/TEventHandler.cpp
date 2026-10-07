@@ -1,8 +1,3 @@
-// Shared base of TView and TApplication. Holds the vtable slots 0x00-0x24
-// and fields through +0x1c that both branches inherit (see game/ui_core/TEventHandler.h).
-// Bodies here are the original shared implementations referenced by both derived vtables;
-// TView/AppRoot override only the few slots where their vtable bodies differ.
-
 #include "game/ui_core/TEventHandler.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_core/TWindow.h"

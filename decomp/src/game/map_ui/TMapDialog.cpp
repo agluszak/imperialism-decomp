@@ -169,10 +169,10 @@ short g_mapProjectionSeamColumn = static_cast<short>(g_mapProjectionColumnScale 
 // FUNCTION: IMPERIALISM 0x00512440
 void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
                                                   short* outY, short* outX, short scale) {
-  unsigned int row = static_cast<unsigned int>(tileIndex / 0x6c);
+  unsigned int row = static_cast<unsigned int>(tileIndex / kStrategicMapColumns);
   *outY = static_cast<short>(row) * 0x40 - static_cast<short>(viewportOrigin->y);
-  short projectedX =
-      static_cast<short>((tileIndex % 0x6c) << 6) - static_cast<short>(viewportOrigin->x);
+  short projectedX = static_cast<short>((tileIndex % kStrategicMapColumns) << 6) -
+                     static_cast<short>(viewportOrigin->x);
   *outX = projectedX;
   if ((row & 1U) != 0) {
     projectedX = static_cast<short>(projectedX + 0x20);
@@ -210,19 +210,19 @@ void ProjectMapCoordinatesToScaledViewport(short row, short column, short* outRo
                                            const CPoint* viewportOrigin) {
   *outColumn = column;
   *outRow = row;
-  if (*outColumn >= 0x6c) {
-    *outColumn = static_cast<short>(*outColumn - 0x6c);
+  if (*outColumn >= kStrategicMapColumns) {
+    *outColumn = static_cast<short>(*outColumn - kStrategicMapColumns);
   } else if (*outColumn < 0) {
-    *outColumn = static_cast<short>(*outColumn + 0x6c);
+    *outColumn = static_cast<short>(*outColumn + kStrategicMapColumns);
   }
   if (*outRow < 0) {
     *outRow = 0;
-  } else if (*outRow >= 0x3c) {
+  } else if (*outRow >= kStrategicMapRows) {
     *outRow = 0x3b;
   }
   if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn) * 0x40 &&
       *outColumn < g_mapProjectionSeamColumn) {
-    *outColumn = static_cast<short>(*outColumn + 0x6c);
+    *outColumn = static_cast<short>(*outColumn + kStrategicMapColumns);
   }
   *outRow = static_cast<short>(*outRow - viewportOrigin->y * g_mapProjectionRowScale);
   *outColumn = static_cast<short>(*outColumn - viewportOrigin->x * g_mapProjectionColumnScale);
@@ -232,22 +232,22 @@ void ProjectMapCoordinatesToScaledViewport(short row, short column, short* outRo
 // FUNCTION: IMPERIALISM 0x005126d0
 void ProjectTileIndexToScaledViewport(short tileIndex, short* outRow, short* outColumn,
                                       const CPoint* viewportOrigin) {
-  unsigned int row = static_cast<unsigned int>(tileIndex / 0x6c);
-  *outColumn = static_cast<short>(tileIndex % 0x6c);
+  unsigned int row = static_cast<unsigned int>(tileIndex / kStrategicMapColumns);
+  *outColumn = static_cast<short>(tileIndex % kStrategicMapColumns);
   *outRow = static_cast<short>(row);
-  if (*outColumn >= 0x6c) {
-    *outColumn = static_cast<short>(*outColumn - 0x6c);
+  if (*outColumn >= kStrategicMapColumns) {
+    *outColumn = static_cast<short>(*outColumn - kStrategicMapColumns);
   } else if (*outColumn < 0) {
-    *outColumn = static_cast<short>(*outColumn + 0x6c);
+    *outColumn = static_cast<short>(*outColumn + kStrategicMapColumns);
   }
   if (*outRow < 0) {
     *outRow = 0;
-  } else if (*outRow >= 0x3c) {
+  } else if (*outRow >= kStrategicMapRows) {
     *outRow = 0x3b;
   }
   if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn) * 0x40 &&
       *outColumn < g_mapProjectionSeamColumn) {
-    *outColumn = static_cast<short>(*outColumn + 0x6c);
+    *outColumn = static_cast<short>(*outColumn + kStrategicMapColumns);
   }
   *outRow = static_cast<short>(*outRow - viewportOrigin->y * g_mapProjectionRowScale);
   *outColumn = static_cast<short>(*outColumn - viewportOrigin->x * g_mapProjectionColumnScale);
@@ -637,7 +637,7 @@ int TMapDialog::GetCenterTile() const {
   int col = viewportOrigin.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
   int row = viewportOrigin.y / 0x40 + 4;
   NormalizeWrappedMapCoord108x60(reinterpret_cast<short*>(&col), reinterpret_cast<short*>(&row));
-  return col + row * 0x6c;
+  return col + row * kStrategicMapColumns;
 }
 
 // FUNCTION: IMPERIALISM 0x0051ad70
@@ -665,9 +665,9 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
     }
   }
   if (static_cast<short>(col) < 0) {
-    col += 0x6c;
-  } else if (static_cast<short>(col) >= 0x6c) {
-    col -= 0x6c;
+    col += kStrategicMapColumns;
+  } else if (static_cast<short>(col) >= kStrategicMapColumns) {
+    col -= kStrategicMapColumns;
   }
   if (static_cast<short>(row) < 0) {
     row = 0;
@@ -2162,9 +2162,9 @@ void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
 // FUNCTION: IMPERIALISM 0x00522c10
 void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2) {
   if (abs(static_cast<int>(col1) - static_cast<int>(col2)) > 0x6c) {
-    if (col1 > 0x6c) {
+    if (col1 > kStrategicMapColumns) {
       col1 -= 0xd8;
-    } else if (col2 > 0x6c) {
+    } else if (col2 > kStrategicMapColumns) {
       col2 -= 0xd8;
     }
   }
@@ -2207,9 +2207,9 @@ void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, in
     short row;
     short band;
     ConvertPoint(mapPoint, column, row, band);
-    int tileIndex = static_cast<int>(row) * 0x6c + column;
+    int tileIndex = static_cast<int>(row) * kStrategicMapColumns + column;
     bool isWater =
-        tileIndex >= 0 && tileIndex < 0x1950 &&
+        tileIndex >= 0 && tileIndex < kStrategicTileCount &&
         g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainWater;
     if (!isWater) {
       drawingWater = false;
@@ -2770,8 +2770,9 @@ void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileInd
 // FUNCTION: IMPERIALISM 0x00565c90
 void ProjectTileIndexToMapGridPoint(int tileIndex, int* outX, int* outY, int cellSize,
                                     short referenceColumn, short referenceRow) {
-  *outY = tileIndex / 0x6c;
+  *outY = tileIndex / kStrategicMapColumns;
   int oddRowOffset = ((*outY & 1) != 0) ? cellSize / 2 : 0;
-  *outX = ((tileIndex - referenceColumn + 0x6c) % 0x6c) * cellSize + oddRowOffset;
+  *outX = ((tileIndex - referenceColumn + kStrategicMapColumns) % kStrategicMapColumns) * cellSize +
+          oddRowOffset;
   *outY = (*outY - referenceRow) * cellSize + cellSize / 2;
 }

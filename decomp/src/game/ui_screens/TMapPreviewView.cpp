@@ -124,7 +124,7 @@ void TMapPreviewView::TakeSatellitePhoto(char* tileOwnerTagTable) {
   TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface);
   int strideBytes = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
 
-  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     short px;
     unsigned short py;
     short hexTags[7];

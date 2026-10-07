@@ -219,18 +219,18 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
 // FUNCTION: IMPERIALISM 0x00528c10
 int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
   int col;
-  if ((tileIndex / 0x6c & 1U) == 0) {
+  if ((tileIndex / kStrategicMapColumns & 1U) == 0) {
     col = g_hexColOffsetEvenRow[direction];
   } else {
     col = g_hexColOffsetOddRow[direction];
   }
-  col = tileIndex % 0x6c + col;
-  int row = tileIndex / 0x6c + g_hexRowOffset[direction];
+  col = tileIndex % kStrategicMapColumns + col;
+  int row = tileIndex / kStrategicMapColumns + g_hexRowOffset[direction];
   if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
     if (col < 0) {
-      col += 0x6c;
+      col += kStrategicMapColumns;
     } else if (0x6b < col) {
-      col -= 0x6c;
+      col -= kStrategicMapColumns;
     }
   } else {
     if (col < 0) {
@@ -240,8 +240,8 @@ int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
       return -1;
     }
   }
-  if (-1 < row && row < 0x3c) {
-    return col + row * 0x6c;
+  if (-1 < row && row < kStrategicMapRows) {
+    return col + row * kStrategicMapColumns;
   }
   return -1;
 }
@@ -263,8 +263,8 @@ int* WrapExtendedMapXCoordinateInPlace(int* x) {
 
 // FUNCTION: IMPERIALISM 0x0052c990
 int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side) {
-  unsigned int row = tileIndex / 0x6c;
-  int column = (row & 1) + (tileIndex % 0x6c) * 2;
+  unsigned int row = tileIndex / kStrategicMapColumns;
+  int column = (row & 1) + (tileIndex % kStrategicMapColumns) * 2;
   int result = column;
   if (side == '\0') {
     result = column + 2;
@@ -392,9 +392,10 @@ int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlag
 // FUNCTION: IMPERIALISM 0x00565d20
 void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY, int tileScale,
                                                  short originCol, short originRow) {
-  int row = tileIndex / 0x6c;
+  int row = tileIndex / kStrategicMapColumns;
   outScreenXY[1] = row;
   int halfTileXOffset = (row & 1) == 0 ? tileScale / 2 : 0;
   outScreenXY[1] = (row - originRow) * tileScale;
-  outScreenXY[0] = (((tileIndex - originCol) + 0x6c) % 0x6c) * tileScale - halfTileXOffset;
+  outScreenXY[0] =
+      (((tileIndex - originCol) + kStrategicMapColumns) % 0x6c) * tileScale - halfTileXOffset;
 }

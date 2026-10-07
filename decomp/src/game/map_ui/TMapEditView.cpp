@@ -22,7 +22,7 @@
 
 namespace {
 
-const int kMapTileCount = 0x1950;
+const int kMapTileCount = kStrategicTileCount;
 const int kCityRecordCount = 0x180;
 
 } // namespace

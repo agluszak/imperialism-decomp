@@ -145,11 +145,11 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   if (this->city == 0) {
     return;
   }
-  char* influenceMap = new char[0x1950];
+  char* influenceMap = new char[kStrategicTileCount];
   if (influenceMap == 0) {
     FailNilPointerWithAssert(g_szUCountrySourcePath, 0xa0e);
   }
-  memset(influenceMap, 0, 0x1950);
+  memset(influenceMap, 0, kStrategicTileCount);
 
   CIterator markerCursor(this->townMarkerList);
   TTown* marker = static_cast<TTown*>(markerCursor.Reset());
@@ -230,8 +230,8 @@ void TGreatPower::TraceRail(char* regionMap, short regionId) {
 char* TGreatPower::BuildCityInfluenceLevelMap() {
   BuildTransportLinkedInfluenceMap(nullptr);
 
-  char* influenceByTile = new char[0x1950];
-  memset(influenceByTile, 0, 0x1950);
+  char* influenceByTile = new char[kStrategicTileCount];
+  memset(influenceByTile, 0, kStrategicTileCount);
 
   CIterator townIter(townMarkerList);
   for (TTown* town = static_cast<TTown*>(townIter.Reset()); townIter.More();
@@ -260,7 +260,7 @@ char* TGreatPower::BuildCityInfluenceLevelMap() {
 
 // FUNCTION: IMPERIALISM 0x004dbd20
 void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) {
-  const int kMapRegionSlotCount = 0x1950;
+  const int kMapRegionSlotCount = kStrategicTileCount;
 
   short* currentNeedByType = this->needCurrentByType;
   short* developmentByType = &this->needCurrentByType[7]; // +0x11c overlays this runtime array.
@@ -382,7 +382,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
           int sum01 = resourceSums[0] + resourceSums[1];
           if (sum01 != 0) {
             int prod = this->city->GetBuildingType(1);
-            int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
+            int prodLimit = prod / 4;
             if (static_cast<int>(*stage1CounterA) < prodLimit &&
                 static_cast<int>(*stage1CounterA) < sum01 / 2) {
               pendingStage = 1;
@@ -393,7 +393,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
 
           if (resourceSums[2] != 0) {
             int prod = this->city->GetBuildingType(5);
-            int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
+            int prodLimit = prod / 4;
             if (static_cast<int>(*stage1CounterB) < prodLimit &&
                 static_cast<int>(*stage1CounterB) < resourceSums[2] / 2) {
               pendingStage = 1;
@@ -404,7 +404,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
 
           if (resourceSums[3] != 0) {
             int prod = this->city->GetBuildingType(3);
-            int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
+            int prodLimit = prod / 4;
             if (static_cast<int>(*stage1CounterC) < prodLimit &&
                 static_cast<int>(*stage1CounterC) < resourceSums[3] / 2) {
               pendingStage = 1;
@@ -2163,7 +2163,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
     homeTileIndex = this->interiorMinister->SelectBestSecondaryHomeTileByFrogCityScore();
   } else {
     TTerrainStateRecord* terrainTable = g_pGlobalMapState->terrainStateTable;
-    for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
       if (static_cast<short>(terrainTable[static_cast<short>(tileIndex)].ownerNationTag) ==
               this->nationSlot &&
           (terrainTable[static_cast<short>(tileIndex)].activeFlags & 1) != 0) {

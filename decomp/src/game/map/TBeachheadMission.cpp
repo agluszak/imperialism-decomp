@@ -1,12 +1,3 @@
-// TBeachheadMission implementations.
-//
-// Real base is TControlSeaZoneMission (RTTI ancestry: TBeachheadMission ->
-// TControlSeaZoneMission -> TNavyMission -> TMission -> TObject -> CObject).
-// Initialize / SetStateByte8To2 / CalculateImportance / GetReplacement /
-// RefreshMissionPortZoneContextForNation are NOT overridden here -- they're
-// inherited unchanged from TControlSeaZoneMission, which owns their
-// `// FUNCTION:` markers.
-
 #include "game/map/TBeachheadMission.h"
 #include "game/military/TAttackProvinceMission.h"
 #include "game/military_ui/TDiplomacyMgr.h"

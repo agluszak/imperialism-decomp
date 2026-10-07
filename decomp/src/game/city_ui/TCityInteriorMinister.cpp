@@ -311,8 +311,7 @@ void TCityInteriorMinister::WriteTo(TStream* stream) {
 
   {
     short* demandCursor = civilianOrderDemandByResourceType;
-    int remaining = 23;
-    do {
+    for (int remaining = 0; remaining < 23; ++remaining) {
       short element = *demandCursor;
       unsigned char* elementBytes = static_cast<unsigned char*>(static_cast<void*>(&element));
       unsigned char low = elementBytes[0];
@@ -320,8 +319,7 @@ void TCityInteriorMinister::WriteTo(TStream* stream) {
       elementBytes[1] = low;
       stream->WriteBytes(&element, 2);
       ++demandCursor;
-      --remaining;
-    } while (remaining != 0);
+    }
   }
 }
 
@@ -1108,7 +1106,7 @@ int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
       }
     }
     ++tileIndex;
-  } while (static_cast<short>(tileIndex) < 0x1950);
+  } while (static_cast<short>(tileIndex) < kStrategicTileCount);
 
   candidateTown->Free();
   if (static_cast<short>(bestTileIndex) == -1) {
@@ -1127,7 +1125,7 @@ void TCityInteriorMinister::ProcessUnitOrders() {
   int ownedTileCount = 0;
   short nationSlot = greatPower->nationSlot;
   int tileIndex;
-  for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     if (g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].ownerNationTag ==
         nationSlot) {
       ++ownedTileCount;
@@ -1135,7 +1133,7 @@ void TCityInteriorMinister::ProcessUnitOrders() {
   }
 
   TShortintList ownedTiles(ownedTileCount);
-  for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     if (g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].ownerNationTag ==
         nationSlot) {
       ownedTiles.Add(static_cast<short>(tileIndex));
@@ -1266,7 +1264,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
     }
   }
 
-  for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (short tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     if (static_cast<short>(
             g_pGlobalMapState->terrainStateTable[tileIndex].secondaryOwnerNationTag) ==
         greatPower->nationSlot) {
@@ -1444,7 +1442,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
     prospectableTerrain[kStrategicTerrainDesert] = 1;
   }
 
-  for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+  for (short tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     short minorNation = static_cast<short>(tile->ownerNationTag);
     if (minorNation <= 6 || minorNation >= 23) {
@@ -1818,8 +1816,8 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
   allowedTerrain[kStrategicTerrainDesert] = 1;
   allowedTerrain[kStrategicTerrainFarmland] = 1;
 
-  char* distanceMap = new char[0x1950];
-  memset(distanceMap, 0, 0x1950);
+  char* distanceMap = new char[kStrategicTileCount];
+  memset(distanceMap, 0, kStrategicTileCount);
   char* transportMap = 0;
   greatPower->BuildTransportLinkedInfluenceMap(&transportMap);
 
@@ -1883,8 +1881,8 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
   allowedTerrain[kStrategicTerrainDesert] = 1;
   allowedTerrain[kStrategicTerrainFarmland] = 1;
 
-  char* distanceMap = new char[0x1950];
-  memset(distanceMap, 0, 0x1950);
+  char* distanceMap = new char[kStrategicTileCount];
+  memset(distanceMap, 0, kStrategicTileCount);
   int remaining = ownedTiles->GetSize();
   int ordinal;
   for (ordinal = 0; ordinal < ownedTiles->GetSize(); ++ordinal) {

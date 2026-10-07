@@ -22,7 +22,7 @@
 
 namespace {
 
-enum { kGlobalMapTileCount = 0x1950 };
+enum { kGlobalMapTileCount = kStrategicTileCount };
 
 short FirstOwnedProvince() {
   TGreatPower* nation = ActiveNation();

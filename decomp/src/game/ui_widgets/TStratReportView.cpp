@@ -1,4 +1,3 @@
-// TStratReportView wrapper class quad extracted from Ghidra autogen.
 
 #include "decomp_types.h"
 #include "game/ui_widgets/TStratReportView.h"

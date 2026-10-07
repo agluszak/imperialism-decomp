@@ -55,8 +55,7 @@ void TWarehouseView::DoStartup() {
   // Resolve and style the 23 commodity value controls by their FourCC tags.
   const int* commodityTag = g_pTradeSummarySelectionMap;
   TPictureNumberText** commodityControl = commodityValueControls;
-  int commodityCount = 23;
-  do {
+  for (int commodityCount = 0; commodityCount < 23; ++commodityCount) {
     TStaticText* control = static_cast<TStaticText*>(ResolveControlByTag(*commodityTag));
     *commodityControl = static_cast<TPictureNumberText*>(control);
     if (control != nullptr) {
@@ -65,8 +64,7 @@ void TWarehouseView::DoStartup() {
     }
     ++commodityTag;
     ++commodityControl;
-    --commodityCount;
-  } while (commodityCount != 0);
+  }
 
   // 'labo' -- labor value control.
   laborValueControl =
@@ -109,8 +107,7 @@ void TWarehouseView::DoStartup() {
         IMPERIALISM_FOURCC('p', 'r', 'o', 'd'), IMPERIALISM_FOURCC('l', 'i', 'v', 'e'),
     };
     unsigned int* shiftedTag = shiftedControlTags;
-    int shiftedCount = 6;
-    do {
+    for (int shiftedCount = 0; shiftedCount < 6; ++shiftedCount) {
       TView* shiftedControl = ResolveControlByTag(*shiftedTag);
       CRect shiftedBounds;
       shiftedControl->QueryBounds(&shiftedBounds);
@@ -118,8 +115,7 @@ void TWarehouseView::DoStartup() {
       shiftedBounds.bottom += static_cast<short>(bitmapSize.x);
       shiftedControl->ApplyBounds(&shiftedBounds, false);
       ++shiftedTag;
-      --shiftedCount;
-    } while (shiftedCount != 0);
+    }
   }
 
   int hoverSize[2] = {0x20, 0x18};

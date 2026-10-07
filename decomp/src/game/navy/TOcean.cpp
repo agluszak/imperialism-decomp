@@ -28,7 +28,7 @@
 
 namespace {
 struct MapTileCostField {
-  short tileCosts[0x1950];
+  short tileCosts[kStrategicTileCount];
 };
 ASSERT_SIZE(MapTileCostField, 0x32a0);
 
@@ -273,7 +273,7 @@ int RelaxMapTileCostFieldByNeighborTerrain(MapTileCostField* costField) {
     pCost++;
     if (tileIndex > 0x194f) {
       short* clear = costField->tileCosts;
-      for (int i = 0x1950; i != 0; i--) {
+      for (int i = kStrategicTileCount; i != 0; i--) {
         if (*clear < 0) {
           *clear = static_cast<short>(-*clear);
         }
@@ -373,7 +373,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
         orderZone->nationKeyMask | (1 << static_cast<unsigned char>(shipNode->nation)));
   }
 
-  for (short overlayTile = 0; overlayTile < 0x1950; ++overlayTile) {
+  for (short overlayTile = 0; overlayTile < kStrategicTileCount; ++overlayTile) {
     short overlayState =
         static_cast<signed char>(g_pGlobalMapState->terrainStateTable[overlayTile].tileActionState);
     bool isNationOverlay = (overlayState >= kMapTileActionStateNationOrderFirst &&
@@ -399,8 +399,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
         ctxZone->ShowFocusIngot(
             ctxZone->CanDisplayMapOrderEntryInCurrentContext(g_pSimMgr->GetPlayerCountry(), true));
         int slotCursor = activeNationId + 1;
-        int slotsRemaining = 6;
-        do {
+        for (int slotsRemaining = 0; slotsRemaining < 6; ++slotsRemaining) {
           int slotWrapped = slotCursor % 7;
           if ((ctxZone->nationKeyMask & static_cast<unsigned char>(1 << slotWrapped)) != 0) {
             short slotTile = ctxZone->GetActiveNationSlotTile();
@@ -409,8 +408,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
             g_pGlobalMapState->terrainStateTable[slotTile].tileActionOrdinal = -1;
           }
           ++slotCursor;
-          --slotsRemaining;
-        } while (slotsRemaining != 0);
+        }
       }
     }
   }

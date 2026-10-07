@@ -31,8 +31,7 @@ void TTradeMgr::ITradeMgr() {
   const short* presetCursor = g_aTradeItemBasePriceByCategory;
   TDealList** rankListCursor = this->categoryRankLists;
   NationMetricCategoryRow* row = this->categoryRows;
-  int rowCount = 0x11;
-  do {
+  for (int rowCount = 0; rowCount < 0x11; ++rowCount) {
     row->numRequests = 0;
     row->numOffers = 0;
     row->amountOffered = 0;
@@ -48,34 +47,29 @@ void TTradeMgr::ITradeMgr() {
     *rankListCursor = list;
 
     short* cellCursor = &row->tradeOfferCells[46];
-    int cellCount = 0x17;
-    do {
+    for (int cellCount = 0; cellCount < 0x17; ++cellCount) {
       cellCursor[-0x2e] = 0;
       *cellCursor = 0;
       cellCursor[-0x17] = 0;
       ++cellCursor;
-      --cellCount;
-    } while (cellCount != 0);
+    }
 
     ++rankListCursor;
     ++presetCursor;
     ++row;
-    --rowCount;
-  } while (rowCount != 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005b7bc0
 void TTradeMgr::Free() {
   TDealList** p = this->categoryRankLists;
-  int i = 0x11;
-  do {
+  for (int i = 0; i < 0x11; ++i) {
     if (*p != 0) {
       (*p)->ReleasePtrList();
     }
     *p = 0;
     ++p;
-    --i;
-  } while (i != 0);
+  }
   delete this;
 }
 
@@ -84,8 +78,7 @@ void TTradeMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   if (g_nSaveFormatVersion >= 0x27) {
     NationMetricCategoryRow* row = categoryRows;
-    int rows = 0x11;
-    do {
+    for (int rows = 0; rows < 0x11; ++rows) {
       stream->ReadBytes(&row->previousPrice, 2);
       stream->ReadBytes(&row->price, 2);
       stream->ReadBytes(&row->numRequests, 2);
@@ -100,27 +93,23 @@ void TTradeMgr::ReadFrom(TStream* stream) {
       stream->ReadBytes(&row->tradeOfferCells[46], 0x2e);
       SwapShortArrayBytes(&row->tradeOfferCells[46], 0x17);
       ++row;
-      --rows;
-    } while (rows != 0);
+    }
   } else {
     stream->ReadBytes(&categoryRows[0].previousPrice, 0xaa0);
   }
   TDealList** p = this->categoryRankLists;
-  int i = 0x11;
-  do {
+  for (int i = 0; i < 0x11; ++i) {
     (*p)->ClearAndFreeAllPtrListRecords();
     (*p)->ReadFrom(stream);
     ++p;
-    --i;
-  } while (i != 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005b7d90
 void TTradeMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   NationMetricCategoryRow* row = categoryRows;
-  int rows = 0x11;
-  do {
+  for (int rows = 0; rows < 0x11; ++rows) {
     stream->WriteBytes(&row->previousPrice, 2);
     stream->WriteBytes(&row->price, 2);
     stream->WriteBytes(&row->numRequests, 2);
@@ -132,38 +121,31 @@ void TTradeMgr::WriteTo(TStream* stream) {
     WriteShortArrayElems(stream, &row->tradeOfferCells[23], 0x17);
     WriteShortArrayElems(stream, &row->tradeOfferCells[46], 0x17);
     ++row;
-    --rows;
-  } while (rows != 0);
+  }
 
   TDealList** p = this->categoryRankLists;
-  int i = 0x11;
-  do {
+  for (int i = 0; i < 0x11; ++i) {
     (*p)->WriteTo(stream);
     ++p;
-    --i;
-  } while (i != 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005b7fc0
 void TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists() {
   NationMetricCategoryRow* row = categoryRows;
-  int rows = 0x11;
-  do {
+  for (int rows = 0; rows < 0x11; ++rows) {
     row->numRequests = 0;
     row->numOffers = 0;
     row->amountOffered = 0;
     row->adjustedNumOffers = 0.0;
     short* cell = &row->tradeOfferCells[23];
-    int c = 0x17;
-    do {
+    for (int c = 0; c < 0x17; ++c) {
       cell[-0x17] = 0;
       *cell = 0;
       ++cell;
-      --c;
-    } while (c != 0);
+    }
     ++row;
-    --rows;
-  } while (rows != 0);
+  }
 
   TDealList** p = &this->categoryRankLists[0xd];
   int i = 4;
@@ -643,21 +625,17 @@ void TTradeMgr::EndTradeOffers() {
   }
 
   short* rowCursor = &categoryRows[0].tradeOfferCells[46];
-  int rowCount = 0x11;
-  do {
+  for (int rowCount = 0; rowCount < 0x11; ++rowCount) {
     short* cellCursor = rowCursor;
-    int cellCount = 0x17;
-    do {
+    for (int cellCount = 0; cellCount < 0x17; ++cellCount) {
       short priorValue = cellCursor[-0x17];
       if (priorValue > *cellCursor) {
         *cellCursor = priorValue;
       }
       ++cellCursor;
-      --cellCount;
-    } while (cellCount != 0);
+    }
     rowCursor += 0x50;
-    --rowCount;
-  } while (rowCount != 0);
+  }
 
   bool isHost = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (isHost) {
@@ -686,30 +664,24 @@ void TTradeMgr::OfferTradeDeals() {
   } while (slot <= 6);
 
   TGreatPower** np = g_apNationStates;
-  int i = 7;
-  do {
+  for (int i = 0; i < 7; ++i) {
     if (*np != 0) {
       (*np)->ClearTradeOffers();
     }
     ++np;
-    --i;
-  } while (i != 0);
+  }
 
   short* base = &categoryRows[0].tradeOfferCells[46];
-  int rows = 0x11;
-  do {
+  for (int rows = 0; rows < 0x11; ++rows) {
     short* q = base;
-    int c = 0x17;
-    do {
+    for (int c = 0; c < 0x17; ++c) {
       if (q[-0x17] > *q) {
         *q = q[-0x17];
       }
       ++q;
-      --c;
-    } while (c != 0);
+    }
     base += 0x50;
-    --rows;
-  } while (rows != 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005b94d0
@@ -781,14 +753,12 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   } while (static_cast<short>(slot) < 7);
 
   TMinor** mp = g_apNationAuxRuntimeStateSlots;
-  int i = 0x10;
-  do {
+  for (int i = 0; i < 0x10; ++i) {
     if (*mp != 0) {
       (*mp)->InitializeTradeStatus();
     }
     ++mp;
-    --i;
-  } while (i != 0);
+  }
 
   slot = 0;
   np = g_apNationStates;
@@ -807,22 +777,19 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
 // FUNCTION: IMPERIALISM 0x005b9890
 void TTradeMgr::SetMinorsTradeBids() {
   TMinor** p = g_apNationAuxRuntimeStateSlots;
-  int i = 0x10;
-  do {
+  for (int i = 0; i < 0x10; ++i) {
     if (*p != 0) {
       (*p)->SetTradeBids();
     }
     ++p;
-    --i;
-  } while (i != 0);
+  }
   this->TallyMinorsTradeBids();
 }
 
 // FUNCTION: IMPERIALISM 0x005b98d0
 void TTradeMgr::TallyTradeBids() {
   short turnCount = g_pSimMgr->economicTurn;
-  short bucket = static_cast<short>(
-      (static_cast<int>(turnCount) + (static_cast<int>(turnCount) >> 0x1f & 3U)) >> 2);
+  short bucket = static_cast<short>(static_cast<int>(turnCount) / 4);
   double base;
   if (bucket < 0xb) {
     base = 1.1;
@@ -891,8 +858,7 @@ void TTradeMgr::TallyTradeBids() {
 // FUNCTION: IMPERIALISM 0x005b9b30
 void TTradeMgr::TallyMinorsTradeBids() {
   short turnCount = g_pSimMgr->economicTurn;
-  short band = static_cast<short>(
-      (static_cast<int>(turnCount) + (static_cast<int>(turnCount) >> 0x1f & 3U)) >> 2);
+  short band = static_cast<short>(static_cast<int>(turnCount) / 4);
   double base;
   if (band < 0xb) {
     base = 1.1;
@@ -921,8 +887,7 @@ void TTradeMgr::TallyMinorsTradeBids() {
   do {
     short* cellCursor = &row->tradeOfferCells[7];
     TMinor** mp = g_apNationAuxRuntimeStateSlots;
-    int remaining = 0x10;
-    do {
+    for (int remaining = 0; remaining < 0x10; ++remaining) {
       short metric = (*mp)->GetTradeOffersFor(static_cast<short>(metricRow));
       *cellCursor = metric;
       if (0 < metric) {
@@ -946,8 +911,7 @@ void TTradeMgr::TallyMinorsTradeBids() {
       }
       ++cellCursor;
       ++mp;
-      --remaining;
-    } while (remaining != 0);
+    }
     ++row;
     ++metricRow;
   } while (static_cast<short>(metricRow) < 7);
@@ -955,8 +919,7 @@ void TTradeMgr::TallyMinorsTradeBids() {
   TMinor** mp = g_apNationAuxRuntimeStateSlots;
   NationMetricCategoryRow* aggregateRow = &categoryRows[7];
   short* aggCursor = &aggregateRow->tradeOfferCells[7];
-  int count = 0x10;
-  do {
+  for (int count = 0; count < 0x10; ++count) {
     short metric = (*mp)->GetTradeOffersFor(kResourceFood);
     *aggCursor = metric;
     if (0 < metric) {
@@ -974,16 +937,14 @@ void TTradeMgr::TallyMinorsTradeBids() {
     }
     ++aggCursor;
     ++mp;
-    --count;
-  } while (count != 0);
+  }
 
   row = &categoryRows[0xd];
   int metricSlot = 0xd;
   do {
     int col = 7;
     mp = g_apNationAuxRuntimeStateSlots;
-    int rem = 0x10;
-    do {
+    for (int rem = 0; rem < 0x10; ++rem) {
       if (*mp != 0) {
         short metric = (*mp)->GetTradeOffersFor(static_cast<short>(metricSlot));
         row->tradeOfferCells[col] = metric;
@@ -993,8 +954,7 @@ void TTradeMgr::TallyMinorsTradeBids() {
       }
       ++col;
       ++mp;
-      --rem;
-    } while (rem != 0);
+    }
     ++metricSlot;
     ++row;
   } while (static_cast<short>(metricSlot) < 0x11);

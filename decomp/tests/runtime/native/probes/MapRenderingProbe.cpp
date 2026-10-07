@@ -216,7 +216,7 @@ bool MapRenderingProbe::TransportConnectivityChangesTilePixels(TMapDialog* mapDi
   }
 
   short tileIndex = -1;
-  for (short candidate = 0; candidate < 0x1950; ++candidate) {
+  for (short candidate = 0; candidate < kStrategicTileCount; ++candidate) {
     TTerrainStateRecord& candidateTerrain = g_pGlobalMapState->terrainStateTable[candidate];
     if (candidateTerrain.GetTerrainKind() != kStrategicTerrainWater &&
         candidateTerrain.riverSpriteCode == kRiverSpriteCodeNone) {

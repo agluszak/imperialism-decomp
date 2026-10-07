@@ -218,10 +218,9 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
     if (g_pActiveRandomMapSetupPicture != 0) {
       g_pActiveRandomMapSetupPicture->SpinYourGlobe();
     }
-    int i;
-    for (i = 0x17; i != 0; --i) {
-      if (cityRegionIds[0x17 - i] == -1) {
-        cityRegionIds[0x17 - i] = ++cityRegionNextId;
+    for (int i = 0; i < 0x17; ++i) {
+      if (cityRegionIds[i] == -1) {
+        cityRegionIds[i] = ++cityRegionNextId;
       }
     }
 
@@ -264,23 +263,20 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
 
     const char* text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Dune", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 10 != 0) {
             *tile = kStrategicTerrainDesert;
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Congo", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 10 != 0) {
@@ -288,14 +284,12 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
             tile[0x13] = 0xd;
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Mirkwood", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 10 != 0) {
@@ -304,15 +298,13 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
             tile[0x13] = static_cast<char>(((~(g_mapGenLcgState >> 12) & 1) << 1) | 0xd);
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Yucatan", text) ||
         TuningKeywordMatches("Siberia", static_cast<LPCSTR>(*tuningString))) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 10 != 0) {
@@ -320,14 +312,12 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
             tile[0x13] = 0xf;
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Antarctica", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 10 != 0) {
@@ -335,84 +325,72 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
             tile[0x13] = 0xc;
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Kansas", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 10 != 0) {
             *tile = kStrategicTerrainPlains;
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Eden", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 10 != 0) {
             *tile = kStrategicTerrainFarmland;
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Everglades", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 5 != 0) {
             *tile = kStrategicTerrainSwamp;
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Nepal", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 5 != 0) {
             *tile = kStrategicTerrainMountain;
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Scotland", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         if (*tile != kStrategicTerrainWater) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 12) & 0x7fff) % 5 != 0) {
             *tile = kStrategicTerrainHills;
           }
         }
-        tile += 0x24;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Eclectia", text)) {
-      char* tile = mapTileGrid;
-      int t;
-      for (t = 0x1950; t != 0; --t) {
+      for (int t = 0; t < kStrategicTileCount; ++t) {
+        char* tile = mapTileGrid + t * 0x24;
         int bucket = tile[4] % 7;
         if (bucket > 4) {
           ++bucket;
@@ -426,7 +404,6 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
             }
           }
         }
-        tile += 0x24;
       }
     }
 
@@ -574,8 +551,8 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
     int cls = (int)tiles[tileOffset + 4];
     if ((cls < 0x17) && (-1 < cls)) {
       if (seedFound[cls] == 0) {
-        int row = tileIndex / 0x6c;
-        int col = tileIndex % 0x6c;
+        int row = tileIndex / kStrategicMapColumns;
+        int col = tileIndex % kStrategicMapColumns;
         char wrapFlag = g_pGlobalMapState->hexNeighborWrapHorizontally;
         bool haveCandidate = false;
         short dir = 0;
@@ -591,19 +568,20 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
           int nRow = row + g_hexRowOffset[idx];
           if (wrapFlag == '\0') {
             if (nCol < 0) {
-              nCol += 0x6c;
+              nCol += kStrategicMapColumns;
             } else if (0x6b < nCol) {
-              nCol -= 0x6c;
+              nCol -= kStrategicMapColumns;
             }
           }
           short nIdx = -1;
-          if ((wrapFlag == '\0' || (nCol >= 0 && nCol < 0x6c)) && nRow >= 0 && nRow <= 0x3b) {
-            nIdx = (short)nCol + (short)nRow * 0x6c;
+          if ((wrapFlag == '\0' || (nCol >= 0 && nCol < kStrategicMapColumns)) && nRow >= 0 &&
+              nRow <= 0x3b) {
+            nIdx = (short)nCol + (short)nRow * kStrategicMapColumns;
           }
           if ((nIdx != -1) && (idx = (int)nIdx, tiles[idx * 0x24] == kStrategicTerrainWater)) {
             haveCandidate = true;
-            int seedRow = idx / 0x6c;
-            int seedCol = idx % 0x6c;
+            int seedRow = idx / kStrategicMapColumns;
+            int seedCol = idx % kStrategicMapColumns;
             int k = 0;
             do {
               int sCol;
@@ -616,13 +594,14 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
               int sRow = seedRow + g_hexRowOffset[k];
               if (wrapFlag == '\0') {
                 if (sCol < 0) {
-                  sCol += 0x6c;
+                  sCol += kStrategicMapColumns;
                 } else if (0x6b < sCol) {
-                  sCol -= 0x6c;
+                  sCol -= kStrategicMapColumns;
                 }
               }
-              if ((wrapFlag == '\0' || (sCol >= 0 && sCol < 0x6c)) && sRow >= 0 && sRow <= 0x3b) {
-                sCol = sCol + sRow * 0x6c;
+              if ((wrapFlag == '\0' || (sCol >= 0 && sCol < kStrategicMapColumns)) && sRow >= 0 &&
+                  sRow <= 0x3b) {
+                sCol = sCol + sRow * kStrategicMapColumns;
               } else {
                 sCol = -1;
               }
@@ -847,14 +826,12 @@ int TMapMaker::SelectGPZone(int cellIndex, int mode, int classIndex, int retryBu
 // FUNCTION: IMPERIALISM 0x005272c0
 void TMapMaker::TranslateZones() {
   int* zone = cityRegionIds;
-  int remaining = 0x17;
-  do {
+  for (int remaining = 0; remaining < 0x17; ++remaining) {
     if (*zone == -1) {
       *zone = ++cityRegionNextId;
     }
     ++zone;
-    --remaining;
-  } while (remaining != 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00527300
@@ -1008,7 +985,7 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
     int tileIndex;
     do {
       g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-      tileIndex = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % 0x1950);
+      tileIndex = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % kStrategicTileCount);
     } while (mapTileGrid[tileIndex * 0x24] != kStrategicTerrainPlains);
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
     int retryBudget = static_cast<int>((seedHigh & 0x7fff) % 0xc) + 3;
@@ -1019,7 +996,7 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
     g_pActiveRandomMapSetupPicture->SpinYourGlobe();
   }
 
-  for (int hillsSrcTile = 0; hillsSrcTile < 0x1950; ++hillsSrcTile) {
+  for (int hillsSrcTile = 0; hillsSrcTile < kStrategicTileCount; ++hillsSrcTile) {
     if (mapTileGrid[hillsSrcTile * 0x24] != kStrategicTerrainMountain) {
       continue;
     }
@@ -1040,7 +1017,8 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
 
   while (hillsQuota > 0) {
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-    int hillsFallbackTile = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % 0x1950);
+    int hillsFallbackTile =
+        static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % kStrategicTileCount);
     if (mapTileGrid[hillsFallbackTile * 0x24] == kStrategicTerrainPlains) {
       mapTileGrid[hillsFallbackTile * 0x24] = kStrategicTerrainHills;
       --hillsQuota;
@@ -1058,7 +1036,7 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
   bool urgentFlag = false;
   while (forestQuota > 0) {
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-    int forestTile = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % 0x1950);
+    int forestTile = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % kStrategicTileCount);
     forestQuota -= PlantForestCluster(forestTile, 7, static_cast<char>(urgentFlag));
     if (forestQuota < g_mapGenForestQuota * 2 / 3) {
       urgentFlag = true;
@@ -1073,7 +1051,7 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
       if (g_pActiveRandomMapSetupPicture != 0) {
         g_pActiveRandomMapSetupPicture->SpinYourGlobe();
       }
-      for (int fillTile = 0; fillTile < 0x1950; ++fillTile) {
+      for (int fillTile = 0; fillTile < kStrategicTileCount; ++fillTile) {
         if (mapTileGrid[fillTile * 0x24] == kStrategicTerrainPlains) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % 100) < 0x2d) {
@@ -1091,7 +1069,7 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
     int swampTile;
     do {
       g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-      swampTile = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % 0x1950);
+      swampTile = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % kStrategicTileCount);
     } while (mapTileGrid[swampTile * 0x24] != kStrategicTerrainPlains);
 
     bool allNeighborsClear = true;
@@ -1116,7 +1094,7 @@ void TMapMaker::CreateRivers() {
     int tileIndex;
     do {
       g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-      tileIndex = static_cast<int>((g_mapGenLcgState >> 12 & 0x7fff) % 0x1950);
+      tileIndex = static_cast<int>((g_mapGenLcgState >> 12 & 0x7fff) % kStrategicTileCount);
       --attemptsRemaining;
       if (attemptsRemaining == 0) {
         return;
@@ -1218,7 +1196,7 @@ int TMapMaker::PlantForestCluster(int tileIndex, int retryBudget, bool markerVar
 
 // FUNCTION: IMPERIALISM 0x005283c0
 int TMapMaker::SeedMountainRange(int tileIndex, int retryBudget, int direction) {
-  if (tileIndex < 0 || tileIndex > 0x1950) {
+  if (tileIndex < 0 || tileIndex > kStrategicTileCount) {
     return 0;
   }
   if (mapTileGrid[tileIndex * 0x24] != kStrategicTerrainPlains) {
@@ -1303,7 +1281,7 @@ void TMapMaker::CreateDeserts() {
 int TMapMaker::TundraBand(int row, int percentChance) {
   char* tile = mapTileGrid + row * 0xf30;
   int column = 0;
-  while (*tile != kStrategicTerrainWater && column < 0x6c) {
+  while (*tile != kStrategicTerrainWater && column < kStrategicMapColumns) {
     tile += 0x24;
     ++column;
   }
@@ -1313,8 +1291,7 @@ int TMapMaker::TundraBand(int row, int percentChance) {
 
   int marked = 0;
   int ringState = 0;
-  int remaining = 0x6b;
-  do {
+  for (int remaining = 0; remaining < 0x6b; ++remaining) {
     ++column;
     tile += 0x24;
     if (column == 0x6c) {
@@ -1337,8 +1314,7 @@ int TMapMaker::TundraBand(int row, int percentChance) {
     } else if (ringState == 2 && *tile == kStrategicTerrainWater) {
       ringState = 0;
     }
-    --remaining;
-  } while (remaining != 0);
+  }
   return marked;
 }
 
@@ -1346,7 +1322,7 @@ int TMapMaker::TundraBand(int row, int percentChance) {
 int TMapMaker::DesertBand(int row, int percentChance) {
   char* tile = mapTileGrid + row * 0xf30;
   int column = 0;
-  while (*tile != kStrategicTerrainWater && column < 0x6c) {
+  while (*tile != kStrategicTerrainWater && column < kStrategicMapColumns) {
     tile += 0x24;
     ++column;
   }
@@ -1356,8 +1332,7 @@ int TMapMaker::DesertBand(int row, int percentChance) {
 
   int marked = 0;
   int ringState = 0;
-  int remaining = 0x6b;
-  do {
+  for (int remaining = 0; remaining < 0x6b; ++remaining) {
     ++column;
     tile += 0x24;
     if (column == 0x6c) {
@@ -1370,7 +1345,7 @@ int TMapMaker::DesertBand(int row, int percentChance) {
       if (*tile == kStrategicTerrainPlains) {
         g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
         if (static_cast<int>((g_mapGenLcgState >> 12 & 0x7fff) % 100) < percentChance) {
-          int tileIndex = column + row * 0x6c;
+          int tileIndex = column + row * kStrategicMapColumns;
           *tile = kStrategicTerrainDesert;
           tile[0x13] = 11;
           ++marked;
@@ -1403,8 +1378,7 @@ int TMapMaker::DesertBand(int row, int percentChance) {
     } else if (ringState == 2 && *tile == kStrategicTerrainWater) {
       ringState = 0;
     }
-    --remaining;
-  } while (remaining != 0);
+  }
   return marked;
 }
 
@@ -1425,7 +1399,7 @@ int TMapMaker::GetAdjacentRegionGridCell(int cell, int direction) {
     column -= 0x1b;
   }
 
-  if (row < 0 || row > 0x3c) {
+  if (row < 0 || row > kStrategicMapRows) {
     return -1;
   }
   int neighbor = column + row * 0x1b;
@@ -1438,13 +1412,13 @@ int TMapMaker::GetAdjacentRegionGridCell(int cell, int direction) {
 // FUNCTION: IMPERIALISM 0x00528d80
 void ComputeHexTilePixelCenter(int tileIndex, int* outX, int* outY, int cellSize) {
   int xOffset;
-  *outY = tileIndex / 0x6c;
-  if ((tileIndex / 0x6c & 1) != 0) {
+  *outY = tileIndex / kStrategicMapColumns;
+  if ((tileIndex / kStrategicMapColumns & 1) != 0) {
     xOffset = cellSize;
   } else {
     xOffset = cellSize / 2;
   }
-  *outX = tileIndex % 0x6c * cellSize + xOffset;
+  *outX = tileIndex % kStrategicMapColumns * cellSize + xOffset;
   *outY = *outY * cellSize + cellSize / 2;
 }
 
@@ -1458,7 +1432,7 @@ void TMapMaker::WriteTileGridToFile(const char* path) {
 // FUNCTION: IMPERIALISM 0x00528e50
 void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
   short owner;
-  for (int tileIndex = 0x6c; tileIndex < 0x1950 - 0x6c; ++tileIndex) {
+  for (int tileIndex = 0x6c; tileIndex < kStrategicTileCount - 0x6c; ++tileIndex) {
     int sameOwnerCount = 0;
     int differingNeighborDir = -1;
     owner = static_cast<signed char>(mapTileGrid[tileIndex * 0x24 + 4]);
@@ -1495,7 +1469,7 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
     }
   }
 
-  for (int isolatedTile = 0x6c; isolatedTile < 0x1950 - 0x6c; ++isolatedTile) {
+  for (int isolatedTile = 0x6c; isolatedTile < kStrategicTileCount - 0x6c; ++isolatedTile) {
     bool hasSameOwnerNeighbor = false;
     owner = static_cast<signed char>(mapTileGrid[isolatedTile * 0x24 + 4]);
     for (int isoDir = 0; isoDir < 6; ++isoDir) {
@@ -1736,10 +1710,10 @@ void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regi
 
 // FUNCTION: IMPERIALISM 0x005298a0
 MapGeneratorTileRecord* TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
-  char* cell =
-      (static_cast<short>(coarseIndex % 0x1b) + static_cast<short>(coarseIndex / 0x1b) * 0x6c) *
-          0x90 +
-      mapTileGrid;
+  char* cell = (static_cast<short>(coarseIndex % 0x1b) +
+                static_cast<short>(coarseIndex / 0x1b) * kStrategicMapColumns) *
+                   0x90 +
+               mapTileGrid;
   if ((coarseIndex / 0x1b & 1U) != 0) {
     cell -= 0x48;
   }
@@ -1772,15 +1746,13 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
   // Prime the 3-column sliding sum with the columns preceding column 0 (wrap-around).
   int* w = window;
   int columnIndex = 104;
-  int prime = 3;
-  do {
+  for (int prime = 0; prime < 3; ++prime) {
     int count = CountSeaTilesInColumn(columnIndex);
     *w = count;
     total += count;
     ++columnIndex;
     ++w;
-    --prime;
-  } while (prime != 0);
+  }
 
   // Slide across all 108 columns, tracking the peak 3-column sum.
   int scanCol = 0;
@@ -1801,7 +1773,7 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
     }
     ++scanCol;
     ++columnIndex;
-  } while (scanCol < 0x6c);
+  } while (scanCol < kStrategicMapColumns);
 
   if (CountSeaTilesInColumn(bestColumn) == 0) {
     int leftCol = bestColumn - 1;
@@ -1833,9 +1805,9 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
       rightCol = bestColumn + 0x6b;
     }
     if (rightCol < leftCol) {
-      bestColumn = (leftCol + 0x6c + rightCol) / 2;
+      bestColumn = (leftCol + kStrategicMapColumns + rightCol) / 2;
       if (0x6c < bestColumn) {
-        bestColumn -= 0x6c;
+        bestColumn -= kStrategicMapColumns;
       }
     } else {
       bestColumn = (rightCol + leftCol) / 2;
@@ -1856,7 +1828,7 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
   memcpy(scratch, mapTileGrid, 0x38f40);
   do {
     int rows = 0x3c;
-    int* scratchRow = scratch + (sourceCol % 0x6c) * 9;
+    int* scratchRow = scratch + (sourceCol % kStrategicMapColumns) * 9;
     int rowByte = destByte;
     do {
       --rows;
@@ -1886,20 +1858,20 @@ int TMapMaker::ZoneCorner(long nationCode) {
     } else {
       if (longestRun < currentRun) {
         longestRun = currentRun;
-        selectedRow = tileIndex / 0x6c;
+        selectedRow = tileIndex / kStrategicMapColumns;
       }
       currentRun = 0;
     }
     ++tileIndex;
     owner += 0x24;
-  } while (tileIndex < 0x1950);
+  } while (tileIndex < kStrategicTileCount);
 
   int leftEdgeCount = 0;
   int rightEdgeCount = 0;
   int columnSum = 0;
   int matchCount = 0;
   int column = 0;
-  int selectedRowTile = selectedRow * 0x6c;
+  int selectedRowTile = selectedRow * kStrategicMapColumns;
   owner = mapTileGrid + selectedRowTile * 0x24 + 4;
   do {
     if (*owner == nationCode) {
@@ -1914,7 +1886,7 @@ int TMapMaker::ZoneCorner(long nationCode) {
     }
     ++column;
     owner += 0x24;
-  } while (column < 0x6c);
+  } while (column < kStrategicMapColumns);
 
   if (0 < leftEdgeCount && 0 < rightEdgeCount) {
     columnSum = columnSum + leftEdgeCount * 0x6c;
@@ -1922,7 +1894,7 @@ int TMapMaker::ZoneCorner(long nationCode) {
   if (matchCount == 0) {
     return -1;
   }
-  return (columnSum / matchCount) % 0x6c + selectedRowTile;
+  return (columnSum / matchCount) % kStrategicMapColumns + selectedRowTile;
 }
 
 // FUNCTION: IMPERIALISM 0x00529d90
@@ -1938,7 +1910,7 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
   char* owner = ownerBase;
   do {
     if (*owner == nationCode) {
-      int column = tileIndex % 0x6c;
+      int column = tileIndex % kStrategicMapColumns;
       if (column < 0x19) {
         leftEdgeCount = leftEdgeCount + '\x01';
       }
@@ -1946,12 +1918,12 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
         rightEdgeCount = rightEdgeCount + '\x01';
       }
       columnSum += column;
-      rowSum = rowSum + tileIndex / 0x6c;
+      rowSum = rowSum + tileIndex / kStrategicMapColumns;
       ++matchCount;
     }
     ++tileIndex;
     owner += 0x24;
-  } while (tileIndex < 0x1950);
+  } while (tileIndex < kStrategicTileCount);
 
   bool wrapsHorizontally;
   if (leftEdgeCount < '\x01' || rightEdgeCount < '\x01') {
@@ -1966,7 +1938,7 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
       owner = ownerBase;
       do {
         if (*owner == nationCode) {
-          int column = tileIndex % 0x6c;
+          int column = tileIndex % kStrategicMapColumns;
           if (column < 0x36 && leftEdgeCount < rightEdgeCount) {
             column = 0x6b;
           }
@@ -1974,14 +1946,15 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
             column = 0;
           }
           columnSum += column;
-          rowSum = rowSum + tileIndex / 0x6c;
+          rowSum = rowSum + tileIndex / kStrategicMapColumns;
           ++matchCount;
         }
         ++tileIndex;
         owner += 0x24;
-      } while (tileIndex < 0x1950);
+      } while (tileIndex < kStrategicTileCount);
       if (matchCount != 0) {
-        return (columnSum / matchCount) % 0x6c + (rowSum / matchCount) * 0x6c;
+        return (columnSum / matchCount) % kStrategicMapColumns +
+               (rowSum / matchCount) * kStrategicMapColumns;
       }
       return -1;
     }
@@ -1990,7 +1963,8 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
     columnSum = columnSum + leftEdgeCount * 0x6c;
   }
   if (matchCount != 0) {
-    return (columnSum / matchCount) % 0x6c + (rowSum / matchCount) * 0x6c;
+    return (columnSum / matchCount) % kStrategicMapColumns +
+           (rowSum / matchCount) * kStrategicMapColumns;
   }
   return -1;
 }
@@ -2072,7 +2046,7 @@ void TMapMaker::CompactCityRegionIds() {
 
 // FUNCTION: IMPERIALISM 0x0052a160
 void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
-  short* labels = new short[0x1950];
+  short* labels = new short[kStrategicTileCount];
 
   // Phase 1: seed a label per tile: -1 for water tiles, -2 otherwise.
   int i = 0;
@@ -2083,7 +2057,7 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
     *p = (g_pGlobalMapState->terrainStateTable[index].GetTerrainKind() == kStrategicTerrainWater) -
          2;
     ++p;
-  } while (i < 0x1950);
+  } while (i < kStrategicTileCount);
   cityRegionCount = 0;
 
   if (0 < g_regionSeedGridRows) {
@@ -2103,7 +2077,7 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
           if ((colIdx & 1) != 0) {
             col = col + rows / 2;
             if (0x6b < col) {
-              col -= 0x6c;
+              col -= kStrategicMapColumns;
             }
           }
           int radius = 0;
@@ -2116,7 +2090,7 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
             if (row < 0 || 0x3b < row || col < 0 || 0x6b < col) {
               neighbor = -1;
             } else {
-              neighbor = col + row * 0x6c;
+              neighbor = col + row * kStrategicMapColumns;
             }
             if (neighbor != -1 && labels[neighbor] == -1) {
               labels[neighbor] = static_cast<short>(cityRegionCount);
@@ -2136,7 +2110,7 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
             TMapMgr::StepHexRowColByDirectionWithWrapRules(&row, &col, direction);
           }
           ++colIdx;
-          colBase += 0x6c;
+          colBase += kStrategicMapColumns;
           cols = g_regionSeedGridCols;
           rows = g_regionSeedGridRows;
         } while (colIdx < g_regionSeedGridCols);
@@ -2165,9 +2139,9 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
       }
       ++j;
       ++pj;
-    } while (j < 0x1950);
+    } while (j < kStrategicTileCount);
 
-    int k = 0x1950;
+    int k = kStrategicTileCount;
     short* pk = labels;
     do {
       if (0x3ff < *pk) {
@@ -2203,7 +2177,7 @@ bool TMapMaker::IsSeaTile(int tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0052a630
 bool TMapMaker::IsSeaTile(int column, int row) {
-  return mapTileGrid[(column + row * 0x6c) * 0x24] == kStrategicTerrainWater;
+  return mapTileGrid[(column + row * kStrategicMapColumns) * 0x24] == kStrategicTerrainWater;
 }
 
 // FUNCTION: IMPERIALISM 0x0052a670
@@ -2408,7 +2382,7 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
   } while (byteOffset < 0xf30);
 
   // Phase 2: remaining tiles, directions 4 and 5, with triple-junction emission.
-  if (tileIdx < 0x1950) {
+  if (tileIdx < kStrategicTileCount) {
     byteOffset = tileIdx * 0x24;
     do {
       int thisRegion = GetCityRegionIdAtTileIndex(tileIdx);
@@ -2485,7 +2459,7 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
     t3 += 1;
     off3 += 0x24;
     if (0x3800f < off3) {
-      for (; t3 < 0x1950; t3 += 1) {
+      for (; t3 < kStrategicTileCount; t3 += 1) {
         int r1 = GetCityRegionIdAtTileIndex(t3);
         int r2 = GetCityRegionIdAtTileIndex(GetNeighborTileIndexOnMap108x60(t3, 1));
         if (r1 != r2 && r1 != -1 && r2 != -1) {
@@ -2609,7 +2583,7 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
 
 // FUNCTION: IMPERIALISM 0x0052d1f0
 void TMapMaker::ReindexContiguousCityRegionIds() {
-  short labels[0x1950];
+  short labels[kStrategicTileCount];
 
   // Phase 1: seed a label per tile.
   char* tile = mapTileGrid;
@@ -2630,7 +2604,7 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
     ++i;
     tile += 0x24;
     ++p;
-  } while (i < 0x1950);
+  } while (i < kStrategicTileCount);
 
   int newCount = 0;
   do {
@@ -2651,7 +2625,7 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
           }
           ++j;
           ++pj;
-        } while (j < 0x1950);
+        } while (j < kStrategicTileCount);
         --label;
         --remaining;
       } while (remaining != 0);
@@ -2693,7 +2667,7 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
         }
         ++j;
         ++pj;
-      } while (j < 0x1950);
+      } while (j < kStrategicTileCount);
     } while (changed != 0);
   } while (true);
 }
@@ -2763,7 +2737,7 @@ int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int
         }
         ++tileIndex;
         ++cursor;
-      } while (tileIndex < 0x1950);
+      } while (tileIndex < kStrategicTileCount);
       ++regionOrdinal;
       --placeholder;
     } while (regionOrdinal < cityRegionCount);
@@ -3034,8 +3008,7 @@ bool TMapMaker::ErrorCheck() {
   EraseZones(0);
   bool failed = false;
   signed char* cell = &regionClassGrid[0][0];
-  int remaining = 0x195;
-  do {
+  for (int remaining = 0; remaining < 0x195; ++remaining) {
     if (*cell == -1) {
       *cell = 100;
       failed = true;
@@ -3043,8 +3016,7 @@ bool TMapMaker::ErrorCheck() {
       *cell = -1;
     }
     ++cell;
-    --remaining;
-  } while (remaining != 0);
+  }
   return failed;
 }
 

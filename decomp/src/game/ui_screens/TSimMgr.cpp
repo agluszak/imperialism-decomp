@@ -249,15 +249,11 @@ void TSimMgr::Free() {
     g_pNavyOrderManager = nullptr;
   }
 
-  TCountry** descriptorCursor = g_apTerrainTypeDescriptorTable;
-  for (i = 0x17; i != 0; --i) {
-    TCountry* descriptor = *descriptorCursor;
-    if (descriptor != nullptr) {
-      descriptor->Free();
-      descriptor = nullptr;
+  for (i = 0; i < 0x17; ++i) {
+    if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
+      g_apTerrainTypeDescriptorTable[i]->Free();
+      g_apTerrainTypeDescriptorTable[i] = nullptr;
     }
-    *descriptorCursor = descriptor;
-    ++descriptorCursor;
   }
 
   for (i = 0; i < 7; ++i) {
@@ -809,13 +805,11 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
       short cityRecordIndex =
           g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeTileIndex)]
               .cityRecordIndex;
-      int remainingOrders = 2;
-      do {
+      for (int remainingOrders = 0; remainingOrders < 2; ++remainingOrders) {
         TMilitaryUnit* order = new TMilitaryUnit();
         order->IMilitaryUnit(2, cityRecordIndex, slotIndex, 0);
         order->SetOrders(static_cast<UnitOrder>(2), -1);
-        --remainingOrders;
-      } while (remainingOrders != 0);
+      }
 
       minor->NameUnits();
     }

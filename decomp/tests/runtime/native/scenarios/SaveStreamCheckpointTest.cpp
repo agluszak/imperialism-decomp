@@ -169,8 +169,8 @@ private:
       FailScenario("save fixture does not start with the AMBI magic");
       return;
     }
-    unsigned char discarded[0x1950];
-    stream.ReadBytes(discarded, 0x1950);
+    unsigned char discarded[kStrategicTileCount];
+    stream.ReadBytes(discarded, kStrategicTileCount);
     stream.ReadBytes(discarded, 0x24);
     Record("header", 0, stream.consumed, 0);
 

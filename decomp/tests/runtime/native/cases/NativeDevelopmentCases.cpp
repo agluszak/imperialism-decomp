@@ -19,7 +19,7 @@ namespace {
 
 bool FindUnoccupiedRailSection(StrategicTileIndex* sourceTile,
                                StrategicTileIndex* destinationTile) {
-  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+  for (StrategicTileIndex candidate = 0; candidate < kStrategicTileCount; ++candidate) {
     const TTerrainStateRecord& source = g_pGlobalMapState->terrainStateTable[candidate];
     if (source.firstCivilianOrder != 0 || source.adjacencyBits != 0 ||
         source.railFlags != 0) {
@@ -50,7 +50,7 @@ bool TerrainAllowsStartingRail(StrategicTerrainKind kind) {
 
 bool FindIssuableRailSection(NationSlot nationSlot, StrategicTileIndex* sourceTile,
                              StrategicTileIndex* destinationTile) {
-  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+  for (StrategicTileIndex candidate = 0; candidate < kStrategicTileCount; ++candidate) {
     short column = candidate % 0x6c;
     if (column < 2 || column > 0x69) {
       continue;
@@ -82,7 +82,7 @@ bool FindIssuableRailSection(NationSlot nationSlot, StrategicTileIndex* sourceTi
 }
 
 bool FindUnoccupiedTile(StrategicTileIndex* tileIndex) {
-  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+  for (StrategicTileIndex candidate = 0; candidate < kStrategicTileCount; ++candidate) {
     if (g_pGlobalMapState->terrainStateTable[candidate].firstCivilianOrder == 0) {
       *tileIndex = candidate;
       return true;
@@ -92,7 +92,7 @@ bool FindUnoccupiedTile(StrategicTileIndex* tileIndex) {
 }
 
 bool FindUnoccupiedProvinceTile(StrategicTileIndex* tileIndex) {
-  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+  for (StrategicTileIndex candidate = 0; candidate < kStrategicTileCount; ++candidate) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
     if (tile.firstCivilianOrder != 0) {
       continue;
@@ -112,7 +112,7 @@ bool FindUnoccupiedProvinceTile(StrategicTileIndex* tileIndex) {
 
 bool FindOwnedConstructionTile(NationSlot nationSlot, unsigned short requiredFlags,
                                unsigned short forbiddenFlags, StrategicTileIndex* tileIndex) {
-  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+  for (StrategicTileIndex candidate = 0; candidate < kStrategicTileCount; ++candidate) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
     if (tile.firstCivilianOrder != 0 || tile.ownerNationTag != nationSlot) {
       continue;
@@ -131,7 +131,7 @@ bool FindOwnedConstructionTile(NationSlot nationSlot, unsigned short requiredFla
 
 bool FindOwnedCoastalConstructionTile(NationSlot nationSlot, unsigned short forbiddenFlags,
                                       StrategicTileIndex* tileIndex) {
-  for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
+  for (StrategicTileIndex candidate = 0; candidate < kStrategicTileCount; ++candidate) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
     if (tile.firstCivilianOrder != 0 || tile.ownerNationTag != nationSlot) {
       continue;

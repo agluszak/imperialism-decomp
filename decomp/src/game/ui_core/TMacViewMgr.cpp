@@ -657,7 +657,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
   colOffset = 0;
   tileIndex = 0;
-  while (tileIndex < 0x1950) {
+  while (tileIndex < kStrategicTileCount) {
     terrainCode = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
     if (terrainCode < 0x17) {
       if (terrainCode == 0) {
@@ -1612,20 +1612,16 @@ void TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame(TBitmapSurfaceNode** 
   unsigned char* sourceRow = sourcePixels + static_cast<short>((overlayFrameIndex + 0x1b) * 0x26);
   unsigned char* destinationRow =
       destinationPixels + (0x26 - destinationYFromBottom) * destinationStride + destinationX;
-  int rowsRemaining = 0x1a;
-  do {
-    int columnsRemaining = 0x26;
-    do {
+  for (int rowsRemaining = 0; rowsRemaining < 0x1a; ++rowsRemaining) {
+    for (int columnsRemaining = 0; columnsRemaining < 0x26; ++columnsRemaining) {
       if (*sourceRow != 0x10) {
         *destinationRow = *sourceRow;
       }
       ++sourceRow;
       ++destinationRow;
-      --columnsRemaining;
-    } while (columnsRemaining != 0);
+    }
     destinationRow += destinationStride - 0x26;
     sourceRow += sourceStride - 0x26;
-    --rowsRemaining;
-  } while (rowsRemaining != 0);
+  }
   UnlockPixels(atlasSurface);
 }
