@@ -247,8 +247,7 @@ void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
     city->BuildPowerPlant(true);
   }
 
-  productionView->SetBuildingPicture(buildingSlotId,
-                                     static_cast<short>(city->GetBuildingType(buildingSlotId)));
+  productionView->SetBuildingPicture(buildingSlotId, city->GetBuildingType(buildingSlotId));
   productionView->UpdateToolbar();
   productionView->RefreshControl();
 }

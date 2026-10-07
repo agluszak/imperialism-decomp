@@ -4,6 +4,7 @@
 #include "game/stretch.h"
 
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
+
 // VTABLE: IMPERIALISM 0x00650a6c
 class TShortintList : public stretch<short> {
 public:

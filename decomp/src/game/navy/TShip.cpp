@@ -163,7 +163,7 @@ void TShip::IShip(short shipType, TZone* zone, short nationArg, const char* name
 
   strength = g_NavyOrderResourceDescriptorTable[shipType].HullPoints();
   if (location != 0) {
-    location->HandleKeyDown(nation);
+    location->OccupyBy(nation);
   }
 }
 

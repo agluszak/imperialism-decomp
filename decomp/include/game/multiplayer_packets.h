@@ -11,8 +11,8 @@
 #include "game/ui_tags_military.h"
 #include "game/ui_tags_widgets.h"
 #include "game/military/NetMessage.h"
-#include "game/nation_domain_types.h" // CongressLeadership / CongressSupportTally
-#include "game/map/TMapMgr.h"         // TTerrainStateRecord (event 0x23 payload)
+#include "game/nation_domain_types.h"
+#include "game/map/TMapMgr.h"
 #include "game/news_domain_types.h"
 
 class TObject;

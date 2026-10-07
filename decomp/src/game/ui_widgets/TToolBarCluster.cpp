@@ -329,6 +329,7 @@ void TToolBarCluster::UpdateGrantDisplay(int grantTotal) {
   CString unused1;
   CString unused2;
 }
+
 // FUNCTION: IMPERIALISM 0x005dc560
 void MakeFlagButtonDialog() {
   TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton);

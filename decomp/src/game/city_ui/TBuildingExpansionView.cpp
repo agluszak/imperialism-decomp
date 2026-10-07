@@ -154,8 +154,7 @@ void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {
     order->SetQuantity(0);
   }
 
-  productionView->SetBuildingPicture(buildingSlotId,
-                                     static_cast<short>(city->GetBuildingType(buildingSlotId)));
+  productionView->SetBuildingPicture(buildingSlotId, city->GetBuildingType(buildingSlotId));
   productionView->UpdateToolbar();
   productionView->RefreshControl();
 }

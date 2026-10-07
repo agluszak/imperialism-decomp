@@ -4,6 +4,7 @@
 #include "game/ui_core/TPicture.h"
 
 struct CRuntimeClass;
+
 // VTABLE: IMPERIALISM 0x668588
 class TTransportPicture : public TPicture {
 public:

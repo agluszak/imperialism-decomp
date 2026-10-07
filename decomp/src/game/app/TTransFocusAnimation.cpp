@@ -103,7 +103,7 @@ void TTransFocusAnimation::IdleDraw() {
 
 // FUNCTION: IMPERIALISM 0x004a0810
 void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
-  short width = screenRect.right - screenRect.left;
+  short width = static_cast<short>(screenRect.right - screenRect.left);
   int height = screenRect.bottom - screenRect.top;
 
   RECT destinationRect;

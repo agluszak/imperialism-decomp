@@ -1,9 +1,9 @@
 #pragma once
 
-#include <afxcmn.h> // CSliderCtrl
+#include <afxcmn.h>
 
-#include "game/gfx/TModalDialogBase.h" // CDialog-derived modal base
-#include "game/mfc.h"                  // CListBox (afxwin.h)
+#include "game/gfx/TModalDialogBase.h"
+#include "game/mfc.h"
 
 class CDib;
 struct GameSetup;

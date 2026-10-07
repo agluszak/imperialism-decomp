@@ -57,6 +57,7 @@ TEventHandler* TApplication::GetTarget() {
 BOOL TApplication::InModalState() {
   return GetMainViewHostFromActiveThread()->GetUiInteractiveFlag() == 0;
 }
+
 // FUNCTION: IMPERIALISM 0x00486990
 void TApplication::GetDefaultCursorRegion(int x, int y, void* cursorRegion) {}
 

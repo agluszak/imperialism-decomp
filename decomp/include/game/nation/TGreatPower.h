@@ -7,7 +7,7 @@
 #include "game/nation_domain_types.h"
 #include "game/resource_domain_types.h"
 #include "game/city_ui/TCountry.h"
-#include "game/map/TMission.h" // eMissionType
+#include "game/map/TMission.h"
 #include "game/ui_core/TSortedList.h"
 
 struct CRuntimeClass;

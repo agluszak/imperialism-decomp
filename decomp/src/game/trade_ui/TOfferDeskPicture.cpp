@@ -202,7 +202,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
     return;
   }
 
-  SwitchToBook(0);
+  SwitchToBook(false);
   sheet->Locate(g_offerDeskSheetPosition, false);
   wait->Locate(g_offerDeskOffscreenPosition, false);
 
@@ -338,7 +338,7 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     short selectionIndex = g_tradeBookCategoryByTabAndTechState
         [g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (!selectionActive) {
-      SwitchToBook(1);
+      SwitchToBook(true);
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
     }
@@ -352,7 +352,7 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       ShowAdvice();
     }
   } else if (commandId == 0x14 && tag == kControlTagDone) {
-    SwitchToBook(0);
+    SwitchToBook(false);
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }
@@ -619,7 +619,7 @@ char TOfferDeskPicture::HandleMouseUp(const CPoint& point, TToolboxEvent* event,
 }
 
 // FUNCTION: IMPERIALISM 0x005c09d0
-void TOfferDeskPicture::SwitchToBook(unsigned char activate) {
+void TOfferDeskPicture::SwitchToBook(bool activate) {
   if (activate == selectionActive) {
     return;
   }

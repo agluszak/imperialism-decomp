@@ -45,7 +45,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone*
   shipNode->strength = g_NavyOrderResourceDescriptorTable[resourceType].HullPoints();
 
   if (portZoneContext != 0) {
-    portZoneContext->HandleKeyDown(nationSlot);
+    portZoneContext->OccupyBy(nationSlot);
   }
 
   return shipNode;

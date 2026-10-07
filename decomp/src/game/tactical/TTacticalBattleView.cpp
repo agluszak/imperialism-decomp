@@ -1139,8 +1139,8 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
   int gridCol = 0;
   ConvertPoint(point, &gridRow, &gridCol);
   int tileIndex = static_cast<short>(gridRow * tileColumnsPerRow + gridCol);
-  unsigned short cursorToken = static_cast<unsigned short>(
-      tacticalBattle->ResolveTacticalHoverCursorResourceId(static_cast<short>(tileIndex)));
+  unsigned short cursorToken =
+      static_cast<unsigned short>(tacticalBattle->ResolveTacticalHoverCursorResourceId(tileIndex));
   if (cursorToken == 999 || cursorToken == 0) {
     cursorToken = 0xffff;
   }

@@ -36,6 +36,7 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
   cursorIndex = 0;
   taskForce = force;
 }
+
 // FUNCTION: IMPERIALISM 0x0059edd0
 void TNavyPlayer::ApplyChanges(unsigned char sideWonFlag) {
   CIterator unitIter(unitList);

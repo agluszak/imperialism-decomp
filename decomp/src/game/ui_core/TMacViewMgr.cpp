@@ -292,6 +292,7 @@ void TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
 }
 
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
+
 // FUNCTION: IMPERIALISM 0x0050a470
 void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   RECT atlasBounds;
@@ -376,6 +377,7 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
 }
 
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
+
 // FUNCTION: IMPERIALISM 0x0050a820
 void TMacViewMgr::CreateIndexedGWorlds() {
   TQuickDrawSurfaceContext* savedContext;

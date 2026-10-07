@@ -4,6 +4,7 @@
 #include "game/mfc.h"
 
 IMPLEMENT_DYNCREATE(TScroller, TView)
+
 // FUNCTION: IMPERIALISM 0x0048cb00
 TScroller::~TScroller() {}
 

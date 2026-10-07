@@ -2067,6 +2067,7 @@ bool TMapMgr::CanBuildPortAtTile(StrategicTileIndex tileIndex) {
   }
   return result;
 }
+
 // FUNCTION: IMPERIALISM 0x00513980
 bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileIndex) {
   TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
@@ -3886,6 +3887,7 @@ bool TMapMgr::HasActiveLinkedTileWithReachableSea(int regionIndex) {
   }
   return false;
 }
+
 // FUNCTION: IMPERIALISM 0x00518b40
 int TMapMgr::LandPrice(StrategicTileIndex nTileIndex) {
   int total = 0;

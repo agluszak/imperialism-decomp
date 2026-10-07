@@ -12,6 +12,7 @@ THQButton::THQButton() : TPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0058b6c0
 THQButton::~THQButton() {}
+
 // FUNCTION: IMPERIALISM 0x0058b6e0
 void THQButton::DoPostCreate(int arg) {
   short glyph = glyphBase;

@@ -23,10 +23,12 @@ IMPLEMENT_SERIAL(TMission, TObject, 1)
 bool TMission::IsANoBrainer() const {
   return false;
 }
+
 // FUNCTION: IMPERIALISM 0x00534c20
 int TMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack) const {
   return 0;
 }
+
 // FUNCTION: IMPERIALISM 0x00534c40
 void TMission::Initialize() {}
 
@@ -34,90 +36,115 @@ void TMission::Initialize() {}
 void TMission::SetStateByte8To2() {
   state08 = 2;
 }
+
 // FUNCTION: IMPERIALISM 0x00534c80
 void TMission::CalculateImportance() {
   importanceScore = 0.0f;
 }
+
 // FUNCTION: IMPERIALISM 0x00534ca0
 void TMission::CalculateNeeds() {}
+
 // FUNCTION: IMPERIALISM 0x00534cc0
 void TMission::Reassess() {
   SetStateByte8To2();
   CalculateImportance();
   CalculateNeeds();
 }
+
 // FUNCTION: IMPERIALISM 0x00534cf0
 void TMission::GiveOrders() {}
+
 // FUNCTION: IMPERIALISM 0x00534d10
 TMission* TMission::GetReplacement() {
   return this;
 }
+
 // FUNCTION: IMPERIALISM 0x00534d30
 bool TMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   return false;
 }
+
 // FUNCTION: IMPERIALISM 0x00534d50
 bool TMission::IsArmyMission() const {
   return false;
 }
+
 // FUNCTION: IMPERIALISM 0x00534d70
 bool TMission::IsNavyMission() const {
   return false;
 }
+
 // FUNCTION: IMPERIALISM 0x00534d90
 TMission* TMission::GetArmyMission() {
   return NULL;
 }
+
 // FUNCTION: IMPERIALISM 0x00534db0
 TMission* TMission::GetNavyMission() {
   return NULL;
 }
+
 // FUNCTION: IMPERIALISM 0x00534dd0
 bool TMission::IsDefensiveSeaZoneMission() const {
   return false;
 }
+
 // FUNCTION: IMPERIALISM 0x00534df0
 bool TMission::IsHospitalMission() const {
   return false;
 }
+
 // FUNCTION: IMPERIALISM 0x00534e10
 float TMission::GetWeightedSatisfaction() {
   return 0.0f;
 }
+
 // FUNCTION: IMPERIALISM 0x00534e30
 float TMission::IndustrialCostOfNeeds() {
   return 0.0f;
 }
+
 // FUNCTION: IMPERIALISM 0x00534e50
 float TMission::ValueOf(TShip* candidate) {
   return 0.0f;
 }
+
 // FUNCTION: IMPERIALISM 0x00534e70
 float TMission::ValueOf(TMilitaryUnit* candidateUnit) {
   return 0.0f;
 }
+
 // FUNCTION: IMPERIALISM 0x00534e90
 float TMission::FitnessOf(TShip* candidate, float* targetProfile) {
   return 0.0f;
 }
+
 // FUNCTION: IMPERIALISM 0x00534eb0
 float TMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   return 0.0f;
 }
+
 // FUNCTION: IMPERIALISM 0x00534ed0
 void TMission::AcceptReenforcement(TShip* ship, bool notify) {}
+
 // FUNCTION: IMPERIALISM 0x00534ef0
 void TMission::AcceptReenforcement(TMilitaryUnit* unit, bool notify) {}
+
 // FUNCTION: IMPERIALISM 0x00534f10
 void TMission::RejectConstituent(TShip* ship, bool notify) {}
+
 // FUNCTION: IMPERIALISM 0x00534f30
 void TMission::RejectConstituent(TMilitaryUnit* unit, bool notify) {}
+
 // FUNCTION: IMPERIALISM 0x00534f50
 void TMission::ForgetTaskForce(TTaskForce* taskForce) {}
+
 // FUNCTION: IMPERIALISM 0x00534f70
 void TMission::Hold(bool value) {
   flag10 = value;
 }
+
 // FUNCTION: IMPERIALISM 0x00534f90
 bool TMission::SmokeEmIfYouGotEm() {
   return false;

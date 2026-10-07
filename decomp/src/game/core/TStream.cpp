@@ -8,6 +8,7 @@
 #include "game/gfx/ui_invalidation_guard.h"
 
 IMPLEMENT_DYNCREATE(TStream, TObject)
+
 // FUNCTION: IMPERIALISM 0x00488a80
 bool TStream::AtEnd() {
   int position = GetPosition();

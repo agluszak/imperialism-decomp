@@ -4,6 +4,7 @@
 #include "game/globals/ui_core_globals.h"
 
 IMPLEMENT_DYNCREATE(TDialogView, TView)
+
 // FUNCTION: IMPERIALISM 0x0049d880
 void TDialogView::EnsureStylePayload() {
   int previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);

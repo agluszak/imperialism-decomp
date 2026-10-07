@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/ui_core/TControl.h" // TextStyle
+#include "game/ui_core/TControl.h"
 #include "game/ui_screens/TLineData.h"
 #include "game/mfc.h"
 

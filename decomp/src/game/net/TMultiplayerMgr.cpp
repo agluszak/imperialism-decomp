@@ -644,6 +644,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
 }
 
 IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY
+
 // FUNCTION: IMPERIALISM 0x00545940
 bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet) {
   TurnEvent1PendingMaskPacket pendingMaskPacket;
@@ -2882,6 +2883,7 @@ void TMultiplayerMgr::DehumanizePlayer(int nationSlot) {
     }
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0054c480
 void TMultiplayerMgr::EmitTurnEvent26DiplomacyMatrixSnapshot() {
   TurnEvent26DiplomacyMatrixPacket packet;

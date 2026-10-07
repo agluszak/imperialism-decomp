@@ -346,6 +346,7 @@ void TTradeMgr::CalculateDealOrder() {
     }
   }
 }
+
 // FUNCTION: IMPERIALISM 0x005b8aa0
 void TTradeMgr::CalculateNewWorldPrices() {
   int slot = 0;

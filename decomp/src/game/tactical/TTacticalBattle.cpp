@@ -865,6 +865,7 @@ void TTacticalBattle::UndeployUnit(TacticalTileIndex tileIndex) {
 }
 
 IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
+
 // FUNCTION: IMPERIALISM 0x005a1520
 void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
                                                  TacticalTileIndex targetTileIndex) {

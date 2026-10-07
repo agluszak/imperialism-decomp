@@ -20,6 +20,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <string.h>
+
 // FUNCTION: IMPERIALISM 0x0043d770
 TTerrainHelpPicture::TTerrainHelpPicture() {}
 

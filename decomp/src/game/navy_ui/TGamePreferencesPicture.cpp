@@ -27,6 +27,7 @@
 
 // FUNCTION: IMPERIALISM 0x0043d960
 TGamePreferencesPicture::TGamePreferencesPicture() {}
+
 // FUNCTION: IMPERIALISM 0x0043db40
 TGamePreferencesPicture::~TGamePreferencesPicture() {}
 

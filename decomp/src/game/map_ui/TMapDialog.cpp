@@ -163,12 +163,16 @@ static inline void Blit64x64StrategicMapAtlasTile(TQuickDrawSurfaceContext* atla
 
 // GLOBAL: IMPERIALISM 0x006a3360
 double g_mapCellRowScale = DefaultMapCellScale();
+
 // GLOBAL: IMPERIALISM 0x006a3388
 double g_mapCellColumnScale = DefaultMapCellScale();
+
 // GLOBAL: IMPERIALISM 0x006a32f8
 double g_mapProjectionColumnScale = DefaultMapCellScale();
+
 // GLOBAL: IMPERIALISM 0x006a3320
 double g_mapProjectionRowScale = DefaultMapCellScale();
+
 // GLOBAL: IMPERIALISM 0x006a3348
 short g_mapProjectionSeamColumn = static_cast<short>(g_mapProjectionColumnScale * 512.0 + 1.0);
 
@@ -1155,9 +1159,8 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
           coastOffset = g_pGlobalMapState->GetDeltaTileOffset(
               static_cast<char>(adjacencyMask), static_cast<char>(corner + 1), riverSpriteCode);
         } else {
-          coastOffset = g_pGlobalMapState->GetCoastTileOffset(
-              static_cast<char>(adjacencyMask), static_cast<char>(corner + 1),
-              static_cast<char>(variantMask & (1 << corner)));
+          coastOffset = g_pGlobalMapState->GetCoastTileOffset(adjacencyMask, corner + 1,
+                                                              variantMask & (1 << corner));
         }
         if (coastOffset == 0) {
           continue;

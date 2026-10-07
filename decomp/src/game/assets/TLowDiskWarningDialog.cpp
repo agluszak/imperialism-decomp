@@ -1,6 +1,6 @@
 #include "game/app/TModalTemplateDialog.h"
 
-#include "game/gfx/TResourceMgr.h" // g_pResourceMgr
+#include "game/gfx/TResourceMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 

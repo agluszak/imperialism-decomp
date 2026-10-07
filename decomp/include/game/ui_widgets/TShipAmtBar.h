@@ -5,6 +5,7 @@
 class TShipOrder;
 
 struct CRuntimeClass;
+
 // VTABLE: IMPERIALISM 0x666998
 class TShipAmtBar : public TAmtBar {
 public:

@@ -318,8 +318,7 @@ void TMapUberPicture::FocusOnForce(TTaskForce* pMapOrderEntry) {
     TShipFractionCluster* shipClass =
         static_cast<TShipFractionCluster*>(FindSubView(kControlTagCls0 + i)); // 'cls0'..'cls3'
     shipClass->AssertValid();
-    shipClass->Set(pMapOrderEntry->shipCountsByToolbarSlot[i],
-                   pMapOrderEntry->GetSelected(static_cast<short>(i)));
+    shipClass->Set(pMapOrderEntry->shipCountsByToolbarSlot[i], pMapOrderEntry->GetSelected(i));
   }
 
   TNavyToolbarCluster* navyToolbar =

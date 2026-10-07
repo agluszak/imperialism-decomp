@@ -717,6 +717,7 @@ void TNewsMgr::ConcatenateTreaty(InterNationEventKind eventKind, int nationA, in
     sharedEventRecordQueue->Insert(&recordB);
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0055cf20
 bool TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
                                     int nationSlot) {

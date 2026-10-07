@@ -29,12 +29,12 @@
 #include "game/military/TArmyMgr.h"
 #include "game/ui_widgets/TArmyToolbar.h"
 #include "game/assets/TAssetMgr.h"
-#include "game/ui_widgets/TSoundPlayer.h" // g_pSfxPlaybackSystem
-#include "game/ui_core/TMacViewMgr.h"     // g_pMacViewMgr
-#include "game/ui_core/TIncludeView.h"    // turn-event UI entry packet ('Incl')
-#include "game/ui_core/CWMgrIterator.h"   // window-registry traversal for the full (code-0) refresh
-#include "game/ui_core/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
-#include "game/ui_widgets/TToolBarCluster.h" // pulls TView/TControl/TCluster chain for main-view dispatch
+#include "game/ui_widgets/TSoundPlayer.h"
+#include "game/ui_core/TMacViewMgr.h"
+#include "game/ui_core/TIncludeView.h"
+#include "game/ui_core/CWMgrIterator.h"
+#include "game/ui_core/quickdraw_rendering.h"
+#include "game/ui_widgets/TToolBarCluster.h"
 #include "game/ui_widgets/TTradeCluster.h"
 #include "game/assets/TMovieView.h"
 
@@ -46,12 +46,12 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/ui_screens_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/city_ui/TCountry.h" // FormatOverlayTerrainLabelText (terrain overlay case)
+#include "game/city_ui/TCountry.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_core/TPtrList.h"
 #include "game/military/TGarrisonView.h"
 #include "game/map/TMapMgr.h"
-#include "game/gfx/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
+#include "game/gfx/TDisplayMgr.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_core/TWindow.h"
 #include "game/ui_widgets/TInfoBarText.h"
@@ -61,7 +61,7 @@
 #include "game/ui_screens/TNewspaperView.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_core/TNumberText.h"
-#include "game/ui_screens/turn_flow_cooldown.h" // IsTurnFlowCooldownActiveAndResetExpiredState
+#include "game/ui_screens/turn_flow_cooldown.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/ui_message_pump.h"
 #include "game/net/TMultiplayerMgr.h"
@@ -79,7 +79,7 @@
 #include "RuntimeTestDriver.h"
 #endif
 #include "game/tactical/TTacticalBattleView.h"
-#include "game/ui_screens/TScrollView.h" // nation-info modal overflow scroll wrapper
+#include "game/ui_screens/TScrollView.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_widgets/TDropShadowText.h"
 #include "game/ui_widgets/TDropShadowNumberText.h"
@@ -89,7 +89,7 @@
 #include "game/ui_widgets/TMinorTreatyDialog.h"
 #include "game/ui_widgets/TRelationshipDialog.h"
 #include "game/app/TTechStorePage.h"
-#include "game/military/mapped_flavor_text.h" // BuildUiMessageTextFromBracketTemplate / scanBracketExpressions
+#include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/TEditText.h"
 #include "game/ui_screens/TRadioText.h"
 #include "game/ui_screens/TRadioTextCluster.h"

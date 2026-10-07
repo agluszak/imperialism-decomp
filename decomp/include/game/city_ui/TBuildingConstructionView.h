@@ -6,6 +6,7 @@
 
 class TCity;
 class TCityProductionView;
+
 // VTABLE: IMPERIALISM 0x00651d88
 class TBuildingConstructionView : public TPicture {
 public:

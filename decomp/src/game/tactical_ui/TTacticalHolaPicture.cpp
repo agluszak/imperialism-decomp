@@ -11,6 +11,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
+
 // FUNCTION: IMPERIALISM 0x0045d480
 TTacticalHolaPicture::TTacticalHolaPicture() {}
 

@@ -164,8 +164,8 @@ void TRailCluster::UpdateMax() {
   }
 
   if (barControl->auxValueA != 0) {
-    barControl->DrawMax(static_cast<short>(
-        (selectedMetricOrder->MaxOrder() * barControl->frameWidth) / barControl->auxValueA));
+    barControl->DrawMax((selectedMetricOrder->MaxOrder() * barControl->frameWidth) /
+                        barControl->auxValueA);
   }
 }
 

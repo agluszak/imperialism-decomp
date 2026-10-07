@@ -803,6 +803,7 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
 }
 
 IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
+
 // FUNCTION: IMPERIALISM 0x00557f10
 bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
                                        TZone* portZoneContext, short nation, short offerAmount) {

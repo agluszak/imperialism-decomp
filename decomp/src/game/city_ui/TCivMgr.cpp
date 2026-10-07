@@ -838,6 +838,7 @@ void TCivMgr::MoveAndRedrawUnit(short nNewTileIndex, TCivUnit* pCivOrderEntry) {
     g_pViewMgr->mapUberPicture->RedrawTile(nNewTileIndex);
   }
 }
+
 // FUNCTION: IMPERIALISM 0x004d4390
 void TCivMgr::CompletedOrders(TCivUnit* order) {
   switch (order->unitOrder - kUnitOrderLayRail) {

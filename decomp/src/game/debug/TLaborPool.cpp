@@ -3,6 +3,7 @@
 #include "game/core/TStream.h"
 
 IMPLEMENT_DYNCREATE(TLaborPool, TObject)
+
 // FUNCTION: IMPERIALISM 0x004b2190
 TLaborPool::~TLaborPool() {}
 

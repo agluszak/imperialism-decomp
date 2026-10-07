@@ -43,11 +43,12 @@
 #include "game/globals/map_globals.h"
 #include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/military/mapped_flavor_text.h" // scanBracketExpressions
-#include "game/navy_order.h" // g_pNavyPrimaryOrderListHead, FindCumulativeWeightBucketIndex
-#include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
+#include "game/military/mapped_flavor_text.h"
+#include "game/navy_order.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+
 // FUNCTION: IMPERIALISM 0x004a13c0
 void MapContextActionRecord::ReadFrom(TStream* stream) {
   stream->ReadBytes(&reportParticipantIndex, 1);
@@ -1650,14 +1651,12 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
       seed = seed * 0x15a4e35 + 1;
       short pointCost = static_cast<short>(FindCumulativeWeightBucketIndex(
           const_cast<short*>(pointCostWeights),
-          static_cast<short>(static_cast<int>(static_cast<unsigned int>(seed) >> 0xc & 0x7fff) %
-                             100)));
+          static_cast<int>(static_cast<unsigned int>(seed) >> 0xc & 0x7fff) % 100));
       seed = seed * 0x15a4e35 + 1;
       short category = static_cast<short>(
           FindCumulativeWeightBucketIndex(
               const_cast<short*>(categoryWeights),
-              static_cast<short>(static_cast<int>(static_cast<unsigned int>(seed) >> 0xc & 0x7fff) %
-                                 100)) +
+              static_cast<int>(static_cast<unsigned int>(seed) >> 0xc & 0x7fff) % 100) +
           3);
       switch (category) {
       default:

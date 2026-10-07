@@ -36,7 +36,7 @@ public:
 
   void SaveAndDismiss(int actionCode);
 
-  void SwitchToBook(unsigned char activate);
+  void SwitchToBook(bool activate);
 };
 
 ASSERT_SIZE(TOfferDeskPicture, 0xa8);

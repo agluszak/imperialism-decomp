@@ -97,6 +97,7 @@ static inline void AssertActionButtonResolved(void* button) {
     FailNilPointerWithAssert(s_SourcePathUDiplomacyViews, 0x3a7);
   }
 }
+
 // FUNCTION: IMPERIALISM 0x004f3a50
 void __cdecl ClampRectWithinBoundsPreservingSize(RECT* rect, RECT* bounds) {
   short width = static_cast<short>(rect->right) - static_cast<short>(rect->left);

@@ -159,6 +159,7 @@ void __cdecl ReplaceUiResourceContextPairBuffer(int styleWord, int packedColor) 
 TUiStyleRef::TUiStyleRef(int value) {
   this->value = value;
 }
+
 // FUNCTION: IMPERIALISM 0x00479e10
 int __stdcall ClearUiResourceEntryDwords(int* destination, int count) {
   while (count != 0) {

@@ -13,7 +13,7 @@
 #include "game/globals/nation_globals.h"
 
 #include "game/military/TArmyMgr.h"
-#include "game/ui_core/TLanguageMgr.h" // StripCodeStr (display-name load)
+#include "game/ui_core/TLanguageMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/city/TCity.h"
 #include "game/ui_screens/TSimMgr.h"

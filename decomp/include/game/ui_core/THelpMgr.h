@@ -26,6 +26,7 @@ struct HelpSetRecord {
 ASSERT_SIZE(HelpSetRecord, 0xe);
 
 #pragma pack(push, 2)
+
 // VTABLE: IMPERIALISM 0x00657040
 class THelpMgr : public TObject {
 public:

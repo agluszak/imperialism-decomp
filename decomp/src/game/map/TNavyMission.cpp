@@ -155,6 +155,7 @@ void TNavyMission::ForgetTaskForce(TTaskForce* taskForce) {
     this->taskForce = NULL;
   }
 }
+
 // FUNCTION: IMPERIALISM 0x00536840
 int TNavyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack) const {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
@@ -597,6 +598,7 @@ float TNavyMission::IndustrialCostOfNeeds() {
   }
   return total;
 }
+
 // FUNCTION: IMPERIALISM 0x00537900
 void TNavyMission::ProjectEquipage(float* vector, TZone* nearZone, short distanceThreshold,
                                    TZone* farZone) {
@@ -737,6 +739,7 @@ float TNavyMission::GetWeightedSatisfaction() {
   }
   return numerator / denominator;
 }
+
 // FUNCTION: IMPERIALISM 0x00538120
 float TNavyMission::GetWeightedSatifactionWith(TShip* candidateOrder) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
@@ -985,6 +988,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfil
   }
   return total * (static_cast<float>(1.0) - diffSum * static_cast<float>(0.5));
 }
+
 // FUNCTION: IMPERIALISM 0x00539a90
 float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
@@ -1022,6 +1026,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
   }
   return total * (static_cast<float>(1.0) - diffSum * static_cast<float>(0.5));
 }
+
 // FUNCTION: IMPERIALISM 0x0053b350
 float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone) {
   float best = 0.0f;

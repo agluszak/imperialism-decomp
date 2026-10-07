@@ -4,6 +4,7 @@
 #include "game/ui_core/TPicture.h"
 
 struct CRuntimeClass;
+
 // VTABLE: IMPERIALISM 0x6687b8
 class TWarningView : public TPicture {
 public:

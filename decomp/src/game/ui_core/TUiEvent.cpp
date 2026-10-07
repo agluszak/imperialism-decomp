@@ -1,4 +1,5 @@
 #include "game/ui_core/TUiEvent.h"
+
 // FUNCTION: IMPERIALISM 0x00483ab0
 TUiEvent::~TUiEvent() {}
 

@@ -56,6 +56,7 @@ template <class T> static T* AllocateCityMinisterScratchArray(int count, int ass
   }
   return result;
 }
+
 // FUNCTION: IMPERIALISM 0x004bdf90
 bool IsResourceCodeInRange13To16(short resourceCode) {
   return resourceCode >= 0xd && resourceCode <= 0x10;
@@ -1025,7 +1026,7 @@ int TCityInteriorMinister::SelectCitySite() {
   do {
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (static_cast<short>(tile->ownerNationTag) == nationSlot &&
-        g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(static_cast<short>(tileIndex))) {
+        g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(tileIndex)) {
       StrategicTerrainKind terrainKind = tile->GetTerrainKind();
       if (terrainKind == kStrategicTerrainPlains || terrainKind == kStrategicTerrainFarmland ||
           terrainKind == kStrategicTerrainForest || terrainKind == kStrategicTerrainDesert) {

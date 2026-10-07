@@ -27,6 +27,7 @@ namespace {} // namespace
 TMapEditView::~TMapEditView() {}
 
 IMPLEMENT_DYNCREATE(TMapEditView, TMapDialog)
+
 // FUNCTION: IMPERIALISM 0x0051cc60
 void TMapEditView::DoPostCreate(int arg) {
   TWorldView::DoPostCreate(arg);

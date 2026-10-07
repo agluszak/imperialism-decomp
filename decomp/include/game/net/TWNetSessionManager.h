@@ -25,6 +25,7 @@ struct WNetSelectionRecord {
 };
 
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
+
 // VTABLE: IMPERIALISM 0x0066f9c0
 class TDirectPlaySessionManagerBase {
 public:

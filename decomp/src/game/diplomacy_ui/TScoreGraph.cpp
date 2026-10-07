@@ -10,6 +10,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
+
 // FUNCTION: IMPERIALISM 0x004fe270
 TScoreGraph::~TScoreGraph() {}
 

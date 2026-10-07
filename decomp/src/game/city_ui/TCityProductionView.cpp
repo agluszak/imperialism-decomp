@@ -45,10 +45,13 @@
 
 // GLOBAL: IMPERIALISM 0x006961e0
 extern "C" short g_clockHourHandOffsetX[12] = {0, 1, 2, 2, 2, 1, 0, -2, -2, -2, -2, -1};
+
 // GLOBAL: IMPERIALISM 0x006961f8
 extern "C" short g_clockHourHandOffsetY[12] = {-2, -2, -1, 1, 2, 2, 2, 2, 0, -1, -2, -2};
+
 // GLOBAL: IMPERIALISM 0x00696210
 extern "C" short g_clockMinuteHandOffsetX[12] = {0, 2, 3, 3, 2, 2, 0, -2, -3, -3, -2, -1};
+
 // GLOBAL: IMPERIALISM 0x00696228
 extern "C" short g_clockMinuteHandOffsetY[12] = {-3, -2, 0, 2, 3, 4, 3, 3, 0, -1, -3, -3};
 
@@ -150,6 +153,7 @@ void TCityProductionView::Free() {
 }
 
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
+
 // FUNCTION: IMPERIALISM 0x004ba7b0
 void TCityProductionView::Draw(RECT* rectBuffer) {
   // Turn-event snapshot mode: blit the cached surface straight through and finish.
@@ -251,6 +255,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
+
 // FUNCTION: IMPERIALISM 0x004bac50
 void TCityProductionView::DrawToGWorld(RECT* destRect, TQuickDrawSurfaceContext* destContext,
                                        short offsetY, short offsetX, short resourceId,

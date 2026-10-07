@@ -59,7 +59,7 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   }
   unsigned char excludeOwnerMask = (1 << (primaryOwner & 0x1f)) ^ 0x7f;
   while ((zone->nationKeyMask & excludeOwnerMask) == 0 ||
-         !zone->ContainsCityStatePointerInZoneArrayByCityIndex(static_cast<short>(tileIndex))) {
+         !zone->ContainsCityStatePointerInZoneArrayByCityIndex(tileIndex)) {
     zone = zone->prev18;
     if (zone == NULL) {
       return false;

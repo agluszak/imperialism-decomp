@@ -4,6 +4,7 @@
 #include "game/ui_core/TView.h"
 
 struct CRuntimeClass;
+
 // VTABLE: IMPERIALISM 0x665cc8
 class TAmtBar : public TView {
 public:

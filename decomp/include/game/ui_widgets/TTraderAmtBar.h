@@ -5,6 +5,7 @@
 #include "game/ui_widgets/TAmtBar.h"
 
 struct CRuntimeClass;
+
 // VTABLE: IMPERIALISM 0x666ba0
 class TTraderAmtBar : public TAmtBar {
 public:

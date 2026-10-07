@@ -430,8 +430,8 @@ void TMinor::InitializeTradeStatus(void) {
           char resourceType =
               g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge];
           if (resourceType != -1) {
-            short yieldLevel = static_cast<char>(
-                g_pGlobalMapState->GetAmountOf(static_cast<short>(tileIndex), resourceType));
+            short yieldLevel =
+                static_cast<char>(g_pGlobalMapState->GetAmountOf(tileIndex, resourceType));
             foreignControlledResourceYieldByType[static_cast<int>(resourceType)] += yieldLevel;
             foreignControlledResourceYieldByTypeAndMajorNation[static_cast<int>(resourceType)]
                 .amountByMajorNation[tileGreatPower] += yieldLevel;

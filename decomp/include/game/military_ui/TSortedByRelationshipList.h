@@ -4,6 +4,7 @@
 #include "game/ui_core/TSortedPtrList.h"
 
 struct CRuntimeClass;
+
 // VTABLE: IMPERIALISM 0x00654d38
 class TSortedByRelationshipList : public TSortedPtrList {
 public:

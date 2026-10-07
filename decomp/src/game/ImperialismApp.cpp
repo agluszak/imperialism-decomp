@@ -14,7 +14,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/gfx/TResourceMgr.h"
 #include "game/gfx/TAmbitApplication.h"
-#include "game/gfx/TBackdropWindow.h" // RefreshBackdropOnInputMessages
+#include "game/gfx/TBackdropWindow.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/app/CAmbitDocument.h"
@@ -40,8 +40,8 @@
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-#include <io.h>  // CRT _findfirst/_findnext/_findclose
-#include <new.h> // CRT _set_new_handler
+#include <io.h>
+#include <new.h>
 #include <string.h>
 
 namespace {

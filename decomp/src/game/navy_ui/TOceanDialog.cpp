@@ -803,10 +803,9 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       CString label;
       zone->AssignZoneDisplayNameToOutputRef(&label);
       SetQuickDrawTextOriginWithContextOffset(
-          static_cast<short>(
-              labelX - MeasureTextRangeWithCachedQuickDrawStyle(
-                           static_cast<LPCSTR>(label), 0, static_cast<short>(label.GetLength())) /
-                           2),
+          static_cast<short>(labelX - MeasureTextRangeWithCachedQuickDrawStyle(
+                                          static_cast<LPCSTR>(label), 0, label.GetLength()) /
+                                          2),
           static_cast<short>(labelY + 0x10));
       DrawTextWithCachedQuickDrawStyleState(&label);
     }

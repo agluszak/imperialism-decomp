@@ -39,6 +39,7 @@ void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 short TWorldView::GetCentertile() {
   return -1;
 }
+
 // FUNCTION: IMPERIALISM 0x00519b10
 TWorldView::~TWorldView() {}
 
@@ -582,7 +583,7 @@ bool TWorldView::IsTileVisible(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x00596700
 void TWorldView::NoticeTile(int tileIndex) {
-  if (!IsTileVisible(static_cast<short>(tileIndex))) {
+  if (!IsTileVisible(tileIndex)) {
     CenterOn(tileIndex);
   }
   static_cast<TWorldView*>(ownerContext)->CenterOn(tileIndex);

@@ -240,6 +240,7 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   origin.x = content->ownerLocalX;
   content->Locate(origin, true);
 }
+
 // FUNCTION: IMPERIALISM 0x00574e20
 void TScrollBarView::SetThumb(int percent, unsigned char refresh) {
   short value = static_cast<short>(

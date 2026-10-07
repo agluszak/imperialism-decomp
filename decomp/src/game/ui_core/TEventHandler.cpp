@@ -40,6 +40,7 @@ void TEventHandler::IEventHandler(TEventHandler* nextHandler) {
   this->nextHandler = nextHandler;
   controlTag = kControlTagSpSpSpSp;
 }
+
 // FUNCTION: IMPERIALISM 0x0048a1b0
 void TEventHandler::Free() {
   if (g_pApplication != 0 && g_pApplication != this) {

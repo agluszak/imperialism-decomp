@@ -182,8 +182,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
       short standingScore = 0x5a;
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(sourceNation)) &&
           g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation))) {
-        standingScore =
-            sourceMinor->IsInConsortiumWith(static_cast<short>(targetNation)) ? 0x96 : 0x6e;
+        standingScore = sourceMinor->IsInConsortiumWith(targetNation) ? 0x96 : 0x6e;
       }
       relationStandingScores[pairIndex] = standingScore;
       relationPropagationMatrix[pairIndex] = kDiplomacyRelationshipPeace;
@@ -1679,7 +1678,7 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationC
           int lookupIndex = normalizedSlot * kNationSlotCount + minorSlot;
           standingValue = relationStandingScores[lookupIndex];
           propagationValue = relationPropagationMatrix[lookupIndex];
-        } else if (capabilityObject->IsInConsortiumWith(static_cast<short>(otherMinorSlot))) {
+        } else if (capabilityObject->IsInConsortiumWith(otherMinorSlot)) {
           standingValue = 0x96;
           propagationValue = kDiplomacyRelationshipPeace;
         } else {

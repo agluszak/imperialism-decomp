@@ -4,6 +4,7 @@
 #include "game/ui_screens/TPictureButton.h"
 
 struct CRuntimeClass;
+
 // VTABLE: IMPERIALISM 0x65eb60
 class T2PictureButton : public TPictureButton {
 public:

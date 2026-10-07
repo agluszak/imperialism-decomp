@@ -18,6 +18,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <string.h>
+
 // FUNCTION: IMPERIALISM 0x004356e0
 TNewspaperView::TNewspaperView() {}
 

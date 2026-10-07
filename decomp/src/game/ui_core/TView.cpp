@@ -27,6 +27,7 @@ extern "C" CRuntimeClass PTR_s_TView_006495a0;
 unsigned short TView::GetCursorID() {
   return cursorId;
 }
+
 // FUNCTION: IMPERIALISM 0x00427220
 void TView::PostRender() {}
 
@@ -40,6 +41,7 @@ void TView::GetExtent(CRect* boundsOut) {
   boundsOut->right = frameWidth;
   boundsOut->bottom = frameHeight;
 }
+
 // FUNCTION: IMPERIALISM 0x00427290
 void TView::GetFrame(CRect* boundsOut) {
   int width = frameWidth;
@@ -51,6 +53,7 @@ void TView::GetFrame(CRect* boundsOut) {
   boundsOut->right = width + left;
   boundsOut->bottom = height + top;
 }
+
 // FUNCTION: IMPERIALISM 0x004272d0
 void TView::TranslateRectToWindow(CRect* rect) {
   LocalToWindow(&rect->TopLeft());
@@ -67,6 +70,7 @@ void TView::SuperToLocal(CPoint* point) {
 void TView::GetDrawableQDRect(CRect* rectOut) {
   GetQDExtent(rectOut);
 }
+
 // FUNCTION: IMPERIALISM 0x00430bd0
 int TView::GetEventNumber() {
   return 0;
@@ -150,6 +154,7 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TVie
   }
   this->resourceContext = resourceContext;
 }
+
 // FUNCTION: IMPERIALISM 0x0048aaf0
 void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
   if (childList != 0) {
@@ -161,14 +166,17 @@ void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
   }
   DoPostCreate(eventArg);
 }
+
 // FUNCTION: IMPERIALISM 0x0048ab70
 void TView::DoPostCreate(int arg) {}
+
 // FUNCTION: IMPERIALISM 0x0048ab90
 void TView::ForwardMapViewVirtualC4IfPresent(RgnHandle region) {
   if (ownerContext != 0) {
     ownerContext->ForwardMapViewVirtualC4IfPresent(region);
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0048abc0
 void TView::NoOpUiCallback() {}
 
@@ -224,6 +232,7 @@ void TView::RemoveSubView(class TView* child) {
   }
   child->ownerContext = 0;
 }
+
 // FUNCTION: IMPERIALISM 0x0048af80
 void TView::SwitchActiveChildAndNotify(class TView* child) {
   if (childList != 0 && childList->GetTail() != child) {
@@ -232,6 +241,7 @@ void TView::SwitchActiveChildAndNotify(class TView* child) {
     child->RefreshControl();
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0048afd0
 class TView* TView::FindSubView(unsigned int controlTag) {
   if (controlTag == static_cast<unsigned int>(this->controlTag)) {
@@ -259,6 +269,7 @@ class TView* TView::FindSubView(unsigned int controlTag) {
   }
   return 0;
 }
+
 // FUNCTION: IMPERIALISM 0x0048b070
 void TView::ViewEnable(int enabled, int refreshNow) {
   SetEnable(enabled);
@@ -304,6 +315,7 @@ TWindow* TView::GetWindow() {
   }
   return 0;
 }
+
 // FUNCTION: IMPERIALISM 0x0048b1a0
 TView* TView::GetRootView() {
   if (ownerContext != 0) {
@@ -311,6 +323,7 @@ TView* TView::GetRootView() {
   }
   return 0;
 }
+
 // FUNCTION: IMPERIALISM 0x0048b1c0
 void TView::Show(int show, int refreshNow) {
   if (show != viewEnabled) {
@@ -320,11 +333,13 @@ void TView::Show(int show, int refreshNow) {
     }
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0048b200
 bool TView::IsActionable() {
   return g_McAppUiActiveFlag != 0 && nativeWindow != 0 && viewEnabled != 0 && ownerContext != 0 &&
          ownerContext->IsActionable();
 }
+
 // FUNCTION: IMPERIALISM 0x0048b250
 void TView::Locate(const CPoint& position, bool refresh) {
   if (refresh && IsActionable()) {
@@ -362,6 +377,7 @@ void TView::UpdateCoordinates() {
     }
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0048b3f0
 void TView::Resize(const CPoint& size, bool refresh) {
   if (refresh) {
@@ -439,6 +455,7 @@ void TView::ValidateVRect(RECT* rect) {
     ValidateRect(nativeWindow->m_hWnd, rect);
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0048b6d0
 void TView::RefreshControl() {
   if (g_McAppUiActiveFlag != 0 && nativeWindow != 0) {
@@ -460,6 +477,7 @@ void TView::ForceRedraw() {
     g_McAppUiUpdateWindowRecursionGuard = 0;
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0048b770
 bool TView::PrepareForDrawing() {
   if (this != g_McAppUiActiveRenderContext) {
@@ -468,6 +486,7 @@ bool TView::PrepareForDrawing() {
   }
   return true;
 }
+
 // FUNCTION: IMPERIALISM 0x0048b7b0
 int TView::BindMapQuickDrawDc(CDC* paintDc) {
   return BindScopedMapQuickDrawDcHandle(this, paintDc);
@@ -484,6 +503,7 @@ void TView::EnsureStylePayload() {
     stylePayload = new TUiStyleBytes();
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0048b860
 void TView::PaintOrInvalidateControl(CDC* paintDc) {
   if (paintDc != 0) {
@@ -535,6 +555,7 @@ void TView::TranslatePointToParentChain4E(CPoint* point) {
   point->x += ownerLocalX;
   ownerContext->TranslatePointToParentChain4E(point);
 }
+
 // FUNCTION: IMPERIALISM 0x0048ba80
 void TView::LocalToWindow(CPoint* point) {
   int offY = ownerLocalY;
@@ -585,6 +606,7 @@ CRect TView::ViewToQDRect(CRect* inRect) {
   CPoint mapped = ViewToQDPt(&corner);
   return CRect(mapped.x, mapped.y, mapped.x + width, mapped.y + height);
 }
+
 // FUNCTION: IMPERIALISM 0x0048bc30
 void TView::AddControlPosToPoint(int x, int y, CPoint* outPoint) {
   x += absoluteX;
@@ -636,6 +658,7 @@ TView::TView(const TView& source)
     }
   }
 }
+
 // FUNCTION: IMPERIALISM 0x0048bef0
 void TView::CopyViewStateFromSource(TView* source) {
   enabled = source->enabled;
@@ -754,6 +777,7 @@ void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   HCURSOR hCursor = LoadCursorA(NULL, IDC_ARROW);
   SetCursor(hCursor);
 }
+
 // FUNCTION: IMPERIALISM 0x0048c380
 void TView::SetFrame(CRect* newBounds, bool modeFlag) {
   CRect current;
@@ -837,6 +861,7 @@ char TView::PointInBoundsAndActionable(CPoint* point) {
   }
   return 0;
 }
+
 // FUNCTION: IMPERIALISM 0x0048c750
 void TView::DrawRectangleInCurrentUiContext(const RECT* rect) {
   if (g_McAppUiDrawGate == 0) {
@@ -845,6 +870,7 @@ void TView::DrawRectangleInCurrentUiContext(const RECT* rect) {
   CDC* context = GetActiveQuickDrawDc();
   Rectangle(context->m_hDC, rect->left, rect->top, rect->right, rect->bottom);
 }
+
 // FUNCTION: IMPERIALISM 0x0048c7a0
 void TView::AssertMcAppUiLine1914(int unusedArg) {
   if (g_McAppUiFlag_006A1AFC == 0) {
@@ -872,6 +898,7 @@ CWnd* TView::Open() {
   }
   return 0;
 }
+
 // FUNCTION: IMPERIALISM 0x0048c890
 void TView::Close() {
   if (childList != 0) {
@@ -899,6 +926,7 @@ void TView::PropagateUiResourceContextRecursive(CWnd* nativeWindow) {
 unsigned short TView::GetHelpState() {
   return helpState;
 }
+
 // FUNCTION: IMPERIALISM 0x0048c990
 short TView::ContainsMouse(const CPoint& point) {
   CRect bounds;
@@ -909,11 +937,15 @@ short TView::ContainsMouse(const CPoint& point) {
   // Returns 3 (not 1) on hit, unlike PointInBoundsAndActionable's near-identical body above.
   return PtInRect(&bounds, p) ? 3 : 0;
 }
+
 // FUNCTION: IMPERIALISM 0x0048c9e0
 void TView::GoAwayByUser(const CPoint& point) {}
+
 // FUNCTION: IMPERIALISM 0x0048ca00
 void TView::MoveByUser(const CPoint& point) {}
+
 // FUNCTION: IMPERIALISM 0x0048ca20
 void TView::ResizeByUser(const CPoint& point) {}
+
 // FUNCTION: IMPERIALISM 0x0048ca40
 void TView::ZoomByUser(const CPoint& point, short partCode) {}

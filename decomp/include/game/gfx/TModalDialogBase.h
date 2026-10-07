@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/mfc.h" // CDialog (afxwin.h)
+#include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x0063e5a0
 class TModalDialogBase : public CDialog {

@@ -21,6 +21,7 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 bool TAttackProvinceMission::IsHospitalMission() const {
   return false;
 }
+
 // FUNCTION: IMPERIALISM 0x0053d780
 TAttackProvinceMission::TAttackProvinceMission(short targetProvince, short amassingProvince)
     : TArmyMission(-1) {

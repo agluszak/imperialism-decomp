@@ -739,6 +739,7 @@ void TAutoGreatPower::RemoveMission(eMissionType missionType, int key, TZone* zo
     }
   }
 }
+
 // FUNCTION: IMPERIALISM 0x004e8b50
 void TAutoGreatPower::SetProvinceStatus(int provinceIndex, eMissionDesirability value) {
   if (value == kMissionDesirabilityCandidate &&
@@ -1408,7 +1409,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
     }
 
     float militaryScore;
-    if (g_pGlobalMapState->IsSameContinent(nationSlot, static_cast<short>(peerNation))) {
+    if (g_pGlobalMapState->IsSameContinent(nationSlot, peerNation)) {
       militaryScore = g_afNationMobileUnitScore[peerNation];
     } else {
       militaryScore = g_afNationWeightedMilitaryOrderScore[peerNation];

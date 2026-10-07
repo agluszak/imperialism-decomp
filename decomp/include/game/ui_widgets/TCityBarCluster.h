@@ -6,6 +6,7 @@
 
 struct CRuntimeClass;
 class TCity;
+
 // VTABLE: IMPERIALISM 0x00665190
 class TCityBarCluster : public TUberCluster {
 public:

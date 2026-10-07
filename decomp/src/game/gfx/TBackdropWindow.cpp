@@ -21,6 +21,7 @@ TBackdropWindow::TBackdropWindow() : CWnd() {}
 TBackdropWindow::~TBackdropWindow() {
   g_pActiveBackdropWindow = NULL;
 }
+
 // FUNCTION: IMPERIALISM 0x0049cc60
 void CreateBackdropWindowIfSplashEnabled(CWnd* parent) {
   if (!g_cachedShowSplashFlag || g_pActiveBackdropWindow != NULL) {

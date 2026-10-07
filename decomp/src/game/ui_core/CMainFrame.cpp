@@ -4,7 +4,7 @@
 
 #include "game/pointer_representation.h"
 #include "game/ui_core/TCommand.h"
-#include "game/ui_core/CIncludeView.h" // GetMainViewHostFromActiveThread()->m_hWnd
+#include "game/ui_core/CIncludeView.h"
 #include "game/turn_event_codes.h"
 #include "game/ImperialismApp.h"
 #include "game/gfx/TBackdropWindow.h"

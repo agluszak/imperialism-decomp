@@ -8,6 +8,7 @@ struct DiplomacyMaskBufferRun;
 struct TQuickDrawSurfaceContext;
 
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
+
 // VTABLE: IMPERIALISM 0x006404a4
 class StrategicMapOpcodeByteStretch : public stretch<unsigned char> {};
 

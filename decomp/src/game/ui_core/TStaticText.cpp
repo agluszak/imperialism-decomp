@@ -15,6 +15,7 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/mfc.h"
 #include <new>
+
 // FUNCTION: IMPERIALISM 0x004294d0
 void TStaticText::CopyTextTo(CString* out) {
   *out = *text;

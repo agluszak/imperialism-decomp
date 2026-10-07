@@ -14,6 +14,7 @@ void TCheater::ApplyCheats() {}
 TCheater::~TCheater() {}
 
 IMPLEMENT_DYNCREATE(TCheater, TView)
+
 // FUNCTION: IMPERIALISM 0x004b14a0
 void TCheater::ICheater(TView* panel, int unusedArg) {
   int frameOffset[2] = {0, 0};

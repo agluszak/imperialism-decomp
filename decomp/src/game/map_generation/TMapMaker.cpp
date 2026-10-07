@@ -1834,6 +1834,7 @@ void TMapMaker::RepositionDateline() {
 
   delete[] scratch;
 }
+
 // FUNCTION: IMPERIALISM 0x00529c80
 int TMapMaker::ZoneCorner(long nationCode) {
   int longestRun = 0;

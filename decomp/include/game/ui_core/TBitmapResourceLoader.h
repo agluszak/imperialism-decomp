@@ -18,6 +18,7 @@ struct TBitmapResourceLoaderState {
 };
 
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
+
 // VTABLE: IMPERIALISM 0x0064c340
 class TBitmapResourceLoader : public TBitmapResourceLoaderState {
 public:

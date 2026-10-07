@@ -976,7 +976,7 @@ bytes:
 - `tile+0x11`/`tile+0x12` — written by the editor/tile-edit dispatchers (already known).
 - `tile+0x16` (`pad16`) — the map-order state byte written at runtime by
   `SetMapTileStateByteAndNotifyObserver` (`src/game/TOcean.cpp`, called from
-  `TZone::HandleKeyDown` with values `7..13`), which also stamps `tile+0x1a = 0xFFFF`.
+  `TZone::OccupyBy` with values `7..13`), which also stamps `tile+0x1a = 0xFFFF`.
 
 To finish the exact `400..426` state machine, the remaining trace target is the sprite
 selection inside `RenderStrategicMapTileCell` (0x0051EB40) — still a stub — and the

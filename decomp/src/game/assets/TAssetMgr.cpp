@@ -77,6 +77,7 @@ int TAssetMgr::ReadResourceStreamIntoBufferAndAdvance(CFile* stream, void* buffe
   *countInOut = stream->Read(buffer, *countInOut);
   return 0;
 }
+
 // FUNCTION: IMPERIALISM 0x005df730
 void TAssetMgr::SeekResourceStreamFromBeginning(CFile* stream, int offset) {
   stream->Seek(offset, CFile::begin);

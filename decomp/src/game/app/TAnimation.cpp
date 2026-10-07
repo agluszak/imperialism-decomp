@@ -69,6 +69,7 @@ void TAnimation::DrawNextFrame(POINT* offset) {
 }
 
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
+
 // FUNCTION: IMPERIALISM 0x0049f2d0
 void TAnimation::LoadFrameIntoBuffer() {
   TQuickDrawSurfaceContext* savedContext = 0;

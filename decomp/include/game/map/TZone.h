@@ -16,6 +16,7 @@ class TTaskForce;
 class TAdmiral;
 
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
+
 // VTABLE: IMPERIALISM 0x0065c74c
 class TZonePrimaryNeighborStretch : public stretch<TZone*> {
 public:
@@ -93,7 +94,7 @@ public:
   static int ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* contextZone,
                                                             Province* contextProvince);
 
-  void HandleKeyDown(int key_id);
+  void OccupyBy(int nation);
 
   static TZone* GetFirstPort();
   TZone* GetNextPort();

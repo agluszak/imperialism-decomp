@@ -4,6 +4,7 @@
 #include "game/ui_screens/TToggleButton.h"
 
 struct CRuntimeClass;
+
 // VTABLE: IMPERIALISM 0x664470
 class T2PictToggleButton : public TToggleButton {
 public:

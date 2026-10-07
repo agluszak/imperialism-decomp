@@ -2148,6 +2148,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
 
 // Retail begins with TEST ESI,ESI and preserves this retail null-this path.
 IMPERIALISM_BEGIN_RETAIL_NULL_THIS_CHECK
+
 // FUNCTION: IMPERIALISM 0x004dfd30
 void TGreatPower::PlaceCity(short homeTileIndex, char* cityName) {
   TCity* city = this ? this->city : 0;
@@ -3483,6 +3484,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
   }
   return result;
 }
+
 // FUNCTION: IMPERIALISM 0x004e8c20
 float TGreatPower::ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int mode) {
   return ComputeAdvisoryMapNodeCompositeScoreByMode(cityRecordIndex, mode, -1);

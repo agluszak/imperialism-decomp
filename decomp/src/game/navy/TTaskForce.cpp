@@ -30,6 +30,7 @@
 // Navy order priority from four category weights over aggression, nation and map marker.
 
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
+
 // FUNCTION: IMPERIALISM 0x00552800
 TTaskForce::TTaskForce(TZone* locationArg, short nationArg)
     : aggression(1), shipOrders(0), target(NULL), shipList(NULL), flagship(NULL),

@@ -13,6 +13,7 @@ void TTacMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
 
 // FUNCTION: IMPERIALISM 0x0045d410
 TTacMapUberPicture::~TTacMapUberPicture() {}
+
 // FUNCTION: IMPERIALISM 0x005ad290
 void TTacMapUberPicture::SetWindPictureResourceIdAndRefresh(int resourceBase) {
   TPicture* windPicture =
@@ -22,6 +23,7 @@ void TTacMapUberPicture::SetWindPictureResourceIdAndRefresh(int resourceBase) {
 }
 
 IMPLEMENT_DYNCREATE(TTacMapUberPicture, TMapUberUberPicture)
+
 // FUNCTION: IMPERIALISM 0x005ad3a0
 void TTacMapUberPicture::DoPostCreate(int arg) {
   TMapUberUberPicture::DoPostCreate(arg);

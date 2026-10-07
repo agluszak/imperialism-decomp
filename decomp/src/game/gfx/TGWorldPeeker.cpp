@@ -10,6 +10,7 @@
 TGWorldPeeker::~TGWorldPeeker() {}
 
 IMPLEMENT_DYNCREATE(TGWorldPeeker, TView)
+
 // FUNCTION: IMPERIALISM 0x004ff2f0
 void TGWorldPeeker::Draw(RECT* rectBuffer) {
   if (peekSurface != NULL) {

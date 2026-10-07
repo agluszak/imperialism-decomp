@@ -6,6 +6,7 @@
 #include <string.h>
 
 IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY
+
 // FUNCTION: IMPERIALISM 0x00415ce0
 TObject* TObject::ShallowFree() {
   CRuntimeClass* runtimeClass = GetRuntimeClass();

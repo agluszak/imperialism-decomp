@@ -5,6 +5,7 @@
 
 struct CRuntimeClass;
 class TCivUnit;
+
 // VTABLE: IMPERIALISM 0x668128
 class TCivReport : public TPicture {
 public:

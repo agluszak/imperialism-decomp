@@ -13,6 +13,7 @@ enum {
   kDiplomacyPairMatrixEntries = 0x180,
   kNationPairMatrixEntries = kNationSlotCount * kNationSlotCount
 };
+
 // VTABLE: IMPERIALISM 0x00654d90
 class TDiplomacyMgr : public TObject {
 public:

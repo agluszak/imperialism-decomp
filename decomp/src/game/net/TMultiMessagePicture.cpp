@@ -10,6 +10,7 @@
 #include "game/ui_core/TWindow.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
+
 // FUNCTION: IMPERIALISM 0x0044fa80
 TMultiMessagePicture::TMultiMessagePicture() {}
 
@@ -45,9 +46,8 @@ void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, 
         recipientMask |= 1 << nationSlot;
       }
     }
-    g_pGameFlowState->SendVerbalMessage(
-        &message, static_cast<unsigned char>(recipientMask),
-        static_cast<unsigned char>(FindActiveNationSlotIndexInGameFlowList()));
+    g_pGameFlowState->SendVerbalMessage(&message, recipientMask,
+                                        FindActiveNationSlotIndexInGameFlowList());
   }
 
   g_pAmbitApplication->CloseAndFreeWindow(GetWindow());

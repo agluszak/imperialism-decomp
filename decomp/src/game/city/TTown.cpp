@@ -118,8 +118,7 @@ void TTown::CalculateRawResources() {
     }
 
     for (short resource = 0; resource < kResourceKindCount; ++resource) {
-      short amount = static_cast<short>(
-          g_pGlobalMapState->GetAmountOf(tileIndex, static_cast<char>(resource)));
+      short amount = static_cast<short>(g_pGlobalMapState->GetAmountOf(tileIndex, static_cast<char>(resource)));
       if (resource != kResourceFish || enabledFlag) {
         resourceYieldByType[resource] = static_cast<short>(resourceYieldByType[resource] + amount);
       }
@@ -192,8 +191,7 @@ void TTown::CalculateCityResources() {
     }
 
     for (short resource = 0; resource < kResourceKindCount; ++resource) {
-      short amount = static_cast<short>(
-          g_pGlobalMapState->GetAmountOf(tileIndex, static_cast<char>(resource)));
+      short amount = static_cast<short>(g_pGlobalMapState->GetAmountOf(tileIndex, static_cast<char>(resource)));
       if (amount != 0 && g_abResourceTypeUsesHighNibbleFlag[tile->gateFlag] != 0) {
         short capability = g_pTechMgr->capabilityValueByNationAndResource[ownerNation][resource];
         amount = static_cast<short>(g_abUniversityRequirementLevelById[resource][capability]);
