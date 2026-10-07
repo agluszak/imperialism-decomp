@@ -27,9 +27,8 @@ Deliberate DB repairs stay dry-run by default and require `--apply`:
 - demote fake functions
 - delete bad labels
 
-Invoke the matching private `just` recipe (or the underlying
-`tools.ghidra.*` module) from the Ghidra skill when a repair is needed. Always
-inspect the result before exporting.
+Invoke the relevant `just` recipe (see `just --list`) or its underlying
+`tools.ghidra.*` module. Inspect the result before exporting.
 
 ## Sync source names into Ghidra
 

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Ghidra Evidence"
-  short_description: "Inspect and document retail binary evidence"
-  default_prompt: "Use $ghidra to inspect or document retail binary evidence."

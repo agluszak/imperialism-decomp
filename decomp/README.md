@@ -1,23 +1,20 @@
 # Imperialism C++ reconstruction
 
-`decomp/` is the behaviorally and ABI-faithful C++ reconstruction of the Windows retail game
-Imperialism (1997). It is a sibling of the independent Rust implementation in `../rust/`. Run the
-commands below from this directory.
+This directory reconstructs the 1997 Windows executable using Visual C++ 5.0,
+retail and Mac CodeWarrior evidence, Ghidra, and reccmp. It is independent of
+the Rust implementation in `../rust/`. Run commands from `decomp/`.
 
-The retail executable is the compatibility target. This project rebuilds with the MSVC 5.0 toolchain,
-uses Ghidra for binary evidence, and uses reccmp to compare the result. It does not contain a retail
-binary or copyrighted game assets; use your own legally obtained copy.
+Retail binaries and proprietary game data are not checked in. Supply your own
+legally obtained `Imperialism.exe`.
 
-## Prerequisites
+## Setup
 
-- `git` and `git-lfs` for the vendored Ghidra archive.
-- `just` for project commands and `uv` for Python tools.
-- Docker for the MSVC500 build, Wine plus GDB/MI for the native runtime suite, and the pinned Ghidra fork distribution (Java 25).
-
-## First setup
+Requirements: Git LFS, `just`, `uv`, Docker, Wine/GDB, Java 25 and the pinned
+Ghidra fork.
 
 ```sh
-cp .env.example .env             # set GHIDRA_INSTALL_DIR, JAVA_HOME and ORIGINAL_BINARY
+cp .env.example .env
+# Set GHIDRA_INSTALL_DIR, JAVA_HOME, ORIGINAL_BINARY
 git lfs pull
 just vendor-msvc500-headers
 just restore-project
@@ -26,39 +23,41 @@ just bootstrap-reccmp
 just build
 ```
 
-`ORIGINAL_BINARY` must point at your legally obtained `Imperialism.exe`. The optional
-`MACOS_IMPERIALISM_DUMP` is only for regenerating vendored Mac evidence. A new worktree needs its own
-`.env` and `reccmp-user.yml`, but can reuse the Docker image and the local Ghidra installation.
+The optional Mac dump is only needed to regenerate vendored Mac evidence.
+A separate checkout needs its own `.env` and `reccmp-user.yml`; the
+Docker image and installed Ghidra distribution can be reused.
 
-## Recovery campaigns
+## Working on recovered source
 
 ```sh
-just compare-report build/comparisons/BASELINE --queue --output build/campaign.json
-# inspect retail evidence; fix shared owners across a coherent source batch
 just build
 just compare --changed
+just compare 0x00401000
+just vtable ClassName
+just datacmp
+just lint
 just precommit
 ```
 
-Start from a saved authored baseline (`just compare --all`), normally cover roughly 50–100 affected
-functions, then rebuild/compare once. Differences are inspection evidence; comparisons do not fail
-for a percentage score. `just vtable`, `just datacmp`, and `just serde-audit` are focused diagnostics.
-Run relevant runtime differentials when behavior may change, and full `just precommit` near the end
-of a source batch. Tooling-only changes use focused tooling tests. See [workflows](docs/workflows.md).
+Comparison differences are evidence to investigate, not a reason to distort
+period C++ for a score. Prefer fixing shared semantic, ABI, layout and
+ownership causes. Run runtime differentials when behavior is affected, and
+use `just precommit` for relevant substantial changes.
 
-The scoped rules are in `AGENTS.md`. The six focused skills under `.agents/skills/` cover function
-recovery, class recovery, Ghidra, verification, runtime behavior, and source/evidence synchronization.
+`just --list` is the command reference. Ghidra procedures are in
+[docs/ghidra-db.md](docs/ghidra-db.md); compiler/toolchain facts are in
+[docs/toolchain.md](docs/toolchain.md); compiler-owned emissions are described
+in [docs/compiler-emissions.md](docs/compiler-emissions.md).
 
-## Layout
+## Ownership
 
-- `src/`, `include/` — manually owned C++ source.
-- `config/` — current inventory and recovery evidence.
-- `tools/ghidra/`, `tools/runtime/` — active retail evidence and runtime tools; generation and direct
-  comparison helpers live alongside them.
-- `just/` — project commands; use `just --list` to discover them.
-- `vendor/` — Ghidra archive, MSVC500 inputs, and recovered Mac evidence.
-- `build-msvc500/` and `build-runtime-tests/` — generated local output, never hand-edit.
+- `src/`, `include/` — reconstructed C++.
+- `config/` — reviewed model inputs.
+- `vendor/` — pinned toolchain headers, Mac evidence, and reviewed Ghidra archive.
+- `tools/` — Ghidra, comparison, and runtime tooling.
+- `build-msvc500/`, `build-runtime-tests/` — disposable outputs.
 
-For deliberate Ghidra database changes, use the matching mutation command, inspect it, then export the
-project through the sync workflow. Source markers remain the ownership authority; `just build`
-regenerates the derived build inputs from them.
+Change the owning source or input, not generated artifacts. For a deliberate
+Ghidra change, inspect it before `just export-project`. The scoped
+[AGENTS.md](AGENTS.md) contains source-fidelity rules; durable evidence
+references are indexed in [docs/reference/README.md](docs/reference/README.md).

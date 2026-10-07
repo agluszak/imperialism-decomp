@@ -1,40 +1,30 @@
-# Reference
+# Retail and source references
 
-Durable layout contracts and game-domain knowledge. These are lookup references, not
-workflow guides (those are in `.agents/skills/`), not the active backlog,
-and not the change log (use clear git commit messages for change-specific commands,
-validation, and score deltas).
+Use these for durable observed behavior, formats and ABI facts.
+Current types/functions belong to C++ declarations, retail analysis
+to the reviewed Ghidra database, and change history to Git.
 
-## Decompilation / layout contracts
+## Files and resources
 
-- `construction.md` — long-form "real C++ construction and inheritance" rules: the full
-  examples, recipes, and rationale behind the crisp principles in `AGENTS.md` (the
-  mechanically-checkable parts are enforced by `just antipattern-gate` / `marker-gate`).
-- `imperialism-decomp.md` — master function reference: startup entry chain
-  (PE entry -> MFC app lifecycle -> main loop), city-screen building/icon mappings,
-  strategic map order/civilian findings, and university/city-production notes,
-  with confirmed code addresses.
-- `tradecontrol_redecomp_contract.md` — `TradeControl` field layout (0x00–0x94) and
-  `TControl` method signatures with addresses/conventions.
-- `tgreatpower-power-score-family.md` — TGreatPower vtable slots 0x86/0x8e-0x9e
-  recovered ground truth: slot map with bodies/semantics, CIterator, the
-  border-link check receiver, named float/data globals, nation-array layout,
-  and the TListObject slot-0x28 drift caveat.
-- `TDiplomacyMapView_layout.md` — discovered offsets for `TDiplomacyMapView`
-  (mask-buffer / packed-color runs, frame/legend fields).
-- `stretch-container.md` — stretch-collection layout and ownership notes.
-- `navy_order_model.md` — navy order / mission model evidence.
-- `navy_tactical_retail.md` — direct Windows retail evidence that production naval combat resolves
-  strategically and the tactical navy classes are dormant.
-- `save_format.md` — retail save format.
+- [Save format](save_format.md) — `.imp` serialization and stream contracts.
+- [Mac resources](macos-resource-oracle.md) — evidence and UI generation inputs.
+- [Bitmap IDs](bitmap-ids.md) — observed UI/resource identifiers.
+- [Cursor resource mapping](cursor-resource-mapping.md) and
+  [cursor semantics](cursor-semantics-exe.md) — Windows resource IDs and uses.
+- [String table](strenu-strings.tsv) — extracted UI text with IDs.
+- [Manual](manual_text.txt) — extracted period gameplay manual.
 
-## Game-domain knowledge
+## Gameplay and ownership evidence
 
-- `bitmap-ids.md` — UI bitmap-ID → feature map (buildings, units, resources, terrain).
-- `technology-unlocks.md` — tech tree gating and university recruitment evidence.
-- Civilian unit orders and command dispatch facts are in `imperialism-decomp.md`.
-- `cursor-resource-mapping.md`, `cursor-semantics-exe.md` — game cursor types,
-  resource mapping, and control semantics.
-- `strenu-strings.tsv` (+ `strenu-index-sample.txt`) — extracted UI/localization string
-  table (`id`, `block`, `index`, `text`); the fastest text→resource-ID lookup.
-- `manual_text.txt` — extracted game manual; baseline gameplay/mechanics reference.
+- [Army stacks](army_stacks.md) and
+  [tactical projection](army_tactical_projections.md).
+- [Naval order ownership](navy_order_model.md) and
+  [retail naval combat](navy_tactical_retail.md).
+- [Turn-start events](turn_start_events.md).
+- [Page pagination](page_view_pagination.md).
+- [TGreatPower power-score family](tgreatpower-power-score-family.md).
+- [stretch container](stretch-container.md).
+
+These are evidence references, not recovery progress reports.
+For current source rules see [decomp/AGENTS.md](../../AGENTS.md);
+for executable Ghidra workflows see [docs/ghidra-db.md](../ghidra-db.md).

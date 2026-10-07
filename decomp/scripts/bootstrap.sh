@@ -196,7 +196,7 @@ sed -i "s#^ORIGINAL_BINARY=.*#ORIGINAL_BINARY=\"${ORIGINAL_EXE}\"#" .env
 # reccmp-user.yml (gitignored, machine-local): points reccmp at the original
 # binary. `just bootstrap-reccmp` is ONLY for a machine that has never had a
 # reccmp project — it refuses to overwrite the committed reccmp-project.yml this
-# repo ships (docs/workflows.md §0), so write the user file directly instead.
+# repo ships, so write the user file directly instead.
 log "reccmp-user.yml"
 if [ ! -f reccmp-user.yml ]; then
   cat > reccmp-user.yml <<YAML
