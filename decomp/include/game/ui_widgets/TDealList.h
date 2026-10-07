@@ -12,8 +12,8 @@ class CArchive;
 class TDealList : public TSortedPtrList {
 public:
   DECLARE_DYNCREATE(TDealList)
-  virtual ~TDealList() override; // slot 0x01 (scalar deleting destructor)
-  short Compare(void* a, void* b) override; // slot 0x11 0x5ba260
+  virtual ~TDealList() override;
+  short Compare(void* a, void* b) override;
 
   TDealList();
   void IDealList();

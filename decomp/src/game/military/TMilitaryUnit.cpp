@@ -16,9 +16,9 @@
 // FUNCTION: IMPERIALISM 0x004a3b30
 void TMilitaryUnit::SetOrClearBattleStateFlags(short mask, bool setFlag) {
   if (setFlag) {
-    this->battleStateFlags |= mask;
+    battleStateFlags |= mask;
   } else {
-    this->battleStateFlags &= ~mask;
+    battleStateFlags &= ~mask;
   }
 }
 
@@ -199,7 +199,7 @@ short TMilitaryUnit::GetTypeArmsCarried(int slot) {
 
 // FUNCTION: IMPERIALISM 0x005c3490
 ArmyUnitCategoryStorage TMilitaryUnit::GetCategory() const {
-  return g_awTacticalUnitCategoryCodeBySlot[this->orderType];
+  return g_awTacticalUnitCategoryCodeBySlot[orderType];
 }
 
 // FUNCTION: IMPERIALISM 0x005c34b0

@@ -40,23 +40,23 @@ TRailCluster::~TRailCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005897b0
 void TRailCluster::DoPostCreate(int styleSeed) {
-  short recordIndex = static_cast<short>(styleSeed);
+  short recordIndex = styleSeed;
   short activeNationId = g_pSimMgr->GetPlayerCountry();
   TGreatPower* activeNationState = g_apNationStates[activeNationId];
   TCity* city = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
-  unsigned int summaryTag = static_cast<unsigned int>(this->controlTag);
+  unsigned int summaryTag = controlTag;
   TPopulationMgr* population = city->productionSummary;
   if (summaryTag < kControlTagPopv) {
     if (summaryTag == kSummaryTagPopu) {
       recordIndex = 0x3c;
-      this->selectedMetricStep = 1;
-      this->selectedMetricValue = static_cast<short>(city->GetBuildingType(0x0f));
+      selectedMetricStep = 1;
+      selectedMetricValue = static_cast<short>(city->GetBuildingType(0x0f));
     } else if (summaryTag == kSummaryTagFood) {
       TLaborPool* labor = population->productionSlots;
       recordIndex = 7;
-      this->selectedMetricStep = 2;
-      this->selectedMetricValue =
+      selectedMetricStep = 2;
+      selectedMetricValue =
           static_cast<short>(((labor->highSkillCount * 2 + labor->mediumSkillCount) * 2 +
                               population->extraAt1e + labor->lowSkillCount) /
                              2);
@@ -64,42 +64,42 @@ void TRailCluster::DoPostCreate(int styleSeed) {
   } else if (summaryTag < kControlTagProg) {
     if (summaryTag == kSummaryTagProf) {
       recordIndex = 0x18;
-      this->selectedMetricStep = 1;
-      this->selectedMetricValue = population->baselineSlots->mediumSkillCount;
+      selectedMetricStep = 1;
+      selectedMetricValue = population->baselineSlots->mediumSkillCount;
     } else if (summaryTag == kSummaryTagPowe) {
       recordIndex = 0x34;
-      this->selectedMetricStep = 6;
-      this->selectedMetricValue = 999;
+      selectedMetricStep = 6;
+      selectedMetricValue = 999;
     }
   } else if (summaryTag == kSummaryTagRail) {
     TLaborPool* labor = population->productionSlots;
     recordIndex = 0x33;
-    this->selectedMetricStep = 1;
-    this->selectedMetricValue =
+    selectedMetricStep = 1;
+    selectedMetricValue =
         static_cast<short>(((labor->highSkillCount * 2 + labor->mediumSkillCount) * 2 +
                             labor->lowSkillCount + population->extraAt1e) /
                            2);
   } else if (summaryTag == kSummaryTagTrai) {
     recordIndex = 0x17;
-    this->selectedMetricStep = 1;
-    this->selectedMetricValue = population->baselineSlots->lowSkillCount;
+    selectedMetricStep = 1;
+    selectedMetricValue = population->baselineSlots->lowSkillCount;
   }
 
-  this->selectedMetricOrder = city->orderSlots[recordIndex];
+  selectedMetricOrder = city->orderSlots[recordIndex];
   TAmtBarCluster::DoPostCreate(styleSeed);
-  this->SetMoveAmount(this->selectedMetricOrder->quantity, true);
+  SetMoveAmount(selectedMetricOrder->quantity, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005899c0
 void TRailCluster::SetMoveAmount(short amount) {
-  this->SetMoveAmount(amount, false);
+  SetMoveAmount(amount, false);
 }
 
 // FUNCTION: IMPERIALISM 0x005899f0
 void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
-  short step = this->selectedMetricStep;
+  short step = selectedMetricStep;
   int quantizedDragValue = ((step / 2 + dragValue) / step) * step;
-  TProductionOrder* selectedOrder = this->selectedMetricOrder;
+  TProductionOrder* selectedOrder = selectedMetricOrder;
   short previousValue = selectedOrder->quantity;
   if (selectedOrder != 0) {
     selectedOrder->SetQuantity(static_cast<short>(quantizedDragValue));
@@ -109,7 +109,7 @@ void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
     return;
   }
 
-  TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(FindSubView(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xcf2);
   }
@@ -119,11 +119,11 @@ void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
   CRect moveBoundsRect;
   RECT moveInvalidRect;
   moveControl->GetFrame(&moveBoundsRect);
-  OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
+  OffsetRect(&moveBoundsRect, ownerLocalX, ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
-  this->ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
+  ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
 
-  TAmtBar* barControl = static_cast<TAmtBar*>(this->FindSubView(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(FindSubView(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(0xcf9);
   }
@@ -149,11 +149,11 @@ void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
   moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
   moveControl->Locate(moveControlPosition, true);
   moveControl->GetFrame(&moveBoundsRect);
-  OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
+  OffsetRect(&moveBoundsRect, ownerLocalX, ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
-  this->ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
+  ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
 
-  static_cast<TBuildingView*>(this->ownerContext)->UpdateFields();
+  static_cast<TBuildingView*>(ownerContext)->UpdateFields();
 }
 
 // FUNCTION: IMPERIALISM 0x00589d10
@@ -172,22 +172,22 @@ void TRailCluster::UpdateMax() {
 // FUNCTION: IMPERIALISM 0x00589da0
 void TRailCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 100) {
-    TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
+    TNumberText* moveControl = static_cast<TNumberText*>(FindSubView(kControlTagMove));
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(0xcf2);
     }
     int moveValue = moveControl->UpdateControlCachedIntFromWindowText();
-    this->SetMoveAmount(static_cast<short>(moveValue + 1));
+    SetMoveAmount(static_cast<short>(moveValue + 1));
     return;
   }
   if (commandId != 0x65) {
     TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(FindSubView(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xcf2);
   }
   int moveValue = moveControl->UpdateControlCachedIntFromWindowText();
-  this->SetMoveAmount(static_cast<short>(moveValue - 1));
+  SetMoveAmount(static_cast<short>(moveValue - 1));
 }

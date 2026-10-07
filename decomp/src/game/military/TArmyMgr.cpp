@@ -261,34 +261,34 @@ void TArmyMgr::WriteTo(TStream* stream) {
 void TArmyMgr::DoCombatMoves() {
   bool isNetworkClient = (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient);
   if (isNetworkClient) {
-    this->ClearPendingStacksAndFinalizeMilitaryUnits();
+    ClearPendingStacksAndFinalizeMilitaryUnits();
     g_pSimMgr->StartNextPhase();
   } else {
-    this->FormStacks();
-    this->nextStackOrdinal = 1;
-    this->ResolveNextMove();
+    FormStacks();
+    nextStackOrdinal = 1;
+    ResolveNextMove();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004a1eb0
 void TArmyMgr::EndBattlePhase() {
-  if (this->ourStackBattle != NULL) {
-    this->ourStackBattle->Free();
+  if (ourStackBattle != NULL) {
+    ourStackBattle->Free();
   }
-  this->ourStackBattle = NULL;
-  if (this->enemyStackBattle != NULL) {
-    this->enemyStackBattle->Free();
+  ourStackBattle = NULL;
+  if (enemyStackBattle != NULL) {
+    enemyStackBattle->Free();
   }
-  this->enemyStackBattle = NULL;
-  if (this->activeBattleView != NULL) {
-    this->activeBattleView->Free();
+  enemyStackBattle = NULL;
+  if (activeBattleView != NULL) {
+    activeBattleView->Free();
   }
-  this->activeBattleView = NULL;
+  activeBattleView = NULL;
 
-  this->ClearPendingStacksAndFinalizeMilitaryUnits();
-  this->DoOwnershipChanges();
+  ClearPendingStacksAndFinalizeMilitaryUnits();
+  DoOwnershipChanges();
 
-  if (this->needsTerrainRefreshFlag) {
+  if (needsTerrainRefreshFlag) {
     g_pMacViewMgr->RegenerateCountryRegions();
     for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
       if (g_apTerrainTypeDescriptorTable[i] != NULL) {
@@ -296,7 +296,7 @@ void TArmyMgr::EndBattlePhase() {
       }
     }
   }
-  this->needsTerrainRefreshFlag = false;
+  needsTerrainRefreshFlag = false;
   g_pSimMgr->StartNextPhase();
 }
 
@@ -326,16 +326,16 @@ void TArmyMgr::FormStacks() {
       if (unitOrderTargetIndex != previousOrderTargetIndex ||
           unitOwnerNationSlot != previousOwnerNationSlot || stack == NULL) {
         bool foundExisting = false;
-        int count = this->pendingUnitPool->GetCount();
+        int count = pendingUnitPool->GetCount();
         if (count != 0) {
           int index = 1;
-          count = this->pendingUnitPool->GetCount();
+          count = pendingUnitPool->GetCount();
           if (index <= count) {
             do {
               if (foundExisting) {
                 break;
               }
-              stack = static_cast<TArmyStack*>(this->pendingUnitPool->GetEntryByOrdinal(index));
+              stack = static_cast<TArmyStack*>(pendingUnitPool->GetEntryByOrdinal(index));
               stack->AssertValid();
               if (stack->ownerNationCode == unitOrderTargetIndex &&
                   static_cast<short>(stack->categoryFlag) == unitOwnerNationSlot) {
@@ -343,7 +343,7 @@ void TArmyMgr::FormStacks() {
               } else {
                 ++index;
               }
-              count = this->pendingUnitPool->GetCount();
+              count = pendingUnitPool->GetCount();
             } while (index <= count);
           }
         }
@@ -351,7 +351,7 @@ void TArmyMgr::FormStacks() {
           stack = new TArmyStack();
           stack->IArmyStack(static_cast<char>(unitOwnerNationSlot), unitOrderTargetIndex,
                             static_cast<short>(tileIndex));
-          this->pendingUnitPool->listState.AddHead(stack);
+          pendingUnitPool->listState.AddHead(stack);
         }
         previousOrderTargetIndex = unitOrderTargetIndex;
         previousOwnerNationSlot = unitOwnerNationSlot;
@@ -364,67 +364,66 @@ void TArmyMgr::FormStacks() {
     }
   }
 
-  CIterator stackIter(this->pendingUnitPool);
+  CIterator stackIter(pendingUnitPool);
   for (TArmyStack* item = static_cast<TArmyStack*>(stackIter.Reset()); stackIter.More();
        item = static_cast<TArmyStack*>(stackIter.Advance())) {
     item->ComputeStackCompositionClassCode();
   }
 
-  this->pendingUnitPool->Sort();
+  pendingUnitPool->Sort();
   for (int i = 0; i < kProvinceCount; ++i) {
-    this->perTileOwnerNationCodeCache[i] = g_pGlobalMapState->FindCountry(i);
+    perTileOwnerNationCodeCache[i] = g_pGlobalMapState->FindCountry(i);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004a2390
 void TArmyMgr::ResolveNextMove() {
   bool battleViewCreated = false;
-  if (this->ourStackBattle != NULL) {
-    this->ourStackBattle->Free();
+  if (ourStackBattle != NULL) {
+    ourStackBattle->Free();
   }
-  this->ourStackBattle = NULL;
-  if (this->enemyStackBattle != NULL) {
-    this->enemyStackBattle->Free();
+  ourStackBattle = NULL;
+  if (enemyStackBattle != NULL) {
+    enemyStackBattle->Free();
   }
-  this->enemyStackBattle = NULL;
-  if (this->activeBattleView != NULL) {
-    this->activeBattleView->Free();
+  enemyStackBattle = NULL;
+  if (activeBattleView != NULL) {
+    activeBattleView->Free();
   }
-  this->activeBattleView = NULL;
+  activeBattleView = NULL;
 
-  int stackCount = this->pendingUnitPool->GetCount();
-  if (this->nextStackOrdinal <= stackCount) {
+  int stackCount = pendingUnitPool->GetCount();
+  if (nextStackOrdinal <= stackCount) {
     while (!battleViewCreated) {
-      int cursor = this->nextStackOrdinal;
-      stackCount = this->pendingUnitPool->GetCount();
+      int cursor = nextStackOrdinal;
+      stackCount = pendingUnitPool->GetCount();
       if (stackCount < cursor) {
         break;
       }
-      this->nextStackOrdinal = cursor + 1;
-      TArmyStack* stack =
-          static_cast<TArmyStack*>(this->pendingUnitPool->GetEntryByOrdinal(cursor));
+      nextStackOrdinal = cursor + 1;
+      TArmyStack* stack = static_cast<TArmyStack*>(pendingUnitPool->GetEntryByOrdinal(cursor));
       stack->AssertValid();
-      if (this->perTileOwnerNationCodeCache[stack->ownerNationCode] ==
+      if (perTileOwnerNationCodeCache[stack->ownerNationCode] ==
           static_cast<short>(stack->categoryFlag)) {
         stack->MoveAll();
       } else {
-        battleViewCreated = this->ResolveConflict(stack, stack->ownerNationCode);
+        battleViewCreated = ResolveConflict(stack, stack->ownerNationCode);
       }
     }
-    stackCount = this->pendingUnitPool->GetCount();
-    if (this->nextStackOrdinal <= stackCount) {
+    stackCount = pendingUnitPool->GetCount();
+    if (nextStackOrdinal <= stackCount) {
       return;
     }
     if (battleViewCreated) {
       return;
     }
   }
-  this->EndBattlePhase();
+  EndBattlePhase();
 }
 
 // FUNCTION: IMPERIALISM 0x004a2500
 void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
-  this->pendingUnitPool->FreePayloads();
+  pendingUnitPool->FreePayloads();
   g_pGlobalMapState->DimmingOff();
 
   for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
@@ -679,7 +678,7 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
   TArmyStack* enemyStack = NULL;
   if (ourStack->unitCount != 0) {
     int ownerNationCodeInt = ownerNationCode;
-    short cachedOwnerAtTile = this->perTileOwnerNationCodeCache[ownerNationCodeInt];
+    short cachedOwnerAtTile = perTileOwnerNationCodeCache[ownerNationCodeInt];
 
     enemyStack = new TArmyStack();
     enemyStack->IArmyStack(static_cast<char>(cachedOwnerAtTile), ownerNationCode, ownerNationCode);
@@ -695,15 +694,14 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
     if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(ourStack->categoryFlag,
                                                            cachedOwnerAtTile)) {
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
-      this->RetreatAttacker(ourStack);
+      RetreatAttacker(ourStack);
     } else if (enemyStack->unitCount != 0) {
       tacticalViewCreated = true;
-      this->CreateTacticalBattleViewAndInitializeBattleSetup(ourStack, enemyStack,
-                                                             ownerNationCodeInt);
+      CreateTacticalBattleViewAndInitializeBattleSetup(ourStack, enemyStack, ownerNationCodeInt);
     } else {
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 1, ownerNationCodeInt, 0);
       ourStack->MoveAll();
-      this->perTileOwnerNationCodeCache[ownerNationCodeInt] = ourStack->categoryFlag;
+      perTileOwnerNationCodeCache[ownerNationCodeInt] = ourStack->categoryFlag;
     }
   }
 
@@ -731,7 +729,7 @@ void TArmyMgr::RetreatDefender(TArmyStack* stack, short tileIndex) {
     if (regionId == -1) {
       break;
     }
-    if (this->perTileOwnerNationCodeCache[regionId] == headUnitTag) {
+    if (perTileOwnerNationCodeCache[regionId] == headUnitTag) {
       candidateRegions[candidateCount] = regionId;
       ++candidateCount;
     }
@@ -835,7 +833,7 @@ bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
 // FUNCTION: IMPERIALISM 0x004a3bc0
 void TArmyMgr::DoOwnershipChanges() {
   for (int tileIndex = 0; tileIndex < kProvinceCount; ++tileIndex) {
-    short cachedOwner = this->perTileOwnerNationCodeCache[tileIndex];
+    short cachedOwner = perTileOwnerNationCodeCache[tileIndex];
     signed char currentOwner = g_pGlobalMapState->cityScoreTable[tileIndex].ownerNationCode;
     if (currentOwner == -1 || cachedOwner == currentOwner) {
       continue;
@@ -868,21 +866,21 @@ void TArmyMgr::DoOwnershipChanges() {
       g_apTerrainTypeDescriptorTable[secondaryOwner]->BecomeProtectorateOf(cachedOwner);
     }
     g_pGlobalMapState->ChangeProvinceOwner(static_cast<short>(tileIndex), cachedOwner);
-    this->needsTerrainRefreshFlag = true;
+    needsTerrainRefreshFlag = true;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004a3d90
 void TArmyMgr::OrderArmies(int contextArg, short tileActionCode) {
   if (tileActionCode == 1 || tileActionCode == 4) {
-    this->MoveArmies(contextArg);
+    MoveArmies(contextArg);
   } else if (tileActionCode == 7) {
-    this->DeploySelectedArmies(contextArg);
+    DeploySelectedArmies(contextArg);
   }
 
   TMilitaryUnit* unit = NULL;
-  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
-    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain;
+  if (pendingMapActionIndex >= 0 && pendingMapActionIndex < kProvinceCount) {
+    unit = g_pGlobalMapState->cityScoreTable[pendingMapActionIndex].stationedUnitChain;
   }
   for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
     if (unit->unitOrder == 4) {
@@ -894,8 +892,8 @@ void TArmyMgr::OrderArmies(int contextArg, short tileActionCode) {
 // FUNCTION: IMPERIALISM 0x004a3e50
 bool TArmyMgr::MoveArmies(int contextArg) {
   TMilitaryUnit* unit = NULL;
-  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
-    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain;
+  if (pendingMapActionIndex >= 0 && pendingMapActionIndex < kProvinceCount) {
+    unit = g_pGlobalMapState->cityScoreTable[pendingMapActionIndex].stationedUnitChain;
   }
   bool foundMovableUnit = false;
   for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
@@ -907,7 +905,7 @@ bool TArmyMgr::MoveArmies(int contextArg) {
   }
   if (foundMovableUnit) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
-    g_pGlobalMapState->ActivateMarchingArrow(this->pendingMapActionIndex, contextArg, false);
+    g_pGlobalMapState->ActivateMarchingArrow(pendingMapActionIndex, contextArg, false);
   }
   return foundMovableUnit;
 }
@@ -915,8 +913,8 @@ bool TArmyMgr::MoveArmies(int contextArg) {
 // FUNCTION: IMPERIALISM 0x004a3f30
 bool TArmyMgr::DeploySelectedArmies(int contextArg) {
   TMilitaryUnit* unit = NULL;
-  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
-    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain;
+  if (pendingMapActionIndex >= 0 && pendingMapActionIndex < kProvinceCount) {
+    unit = g_pGlobalMapState->cityScoreTable[pendingMapActionIndex].stationedUnitChain;
   }
   int totalCost = 0;
   for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
@@ -933,7 +931,7 @@ bool TArmyMgr::DeploySelectedArmies(int contextArg) {
 
   TGreatPower* nation = g_apNationStates[nationSlot];
   if (totalCost <= nation->armyTransportRemaining) {
-    this->MoveArmies(contextArg);
+    MoveArmies(contextArg);
     nation->armyTransportRemaining -= totalCost;
     return true;
   }
@@ -954,8 +952,8 @@ bool TArmyMgr::DeploySelectedArmies(int contextArg) {
 // FUNCTION: IMPERIALISM 0x004a41d0
 int TArmyMgr::GetSelectedForceSize() {
   TMilitaryUnit* unit = NULL;
-  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
-    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain;
+  if (pendingMapActionIndex >= 0 && pendingMapActionIndex < kProvinceCount) {
+    unit = g_pGlobalMapState->cityScoreTable[pendingMapActionIndex].stationedUnitChain;
   }
   int totalCost = 0;
   for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
@@ -970,8 +968,8 @@ int TArmyMgr::GetSelectedForceSize() {
 // FUNCTION: IMPERIALISM 0x004a4260
 void TArmyMgr::OrderSelectedArmies(int mode) {
   TMilitaryUnit* unit = NULL;
-  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
-    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain;
+  if (pendingMapActionIndex >= 0 && pendingMapActionIndex < kProvinceCount) {
+    unit = g_pGlobalMapState->cityScoreTable[pendingMapActionIndex].stationedUnitChain;
   }
   for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
     if (unit->unitOrder == 0) {
@@ -1069,7 +1067,7 @@ bool TArmyMgr::AnySelectableUnits(short regionId) {
 
 // FUNCTION: IMPERIALISM 0x004a45e0
 void TArmyMgr::SetSelectedProvince(short cityRecordIndex) {
-  this->pendingMapActionIndex = cityRecordIndex;
+  pendingMapActionIndex = cityRecordIndex;
   if (cityRecordIndex != -1) {
     TMilitaryUnit* unit;
     if (cityRecordIndex >= 0 && cityRecordIndex < kProvinceCount) {
@@ -1100,12 +1098,12 @@ void TArmyMgr::ResetCycle(short nationId) {
       unit->SetOrders(kUnitOrderIdle, -1);
     }
   }
-  this->pendingMapActionIndex = -1;
+  pendingMapActionIndex = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x004a4760
 short TArmyMgr::Cycle(short nationId) {
-  short candidate = this->pendingMapActionIndex;
+  short candidate = pendingMapActionIndex;
   if (candidate == -1) {
     candidate = 0;
   }
@@ -1143,15 +1141,15 @@ bool TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) 
   case 2:
     if (g_pViewMgr->mapUberPicture != NULL) {
       g_pViewMgr->mapUberPicture->SetMapInteractionMode(1);
-      this->SetSelectedProvince(cityRecordIndex);
+      SetSelectedProvince(cityRecordIndex);
       handled = true;
     }
     break;
   case 6:
-    this->MarchSelectedArmies(tileIndex);
+    MarchSelectedArmies(tileIndex);
     return true;
   case 8:
-    this->ShowSpyReport(cityRecordIndex);
+    ShowSpyReport(cityRecordIndex);
     return true;
   }
   return handled;
@@ -1197,36 +1195,36 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
 
 // FUNCTION: IMPERIALISM 0x004a4aa0
 unsigned short TArmyMgr::LookupCivilianMapCursorTokenByStateIndex(short tileIndex, short mode) {
-  return g_civilianMapCursorTokenByStateIndex[this->GetTileSelection(tileIndex, mode)];
+  return g_civilianMapCursorTokenByStateIndex[GetTileSelection(tileIndex, mode)];
 }
 
 // FUNCTION: IMPERIALISM 0x004a4ad0
 bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) {
-  int cursorState = this->GetTileSelection(tileIndex, mode);
+  int cursorState = GetTileSelection(tileIndex, mode);
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   switch (cursorState) {
   case 2:
-    this->SetSelectedProvince(cityRecordIndex);
+    SetSelectedProvince(cityRecordIndex);
     return false;
   case 3:
   case 4:
     break;
   case 5:
-    return this->ValidateOrderPlacementPrerequisitesForSelectedTile(cityRecordIndex);
+    return ValidateOrderPlacementPrerequisitesForSelectedTile(cityRecordIndex);
   case 6:
-    this->MarchSelectedArmies(tileIndex);
+    MarchSelectedArmies(tileIndex);
     return false;
   case 7:
-    g_pViewMgr->MakeGarrisonWindow(this->pendingMapActionIndex);
+    g_pViewMgr->MakeGarrisonWindow(pendingMapActionIndex);
     return false;
   case 8:
-    this->ShowSpyReport(cityRecordIndex);
+    ShowSpyReport(cityRecordIndex);
     // fall through
   default:
     return false;
   }
 
-  const Province& selectedTile = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
+  const Province& selectedTile = g_pGlobalMapState->cityScoreTable[pendingMapActionIndex];
   bool cityIsAdjacent = false;
   for (short i = 0; i < selectedTile.adjacentRegionCount; ++i) {
     if (selectedTile.adjacentRegionIds[i] == cityRecordIndex) {
@@ -1235,14 +1233,14 @@ bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) 
     }
   }
   if (cityIsAdjacent) {
-    return this->MoveArmies(cityRecordIndex);
+    return MoveArmies(cityRecordIndex);
   }
-  return this->DeploySelectedArmies(cityRecordIndex);
+  return DeploySelectedArmies(cityRecordIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x004a4c80
 int TArmyMgr::GetTileSelection(short tileIndex, short mode) {
-  if (this->pendingMapActionIndex == -1) {
+  if (pendingMapActionIndex == -1) {
     return ComputeMapCursorStateIndex(tileIndex, mode);
   }
 
@@ -1255,12 +1253,12 @@ int TArmyMgr::GetTileSelection(short tileIndex, short mode) {
     return 1;
   }
 
-  short pendingSlot = g_pGlobalMapState->FindCountry(this->pendingMapActionIndex);
+  short pendingSlot = g_pGlobalMapState->FindCountry(pendingMapActionIndex);
   short citySlot = g_pGlobalMapState->FindCountry(cityRecordIndex);
 
   TMilitaryUnit* unit = NULL;
-  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
-    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain;
+  if (pendingMapActionIndex >= 0 && pendingMapActionIndex < kProvinceCount) {
+    unit = g_pGlobalMapState->cityScoreTable[pendingMapActionIndex].stationedUnitChain;
   }
   bool hasMovableUnit = false;
   for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
@@ -1271,7 +1269,7 @@ int TArmyMgr::GetTileSelection(short tileIndex, short mode) {
     }
   }
 
-  if (cityRecordIndex == this->pendingMapActionIndex) {
+  if (cityRecordIndex == pendingMapActionIndex) {
     return ((rec->activeFlags >> 5) & 1) != 0 ? 7 : 0;
   }
 
@@ -1288,9 +1286,7 @@ int TArmyMgr::GetTileSelection(short tileIndex, short mode) {
     if (!hasMovableUnit) {
       return 1;
     }
-    return g_pGlobalMapState->IsProvinceAdjacentTo(this->pendingMapActionIndex, cityRecordIndex)
-               ? 3
-               : 4;
+    return g_pGlobalMapState->IsProvinceAdjacentTo(pendingMapActionIndex, cityRecordIndex) ? 3 : 4;
   }
 
   if (((rec->activeFlags >> 5) & 1) != 0) {
@@ -1302,7 +1298,7 @@ int TArmyMgr::GetTileSelection(short tileIndex, short mode) {
   if (!g_pDiplomacyTurnStateManager->AreAtWar(pendingSlot, citySlot)) {
     return 1;
   }
-  if (g_pGlobalMapState->IsProvinceAdjacentTo(this->pendingMapActionIndex, cityRecordIndex)) {
+  if (g_pGlobalMapState->IsProvinceAdjacentTo(pendingMapActionIndex, cityRecordIndex)) {
     return 5;
   }
   if ((g_pGlobalMapState->cityScoreTable[cityRecordIndex].exploredByNationMask >> pendingSlot) &
@@ -1316,7 +1312,7 @@ int TArmyMgr::GetTileSelection(short tileIndex, short mode) {
 void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
   bool isAdjacent = false;
   short index = 0;
-  Province* province = &g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
+  Province* province = &g_pGlobalMapState->cityScoreTable[pendingMapActionIndex];
   short adjacentCount = province->adjacentRegionCount;
   if (adjacentCount > 0) {
     do {
@@ -1338,7 +1334,7 @@ void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
 
 // FUNCTION: IMPERIALISM 0x004a5080
 bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex) {
-  TMilitaryUnit* unit = g_pGlobalMapState->GetMilitaryMaster(this->pendingMapActionIndex);
+  TMilitaryUnit* unit = g_pGlobalMapState->GetMilitaryMaster(pendingMapActionIndex);
   int totalCost = 0;
   for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
     if (unit->unitOrder == 0 &&
@@ -1350,10 +1346,10 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     return false;
   }
 
-  if (!g_pGlobalMapState->IsProvinceAdjacentTo(this->pendingMapActionIndex, cityRecordIndex)) {
+  if (!g_pGlobalMapState->IsProvinceAdjacentTo(pendingMapActionIndex, cityRecordIndex)) {
     CString validationBody;
     CString validationTitle;
-    if (!g_pGlobalMapState->HasPortInProvince(this->pendingMapActionIndex)) {
+    if (!g_pGlobalMapState->HasPortInProvince(pendingMapActionIndex)) {
       g_pSimMgr->GetString(0x2745, 4, &validationBody);
       g_pSimMgr->GetString(0x2745, 5, &validationTitle);
       g_pViewMgr->ModalMessage(5, validationTitle, validationBody, g_ptArmyValidationModalMessage,
@@ -1361,7 +1357,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
       return false;
     }
 
-    if (!g_pGlobalMapState->HasActiveLinkedTileWithReachableSea(this->pendingMapActionIndex)) {
+    if (!g_pGlobalMapState->HasActiveLinkedTileWithReachableSea(pendingMapActionIndex)) {
       g_pSimMgr->GetString(0x2745, 6, &validationBody);
       g_pSimMgr->GetString(0x2745, 7, &validationTitle);
       g_pViewMgr->ModalMessage(5, validationTitle, validationBody, g_ptArmyValidationModalMessage,
@@ -1411,14 +1407,14 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     }
   }
 
-  for (unit = g_pGlobalMapState->GetMilitaryMaster(this->pendingMapActionIndex); unit != NULL;
+  for (unit = g_pGlobalMapState->GetMilitaryMaster(pendingMapActionIndex); unit != NULL;
        unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
     if (unit->unitOrder == 0 &&
         unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       unit->SetOrders(kUnitOrderRedeploy, cityRecordIndex);
     }
   }
-  g_pGlobalMapState->ActivateMarchingArrow(this->pendingMapActionIndex, cityRecordIndex, true);
+  g_pGlobalMapState->ActivateMarchingArrow(pendingMapActionIndex, cityRecordIndex, true);
 
   if (g_pViewMgr->mapUberPicture != NULL) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
@@ -1494,15 +1490,15 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
     }
 
     g_pGlobalMapState->ConfirmArrows();
-    if (this->pendingMapActionIndex != -1) {
-      this->SetSelectedProvince(this->pendingMapActionIndex);
+    if (pendingMapActionIndex != -1) {
+      SetSelectedProvince(pendingMapActionIndex);
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004a5aa0
 int TArmyMgr::GetLandForceIn(int nodeIndexArg) {
-  short nodeIndex = static_cast<short>(nodeIndexArg);
+  short nodeIndex = nodeIndexArg;
   TMilitaryUnit* chain;
   if (nodeIndex < 0 || nodeIndex >= kProvinceCount) {
     chain = 0;
@@ -1522,7 +1518,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
                                                                 TArmyStack* enemyStack,
                                                                 int ownerNationCodeInt) {
   int compositionClass = g_pGlobalMapState->ClassifyCityGateTerrainComposition(ownerNationCodeInt);
-  short provinceIndex = static_cast<short>(ownerNationCodeInt);
+  short provinceIndex = ownerNationCodeInt;
   int fortLevel = g_pGlobalMapState->cityScoreTable[provinceIndex].fortLevel;
   if (fortLevel > 0) {
     fortLevel++;
@@ -1533,9 +1529,9 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   newBattle->InitializeBattleSetupAndMaybeShowTacticalView(ourStack, enemyStack, compositionClass,
                                                            fortLevel, ownerNationCodeInt);
 
-  this->ourStackBattle = ourStack;
-  this->enemyStackBattle = enemyStack;
-  this->activeBattleView = newBattle;
+  ourStackBattle = ourStack;
+  enemyStackBattle = enemyStack;
+  activeBattleView = newBattle;
 
   bool isMultiplayerHost =
       static_cast<unsigned char>(g_pSimMgr->multiplayerSessionRole == kSessionRoleHost);
@@ -1552,17 +1548,17 @@ void TArmyMgr::EndTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
                                                 1);
 
   if (sideWonFlag != 0) {
-    this->RetreatDefender(enemyStack, static_cast<short>(battleSiteIndex));
+    RetreatDefender(enemyStack, static_cast<short>(battleSiteIndex));
     ourStack->MoveAll();
-    this->perTileOwnerNationCodeCache[battleSiteIndex] = ourStack->categoryFlag;
+    perTileOwnerNationCodeCache[battleSiteIndex] = ourStack->categoryFlag;
     ourStack->RaiseExperience(true);
     enemyStack->RaiseExperience(false);
   } else {
-    this->RetreatAttacker(ourStack);
+    RetreatAttacker(ourStack);
     ourStack->RaiseExperience(false);
     enemyStack->RaiseExperience(true);
   }
-  this->ResolveNextMove();
+  ResolveNextMove();
 }
 
 // FUNCTION: IMPERIALISM 0x004a5ec0
@@ -1644,7 +1640,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
 
   int resourceBuckets[11];
   memset(resourceBuckets, 0, sizeof(resourceBuckets));
-  short citySlot = static_cast<short>(cityRecordIndex);
+  short citySlot = cityRecordIndex;
   TMilitaryUnit* unit = NULL;
   if (citySlot >= 0 && citySlot < kProvinceCount) {
     unit =
@@ -1732,7 +1728,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
 
   CString defenderSummary;
   CString garrisonSummary;
-  if (!this->GenerateSpyReport(cityRecordIndex, defenderSummary, garrisonSummary)) {
+  if (!GenerateSpyReport(cityRecordIndex, defenderSummary, garrisonSummary)) {
     CString noSummaryMessage;
     g_pSimMgr->GetString(0x2744, 8, &noSummaryMessage);
     g_pViewMgr->ModalMessage(noSummaryMessage, g_ptArmyValidationModalMessage, 1, 0);

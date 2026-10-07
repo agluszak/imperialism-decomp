@@ -19,26 +19,25 @@ class TOceanDialog;
 class TMapUberPicture : public TMapUberUberPicture {
 public:
   DECLARE_DYNCREATE(TMapUberPicture)
-  virtual ~TMapUberPicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;        // slot 0x07 0x596c60
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;                    // slot 0x0f 0x00597340
-  virtual void DoMenuCommand(int param) override;                  // slot 0x11 0x597600
-  virtual void DoKeyEvent(TToolboxEvent* event) override;          // slot 0x12 0x597770
-  virtual void DoPostCreate(int arg) override;                     // slot 0x37 0x596a80
-  virtual void Scroll(MapScrollEdgeMaskStorage edgeMask) override; // slot 0x74 0x5977a0
-  virtual void InvalidateMap();                                    // slot 0x75 0x598950
-  virtual void InvalidateTile(short tileIndex);                    // slot 0x76 0x598870
-  virtual void RedrawTile(short tileIndex);                        // slot 0x77 0x5988c0
+  virtual ~TMapUberPicture() override;
+  virtual void Free() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoMenuCommand(int param) override;
+  virtual void DoKeyEvent(TToolboxEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Scroll(MapScrollEdgeMaskStorage edgeMask) override;
+  virtual void InvalidateMap();
+  virtual void InvalidateTile(short tileIndex);
+  virtual void RedrawTile(short tileIndex);
   // CenterOn/SetUpperLeft consume promoted stack dwords at these virtual boundaries.
-  virtual void CenterOn(int tileIndex);                                     // slot 0x78 0x598990
-  virtual void SetUpperLeft(int tileX, int tileY);                          // slot 0x79 0x5989d0
-  virtual void NoticeTile(int tileIndex);                                   // slot 0x7a 0x598a20
-  virtual bool IsAUnitSelected();                                           // slot 0x7b 0x597a10
-  virtual void DisplayInfo(bool showInfo);                                  // slot 0x7c 0x598910
-  virtual void DisplayMiniMap();                                            // slot 0x7d 0x599cf0
-  virtual void RemoveMiniMap();                                             // slot 0x7e 0x599fd0
-  virtual void SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
+  virtual void CenterOn(int tileIndex);
+  virtual void SetUpperLeft(int tileX, int tileY);
+  virtual void NoticeTile(int tileIndex);
+  virtual bool IsAUnitSelected();
+  virtual void DisplayInfo(bool showInfo);
+  virtual void DisplayMiniMap();
+  virtual void RemoveMiniMap();
+  virtual void SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState);
 
   bool invalidationFlag;
   // 0=civilian, 1=army, 2=navy, 3=none (default) -- selects categoryPages[] below.
@@ -55,7 +54,7 @@ public:
   TMapUberPicture();
 
   void SetMapInteractionMode(short nMode);
-  void GrandCycle(); // 0x5999c0, Mac oracle
+  void GrandCycle();
   void InvalidateMiniMap();
   void FocusOnForce(TTaskForce* pMapOrderEntry);
   void CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride);

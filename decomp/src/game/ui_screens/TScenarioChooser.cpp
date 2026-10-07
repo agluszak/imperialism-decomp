@@ -377,7 +377,7 @@ void ReadLineFromBufferedStreamUntilTerminator(char* destination, int maxLength,
   }
 
   while ((stream->_flag & _IOEOF) == 0) {
-    char value = static_cast<char>(fgetc(stream));
+    char value = fgetc(stream);
     *destination = value;
     if (value == '\n' || value == '\r' || value == '\0') {
       *destination = '\0';

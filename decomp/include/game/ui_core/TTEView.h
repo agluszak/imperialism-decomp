@@ -11,9 +11,9 @@ class TDocument;
 class TTEView : public TStaticText {
 public:
   TTEView();
-  void SetText(const CString& text); // 0x004861f0
+  void SetText(const CString& text);
   DECLARE_DYNCREATE(TTEView)
-  virtual ~TTEView() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TTEView() override;
   short GetNumberOfChars();
   void SetOneStyle(short start, short end, short styleMask, const TextStyle& style,
                    bool refreshNow);
@@ -23,8 +23,8 @@ public:
                int layoutParam5, int layoutParam6, RECT* insetRect, TextStyle* style,
                short styleWord90, unsigned char unusedB, bool unusedC);
 
-  bool editingEnabled;        // +0x94
-  unsigned char field95;      // +0x95
-  unsigned char padding96[2]; // +0x96
+  bool editingEnabled;
+  unsigned char field95;
+  unsigned char padding96[2];
 };
 ASSERT_SIZE(TTEView, 0x98);

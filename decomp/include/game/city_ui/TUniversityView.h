@@ -11,14 +11,13 @@ class TUnitOrder;
 class TUniversityView : public TBuildingView {
 public:
   DECLARE_DYNCREATE(TUniversityView)
-  virtual ~TUniversityView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;        // slot 0x07 0x4cbf30
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;    // slot 0x0f 0x004cb8a0
-  virtual void Draw(RECT* rectBuffer) override;    // slot 0x44 0x4cbf70
-  virtual void DoStartup() override;               // slot 0x75 0x4cace0
-  virtual void UpdateFields() override;            // slot 0x76 0x4cbb20
-  virtual void SetUnit(short recruitmentCategory); // slot 0x79 0x4cb320
+  virtual ~TUniversityView() override;
+  virtual void Free() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void DoStartup() override;
+  virtual void UpdateFields() override;
+  virtual void SetUnit(short recruitmentCategory);
 
   TUniversityView();
 

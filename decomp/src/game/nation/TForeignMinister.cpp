@@ -59,7 +59,7 @@ TForeignMinister::TForeignMinister() : TMinister() {
 
 // FUNCTION: IMPERIALISM 0x0052f130
 void TForeignMinister::IForeignMinister(TGreatPower* owner) {
-  this->IMinister(owner);
+  IMinister(owner);
   interiorBidResource = kNoInteriorBidResource;
   interiorBidAmount = 0;
   priceCheckPending = 0;
@@ -122,16 +122,16 @@ short TForeignMinister::GetRankingCriterionForGP(short nationSlot) {
               ->relationStandingScores[nationSlot * kNationSlotCount + otherNation]);
     }
   }
-  return static_cast<short>(relationTotal / (g_pSimMgr->GetNumCountries() - 1));
+  return relationTotal / (g_pSimMgr->GetNumCountries() - 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0052f4b0
 void TForeignMinister::InitializeTradeStatus() {
-  memset(this->tradePartnerEnabled, 1, 7);
-  TGreatPower* ownerGP = this->greatPower;
-  this->specialOfferQuota = 0;
+  memset(tradePartnerEnabled, 1, 7);
+  TGreatPower* ownerGP = greatPower;
+  specialOfferQuota = 0;
   if (ownerGP->treasuryValue < 0) {
-    this->priceCheckPending = 1;
+    priceCheckPending = 1;
   }
 }
 
@@ -142,13 +142,13 @@ void TForeignMinister::PleaseBuy(short index, short delta) {
 
 // FUNCTION: IMPERIALISM 0x0052f520
 void TForeignMinister::PriceCheck() {
-  this->priceCheckPending = 1;
+  priceCheckPending = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0052f540
 void TForeignMinister::SetInteriorMinisterBid(short primary, short secondary) {
-  this->interiorBidResource = primary;
-  this->interiorBidAmount = secondary;
+  interiorBidResource = primary;
+  interiorBidAmount = secondary;
 }
 
 // FUNCTION: IMPERIALISM 0x0052f570
@@ -194,13 +194,13 @@ void TForeignMinister::SetBuyPriorities() {
 // FUNCTION: IMPERIALISM 0x0052f730
 int TForeignMinister::WeNeedMoney() {
   // The original reloads the owner (this->greatPower) once per comparison.
-  TGreatPower* gp = this->greatPower;
+  TGreatPower* gp = greatPower;
   short cap = gp->merchantCapacity;
   if (gp->GetStockpile(kResourceClothing) < cap) {
-    gp = this->greatPower;
+    gp = greatPower;
     cap = gp->merchantCapacity;
     if (gp->GetStockpile(kResourceFurniture) < cap) {
-      gp = this->greatPower;
+      gp = greatPower;
       cap = gp->merchantCapacity;
       if (gp->GetStockpile(kResourceHardware) < cap) {
         return 0;
@@ -212,7 +212,7 @@ int TForeignMinister::WeNeedMoney() {
 
 // FUNCTION: IMPERIALISM 0x0052f7b0
 void TForeignMinister::ArrangeMaterialsOffers() {
-  TGreatPower* owner = this->greatPower;
+  TGreatPower* owner = greatPower;
 
   if (interiorBidResource != kNoInteriorBidResource) {
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
@@ -250,11 +250,11 @@ void TForeignMinister::ArrangeMaterialsOffers() {
 
 // FUNCTION: IMPERIALISM 0x0052f940
 void TForeignMinister::SetTradeBids() {
-  this->InitializeTradeStatus();
-  TGreatPower* owner = this->greatPower;
+  InitializeTradeStatus();
+  TGreatPower* owner = greatPower;
   int skipMissionSlot1A = 0;
   if (diplomacyPhaseCounter < tradeBidRefreshInterval) {
-    if (this->WeNeedMoney() == 0) {
+    if (WeNeedMoney() == 0) {
       skipMissionSlot1A = 1;
     }
   }
@@ -262,7 +262,7 @@ void TForeignMinister::SetTradeBids() {
     owner->interiorMinister->PleaseBuildShip(interiorOrderKind);
     diplomacyPhaseCounter = 0;
   }
-  this->SetBuyPriorities();
+  SetBuyPriorities();
   if (interiorBidResource != kNoInteriorBidResource) {
     short idx = interiorBidResource;
     purchasePriorityByResource[idx] = interiorBidAmount;
@@ -272,7 +272,7 @@ void TForeignMinister::SetTradeBids() {
 
 // FUNCTION: IMPERIALISM 0x0052f9d0
 void TForeignMinister::DoUsualSubsidyRule() {
-  TGreatPower* owner = this->greatPower;
+  TGreatPower* owner = greatPower;
   short nationSlot = owner->nationSlot;
   const short kOrderKinds[] = {0, 1, 2, 3, 4, 5, 6};
   int loopCount = (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x13] == 2) + 5;
@@ -318,13 +318,13 @@ void TForeignMinister::DoUsualSubsidyRule() {
 // FUNCTION: IMPERIALISM 0x0052fba0
 void TForeignMinister::ReplyToTradeOffer(short targetNation, short amount, short maximumAmount,
                                          short resourceCode) {
-  TGreatPower* owner = this->greatPower;
-  unsigned int dispatchAmount = static_cast<unsigned int>(amount);
+  TGreatPower* owner = greatPower;
+  unsigned int dispatchAmount = amount;
   if (resourceCode == interiorBidResource) {
     if (interiorBidAmount < static_cast<short>(dispatchAmount)) {
       dispatchAmount = static_cast<unsigned short>(interiorBidAmount);
     }
-    short availableAmount = static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode));
+    short availableAmount = owner->GetUnreservedMerchantCapacity(resourceCode);
     if (availableAmount < static_cast<short>(dispatchAmount)) {
       g_pTradeMgr->SetDealResults(
           owner->nationSlot, targetNation,
@@ -341,7 +341,7 @@ void TForeignMinister::ReplyToTradeOffer(short targetNation, short amount, short
     } else if (static_cast<short>(ledgerAmount) < static_cast<short>(dispatchAmount)) {
       dispatchAmount = ledgerAmount;
     }
-    short availableAmount = static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode));
+    short availableAmount = owner->GetUnreservedMerchantCapacity(resourceCode);
     if (availableAmount < static_cast<short>(dispatchAmount)) {
       dispatchAmount =
           static_cast<unsigned int>(owner->GetUnreservedMerchantCapacity(resourceCode));
@@ -357,7 +357,7 @@ void TForeignMinister::EndTradePhase() {
   interiorBidAmount = 0;
   priceCheckPending = 0;
   interiorBidResource = kNoInteriorBidResource;
-  TGreatPower* owner = this->greatPower;
+  TGreatPower* owner = greatPower;
   if (owner->GetMerchantCapacity() == 0) {
     diplomacyPhaseCounter = static_cast<short>(diplomacyPhaseCounter + 1);
   }
@@ -367,15 +367,15 @@ void TForeignMinister::EndTradePhase() {
 // FUNCTION: IMPERIALISM 0x0052fd10
 void TForeignMinister::SetDiplomacyPolicies() {
   if (g_pSimMgr->GetEconomicTurn() == 1) {
-    this->DoFirstTurnDiplomacy();
+    DoFirstTurnDiplomacy();
   }
   if (g_pSimMgr->GetEconomicTurn() == 2) {
-    this->DoSecondTurnDiplomacy();
+    DoSecondTurnDiplomacy();
   }
-  this->SetEmpirePolicies();
-  this->DoProposeTreaties();
-  this->GoodsMatchShipping();
-  this->DoDevelopmentGrants();
+  SetEmpirePolicies();
+  DoProposeTreaties();
+  GoodsMatchShipping();
+  DoDevelopmentGrants();
 }
 
 // FUNCTION: IMPERIALISM 0x0052fd80
@@ -386,7 +386,7 @@ void TForeignMinister::DoSecondTurnDiplomacy() {}
 
 // FUNCTION: IMPERIALISM 0x0052fdc0
 void TForeignMinister::GoodsMatchShipping() {
-  TGreatPower* owner = this->greatPower;
+  TGreatPower* owner = greatPower;
   bool matched = false;
   short terrainSlot = 7;
   do {
@@ -429,7 +429,7 @@ void TForeignMinister::DoDevelopmentGrants() {
   relationshipList->ISortedByRelationshipList();
   g_pDiplomacyTurnStateManager->BuildRelationshipList(owner->nationSlot, 0, relationshipList);
 
-  short entryIndex = static_cast<short>(relationshipList->GetSize());
+  short entryIndex = relationshipList->GetSize();
   while (entryIndex >= 1 && availableBudget > 1000) {
     RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
         relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
@@ -637,7 +637,7 @@ bool TForeignMinister::DeservesToBeEnemy(int nationCode) {
   int thresholdB = thresholds[difficulty + 5];
   bool result = false;
 
-  TGreatPower* ownerGP = this->greatPower;
+  TGreatPower* ownerGP = greatPower;
   bool linked = g_pGlobalMapState->AreNationsBorderLinked(ownerGP->nationSlot, nationCode);
   if (linked == 0) {
     if (thresholdB < ownerGP->GetArmsInNavy()) {
@@ -670,12 +670,12 @@ bool TForeignMinister::DeservesToBeEnemy(int nationCode) {
 // FUNCTION: IMPERIALISM 0x00530b30
 void TForeignMinister::DoSelectEnemy() {
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-    if (this->greatPower->HasEnemy()) {
+    if (greatPower->HasEnemy()) {
       return;
     }
-    if (nationSlot != this->greatPower->nationSlot && g_pSimMgr->ReallyInTheGame(nationSlot) &&
-        this->DeservesToBeEnemy(nationSlot)) {
-      this->greatPower->SetEnemy(nationSlot);
+    if (nationSlot != greatPower->nationSlot && g_pSimMgr->ReallyInTheGame(nationSlot) &&
+        DeservesToBeEnemy(nationSlot)) {
+      greatPower->SetEnemy(nationSlot);
     }
   }
 }
@@ -689,7 +689,7 @@ void TForeignMinister::SetEmpirePolicies() {
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
     relationshipList->ISortedByRelationshipList();
     g_pDiplomacyTurnStateManager->BuildRelationshipList(owner->nationSlot, 0, relationshipList);
-    short entryIndex = static_cast<short>(relationshipList->GetSize());
+    short entryIndex = relationshipList->GetSize();
     while (entryIndex >= 1 && keepSearching) {
       RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
           relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
@@ -768,7 +768,7 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
     NationSlot targetNation;
   };
 
-  TGreatPower* gp = this->greatPower;
+  TGreatPower* gp = greatPower;
   bool valid = 0;
   DiplomacyProposalRecord* record = static_cast<DiplomacyProposalRecord*>(
       gp->proposalQueue->GetPtrListEntryByOneBasedIndex(queueIndex));

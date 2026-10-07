@@ -515,7 +515,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
     short compatValue =
         g_pDiplomacyTurnStateManager->GetEmbassyStatus(frameRegionSelector, terrainIndex);
     if (compatValue != 0) {
-      short compatIconX = static_cast<short>((compatValue + 0x16) * 0x10);
+      short compatIconX = (compatValue + 0x16) * 0x10;
       RECT compatSrcRect = {compatIconX, 0, static_cast<int>(compatIconX + 0x10), 0x10};
       UpdatePaletteIndexWithDefaultFallback(0x10);
       SetQuickDrawFillColor(0);
@@ -736,7 +736,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     break;
   }
   case kDipActionRecurringGrant: {
-    short grantValue = static_cast<short>(g_awDiplomacyGrantValueTable[selectedGrantRow] | 0x4000);
+    short grantValue = g_awDiplomacyGrantValueTable[selectedGrantRow] | 0x4000;
     if (g_apNationStates[selectedTerrainIndex]->diplomacyGrantByNation[activeNation] ==
         grantValue) {
       grantUpdated = g_apNationStates[selectedTerrainIndex]->SetGrantPolicyTo(activeNation, -1);
@@ -843,9 +843,9 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     TCountry* targetNation = g_apTerrainTypeDescriptorTable[activeNation];
     short controllingNation = targetNation->encodedNationSlot;
     if (controllingNation >= 200) {
-      controllingNation = static_cast<short>(controllingNation - 200);
+      controllingNation -= 200;
     } else if (controllingNation >= 100) {
-      controllingNation = static_cast<short>(controllingNation - 100);
+      controllingNation -= 100;
     } else {
       controllingNation = targetNation->nationSlot;
     }
@@ -906,7 +906,7 @@ eDipAction TDiplomacyMapView::GetAction(CPoint* clickPoint) {
     return kDipActionNone;
   }
 
-  CPoint localPoint = this->ViewToQDPt(clickPoint);
+  CPoint localPoint = ViewToQDPt(clickPoint);
 
   int terrainIndex;
   for (terrainIndex = 0; terrainIndex < kNationSlotCount; ++terrainIndex) {
@@ -986,7 +986,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
       cursorId = cursorIdsByAction[action];
       if (action == kDipActionTradeSubsidy || action == kDipActionOneTimeGrant ||
           action == kDipActionRecurringGrant) {
-        cursorId = static_cast<short>(cursorId + selectedGrantRow);
+        cursorId += selectedGrantRow;
       }
     }
     currentCursorResourceId = cursorId;
@@ -1030,7 +1030,7 @@ void TDiplomacyMapView::DrawCountries(RECT* presentRect) {
     short terrainIndex;
     for (terrainIndex = 0; terrainIndex < 7; ++terrainIndex) {
       if (*terrainDescriptors != 0) {
-        this->FillRegionWithPict(terrainIndex, terrainIndex + 0x258);
+        FillRegionWithPict(terrainIndex, terrainIndex + 0x258);
       }
       ++terrainDescriptors;
     }
@@ -1041,9 +1041,9 @@ void TDiplomacyMapView::DrawCountries(RECT* presentRect) {
     terrainDescriptors = g_apTerrainTypeDescriptorTable + 7;
     do {
       if (*terrainDescriptors != 0) {
-        this->FillRegionWithPict(terrainIndex, 0x2bb);
+        FillRegionWithPict(terrainIndex, 0x2bb);
       }
-      terrainIndex = static_cast<short>(terrainIndex + 1);
+      ++terrainIndex;
       ++terrainDescriptors;
     } while (terrainIndex < 0x17);
 
@@ -1086,7 +1086,7 @@ void TDiplomacyMapView::InvalidateCountries() {
       RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(static_cast<short>(terrainIndex));
       UnionRgn(region, frameRegion, region);
     }
-    terrainIndex = static_cast<short>(terrainIndex + 1);
+    ++terrainIndex;
     ++terrainDescriptors;
   } while (terrainIndex < 0x17);
 
@@ -1377,9 +1377,9 @@ void TDiplomacyMapView::SwitchToPanel(int topicIndex) {
   layoutPosition.y = 0x162;
   actionButtons[newTopic]->Locate(layoutPosition, true);
 
-  TPicture* ltabControl = static_cast<TPicture*>(this->FindSubView(kControlTagLtab));
+  TPicture* ltabControl = static_cast<TPicture*>(FindSubView(kControlTagLtab));
   ltabControl->AssertValid();
-  TPicture* rtabControl = static_cast<TPicture*>(this->FindSubView(kControlTagRtab));
+  TPicture* rtabControl = static_cast<TPicture*>(FindSubView(kControlTagRtab));
   rtabControl->AssertValid();
 
   if (newTopic == 0 || newTopic == 4) {
@@ -1400,7 +1400,7 @@ void TDiplomacyMapView::SwitchToPanel(int topicIndex) {
     }
   }
 
-  this->ForceRedraw();
+  ForceRedraw();
   stateFlag = newTopic;
 
   switch (newTopic) {

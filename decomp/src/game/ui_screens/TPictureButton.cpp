@@ -11,11 +11,11 @@ TPictureButton::~TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570870
 void TPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
-  if (static_cast<unsigned char>(enabledState) != this->controlState) {
-    this->controlState = enabledState;
-    this->Show(enabledState, true);
+  if (static_cast<unsigned char>(enabledState) != controlState) {
+    controlState = enabledState;
+    Show(enabledState, true);
     if (refreshNow) {
-      this->DrawImmediate();
+      DrawImmediate();
     }
   }
 }
@@ -23,7 +23,7 @@ void TPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
 // FUNCTION: IMPERIALISM 0x005708c0
 void TPictureButton::DrawImmediate() {
   CRect rect;
-  CRect* redrawRect = this->GetQDExtent(&rect);
+  CRect* redrawRect = GetQDExtent(&rect);
   CWnd* nativeWindow = this->nativeWindow;
   RedrawWindow(nativeWindow->m_hWnd, redrawRect, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
 }

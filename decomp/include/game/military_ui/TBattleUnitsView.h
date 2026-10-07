@@ -11,8 +11,8 @@
 class TBattleUnitsView : public TMilitaryPageView {
 public:
   DECLARE_DYNCREATE(TBattleUnitsView)
-  virtual ~TBattleUnitsView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;        // slot 0x28 0x4b0900
+  virtual ~TBattleUnitsView() override;
+  virtual void Close() override;
 
   TBattleUnitsView();
   void StuffValues(BattleRecord& battleRecord, int participantIndex);

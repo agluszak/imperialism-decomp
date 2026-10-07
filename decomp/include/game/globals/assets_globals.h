@@ -9,14 +9,14 @@ extern TSoundPlayer* g_pSfxPlaybackSystem;
 extern int g_localizationAudioSlotCursor;
 
 // CD-audio MCI device singleton (see game/TCdAudioDevice.h).
-extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
+extern TCdAudioDevice g_cdAudioDevice;
 
 // Audio timer-slot registry (see game/timer_slots.h): 10 callbacks + 10 live timer ids.
-extern TimerSlotCallback g_timerSlotCallbacks[10]; // 0x006a5cf8
+extern TimerSlotCallback g_timerSlotCallbacks[10];
 
-extern UINT g_timerSlotIds[10]; // 0x006a5c98
+extern UINT g_timerSlotIds[10];
 
-extern int g_timerDispatchSuppressAssert; // 0x006a5d24
+extern int g_timerDispatchSuppressAssert;
 
 extern char g_szSavedDocumentMarker[];
 

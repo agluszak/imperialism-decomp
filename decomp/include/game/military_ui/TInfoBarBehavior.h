@@ -11,10 +11,9 @@ class TView;
 class TInfoBarBehavior : public TBehavior {
 public:
   DECLARE_DYNCREATE(TInfoBarBehavior)
-  virtual ~TInfoBarBehavior() override; // slot 0x01 (scalar deleting destructor)
-  virtual void IInfoBarBehavior(CString text, TView* ownerView); // slot 0x0e 0x4b0e20
-  virtual bool DoSetCursor(CPoint* point,
-                           RgnHandle region); // slot 0x0f 0x4b0f50
+  virtual ~TInfoBarBehavior() override;
+  virtual void IInfoBarBehavior(CString text, TView* ownerView);
+  virtual bool DoSetCursor(CPoint* point, RgnHandle region);
   CString text;
 
   TInfoBarBehavior();

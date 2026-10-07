@@ -1,10 +1,10 @@
 #pragma once
 #include "game/globals/global_types.h"
 
-extern int g_nIdleMeAnimationNextRegistryTag; // 0x00695934
+extern int g_nIdleMeAnimationNextRegistryTag;
 
-extern bool g_bBattleReportMarkerBlinkPhase; // 0x006a23b4
-extern int g_nBattleReportMarkerBlinkTicks;  // 0x006a23b8
+extern bool g_bBattleReportMarkerBlinkPhase;
+extern int g_nBattleReportMarkerBlinkTicks;
 extern int g_InfoBarDummyOrigin[2];
 
 extern "C" {

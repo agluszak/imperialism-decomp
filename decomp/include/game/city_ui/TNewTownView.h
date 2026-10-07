@@ -11,9 +11,9 @@ class TTown;
 class TNewTownView : public TView {
 public:
   DECLARE_DYNCREATE(TNewTownView)
-  virtual ~TNewTownView() override;      // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;         // slot 0x28 0x4bdc10
-  virtual void StuffValues(TTown* town); // slot 0x68 0x4bd880
+  virtual ~TNewTownView() override;
+  virtual void Close() override;
+  virtual void StuffValues(TTown* town);
 
   // NOOP: verified empty in original 0x004bd7d3
   TNewTownView() {}

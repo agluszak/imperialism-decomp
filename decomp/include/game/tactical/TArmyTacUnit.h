@@ -10,18 +10,18 @@ class TArmyTacUnit : public TTacticalUnit {
 public:
   DECLARE_DYNCREATE(TArmyTacUnit)
   // NOOP: verified empty in original 0x0059b3c0
-  virtual ~TArmyTacUnit() override {}          // slot 0x01 (scalar deleting destructor)
-  virtual int GetBaseActionPoints() override;  // slot 0x0a 0x5a6120
-  virtual int GetUnitRange() override;         // slot 0x0b 0x5a6140
-  virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6180
-  virtual float GetDamageScale() override;     // slot 0x0d 0x5a61a0
-  virtual void ApplyDamage(int damageA, int damageB) override; // slot 0x0e 0x5a61c0
+  virtual ~TArmyTacUnit() override {}
+  virtual int GetBaseActionPoints() override;
+  virtual int GetUnitRange() override;
+  virtual float GetBaseAttackPower() override;
+  virtual float GetDamageScale() override;
+  virtual void ApplyDamage(int damageA, int damageB) override;
 
   // Army state appended to TTacticalUnit at +0x34.
   int morale;                // +0x34 init = sourceUnit->strength; floors at 0 -> state1c = 1
   TMilitaryUnit* sourceUnit; // +0x38 back-pointer (persisted as its persistentUnitId id)
   unsigned char flag3c;      // +0x3c = (source unitOrder == 2 && category[type] == 0)
-  unsigned char pad3d[3];    // +0x3d
+  unsigned char pad3d[3];
   int sapTargetTileIndex;    // +0x40 pending sap/mine target tile; -1 = none
   float projectionScores[5]; // +0x44 strength/quality-weighted military attributes 0..4
 
@@ -30,8 +30,8 @@ public:
 
   void IArmyTacUnit(TMilitaryUnit* source);
 
-  void ComputeTacticalProjectionScoreVector(); // 0x5a5fe0, __thiscall
-  int GetUID() const;                          // 0x5a6210, Mac oracle
+  void ComputeTacticalProjectionScoreVector();
+  int GetUID() const;
 };
 
 ASSERT_SIZE(TArmyTacUnit, 0x58);

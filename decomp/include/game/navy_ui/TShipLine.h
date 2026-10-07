@@ -12,8 +12,8 @@ class TShipLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TShipLine)
   // FUNCTION: IMPERIALISM 0x00564fc0
-  virtual ~TShipLine() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x565100
+  virtual ~TShipLine() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
   // NOOP: verified empty in original 0x00565063
   TShipLine() {}

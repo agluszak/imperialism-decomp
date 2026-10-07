@@ -44,14 +44,14 @@ IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 void TTraderAmtBar::DoPostCreate(int arg) {
   (void)arg;
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
-  int scenarioTag = this->ownerContext->controlTag;
+  int scenarioTag = ownerContext->controlTag;
 
   short recordIndex = 0;
   while (recordIndex < 0x11) {
     if (kScenarioRecordTags[recordIndex] == scenarioTag) {
       break;
     }
-    recordIndex = static_cast<short>(recordIndex + 1);
+    ++recordIndex;
   }
 
   short merchantCapacity = nationState != 0 ? nationState->merchantCapacity : 0;
@@ -61,7 +61,7 @@ void TTraderAmtBar::DoPostCreate(int arg) {
     short currentValue = nationState->GetStockpile(recordIndex);
     stepOrCurrentValue =
         (short)(((static_cast<int>(merchantCapacity) - static_cast<int>(currentValue)) *
-                 this->frameWidth) /
+                 frameWidth) /
                 static_cast<int>(merchantCapacity));
   }
 
@@ -72,8 +72,8 @@ void TTraderAmtBar::DoPostCreate(int arg) {
   if (merchantCapacity == 0) {
     rangeOrMaxValue = 0;
   } else {
-    rangeOrMaxValue = (short)((this->frameHeight * static_cast<int>(gaugeValue)) /
-                              static_cast<int>(merchantCapacity));
+    rangeOrMaxValue =
+        (short)((frameHeight * static_cast<int>(gaugeValue)) / static_cast<int>(merchantCapacity));
   }
 
   auxValueA = merchantCapacity;
@@ -83,13 +83,13 @@ void TTraderAmtBar::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0058b070
 short TTraderAmtBar::AdjustForZero(int baseValue, short requestedValue) {
-  short result = static_cast<short>(baseValue);
+  short result = baseValue;
   if (requestedValue > 0) {
     TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     short merchantCapacity = nationState->merchantCapacity;
     if (static_cast<int>(requestedValue) <
-        (static_cast<int>(this->frameWidth) / static_cast<int>(merchantCapacity))) {
-      if (this->ownerContext->FindSubView(kControlTagSell) != 0) {
+        (static_cast<int>(frameWidth) / static_cast<int>(merchantCapacity))) {
+      if (ownerContext->FindSubView(kControlTagSell) != 0) {
         result = 1;
       }
     }

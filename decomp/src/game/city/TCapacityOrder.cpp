@@ -21,18 +21,18 @@ void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short prima
 
 // FUNCTION: IMPERIALISM 0x004b8dd0
 void TCapacityOrder::Produce() {
-  TCity* city = this->ownerCity;
-  short slotIndex = this->resourceTypeIndex;
+  TCity* city = ownerCity;
+  short slotIndex = resourceTypeIndex;
   short newValue;
   short deltaToAccum;
 
-  if (this->quantity == 0) {
+  if (quantity == 0) {
     return;
   }
 
   if (slotIndex == 0xe) {
-    const short currentCap = static_cast<short>(city->GetRollingStock());
-    city->SetRollingStock(static_cast<short>(currentCap + this->quantity));
+    const short currentCap = city->GetRollingStock();
+    city->SetRollingStock(static_cast<short>(currentCap + quantity));
   } else {
     if (slotIndex == 0xf) {
       TGreatPower* owner = city->ownerNation;
@@ -57,16 +57,16 @@ void TCapacityOrder::Produce() {
       newValue = city->productionOrderTable[slotIndex];
     }
 
-    newValue = static_cast<short>(newValue + this->quantity);
+    newValue += quantity;
     deltaToAccum = static_cast<short>(newValue - city->productionOrderTable[slotIndex]);
     city->productionAccum[slotIndex] =
         static_cast<short>(city->productionAccum[slotIndex] + deltaToAccum);
     city->productionOrderTable[slotIndex] = newValue;
   }
 
-  this->requestedQuantity = 0;
-  this->quantity = 0;
-  this->trackingSlots[this->primaryInputResourceId] = 0;
-  this->trackingSlots[this->secondaryInputResourceId] = 0;
-  this->reservedWorkforce = 0;
+  requestedQuantity = 0;
+  quantity = 0;
+  trackingSlots[primaryInputResourceId] = 0;
+  trackingSlots[secondaryInputResourceId] = 0;
+  reservedWorkforce = 0;
 }

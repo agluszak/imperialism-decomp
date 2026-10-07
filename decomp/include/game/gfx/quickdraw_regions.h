@@ -14,26 +14,26 @@ struct Region {
   int attachRegistered; // +0x10 BOOL result of CRgn::Attach in the ctor / RectRgn
   CRgn rgn;             // +0x14 the real GDI region (m_hObject at +0x18)
 
-  Region();                               // 0x004954a0
-  ~Region();                              // 0x00495520
-  BOOL ReplaceWithRect(const RECT* rect); // 0x004955b0
-  void RefreshBoundingBox();              // 0x004955f0
+  Region();
+  ~Region();
+  BOOL ReplaceWithRect(const RECT* rect);
+  void RefreshBoundingBox();
 };
 ASSERT_SIZE(Region, 0x1c);
 
 typedef Region** RgnHandle;
 
-void OffsetRgn(RgnHandle region, int horizontalOffset, int verticalOffset); // 0x00497b30
-void RefreshRgnBoundingBox(RgnHandle region);                               // 0x00497b70
-RgnHandle NewRgn(void);                                                     // 0x00495820
-RgnHandle DisposeRgn(RgnHandle rgn);                                        // 0x00495610
-void RectRgn(RgnHandle rgn, RECT* rect);                                    // 0x004958e0
-void GetClip(RgnHandle rgn);                                                // 0x00495920
-void SetClip(RgnHandle rgn);                                                // 0x00495a30
-void ClipRect(RECT* rect);                                                  // 0x00495a80
-void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);               // 0x004977a0
-void SetEmptyRgn(RgnHandle rgn);                                            // 0x00497810
-void QDFrameRgn(RgnHandle rgn);                                             // 0x00497860
+void OffsetRgn(RgnHandle region, int horizontalOffset, int verticalOffset);
+void RefreshRgnBoundingBox(RgnHandle region);
+RgnHandle NewRgn(void);
+RgnHandle DisposeRgn(RgnHandle rgn);
+void RectRgn(RgnHandle rgn, RECT* rect);
+void GetClip(RgnHandle rgn);
+void SetClip(RgnHandle rgn);
+void ClipRect(RECT* rect);
+void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);
+void SetEmptyRgn(RgnHandle rgn);
+void QDFrameRgn(RgnHandle rgn);
 // Combine two clip regions into dst (empty/copy/RGN_DIFF cases) and refresh its box
 void CombineClipRegionsWithEmptyHandling(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);
 // Fill the region with a solid foreground-color brush (CBrush(COLORREF) form)
@@ -42,24 +42,23 @@ void FillClipRegionWithForegroundBrush(RgnHandle rgn);
 void QDPaintRgn(RgnHandle rgn);
 // Intersect the clip region with `rect` (RGN_AND) and refresh its bounding box
 void IntersectClipRegionWithRectAndUpdateBounds(RgnHandle clipRgn, RECT* rect);
-void SetRectRgn(RgnHandle rgn, short left, short top, short right,
-                short bottom);                               // 0x00498be0
-bool EqualRgn(RgnHandle first, RgnHandle second);            // 0x00498c30
-void CopyRgn(RgnHandle src, RgnHandle dst);                  // 0x00497bb0
-void SectRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst); // 0x00498000
-void OpenRgn(void);                                          // 0x00497f60
-void CloseRgn(RgnHandle dst);                                // 0x00497f90
-void QDFrameRect(RECT* rect);              // 0x00498180 (Win32 ::FrameRect collides)
-void QDFrameOval(RECT* rect);              // 0x00498310
-void QDPaintOval(RECT* rect);              // 0x004986d0
-unsigned char EmptyRgn(RgnHandle rgn);     // 0x00498aa0
-int PtInRgn(CPoint* point, RgnHandle rgn); // 0x00495650
+void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom);
+bool EqualRgn(RgnHandle first, RgnHandle second);
+void CopyRgn(RgnHandle src, RgnHandle dst);
+void SectRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);
+void OpenRgn(void);
+void CloseRgn(RgnHandle dst);
+void QDFrameRect(RECT* rect); // 0x00498180 (Win32 ::FrameRect collides)
+void QDFrameOval(RECT* rect);
+void QDPaintOval(RECT* rect);
+unsigned char EmptyRgn(RgnHandle rgn);
+int PtInRgn(CPoint* point, RgnHandle rgn);
 // QuickDraw MapPt: rescale a point from srcRect's space into dstRect's, per axis.
-void MapPt(int* point, RECT* srcRect, RECT* dstRect); // 0x004956e0
+void MapPt(int* point, RECT* srcRect, RECT* dstRect);
 // Byte-identical unfolded second copy kept by the retail image.
-void MapPtSecondCopy(int* point, RECT* srcRect, RECT* dstRect); // 0x00495780
-int SectRect(RECT* src1, RECT* src2, RECT* dst);                // 0x00498bb0
-int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode* surface); // 0x00497ef0
-void DisposeTemporaryRegionCache(void);                         // 0x004974f0
+void MapPtSecondCopy(int* point, RECT* srcRect, RECT* dstRect);
+int SectRect(RECT* src1, RECT* src2, RECT* dst);
+int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode* surface);
+void DisposeTemporaryRegionCache(void);
 
 int ProbeRectEmptyAfterCopyToLocal(RECT* rect);

@@ -34,7 +34,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     return;
   }
 
-  unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
+  unsigned int controlTag = sourceHandler->controlTag;
   TurnEventCodeStorage postEventCode = -1;
 
   if (controlTag == kControlTagHigh) {
@@ -55,7 +55,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   } else if (controlTag == kControlTagPref) {
     postEventCode = EncodeTurnEventCode(kTurnEventGamePreferences);
   } else if (controlTag == kControlTagRand) {
-    short shiftState = static_cast<short>(GetAsyncKeyState(VK_SHIFT));
+    short shiftState = GetAsyncKeyState(VK_SHIFT);
     if ((shiftState & 0x8000) != 0 && g_bRandomMapDeveloperCheatFlag) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x232c, 0, 1);
       if (g_pGameFlowState == 0) {

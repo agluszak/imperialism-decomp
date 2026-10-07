@@ -23,11 +23,11 @@ extern char g_szSaveDirectoryPrefix[];
 
 extern char g_szLiteralA[];
 
-extern const char* const g_pszSingleSlotSavePrefix; // "slot" @ 0x65ddd0
+extern const char* const g_pszSingleSlotSavePrefix; // "slot" @
 
-extern const char* const g_pszMultiplayerSavePrefix; // "mult" @ 0x65ddd4
+extern const char* const g_pszMultiplayerSavePrefix; // "mult" @
 
-extern const char* const g_pszImpSaveExtension; // ".imp" @ 0x65ddd8
+extern const char* const g_pszImpSaveExtension; // ".imp" @
 
 extern int g_mapActionContextDisplayNameCacheId;
 

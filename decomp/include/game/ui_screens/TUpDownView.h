@@ -7,10 +7,9 @@
 class TUpDownView : public TControl {
 public:
   DECLARE_DYNCREATE(TUpDownView)
-  virtual ~TUpDownView() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TUpDownView() override;
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint,
-                          bool commandFlag) override; // slot 0x68 0x583dd0
+                          CPoint& currentPoint, bool commandFlag) override;
   int repeatTick;
 
   TUpDownView();

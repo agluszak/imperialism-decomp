@@ -84,7 +84,7 @@ TTradeCluster::TTradeCluster() : TAmtBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00587130
 void TTradeCluster::DoPostCreate(int styleSeed) {
-  TNumberText* sellControl = static_cast<TNumberText*>(this->FindSubView(kControlTagSell));
+  TNumberText* sellControl = static_cast<TNumberText*>(FindSubView(kControlTagSell));
   if (sellControl != 0) {
     TextStyle style;
     InitializeUiTextStyleDescriptor(&style, 0, 0xe, 0x2b68, 2);
@@ -98,17 +98,17 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
     sellControl->SetFrame(&boundsBuffer, true);
   }
 
-  TAmtBar* barControl = static_cast<TAmtBar*>(this->FindSubView(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(FindSubView(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineInitBar);
   }
   barControl->ViewEnable(0, 0);
 
-  TView* leftControl = this->FindSubView(kControlTagLeft);
+  TView* leftControl = FindSubView(kControlTagLeft);
   if (leftControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineInitLeft);
   }
-  TView* rightControl = this->FindSubView(kControlTagRght);
+  TView* rightControl = FindSubView(kControlTagRght);
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineInitRight);
   }
@@ -121,7 +121,7 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
     leftControl->Show(0, 0);
     rightControl->Show(0, 0);
     barControl->Show(0, 0);
-    TView* greenControl = this->FindSubView(kControlTagGree);
+    TView* greenControl = FindSubView(kControlTagGree);
     if (greenControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineInitGree);
     }
@@ -135,12 +135,12 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
 
 // FUNCTION: IMPERIALISM 0x005873e0
 void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TView* ownerPanel = this->GetWindow();
+  TView* ownerPanel = GetWindow();
 
   switch (commandId) {
   case 100: {
-    if (this->IsSellOffer() != '\0') {
-      TNumberText* sellControl = static_cast<TNumberText*>(this->FindSubView(kControlTagSell));
+    if (IsSellOffer() != '\0') {
+      TNumberText* sellControl = static_cast<TNumberText*>(FindSubView(kControlTagSell));
       if (sellControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncSell);
       }
@@ -160,7 +160,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         int capacityValue = capacityControl->UpdateControlCachedIntFromWindowText();
         if (sellValue < capacityValue) {
           sellControl->Show(sellValue + 1 != 0, 1);
-          this->SetMoveAmount(static_cast<short>(sellValue + 1));
+          SetMoveAmount(static_cast<short>(sellValue + 1));
           return;
         }
       }
@@ -168,13 +168,13 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     break;
   }
   case 0x65: {
-    TNumberText* sellControl = static_cast<TNumberText*>(this->FindSubView(kControlTagSell));
+    TNumberText* sellControl = static_cast<TNumberText*>(FindSubView(kControlTagSell));
     if (sellControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellDecSell);
     }
     int sellValue = sellControl->UpdateControlCachedIntFromWindowText();
     if (sellValue > 1) {
-      this->SetMoveAmount(static_cast<short>(sellValue - 1));
+      SetMoveAmount(static_cast<short>(sellValue - 1));
       return;
     }
     return;
@@ -221,33 +221,33 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     if (capacityControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveSell);
     }
-    short cappedValue = static_cast<short>(capacityControl->UpdateControlCachedIntFromWindowText());
-    int applyValue = static_cast<int>(maxByNationMetric);
+    short cappedValue = capacityControl->UpdateControlCachedIntFromWindowText();
+    int applyValue = maxByNationMetric;
     if (static_cast<int>(cappedValue) <= static_cast<int>(maxByNationMetric)) {
       applyValue = static_cast<int>(cappedValue);
     }
 
-    TControl* sellControl = static_cast<TControl*>(this->FindSubView(kControlTagSell));
+    TControl* sellControl = static_cast<TControl*>(FindSubView(kControlTagSell));
     sellControl->Show(1, 1);
 
-    TControl* barControl = static_cast<TControl*>(this->FindSubView(kControlTagBar));
+    TControl* barControl = static_cast<TControl*>(FindSubView(kControlTagBar));
     if (barControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveBar);
     }
     barControl->ViewEnable(1, 0);
-    this->SetMoveAmount(static_cast<short>(applyValue));
+    SetMoveAmount(static_cast<short>(applyValue));
     return;
   }
   case 0x6a: {
-    TControl* sellControl = static_cast<TControl*>(this->FindSubView(kControlTagSell));
+    TControl* sellControl = static_cast<TControl*>(FindSubView(kControlTagSell));
     sellControl->Show(0, 1);
 
-    TControl* barControl = static_cast<TControl*>(this->FindSubView(kControlTagBar));
+    TControl* barControl = static_cast<TControl*>(FindSubView(kControlTagBar));
     if (barControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellZeroBar);
     }
     barControl->ViewEnable(0, 1);
-    this->SetMoveAmount(0);
+    SetMoveAmount(0);
     return;
   }
   default:
@@ -261,19 +261,19 @@ bool TTradeCluster::IsTradeControlAtMinimum() {
   if (g_pViewMgr->GetPendingTurnOverlayCode() > 3) {
     return false;
   }
-  TNumberText* sellControl = static_cast<TNumberText*>(this->FindSubView(kControlTagSell));
+  TNumberText* sellControl = static_cast<TNumberText*>(FindSubView(kControlTagSell));
   return sellControl->UpdateControlCachedIntFromWindowText() <= 0 ? 1 : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00587950
 int TTradeCluster::GetTradeSellControlValue() {
-  TNumberText* sellControl = static_cast<TNumberText*>(this->FindSubView(kControlTagSell));
+  TNumberText* sellControl = static_cast<TNumberText*>(FindSubView(kControlTagSell));
   return sellControl->UpdateControlCachedIntFromWindowText();
 }
 
 // FUNCTION: IMPERIALISM 0x00587980
 bool TTradeCluster::IsSelectionAllowed() {
-  TPicture* bidControl = static_cast<TPicture*>(this->FindSubView(kControlTagCard));
+  TPicture* bidControl = static_cast<TPicture*>(FindSubView(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
   }
@@ -289,7 +289,7 @@ bool TTradeCluster::IsSelectionAllowed() {
 
 // FUNCTION: IMPERIALISM 0x00587a10
 int TTradeCluster::IsSellOffer() {
-  TPicture* offerControl = static_cast<TPicture*>(this->FindSubView(kControlTagOffr));
+  TPicture* offerControl = static_cast<TPicture*>(FindSubView(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);
   }
@@ -308,7 +308,7 @@ int TTradeCluster::IsSellOffer() {
 
 // FUNCTION: IMPERIALISM 0x00587aa0
 void TTradeCluster::DoControlAction() {
-  TPicture* bidControl = static_cast<TPicture*>(this->FindSubView(kControlTagCard));
+  TPicture* bidControl = static_cast<TPicture*>(FindSubView(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidSecondary);
   }
@@ -333,7 +333,7 @@ void TTradeCluster::DoControlAction() {
 
 // FUNCTION: IMPERIALISM 0x00587bb0
 void TTradeCluster::ShowBidCard() {
-  TPicture* bidControl = static_cast<TPicture*>(this->FindSubView(kControlTagCard));
+  TPicture* bidControl = static_cast<TPicture*>(FindSubView(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidControl);
   }
@@ -348,15 +348,15 @@ void TTradeCluster::ShowBidCard() {
   CPoint size(0x41, 0x14);
   bidControl->Resize(size, true);
 
-  TView* greenControl = this->FindSubView(kControlTagGree);
+  TView* greenControl = FindSubView(kControlTagGree);
   if (greenControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidGree);
   }
-  TView* leftControl = this->FindSubView(kControlTagLeft);
+  TView* leftControl = FindSubView(kControlTagLeft);
   if (leftControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidLeft);
   }
-  TView* rightControl = this->FindSubView(kControlTagRght);
+  TView* rightControl = FindSubView(kControlTagRght);
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidRight);
   }
@@ -374,7 +374,7 @@ void TTradeCluster::ShowBidCard() {
 
 // FUNCTION: IMPERIALISM 0x00587dd0
 void TTradeCluster::ShowOfferCard() {
-  TPicture* offerControl = static_cast<TPicture*>(this->FindSubView(kControlTagOffr));
+  TPicture* offerControl = static_cast<TPicture*>(FindSubView(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferControl);
   }
@@ -391,15 +391,15 @@ void TTradeCluster::ShowOfferCard() {
   CPoint layoutCaptureF0(0x73, 0);
   offerControl->Locate(layoutCaptureF0, true);
 
-  TView* greenControl = this->FindSubView(kControlTagGree);
+  TView* greenControl = FindSubView(kControlTagGree);
   if (greenControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferGree);
   }
-  TView* leftControl = this->FindSubView(kControlTagLeft);
+  TView* leftControl = FindSubView(kControlTagLeft);
   if (leftControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferLeft);
   }
-  TView* rightControl = this->FindSubView(kControlTagRght);
+  TView* rightControl = FindSubView(kControlTagRght);
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferRight);
   }
@@ -417,7 +417,7 @@ void TTradeCluster::ShowOfferCard() {
 
 // FUNCTION: IMPERIALISM 0x00588030
 void TTradeCluster::ShowOfferHandle() {
-  TPicture* offerControl = static_cast<TPicture*>(this->FindSubView(kControlTagOffr));
+  TPicture* offerControl = static_cast<TPicture*>(FindSubView(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryOffr);
   }
@@ -448,15 +448,15 @@ void TTradeCluster::ShowOfferHandle() {
     offerControl->Show(0, 1);
   }
 
-  TView* greenControl = this->FindSubView(kControlTagGree);
+  TView* greenControl = FindSubView(kControlTagGree);
   if (greenControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryGree);
   }
-  TView* leftControl = this->FindSubView(kControlTagLeft);
+  TView* leftControl = FindSubView(kControlTagLeft);
   if (leftControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryLeft);
   }
-  TView* rightControl = this->FindSubView(kControlTagRght);
+  TView* rightControl = FindSubView(kControlTagRght);
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryRight);
   }
@@ -476,22 +476,22 @@ void TTradeCluster::ShowOfferHandle() {
 void TTradeCluster::SetMoveAmount(short metricClampMax) {
   short activeNationSlot = g_pSimMgr->GetPlayerCountry();
   TGreatPower* activeNationState = g_apNationStates[activeNationSlot];
-  int tradeMetricValue = static_cast<int>(activeNationState->GetStockpile(tradeMetricSlot));
+  int tradeMetricValue = activeNationState->GetStockpile(tradeMetricSlot);
   if (tradeMetricValue > metricClampMax) {
     tradeMetricValue = metricClampMax;
   }
 
-  TNumberText* sellControl = static_cast<TNumberText*>(this->FindSubView(kControlTagSell));
+  TNumberText* sellControl = static_cast<TNumberText*>(FindSubView(kControlTagSell));
   if (sellControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateSell);
   }
   sellControl->SetControlValue(tradeMetricValue, 1);
 
-  TAmtBar* barControl = static_cast<TAmtBar*>(this->FindSubView(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(FindSubView(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateBar);
   }
-  TView* greenControl = this->FindSubView(kControlTagGree);
+  TView* greenControl = FindSubView(kControlTagGree);
   if (greenControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateGree);
   }

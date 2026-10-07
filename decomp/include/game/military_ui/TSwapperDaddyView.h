@@ -9,13 +9,13 @@
 class TSwapperDaddyView : public TView {
 public:
   DECLARE_DYNCREATE(TSwapperDaddyView)
-  virtual ~TSwapperDaddyView() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TSwapperDaddyView() override;
 
   // NOOP: verified empty in original 0x004ac5f5
   TSwapperDaddyView() {}
 
-  TView* SelectSwapperItemByTag(int tag); // 0x004ac6c0
+  TView* SelectSwapperItemByTag(int tag);
 
-  int selectedTag; // 0x60 — currently displayed child's controlTag
+  int selectedTag; // currently displayed child's controlTag
 };
 ASSERT_SIZE(TSwapperDaddyView, 0x64);

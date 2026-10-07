@@ -9,17 +9,17 @@ class CMcWindow;
 // VTABLE: IMPERIALISM 0x0063e8b0
 class TNumberText : public TEditText {
 public:
-  int value;        // 0xa0
-  int minimumValue; // 0xa4
-  int maximumValue; // 0xa8
+  int value;
+  int minimumValue;
+  int maximumValue;
 
   DECLARE_DYNCREATE(TNumberText)
-  ~TNumberText() override;          // slot 0x01 (0x429530)
-  TObject* ShallowClone() override; // slot 0x08 (0x4912b0)
+  ~TNumberText() override;
+  TObject* ShallowClone() override;
 
   // New virtual methods
-  virtual void SetControlValue(int val, int refresh); // slot 0x79 (0x4910e0)
-  virtual int UpdateControlCachedIntFromWindowText(); // slot 0x7a (0x4911c0)
+  virtual void SetControlValue(int val, int refresh);
+  virtual int UpdateControlCachedIntFromWindowText();
 
   // FUNCTION: IMPERIALISM 0x00429500
   TNumberText() : TEditText() {

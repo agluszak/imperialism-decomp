@@ -9,9 +9,8 @@
 class TTradePolicyCluster : public TUberCluster {
 public:
   DECLARE_DYNCREATE(TTradePolicyCluster)
-  virtual ~TTradePolicyCluster() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x00584320
+  virtual ~TTradePolicyCluster() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   TTradePolicyCluster();
 };

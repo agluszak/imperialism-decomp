@@ -106,60 +106,60 @@ int TSortedList::GetIdentityItemNo(void* item) {
 
 // FUNCTION: IMPERIALISM 0x004885d0
 POSITION TSortedList::AddHead(void* item) {
-  return this->listState.AddHead(item);
+  return listState.AddHead(item);
 }
 
 // FUNCTION: IMPERIALISM 0x004885f0
 POSITION TSortedList::AddHeadEx(void* item, int unused1, int unused2) {
-  return this->listState.AddHead(item);
+  return listState.AddHead(item);
 }
 
 // FUNCTION: IMPERIALISM 0x00488610
 POSITION TSortedList::AddTail(void* item) {
-  return this->listState.AddTail(item);
+  return listState.AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x00488630
 POSITION TSortedList::AddTailEx(void* item, int unused1, int unused2) {
-  return this->listState.AddTail(item);
+  return listState.AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x00488650
 POSITION TSortedList::Push(void* item) {
-  return this->listState.AddTail(item);
+  return listState.AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x00488670
 void* TSortedList::Pop() {
-  return this->listState.RemoveTail();
+  return listState.RemoveTail();
 }
 
 // FUNCTION: IMPERIALISM 0x00488690
 POSITION TSortedList::Queue(void* item) {
-  return this->listState.AddTail(item);
+  return listState.AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x004886b0
 void* TSortedList::Dequeue() {
-  return this->listState.RemoveHead();
+  return listState.RemoveHead();
 }
 
 // FUNCTION: IMPERIALISM 0x004886d0
 int TSortedList::GetCount() {
-  return this->listState.GetCount();
+  return listState.GetCount();
 }
 
 // FUNCTION: IMPERIALISM 0x004886f0
 void* TSortedList::GetEntryByOrdinal(int ordinal) {
-  POSITION pos = this->listState.FindIndex(ordinal - 1);
-  return pos != NULL ? this->listState.GetAt(pos) : 0;
+  POSITION pos = listState.FindIndex(ordinal - 1);
+  return pos != NULL ? listState.GetAt(pos) : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00488720
 void TSortedList::RemoveAtOrdinal(int oneBasedIndex) {
-  POSITION pos = this->listState.FindIndex(oneBasedIndex - 1);
+  POSITION pos = listState.FindIndex(oneBasedIndex - 1);
   if (pos != 0) {
-    this->listState.RemoveAt(pos);
+    listState.RemoveAt(pos);
   }
 }
 
@@ -178,13 +178,13 @@ void TSortedList::Free() {
 
 // FUNCTION: IMPERIALISM 0x004887b0
 void TSortedList::FreeList() {
-  this->FreePayloads();
-  this->Free();
+  FreePayloads();
+  Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004887e0
 void TSortedList::RemoveAll() {
-  this->listState.RemoveAll();
+  listState.RemoveAll();
 }
 
 // FUNCTION: IMPERIALISM 0x00488800
@@ -195,8 +195,8 @@ void TSortedList::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x00488840
 void TSortedList::SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag) {
-  POSITION pos = this->listState.FindIndex(ordinal - 1);
+  POSITION pos = listState.FindIndex(ordinal - 1);
   if (pos != NULL) {
-    this->listState.SetAt(pos, *entryPtr);
+    listState.SetAt(pos, *entryPtr);
   }
 }

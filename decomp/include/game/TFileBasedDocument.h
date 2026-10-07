@@ -10,7 +10,7 @@ class TFileBasedDocument : public TDocument {
 public:
   DECLARE_DYNCREATE(TFileBasedDocument)
   // FUNCTION: IMPERIALISM 0x00486420
-  virtual ~TFileBasedDocument() override {} // slot 0x01 (scalar deleting destructor)
+  virtual ~TFileBasedDocument() override {}
 
   // NOOP: verified empty in original 0x004863c2
   TFileBasedDocument() {}

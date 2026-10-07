@@ -64,16 +64,16 @@ TAdmiral::~TAdmiral() {}
 // FUNCTION: IMPERIALISM 0x005515d0
 void TAdmiral::Free() {
   if (g_pNavySecondaryOrderListHead == this) {
-    g_pNavySecondaryOrderListHead = this->next;
+    g_pNavySecondaryOrderListHead = next;
   }
-  if (this->next != 0) {
-    this->next->prev = this->prev;
+  if (next != 0) {
+    next->prev = prev;
   }
-  if (this->prev != 0) {
-    this->prev->next = this->next;
+  if (prev != 0) {
+    prev->next = next;
   }
-  if (this->assignedShip != 0) {
-    this->assignedShip->admiral = 0;
+  if (assignedShip != 0) {
+    assignedShip->admiral = 0;
   }
   delete this;
 }
@@ -143,30 +143,30 @@ void TAdmiral::Victory(short experienceGain) {
 
 // FUNCTION: IMPERIALISM 0x00551850
 void TAdmiral::ReassignThyself() {
-  if (this->assignedShip != 0) {
-    this->assignedShip->admiral = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
+  if (assignedShip != 0) {
+    assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
   }
-  this->assignedShip = 0;
+  assignedShip = 0;
 
   TShip* best = 0;
   for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->next) {
-    if (node->nation == this->nationSlot) {
+    if (node->nation == nationSlot) {
       best = node->Finest(best, true);
     }
   }
 
-  if (this->assignedShip != 0) {
-    this->assignedShip->admiral = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
+  if (assignedShip != 0) {
+    assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
   }
-  this->assignedShip = best;
+  assignedShip = best;
   if (best != 0) {
     best->admiral = this;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
   }
   if (best == 0) {
-    this->Free();
+    Free();
   }
 }
 
@@ -198,7 +198,7 @@ short TAdmiral::EstimateEnemyForces(short* estimatedCounts, const TZone* zone,
       continue;
     }
 
-    short countRoll = static_cast<short>(rand() % 100);
+    short countRoll = rand() % 100;
     short estimatedCount = -1;
     do {
       ++estimatedCount;
@@ -206,7 +206,7 @@ short TAdmiral::EstimateEnemyForces(short* estimatedCounts, const TZone* zone,
                                      -g_aNavalIntelligenceAccuracyProfiles[skill][estimatedCount]);
     } while (countRoll > 0);
 
-    short classRoll = static_cast<short>(rand() % 100);
+    short classRoll = rand() % 100;
     short classEstimate = -1;
     do {
       ++classEstimate;
@@ -231,7 +231,7 @@ short TAdmiral::EstimateEnemyForces(short* estimatedCounts, const TZone* zone,
     estimatedCounts[category] = static_cast<short>(estimatedCounts[category] + estimatedCount);
     total += estimatedCount;
   }
-  return static_cast<short>(total);
+  return total;
 }
 
 // FUNCTION: IMPERIALISM 0x00551be0
@@ -259,7 +259,7 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) cons
     if (count <= 0) {
       continue;
     }
-    remaining = static_cast<short>(remaining - count);
+    remaining -= count;
     if (!out->IsEmpty()) {
       *out += remaining == 0 ? conjunction : comma;
     }
@@ -302,13 +302,13 @@ int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) con
   for (TMapOrderChildLinkNode* node = force->shipList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     short resourceType = ship->type;
-    short strengthBucket = static_cast<short>(ship->experience / 100);
+    short strengthBucket = ship->experience / 100;
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[resourceType];
     int navyPriorityScore = strengthBucket + 5 + descriptor.BattleSpeedDword() * 10;
-    short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+    short navyPriorityBucket = navyPriorityScore / 10;
     int resolveScore = strengthBucket + 5 + descriptor.FirepowerDword() * 10;
-    short resolveBucket = static_cast<short>(resolveScore / 10);
+    short resolveBucket = resolveScore / 10;
     total +=
         ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket + ship->strength) /
         descriptor.Armor();
@@ -318,52 +318,52 @@ int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) con
 
 // FUNCTION: IMPERIALISM 0x00552250
 void TAdmiral::AssignToShip(TShip* primaryOrderNode) {
-  if (this->assignedShip != 0) {
-    this->assignedShip->admiral = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
+  if (assignedShip != 0) {
+    assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
   }
-  this->assignedShip = primaryOrderNode;
+  assignedShip = primaryOrderNode;
   if (primaryOrderNode != 0) {
     primaryOrderNode->admiral = this;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00552310
 void TAdmiral::ReassignToZone(TZone* zone) {
-  if (this->assignedShip != 0) {
-    this->assignedShip->admiral = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
+  if (assignedShip != 0) {
+    assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
   }
-  this->assignedShip = 0;
+  assignedShip = 0;
 
   TShip* best = 0;
   for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->next) {
-    if (node->location == zone && node->nation == this->nationSlot) {
+    if (node->location == zone && node->nation == nationSlot) {
       best = node->Finest(best, true);
     }
   }
 
-  if (this->assignedShip != 0) {
-    this->assignedShip->admiral = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
+  if (assignedShip != 0) {
+    assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
   }
-  this->assignedShip = best;
+  assignedShip = best;
   if (best != 0) {
     best->admiral = this;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00552450
 void TAdmiral::NameThyself() {
-  g_apTerrainTypeDescriptorTable[this->nationSlot]->GenerateEthnicName(&this->displayName);
+  g_apTerrainTypeDescriptorTable[nationSlot]->GenerateEthnicName(&displayName);
   for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
     if (node == this) {
       continue;
     }
-    if (node->displayName.Compare(this->displayName) == 0) {
-      this->NameThyself();
+    if (node->displayName.Compare(displayName) == 0) {
+      NameThyself();
     }
   }
 }

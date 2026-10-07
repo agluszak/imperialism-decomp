@@ -82,9 +82,9 @@ public:
   void AssignMilitiaToDefendMissions();
   void CreateInitialMissions();
   void MarkEnemyProvinceCandidates();
-  void SetZoneStatus(int contextOrdinal, eMissionDesirability value);     // 0x4e8bf0
-  void SetConquerLust(int nationSlot, char makeEnemy);                    // 0x004e8300
-  void SetProvinceStatus(int provinceIndex, eMissionDesirability status); // Mac oracle
+  void SetZoneStatus(int contextOrdinal, eMissionDesirability value);
+  void SetConquerLust(int nationSlot, char makeEnemy);
+  void SetProvinceStatus(int provinceIndex, eMissionDesirability status);
   void SetProvinceStatus(int provinceIndex, eMissionDesirability status, unsigned char bypassGate);
 
   short actionMetricByQuarter[6];

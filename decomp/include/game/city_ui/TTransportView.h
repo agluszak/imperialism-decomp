@@ -11,9 +11,9 @@ class TGreatPower;
 class TTransportView : public TView {
 public:
   DECLARE_DYNCREATE(TTransportView)
-  virtual ~TTransportView() override;            // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;                 // slot 0x28 0x4bd690
-  virtual void StuffValues(TGreatPower* nation); // slot 0x68 0x4bd3e0
+  virtual ~TTransportView() override;
+  virtual void Close() override;
+  virtual void StuffValues(TGreatPower* nation);
 
   // NOOP: verified empty in original 0x004bd333
   TTransportView() {}

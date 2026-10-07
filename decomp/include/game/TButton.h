@@ -9,7 +9,7 @@
 class TButton : public TCtlMgr {
 public:
   DECLARE_DYNCREATE(TButton)
-  virtual ~TButton() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TButton() override;
   TButton() : TCtlMgr() {
     ReportAssertionFailure();
   }

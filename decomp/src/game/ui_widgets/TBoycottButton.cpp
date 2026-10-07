@@ -17,7 +17,7 @@ TBoycottButton::~TBoycottButton() {}
 void TBoycottButton::Select(bool isPressed, bool notifyParent) {
   if (static_cast<char>(isPressed) != '\0') {
     // GetWindow() (slot 0x16) -> the 'clus' control via FindSubView (slot 0x25).
-    TCluster* clusControl = static_cast<TCluster*>(this->GetWindow()->FindSubView(kControlTagClus));
+    TCluster* clusControl = static_cast<TCluster*>(GetWindow()->FindSubView(kControlTagClus));
     if (clusControl == NULL) {
       GAME_FAIL_NIL_POINTER();
     }

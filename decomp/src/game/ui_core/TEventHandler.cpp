@@ -63,7 +63,7 @@ void TEventHandler::Free() {
 
 // FUNCTION: IMPERIALISM 0x0048a240
 char TEventHandler::IsEnabled() {
-  return static_cast<char>(enabled);
+  return enabled;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a260

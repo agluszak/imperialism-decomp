@@ -31,8 +31,8 @@ void TMapKey::DoPostCreate(int arg) {
   short legendY[8] = {0x187, 0x1a0, 0x1b8, 0x1d1, 0x187, 0x1a0, 0x1b8, 0x1d1};
 
   TView* anchor = ownerContext;
-  short baseX = static_cast<short>(ownerLocalX + anchor->ownerLocalX);
-  short baseY = static_cast<short>(ownerLocalY + anchor->ownerLocalY);
+  short baseX = ownerLocalX + anchor->ownerLocalX;
+  short baseY = ownerLocalY + anchor->ownerLocalY;
 
   int sizeXY[2] = {0x46, 0x19};
   CString label;
@@ -68,7 +68,7 @@ void TMapKey::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004fcf80
 void TMapKey::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
-  switch (this->viewMode) {
+  switch (viewMode) {
   case 0:
     RenderMapHintOverlayMode0();
     break;
@@ -86,9 +86,9 @@ void TMapKey::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004fd000
 void TMapKey::RenderMapHintOverlayMode0() {
-  TView* anchor = this->ownerContext;
-  short baseX = static_cast<short>(this->ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
-  short baseY = static_cast<short>(this->ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
+  TView* anchor = ownerContext;
+  short baseX = static_cast<short>(ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
+  short baseY = static_cast<short>(ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
 
   CString label;
   COLORREF shadowStyle = 0;
@@ -121,9 +121,9 @@ void TMapKey::RenderMapHintOverlayMode0() {
 
 // FUNCTION: IMPERIALISM 0x004fd220
 void TMapKey::DrawTreatyPanel() {
-  TView* anchor = this->ownerContext;
-  short baseX = static_cast<short>(this->ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
-  short baseY = static_cast<short>(this->ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
+  TView* anchor = ownerContext;
+  short baseX = static_cast<short>(ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
+  short baseY = static_cast<short>(ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
   short descriptorIndex = *(short*)((char*)anchor->ownerContext + 0x98);
 
   short xTable[7] = {0x169, 0x169, 0, 0x1e5, 0x1e5, 0x1e5, 0x1e5};
@@ -169,9 +169,9 @@ void TMapKey::DrawTreatyPanel() {
 
 // FUNCTION: IMPERIALISM 0x004fd5c0
 void TMapKey::RenderMapHintOverlayMode1() {
-  TView* anchor = this->ownerContext;
-  short baseX = static_cast<short>(this->ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
-  short baseY = static_cast<short>(this->ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
+  TView* anchor = ownerContext;
+  short baseX = static_cast<short>(ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
+  short baseY = static_cast<short>(ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
   short descriptorIndex = *(short*)((char*)anchor->ownerContext + 0x98);
 
   short xTable[3] = {0, 0x1f2, 0x16b};
@@ -217,9 +217,9 @@ void TMapKey::RenderMapHintOverlayMode1() {
 
 // FUNCTION: IMPERIALISM 0x004fd910
 void TMapKey::RenderMapHintOverlayMode2() {
-  TView* anchor = this->ownerContext;
-  short baseX = static_cast<short>(this->ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
-  short baseY = static_cast<short>(this->ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
+  TView* anchor = ownerContext;
+  short baseX = static_cast<short>(ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
+  short baseY = static_cast<short>(ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
   short descriptorIndex = *(short*)((char*)anchor->ownerContext + 0x98);
 
   short xTable[3] = {0x153, 0x90, 0x198};

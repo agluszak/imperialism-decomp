@@ -55,8 +55,8 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   CString ownerName;
   CString templateText;
 
-  short ownerY = static_cast<short>(ownerLocalY);
-  short ownerX = static_cast<short>(ownerLocalX);
+  short ownerY = ownerLocalY;
+  short ownerX = ownerLocalX;
   COLORREF shadowColor = 0;
   COLORREF foregroundColor = 0;
   selectedNation = diplomacyMapView->frameRegionSelector;
@@ -65,8 +65,8 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   ResolveUiThemeColor(0x2b6b, &shadowColor);
   ResolveUiThemeColor(0x2b68, &foregroundColor);
 
-  short baseY = static_cast<short>(0x16f - ownerY);
-  short baseX = static_cast<short>(0x48 - ownerX);
+  short baseY = 0x16f - ownerY;
+  short baseX = 0x48 - ownerX;
   g_pSimMgr->GetString(0x2733, 0, &text); // "Information:"
   SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(baseX + 1, baseY + 1);
@@ -77,8 +77,8 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
   g_pSimMgr->GetString(0x2733, 1, &text); // "Provinces:"
-  short labelY = static_cast<short>(g_infoPanelLabelYByRow[0] - ownerY);
-  short labelX = static_cast<short>(g_infoPanelLabelXByRow[0] - ownerX);
+  short labelY = g_infoPanelLabelYByRow[0] - ownerY;
+  short labelX = g_infoPanelLabelXByRow[0] - ownerX;
   SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
   DrawTextWithCachedQuickDrawStyleState(&text);
@@ -127,7 +127,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
   TCountry* selectedCountry = g_apTerrainTypeDescriptorTable[selectedNation];
   selectedCountry->GetName(&text);
-  short valueX = static_cast<short>(0xa7 - ownerX);
+  short valueX = 0xa7 - ownerX;
   SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(valueX + 1, baseY + 1);
   DrawTextWithCachedQuickDrawStyleState(&text);

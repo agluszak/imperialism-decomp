@@ -11,9 +11,9 @@ class TCity;
 class TRailheadDialog : public TDialogView {
 public:
   DECLARE_DYNCREATE(TRailheadDialog)
-  virtual ~TRailheadDialog() override;   // slot 0x01 (scalar deleting destructor)
-  virtual void StuffValues(TCity* city); // slot 0x68 0x4bd040
-  virtual void DoClosingAction(unsigned long dialogActionTag); // slot 0x69 0x4bd260
+  virtual ~TRailheadDialog() override;
+  virtual void StuffValues(TCity* city);
+  virtual void DoClosingAction(unsigned long dialogActionTag);
 
   // NOOP: verified empty in original 0x004bcf73
   TRailheadDialog() {}

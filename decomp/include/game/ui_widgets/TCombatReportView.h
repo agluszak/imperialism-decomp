@@ -21,22 +21,21 @@ struct TCombatReportContext {
   unsigned char pad02[2];
   short mapTileIndex; // +0x04 passed to the active strategic-map view's CenterOn()
   unsigned char pad06[2];
-  CombatReportUnitRecord* unitsA; // +0x08
-  CombatReportUnitRecord* unitsB; // +0x0c
+  CombatReportUnitRecord* unitsA;
+  CombatReportUnitRecord* unitsB;
 };
 
 // VTABLE: IMPERIALISM 0x6678a0
 class TCombatReportView : public TPicture {
 public:
-  virtual ~TCombatReportView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x0058d950
-  TCombatReportContext* m_reportContext;        // 0x90
-  short reportValue;                            // 0x94
-  short totalPages;                             // 0x96
-  short participantAUnitCount;                  // 0x98
-  short participantBUnitCount;                  // 0x9a
-  short participantBFirstPage;                  // 0x9c
+  virtual ~TCombatReportView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  TCombatReportContext* m_reportContext;
+  short reportValue;
+  short totalPages;
+  short participantAUnitCount;
+  short participantBUnitCount;
+  short participantBFirstPage;
 
   TCombatReportView();
   DECLARE_DYNCREATE(TCombatReportView)

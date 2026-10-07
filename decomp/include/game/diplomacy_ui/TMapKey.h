@@ -7,19 +7,19 @@
 class TMapKey : public TPicture {
 public:
   DECLARE_DYNCREATE(TMapKey)
-  virtual ~TMapKey() override;                  // slot 0x01 (scalar deleting destructor)
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x4fcac0
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4fcf80
-  short viewMode;                               // 0x90
+  virtual ~TMapKey() override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  short viewMode;
   unsigned char padding92[2];
 
   TMapKey();
 
 private:
-  void RenderMapHintOverlayMode0(); // 0x004fd000
-  void RenderMapHintOverlayMode1(); // 0x004fd5c0
-  void RenderMapHintOverlayMode2(); // 0x004fd910
-  void DrawTreatyPanel();           // 0x004fd220
+  void RenderMapHintOverlayMode0();
+  void RenderMapHintOverlayMode1();
+  void RenderMapHintOverlayMode2();
+  void DrawTreatyPanel();
 };
 
 ASSERT_SIZE(TMapKey, 0x94);

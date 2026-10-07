@@ -9,8 +9,8 @@
 class TTradeBidNationView : public TView {
 public:
   DECLARE_DYNCREATE(TTradeBidNationView)
-  virtual ~TTradeBidNationView() override;      // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5bdc20
+  virtual ~TTradeBidNationView() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   // NOOP: verified empty in original 0x005bdb73
   TTradeBidNationView() {}

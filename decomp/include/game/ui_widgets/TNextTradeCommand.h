@@ -10,7 +10,7 @@ public:
   TNextTradeCommand();
 
   DECLARE_DYNCREATE(TNextTradeCommand)
-  void DoIt() override; // slot 0x0b 0x5ba4b0
+  void DoIt() override;
 
   void INextTradeCommand();
   virtual ~TNextTradeCommand() override;

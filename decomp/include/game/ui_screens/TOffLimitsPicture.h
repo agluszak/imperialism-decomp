@@ -10,11 +10,11 @@
 class TOffLimitsPicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TOffLimitsPicture)
-  virtual ~TOffLimitsPicture() override;        // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;                 // slot 0x07 0x573900
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x573850
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x573890
-  virtual void SetRgn(RgnHandle srcRegion);     // slot 0x73 0x573940
+  virtual ~TOffLimitsPicture() override;
+  virtual void Free() override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void SetRgn(RgnHandle srcRegion);
   RgnHandle ownClipRegion;
 
   TOffLimitsPicture();

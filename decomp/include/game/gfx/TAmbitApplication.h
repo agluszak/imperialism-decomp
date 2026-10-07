@@ -20,18 +20,18 @@ public:
   }
 
   DECLARE_DYNCREATE(TAmbitApplication)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05, 0x0049e2f0
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06, 0x0049e280
-  virtual void Free() override;                    // slot 0x07, 0x0049e1a0
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual void Free() override;
 
-  virtual void DoKeyEvent(TToolboxEvent* event) override; // slot 0x12, 0x0049e4b0
+  virtual void DoKeyEvent(TToolboxEvent* event) override;
 
-  virtual void HandleCursor(int x, int y, void* cursorRegion); // slot 0x2b, 0x0049e320
-  virtual void DoSetupMenus();                                 // slot 0x2c, 0x00414770
+  virtual void HandleCursor(int x, int y, void* cursorRegion);
+  virtual void DoSetupMenus();
   // MacApp TAmbitApplication::CloseAndFreeWindow(TWindow*).
-  virtual void CloseAndFreeWindow(TWindow* window); // slot 0x2d, 0x0049e4e0
+  virtual void CloseAndFreeWindow(TWindow* window);
 
-  void IAmbitApplication(); // 0x49ded0
+  void IAmbitApplication();
 
   TMapUberUberPicture* edgeScrollTarget;
   bool dispatchBusyFlag;

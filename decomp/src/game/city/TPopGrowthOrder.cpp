@@ -29,8 +29,8 @@ short TPopGrowthOrder::MaxOrder() {
       static_cast<short>(ownerCity->stockByType[kResourceFurniture] + currentQuantity);
   short clothingLimit =
       static_cast<short>(ownerCity->stockByType[kResourceClothing] + currentQuantity);
-  short foodLimit = static_cast<short>(ownerCity->stockByType[kResourceFood] + currentQuantity);
-  short capacityLimit = static_cast<short>(ownerCity->productionAccum[0x0f] + currentQuantity);
+  short foodLimit = ownerCity->stockByType[kResourceFood] + currentQuantity;
+  short capacityLimit = ownerCity->productionAccum[0x0f] + currentQuantity;
 
   limitingConstraint = kProductionOrderLimitResources;
   short limit = furnitureLimit;
@@ -49,7 +49,7 @@ short TPopGrowthOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b8230
 bool TPopGrowthOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - this->quantity);
+  short delta = quantity - this->quantity;
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
@@ -102,7 +102,7 @@ void TPopGrowthOrder::Restock() {}
 
 // FUNCTION: IMPERIALISM 0x004b8440
 void TPopGrowthOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->ResetOrderSheet(orderSheet);
+  ResetOrderSheet(orderSheet);
   orderSheet->slotByResourceCode[0x0d] = quantity;
   orderSheet->slotByResourceCode[0x0e] = quantity;
   orderSheet->slotByResourceCode[0x07] = quantity;

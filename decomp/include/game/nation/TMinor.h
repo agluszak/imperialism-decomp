@@ -38,14 +38,14 @@ public:
   void AddNoticeFrom(short sourceNation, short actionCode) override;
 
   virtual void InitializeTradeStatus(void);
-  virtual void SetTradeBids(void); // slot 0x2b 0x4e4bd0
+  virtual void SetTradeBids(void);
   virtual bool WouldAcceptOffer(NationSlot targetNationSlot,
-                                DiplomacyProposalCodeStorage proposalCode); // 0x4e4ff0
-  virtual void HandleNetworkPortConstructionOrder(int nationId);            // slot 0x2d 0x4e5730
-  virtual void SetBoycottPoliciesToMatch(int targetNationSlot);             // slot 0x2e 0x4e5a40
-  virtual void ClearTileActivityOverlayByProvinceId(int provinceId);        // slot 0x2f 0x4e5ac0
-  virtual void KillBoycottedForeignCompanies(void);                         // slot 0x30 0x4e5be0
-  virtual void KillEnemyCiviliansIn(int provinceId);                        // slot 0x31 0x4e5d90
+                                DiplomacyProposalCodeStorage proposalCode);
+  virtual void HandleNetworkPortConstructionOrder(int nationId);
+  virtual void SetBoycottPoliciesToMatch(int targetNationSlot);
+  virtual void ClearTileActivityOverlayByProvinceId(int provinceId);
+  virtual void KillBoycottedForeignCompanies(void);
+  virtual void KillEnemyCiviliansIn(int provinceId);
   short GetCurrentTradeSupply(ResourceKindStorage resourceKind) const {
     ASSERT(resourceKind >= 0 && resourceKind < kResourceKindCount);
     return needCurrentByType[resourceKind];
@@ -100,10 +100,9 @@ public:
     return consortiumMembers[index];
   }
 
-  virtual void DeportCiviliansIn(int provinceId,
-                                 bool includeAllPolicyTargets); // slot 0x32 0x4e6150
-  virtual void AssimilateTroopsOf(int priorOwnerNationSlot);    // slot 0x33 0x4e6040
-  virtual void ChangeArmyOwnership(int destinationNationSlot);  // slot 0x34 0x4e6520
+  virtual void DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets);
+  virtual void AssimilateTroopsOf(int priorOwnerNationSlot);
+  virtual void ChangeArmyOwnership(int destinationNationSlot);
 
   void IMinor(NationSlot nationSlot);
 
@@ -125,11 +124,12 @@ private:
   short consortiumMembers[4];
 
 public:
-  short independentResourceCountByType[kResourceKindCount]; // 0x13c
+  short independentResourceCountByType[kResourceKindCount];
+
 private:
-  short foreignControlledResourceYieldByType[kResourceKindCount]; // 0x16a
+  short foreignControlledResourceYieldByType[kResourceKindCount];
   TMinorForeignResourceYieldByMajorNation
-      foreignControlledResourceYieldByTypeAndMajorNation[kResourceKindCount]; // 0x198
+      foreignControlledResourceYieldByTypeAndMajorNation[kResourceKindCount];
 
 protected:
   // Inline so network minor subclasses reproduce the original direct CString teardown.

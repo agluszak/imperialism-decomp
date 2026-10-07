@@ -13,7 +13,7 @@ public:
 
   void PostThyself();
 
-  virtual ~TNextDiplomationCommand() override; // slot 0x01 scalar deleting dtor 0x4f0dd0
+  virtual ~TNextDiplomationCommand() override;
 };
 
 ASSERT_SIZE(TNextDiplomationCommand, 0x18);

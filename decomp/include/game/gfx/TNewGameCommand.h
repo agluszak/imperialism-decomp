@@ -9,8 +9,8 @@
 class TNewGameCommand : public TCommand {
 public:
   DECLARE_DYNCREATE(TNewGameCommand)
-  virtual ~TNewGameCommand() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoIt() override;        // slot 0x0b 0x49ddb0
+  virtual ~TNewGameCommand() override;
+  virtual void DoIt() override;
 
   TNewGameCommand() : TCommand() {}
 };

@@ -229,7 +229,7 @@ void TViewMgr::ShowTownNameDialog(int stringCode) {
   }
   TControl* gold = static_cast<TControl*>(node->FindSubView(kControlTagDialog)); // 'DLOG'
   CPoint placement;
-  this->GetTopLeftFor(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->PoseModally();
   TDeluxeText* nameText =
@@ -362,7 +362,7 @@ void TViewMgr::MakeGarrisonWindow(int tileIndex) {
   static_cast<TGarrisonView*>(page)->StuffValues(static_cast<short>(tileIndex));
 
   CPoint placement;
-  this->GetTopLeftFor(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
@@ -402,7 +402,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
   CPoint placement;
-  this->GetTopLeftFor(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
@@ -445,7 +445,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
   CPoint placement;
-  this->GetTopLeftFor(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
@@ -454,7 +454,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   node->Free();
 
   if (selectedIndex != -1) {
-    this->mapUberPicture->NoticeTile(selectedIndex);
+    mapUberPicture->NoticeTile(selectedIndex);
     UnitOrder orderState =
         g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder->unitOrder;
     if (orderState == kUnitOrderIdle || orderState == static_cast<UnitOrder>(3) ||
@@ -569,7 +569,7 @@ bool TViewMgr::MakeCivInfoWindow(TCivUnit* pCivilianOrderEntry) {
       static_cast<TCivReport*>(static_cast<TView*>(node->FindSubView(kControlTagDialog)));
   report->StuffValues(pCivilianOrderEntry);
   CPoint placement;
-  this->GetTopLeftFor(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   unsigned int resultTag = node->PoseModally();
   node->Close();
@@ -590,7 +590,7 @@ bool TViewMgr::MakeArmyInfoWindow(short cityRecordIndex, int* categoryCounts) {
       static_cast<TArmyInfoView*>(static_cast<TView*>(node->FindSubView(kControlTagDialog)));
   report->StuffValues(cityRecordIndex, categoryCounts);
   CPoint placement;
-  this->GetTopLeftFor(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   unsigned int resultTag = node->PoseModally();
   node->Close();
@@ -606,7 +606,7 @@ void TViewMgr::ShowQueryWindow() {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x33f);
   }
   CPoint placement;
-  this->GetTopLeftFor(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->PoseModally();
   node->Close();

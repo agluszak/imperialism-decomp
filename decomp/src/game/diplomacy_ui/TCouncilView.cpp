@@ -46,7 +46,7 @@ IMPLEMENT_DYNCREATE(TCouncilView, TDiplomacyMapView)
 
 // FUNCTION: IMPERIALISM 0x004fba70
 void TCouncilView::DoPostCreate(int arg) {
-  this->TView::DoPostCreate(arg);
+  TView::DoPostCreate(arg);
 
   interactionMode = 5;
   tickerSlots[0] = 0;
@@ -60,9 +60,9 @@ void TCouncilView::DoPostCreate(int arg) {
   tickerSlots[8] = 0;
   tickerSlots[9] = 0;
 
-  this->CreateDrawGeometries();
+  CreateDrawGeometries();
 
-  TDropShadowText* titleControl = static_cast<TDropShadowText*>(this->FindSubView(kControlTagTitl));
+  TDropShadowText* titleControl = static_cast<TDropShadowText*>(FindSubView(kControlTagTitl));
   titleControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x10, 0x2b6c, 0x2b67);
   titleControl->SetJustification(-2, false);
@@ -91,10 +91,10 @@ void TCouncilView::DoPostCreate(int arg) {
 
     ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
 
-    TView* endControl = this->FindSubView(kControlTagEnd);
+    TView* endControl = FindSubView(kControlTagEnd);
     LoadUiStringByGroupAndIndexToControlObject(0x2746, 6, endControl);
 
-    TView* querControl = this->FindSubView(kControlTagQuer);
+    TView* querControl = FindSubView(kControlTagQuer);
     LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, querControl);
   }
 }
@@ -103,7 +103,7 @@ void TCouncilView::DoPostCreate(int arg) {
 void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagStar) { // "star"
-      this->StartVoting();
+      StartVoting();
       return;
     }
   } else if (commandId == 0x14) {
@@ -118,7 +118,7 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
       tagIndex += 1;
     } while (tagTable < g_aDiplomacyActionTopicTabTags + 6);
     if (tagIndex < 6) {
-      this->SwitchToPanel(tagIndex);
+      SwitchToPanel(tagIndex);
       return;
     }
   } else {
@@ -166,7 +166,7 @@ void TCouncilView::DisplayStats() {
 
   for (int row = 0; row < 4; ++row) {
     TStaticText* titleLabel =
-        static_cast<TStaticText*>(this->FindSubView(IMPERIALISM_FOURCC('t', 't', 'l', '0') + row));
+        static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('t', 't', 'l', '0') + row));
     titleLabel->AssertValid();
     titleLabel->SetTextWithStrListID(0x2733, static_cast<short>(0x5a + row), true);
     titleLabel->InstallTextStyle(style, 0);
@@ -174,7 +174,7 @@ void TCouncilView::DisplayStats() {
     titleLabel->Show(1, 0);
 
     TStaticText* majorField =
-        static_cast<TStaticText*>(this->FindSubView(IMPERIALISM_FOURCC('n', 'u', 'm', '0') + row));
+        static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('n', 'u', 'm', '0') + row));
     majorField->AssertValid();
     text.Format(g_szDecimalFormat, categoryCounts[row]);
     majorField->SetTextAndMaybeRefresh(&text, true);
@@ -183,7 +183,7 @@ void TCouncilView::DisplayStats() {
     majorField->Show(1, 1);
 
     TStaticText* minorField =
-        static_cast<TStaticText*>(this->FindSubView(IMPERIALISM_FOURCC('n', 'u', 'm', '4') + row));
+        static_cast<TStaticText*>(FindSubView(IMPERIALISM_FOURCC('n', 'u', 'm', '4') + row));
     minorField->AssertValid();
     text.Format(g_szDecimalFormat, categoryCounts[row + 4]);
     minorField->SetTextAndMaybeRefresh(&text, true);
@@ -255,7 +255,7 @@ void TCouncilView::StartVoting() {
                          kCouncilCoatOfArmsPictureBase),
       1);
 
-  const short phase = static_cast<short>(g_pSimMgr->mode);
+  const short phase = g_pSimMgr->mode;
   if (phase == kGamePhaseCouncilVictory || phase == kGamePhaseCouncilDefeat) {
     for (int provinceIndex = 0; provinceIndex < kProvinceCount; ++provinceIndex) {
       if (g_pGlobalMapState->cityScoreTable[provinceIndex].ownerNationCode != -1) {

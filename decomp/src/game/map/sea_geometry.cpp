@@ -440,9 +440,9 @@ void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
 // FUNCTION: IMPERIALISM 0x0052c000
 unsigned short SeaSegment::SelectAttrByAngle() const {
   if (static_cast<unsigned short>(angle) < 0x8fff) {
-    return static_cast<unsigned short>(attrBySide[1]);
+    return attrBySide[1];
   }
-  return static_cast<unsigned short>(attrBySide[0]);
+  return attrBySide[0];
 }
 
 // FUNCTION: IMPERIALISM 0x0052ca20

@@ -15,54 +15,44 @@ public:
   TInvadeMission(TZone* beachheadZone, short targetProvince);
   virtual ~TInvadeMission() override;
 
-  float CalculatePriority(); // 0x53f800
+  float CalculatePriority();
 
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x53f640
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x53f690
-  virtual void Free() override;                    // slot 0x07 0x53f410
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual void Free() override;
 
-  virtual int AccumulateLack(int* accumulatedLack,
-                             bool includeExistingLack) const override; // 0x53fc10
+  virtual int AccumulateLack(int* accumulatedLack, bool includeExistingLack) const override;
 
-  virtual void Initialize() override;       // slot 0x0c 0x53f580 -- init from nation/target tile
-  virtual void SetStateByte8To2() override; // slot 0x0d 0x53f5f0 -- state08 = 2
-  virtual void
-  CalculateNeeds() override; // slot 0x0f 0x53f610 -- updates invade+beachhead child state
+  virtual void Initialize() override;       // init from nation/target tile
+  virtual void SetStateByte8To2() override; // state08 = 2
+  virtual void CalculateNeeds() override;   // updates invade+beachhead child state
 
-  virtual void Reassess() override;   // slot 0x10 0x53f7d0 -- advance composite handlers
-  virtual void GiveOrders() override; // slot 0x11 0x53f780 -- refresh beachhead node / repath
-  virtual TMission*
-  GetReplacement() override; // slot 0x12 0x53fe10 -- reset target terrain class + refresh
-  virtual bool Matches(eMissionType missionType, int key,
-                       TZone* zoneContext) const override; // slot 0x13 0x53fbc0
+  virtual void Reassess() override;            // advance composite handlers
+  virtual void GiveOrders() override;          // refresh beachhead node / repath
+  virtual TMission* GetReplacement() override; // reset target terrain class + refresh
+  virtual bool Matches(eMissionType missionType, int key, TZone* zoneContext) const override;
 
-  virtual bool IsArmyMission() const override; // slot 0x14 0x53faa0
-  virtual bool IsNavyMission() const override; // slot 0x15 0x53f140
+  virtual bool IsArmyMission() const override;
+  virtual bool IsNavyMission() const override;
 
-  virtual TMission* GetNavyMission() override; // slot 0x17 0x53f120 -- returns beachhead
+  virtual TMission* GetNavyMission() override; // returns beachhead
 
-  virtual bool IsHospitalMission() const override; // slot 0x19 0x53f240
+  virtual bool IsHospitalMission() const override;
 
-  virtual float
-  IndustrialCostOfNeeds() override; // slot 0x1b 0x53f1f0 -- composite score with beachhead
-  virtual float
-  ValueOf(TMilitaryUnit* candidateUnit) override; // slot 0x1c 0x53fac0 -- weighted score delta
-  virtual float
-  ValueOf(TShip* candidate) override; // slot 0x1d 0x53fb60 -- beachhead score if enabled
+  virtual float IndustrialCostOfNeeds() override;               // composite score with beachhead
+  virtual float ValueOf(TMilitaryUnit* candidateUnit) override; // weighted score delta
+  virtual float ValueOf(TShip* candidate) override;             // beachhead score if enabled
 
   using TAttackProvinceMission::AcceptReenforcement;
-  virtual void AcceptReenforcement(TShip* ship,
-                                   bool notify) override; // slot 0x21 0x53f190
+  virtual void AcceptReenforcement(TShip* ship, bool notify) override;
   using TAttackProvinceMission::RejectConstituent;
-  virtual void RejectConstituent(TShip* ship,
-                                 bool notify) override;         // slot 0x23 0x53f1c0
-  virtual void ForgetTaskForce(TTaskForce* taskForce) override; // slot 0x24 0x53f160
-  virtual void Hold(bool value) override;                       // slot 0x25 0x53fb90
+  virtual void RejectConstituent(TShip* ship, bool notify) override;
+  virtual void ForgetTaskForce(TTaskForce* taskForce) override;
+  virtual void Hold(bool value) override;
 
-  virtual bool
-  SmokeEmIfYouGotEm() override; // slot 0x26 0x53f4e0 -- evaluate beachhead + queue eligible units
+  virtual bool SmokeEmIfYouGotEm() override; // evaluate beachhead + queue eligible units
 
-  virtual bool TryResolveTargetTerrainClass() override; // slot 0x28 0x53fdc0
+  virtual bool TryResolveTargetTerrainClass() override;
 };
 
 ASSERT_SIZE(TInvadeMission, 0x38);

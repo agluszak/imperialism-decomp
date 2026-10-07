@@ -33,10 +33,10 @@ void TAmtBar::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x00588630
 void TAmtBar::SetAmt(short valueAt60, short valueAt62) {
-  this->rangeOrMaxValue = valueAt60;
-  this->stepOrCurrentValue = valueAt62;
-  this->RefreshControl();
-  this->ForceRedraw();
+  rangeOrMaxValue = valueAt60;
+  stepOrCurrentValue = valueAt62;
+  RefreshControl();
+  ForceRedraw();
 }
 
 // FUNCTION: IMPERIALISM 0x00588670
@@ -59,20 +59,20 @@ void TAmtBar::DrawAmt() {
 
   GetClip(surface.tempRgn);
 
-  if (!this->IsActionable() || !this->PrepareForDrawing()) {
+  if (!IsActionable() || !PrepareForDrawing()) {
     return;
   }
 
-  this->GetExtent(&contentBounds);
+  GetExtent(&contentBounds);
   ClipRect(&contentBounds);
 
-  this->GetFrame(&frameBounds);
+  GetFrame(&frameBounds);
 
   CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
-  this->TranslatePointToParentChain4E(&translatedOrigin);
+  TranslatePointToParentChain4E(&translatedOrigin);
 
-  controlWidth = static_cast<short>(this->frameWidth);
-  controlHeight = static_cast<short>(this->frameHeight);
+  controlWidth = static_cast<short>(frameWidth);
+  controlHeight = static_cast<short>(frameHeight);
 
   panelRect.left = translatedOrigin.x;
   panelRect.top = translatedOrigin.y;
@@ -122,7 +122,7 @@ void TAmtBar::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin)
   }
 
   short appliedValue = AdjustForZero(baseValue, static_cast<short>(point.x));
-  TView* owner = this->ownerContext;
+  TView* owner = ownerContext;
   if ((appliedValue == 0) && point.x != 0) {
     TNumberText* fallbackControl = static_cast<TNumberText*>(owner->FindSubView(kControlTagMove));
     if (fallbackControl == 0) {

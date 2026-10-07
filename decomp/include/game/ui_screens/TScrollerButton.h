@@ -9,10 +9,9 @@
 class TScrollerButton : public TPictureButton {
 public:
   DECLARE_DYNCREATE(TScrollerButton)
-  virtual ~TScrollerButton() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TScrollerButton() override;
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint,
-                          bool commandFlag) override; // slot 0x68 0x574fc0
+                          CPoint& currentPoint, bool commandFlag) override;
 
   TScrollerButton();
 };

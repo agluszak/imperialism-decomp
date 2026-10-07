@@ -286,13 +286,13 @@ void TTechMgr::CheckForAdvances() {
 
 // FUNCTION: IMPERIALISM 0x005afb10
 void TTechMgr::ActivateAdvance(int techId, int forcedNationSlot) {
-  this->UniversalActivation(techId);
+  UniversalActivation(techId);
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation->diplomacyEligibility == 0 || nationSlot == forcedNationSlot) {
-      this->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
+      capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
           static_cast<short>(g_pSimMgr->economicTurn / 4);
-      this->GeneralActivation(techId, nationSlot);
+      GeneralActivation(techId, nationSlot);
     }
   }
 }
@@ -708,7 +708,7 @@ short TTechMgr::GetNextNewAdvance(short nationSlot) {
   for (int techId = 0; techId < 0x1d; ++techId) {
     if (orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
       GeneralActivation(techId, nationSlot);
-      return static_cast<short>(techId);
+      return techId;
     }
   }
   return -1;

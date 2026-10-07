@@ -7,8 +7,8 @@
 class TIncludeView : public TView {
 public:
   DECLARE_DYNCREATE(TIncludeView)
-  virtual ~TIncludeView() override;            // slot 0x01 (scalar deleting destructor)
-  virtual void DoPostCreate(int arg) override; // slot 0x37 0x48cfd0
+  virtual ~TIncludeView() override;
+  virtual void DoPostCreate(int arg) override;
   short turnEventCode;
   short padding62;
   CPoint anchorPoint;

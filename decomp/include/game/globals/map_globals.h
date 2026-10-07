@@ -2,7 +2,7 @@
 #include "game/globals/global_types.h"
 #include "game/civilian_domain_types.h"
 
-extern POINT g_ptMapModeModalMessage; // @ 0x6a45c0
+extern POINT g_ptMapModeModalMessage;
 
 extern SeapointStretch g_seapointQuadTable;
 

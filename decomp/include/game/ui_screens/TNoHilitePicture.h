@@ -9,9 +9,9 @@
 class TNoHilitePicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TNoHilitePicture)
-  virtual ~TNoHilitePicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Hilite();                // slot 0x73 0x572bb0
-  bool hiliteState;                     // +0x90
+  virtual ~TNoHilitePicture() override;
+  virtual void Hilite();
+  bool hiliteState;
 
   // FUNCTION: IMPERIALISM 0x00572b30
   TNoHilitePicture() : TPicture() {

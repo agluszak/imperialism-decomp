@@ -9,8 +9,8 @@
 class TCancelGameOptionsCommand : public TCommand {
 public:
   DECLARE_DYNCREATE(TCancelGameOptionsCommand)
-  virtual ~TCancelGameOptionsCommand() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoIt() override;                  // slot 0x0b 0x542520
+  virtual ~TCancelGameOptionsCommand() override;
+  virtual void DoIt() override;
 
   TCancelGameOptionsCommand() : TCommand() {}
 };

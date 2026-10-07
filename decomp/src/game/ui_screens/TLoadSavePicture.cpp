@@ -183,7 +183,7 @@ namespace {
 
 struct SaveFileHeader {
   unsigned char pad0[8];
-  int scenarioIndex; // +0x08
+  int scenarioIndex;
   unsigned char pad0C[0x40 - 0xc];
 };
 
@@ -192,7 +192,7 @@ struct SaveFileHeader {
 // FUNCTION: IMPERIALISM 0x0056cd10
 void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xd) {
-    short newSlot = static_cast<short>(sourceHandler->controlTag - kControlTagSlt0);
+    short newSlot = sourceHandler->controlTag - kControlTagSlt0;
     if (newSlot != selectedSlot) {
       if (loadModeFlag) {
         if (selectedSlot != -1 && selectedSlot != 0xa1) {

@@ -21,7 +21,7 @@ public:
   void* m_dibBits;           // 0x0c  DIB section bits (owned when m_dibBitsOwned == 1)
   BITMAPINFO* m_pInfoHeader; // 0x10  packed BITMAPINFOHEADER + RGBQUAD palette
   HGLOBAL m_hGlobalInfo;     // 0x14  GlobalAlloc handle backing m_pInfoHeader (own mode 2)
-  eDibInfoOwnershipMode m_infoOwnMode; // 0x18
+  eDibInfoOwnershipMode m_infoOwnMode;
   BOOL m_dibBitsOwned;
   int m_pixelBytes;      // 0x20  size of the pixel buffer in bytes
   int m_paletteCount;    // 0x24  number of palette entries (biClrUsed)
@@ -30,17 +30,17 @@ public:
   void* m_mappedView;    // 0x30  MapViewOfFile base
   HPALETTE m_hPalette;   // 0x34  palette built from the color table (DeleteObject)
 
-  CDib();                                    // 0x00479f40
-  CDib(int width, int height, int bitDepth); // 0x00479fe0
-  CDib(const CDib& source);                  // 0x0047a200
+  CDib();
+  CDib(int width, int height, int bitDepth);
+  CDib(const CDib& source);
 
   DECLARE_SERIAL(CDib) // slot 0x00 GetRuntimeClass 0x00479ed0; schema 0 in the binary descriptor
-  virtual ~CDib() override;                   // slot 0x01 (real dtor 0x0047a370)
-  void Serialize(CArchive& archive) override; // slot 0x02 0x0047bb10
+  virtual ~CDib() override;
+  void Serialize(CArchive& archive) override;
 
   // Free every owned GDI/heap/mapping resource and zero the state
   void Release();
-  void ReleaseMappedFileView(); // 0x0047bd90
+  void ReleaseMappedFileView();
   BOOL AttachPackedInfoHeader(BITMAPINFO* info, BOOL ownsInfo, HGLOBAL hGlobalInfo);
   HBITMAP EnsureDibSectionCreated(CDC* dc);
   // Build m_hPalette (LOGPALETTE -> CreatePalette) from the RGBQUAD color table. 0x0047ae90
@@ -73,8 +73,8 @@ public:
                             int ySrc, int srcWidth, int srcHeight);
   HBITMAP CreateDibBitmapFromStoredInfo(CDC* dc);
   BOOL Compress(CDC* dc, BOOL compress);
-  void ComputePaletteSize(unsigned int bitCount); // 0x0047bb60
-  void ComputeMetrics();                          // 0x0047bc30
+  void ComputePaletteSize(unsigned int bitCount);
+  void ComputeMetrics();
   BOOL StretchDibitsWithCopiedPaletteTable(CDC* dc, int paletteIndex, int xDest, int yDest,
                                            int destWidth, int destHeight, int xSrc, int ySrc,
                                            int srcWidth, int srcHeight);
@@ -99,8 +99,8 @@ public:
   POINT* BuildNonTransparentOutlinePolygon(unsigned int transparentIndex);
 
   // Serialize backends: write a .bmp (BITMAPFILEHEADER + BITMAPINFO + pixels) / read one back.
-  void Write(CFile* file); // 0x0047b9f0
-  int Read(CFile* file);   // 0x0047b6d0
+  void Write(CFile* file);
+  int Read(CFile* file);
 
   // abs(biHeight) -- rows are stored bottom-up when biHeight > 0
   int GetAbsoluteHeight();

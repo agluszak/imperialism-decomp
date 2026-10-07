@@ -9,12 +9,12 @@
 class TMadnessButton : public TCzechBox {
 public:
   DECLARE_DYNCREATE(TMadnessButton)
-  virtual ~TMadnessButton() override;          // slot 0x01 (scalar deleting destructor)
-  virtual void DoPostCreate(int arg) override; // slot 0x37 0x54eaf0
-  virtual void CheckTheLook(unsigned char refreshNow) override; // slot 0x76 0x54eb30
+  virtual ~TMadnessButton() override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void CheckTheLook(unsigned char refreshNow) override;
 
   TMadnessButton();
 
-  int initialPictureId; // 0x98, snapshot of glyphBase captured during DoPostCreate
+  int initialPictureId; // snapshot of glyphBase captured during DoPostCreate
 };
 ASSERT_SIZE(TMadnessButton, 0x9c);

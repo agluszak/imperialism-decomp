@@ -11,20 +11,19 @@ class CDib;
 class TPicture : public TControl {
 public:
   DECLARE_DYNCREATE(TPicture)
-  virtual ~TPicture() override;                 // slot 0x01 (scalar deleting destructor)
-  virtual TObject* ShallowClone() override;     // slot 0x08 0x48f640
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x48f3c0
-  virtual void ReleasePicture();                // slot 0x71 0x48f520
-  virtual void SetPictureRsrcID(short nPictureId,
-                                unsigned char fRefreshNow); // slot 0x72 0x48f570
+  virtual ~TPicture() override;
+  virtual TObject* ShallowClone() override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void ReleasePicture();
+  virtual void SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow);
   short glyphBase;
-  short reserved86; // 0x86, copied by ShallowClone; no other accesses observed
+  short reserved86; // copied by ShallowClone; no other accesses observed
   short bitmapId;
-  short resourceNamespaceId; // 0x8a, high word of the resource registry key
-  CDib* cachedBitmap;        // 0x8c
+  short resourceNamespaceId; // high word of the resource registry key
+  CDib* cachedBitmap;
 
   TPicture();
-  TPicture(const TPicture& source); // 0x48f080
+  TPicture(const TPicture& source);
   void CopyPictureStateFromSource(TPicture* source);
 
   void IPicture(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam4,

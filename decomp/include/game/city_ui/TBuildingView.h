@@ -13,19 +13,16 @@ class TStaticText;
 class TBuildingView : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(TBuildingView)
-  virtual ~TBuildingView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;     // slot 0x28 0x4c7180
-  virtual void
-  ApplyCityViewSelectionPayloadAndRefreshControls(TCity* city, bool isEmbeddedPage,
-                                                  TCityProductionView* productionView,
-                                                  short embeddedPageIndex); // slot 0x74 0x4c6f30
-  virtual void DoStartup();                                                 // slot 0x75 0x4c6fd0
-  virtual void UpdateFields();                                              // slot 0x76 0x4c6fb0
+  virtual ~TBuildingView() override;
+  virtual void Close() override;
+  virtual void ApplyCityViewSelectionPayloadAndRefreshControls(TCity* city, bool isEmbeddedPage,
+                                                               TCityProductionView* productionView,
+                                                               short embeddedPageIndex);
+  virtual void DoStartup();
+  virtual void UpdateFields();
   // Both push the label's own GetFrame rect through CopyRect and invalidate it.
-  virtual void SetTextBox(TStaticText* label, short stringGroup,
-                          short stringIndex); // slot 0x77 0x4c70e0
-  virtual void SetUniversityDialogTextAndRefresh(TStaticText* label,
-                                                 CString text); // slot 0x78 0x4c6ff0
+  virtual void SetTextBox(TStaticText* label, short stringGroup, short stringIndex);
+  virtual void SetUniversityDialogTextAndRefresh(TStaticText* label, CString text);
   TCity* city;
   TCityProductionView* productionView;
   bool isEmbeddedPage;

@@ -64,12 +64,12 @@ void TMapOrderChildLinkNode::RelinkBetween(TMapOrderChildLinkNode* prevNode,
 
 // FUNCTION: IMPERIALISM 0x00552590
 TMapOrderChildLinkNode* TMapOrderChildLinkNode::DeleteMapOrderChildLinkAndReturnNext() {
-  TMapOrderChildLinkNode* next_node = this->next;
+  TMapOrderChildLinkNode* next_node = next;
   if (next_node != 0) {
-    next_node->prev = this->prev;
+    next_node->prev = prev;
   }
-  if (this->prev != 0) {
-    this->prev->next = this->next;
+  if (prev != 0) {
+    prev->next = next;
   }
 
   delete this;

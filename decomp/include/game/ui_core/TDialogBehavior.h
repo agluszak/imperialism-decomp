@@ -13,22 +13,21 @@ class TDialogBehavior : public TBehavior {
 public:
   DECLARE_DYNCREATE(TDialogBehavior)
   // FUNCTION: IMPERIALISM 0x004873e0
-  virtual ~TDialogBehavior() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void Dismiss(unsigned long commandCode, bool accepted); // slot 0x0e 0x487430
-  virtual void DoEvent(long commandId, TEventHandler* sourceHandler,
-                       TEvent* event);                  // slot 0x0f 0x487470
-  virtual void DoKeyEvent(TToolboxEvent* event);        // slot 0x10 0x4874b0
-  virtual void DoCommandKeyEvent(TToolboxEvent* event); // slot 0x11 0x4875d0
-  virtual void PoseModally();                           // slot 0x12 0x487660
+  virtual ~TDialogBehavior() override {}
+  virtual void Dismiss(unsigned long commandCode, bool accepted);
+  virtual void DoEvent(long commandId, TEventHandler* sourceHandler, TEvent* event);
+  virtual void DoKeyEvent(TToolboxEvent* event);
+  virtual void DoCommandKeyEvent(TToolboxEvent* event);
+  virtual void PoseModally();
 
   void IDialogBehavior(bool flag, int colorA, int colorB);
 
-  bool armed; // 0x10 — state/flag byte
+  bool armed; // state/flag byte
   unsigned char padding_11_13[0x03];
-  unsigned long defaultCommandCode; // 0x14 — command fired on Enter/Return
-  unsigned long cancelCommandCode;  // 0x18 — command fired on Escape/Delete
-  unsigned long armedCommandCode;   // 0x1c — command armed via slot 0x0e
-  bool dismissPending;              // 0x20 — set by Dismiss, cleared before the modal loop
+  unsigned long defaultCommandCode; // command fired on Enter/Return
+  unsigned long cancelCommandCode;  // command fired on Escape/Delete
+  unsigned long armedCommandCode;   // command armed via slot 0x0e
+  bool dismissPending;              // set by Dismiss, cleared before the modal loop
   unsigned char padding_21_23[0x03];
 
   TDialogBehavior();

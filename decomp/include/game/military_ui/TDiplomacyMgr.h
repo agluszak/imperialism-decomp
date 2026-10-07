@@ -18,75 +18,65 @@ class TDiplomacyMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TDiplomacyMgr)
   ~TDiplomacyMgr() override;
-  void WriteTo(TStream* stream) override;  // 5 (0x14) 0x004ef2a0
-  void ReadFrom(TStream* stream) override; // 6 (0x18) 0x004ef080
-  void Free() override;                    // 7 (0x1c) 0x004ef040
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
 
-  virtual void SetRelationship(NationSlot sourceNation, NationSlot targetNation,
-                               short score); // 10 (0x28)
-  virtual void SetRelationshipsToMatch(NationSlot destinationNation,
-                                       NationSlot sourceNation);    // 11 (0x2c)
-  virtual void ApplyDiplomacyInterNationStatesForTurn();            // 12 (0x30)
-  virtual void SelectPriorityNationIndicesForMinorCapabilityRows(); // 13 (0x34)
-  virtual void ConveneCouncil(char forceOrMode);                    // 14 (0x38)
-  virtual void InitializeDiplomacyStandingBaselineRandom();         // 15 (0x3c)
-  virtual void ChooseCandidates(int* topNationSlot,
-                                int* secondNationSlot);                    // 16 (0x40)
-  virtual bool AreAtWar(NationSlot sourceNation, NationSlot targetNation); // 17 (0x44)
-  virtual bool AreInEstablishedWar(NationSlot sourceNation,
-                                   NationSlot targetNation);           // 18 (0x48)
-  virtual bool IsAtWarWithAnybody(NationSlot sourceNation);            // 19 (0x4c)
-  virtual bool IsInEstablishedWarWithAnybody(NationSlot sourceNation); // 20 (0x50)
+  virtual void SetRelationship(NationSlot sourceNation, NationSlot targetNation, short score);
+  virtual void SetRelationshipsToMatch(NationSlot destinationNation, NationSlot sourceNation);
+  virtual void ApplyDiplomacyInterNationStatesForTurn();
+  virtual void SelectPriorityNationIndicesForMinorCapabilityRows();
+  virtual void ConveneCouncil(char forceOrMode);
+  virtual void InitializeDiplomacyStandingBaselineRandom();
+  virtual void ChooseCandidates(int* topNationSlot, int* secondNationSlot);
+  virtual bool AreAtWar(NationSlot sourceNation, NationSlot targetNation);
+  virtual bool AreInEstablishedWar(NationSlot sourceNation, NationSlot targetNation);
+  virtual bool IsAtWarWithAnybody(NationSlot sourceNation);
+  virtual bool IsInEstablishedWarWithAnybody(NationSlot sourceNation);
   virtual bool IsSpecialRelationSourceForMinorNationSlot(NationSlot nationSlot,
-                                                         NationSlot minorNationSlot); // 21 (0x54)
+                                                         NationSlot minorNationSlot);
   virtual bool IsSpecialRelationTargetForMinorNationSlot(NationSlot nationSlot,
-                                                         NationSlot minorNationSlot); // 22 (0x58)
-  virtual bool IsActionAllowed(NationSlot sourceNation, NationSlot targetNation,
-                               eDipAction action); // 23 (0x5c)
-  virtual bool HasAllianceGuardForNationPair(NationSlot sourceNation,
-                                             NationSlot targetNation); // 24 (0x60)
-  virtual bool IsBoycott(NationSlot sourceNation,
-                         NationSlot targetNation); // 25 (0x64)
+                                                         NationSlot minorNationSlot);
+  virtual bool IsActionAllowed(NationSlot sourceNation, NationSlot targetNation, eDipAction action);
+  virtual bool HasAllianceGuardForNationPair(NationSlot sourceNation, NationSlot targetNation);
+  virtual bool IsBoycott(NationSlot sourceNation, NationSlot targetNation);
   virtual DiplomacyRelationshipNotch GetRelationshipNotch(NationSlot sourceNation,
-                                                          NationSlot targetNation); // 26 (0x68)
+                                                          NationSlot targetNation);
   virtual void GetTreatyStatusText(NationSlot sourceNationSlot, NationSlot targetNationSlot,
-                                   CString* treatyName); // 27 (0x6c)
+                                   CString* treatyName);
   virtual DiplomacyRelationshipStorage GetTreatyStatus(NationSlot sourceNation,
-                                                       NationSlot targetNation); // 28 (0x70)
+                                                       NationSlot targetNation);
   virtual void SetTreatyStatus(NationSlot sourceNation, NationSlot targetNation,
-                               DiplomacyRelationshipStorage relationship,
-                               unsigned char updateMode); // 29 (0x74)
-  virtual void
-  SetNationPairDiplomacyRelationCodeFinal(NationSlot sourceNation, NationSlot targetNation,
-                                          DiplomacyRelationshipStorage relationship); // 30
+                               DiplomacyRelationshipStorage relationship, unsigned char updateMode);
+  virtual void SetNationPairDiplomacyRelationCodeFinal(NationSlot sourceNation,
+                                                       NationSlot targetNation,
+                                                       DiplomacyRelationshipStorage relationship);
   // (0x78)
   virtual void TerminateAlliance(NationSlot sourceNation, NationSlot targetNation,
-                                 unsigned char updateMode); // 31 (0x7c)
+                                 unsigned char updateMode);
   virtual void InflictWarPenalty(NationSlot sourceNation, NationSlot targetNation,
-                                 unsigned char updateMode); // 32 (0x80)
-  virtual bool IsGreatPower(NationSlot nationSlot);         // 33 (0x84)
+                                 unsigned char updateMode);
+  virtual bool IsGreatPower(NationSlot nationSlot);
   // ABI: primaryOnlyFlag is a genuine short; callers push a partial register.
-  virtual void BuildRelationshipList(NationSlot sourceNation, short primaryOnlyFlag,
-                                     void* list); // 34 (0x88)
+  virtual void BuildRelationshipList(NationSlot sourceNation, short primaryOnlyFlag, void* list);
   // ORACLE: Mac TDiplomacyMgr::GetNumAllies(long); Windows uses int.
-  virtual int GetNumAllies(int sourceNation);                        // 35 (0x8c)
-  virtual int GetAllyNumber(int nthAllianceIndex, int sourceNation); // 36 (0x90)
+  virtual int GetNumAllies(int sourceNation);
+  virtual int GetAllyNumber(int nthAllianceIndex, int sourceNation);
   // MATCH: VC5 emits this overload group in reverse order; keep the two-arg form first.
-  virtual int GetFavorite(int sourceNation, int primaryOnlyFlag); // 38 (0x98)
-  virtual int GetFavorite(int sourceNation, int primaryOnlyFlag,
-                          int sideEffectCode);              // 37 (0x94)
-  virtual int GetFavoriteTradePartner(int minorNationSlot); // 39 (0x9c)
+  virtual int GetFavorite(int sourceNation, int primaryOnlyFlag);
+  virtual int GetFavorite(int sourceNation, int primaryOnlyFlag, int sideEffectCode);
+  virtual int GetFavoriteTradePartner(int minorNationSlot);
 
   bool BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation, int targetNation);
 
   short relationCodeMatrix[kDiplomacyPairMatrixEntries];
   signed char pendingPolicyCodeMatrix[kDiplomacyPairMatrixEntries];
   short pendingPolicyTierMatrix[kDiplomacyPairMatrixEntries];
-  CongressLeadership congressLeadership; // +0x784
+  CongressLeadership congressLeadership;
   struct TurnEvent2SyncPacket* BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
   void HandleDiplomaticStandingsMsg(TurnEvent2SyncPacket* packet);
 
-  CongressSupportTally congressSupport; // +0x788..+0x78d
+  CongressSupportTally congressSupport;
   NationSlot lastProcessedNationSlot;
   short lastDiplomaticEffortTurn;
   unsigned char padding792[2];
@@ -114,9 +104,9 @@ public:
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot);
   void RemoveNationSlotAndNotifyPeers(NationSlot nationSlot);
   // Records the current turn.
-  void SetLastDiploEffort(); // 0x4f0590
+  void SetLastDiploEffort();
 
-  void UpdateTables(int nationCode); // 0x4f2430, Mac oracle
+  void UpdateTables(int nationCode);
   void RebuildMinorNationDispositionLookupTables(NationSlot nationCode);
 };
 ASSERT_SIZE(TDiplomacyMgr, 0x18dc);

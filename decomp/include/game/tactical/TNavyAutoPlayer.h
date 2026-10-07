@@ -12,9 +12,9 @@ public:
 
   DECLARE_DYNCREATE(TNavyAutoPlayer)
   // NOOP: verified empty in original 0x0059f0a0
-  virtual ~TNavyAutoPlayer() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void StartBattle() override;   // slot 0x0a 0x59f110
-  virtual void NextMove() override;      // slot 0x0b 0x59f160
+  virtual ~TNavyAutoPlayer() override {}
+  virtual void StartBattle() override;
+  virtual void NextMove() override;
 
   // NOOP: verified empty in original 0x0059f042
   TNavyAutoPlayer() {}

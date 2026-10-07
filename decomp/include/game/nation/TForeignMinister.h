@@ -44,19 +44,19 @@ public:
                                  short resourceCode);
   virtual void EndTradePhase();
 
-  short interiorBidResource;              // +0x10 — SetInteriorMinisterBid resource code
-  short interiorBidAmount;                // +0x12 — SetInteriorMinisterBid amount
-  short priceCheckPending;                // +0x14
-  short specialOfferQuota;                // +0x16
-  short diplomacyPhaseCounter;            // +0x18 — reset after SetTradeBids
-  short tradeBidRefreshInterval;          // +0x1a — turns before forced trade-bid refresh
-  short interiorOrderKind;                // +0x1c — passed to TInteriorMinister slot 0x1a
-  short purchasePriorityByResource[0x11]; // +0x1e..0x3f — per-resource demand
-  short preferredResourceSlots[4];        // +0x40..0x47 — top four resource codes
+  short interiorBidResource; // SetInteriorMinisterBid resource code
+  short interiorBidAmount;   // SetInteriorMinisterBid amount
+  short priceCheckPending;
+  short specialOfferQuota;
+  short diplomacyPhaseCounter;            // reset after SetTradeBids
+  short tradeBidRefreshInterval;          // turns before forced trade-bid refresh
+  short interiorOrderKind;                // passed to TInteriorMinister slot 0x1a
+  short purchasePriorityByResource[0x11]; // per-resource demand
+  short preferredResourceSlots[4];        // top four resource codes
 
-  unsigned char field48;                            // +0x48 — cleared by the constructor
-  unsigned char tradePartnerEnabled[7];             // +0x49..0x4f — per-major-nation trade status
-  short developmentGrantByNation[kNationSlotCount]; // +0x50..0x7d — serialized grant accumulation
+  unsigned char field48;                            // cleared by the constructor
+  unsigned char tradePartnerEnabled[7];             // per-major-nation trade status
+  short developmentGrantByNation[kNationSlotCount]; // serialized grant accumulation
   unsigned char pad7e[2];
 };
 

@@ -10,8 +10,8 @@ class TZone;
 // VTABLE: IMPERIALISM 0x0065d020
 class TOceanDialog : public TWorldView {
 public:
-  short scrollRowOffset; // +0x7c
-  short scrollColOffset; // +0x7e
+  short scrollRowOffset;
+  short scrollColOffset;
 
   DECLARE_DYNCREATE(TOceanDialog)
   virtual ~TOceanDialog() override;
@@ -34,12 +34,12 @@ public:
   virtual void SetMapViewCellCoordinates(int column, int row) override;
   virtual void ImmediateDrawTile(short tileIndex) override;
   virtual bool IsTileVisible(short tileIndex) override;
-  void BuildTileViewportRect(short tileIndex, CRect* outRect);       // 0x5686d0
-  int ComputeWrappedTileIndexFromViewportPoint(const CPoint* point); // 0x568840
+  void BuildTileViewportRect(short tileIndex, CRect* outRect);
+  int ComputeWrappedTileIndexFromViewportPoint(const CPoint* point);
   virtual int GetCenterTile();
   void InvalidateTile(short tileIndex);
-  void InvalidateZone(TZone* zone); // 0x565f80
-  CRect BoundingRect(TZone* zone);  // 0x566060
+  void InvalidateZone(TZone* zone);
+  CRect BoundingRect(TZone* zone);
 
   void ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directionFlags);
 

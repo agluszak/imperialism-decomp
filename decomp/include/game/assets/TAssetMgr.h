@@ -14,28 +14,26 @@ class TMovieView;
 class TAssetMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TAssetMgr)
-  virtual ~TAssetMgr() override; // slot 0x01 (scalar deleting destructor)
-  virtual TWindow*
-  ResolveTurnEventDialogNodeByMessageContext(TurnEventId messageContext); // slot 0x0a 0x5df3c0
-  virtual void OpenFilesForView(short fileSet);                           // slot 0x0b 0x5df780
-  virtual void OpenFilesFor(short fileSet);                               // slot 0x0c 0x5df3f0
-  virtual void CloseFilesFor(short fileSet);                              // slot 0x0d 0x5df410
+  virtual ~TAssetMgr() override;
+  virtual TWindow* ResolveTurnEventDialogNodeByMessageContext(TurnEventId messageContext);
+  virtual void OpenFilesForView(short fileSet);
+  virtual void OpenFilesFor(short fileSet);
+  virtual void CloseFilesFor(short fileSet);
   // ABI: the third argument is unused but still pushed by callers (RET 0x0c).
-  virtual void OpenMovie(const CString& movieName, TMovieView* movieView,
-                         int unused); // slot 0x0e 0x5dfc10
+  virtual void OpenMovie(const CString& movieName, TMovieView* movieView, int unused);
 
   void GetScenarioFileName(int scenarioIndex, int mode, CString* outPath);
   CFile* LoadTableResourceStreamByName(CString name);
   int ReadResourceStreamIntoBufferAndAdvance(CFile* stream, void* buffer, int* countInOut);
-  void ReleaseResourceStreamIfNotNull(CFile* stream); // 0x5df6d0
+  void ReleaseResourceStreamIfNotNull(CFile* stream);
   // Reseek the stream from the start; `this` is unused.
   void SeekResourceStreamFromBeginning(CFile* stream, int offset);
   // Thiscall member that ignores `this` and returns the stream's length.
-  int GetResourceStreamSize(CFile* stream); // 0x5df760
+  int GetResourceStreamSize(CFile* stream);
 
   int unusedRegion[7];
-  CString sharedTextSlots[0xd]; // +0x20 .. 0x54
-  int deadStore54;              // +0x54
+  CString sharedTextSlots[0xd];
+  int deadStore54;
 
   TAssetMgr();
   void EnsurePictWvDataGobLoadedBySlot(int languageTag);
@@ -44,7 +42,7 @@ public:
   bool LoadTheGame(const CString& loadPath);
   void SetPreferenceString(CString* value, const char* key);
   void GetPreferenceInt(int* out, LPCSTR key, int defaultValue);
-  void SetPreferenceInt(int value, LPCSTR key); // 0x005e02c0
+  void SetPreferenceInt(int value, LPCSTR key);
   bool AreThereStrayClientSaves();
   int DeleteStrayClientSaves();
   void ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback, UINT interval, int slot);

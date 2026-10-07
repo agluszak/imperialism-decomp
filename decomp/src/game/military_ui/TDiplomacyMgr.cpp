@@ -744,7 +744,7 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
         candidateAdjustment = static_cast<short>(candidateAdjustment) / 2;
       }
 
-      short delta = static_cast<short>(candidateAdjustment);
+      short delta = candidateAdjustment;
       int appliedDelta = delta;
       if (currentStanding < 0x32) {
         if (delta > 0 && currentStanding + delta > 0x31) {
@@ -1094,7 +1094,7 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
            secondPower) /
           2;
     } else {
-      short homeTile = static_cast<short>(descriptor->homeTileIndex);
+      short homeTile = descriptor->homeTileIndex;
       int ownerNation = g_pGlobalMapState->terrainStateTable[homeTile].ownerNationTag;
       topSideScore[nationSlot] = (ownerNation == topNationSlot) ? 1 : rand() % 50 + 50;
       secondSideScore[nationSlot] = (ownerNation == secondNationSlot) ? 1 : rand() % 50 + 50;
@@ -1233,12 +1233,12 @@ void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {
     if (formerOwner < 7) {
       baseline = 14;
       for (int i = 0; i < 3; ++i) {
-        baseline = static_cast<short>(baseline + rand() % 6);
+        baseline += rand() % 6;
       }
     } else {
       baseline = 8;
       for (int i = 0; i < 3; ++i) {
-        baseline = static_cast<short>(baseline + rand() % 4);
+        baseline += rand() % 4;
       }
     }
     relationCodeMatrix[cityIndex] = baseline;

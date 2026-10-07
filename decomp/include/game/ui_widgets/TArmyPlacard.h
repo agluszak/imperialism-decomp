@@ -9,15 +9,14 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x667448
 class TArmyPlacard : public TPicture {
 public:
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x0058c140
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   short glyph;
 
   TArmyPlacard();
   virtual ~TArmyPlacard() override;
   DECLARE_DYNCREATE(TArmyPlacard)
   void RenderArmyPlacardWithShadow();
-  void Draw(RECT* rectBuffer) override; // 0x110 0x58bfe0
+  void Draw(RECT* rectBuffer) override;
   virtual void SetValue(short value = -1, bool refreshNow = 1);
 };
 ASSERT_SIZE(TArmyPlacard, 0x94);

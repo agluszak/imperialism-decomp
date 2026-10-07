@@ -669,7 +669,7 @@ void TTaskForce::Add(TShip* node) {
 
     node->aggression = aggression;
 
-    short kind = static_cast<short>(shipOrders);
+    short kind = shipOrders;
     if (kind != 0 && kind != 7 && kind != 8 && kind != 4) {
       node->selection = 0;
     }
@@ -1370,11 +1370,11 @@ bool TTaskForce::Encounter(TTaskForce* other) {
       }
     }
     short thisAverage = (count == 0) ? 0 : static_cast<short>((sum * 10) / count);
-    short otherAverage = static_cast<short>(other->GetDeciSpeed());
-    short threshold = static_cast<short>(thisAverage - otherAverage + 0x32);
+    short otherAverage = other->GetDeciSpeed();
+    short threshold = thisAverage - otherAverage + 0x32;
     int totalChildren = other->CountShips() + CountShips();
     if (totalChildren > 10) {
-      threshold = static_cast<short>(threshold + (totalChildren - 10));
+      threshold += (totalChildren - 10);
     }
     int roll = rand();
     shouldAttempt = (roll % 100) < threshold;
@@ -1464,7 +1464,7 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
     }
   }
   short otherAverage = (otherCount == 0) ? 0 : static_cast<short>((otherSum * 10) / otherCount);
-  short threshold = static_cast<short>(thisAverage - otherAverage + 0x32);
+  short threshold = thisAverage - otherAverage + 0x32;
   thisShipCount = 0;
   for (TMapOrderChildLinkNode* recountNode = shipList; recountNode != NULL;
        recountNode = recountNode->next) {
@@ -1477,7 +1477,7 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
   }
   int totalChildren = otherShipCount + thisShipCount;
   if (totalChildren > 10) {
-    threshold = static_cast<short>(threshold + (totalChildren - 10));
+    threshold += (totalChildren - 10);
   }
   int roll = rand();
   return (roll % 100) < threshold;
@@ -1625,13 +1625,13 @@ bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
   for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     short resourceType = ship->type;
-    short strengthBucket = static_cast<short>(ship->experience / 100);
+    short strengthBucket = ship->experience / 100;
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[resourceType];
     int navyPriorityScore = strengthBucket + descriptor.BattleSpeedDword() * 10 + 5;
-    short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+    short navyPriorityBucket = navyPriorityScore / 10;
     int resolveScore = strengthBucket + descriptor.FirepowerDword() * 10 + 5;
-    short resolveBucket = static_cast<short>(resolveScore / 10);
+    short resolveBucket = resolveScore / 10;
     thisSum +=
         ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket + ship->strength) /
         descriptor.Armor();
@@ -1642,13 +1642,13 @@ bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
        otherNode = otherNode->next) {
     TShip* ship = otherNode->payload;
     short resourceType = ship->type;
-    short strengthBucket = static_cast<short>(ship->experience / 100);
+    short strengthBucket = ship->experience / 100;
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[resourceType];
     int navyPriorityScore = strengthBucket + descriptor.BattleSpeedDword() * 10 + 5;
-    short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+    short navyPriorityBucket = navyPriorityScore / 10;
     int resolveScore = strengthBucket + descriptor.FirepowerDword() * 10 + 5;
-    short resolveBucket = static_cast<short>(resolveScore / 10);
+    short resolveBucket = resolveScore / 10;
     otherSum +=
         ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket + ship->strength) /
         descriptor.Armor();
@@ -1663,13 +1663,13 @@ int TTaskForce::GetBattleStrengthRating() const {
   for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     short resourceType = ship->type;
-    short strengthBucket = static_cast<short>(ship->experience / 100);
+    short strengthBucket = ship->experience / 100;
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[resourceType];
     int navyPriorityScore = strengthBucket + descriptor.BattleSpeedDword() * 10 + 5;
-    short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+    short navyPriorityBucket = navyPriorityScore / 10;
     int resolveScore = strengthBucket + descriptor.FirepowerDword() * 10 + 5;
-    short resolveBucket = static_cast<short>(resolveScore / 10);
+    short resolveBucket = resolveScore / 10;
     total +=
         ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket + ship->strength) /
         descriptor.Armor();
@@ -1703,7 +1703,7 @@ void TTaskForce::CarryOutOrders() {
       TShip* child = node->payload;
       child->strength = static_cast<s16>(
           child->strength + g_NavyOrderResourceDescriptorTable[child->type].HullPoints() / 4);
-      short cap = static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].HullPoints());
+      short cap = g_NavyOrderResourceDescriptorTable[child->type].HullPoints();
       if (cap < child->strength) {
         child->strength = cap;
       }
@@ -1770,7 +1770,7 @@ short TTaskForce::CountForcesFromHere() const {
     force = force->nextForce;
     ++count;
   } while (force != 0);
-  return static_cast<short>(count);
+  return count;
 }
 
 // FUNCTION: IMPERIALISM 0x00556340

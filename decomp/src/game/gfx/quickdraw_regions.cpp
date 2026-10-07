@@ -448,7 +448,7 @@ unsigned char EmptyRgn(RgnHandle rgn) {
       ::GetRgnBox(static_cast<HRGN>(region->rgn.m_hObject), &region->rgnBBox);
       RECT box;
       ::CopyRect(&box, &region->rgnBBox);
-      return static_cast<unsigned char>(::IsRectEmpty(&box));
+      return ::IsRectEmpty(&box);
     }
   }
   return 1;

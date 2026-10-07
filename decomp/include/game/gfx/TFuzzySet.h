@@ -7,8 +7,8 @@
 class TFuzzySet : public TObject {
 public:
   DECLARE_DYNCREATE(TFuzzySet)
-  virtual ~TFuzzySet() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;  // slot 0x07 0x4ff780
+  virtual ~TFuzzySet() override;
+  virtual void Free() override;
 
   TFuzzySet();
 
@@ -18,7 +18,7 @@ public:
   // Allocates a 4-value TFuzzyVar leaf, fills its values, and appends it to m_members
   void AddFuzzyVar(float value0, float value1, float value2, float value3);
 
-  int GetCrispOutput(float input); // 0x004ff840
+  int GetCrispOutput(float input);
 
 private:
   int m_memberCount;      // field_0x4 — not zeroed by the ctor; caller-managed

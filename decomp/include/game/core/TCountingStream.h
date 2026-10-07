@@ -9,7 +9,7 @@ class TCountingStream : public TStream {
 public:
   // clang-format off
   // NOOP: verified empty in original 0x00489470
-  virtual ~TCountingStream() override {} // slot 0x01 (scalar deleting destructor)
+  virtual ~TCountingStream() override {}
   // clang-format on
   int positionOrByteCount;
   int maxExtentOrLimit;

@@ -10,8 +10,8 @@
 class TPoseMessageDialog : public TCommand {
 public:
   DECLARE_DYNCREATE(TPoseMessageDialog)
-  virtual ~TPoseMessageDialog() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoIt() override;           // slot 0x0b 0x54aff0
+  virtual ~TPoseMessageDialog() override;
+  virtual void DoIt() override;
 
   int kickedByNationSlot;
 

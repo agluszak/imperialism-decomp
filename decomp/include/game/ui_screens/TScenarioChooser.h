@@ -12,14 +12,13 @@
 class TScenarioChooser : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(TScenarioChooser)
-  virtual ~TScenarioChooser() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;         // slot 0x07 0x57ab30
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;           // slot 0x0f 0x0057a050
-  virtual void DoKeyEvent(TToolboxEvent* event) override; // slot 0x12 0x57a310
-  virtual void DoPostCreate(int arg) override;            // slot 0x37 0x579b80
-  virtual void StartGame();                               // slot 0x74 0x57a350
-  virtual void ExitScreen();                              // slot 0x75 0x57a2d0
+  virtual ~TScenarioChooser() override;
+  virtual void Free() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoKeyEvent(TToolboxEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void StartGame();
+  virtual void ExitScreen();
 
   void ShowInfo(int scenarioIndex);
 
@@ -27,12 +26,12 @@ public:
 
   enum { kScenarioSlotCount = 64 };
 
-  short scenarioIndexByListRow[kScenarioSlotCount]; // 0x94
-  short scenarioListRowCount;                       // 0x114
+  short scenarioIndexByListRow[kScenarioSlotCount];
+  short scenarioListRowCount;
   // +0x116..+0x117: natural alignment before the pointer table.
-  char* nationDescriptionTextByNation[kMajorNationCount];   // 0x118
-  short nationDescriptionLengthByNation[kMajorNationCount]; // 0x134
-  short selectedScenarioIndex;                              // 0x142
-  int difficultyLevelByNation[kMajorNationCount];           // 0x144
+  char* nationDescriptionTextByNation[kMajorNationCount];
+  short nationDescriptionLengthByNation[kMajorNationCount];
+  short selectedScenarioIndex;
+  int difficultyLevelByNation[kMajorNationCount];
 };
 ASSERT_SIZE(TScenarioChooser, 0x160);

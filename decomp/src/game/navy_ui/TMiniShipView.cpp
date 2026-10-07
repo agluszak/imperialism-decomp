@@ -87,7 +87,7 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
 
   if (shipNode->taskForce != 0) {
     short orderTypeBadgeRowTable[10] = {0, 4, 3, 5, 5, 6, 2, 3, 0, 0};
-    short orderKind = static_cast<short>(shipNode->taskForce->shipOrders);
+    short orderKind = shipNode->taskForce->shipOrders;
     short badgeRow = orderTypeBadgeRowTable[orderKind];
     if (badgeRow != 0) {
       TQuickDrawBlitSurface* badgeStripSurface = g_pMacViewMgr->nationFleetWorld->GetBlitSurface();

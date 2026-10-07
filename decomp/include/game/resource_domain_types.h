@@ -28,15 +28,15 @@ enum ResourceKind {
 };
 
 enum ResourceKindBand {
-  kResourceIndustrialRawFirst = kResourceCotton, // 0
-  kResourceIndustrialRawLast = kResourceOil,     // 6
-  kResourceIndustrialRawCount = 7,               // one past kResourceOil
-  kResourceManufacturedFirst = kResourceFood,    // 7
-  kResourceManufacturedLast = kResourceArms,     // 16
-  kResourceManufacturedEnd = kResourceGrain,     // one past kResourceArms
+  kResourceIndustrialRawFirst = kResourceCotton,
+  kResourceIndustrialRawLast = kResourceOil,
+  kResourceIndustrialRawCount = 7, // one past kResourceOil
+  kResourceManufacturedFirst = kResourceFood,
+  kResourceManufacturedLast = kResourceArms,
+  kResourceManufacturedEnd = kResourceGrain, // one past kResourceArms
   kResourceManufacturedCount = 10,
-  kResourceHarvestedFirst = kResourceGrain, // 17
-  kResourceHarvestedLast = kResourceGold    // 22
+  kResourceHarvestedFirst = kResourceGrain,
+  kResourceHarvestedLast = kResourceGold
 };
 
 enum { kResourceKindNone = -1 };

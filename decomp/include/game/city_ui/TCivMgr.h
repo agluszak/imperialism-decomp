@@ -11,14 +11,11 @@
 class TCivMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TCivMgr)
-  virtual ~TCivMgr() override; // slot 0x01 (scalar deleting destructor)
-  virtual bool HandleCivilianTileSelectionOrReportClick(short nTileIndex,
-                                                        short nClickMode); // slot 0x0a 0x4d2380
-  virtual bool HandleCivilianTileOrderAction(short nTileIndex,
-                                             short nInputHint); // slot 0x0b 0x4d26d0
-  virtual void MoveAndRedrawUnit(short nNewTileIndex,
-                                 class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
-  virtual void SetDimming(class TCivUnit* pUnitOrderEntry);       // slot 0x0d 0x4d2270
+  virtual ~TCivMgr() override;
+  virtual bool HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode);
+  virtual bool HandleCivilianTileOrderAction(short nTileIndex, short nInputHint);
+  virtual void MoveAndRedrawUnit(short nNewTileIndex, class TCivUnit* pCivOrderEntry);
+  virtual void SetDimming(class TCivUnit* pUnitOrderEntry);
   void CompletedOrders(class TCivUnit* order);
   bool EngineerClick(short nTileIndex);
 
@@ -32,8 +29,8 @@ public:
   void DisbandSelected();
 
   // Data members (object size 0x0c, base TObject = vptr only).
-  class TCivUnit* selectedEntry; // 0x4 — selected civilian order entry
-  int field08;                   // 0x8
+  class TCivUnit* selectedEntry; // selected civilian order entry
+  int field08;
 
   TCivMgr();
   void ICivMgr();

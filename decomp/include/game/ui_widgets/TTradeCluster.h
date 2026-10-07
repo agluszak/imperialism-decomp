@@ -13,14 +13,14 @@ class TTradeCluster : public TAmtBarCluster {
 public:
   // FUNCTION: IMPERIALISM 0x00587110
   ~TTradeCluster() override {}
-  short tradeMetricSlot; // 0x88
+  short tradeMetricSlot;
 
   DECLARE_DYNCREATE(TTradeCluster)
   TTradeCluster();
 
   void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
-  void DoPostCreate(int styleSeed) override; // 0xdc 0x587130
+  void DoPostCreate(int styleSeed) override;
   virtual bool IsTradeControlAtMinimum() override;
   void SetMoveAmount(short amount) override;
   virtual int GetTradeSellControlValue();

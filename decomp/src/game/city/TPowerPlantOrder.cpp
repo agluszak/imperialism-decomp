@@ -16,12 +16,12 @@ void TPowerPlantOrder::IPowerPlantOrder(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b7b00
 short TPowerPlantOrder::MaxOrder() {
-  return static_cast<short>(quantity + ownerCity->stockByType[kResourceFuel] * 6);
+  return quantity + ownerCity->stockByType[kResourceFuel] * 6;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b30
 bool TPowerPlantOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - this->quantity);
+  short delta = quantity - this->quantity;
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
@@ -64,7 +64,7 @@ void TPowerPlantOrder::Restock() {
 
 // FUNCTION: IMPERIALISM 0x004b7c90
 void TPowerPlantOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->ResetOrderSheet(orderSheet);
+  ResetOrderSheet(orderSheet);
   orderSheet->slotByResourceCode[0x0c] = static_cast<short>(quantity * 6);
 }
 

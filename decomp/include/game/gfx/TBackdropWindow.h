@@ -16,7 +16,7 @@ public:
   void DestroyAndRefreshMainWindow();
   virtual void PostNcDestroy() override;
 
-  CDib* m_backdropBmp; // 0x3c
+  CDib* m_backdropBmp;
 
 protected:
   afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

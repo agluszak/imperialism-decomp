@@ -362,7 +362,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
 
 // FUNCTION: IMPERIALISM 0x00501a20
 void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
-  short tickMod = static_cast<short>(g_pSimMgr->GetEconomicTurn() % 10);
+  short tickMod = g_pSimMgr->GetEconomicTurn() % 10;
   short activeNation = g_pSimMgr->GetPlayerCountry();
   CString titleText;
   CString messageText;
@@ -845,7 +845,7 @@ void THelpMgr::SelectAndActivatePendingEventType1A0A() {
 
 // FUNCTION: IMPERIALISM 0x00503370
 void THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx) {
-  short targetContextId = static_cast<short>(idx + 0x1a0b);
+  short targetContextId = idx + 0x1a0b;
   for (int index = 1; index <= indexList->GetSize(); ++index) {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));

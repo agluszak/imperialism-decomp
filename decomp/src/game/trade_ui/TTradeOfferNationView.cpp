@@ -58,7 +58,7 @@ void TTradeOfferNationView::Draw(RECT* rectBuffer) {
     long val = nudgeList->At(i);
     short srcLeft = static_cast<short>(val << 5);
     RECT srcRect = {srcLeft, 0, srcLeft + 0x20, 0x18};
-    short dstLeft = static_cast<short>(i * 0x20 - 0x20);
+    short dstLeft = i * 0x20 - 0x20;
     RECT dstRect = {dstLeft, 0, dstLeft + 0x20, 0x18};
     BlitRectWithOptionalTransparency(g_pMacViewMgr->flagWorld->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,

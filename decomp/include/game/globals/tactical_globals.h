@@ -1,7 +1,7 @@
 #pragma once
 #include "game/globals/global_types.h"
 
-extern POINT g_ptTacticalAutoPlayModalMessage; // @ 0x6a4650
+extern POINT g_ptTacticalAutoPlayModalMessage;
 
 extern "C" {
 extern int g_nUiFrameClipOriginX;

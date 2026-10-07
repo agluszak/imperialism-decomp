@@ -9,16 +9,15 @@
 class TInfoBarText : public TDeluxeText {
 public:
   DECLARE_DYNCREATE(TInfoBarText)
-  virtual ~TInfoBarText() override;                     // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;                         // slot 0x07 0x5b6930
-  virtual void ClearTextAndLayoutRect(int);             // slot 0x7f 0x5b6770
-  virtual void HotText(CString text, RECT* layoutRect); // slot 0x80 0x5b66b0
-  virtual void InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
-                                                       int styleSecondary); // slot 0x81 0x5b6840
+  virtual ~TInfoBarText() override;
+  virtual void Free() override;
+  virtual void ClearTextAndLayoutRect(int);
+  virtual void HotText(CString text, RECT* layoutRect);
+  virtual void InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary);
   // Applies the default map-hint style pair (0x2b6c/0x2b67) through slot 0x81.
-  virtual void Reset(); // slot 0x82 0x5b6810
+  virtual void Reset();
 
-  RECT layoutRect; // +0xa4
+  RECT layoutRect;
 
   TInfoBarText();
 };

@@ -114,7 +114,7 @@ static CPoint g_MapUberModeLayoutScratch(-1000, -1000);
 
 // FUNCTION: IMPERIALISM 0x00596cb0
 void TMapUberPicture::SetMapInteractionMode(short nMode) {
-  short previousMode = this->activeUnitCategoryIndex;
+  short previousMode = activeUnitCategoryIndex;
   if (previousMode != nMode) {
     if (previousMode == 0) {
       g_pSelectedCivilianOrderState->SelectUnit(NULL, false);
@@ -149,14 +149,14 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
     }
 
     if (nMode == 0) {
-      this->EnterMapInteractionOverlayMode(NULL);
+      EnterMapInteractionOverlayMode(NULL);
     }
   }
 
   if (previousMode < 3) {
     categoryPages[previousMode]->Locate(g_MapUberModeLayoutScratch, true);
   }
-  this->activeUnitCategoryIndex = nMode;
+  activeUnitCategoryIndex = nMode;
   if (nMode < 3) {
     categoryPages[nMode]->Locate(g_MapUberModeLayoutTable[nMode], true);
   }
@@ -297,7 +297,7 @@ void TMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
 
 // FUNCTION: IMPERIALISM 0x00597810
 void TMapUberPicture::FocusOnForce(TTaskForce* pMapOrderEntry) {
-  this->SetMapInteractionMode(2);
+  SetMapInteractionMode(2);
   ResetMapActionContextActivityAndNationFlags();
 
   if (pMapOrderEntry == NULL) {
@@ -330,21 +330,21 @@ void TMapUberPicture::FocusOnForce(TTaskForce* pMapOrderEntry) {
 
 // FUNCTION: IMPERIALISM 0x00597950
 void TMapUberPicture::FocusOnZone(TZone* pMapOrderContextZone) {
-  this->SetMapInteractionMode(2);
+  SetMapInteractionMode(2);
   goodGoldTagControl->InvalidateZone(orderEntryContext);
-  this->orderEntryContext = pMapOrderContextZone;
+  orderEntryContext = pMapOrderContextZone;
   goodGoldTagControl->InvalidateZone(pMapOrderContextZone);
   if (pMapOrderContextZone == NULL) {
-    this->FocusOnForce(NULL);
+    FocusOnForce(NULL);
     return;
   }
   TTaskForce* refreshedTaskForce = g_pActiveMapOrderContext->AssembleUIForce(pMapOrderContextZone);
-  this->FocusOnForce(refreshedTaskForce);
+  FocusOnForce(refreshedTaskForce);
 }
 
 // FUNCTION: IMPERIALISM 0x00597a10
 bool TMapUberPicture::IsAUnitSelected() {
-  switch (this->activeUnitCategoryIndex) {
+  switch (activeUnitCategoryIndex) {
   case 0:
     return g_pSelectedCivilianOrderState->selectedEntry != NULL;
   case 1:
@@ -608,15 +608,15 @@ void TMapUberPicture::InvalidateTile(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005988c0
 void TMapUberPicture::RedrawTile(short tileIndex) {
-  this->subview->ImmediateDrawTile(tileIndex);
-  if (!this->invalidationFlag) {
-    this->subview2A8->DeCache(tileIndex);
+  subview->ImmediateDrawTile(tileIndex);
+  if (!invalidationFlag) {
+    subview2A8->DeCache(tileIndex);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00598910
 void TMapUberPicture::DisplayInfo(bool showInfo) {
-  this->PrepareForDrawing();
+  PrepareForDrawing();
   subview->SetMapOverlayModeAndRenderPreview(showInfo);
 }
 
@@ -631,23 +631,23 @@ void TMapUberPicture::InvalidateMap() {
 
 // FUNCTION: IMPERIALISM 0x00598990
 void TMapUberPicture::CenterOn(int tileIndex) {
-  this->subview->CenterOn(tileIndex);
-  if (this->miniMapView != NULL) {
-    this->miniMapView->RefreshControl();
+  subview->CenterOn(tileIndex);
+  if (miniMapView != NULL) {
+    miniMapView->RefreshControl();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005989d0
 void TMapUberPicture::SetUpperLeft(int tileX, int tileY) {
-  this->subview->SetMapViewCellCoordinates(tileX, tileY);
-  if (this->miniMapView != NULL) {
-    this->miniMapView->RefreshControl();
+  subview->SetMapViewCellCoordinates(tileX, tileY);
+  if (miniMapView != NULL) {
+    miniMapView->RefreshControl();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00598a20
 void TMapUberPicture::NoticeTile(int tileIndex) {
-  this->subview->NoticeTile(tileIndex);
+  subview->NoticeTile(tileIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x00598a50
@@ -743,7 +743,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
     TNumberText* countControl =
         static_cast<TNumberText*>(dialog->FindSubView(kControlTagNuma + index)); // 'numa'
     if (countControl != 0) {
-      short count = static_cast<short>(countControl->UpdateControlCachedIntFromWindowText());
+      short count = countControl->UpdateControlCachedIntFromWindowText();
       if (count != 0) {
         while (count > 0) {
           CreateNavyPrimaryOrderNodeAndAssignDisplayName(static_cast<short>(index), portZone,
@@ -968,31 +968,28 @@ void TMapUberPicture::UpdateRoster() {
 
 // FUNCTION: IMPERIALISM 0x00599a50
 void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
-  if (this->invalidationFlag) {
+  if (invalidationFlag) {
     return;
   }
-  TView* zoomControl =
-      (controlOverride != NULL) ? controlOverride : this->FindSubView(kControlTagZmIn);
+  TView* zoomControl = (controlOverride != NULL) ? controlOverride : FindSubView(kControlTagZmIn);
   zoomControl->AssertValid();
   if (zoomControl != NULL) {
     zoomControl->controlTag = kControlTagZmOt; // "ZmOt" ("Zoom Out")
   }
-  this->invalidationFlag = true;
+  invalidationFlag = true;
 
   subview2A8->CenterOn(goodGoldTagControl->GetCenterTile());
 
-  this->goodGoldTagControl->Locate(g_MapUberModeLayoutScratch, false);
-  this->subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch, true);
-  this->subview = this->subview2A8;
+  goodGoldTagControl->Locate(g_MapUberModeLayoutScratch, false);
+  subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch, true);
+  subview = subview2A8;
 
-  if (this->miniMapView != NULL) {
-    this->miniMapView->markerBoxWidth = g_defaultMarkerBoxWidth;
-    this->miniMapView->markerBoxHeight = 8;
-    this->miniMapView->markerBoxX =
-        this->miniMapView->frameWidth / 2 - this->miniMapView->markerBoxWidth - 2;
-    this->miniMapView->markerBoxY =
-        this->miniMapView->frameHeight / 2 - this->miniMapView->markerBoxHeight - 2;
-    this->miniMapView->RefreshControl();
+  if (miniMapView != NULL) {
+    miniMapView->markerBoxWidth = g_defaultMarkerBoxWidth;
+    miniMapView->markerBoxHeight = 8;
+    miniMapView->markerBoxX = miniMapView->frameWidth / 2 - miniMapView->markerBoxWidth - 2;
+    miniMapView->markerBoxY = miniMapView->frameHeight / 2 - miniMapView->markerBoxHeight - 2;
+    miniMapView->RefreshControl();
   }
 }
 
@@ -1024,7 +1021,7 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
 
 // FUNCTION: IMPERIALISM 0x00599cf0
 void TMapUberPicture::DisplayMiniMap() {
-  TView* toolControl = this->FindSubView(kControlTagTool); // "tool"
+  TView* toolControl = FindSubView(kControlTagTool); // "tool"
   if (toolControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xa56);
   }
@@ -1040,7 +1037,7 @@ void TMapUberPicture::DisplayMiniMap() {
   miniMap->markerBoxY = miniMap->frameHeight / 2 - miniMap->markerBoxHeight;
   miniMap->RefreshControl();
   miniMap->ViewEnable(1, 0);
-  this->miniMapView = miniMap;
+  miniMapView = miniMap;
 
   RECT toolRect;
   toolRect.left = toolControl->ownerLocalX + offsetLayout[0];
@@ -1049,20 +1046,18 @@ void TMapUberPicture::DisplayMiniMap() {
   toolRect.bottom = toolRect.top + 0x41;
   RgnHandle region = NewRgn();
   RectRgn(region, &toolRect);
-  UnionRgn(this->ownClipRegion, region, this->ownClipRegion);
+  UnionRgn(ownClipRegion, region, ownClipRegion);
   DisposeRgn(region);
 
-  if (!this->invalidationFlag) {
-    this->miniMapView->markerBoxWidth = 0x20;
-    this->miniMapView->markerBoxHeight = 0x1c;
-    this->miniMapView->markerBoxX =
-        this->miniMapView->frameWidth / 2 - this->miniMapView->markerBoxWidth - 2;
-    this->miniMapView->markerBoxY =
-        this->miniMapView->frameHeight / 2 - this->miniMapView->markerBoxHeight - 2;
-    this->miniMapView->RefreshControl();
+  if (!invalidationFlag) {
+    miniMapView->markerBoxWidth = 0x20;
+    miniMapView->markerBoxHeight = 0x1c;
+    miniMapView->markerBoxX = miniMapView->frameWidth / 2 - miniMapView->markerBoxWidth - 2;
+    miniMapView->markerBoxY = miniMapView->frameHeight / 2 - miniMapView->markerBoxHeight - 2;
+    miniMapView->RefreshControl();
   }
 
-  this->SetTradeToolSubcontrolEnabledStateByFlag(false);
+  SetTradeToolSubcontrolEnabledStateByFlag(false);
 }
 
 // FUNCTION: IMPERIALISM 0x00599fa0
@@ -1110,7 +1105,7 @@ void TMapUberPicture::RemoveMiniMap() {
 
 // FUNCTION: IMPERIALISM 0x0059a180
 void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
-  TView* toolControl = this->FindSubView(kControlTagTool); // "tool"
+  TView* toolControl = FindSubView(kControlTagTool); // "tool"
   if (toolControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xac7);
   }

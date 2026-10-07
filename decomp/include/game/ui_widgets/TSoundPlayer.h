@@ -12,8 +12,8 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x668a60
 class TSoundPlayer : public TEventHandler {
 public:
-  unsigned char directSoundInitOk; // 0x20 — set by InitializeSoundSubsystem
-  bool directSoundInitPending;     // 0x21 — set by RequestDirectSoundInitIfAllowed
+  unsigned char directSoundInitOk; // set by InitializeSoundSubsystem
+  bool directSoundInitPending;     // set by RequestDirectSoundInitIfAllowed
   char pad22[0x4a];
   TLongintList* audioCuePool;
   TLongintList* remainingRandomAudioCues;
@@ -29,48 +29,45 @@ public:
 
   TSoundPlayer();
   // FUNCTION: IMPERIALISM 0x005933e0
-  ~TSoundPlayer() override {} // 0x5933e0 (slot 0x01 scalar deleting dtor 0x5933b0)
+  ~TSoundPlayer() override {}
   DECLARE_DYNCREATE(TSoundPlayer)
-  void Free() override;             // 0x07 -> 0x5e51d0
-  bool DoIdle(int action) override; // 0x13 -> 0x593400
+  void Free() override;
+  bool DoIdle(int action) override;
 
   // TSoundPlayer-introduced slots (0x25+).
-  virtual void ISoundPlayer(int idleFrequency);   // 0x25 -> 0x5e4e70
-  virtual bool DefaultSoundCapabilityPredicate(); // 0x26 -> 0x5e4f60
-  virtual bool DefaultSoundCompatibilityPredicate(int unusedArg1,
-                                                  int unusedArg2);               // 0x27 -> 0x5e4fb0
-  virtual void RequestDirectSoundInitIfAllowed();                                // 0x28 -> 0x5e4f80
-  virtual void ClearDirectSoundInitPendingAndResetState();                       // 0x29 -> 0x5e4fd0
-  virtual void StopAllSounds();                                                  // 0x2a -> 0x5e4ff0
-  virtual void SetMasterVolumeFromPercent(short percent);                        // 0x2b -> 0x5e5020
-  virtual void PriorityOverride(short currentPriority, short requestedPriority); // 0x2c -> 0x5e50a0
-  virtual int
-  UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfxToken, int unusedArg2 = 0,
-                                                       int unusedArg3 = 1,
-                                                       int unusedArg4 = 1); // 0x2d -> 0x5e50c0
-  virtual int PlaySoundEffect(short sfxToken, int forwardedArg2 = 0,
-                              int forwardedArg3 = 1); // 0x2e -> 0x5e5140
-  virtual int PlaySndAsynchChannel(short soundId, short channel,
-                                   short priority);                              // 0x2f 0x5e5170
-  virtual int PlaySndSynchChannel(short soundId, short channel, short priority); // 0x30 0x5e5190
-  virtual int PlayAiffFile(CString fileName, short channel, short priority);     // 0x31 0x5e51b0
+  virtual void ISoundPlayer(int idleFrequency);
+  virtual bool DefaultSoundCapabilityPredicate();
+  virtual bool DefaultSoundCompatibilityPredicate(int unusedArg1, int unusedArg2);
+  virtual void RequestDirectSoundInitIfAllowed();
+  virtual void ClearDirectSoundInitPendingAndResetState();
+  virtual void StopAllSounds();
+  virtual void SetMasterVolumeFromPercent(short percent);
+  virtual void PriorityOverride(short currentPriority, short requestedPriority);
+  virtual int UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfxToken,
+                                                                   int unusedArg2 = 0,
+                                                                   int unusedArg3 = 1,
+                                                                   int unusedArg4 = 1);
+  virtual int PlaySoundEffect(short sfxToken, int forwardedArg2 = 0, int forwardedArg3 = 1);
+  virtual int PlaySndAsynchChannel(short soundId, short channel, short priority);
+  virtual int PlaySndSynchChannel(short soundId, short channel, short priority);
+  virtual int PlayAiffFile(CString fileName, short channel, short priority);
 
   bool FadeCD();
 
-  void StopMusic(bool fadeOut); // 0x593c10
+  void StopMusic(bool fadeOut);
 
   void StartDeferredAudioFadeTimerIfIdle();
 
   void RequestAudioPresetChangeWithDeferredApply(int presetId, bool flag);
 
-  void ScaleAndApplyAuxOutputVolume(short scalar); // 0x593cb0
+  void ScaleAndApplyAuxOutputVolume(short scalar);
 
-  void PlayRandomTrack(); // 0x593790
+  void PlayRandomTrack();
   void CheckMusicStatus();
 
-  void ResetPlayList();          // 0x593730
-  void AddToPlayList(int cueId); // 0x593760
+  void ResetPlayList();
+  void AddToPlayList(int cueId);
 
-  void SetActiveAudioCueAndResetQueue(int cueId, bool flag); // 0x593a10
+  void SetActiveAudioCueAndResetQueue(int cueId, bool flag);
 };
 ASSERT_SIZE(TSoundPlayer, 0x84);

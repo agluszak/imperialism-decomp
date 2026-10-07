@@ -393,7 +393,7 @@ void TOcean::UpdateOccupants() {
 
   short activeNationId = g_pSimMgr->GetPlayerCountry();
   if (g_pMapActionContextListHead != 0) {
-    unsigned char activeNationBit = static_cast<unsigned char>(1 << activeNationId);
+    unsigned char activeNationBit = 1 << activeNationId;
     for (TZone* ctxZone = g_pMapActionContextListHead; ctxZone != 0; ctxZone = ctxZone->prev18) {
       bool nationFlagged = (ctxZone->nationKeyMask & activeNationBit) != 0 ||
                            ctxZone->IsAdjacentToCountry(activeNationId);
@@ -453,7 +453,7 @@ TZone* TOcean::Seath(short index) {
 // FUNCTION: IMPERIALISM 0x005633b0
 TZone* TOcean::GetZoneAt(short seaTileIndex) {
   TTerrainStateRecord& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
-  signed char terrainClass = static_cast<signed char>(terrainRecord.tileActionState);
+  signed char terrainClass = terrainRecord.tileActionState;
   if (terrainClass == kMapTileActionStateAnchor || terrainClass == kMapTileActionStateDockedFleet) {
     TZone* zone = g_pMapActionContextListHead;
     while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
@@ -556,7 +556,7 @@ void TOcean::BuildPort(short nTileIndex) {
     return;
   }
   TTerrainStateRecord* terrainTable = g_pGlobalMapState->terrainStateTable;
-  int tileIndex = static_cast<int>(nTileIndex);
+  int tileIndex = nTileIndex;
   if ((terrainTable[tileIndex].activeFlags & 1) == 0) {
     return;
   }
@@ -587,7 +587,7 @@ void TOcean::BuildPort(short nTileIndex) {
 
   short bestSeaTile = -1;
   for (int i = 0; i < 6; ++i) {
-    short direction = static_cast<short>((tileIndex + i) % 6);
+    short direction = (tileIndex + i) % 6;
     short candidateTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(nTileIndex, direction);
     if (candidateTile == -1) {
       continue;

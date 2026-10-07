@@ -6,12 +6,12 @@
 #include <vfw.h>
 
 struct MciMovieWindowState {
-  MciMovieWindowState(HWND parentHwnd); // 0x492f60
+  MciMovieWindowState(HWND parentHwnd);
 
-  void Close();                         // 0x492fa0 — send WM_CLOSE to hwnd
-  bool OpenAndCenter(LPCSTR moviePath); // 0x492fc0 — MCIWNDM_OPENA, center on success
-  bool Play();                          // 0x493090 — MCI_PLAY
-  bool Stop();                          // 0x4930d0 — MCI_STOP (also used to skip)
+  void Close();                         // send WM_CLOSE to hwnd
+  bool OpenAndCenter(LPCSTR moviePath); // MCIWNDM_OPENA, center on success
+  bool Play();                          // MCI_PLAY
+  bool Stop();                          // MCI_STOP (also used to skip)
 
   HWND hwnd;
   LRESULT lastResult;

@@ -10,9 +10,9 @@
 class TArmyBoyView : public TView {
 public:
   DECLARE_DYNCREATE(TArmyBoyView)
-  virtual ~TArmyBoyView() override;             // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4aebc0
-  BattleReportDetailRecord* battleDetail;       // +0x60
+  virtual ~TArmyBoyView() override;
+  virtual void Draw(RECT* rectBuffer) override;
+  BattleReportDetailRecord* battleDetail;
 
   // NOOP: verified empty in original 0x004aeb13
   TArmyBoyView() {}

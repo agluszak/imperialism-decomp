@@ -41,13 +41,13 @@ short TUnitOrder::MaxOrder() {
     }
   } else if (workforceMode == kMediumSkillWorkforceMode) {
     workforceLimit = productionSummary->productionSlots->mediumSkillCount;
-    short strengthLimit = static_cast<short>(productionSummary->strength / 2);
+    short strengthLimit = productionSummary->strength / 2;
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
     }
   } else if (workforceMode == kHighSkillWorkforceMode) {
     workforceLimit = productionSummary->productionSlots->highSkillCount;
-    short strengthLimit = static_cast<short>(productionSummary->strength / 4);
+    short strengthLimit = productionSummary->strength / 4;
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
     }
@@ -90,12 +90,12 @@ short TUnitOrder::MaxOrder() {
     limitingConstraint = kProductionOrderLimitTreasury;
     limit = cashLimit;
   }
-  return static_cast<short>(quantity + limit);
+  return quantity + limit;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7210
 bool TUnitOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - this->quantity);
+  short delta = quantity - this->quantity;
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
@@ -120,18 +120,18 @@ bool TUnitOrder::SetQuantity(short quantity) {
 
 // FUNCTION: IMPERIALISM 0x004b7320
 void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->ResetOrderSheet(orderSheet);
-  orderSheet->ForResourceCode(this->primaryInputResourceId) =
-      static_cast<short>(this->primaryInputPerUnit * quantity);
-  if (this->secondaryInputResourceId >= 0) {
-    orderSheet->ForResourceCode(this->secondaryInputResourceId) =
-        static_cast<short>(this->secondaryInputPerUnit * quantity);
+  ResetOrderSheet(orderSheet);
+  orderSheet->ForResourceCode(primaryInputResourceId) =
+      static_cast<short>(primaryInputPerUnit * quantity);
+  if (secondaryInputResourceId >= 0) {
+    orderSheet->ForResourceCode(secondaryInputResourceId) =
+        static_cast<short>(secondaryInputPerUnit * quantity);
   }
-  if (this->workforceMode == kMediumSkillWorkforceMode) {
+  if (workforceMode == kMediumSkillWorkforceMode) {
     orderSheet->slotByResourceCode[0x17] = quantity;
     return;
   }
-  if (this->workforceMode == kHighSkillWorkforceMode) {
+  if (workforceMode == kHighSkillWorkforceMode) {
     orderSheet->slotByResourceCode[0x18] = quantity;
     return;
   }
@@ -225,12 +225,12 @@ void TUnitOrder::ReplaceOrder(short resourceTypeIndex, short nPrimaryInputResour
                               short nSecondaryInputPerUnit, short nCashCostPerUnit,
                               short nWorkforceMode) {
   this->resourceTypeIndex = resourceTypeIndex;
-  this->primaryInputResourceId = nPrimaryInputResourceId;
-  this->primaryInputPerUnit = nPrimaryInputPerUnit;
-  this->secondaryInputResourceId = nSecondaryInputResourceId;
-  this->secondaryInputPerUnit = nSecondaryInputPerUnit;
-  this->cashCostPerUnit = nCashCostPerUnit;
-  this->workforceMode = nWorkforceMode;
+  primaryInputResourceId = nPrimaryInputResourceId;
+  primaryInputPerUnit = nPrimaryInputPerUnit;
+  secondaryInputResourceId = nSecondaryInputResourceId;
+  secondaryInputPerUnit = nSecondaryInputPerUnit;
+  cashCostPerUnit = nCashCostPerUnit;
+  workforceMode = nWorkforceMode;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7850

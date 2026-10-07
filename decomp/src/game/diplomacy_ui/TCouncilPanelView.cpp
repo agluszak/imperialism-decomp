@@ -25,7 +25,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   CString scratchText;
   CString rowText;
 
-  short centerX = static_cast<short>(this->frameWidth / 2);
+  short centerX = frameWidth / 2;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0x12, 0x2b68);
 
@@ -37,7 +37,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   if (g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot == -1) {
     g_pSimMgr->GetString(0x2733, 0x34, &rowText);
     short width = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
-    short x = static_cast<short>(centerX - width / 2);
+    short x = centerX - width / 2;
     SetQuickDrawColorAndSyncGlobals(styleForeground);
     SetQuickDrawTextOriginWithContextOffset(x + 1, 0x25);
     DrawTextWithCachedQuickDrawStyleState(&rowText);
@@ -53,7 +53,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   scanBracketExpressions(g_pSimMgr, &rowText, static_cast<LPCSTR>(titleTemplate),
                          static_cast<LPCSTR>(scratchText));
   short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
-  short titleX = static_cast<short>(centerX - titleWidth / 2);
+  short titleX = centerX - titleWidth / 2;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(titleX + 1, 0x25);
   DrawTextWithCachedQuickDrawStyleState(&rowText);
@@ -69,7 +69,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
       ->FormatOverlayTerrainLabelText(&rowText);
   rowText += s_szColonSeparator;
   short rowAWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
-  short rowALabelX = static_cast<short>(centerX - rowAWidth);
+  short rowALabelX = centerX - rowAWidth;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(rowALabelX + 1, 0x3d);
   DrawTextWithCachedQuickDrawStyleState(&rowText);
@@ -92,7 +92,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
       ->FormatOverlayTerrainLabelText(&rowText);
   rowText += s_szColonSeparator;
   short rowBWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
-  short rowBLabelX = static_cast<short>(centerX - rowBWidth);
+  short rowBLabelX = centerX - rowBWidth;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(rowBLabelX + 1, 0x4d);
   DrawTextWithCachedQuickDrawStyleState(&rowText);
@@ -112,7 +112,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   // Row C: a generic label (GetString 0x2733/0x36) and the neutral count.
   g_pSimMgr->GetString(0x2733, 0x36, &rowText);
   short rowCWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
-  short rowCLabelX = static_cast<short>(centerX - rowCWidth);
+  short rowCLabelX = centerX - rowCWidth;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(rowCLabelX + 1, 0x5d);
   DrawTextWithCachedQuickDrawStyleState(&rowText);

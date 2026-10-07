@@ -9,13 +9,12 @@
 class TGamePreferencesPicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TGamePreferencesPicture)
-  virtual ~TGamePreferencesPicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x0056ae10
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x56a5b0
+  virtual ~TGamePreferencesPicture() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
 
   TGamePreferencesPicture();
 
-  int originalSoundVolumePercent; // 0x90, restored when the preferences dialog is cancelled
+  int originalSoundVolumePercent; // restored when the preferences dialog is cancelled
 };
 ASSERT_SIZE(TGamePreferencesPicture, 0x94);

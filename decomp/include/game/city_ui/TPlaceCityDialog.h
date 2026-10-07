@@ -11,10 +11,10 @@ class TTown;
 class TPlaceCityDialog : public TPicture {
 public:
   DECLARE_DYNCREATE(TPlaceCityDialog)
-  virtual ~TPlaceCityDialog() override;         // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;                // slot 0x28 0x4d1e60
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4d1e40
-  virtual void StuffValues(TTown* town);        // slot 0x73 0x4d1880
+  virtual ~TPlaceCityDialog() override;
+  virtual void Close() override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void StuffValues(TTown* town);
 
   TPlaceCityDialog();
 

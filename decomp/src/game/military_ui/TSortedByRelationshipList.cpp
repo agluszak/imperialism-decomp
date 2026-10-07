@@ -23,5 +23,5 @@ short TSortedByRelationshipList::Compare(void* a, void* b) {
   if (aKey < bKey) {
     return -1;
   }
-  return static_cast<short>(rand() % 2 != 0 ? 1 : -1);
+  return rand() % 2 != 0 ? 1 : -1;
 }

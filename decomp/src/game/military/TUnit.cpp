@@ -18,12 +18,12 @@ IMPLEMENT_DYNCREATE(TUnit, TObject)
 
 // FUNCTION: IMPERIALISM 0x005c2530
 void TUnit::IUnit(short nOrderType, int anchorIndex, short nOrderOwnerNationId, short arg3) {
-  this->orderType = nOrderType;
-  this->unitOrder = kUnitOrderIdle;
-  this->MoveTo(anchorIndex);
+  orderType = nOrderType;
+  unitOrder = kUnitOrderIdle;
+  MoveTo(anchorIndex);
 
   TSortedList* ownerManager;
-  if (this->militaryRegistrationFlag) {
+  if (militaryRegistrationFlag) {
     ownerManager = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId]->militaryUnitList;
   } else {
     ownerManager = g_apNationStates[nOrderOwnerNationId]->trackedObjectList;
@@ -35,13 +35,13 @@ void TUnit::IUnit(short nOrderType, int anchorIndex, short nOrderOwnerNationId, 
 
   ownerManager->AddTail(this);
 
-  this->ownerNationSlot = nOrderOwnerNationId;
-  this->unitRosterId = arg3;
-  this->orderTargetIndex = -1;
+  ownerNationSlot = nOrderOwnerNationId;
+  unitRosterId = arg3;
+  orderTargetIndex = -1;
 
   TSimMgr* simMgr = g_pSimMgr;
   ++simMgr->lastPersistentUnitId;
-  this->persistentUnitId = simMgr->lastPersistentUnitId;
+  persistentUnitId = simMgr->lastPersistentUnitId;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2610
@@ -49,24 +49,24 @@ void TUnit::MoveTo(short anchorIndex) {}
 
 // FUNCTION: IMPERIALISM 0x005c2630
 void TUnit::SetOrders(UnitOrder order, int payload) {
-  this->unitOrder = order;
-  this->orderTargetIndex = static_cast<short>(payload);
+  unitOrder = order;
+  orderTargetIndex = static_cast<short>(payload);
 }
 
 // FUNCTION: IMPERIALISM 0x005c2660
 void TUnit::ContinueOrders() {
-  if (this->unitOrder - static_cast<UnitOrder>(2) != 0) {
-    this->unitOrder = kUnitOrderIdle;
+  if (unitOrder - static_cast<UnitOrder>(2) != 0) {
+    unitOrder = kUnitOrderIdle;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005c2680
 void TUnit::Free() {
   TSortedList* manager = NULL;
-  if (!this->militaryRegistrationFlag) {
-    manager = g_apNationStates[this->ownerNationSlot]->trackedObjectList;
+  if (!militaryRegistrationFlag) {
+    manager = g_apNationStates[ownerNationSlot]->trackedObjectList;
   } else {
-    TCountry* terrain = g_apTerrainTypeDescriptorTable[this->ownerNationSlot];
+    TCountry* terrain = g_apTerrainTypeDescriptorTable[ownerNationSlot];
     manager = terrain->militaryUnitList;
   }
   if (manager != NULL) {
@@ -92,7 +92,7 @@ void TUnit::ReadFrom(TStream* stream) {
   if (savedTileIndex != -1) {
     short savedOrderTargetIndex = orderTargetIndex;
     tileIndex = -1;
-    this->MoveTo(savedTileIndex);
+    MoveTo(savedTileIndex);
     orderTargetIndex = savedOrderTargetIndex;
   }
   if (g_nSaveFormatVersion > 0x2d) {

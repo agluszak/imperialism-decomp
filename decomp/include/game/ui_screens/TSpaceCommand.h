@@ -11,10 +11,10 @@ class TSetupRandomMapPicture;
 class TSpaceCommand : public TCommand {
 public:
   DECLARE_DYNCREATE(TSpaceCommand)
-  virtual ~TSpaceCommand() override;    // slot 0x01 (scalar deleting destructor)
-  virtual void DoIt() override;         // slot 0x0b 0x5751f0
-  TSetupRandomMapPicture* setupPicture; // +0x18
-  unsigned char mode1c;                 // +0x1c
+  virtual ~TSpaceCommand() override;
+  virtual void DoIt() override;
+  TSetupRandomMapPicture* setupPicture;
+  unsigned char mode1c;
   unsigned char pad1d[3];
 
   // NOOP: verified empty in original 0x005751b3

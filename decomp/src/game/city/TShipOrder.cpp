@@ -30,19 +30,19 @@ IMPLEMENT_DYNCREATE(TShipOrder, TProductionOrder)
 
 // FUNCTION: IMPERIALISM 0x004b85a0
 bool TShipOrder::AutoCanMakeProduct() {
-  TCity* city = this->ownerCity;
+  TCity* city = ownerCity;
 
-  if (ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex) <=
+  if (ReadWeight(g_industryActionCostWeightResCode09, resourceTypeIndex) <=
           city->stockByType[kResourceLumber] &&
-      ReadWeight(g_industryActionCostWeightResCode08, this->resourceTypeIndex) <=
+      ReadWeight(g_industryActionCostWeightResCode08, resourceTypeIndex) <=
           city->stockByType[kResourceFabric] &&
-      ReadWeight(g_industryActionCostWeightResCode10, this->resourceTypeIndex) <=
+      ReadWeight(g_industryActionCostWeightResCode10, resourceTypeIndex) <=
           city->stockByType[kResourceArms] &&
-      ReadWeight(g_industryActionCostWeightResCode0B, this->resourceTypeIndex) <=
+      ReadWeight(g_industryActionCostWeightResCode0B, resourceTypeIndex) <=
           city->stockByType[kResourceSteel] &&
-      ReadWeight(g_industryActionCostWeightResCode03, this->resourceTypeIndex) <=
+      ReadWeight(g_industryActionCostWeightResCode03, resourceTypeIndex) <=
           city->stockByType[kResourceCoal] &&
-      ReadWeight(g_industryActionCostWeightResCode0C, this->resourceTypeIndex) <=
+      ReadWeight(g_industryActionCostWeightResCode0C, resourceTypeIndex) <=
           city->stockByType[kResourceFuel]) {
     return true;
   }
@@ -51,7 +51,7 @@ bool TShipOrder::AutoCanMakeProduct() {
 
 // FUNCTION: IMPERIALISM 0x004b8630
 bool TShipOrder::CanMakeProduct() {
-  const short weightIndex = this->resourceTypeIndex;
+  const short weightIndex = resourceTypeIndex;
   const short weight09 = ReadWeight(g_industryActionCostWeightResCode09, weightIndex);
   const short weight08 = ReadWeight(g_industryActionCostWeightResCode08, weightIndex);
   const short weight10 = ReadWeight(g_industryActionCostWeightResCode10, weightIndex);
@@ -60,17 +60,17 @@ bool TShipOrder::CanMakeProduct() {
   const short weight0C = ReadWeight(g_industryActionCostWeightResCode0C, weightIndex);
 
   if (static_cast<int>(weight09) <=
-          static_cast<int>(this->trackingSlots[kResourceWeightIndex09] + weight09) &&
+          static_cast<int>(trackingSlots[kResourceWeightIndex09] + weight09) &&
       static_cast<int>(weight08) <=
-          static_cast<int>(this->trackingSlots[kResourceWeightIndex08] + weight08) &&
+          static_cast<int>(trackingSlots[kResourceWeightIndex08] + weight08) &&
       static_cast<int>(weight10) <=
-          static_cast<int>(this->trackingSlots[kResourceWeightIndex10] + weight10) &&
+          static_cast<int>(trackingSlots[kResourceWeightIndex10] + weight10) &&
       static_cast<int>(weight0B) <=
-          static_cast<int>(this->trackingSlots[kResourceWeightIndex0B] + weight0B) &&
+          static_cast<int>(trackingSlots[kResourceWeightIndex0B] + weight0B) &&
       static_cast<int>(weight03) <=
-          static_cast<int>(this->trackingSlots[kResourceWeightIndex03] + weight03) &&
+          static_cast<int>(trackingSlots[kResourceWeightIndex03] + weight03) &&
       static_cast<int>(weight0C) <=
-          static_cast<int>(this->trackingSlots[kResourceWeightIndex0C] + weight0C)) {
+          static_cast<int>(trackingSlots[kResourceWeightIndex0C] + weight0C)) {
     return true;
   }
   return false;
@@ -78,8 +78,8 @@ bool TShipOrder::CanMakeProduct() {
 
 // FUNCTION: IMPERIALISM 0x004b86d0
 short TShipOrder::MaxOrder() {
-  TCity* city = this->ownerCity;
-  const short weightIndex = this->resourceTypeIndex;
+  TCity* city = ownerCity;
+  const short weightIndex = resourceTypeIndex;
   int limit = 10000;
   int candidate;
 
@@ -125,12 +125,12 @@ short TShipOrder::MaxOrder() {
       limit = candidate;
     }
   }
-  return static_cast<short>(this->quantity + static_cast<short>(limit));
+  return quantity + static_cast<short>(limit);
 }
 
 // FUNCTION: IMPERIALISM 0x004b8800
 bool TShipOrder::SetQuantity(short quantity) {
-  const short delta = static_cast<short>(quantity - this->quantity);
+  const short delta = quantity - this->quantity;
 
   if (!TProductionOrder::SetQuantity(quantity)) {
     return false;
@@ -166,15 +166,15 @@ bool TShipOrder::SetQuantity(short quantity) {
 
 // FUNCTION: IMPERIALISM 0x004b8970
 void TShipOrder::Produce() {
-  if (this->resourceTypeIndex != 0 && this->quantity != 0) {
-    this->LaunchShip();
+  if (resourceTypeIndex != 0 && quantity != 0) {
+    LaunchShip();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004b89a0
 void TShipOrder::LaunchShip() {
   short resourceTypeIndex = this->resourceTypeIndex;
-  TCity* city = this->ownerCity;
+  TCity* city = ownerCity;
 
   city->orderCountByType[resourceTypeIndex] =
       static_cast<short>(city->orderCountByType[resourceTypeIndex] + this->quantity);
@@ -182,7 +182,7 @@ void TShipOrder::LaunchShip() {
   this->quantity = static_cast<short>(quantity - 1);
 
   while (quantity != 0) {
-    const int nationSlot = static_cast<int>(city->ownerNation->nationSlot);
+    const int nationSlot = city->ownerNation->nationSlot;
     TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(city);
     CreateNavyPrimaryOrderNodeAndAssignDisplayName(this->resourceTypeIndex, portZone, nationSlot,
                                                    0);
@@ -191,7 +191,7 @@ void TShipOrder::LaunchShip() {
   }
 
   for (int resource = 0; resource < kResourceKindCount; ++resource) {
-    this->trackingSlots[resource] = 0;
+    trackingSlots[resource] = 0;
   }
   this->quantity = 0;
 
@@ -200,7 +200,7 @@ void TShipOrder::LaunchShip() {
     return;
   }
 
-  short currentCapability = static_cast<short>(owner->GetArmsInNavy());
+  short currentCapability = owner->GetArmsInNavy();
   short desiredCapability;
   if (owner->pendingActionStatus.byAction[0] == '\0') {
     desiredCapability = 0;
@@ -255,46 +255,46 @@ void TShipOrder::LaunchShip() {
 void TShipOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   short value;
 
-  this->ResetOrderSheet(orderSheet);
+  ResetOrderSheet(orderSheet);
 
-  value = static_cast<short>(
-      ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex) * quantity);
+  value = static_cast<short>(ReadWeight(g_industryActionCostWeightResCode09, resourceTypeIndex) *
+                             quantity);
   orderSheet->slotByResourceCode[kResourceWeightIndex09] = value;
   if (value < 0) {
     orderSheet->slotByResourceCode[kResourceWeightIndex09] = 0;
   }
 
-  value = static_cast<short>(
-      ReadWeight(g_industryActionCostWeightResCode08, this->resourceTypeIndex) * quantity);
+  value = static_cast<short>(ReadWeight(g_industryActionCostWeightResCode08, resourceTypeIndex) *
+                             quantity);
   orderSheet->slotByResourceCode[kResourceWeightIndex08] = value;
   if (value < 0) {
     orderSheet->slotByResourceCode[kResourceWeightIndex08] = 0;
   }
 
-  value = static_cast<short>(
-      ReadWeight(g_industryActionCostWeightResCode10, this->resourceTypeIndex) * quantity);
+  value = static_cast<short>(ReadWeight(g_industryActionCostWeightResCode10, resourceTypeIndex) *
+                             quantity);
   orderSheet->slotByResourceCode[kResourceWeightIndex10] = value;
   // Matches the original: this clamp re-checks index 09, not the index 10 just written.
   if (orderSheet->slotByResourceCode[kResourceWeightIndex09] < 0) {
     orderSheet->slotByResourceCode[kResourceWeightIndex09] = 0;
   }
 
-  value = static_cast<short>(
-      ReadWeight(g_industryActionCostWeightResCode0B, this->resourceTypeIndex) * quantity);
+  value = static_cast<short>(ReadWeight(g_industryActionCostWeightResCode0B, resourceTypeIndex) *
+                             quantity);
   orderSheet->slotByResourceCode[kResourceWeightIndex0B] = value;
   if (value < 0) {
     orderSheet->slotByResourceCode[kResourceWeightIndex0B] = 0;
   }
 
-  value = static_cast<short>(
-      ReadWeight(g_industryActionCostWeightResCode03, this->resourceTypeIndex) * quantity);
+  value = static_cast<short>(ReadWeight(g_industryActionCostWeightResCode03, resourceTypeIndex) *
+                             quantity);
   orderSheet->slotByResourceCode[kResourceWeightIndex03] = value;
   if (value < 0) {
     orderSheet->slotByResourceCode[kResourceWeightIndex03] = 0;
   }
 
-  value = static_cast<short>(
-      ReadWeight(g_industryActionCostWeightResCode0C, this->resourceTypeIndex) * quantity);
+  value = static_cast<short>(ReadWeight(g_industryActionCostWeightResCode0C, resourceTypeIndex) *
+                             quantity);
   orderSheet->slotByResourceCode[kResourceWeightIndex0C] = value;
   if (value < 0) {
     orderSheet->slotByResourceCode[kResourceWeightIndex0C] = 0;

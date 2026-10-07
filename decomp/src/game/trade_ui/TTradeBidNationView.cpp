@@ -26,7 +26,7 @@ void TTradeBidNationView::ITradeBidNationView(TView* panel, int* offsetLayout, i
 // FUNCTION: IMPERIALISM 0x005bdc20
 void TTradeBidNationView::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  short iconLeft = static_cast<short>(nationSlot << 5);
+  short iconLeft = nationSlot << 5;
   RECT srcRect = {iconLeft, 0, iconLeft + 0x20, 0x18};
   RECT dstRect = {0, 0, 0x20, 0x18};
   BlitRectWithOptionalTransparency(g_pMacViewMgr->flagWorld->GetBlitSurface(),

@@ -13,24 +13,24 @@ class TLineData;
 class TPageView : public TView {
 public:
   DECLARE_DYNCREATE(TPageView)
-  virtual ~TPageView() override;                     // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;                      // slot 0x07 0x56ffe0
-  virtual void DoPostCreate(int arg) override;       // slot 0x37 0x56fa50
-  virtual POSITION AddOrderedEntry(TLineData* item); // slot 0x68 0x56fbb0
-  virtual POSITION AddOptionEntry(TLineData* item);  // slot 0x69 0x56fbd0
-  virtual void ResetSelectableOptionEntriesExceptColorAndOkay(); // slot 0x6a 0x56fbf0
-  virtual void CalculatePageStarts();                            // slot 0x6b 0x56fc80
-  virtual void ShowPage(short pageNumber);                       // slot 0x6c 0x56fdb0
-  virtual void Clear();                                          // slot 0x6d 0x56ff90
+  virtual ~TPageView() override;
+  virtual void Free() override;
+  virtual void DoPostCreate(int arg) override;
+  virtual POSITION AddOrderedEntry(TLineData* item);
+  virtual POSITION AddOptionEntry(TLineData* item);
+  virtual void ResetSelectableOptionEntriesExceptColorAndOkay();
+  virtual void CalculatePageStarts();
+  virtual void ShowPage(short pageNumber);
+  virtual void Clear();
 
-  short pageCount;                // +0x60
-  short currentPage;              // +0x62, ctor writes -1
-  short visibleColumnCount;       // +0x64, ctor writes 1
-  short reserved66;               // +0x66, no accesses observed
-  RECT pageRect;                  // +0x68
-  TList* optionEntries;           // +0x78, owned TLineData section headers, indexed by row
-  TList* orderedEntries;          // +0x7c, owned TLineData rows in layout order
-  TLongintList* pageStartIndices; // +0x80
+  short pageCount;
+  short currentPage;        // ctor writes -1
+  short visibleColumnCount; // ctor writes 1
+  short reserved66;         // no accesses observed
+  RECT pageRect;
+  TList* optionEntries;  // owned TLineData section headers, indexed by row
+  TList* orderedEntries; // owned TLineData rows in layout order
+  TLongintList* pageStartIndices;
 
   TPageView();
 };

@@ -9,12 +9,11 @@
 class TTreatiesView : public TPanelView {
 public:
   DECLARE_DYNCREATE(TTreatiesView)
-  virtual ~TTreatiesView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x004f7f80
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x4f7ac0
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4f7c00
-  virtual void Setup() override;                // slot 0x68 0x4f7f10
+  virtual ~TTreatiesView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void Setup() override;
 
   TTreatiesView();
 };

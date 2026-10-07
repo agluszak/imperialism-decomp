@@ -9,22 +9,21 @@ struct TQuickDrawSurfaceContext;
 class TMapPreviewView : public TView {
 public:
   DECLARE_DYNCREATE(TMapPreviewView)
-  virtual ~TMapPreviewView() override;          // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;                 // slot 0x07 0x5789b0
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x578850
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x578a80
-  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin) override; // slot 0x47 0x5789e0
+  virtual ~TMapPreviewView() override;
+  virtual void Free() override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
   TMapPreviewView();
 
-  void TakeSatellitePhoto(char* tileOwnerTagTable); // 0x578c10
+  void TakeSatellitePhoto(char* tileOwnerTagTable);
   // Rebuild the selected-nation boundary mask in the offscreen preview surface.
-  void EnhancePhoto(); // 0x579270
+  void EnhancePhoto();
 
   TQuickDrawSurfaceContext* previewSurface;
-  int selectedRegion; // 0x64 — city/region marker; ctor seeds -1 (none)
-  int selectedNation; // 0x68 — nation whose boundary is highlighted (-1 = none)
-  int pendingNation;  // 0x6c — nation hit by the most recent mouse command
+  int selectedRegion; // city/region marker; ctor seeds -1 (none)
+  int selectedNation; // nation whose boundary is highlighted (-1 = none)
+  int pendingNation;  // nation hit by the most recent mouse command
 };
 ASSERT_SIZE(TMapPreviewView, 0x70);

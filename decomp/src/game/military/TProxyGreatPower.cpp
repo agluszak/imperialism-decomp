@@ -45,8 +45,8 @@ void TProxyGreatPower::AddToTreasury(int amount) {
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x20;
-  packet.DestinateToGP(this->nationSlot);
-  packet.nationSlot = this->nationSlot;
+  packet.DestinateToGP(nationSlot);
+  packet.nationSlot = nationSlot;
   packet.amount = amount;
   g_pNetMgr->Send(&packet, false);
 }
@@ -62,13 +62,13 @@ void TProxyGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
   TurnEvent16DiplomacyProposalPacket packetPayload;
   packetPayload.messageTag = kControlTagTime;
   packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  packetPayload.nationSlot = this->nationSlot;
+  packetPayload.nationSlot = nationSlot;
   packetPayload.eventCode = 0x16;
   packetPayload.messageLength = 0x20;
   packetPayload.sourceNationSlot = sourceNationSlot;
   packetPayload.proposalCode = proposalCode;
 
-  packetPayload.DestinateToGP(static_cast<int>(this->nationSlot));
+  packetPayload.DestinateToGP(static_cast<int>(nationSlot));
   g_pNetMgr->Send(&packetPayload, false);
 }
 
@@ -78,33 +78,32 @@ void TProxyGreatPower::FinishCityPhase() {}
 // FUNCTION: IMPERIALISM 0x00540ba0
 bool TProxyGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                          ResourceKindStorage resourceKind) {
-  if (this->StillBuyingItem(resourceKind)) {
-    g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot, amount, price,
-                                     resourceKind);
+  if (StillBuyingItem(resourceKind)) {
+    g_pGameFlowState->SendTradeOffer(nationSlot, targetNationSlot, amount, price, resourceKind);
     return true;
   }
 
-  this->AddToDealBook(1, targetNationSlot, 0, resourceKind, 0);
+  AddToDealBook(1, targetNationSlot, 0, resourceKind, 0);
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00540c20
 void TProxyGreatPower::SetTradePolicyTo(NationSlot targetNation, short tradePolicy) {
   int packedPolicy = static_cast<int>(targetNation) << 16 | static_cast<int>(tradePolicy);
-  g_pGameFlowState->SendGameControl(kControlTagTrad, packedPolicy, this->nationSlot);
+  g_pGameFlowState->SendGameControl(kControlTagTrad, packedPolicy, nationSlot);
   TGreatPower::SetTradePolicyTo(targetNation, tradePolicy);
 }
 
 // FUNCTION: IMPERIALISM 0x00540c70
 void TProxyGreatPower::AddTurnStartEvent(TTurnStartEvent* event) {
-  g_pGameFlowState->SendStreamObject(kControlTagStar, event, this->nationSlot);
+  g_pGameFlowState->SendStreamObject(kControlTagStar, event, nationSlot);
   event->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x00540cb0
 void TProxyGreatPower::SorryYouLose() {
-  g_pGameFlowState->SendGameControl(kControlTagLost, this->nationSlot, -3);
-  g_pGameFlowState->DehumanizePlayer(this->nationSlot);
+  g_pGameFlowState->SendGameControl(kControlTagLost, nationSlot, -3);
+  g_pGameFlowState->DehumanizePlayer(nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x00540cf0
@@ -118,7 +117,7 @@ int TProxyGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNati
   packet.messageLength = 0x20;
   packet.SetTimeEmitPacketGameFlowTurnId();
   packet.toNetworkId = -1;
-  packet.DestinateTo(this->nationSlot);
+  packet.DestinateTo(nationSlot);
   packet.actionCode = 'i';
   packet.nationA1D = static_cast<signed char>(targetNation);
   packet.nationB1E = static_cast<signed char>(sourceNation);
@@ -137,7 +136,7 @@ int TProxyGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, 
   packet.messageLength = 0x20;
   packet.SetTimeEmitPacketGameFlowTurnId();
   packet.toNetworkId = -1;
-  packet.DestinateTo(this->nationSlot);
+  packet.DestinateTo(nationSlot);
   packet.actionCode = 'a';
   packet.nationA1D = static_cast<signed char>(targetNation);
   packet.nationB1E = static_cast<signed char>(sourceNation);

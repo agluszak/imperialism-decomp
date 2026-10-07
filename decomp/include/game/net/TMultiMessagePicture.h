@@ -9,9 +9,8 @@
 class TMultiMessagePicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TMultiMessagePicture)
-  virtual ~TMultiMessagePicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x0054ecc0
+  virtual ~TMultiMessagePicture() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   TMultiMessagePicture();
 };

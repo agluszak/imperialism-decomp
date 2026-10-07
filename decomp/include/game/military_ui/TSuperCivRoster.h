@@ -7,9 +7,9 @@
 class TSuperCivRoster : public TPageView {
 public:
   DECLARE_DYNCREATE(TSuperCivRoster)
-  virtual ~TSuperCivRoster() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TSuperCivRoster() override;
   virtual void InitializeLedgerRosterPages(TView* pOwnerContext, int* pOffsetLayout,
-                                           int* pSizeLayout); // slot 0x6e 0x4ab470
+                                           int* pSizeLayout);
 
   short selectedTileIndex;
 

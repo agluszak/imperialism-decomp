@@ -10,7 +10,7 @@ struct TurnEventMapSelection {
 };
 
 struct UnreachableTacticalMapPictureControl : public TView {
-  virtual void ApplySelection(TurnEventMapSelection* value); // slot 0x68 byte 0x1a0
+  virtual void ApplySelection(TurnEventMapSelection* value);
 };
 
 } // namespace turn_event_dialog

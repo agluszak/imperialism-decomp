@@ -7,12 +7,10 @@
 class TPictureButton : public TPicture {
 public:
   DECLARE_DYNCREATE(TPictureButton)
-  virtual ~TPictureButton() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin) override; // slot 0x47 0x570900
-  virtual void HiliteState(unsigned char enabledState,
-                           bool refreshNow) override; // slot 0x70 0x570870
-  virtual void DrawImmediate();                       // slot 0x73 0x5708c0
+  virtual ~TPictureButton() override;
+  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
+  virtual void HiliteState(unsigned char enabledState, bool refreshNow) override;
+  virtual void DrawImmediate();
   short glyph;
   short clickSoundId;
 

@@ -10,10 +10,10 @@
 class TMapUberUberPicture : public TOffLimitsPicture {
 public:
   DECLARE_DYNCREATE(TMapUberUberPicture)
-  virtual ~TMapUberUberPicture() override;                // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;                           // slot 0x07 0x596840
-  virtual void DoPostCreate(int arg) override;            // slot 0x37 0x596810
-  virtual void Scroll(MapScrollEdgeMaskStorage edgeMask); // slot 0x74 0x45d2a0
+  virtual ~TMapUberUberPicture() override;
+  virtual void Free() override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Scroll(MapScrollEdgeMaskStorage edgeMask);
 
   TMapUberUberPicture();
 };

@@ -12,7 +12,7 @@ public:
   TSortedByRelationshipList();
   DECLARE_DYNCREATE(TSortedByRelationshipList)
   // Descending by the relationship short at record+2; ties broken pseudo-randomly.
-  short Compare(void* a, void* b) override; // slot 0x44 0x4ee5e0
+  short Compare(void* a, void* b) override;
   void ISortedByRelationshipList();
 };
 

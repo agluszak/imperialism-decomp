@@ -7,12 +7,12 @@
 class TTextPictureButton : public TUpDownPictureButton {
 public:
   DECLARE_DYNCREATE(TTextPictureButton)
-  virtual ~TTextPictureButton() override;       // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x572790
-  CString buttonText;                           // 0x94
-  short pointSize;                              // 0x98
-  short themeCode9A;                            // 0x9A
-  short themeCode9C;                            // 0x9C
+  virtual ~TTextPictureButton() override;
+  virtual void Draw(RECT* rectBuffer) override;
+  CString buttonText;
+  short pointSize;
+  short themeCode9A;
+  short themeCode9C;
 
   void ITextPictureButton(TView* panel, int* offsetLayout, int* sizeLayout, short pictureId,
                           CString* text, short pointSize, short themeCodeA, short themeCodeC);

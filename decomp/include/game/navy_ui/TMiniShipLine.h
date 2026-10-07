@@ -12,8 +12,8 @@ class TMiniShipLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TMiniShipLine)
   // FUNCTION: IMPERIALISM 0x00569b90
-  virtual ~TMiniShipLine() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x569c80
+  virtual ~TMiniShipLine() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
   // NOOP: verified empty in original 0x00569be3
   TMiniShipLine() {}

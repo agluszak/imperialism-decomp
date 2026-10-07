@@ -42,8 +42,8 @@ void TGrantsView::Draw(RECT* rectBuffer) {
   CString labelText;
   CString sumText;
 
-  short baseX = static_cast<short>(0x48 - ownerLocalX);
-  short baseY = static_cast<short>(0x16f - ownerLocalY);
+  short baseX = 0x48 - ownerLocalX;
+  short baseY = 0x16f - ownerLocalY;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
 
@@ -70,8 +70,8 @@ void TGrantsView::Draw(RECT* rectBuffer) {
       continue;
     }
     g_pSimMgr->GetString(0x2733, static_cast<short>(0x22 + i), &labelText);
-    short y = static_cast<short>(kGrantColumnY[i] - ownerLocalY);
-    short x = static_cast<short>(kGrantColumnX[i] - ownerLocalX);
+    short y = kGrantColumnY[i] - ownerLocalY;
+    short x = kGrantColumnX[i] - ownerLocalX;
     SetQuickDrawColorAndSyncGlobals(styleForeground);
     SetQuickDrawTextOriginWithContextOffset(x + 1, y + 1);
     DrawTextWithCachedQuickDrawStyleState(&labelText);
@@ -86,7 +86,7 @@ void TGrantsView::Draw(RECT* rectBuffer) {
   g_pSimMgr->NumToCurrency(grantSum, &sumText);
   labelText += s_szSpaceSeparator + sumText;
 
-  short totalY = static_cast<short>(kGrantColumnY[3] - ownerLocalY);
+  short totalY = kGrantColumnY[3] - ownerLocalY;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(baseX + 1, totalY + 1);
   DrawTextWithCachedQuickDrawStyleState(&labelText);
@@ -109,7 +109,7 @@ void TGrantsView::Setup() {
 // FUNCTION: IMPERIALISM 0x004f8650
 void TGrantsView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
-    short tagOffset = static_cast<short>(sourceHandler->controlTag - 0x6330);
+    short tagOffset = sourceHandler->controlTag - 0x6330;
     TDiplomacyMapView* mapView = diplomacyMapView;
     if (tagOffset & 1) {
       mapView->actionCode = kDipActionRecurringGrant;

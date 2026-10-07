@@ -16,16 +16,16 @@
 
 // FUNCTION: IMPERIALISM 0x004a3b70
 TMilitaryUnit* TArmyStack::ResetCursorAndGetHeadUnit() {
-  this->cursor = this->head14;
-  return (this->head14 != NULL) ? this->head14->unit : NULL;
+  cursor = head14;
+  return (head14 != NULL) ? head14->unit : NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3b90
 TMilitaryUnit* TArmyStack::AdvanceCursorAndGetUnit() {
-  if (this->cursor != NULL) {
-    this->cursor = this->cursor->next;
-    if (this->cursor != NULL) {
-      return this->cursor->unit;
+  if (cursor != NULL) {
+    cursor = cursor->next;
+    if (cursor != NULL) {
+      return cursor->unit;
     }
   }
   return NULL;

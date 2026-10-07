@@ -12,16 +12,15 @@
 class TShipFractionCluster : public TCluster {
 public:
   DECLARE_DYNCREATE(TShipFractionCluster)
-  virtual ~TShipFractionCluster() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x00568eb0
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x568d70
+  virtual ~TShipFractionCluster() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
 
   TShipFractionCluster();
 
   void Set(int availableCount, int selectedCount);
-  void IncrementSelectedShipCount(unsigned char displayOnly); // 0x005690d0
-  void Less(unsigned char displayOnly);                       // 0x00569150
+  void IncrementSelectedShipCount(unsigned char displayOnly);
+  void Less(unsigned char displayOnly);
 
   short availableShipCount;
   short pad8a;

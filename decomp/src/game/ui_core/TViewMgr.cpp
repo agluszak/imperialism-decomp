@@ -151,11 +151,11 @@ void TViewMgr::Free() {
 // FUNCTION: IMPERIALISM 0x005d5200
 void TViewMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  this->pendingTurnOverlayCode = 0;
-  this->currentTurnEventCode = 0;
-  this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
-  this->waitOverlayPending = false;
-  this->mapUberPicture = 0;
+  pendingTurnOverlayCode = 0;
+  currentTurnEventCode = 0;
+  dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
+  waitOverlayPending = false;
+  mapUberPicture = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005d5250
@@ -360,7 +360,7 @@ void TViewMgr::VerifyEndTurn() {
   }
 
   CPoint placement;
-  this->GetTopLeftFor(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
 
   TPicture* gold = static_cast<TPicture*>(node->FindSubView(kControlTagDialog)); // 'DLOG'
@@ -412,15 +412,15 @@ int TViewMgr::ClassifyTurnStateForOverlayMode() {
 
 // FUNCTION: IMPERIALISM 0x005d5a70
 void TViewMgr::ModalMessage(CString message, const POINT& messagePosition) {
-  int overlayMode = this->ClassifyTurnStateForOverlayMode();
-  this->ModalMessage(message, messagePosition, overlayMode, 0);
+  int overlayMode = ClassifyTurnStateForOverlayMode();
+  ModalMessage(message, messagePosition, overlayMode, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005d5b00
 bool TViewMgr::ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
                             unsigned char showCancel) {
-  return this->ModalMessage(3, CString(g_szEmptyString), message, messagePosition, overlayMode,
-                            showCancel);
+  return ModalMessage(3, CString(g_szEmptyString), message, messagePosition, overlayMode,
+                      showCancel);
 }
 
 // FUNCTION: IMPERIALISM 0x005d5bc0
@@ -477,7 +477,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   }
 
   CPoint placement;
-  this->GetTopLeftFor(dialog, &placement);
+  GetTopLeftFor(dialog, &placement);
   dialog->Locate(placement, false);
 
   TPicture* gold = static_cast<TPicture*>(dialog->FindSubView(kControlTagDialog)); // 'DLOG'
@@ -729,7 +729,7 @@ void TViewMgr::GetTopLeftFor(TView* dialogView, POINT* outPlacement) {
   int designWidth = 0x276;
   int designHeight = 0x1d1;
   int margin = 0x1e;
-  short code = this->currentTurnEventCode;
+  short code = currentTurnEventCode;
   if (code == kTurnEventCitySiteSelector || code == kTurnEventStrategicMap) {
     designWidth = 0x200;
     designHeight = 0x1c0;
@@ -753,7 +753,7 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   }
   // Turn-event 0x7DD targets the 'trb1' toolbar tag; everything else the 'tool' tag.
   TControl* control;
-  if (this->currentTurnEventCode == kTurnEventStrategicMap) {
+  if (currentTurnEventCode == kTurnEventStrategicMap) {
     control = static_cast<TControl*>(mainView->FindSubView(kControlTagTbr1));
   } else {
     control = static_cast<TControl*>(mainView->FindSubView(kControlTagTool));
@@ -961,10 +961,10 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   SetQuickDrawStrokeColor(0xffffff);
 
   const TurnEventCodeStorage newCode = eventCode;
-  const short secondary = static_cast<short>(payload);
+  const short secondary = payload;
 
   // Sound cue when the turn-flow mode is in the 0x67..0x6a band and the code changed.
-  if (newCode != this->currentTurnEventCode) {
+  if (newCode != currentTurnEventCode) {
     switch (static_cast<short>(g_pSimMgr->mode)) {
     case kGamePhaseOptionalTradeOverview:
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5b);
@@ -982,7 +982,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   }
 
   // Teardown hook for the code currently displayed.
-  const int curCode = this->currentTurnEventCode;
+  const int curCode = currentTurnEventCode;
   if (curCode < 0x2135) {
     if (curCode == kTurnEventOfferSheet) {
       ClearMainViewChildWindowStyle(mainView);
@@ -990,13 +990,13 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       switch (curCode) {
       case kTurnEventTradeOverview:
       case kTurnEventIndustryOverview:
-        this->RefreshStrategicMapStatusIconsForActiveNation();
+        RefreshStrategicMapStatusIconsForActiveNation();
         break;
       case kTurnEventCityProduction:
         g_pMacViewMgr->ClearActiveCityProductionViewAndDiscardRegion();
         break;
       case kTurnEventStrategicMap:
-        this->mapUberPicture = 0;
+        mapUberPicture = 0;
         break;
       }
     }
@@ -1005,14 +1005,14 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   // Code 0 = rebuild every registered UI window node.
   if (newCode == 0) {
     g_pAmbitApplication->dispatchBusyFlag = false;
-    this->currentTurnEventCode = 0;
+    currentTurnEventCode = 0;
     g_pDisplayMgr->clipSnapshotEvent = 0;
     mainView->Close();
     CWMgrIterator iter;
     iter.Reset(true);
     TWindow* window = static_cast<TWindow*>(iter.FirstWindow());
     while (iter.More() != 0) {
-      const unsigned int tag = static_cast<unsigned int>(window->controlTag);
+      const unsigned int tag = window->controlTag;
       if (tag == kControlTagMapW || tag == kControlTagTrnW) {
         window->CloseAndFree();
       }
@@ -1022,9 +1022,9 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   }
 
   // Same-code refresh: refresh the main view, then run the per-code hook.
-  if (newCode == this->currentTurnEventCode) {
+  if (newCode == currentTurnEventCode) {
     if (secondary != -1) {
-      this->currentTurnEventNationSlot = secondary;
+      currentTurnEventNationSlot = secondary;
     }
     if (newCode == kTurnEventNetworkGameOptions) {
       QueueDeferredUiEventPacket(mainView, 0x29a, mainView);
@@ -1033,29 +1033,29 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
     } else if (newCode == kTurnEventTechnologyStore) {
       mainView->RefreshControl();
-      this->RefreshTechnologyStorePageAndHudText(payload);
+      RefreshTechnologyStorePageAndHudText(payload);
     } else if (newCode == kTurnEventDiplomacyMap) {
       if (static_cast<short>(g_pSimMgr->mode) == kGamePhaseOptionalDiplomacyMap) {
         mainView->RefreshControl();
-        this->ShowDiplomacyScreen(static_cast<short>(payload));
+        ShowDiplomacyScreen(static_cast<short>(payload));
       }
     } else if (newCode == kTurnEventTradeOverview || newCode == kTurnEventIndustryOverview) {
       mainView->RefreshControl();
-      this->RefreshTradeAndIndustryOverviewScreen(payload);
+      RefreshTradeAndIndustryOverviewScreen(payload);
     } else if (newCode == kTurnEventCityProduction) {
       mainView->RefreshControl();
-      this->ShowCityProductionView(static_cast<short>(payload));
+      ShowCityProductionView(static_cast<short>(payload));
     } else if (newCode == kTurnEventStrategicMap) {
       mainView->RefreshControl();
-      this->ShowTerrainMap(static_cast<short>(payload));
+      ShowTerrainMap(static_cast<short>(payload));
     } else if (newCode == kTurnEventTransport) {
       mainView->RefreshControl();
-      this->ShowTransportScreen(static_cast<short>(payload));
+      ShowTransportScreen(static_cast<short>(payload));
     } else if (newCode == kTurnEventNewspaperStatus) {
-      this->ShowNewspaper(secondary);
+      ShowNewspaper(secondary);
     } else if (newCode == kTurnEventDealBook) {
       mainView->RefreshControl();
-      this->ShowDealBookScreen(static_cast<short>(payload));
+      ShowDealBookScreen(static_cast<short>(payload));
     }
     DispatchPostTurnStateUpdatesTail(newCode);
     return;
@@ -1064,9 +1064,9 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   // Cross-code path: tear down the previous dialog, build the new turn-event UI packet.
   g_pAssetMgr->OpenFilesForView(newCode);
   mainView->Open();
-  if (this->waitOverlayPending) {
+  if (waitOverlayPending) {
     ShowBlockingWaitOverlayDialog();
-    this->waitOverlayPending = false;
+    waitOverlayPending = false;
   }
   TControl* inclControl = static_cast<TControl*>(mainView->FindSubView(kControlTagIncl)); // 'Incl'
   if (inclControl != NULL) {
@@ -1075,7 +1075,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     inclControl->Free();
   }
   if (newCode != kTurnEventTechnologyAdvance) {
-    this->currentTurnEventNationSlot = secondary;
+    currentTurnEventNationSlot = secondary;
   }
 
   TIncludeView* packet = ::new TIncludeView();
@@ -1085,18 +1085,18 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   packet->controlTag = kControlTagIncl; // 'Incl'
   packet->RefreshControl();
   g_pDisplayMgr->UpdateTheGWorld(newCode);
-  if (this->waitOverlayPending) {
+  if (waitOverlayPending) {
     ShowBlockingWaitOverlayDialog();
-    this->waitOverlayPending = false;
+    waitOverlayPending = false;
   }
-  this->currentTurnEventCode = newCode;
+  currentTurnEventCode = newCode;
 
   bool clearDispatchBusyFlag = true;
 
   if (newCode > kTurnEventMapEditor) {
     if (newCode < kTurnEventRandomGameSetup) {
       if (newCode == kTurnEventMainMenu) {
-        this->SetUpMainMenuScreen();
+        SetUpMainMenuScreen();
       } else if (newCode == kTurnEventBattleReport) {
         turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
         g_pAmbitApplication->dispatchBusyFlag = true;
@@ -1105,76 +1105,76 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     } else if (newCode < kTurnEventTradeOverview) {
       switch (newCode) {
       case kTurnEventRandomGameSetup:
-        this->NoOpTurnEventStateVtableSlotFC();
+        NoOpTurnEventStateVtableSlotFC();
         break;
       case kTurnEventLoadSave:
-        this->ShowLoadSaveScreen();
+        ShowLoadSaveScreen();
         break;
       case kTurnEventScenarioGameSetup:
-        this->ShowScenarioScreen();
+        ShowScenarioScreen();
         break;
       case kTurnEventHighScores:
-        this->ShowHighScoreScreen();
+        ShowHighScoreScreen();
         break;
       case kTurnEventDiplomacyMap:
-        this->ShowDiplomacyScreen(static_cast<short>(payload));
+        ShowDiplomacyScreen(static_cast<short>(payload));
         g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       }
     } else if (newCode > kTurnEventTechnologyAdvance) {
       if (newCode == kTurnEventTacticalView || newCode == kTurnEventTacticalStatusRefresh) {
-        this->SyncTacticalStatusPanelRegion();
+        SyncTacticalStatusPanelRegion();
       } else if (newCode == kTurnEventTechnologyStore) {
-        this->RefreshTechnologyStorePageAndHudText(payload);
+        RefreshTechnologyStorePageAndHudText(payload);
         g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
       } else if (newCode == kTurnEventOpeningCinematic) {
-        this->StartPhaseMovie();
+        StartPhaseMovie();
       } else if (newCode == kTurnEventUnitHistory) {
-        this->ShowUnitHistory(payload);
+        ShowUnitHistory(payload);
         clearDispatchBusyFlag = false;
       } else if (newCode == kTurnEventNewspaperStatus) {
-        this->ShowNewspaper(secondary);
+        ShowNewspaper(secondary);
       } else if (newCode == kTurnEventOfferSheet) {
-        this->RefreshMainDialogAndCursorHelp(payload);
+        RefreshMainDialogAndCursorHelp(payload);
       } else if (newCode == kTurnEventDealBook) {
-        this->ShowDealBookScreen(static_cast<short>(payload));
+        ShowDealBookScreen(static_cast<short>(payload));
       }
     } else if (newCode == kTurnEventTechnologyAdvance) {
-      this->ShowAbilityStatusReport(payload);
+      ShowAbilityStatusReport(payload);
     } else {
       switch (newCode) {
       case kTurnEventTradeOverview:
       case kTurnEventIndustryOverview:
-        this->RefreshTradeAndIndustryOverviewScreen(payload);
+        RefreshTradeAndIndustryOverviewScreen(payload);
         g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventCityProduction:
-        this->ShowCityProductionView(static_cast<short>(payload));
+        ShowCityProductionView(static_cast<short>(payload));
         g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventStrategicMap:
-        this->ShowTerrainMap(static_cast<short>(payload));
+        ShowTerrainMap(static_cast<short>(payload));
         g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventTransport:
-        this->ShowTransportScreen(static_cast<short>(payload));
+        ShowTransportScreen(static_cast<short>(payload));
         g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventCouncilOfGovernors:
-        this->SetCursorRangeAndRefreshMainPanel(payload);
+        SetCursorRangeAndRefreshMainPanel(payload);
         break;
       }
     }
   } else if (newCode == kTurnEventMapEditor) {
-    this->ConfigureMapEditorGoldValueGrid();
+    ConfigureMapEditorGoldValueGrid();
   } else if (newCode == kTurnEventCitySiteSelector) {
-    this->InitializeCitySiteSelectionScreenForNation(payload);
+    InitializeCitySiteSelectionScreenForNation(payload);
   }
   if (clearDispatchBusyFlag) {
     g_pAmbitApplication->dispatchBusyFlag = false;
@@ -1557,12 +1557,12 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   sharedString = CString(g_szEmptyString);
   SetControlHoverHelpText(sharedString, mainControl);
 
-  short nationSlot = static_cast<short>(nationIndex);
+  short nationSlot = nationIndex;
   g_apNationStates[nationSlot]->RecallTradeBids();
-  this->pendingTurnOverlayCode = 0;
+  pendingTurnOverlayCode = 0;
   for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
     if (g_apNationStates[nationSlot]->GetTradeOffersFor(metricSlot) == -1) {
-      this->pendingTurnOverlayCode = static_cast<short>(this->pendingTurnOverlayCode + 1);
+      pendingTurnOverlayCode = static_cast<short>(pendingTurnOverlayCode + 1);
     }
   }
 
@@ -1779,7 +1779,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   if (g_apNationStates[nationSlot]->merchantCapacity == 0) {
     g_pSimMgr->GetString(0x2731, 0x12, &sharedString);
     g_pViewMgr->ModalMessage(sharedString, g_ptCitySiteSelectionDialogPlacement);
-    this->pendingTurnOverlayCode = 5;
+    pendingTurnOverlayCode = 5;
   }
 
   for (short commodity = 0; commodity < 0x11; ++commodity) {
@@ -1913,7 +1913,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
   mapPicture->DisplayMiniMap();
   sharedString = g_szEmptyString;
   SetControlHoverHelpText(sharedString, mapPicture);
-  this->mapUberPicture = mapPicture;
+  mapUberPicture = mapPicture;
 
   TView* zoomControl = mainView->FindSubView(kControlTagZmOt);
   if (zoomControl == 0) {
@@ -2148,14 +2148,14 @@ void TViewMgr::StartPhaseMovie() {
 
 // FUNCTION: IMPERIALISM 0x005db620
 void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) {
-  this->pendingFollowupState = followupState;
+  pendingFollowupState = followupState;
   if (followupState != 0) {
     return;
   }
   g_pSfxPlaybackSystem->RequestDirectSoundInitIfAllowed();
   g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(g_pSimMgr->preferenceValues[2]);
   g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
-  this->activeMovieView = 0;
+  activeMovieView = 0;
   switch (g_pSimMgr->mode) {
   case kGamePhaseStartup:
     g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
@@ -2328,7 +2328,7 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
   }
   expansionView->StuffValues(buildingSlotId, city, productionView);
   CPoint placement;
-  this->GetTopLeftFor(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   int dialogAction = node->PoseModally();
   expansionView->DoClosingAction(static_cast<unsigned long>(dialogAction));

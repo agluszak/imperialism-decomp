@@ -15,47 +15,47 @@ public:
   virtual ~ImperialismApp() override;
 
   // CWinApp lifecycle overrides resolved by DispatchMfcAppLifecycle.
-  virtual BOOL InitInstance() override;                 // slot +0x58, 0x00412dc0
-  virtual int ExitInstance() override;                  // slot +0x70, 0x00413780
-  virtual BOOL PreTranslateMessage(MSG* pMsg) override; // slot +0x60, 0x00413a20
-  virtual BOOL OnIdle(LONG lCount) override;            // slot +0x68, 0x004145f0
+  virtual BOOL InitInstance() override;
+  virtual int ExitInstance() override;
+  virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+  virtual BOOL OnIdle(LONG lCount) override;
 
-  int ShowAutoResolutionDialogIfNeeded();                                 // 0x00415090
-  BOOL SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value);      // 0x00415580
-  UINT GetSettingValueFromSettingsSection(LPCTSTR key, int defaultValue); // 0x004154e0
-  BOOL WriteSettingValueToSettingsSection(LPCTSTR key, int value);        // 0x00415510
-  BOOL ApplyAutoResolutionModeAndPersist(int mode);                       // 0x004155b0
-  BOOL LoadLanguageResourcesFromIrgFiles();                               // 0x004149a0
-  void HandleStartupCommand100();                                         // 0x00413950
-  void PostStartupCommand100();                                           // 0x004138b0
-  LPCTSTR DetectImperialismInstallDriveAndSetPathPrefix();                // 0x00414870
-  void RestoreWaitCursorIfStartupBusy();                                  // 0x004139f0
+  int ShowAutoResolutionDialogIfNeeded();
+  BOOL SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value);
+  UINT GetSettingValueFromSettingsSection(LPCTSTR key, int defaultValue);
+  BOOL WriteSettingValueToSettingsSection(LPCTSTR key, int value);
+  BOOL ApplyAutoResolutionModeAndPersist(int mode);
+  BOOL LoadLanguageResourcesFromIrgFiles();
+  void HandleStartupCommand100();
+  void PostStartupCommand100();
+  LPCTSTR DetectImperialismInstallDriveAndSetPathPrefix();
+  void RestoreWaitCursorIfStartupBusy();
 
   // Developer UI commands recovered from the ImperialismApp message map.
-  afx_msg void OnTestSomething();                             // 0x00413d00
-  afx_msg void OnSwitchGreatPower();                          // 0x00413d20
-  afx_msg void OnRunOffTurns();                               // 0x00413f60
-  afx_msg void OnBequeathGoodies();                           // 0x004140f0
-  afx_msg void OnPeekAtDib();                                 // 0x004143b0
-  afx_msg void OnHuman();                                     // 0x00414640
-  afx_msg void OnUpdateHuman(CCmdUI* commandUi);              // 0x00414670
-  afx_msg void OnMissionSnooper();                            // 0x005de830
-  afx_msg void OnSlowMemoryChecking();                        // 0x004147b0
-  afx_msg void OnUpdateSlowMemoryChecking(CCmdUI* commandUi); // 0x004147d0
-  afx_msg void OnTraceEnabled();                              // 0x004147f0
-  afx_msg void OnUpdateTraceEnabled(CCmdUI* commandUi);       // 0x00414810
-  afx_msg void OnPeekAtGWorld();                              // 0x00414830
+  afx_msg void OnTestSomething();
+  afx_msg void OnSwitchGreatPower();
+  afx_msg void OnRunOffTurns();
+  afx_msg void OnBequeathGoodies();
+  afx_msg void OnPeekAtDib();
+  afx_msg void OnHuman();
+  afx_msg void OnUpdateHuman(CCmdUI* commandUi);
+  afx_msg void OnMissionSnooper();
+  afx_msg void OnSlowMemoryChecking();
+  afx_msg void OnUpdateSlowMemoryChecking(CCmdUI* commandUi);
+  afx_msg void OnTraceEnabled();
+  afx_msg void OnUpdateTraceEnabled(CCmdUI* commandUi);
+  afx_msg void OnPeekAtGWorld();
 
-  int* waitCursorAnchor; // 0xC0
+  int* waitCursorAnchor;
   CString installDrivePrefix;
-  int appliedAutoResMode;       // 0xC8 — auto-resolution mode currently applied to the display
-  CString languageLabel;        // 0xCC — string 0x1e36, the language display label
-  CString localizedPictGobName; // 0xD0 — string 0x2c6, localized Pict .gob path (lib slot 0)
-  CString assetLibraryName;     // 0xD4 — string 0x840
-  CString primaryDataLibName;   // 0xD8 — string 0x297, primary data library path
-  CString soundLibraryName;     // 0xDC — string 0x80
-  CString languageCodeString;   // 0xE0 — string 0x323, three-letter language code
-  int languagePackId;           // 0xE4 — languageCodeString packed little-endian
+  int appliedAutoResMode;       // auto-resolution mode currently applied to the display
+  CString languageLabel;        // string 0x1e36, the language display label
+  CString localizedPictGobName; // string 0x2c6, localized Pict .gob path (lib slot 0)
+  CString assetLibraryName;     // string 0x840
+  CString primaryDataLibName;   // string 0x297, primary data library path
+  CString soundLibraryName;     // string 0x80
+  CString languageCodeString;   // string 0x323, three-letter language code
+  int languagePackId;           // languageCodeString packed little-endian
 
   DECLARE_MESSAGE_MAP()
 };

@@ -11,13 +11,11 @@ class TTacticalUnit;
 class TTacNavyToolbar : public TTacticalToolbar {
 public:
   DECLARE_DYNCREATE(TTacNavyToolbar)
-  virtual ~TTacNavyToolbar() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x005ad1b0
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5ad180
-  virtual void UpdateTacticalCurrentUnitControlAndDialogLabel(
-      TTacticalUnit* unit) override; // slot 0x73 0x5ad0d0
-  virtual void UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) override; // slot 0x74
+  virtual ~TTacNavyToolbar() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) override;
+  virtual void UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) override;
 
   // NOOP: verified empty in original 0x005ad067
   TTacNavyToolbar() {}

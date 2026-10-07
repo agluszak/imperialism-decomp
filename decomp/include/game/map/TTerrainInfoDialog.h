@@ -8,7 +8,7 @@
 class TTerrainInfoDialog : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(TTerrainInfoDialog)
-  virtual ~TTerrainInfoDialog() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TTerrainInfoDialog() override;
 
   TTerrainInfoDialog();
 };

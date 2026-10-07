@@ -9,9 +9,8 @@
 class TMapEditCluster : public TCluster {
 public:
   DECLARE_DYNCREATE(TMapEditCluster)
-  virtual ~TMapEditCluster() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x005b2970
+  virtual ~TMapEditCluster() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   // NOOP: verified empty in original 0x005b28b6
   TMapEditCluster() {}

@@ -145,7 +145,7 @@ bool TPortZone::CanBeTargetOf(TTaskForce* force) {
 
 // FUNCTION: IMPERIALISM 0x00561e40
 short TPortZone::PickPennantIngotTile() {
-  short originTile = static_cast<short>(tileOrTerrainId);
+  short originTile = tileOrTerrainId;
   HexSpiralSearchState spiral;
   spiral.row = originTile / kStrategicMapColumns;
   spiral.col = originTile % kStrategicMapColumns;
@@ -172,7 +172,7 @@ short TPortZone::PickPennantIngotTile() {
           candidateContext = candidateContext->GetNextPort();
         }
       } else {
-        short nationCode = static_cast<short>(candidateRecord.ownerNationTag);
+        short nationCode = candidateRecord.ownerNationTag;
         if (nationCode >= kNationSlotCount) {
           candidateContext = &g_pActiveMapOrderContext->contextArray[nationCode - 0x17];
         }

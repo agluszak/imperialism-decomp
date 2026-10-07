@@ -37,7 +37,7 @@
 static const unsigned int kAddrClassDescTCountry = 0x00653670;
 
 static bool IsRecruitQuarterTickGate(short tickRaw) {
-  int tick = static_cast<int>(tickRaw);
+  int tick = tickRaw;
   if (((tick / 4) & 1) == 0) {
     return false;
   }
@@ -70,35 +70,36 @@ TCountry::TCountry() {}
 // FUNCTION: IMPERIALISM 0x004d68f0
 void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot) {
   this->nationSlot = nationSlot;
-  this->homeTileIndex = -1;
-  this->overlayAnchorTileCache = -1;
-  this->encodedNationSlot = -1;
+  homeTileIndex = -1;
+  overlayAnchorTileCache = -1;
+  encodedNationSlot = -1;
 
   for (int nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
-    this->tradePolicyByNation[nationIndex] = 100;
+    tradePolicyByNation[nationIndex] = 100;
   }
 
-  this->identitySharedString0 = CString(g_pszDescriptorDefaultName);
-  bool nameIsDefault = _mbscmp(reinterpret_cast<const unsigned char*>(g_pszDescriptorDefaultName),
-                               reinterpret_cast<const unsigned char*>(
-                                   static_cast<LPCSTR>(this->identitySharedString0))) == 0;
+  identitySharedString0 = CString(g_pszDescriptorDefaultName);
+  bool nameIsDefault =
+      _mbscmp(reinterpret_cast<const unsigned char*>(g_pszDescriptorDefaultName),
+              reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(identitySharedString0))) ==
+      0;
   if (nameIsDefault) {
     CString flavorName;
     SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, this->nationSlot);
-    this->identitySharedString0 = CString(flavorName);
+    identitySharedString0 = CString(flavorName);
     if (g_pSimMgr != 0) {
       g_pSimMgr->sharedTextSlots[this->nationSlot] = flavorName;
     }
   }
-  this->identitySharedString1 = this->identitySharedString0;
-  this->treasuryValue = 5000;
+  identitySharedString1 = identitySharedString0;
+  treasuryValue = 5000;
 
-  this->militaryUnitList = new TList();
+  militaryUnitList = new TList();
 
   for (int unitType = 0; unitType < 0x1e; ++unitType) {
-    this->unitNameOrdinalByType[unitType] = 1;
+    unitNameOrdinalByType[unitType] = 1;
   }
-  this->unitNameCounter = 1;
+  unitNameCounter = 1;
 
   TLongintList* ownedRegions = new TLongintList();
   for (int cityIndex = 0; cityIndex < kProvinceCount; ++cityIndex) {
@@ -107,18 +108,18 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
       ownedRegions->InsertLast(cityIndex);
     }
   }
-  this->ownedRegionList = ownedRegions;
+  ownedRegionList = ownedRegions;
 }
 
 // FUNCTION: IMPERIALISM 0x004d6ba0
 void TCountry::Free(void) {
-  if (this->militaryUnitList != 0) {
-    this->militaryUnitList->FreeList();
+  if (militaryUnitList != 0) {
+    militaryUnitList->FreeList();
   }
-  this->militaryUnitList = 0;
-  if (this->ownedRegionList != 0) {
-    this->ownedRegionList->Free();
-    this->ownedRegionList = 0;
+  militaryUnitList = 0;
+  if (ownedRegionList != 0) {
+    ownedRegionList->Free();
+    ownedRegionList = 0;
   }
   delete this;
 }
@@ -126,44 +127,44 @@ void TCountry::Free(void) {
 // FUNCTION: IMPERIALISM 0x004d6bf0
 void TCountry::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadSharedString(&this->identitySharedString0, 0xff);
-  g_pSimMgr->sharedTextSlots[this->nationSlot] = this->identitySharedString0;
-  stream->ReadSharedString(&this->identitySharedString1, 0xff);
+  stream->ReadSharedString(&identitySharedString0, 0xff);
+  g_pSimMgr->sharedTextSlots[nationSlot] = identitySharedString0;
+  stream->ReadSharedString(&identitySharedString1, 0xff);
 
-  stream->ReadBytes(&this->nationSlot, 2);
-  stream->ReadBytes(&this->encodedNationSlot, 2);
-  stream->ReadBytes(this->unitNameOrdinalByType, 0x3c);
-  SwapShortArrayBytes(this->unitNameOrdinalByType, 0x1e);
+  stream->ReadBytes(&nationSlot, 2);
+  stream->ReadBytes(&encodedNationSlot, 2);
+  stream->ReadBytes(unitNameOrdinalByType, 0x3c);
+  SwapShortArrayBytes(unitNameOrdinalByType, 0x1e);
 
-  stream->ReadBytes(&this->unitNameCounter, 2);
-  stream->ReadBytes(&this->treasuryValue, 4);
-  stream->ReadBytes(&this->homeTileIndex, 4);
-  stream->ReadBytes(&this->overlayAnchorTileCache, 4);
-  stream->ReadBytes(this->tradePolicyByNation, 0x2e);
-  SwapShortArrayBytes(this->tradePolicyByNation, 0x17);
+  stream->ReadBytes(&unitNameCounter, 2);
+  stream->ReadBytes(&treasuryValue, 4);
+  stream->ReadBytes(&homeTileIndex, 4);
+  stream->ReadBytes(&overlayAnchorTileCache, 4);
+  stream->ReadBytes(tradePolicyByNation, 0x2e);
+  SwapShortArrayBytes(tradePolicyByNation, 0x17);
 
-  if (this->militaryUnitList->GetCount() != 0) {
-    this->militaryUnitList->FreePayloads();
+  if (militaryUnitList->GetCount() != 0) {
+    militaryUnitList->FreePayloads();
   }
-  this->militaryUnitList->ReadFrom(stream);
+  militaryUnitList->ReadFrom(stream);
 
   int entryCount;
   stream->ReadBytes(&entryCount, 4);
   for (int recruitIndex = 1; recruitIndex <= entryCount; ++recruitIndex) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
-    militaryOrder->IMilitaryUnit(0, -1, this->nationSlot, 0);
+    militaryOrder->IMilitaryUnit(0, -1, nationSlot, 0);
     militaryOrder->ReadFrom(stream);
   }
 
-  if (this->ownedRegionList->GetSize() != 0) {
-    this->ownedRegionList->RemoveAll();
+  if (ownedRegionList->GetSize() != 0) {
+    ownedRegionList->RemoveAll();
   }
-  this->ownedRegionList->NoOpReadFrom(stream);
+  ownedRegionList->NoOpReadFrom(stream);
   stream->ReadBytes(&entryCount, 4);
   for (int regionIndex = 1; regionIndex <= entryCount; ++regionIndex) {
     int entryValue;
     stream->ReadBytes(&entryValue, 4);
-    this->ownedRegionList->InsertLast(entryValue);
+    ownedRegionList->InsertLast(entryValue);
   }
 }
 
@@ -173,41 +174,41 @@ void TCountry::ReadFrom(TStream* stream) {
 void TCountry::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
 
-  stream->WriteSharedString(&this->identitySharedString0);
-  stream->WriteSharedString(&this->identitySharedString1);
+  stream->WriteSharedString(&identitySharedString0);
+  stream->WriteSharedString(&identitySharedString1);
 
-  stream->WriteBytes(&this->nationSlot, 2);
-  stream->WriteBytes(&this->encodedNationSlot, 2);
-  WriteShortArrayElems(stream, this->unitNameOrdinalByType, 0x1e);
-  stream->WriteBytes(&this->unitNameCounter, 2);
-  stream->WriteBytes(&this->treasuryValue, 4);
-  stream->WriteBytes(&this->homeTileIndex, 4);
-  stream->WriteBytes(&this->overlayAnchorTileCache, 4);
-  WriteShortArrayElemsRev(stream, this->tradePolicyByNation, 0x17);
+  stream->WriteBytes(&nationSlot, 2);
+  stream->WriteBytes(&encodedNationSlot, 2);
+  WriteShortArrayElems(stream, unitNameOrdinalByType, 0x1e);
+  stream->WriteBytes(&unitNameCounter, 2);
+  stream->WriteBytes(&treasuryValue, 4);
+  stream->WriteBytes(&homeTileIndex, 4);
+  stream->WriteBytes(&overlayAnchorTileCache, 4);
+  WriteShortArrayElemsRev(stream, tradePolicyByNation, 0x17);
 
-  WriteTrackedListToStream(stream, this->militaryUnitList);
-  WriteIntListToStream(stream, this->ownedRegionList);
+  WriteTrackedListToStream(stream, militaryUnitList);
+  WriteIntListToStream(stream, ownedRegionList);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7070
 void TCountry::MultiReadFrom(TStream* stream, int unusedArg) {
-  stream->ReadBytes(&this->encodedNationSlot, 2);
-  stream->ReadBytes(&this->treasuryValue, 4);
-  stream->ReadBytes(&this->homeTileIndex, 4);
-  stream->ReadBytes(&this->overlayAnchorTileCache, 4);
+  stream->ReadBytes(&encodedNationSlot, 2);
+  stream->ReadBytes(&treasuryValue, 4);
+  stream->ReadBytes(&homeTileIndex, 4);
+  stream->ReadBytes(&overlayAnchorTileCache, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004d70e0
 void TCountry::MultiWriteTo(TStream* stream) {
-  stream->WriteBytes(&this->encodedNationSlot, 2);
-  stream->WriteBytes(&this->treasuryValue, 4);
-  stream->WriteBytes(&this->homeTileIndex, 4);
-  stream->WriteBytes(&this->overlayAnchorTileCache, 4);
+  stream->WriteBytes(&encodedNationSlot, 2);
+  stream->WriteBytes(&treasuryValue, 4);
+  stream->WriteBytes(&homeTileIndex, 4);
+  stream->WriteBytes(&overlayAnchorTileCache, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7150
 void TCountry::SetCenterTile(int value) {
-  this->overlayAnchorTileCache = static_cast<short>(value);
+  overlayAnchorTileCache = static_cast<short>(value);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7170
@@ -216,7 +217,7 @@ short TCountry::GeopoliticalCenter() {
     overlayAnchorTileCache = static_cast<short>(
         g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, true));
   }
-  return static_cast<short>(overlayAnchorTileCache);
+  return overlayAnchorTileCache;
 }
 
 // FUNCTION: IMPERIALISM 0x004d71b0
@@ -224,95 +225,94 @@ void TCountry::InitialMilitia(void) {
   TSimMgr* simMgr = g_pSimMgr;
   if (simMgr->scenarioMapIndexPlusOne > 0) {
     g_pGlobalMapState->BuildFort(
-        g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)]
-            .cityRecordIndex);
+        g_pGlobalMapState->terrainStateTable[static_cast<short>(homeTileIndex)].cityRecordIndex);
     return;
   }
   int ordinal = 1;
-  if (this->ownedRegionList->GetSize() >= 1) {
+  if (ownedRegionList->GetSize() >= 1) {
     do {
-      int regionId = this->ownedRegionList->At(ordinal);
+      int regionId = ownedRegionList->At(ordinal);
       short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].cityTileIndex;
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
-        order->IMilitaryUnit(2, regionId, this->nationSlot);
+        order->IMilitaryUnit(2, regionId, nationSlot);
         if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
-        order->IMilitaryUnit(2, regionId, this->nationSlot);
+        order->IMilitaryUnit(2, regionId, nationSlot);
         if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
-        order->IMilitaryUnit(7, regionId, this->nationSlot);
+        order->IMilitaryUnit(7, regionId, nationSlot);
         if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         g_pGlobalMapState->BuildFort(regionId);
-        if (this->nationSlot < 7 && g_apNationStates[this->nationSlot]->diplomacyEligibility == 0 &&
+        if (nationSlot < 7 && g_apNationStates[nationSlot]->diplomacyEligibility == 0 &&
             g_pSimMgr->difficultyLevel == kDifficultyNighOnImpossible) {
           order = new TMilitaryUnit();
-          order->IMilitaryUnit(6, regionId, this->nationSlot);
+          order->IMilitaryUnit(6, regionId, nationSlot);
           if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
             order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
           order = new TMilitaryUnit();
-          order->IMilitaryUnit(5, regionId, this->nationSlot);
+          order->IMilitaryUnit(5, regionId, nationSlot);
           if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
             order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
-          TGreatPower* nation = g_apNationStates[this->nationSlot];
+          TGreatPower* nation = g_apNationStates[nationSlot];
           TCity* cityForPort = (nation != 0) ? nation->city : 0;
           TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
-          CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone, this->nationSlot, 0);
+          CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone, nationSlot, 0);
         }
-        if (this->nationSlot < kMajorNationCount) {
-          TGreatPower* nation = g_apNationStates[this->nationSlot];
+        if (nationSlot < kMajorNationCount) {
+          TGreatPower* nation = g_apNationStates[nationSlot];
           if (nation->diplomacyEligibility != 0 &&
               g_pSimMgr->difficultyLevel == kDifficultyIntroductory) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
             CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone->primaryNeighbors[0],
-                                                           this->nationSlot, 0);
+                                                           nationSlot, 0);
           }
         }
       }
-      this->AddMilitia(regionId);
-      this->AddMilitia(regionId);
-      this->AddMilitia(regionId);
+      AddMilitia(regionId);
+      AddMilitia(regionId);
+      AddMilitia(regionId);
       if (g_pSimMgr->difficultyLevel > kDifficultyNormal) {
-        this->AddMilitia(regionId);
-        if (this->nationSlot >= kMajorNationCount) {
+        AddMilitia(regionId);
+        if (nationSlot >= kMajorNationCount) {
           TMilitaryUnit* lateOrder = new TMilitaryUnit();
-          lateOrder->IMilitaryUnit(7, regionId, this->nationSlot);
+          lateOrder->IMilitaryUnit(7, regionId, nationSlot);
         }
       }
       if (*g_pGlobalMapState->scenarioTagText == '+') {
         TMilitaryUnit* bonusOrder = new TMilitaryUnit();
-        bonusOrder->IMilitaryUnit(2, regionId, this->nationSlot);
+        bonusOrder->IMilitaryUnit(2, regionId, nationSlot);
         bonusOrder->SetOrders(static_cast<UnitOrder>(2), -1);
       }
       ++ordinal;
-    } while (ordinal <= this->ownedRegionList->GetSize());
+    } while (ordinal <= ownedRegionList->GetSize());
   }
-  this->NameUnits();
+  NameUnits();
 }
 
 // FUNCTION: IMPERIALISM 0x004d7770
 void TCountry::AddMilitia(int nodeContext) {
   int capabilityBonus = 0;
-  if (static_cast<unsigned short>(this->nationSlot) < kMajorNationCount) {
-    const TTechMgr::MilitaryCapRow& capabilityRow = g_pTechMgr->abilityActiveRows[this->nationSlot];
+  if (static_cast<unsigned short>(nationSlot) < kMajorNationCount) {
+    const TTechMgr::MilitaryCapRow& capabilityRow = g_pTechMgr->abilityActiveRows[nationSlot];
     if (capabilityRow.abilityActiveById[0x10] != 0) {
       capabilityBonus = 0x10;
     } else {
-      char capabilityFlag = static_cast<char>(capabilityRow.abilityActiveById[8]);
+      char capabilityFlag = capabilityRow.abilityActiveById[8];
       capabilityBonus = capabilityFlag > 0 ? 8 : 0;
     }
   }
   TMilitaryUnit* militaryOrder = new TMilitaryUnit();
-  militaryOrder->IMilitaryUnit(static_cast<short>(capabilityBonus), nodeContext, this->nationSlot);
+  militaryOrder->IMilitaryUnit(static_cast<short>(capabilityBonus), nodeContext, nationSlot);
   militaryOrder->SetOrders(static_cast<UnitOrder>(2), -1);
 }
 
@@ -332,15 +332,15 @@ void TCountry::AssignSharedStringFromDescriptorNameOrDefault(CString* out) {
     CString defaultName(g_pszDescriptorDefaultName);
     *out = defaultName;
   } else {
-    *out = g_pSimMgr->GetCountryNameWithCode(this->nationSlot);
+    *out = g_pSimMgr->GetCountryNameWithCode(nationSlot);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004d7a00
 void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
-  this->identitySharedString0 = name;
+  identitySharedString0 = name;
   if (g_pSimMgr != 0) {
-    g_pSimMgr->sharedTextSlots[this->nationSlot] = name;
+    g_pSimMgr->sharedTextSlots[nationSlot] = name;
   }
 }
 
@@ -356,7 +356,7 @@ void TCountry::GetNameWithCode(CString* destString) {
 
 // FUNCTION: IMPERIALISM 0x004d7ae0
 void TCountry::AddToTreasury(int amount) {
-  this->treasuryValue += amount;
+  treasuryValue += amount;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7b00
@@ -368,34 +368,34 @@ bool TCountry::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, shor
 // FUNCTION: IMPERIALISM 0x004d7b20
 void TCountry::ChangeMaster(int targetNationSlot, int mode) {
   if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
-    g_pGameFlowState->SendChangeMaster(this->nationSlot, targetNationSlot, mode);
+    g_pGameFlowState->SendChangeMaster(nationSlot, targetNationSlot, mode);
   }
 
   if (mode == 1) {
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
-        this->nationSlot, targetNationSlot, kDiplomacyRelationshipJoinedEmpire);
+        nationSlot, targetNationSlot, kDiplomacyRelationshipJoinedEmpire);
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
-        targetNationSlot, this->nationSlot, kDiplomacyRelationshipJoinedEmpire);
+        targetNationSlot, nationSlot, kDiplomacyRelationshipJoinedEmpire);
   }
 
-  if (this->nationSlot < kMajorNationCount) {
+  if (nationSlot < kMajorNationCount) {
     g_pSimMgr->ReduceNumGPs();
   }
 
   if (mode == 0) {
-    this->BecomeProtectorateOf(targetNationSlot);
+    BecomeProtectorateOf(targetNationSlot);
     return;
   }
   if (mode == 1) {
-    this->BecomeColonyOf(targetNationSlot);
+    BecomeColonyOf(targetNationSlot);
     return;
   }
-  this->RegainIndependence();
+  RegainIndependence();
 }
 
 // FUNCTION: IMPERIALISM 0x004d7c00
 void TCountry::BecomeProtectorateOf(int targetNationSlot) {
-  this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
+  encodedNationSlot = static_cast<short>(targetNationSlot + 100);
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
         nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
@@ -408,8 +408,8 @@ void TCountry::BecomeProtectorateOf(int targetNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004d7c90
 void TCountry::BecomeColonyOf(int targetNationSlot) {
-  this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
-  this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
+  encodedNationSlot = static_cast<short>(targetNationSlot + 200);
+  SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
 
   int nationSlot;
   for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
@@ -425,45 +425,43 @@ void TCountry::BecomeColonyOf(int targetNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004d7d20
 bool TCountry::IsColonyOf(int nationCode) {
-  int adjusted = static_cast<short>(this->encodedNationSlot) - 0xc8;
+  int adjusted = static_cast<short>(encodedNationSlot) - 0xc8;
   return adjusted == nationCode;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7d50
 void TCountry::RegainIndependence(void) {
-  this->identitySharedString0 = this->identitySharedString1;
+  identitySharedString0 = identitySharedString1;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7d70
 void TCountry::LoseProvince(int regionId) {
-  this->ownedRegionList->Delete(regionId);
+  ownedRegionList->Delete(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7da0
 void TCountry::AddProvince(int regionId) {
-  this->ownedRegionList->InsertLast(regionId);
+  ownedRegionList->InsertLast(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7dd0
 void TCountry::NewStatusFor(int targetNationSlot, int policyCode) {
-  short targetNation = static_cast<short>(targetNationSlot);
+  short targetNation = targetNationSlot;
   if (policyCode == 500 || policyCode != 200) {
-    this->tradePolicyByNation[targetNation] = 100;
+    tradePolicyByNation[targetNation] = 100;
     return;
   }
   TCountry* terrain = g_apTerrainTypeDescriptorTable[targetNationSlot];
   short encodedLink = terrain->encodedNationSlot;
   if (encodedLink > 199) {
-    this->tradePolicyByNation[targetNation] =
-        this->tradePolicyByNation[static_cast<short>(encodedLink - 200)];
+    tradePolicyByNation[targetNation] = tradePolicyByNation[static_cast<short>(encodedLink - 200)];
     return;
   }
   if (encodedLink > 99) {
-    this->tradePolicyByNation[targetNation] =
-        this->tradePolicyByNation[static_cast<short>(encodedLink - 100)];
+    tradePolicyByNation[targetNation] = tradePolicyByNation[static_cast<short>(encodedLink - 100)];
     return;
   }
-  this->tradePolicyByNation[targetNation] = this->tradePolicyByNation[terrain->nationSlot];
+  tradePolicyByNation[targetNation] = tradePolicyByNation[terrain->nationSlot];
 }
 
 // FUNCTION: IMPERIALISM 0x004d7e90
@@ -517,12 +515,11 @@ void TCountry::AddOfferFrom(NationSlot sourceNationSlot,
 // FUNCTION: IMPERIALISM 0x004d8000
 void TCountry::NameUnits(void) {
   int ordinal = 1;
-  if (this->militaryUnitList->GetCount() < 1) {
+  if (militaryUnitList->GetCount() < 1) {
     return;
   }
   do {
-    TMilitaryUnit* unit =
-        static_cast<TMilitaryUnit*>(this->militaryUnitList->GetEntryByOrdinal(ordinal));
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(militaryUnitList->GetEntryByOrdinal(ordinal));
     if (unit->unitRosterId == 0) {
       if (unit->orderType < EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
         CString ordinalText;
@@ -530,34 +527,34 @@ void TCountry::NameUnits(void) {
         CString composedName;
         short unitType = unit->orderType;
         TSimMgr* simMgr = g_pSimMgr;
-        short* nameOrdinalCounter = &this->unitNameOrdinalByType[unitType];
+        short* nameOrdinalCounter = &unitNameOrdinalByType[unitType];
         simMgr->NumToOrdinal(*nameOrdinalCounter, &ordinalText);
         simMgr->GetString(0x2717, unitType, &typeName);
         CString withSeparator = ordinalText + CString(" ");
         CString fullName = withSeparator + typeName;
         composedName = fullName;
         unit->name = composedName;
-        unit->unitRosterId = this->unitNameCounter;
-        ++this->unitNameCounter;
+        unit->unitRosterId = unitNameCounter;
+        ++unitNameCounter;
         ++*nameOrdinalCounter;
       } else {
         CString flavorBase;
         CString flavorName;
         g_pSimMgr->GetString(0x2744, 0, &flavorBase);
         do {
-          GenerateMappedFlavorTextByTableSlot(&flavorName, this->nationSlot);
+          GenerateMappedFlavorTextByTableSlot(&flavorName, nationSlot);
         } while (flavorName.GetLength() > 0xf - flavorBase.GetLength());
         CString withSeparator = flavorBase + CString(" ");
         CString fullName = withSeparator + flavorName;
         flavorName = fullName;
         unit->name = flavorName;
-        unit->unitRosterId = this->unitNameCounter;
-        ++this->unitNameCounter;
+        unit->unitRosterId = unitNameCounter;
+        ++unitNameCounter;
       }
     }
     ++ordinal;
     ordinal = static_cast<short>(ordinal);
-  } while (ordinal <= this->militaryUnitList->GetCount());
+  } while (ordinal <= militaryUnitList->GetCount());
 }
 
 // FUNCTION: IMPERIALISM 0x004d8390
@@ -579,7 +576,7 @@ int TCountry::GetTotalLandForce(void) {
 // FUNCTION: IMPERIALISM 0x004d8430
 int TCountry::GetArmsInArmy() {
   int powerSum = 0;
-  CIterator unitIter(this->militaryUnitList);
+  CIterator unitIter(militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     powerSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
@@ -589,8 +586,7 @@ int TCountry::GetArmsInArmy() {
 
 // FUNCTION: IMPERIALISM 0x004d87b0
 int TCountry::GetCapitolProvince(void) {
-  return g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)]
-      .cityRecordIndex;
+  return g_pGlobalMapState->terrainStateTable[static_cast<short>(homeTileIndex)].cityRecordIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x004d87e0
@@ -601,17 +597,17 @@ void TCountry::GrowMilitia(void) {
   }
 
   int garrisonThreshold = 3;
-  if (static_cast<unsigned short>(this->nationSlot) < kMajorNationCount) {
+  if (static_cast<unsigned short>(nationSlot) < kMajorNationCount) {
     garrisonThreshold = 4;
   }
 
-  int regionCount = this->ownedRegionList->GetSize();
+  int regionCount = ownedRegionList->GetSize();
   int ordinal = 1;
   if (ordinal > regionCount) {
     return;
   }
   do {
-    short regionId = static_cast<short>(this->ownedRegionList->At(ordinal));
+    short regionId = ownedRegionList->At(ordinal);
     short garrisonCount = 0;
     TMilitaryUnit* unitChain;
     if ((regionId < 0) || (regionId) > 0x17f) {
@@ -621,21 +617,21 @@ void TCountry::GrowMilitia(void) {
     }
     for (; unitChain != 0; unitChain = static_cast<TMilitaryUnit*>(unitChain->nextAtLocation)) {
       if (unitChain->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-        garrisonCount = static_cast<short>(garrisonCount + 1);
+        ++garrisonCount;
       }
     }
     if (garrisonCount < static_cast<short>(garrisonThreshold)) {
-      this->AddMilitia(static_cast<int>(regionId));
+      AddMilitia(static_cast<int>(regionId));
     }
     ++ordinal;
-    regionCount = this->ownedRegionList->GetSize();
+    regionCount = ownedRegionList->GetSize();
   } while (ordinal <= regionCount);
 }
 
 // FUNCTION: IMPERIALISM 0x004d8920
 void TCountry::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
   if (nationSlot != this->nationSlot) {
-    this->tradePolicyByNation[nationSlot] = tradePolicy;
+    tradePolicyByNation[nationSlot] = tradePolicy;
   }
 }
 

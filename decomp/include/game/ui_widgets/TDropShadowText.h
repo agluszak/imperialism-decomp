@@ -7,11 +7,11 @@
 class TDropShadowText : public TPictureText {
 public:
   DECLARE_DYNCREATE(TDropShadowText)
-  virtual ~TDropShadowText() override;          // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5b5650
+  virtual ~TDropShadowText() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   TDropShadowText();
 
-  COLORREF shadowColor; // +0x94 -- resolved QuickDraw shadow color
+  COLORREF shadowColor; // resolved QuickDraw shadow color
 };
 ASSERT_SIZE(TDropShadowText, 0x98);

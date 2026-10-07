@@ -9,20 +9,20 @@ class TStream;
 class TTaskForce;
 
 struct TMapOrderInteractionSelection {
-  short offerNationCode;       // +0x00
-  short pad02;                 // +0x02
+  short offerNationCode;
+  short pad02;
   unsigned int directionFlags; // +0x04 packed direction bits (bit0/bit1)
-  TTaskForce* selectedEntry;   // +0x08
+  TTaskForce* selectedEntry;
 };
 
 // VTABLE: IMPERIALISM 0x0065c4c8
 class TNavyMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TNavyMgr)
-  virtual ~TNavyMgr() override;                    // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5568c0
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x556aa0
-  virtual void Free() override;                    // slot 0x07 0x5567a0
+  virtual ~TNavyMgr() override;
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual void Free() override;
   TTaskForce* orderQueueHead;
 
   TTaskForce* WhoseIngotIsAt(short tileIndex);
@@ -32,13 +32,13 @@ public:
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
   void PrepareToCarryOutAllOrders(short phaseId);
-  void MakeSureAllShipsHaveOrders(); // 0x557560
+  void MakeSureAllShipsHaveOrders();
 
   TTaskForce* AssignEscorts(short requiredCount, short chancePercent);
 
   void WriteToFilterously(TStream* stream, short nationFilter);
   void ReadFromFilterously(TStream* stream, short nationFilter);
-  void FreeShipsOf(short nation); // 0x556f60
+  void FreeShipsOf(short nation);
   void ClearAllOrders() {
     while (g_pNavyPrimaryOrderListHead != 0) {
       g_pNavyPrimaryOrderListHead->Free();
@@ -54,25 +54,25 @@ public:
   }
   short GetInvasionCapacity(short nationSlot, Province* provinceTarget, TZone* contextFilter);
 
-  bool CommitForce(TTaskForce* entry); // 0x557080
+  bool CommitForce(TTaskForce* entry);
 
   void ForgetForce(TTaskForce* entry);
 
-  void ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEntry); // 0x55a780
+  void ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEntry);
 
-  void ScuttleEverything(); // 0x556fd0
+  void ScuttleEverything();
 
   void ClearAllTransientOrders();
 
   bool TryMerchantInterception(TMapOrderInteractionSelection* outResult, TZone* portZoneContext,
                                short nation, short offerAmount);
 
-  void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode); // 0x558960
+  void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode);
 
-  void CarryOutOrders(); // 0x5578a0
+  void CarryOutOrders();
 
-  unsigned short ActionCursor(short nTileIndex, int nInputFlags);    // 0x559dd0
-  unsigned short SelectionCursor(short nTileIndex, int nInputFlags); // 0x559e00
+  unsigned short ActionCursor(short nTileIndex, int nInputFlags);
+  unsigned short SelectionCursor(short nTileIndex, int nInputFlags);
 
   // ABI: callers store and test AL.
   bool SelectionClick(short nTileIndex, int nInputFlags);

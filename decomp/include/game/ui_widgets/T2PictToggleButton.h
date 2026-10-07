@@ -10,8 +10,8 @@ public:
   T2PictToggleButton();
   virtual ~T2PictToggleButton() override;
   DECLARE_DYNCREATE(T2PictToggleButton)
-  bool IsSelected() override;                              // slot 0x73 0x1cc
-  void Select(bool isPressed, bool notifyParent) override; // slot 0x74 0x1d0
+  bool IsSelected() override;
+  void Select(bool isPressed, bool notifyParent) override;
 };
 
 ASSERT_SIZE(T2PictToggleButton, 0x90);

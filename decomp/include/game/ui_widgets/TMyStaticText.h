@@ -9,7 +9,7 @@
 class TMyStaticText : public TStaticText {
 public:
   DECLARE_DYNCREATE(TMyStaticText)
-  virtual ~TMyStaticText() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TMyStaticText() override;
 
   TMyStaticText();
 };

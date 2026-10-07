@@ -548,7 +548,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
   int tileOffset = 0;
   do {
     char* tiles = mapTileGrid;
-    int cls = static_cast<int>(tiles[tileOffset + 4]);
+    int cls = tiles[tileOffset + 4];
     if ((cls < kNationSlotCount) && (cls) > -1) {
       if (seedFound[cls] == 0) {
         int row = tileIndex / kStrategicMapColumns;
@@ -556,7 +556,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
         char wrapFlag = g_pGlobalMapState->hexNeighborWrapHorizontally;
         bool haveCandidate = false;
         for (short dir = 0; dir < 6; ++dir) {
-          int idx = static_cast<int>(dir);
+          int idx = dir;
           int nCol;
           if ((row & 1U) == 0) {
             nCol = g_hexColOffsetEvenRow[idx];
@@ -727,8 +727,8 @@ void TMapMaker::RunMapGenerationAttempt() {
         RuntimeCoarseMapOracleRecordDraw();
         RuntimeCoarseMapOracleRecordDraw();
 #endif
-        int roll1 = static_cast<int>((rngTemp >> 0xc & 0x7fff) % 0x1b);
-        int roll2 = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % 0xf);
+        int roll1 = (rngTemp >> 0xc & 0x7fff) % 0x1b;
+        int roll2 = (g_mapGenLcgState >> 0xc & 0x7fff) % 0xf;
         cellIndex =
             roll1 / 2 + ((parity & 1) ? 0xd : 0) + (roll2 / 2 + ((parity < 2) ? 0 : 7)) * 0x1b;
         for (int dir = 0; dir < 6; ++dir) {
@@ -798,7 +798,7 @@ int TMapMaker::SelectGPZone(int cellIndex, int mode, int classIndex, int retryBu
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeCoarseMapOracleRecordDraw();
 #endif
-    int roll = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % totalWeight);
+    int roll = (g_mapGenLcgState >> 0xc & 0x7fff) % totalWeight;
     int selectedDir = 0;
     if (weights[0] < roll) {
       int cumulative = weights[0];
@@ -986,7 +986,7 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
     } while (mapTileGrid[tileIndex * kTileStride] != kStrategicTerrainPlains);
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
     int retryBudget = static_cast<int>((seedHigh & 0x7fff) % 0xc) + 3;
-    int direction = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % 6);
+    int direction = (g_mapGenLcgState >> 0xc & 0x7fff) % 6;
     remaining -= SeedMountainRange(tileIndex, retryBudget, direction);
   }
   if (g_pActiveRandomMapSetupPicture != 0) {
@@ -1034,7 +1034,7 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
   bool urgentFlag = false;
   while (forestQuota > 0) {
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-    int forestTile = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % kStrategicTileCount);
+    int forestTile = (g_mapGenLcgState >> 0xc & 0x7fff) % kStrategicTileCount;
     forestQuota -= PlantForestCluster(forestTile, 7, static_cast<char>(urgentFlag));
     if (forestQuota < g_mapGenForestQuota * 2 / 3) {
       urgentFlag = true;
@@ -1101,7 +1101,7 @@ void TMapMaker::CreateRivers() {
     } while (mapTileGrid[tileIndex * kTileStride] != kStrategicTerrainMountain);
 
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-    int firstDirection = static_cast<int>((g_mapGenLcgState >> 12 & 0x7fff) % 5);
+    int firstDirection = (g_mapGenLcgState >> 12 & 0x7fff) % 5;
     int direction = firstDirection;
     int neighbor;
     do {
@@ -1213,7 +1213,7 @@ int TMapMaker::SeedMountainRange(int tileIndex, int retryBudget, int direction) 
   int nextDirection = direction;
   if (direction == 1 || direction == 4) {
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-    int roll = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % 100);
+    int roll = (g_mapGenLcgState >> 0xc & 0x7fff) % 100;
     if (roll > 0x27) {
       if (roll < 0x46) {
         nextDirection = (direction == 0) ? 5 : direction - 1;
@@ -1225,7 +1225,7 @@ int TMapMaker::SeedMountainRange(int tileIndex, int retryBudget, int direction) 
     }
   } else {
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-    int roll = static_cast<int>((g_mapGenLcgState >> 0xc & 0x7fff) % 100);
+    int roll = (g_mapGenLcgState >> 0xc & 0x7fff) % 100;
     if (roll > 0x3b) {
       if (roll < 0x50) {
         nextDirection = (direction == 0) ? 5 : direction - 1;
@@ -1483,7 +1483,7 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
     }
     if (!hasSameOwnerNeighbor) {
       g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-      short randomDir = static_cast<short>(static_cast<int>(g_mapGenLcgState >> 0xc & 0x7fff) % 6);
+      short randomDir = static_cast<int>(g_mapGenLcgState >> 0xc & 0x7fff) % 6;
       int neighborTile = GetNeighborTileIndexOnMap108x60(isolatedTile, randomDir);
       memcpy(&mapTileGrid[isolatedTile * kTileStride], &mapTileGrid[neighborTile * kTileStride],
              kTileStride);
@@ -2045,7 +2045,7 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
   int i = 0;
   short* p = labels;
   do {
-    short index = static_cast<short>(i);
+    short index = i;
     ++i;
     *p = (g_pGlobalMapState->terrainStateTable[index].GetTerrainKind() == kStrategicTerrainWater) -
          2;

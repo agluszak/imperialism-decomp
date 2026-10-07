@@ -128,7 +128,7 @@ void TMapPreviewView::TakeSatellitePhoto(char* tileOwnerTagTable) {
     short hexTags[7];
     SplitTileIndexToHexRasterColumnX2AndRow(static_cast<short>(tileIndex), &px, &py);
     unsigned char oddRow = static_cast<unsigned char>(py) & 1;
-    py = static_cast<short>(py * 3);
+    py *= 3;
     px = static_cast<short>((px * 3) / 2);
     TMapMgr::GetNeighborTileIDArray(static_cast<short>(tileIndex), hexTags, 1);
     hexTags[6] = static_cast<short>(tileIndex);

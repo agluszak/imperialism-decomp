@@ -10,11 +10,11 @@ class TTurnStartEvent : public TObject {
 public:
   DECLARE_DYNCREATE(TTurnStartEvent)
   // FUNCTION: IMPERIALISM 0x004e6660
-  virtual ~TTurnStartEvent() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void Execute();                // slot 0x0a 0x4e6610
+  virtual ~TTurnStartEvent() override {}
+  virtual void Execute();
 
   // Concrete event initializers replace the uninitialized 'erra' tag.
-  int eventTag; // +0x04
+  int eventTag;
 
   TTurnStartEvent() : eventTag(kControlTagErra) {}
 };

@@ -9,19 +9,19 @@
 class TStream;
 
 struct newsEntry {
-  int storyId;            // +0x00 — match key; 0 in a story slot means "slot empty"
+  int storyId;            // match key; 0 in a story slot means "slot empty"
   int headlineTextOffset; // +0x04 \ byte range in news.tex
-  int headlineTextLength; // +0x08 /
-  int storyTextOffset;    // +0x0c \ second byte range in news.tex
-  int storyTextLength;    // +0x10 /
-  int reserved14;         // +0x14 — byteswapped with the rest; no observed reader
+  int headlineTextLength;
+  int storyTextOffset; // +0x0c \ second byte range in news.tex
+  int storyTextLength;
+  int reserved14; // byteswapped with the rest; no observed reader
 };
 
 struct newsStory {
-  int parmValue[4]; // +0x00..0x0F — substitution-token payloads
+  int parmValue[4]; // substitution-token payloads
   int parmKind[4];
-  newsEntry entry; // +0x20..0x37 — copy of the matched template row
-  bool feature;    // +0x38 — 1 for ranking/random filler stories, 0 for events
+  newsEntry entry; // copy of the matched template row
+  bool feature;    // 1 for ranking/random filler stories, 0 for events
   unsigned char pad39[3];
 };
 
@@ -29,35 +29,33 @@ struct newsStory {
 class TNewsMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TNewsMgr)
-  virtual ~TNewsMgr() override;                    // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x55b8c0
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x55b8a0
-  virtual void Free() override;                    // slot 0x07 0x55b820
+  virtual ~TNewsMgr() override;
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual void Free() override;
 
-  newsEntry* storyTemplateTable; // +0x004
-  int storyTemplateCount;        // +0x008
+  newsEntry* storyTemplateTable;
+  int storyTemplateCount;
   // Per-nation newspaper page: 3x3 story slots (entry.storyId == 0 = empty).
-  newsStory stories[7][3][3]; // +0x00c..0xecf
+  newsStory stories[7][3][3];
   // Transient "news.tex" resource stream held open across the CreateNewspaper calls.
-  CFile* newsTexStream;                                 // +0xed0
-  TPtrList* perNationEventBuckets[kMajorNationCount];   // +0xed4
-  TPtrList* sharedEventRecordQueue;                     // +0xef0
-  short* perNationStoryLastUsedTick[kMajorNationCount]; // +0xef4
+  CFile* newsTexStream;
+  TPtrList* perNationEventBuckets[kMajorNationCount];
+  TPtrList* sharedEventRecordQueue;
+  short* perNationStoryLastUsedTick[kMajorNationCount];
 
   // NOOP: verified empty at original inlined allocation site 0x0057c58f
   TNewsMgr() {}
 
-  bool EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
-                            int nationSlot); // 0x0055cf20
+  bool EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story, int nationSlot);
 
-  bool AlwaysTrueStory(const newsEntry* templateRow, newsStory* story,
-                       int nationSlot); // 0x0055d0c0
+  bool AlwaysTrueStory(const newsEntry* templateRow, newsStory* story, int nationSlot);
 
-  void ClearStoryParms(newsStory* story); // 0x0055d090
+  void ClearStoryParms(newsStory* story);
   void INewsMgr();
-  newsEntry* FindEntry(int storyId); // 0x55c930, Mac oracle
+  newsEntry* FindEntry(int storyId);
   InterNationNewsRecord* FindEventType(int eventKind, int nation, int* ordinal,
-                                       unsigned char differentNation); // 0x55c870
+                                       unsigned char differentNation);
 
   // Mac-oracle event-queue API (gameplay side).
   void AddTreatyEvent(InterNationEventKind eventKind, int nationA, int nationB,

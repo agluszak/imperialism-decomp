@@ -19,5 +19,5 @@ short TIndexAndRankList::Compare(void* a, void* b) {
   if (aKey < bKey) {
     return 1;
   }
-  return static_cast<short>(((aKey <= bKey) - 1 & 0xfffffffe) + 1);
+  return ((aKey <= bKey) - 1 & 0xfffffffe) + 1;
 }

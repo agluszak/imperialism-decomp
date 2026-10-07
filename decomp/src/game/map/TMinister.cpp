@@ -17,30 +17,30 @@ TMinister::TMinister() : greatPower(NULL), ranking(0), skillIndex(0) {}
 
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::IMinister(TGreatPower* ownerContext) {
-  this->greatPower = ownerContext;
-  this->ranking = new TIndexAndRankList();
-  this->ranking->recordSize = 6;
+  greatPower = ownerContext;
+  ranking = new TIndexAndRankList();
+  ranking->recordSize = 6;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ec80
 void TMinister::Free() {
-  if (this->ranking != 0) {
-    this->ranking->FreeList();
+  if (ranking != 0) {
+    ranking->FreeList();
   }
-  this->ranking = 0;
+  ranking = 0;
   delete this;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ecc0
 void TMinister::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadBytes(&this->skillIndex, 2);
+  stream->ReadBytes(&skillIndex, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ecf0
 void TMinister::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytes(&this->skillIndex, 2);
+  stream->WriteBytes(&skillIndex, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ed20
@@ -50,7 +50,7 @@ short TMinister::GetRankingCriterionForGP(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x0052ed50
 void TMinister::FigureOutRanking() {
-  this->ranking->DeleteAll();
+  ranking->DeleteAll();
 
   int nationSlot = 0;
   TCountry** tableCursor = g_apTerrainTypeDescriptorTable;
@@ -59,7 +59,7 @@ void TMinister::FigureOutRanking() {
       IndexAndRankRecord entry;
       entry.index = static_cast<short>(nationSlot);
       entry.value = GetRankingCriterionForGP(static_cast<short>(nationSlot));
-      this->ranking->Insert(&entry);
+      ranking->Insert(&entry);
     }
     ++nationSlot;
     ++tableCursor;
@@ -67,19 +67,19 @@ void TMinister::FigureOutRanking() {
 
   int entryIndex = 1;
   short rank = 1;
-  if (this->ranking->GetSize() > 1) {
+  if (ranking->GetSize() > 1) {
     do {
-      IndexAndRankRecord* current = static_cast<IndexAndRankRecord*>(
-          this->ranking->GetPtrListEntryByOneBasedIndex(entryIndex));
-      IndexAndRankRecord* next = static_cast<IndexAndRankRecord*>(
-          this->ranking->GetPtrListEntryByOneBasedIndex(entryIndex + 1));
+      IndexAndRankRecord* current =
+          static_cast<IndexAndRankRecord*>(ranking->GetPtrListEntryByOneBasedIndex(entryIndex));
+      IndexAndRankRecord* next =
+          static_cast<IndexAndRankRecord*>(ranking->GetPtrListEntryByOneBasedIndex(entryIndex + 1));
       current->rank = rank;
       if (next->value < current->value) {
-        rank = static_cast<short>(rank + 1);
+        ++rank;
       }
       next->rank = rank;
       ++entryIndex;
-    } while (entryIndex < this->ranking->GetSize());
+    } while (entryIndex < ranking->GetSize());
   }
 }
 
@@ -87,18 +87,18 @@ void TMinister::FigureOutRanking() {
 short TMinister::GetRankOf(short nationSlot) {
   int entryIndex = 1;
   short result = nationSlot;
-  if (this->ranking->GetSize() < 1) {
+  if (ranking->GetSize() < 1) {
     return result;
   }
   do {
     IndexAndRankRecord* entry =
-        static_cast<IndexAndRankRecord*>(this->ranking->GetPtrListEntryByOneBasedIndex(entryIndex));
+        static_cast<IndexAndRankRecord*>(ranking->GetPtrListEntryByOneBasedIndex(entryIndex));
     if (entry->index == nationSlot) {
       result = entry->rank;
-      entryIndex = this->ranking->GetSize() + 10;
+      entryIndex = ranking->GetSize() + 10;
     }
     ++entryIndex;
-  } while (entryIndex <= this->ranking->GetSize());
+  } while (entryIndex <= ranking->GetSize());
   return result;
 }
 
@@ -106,39 +106,39 @@ short TMinister::GetRankOf(short nationSlot) {
 short TMinister::GetCountryInRank(short rank) {
   int entryIndex = 1;
   short result = rank;
-  if (this->ranking->GetSize() < 1) {
+  if (ranking->GetSize() < 1) {
     return result;
   }
   do {
     IndexAndRankRecord* entry =
-        static_cast<IndexAndRankRecord*>(this->ranking->GetPtrListEntryByOneBasedIndex(entryIndex));
+        static_cast<IndexAndRankRecord*>(ranking->GetPtrListEntryByOneBasedIndex(entryIndex));
     if (entry->rank == rank) {
       result = entry->index;
-      entryIndex = this->ranking->GetSize() + 10;
+      entryIndex = ranking->GetSize() + 10;
     }
     ++entryIndex;
-  } while (entryIndex <= this->ranking->GetSize());
+  } while (entryIndex <= ranking->GetSize());
   return result;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ef20
 short TMinister::GetRankOfCountryAt(short index) {
   IndexAndRankRecord* entry =
-      static_cast<IndexAndRankRecord*>(this->ranking->GetPtrListEntryByOneBasedIndex(index));
+      static_cast<IndexAndRankRecord*>(ranking->GetPtrListEntryByOneBasedIndex(index));
   return entry->rank;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ef50
 short TMinister::GetInfoOfCountryAt(short index) {
   IndexAndRankRecord* entry =
-      static_cast<IndexAndRankRecord*>(this->ranking->GetPtrListEntryByOneBasedIndex(index));
+      static_cast<IndexAndRankRecord*>(ranking->GetPtrListEntryByOneBasedIndex(index));
   return entry->value;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ef80
 short TMinister::GetCountryAt(short index) {
   IndexAndRankRecord* entry =
-      static_cast<IndexAndRankRecord*>(this->ranking->GetPtrListEntryByOneBasedIndex(index));
+      static_cast<IndexAndRankRecord*>(ranking->GetPtrListEntryByOneBasedIndex(index));
   return entry->index;
 }
 

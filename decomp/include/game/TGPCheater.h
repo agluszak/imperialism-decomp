@@ -9,7 +9,7 @@
 class TGPCheater : public TCheater {
 public:
   DECLARE_DYNCREATE(TGPCheater)
-  virtual ~TGPCheater() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TGPCheater() override;
 
   // NOOP: verified empty in original 0x004b19e3
   TGPCheater() {}

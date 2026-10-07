@@ -44,12 +44,12 @@ TApplication::~TApplication() {
 
 // FUNCTION: IMPERIALISM 0x00486880
 void TApplication::SetTarget(TEventHandler* view) {
-  this->currentTarget = view;
+  currentTarget = view;
 }
 
 // FUNCTION: IMPERIALISM 0x004868a0
 TEventHandler* TApplication::GetTarget() {
-  return this->currentTarget;
+  return currentTarget;
 }
 
 // vtable slot 0x28 (0x00486990 via ILT 0x00405551): `RET 0xc` no-op. MacApp's

@@ -8,9 +8,9 @@ public:
   DECLARE_DYNCREATE(TTerrainHelpWindow)
 
   TTerrainHelpWindow();
-  virtual ~TTerrainHelpWindow() override; // slot 0x01 (scalar deleting destructor 0x504d70)
+  virtual ~TTerrainHelpWindow() override;
 
-  void Close() override; // slot 0x28 0x504dc0
+  void Close() override;
 };
 
 ASSERT_SIZE(TTerrainHelpWindow, 0xa0);

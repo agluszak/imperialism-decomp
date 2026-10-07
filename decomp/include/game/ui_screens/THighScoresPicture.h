@@ -9,17 +9,16 @@
 class THighScoresPicture : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(THighScoresPicture)
-  virtual ~THighScoresPicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x00575770
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x575320
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x575460
-  virtual void Hilite() override;               // slot 0x73 0x45ada0
+  virtual ~THighScoresPicture() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void Hilite() override;
 
   // NOOP: verified empty in original 0x00455a91
   THighScoresPicture() {}
 
-  int scoreValues[10];       // +0x94
-  char scoreNames[10][0x20]; // +0xbc
+  int scoreValues[10];
+  char scoreNames[10][0x20];
 };
 ASSERT_SIZE(THighScoresPicture, 0x1fc);

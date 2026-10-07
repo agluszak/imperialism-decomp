@@ -12,8 +12,8 @@ class TCouncilTickerAnimation : public TAnimation {
 public:
   DECLARE_DYNCREATE(TCouncilTickerAnimation)
   // FUNCTION: IMPERIALISM 0x0049ff50
-  virtual ~TCouncilTickerAnimation() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void Tick() override;                  // slot 0x0a 0x49ffe0
+  virtual ~TCouncilTickerAnimation() override {}
+  virtual void Tick() override;
 
   void InitializeCouncilTicker(TCouncilView* hostPanel, int tickInterval);
 

@@ -35,57 +35,54 @@ TDealBookPicture::~TDealBookPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005bac50
 void TDealBookPicture::Startup(short startupValue) {
-  TToolBarCluster* toolControl = static_cast<TToolBarCluster*>(this->FindSubView(kControlTagTool));
+  TToolBarCluster* toolControl = static_cast<TToolBarCluster*>(FindSubView(kControlTagTool));
   toolControl->AssertValid();
   toolControl->AddInfoBehaviors();
   toolControl->SetReadouts(g_pSimMgr->GetPlayerCountry());
   toolControl->RefreshControl();
 
   // Re-cache the six commodity sub-controls.
-  this->boughtTradesView =
-      static_cast<TTradePageBuyView*>(this->FindSubView(kControlTagBoug)); // 'boug'
-  this->soldTradesView =
-      static_cast<TTradePageSellView*>(this->FindSubView(kControlTagSold));                // 'sold'
-  this->buyPageView = static_cast<TTradePageBuyView*>(this->FindSubView(kControlTagTbou)); // 'tbou'
-  this->sellPageView =
-      static_cast<TTradePageSellView*>(this->FindSubView(kControlTagTsol)); // 'tsol'
-  this->cachedBuyPageView = this->boughtTradesView;
-  this->cachedSellPageView = this->soldTradesView;
+  boughtTradesView = static_cast<TTradePageBuyView*>(FindSubView(kControlTagBoug)); // 'boug'
+  soldTradesView = static_cast<TTradePageSellView*>(FindSubView(kControlTagSold));  // 'sold'
+  buyPageView = static_cast<TTradePageBuyView*>(FindSubView(kControlTagTbou));      // 'tbou'
+  sellPageView = static_cast<TTradePageSellView*>(FindSubView(kControlTagTsol));    // 'tsol'
+  cachedBuyPageView = boughtTradesView;
+  cachedSellPageView = soldTradesView;
 
   // 'mark' toggle + label reload.
-  TView* markControl = this->FindSubView(kControlTagMark); // 'mark'
+  TView* markControl = FindSubView(kControlTagMark); // 'mark'
   if (markControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x129);
   }
   markControl->ViewEnable(1, 0);
-  LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->FindSubView(kControlTagMark));
+  LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, FindSubView(kControlTagMark));
   markControl->ViewEnable(0, 0);
-  TView* tabsControl = this->FindSubView(kControlTagTabs);
+  TView* tabsControl = FindSubView(kControlTagTabs);
   LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, tabsControl);
 
-  this->alternatePageMode = false;
-  this->ShowPage(0, startupValue);
+  alternatePageMode = false;
+  ShowPage(0, startupValue);
   g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
 
   // 'titL' title label.
-  TStaticText* titLControl = static_cast<TStaticText*>(this->FindSubView(kControlTagTitL));
+  TStaticText* titLControl = static_cast<TStaticText*>(FindSubView(kControlTagTitL));
   titLControl->AssertValid();
   titLControl->SetTextWithStrListID(0x2740, 0x19, false);
   CRect titLBounds;
   titLControl->GetFrame(&titLBounds);
   RECT titLInval;
   CopyRect(&titLInval, &titLBounds);
-  this->InvalidateCityDialogRectRegion(&titLInval, 1);
+  InvalidateCityDialogRectRegion(&titLInval, 1);
 
   // 'rtil' subtitle label.
-  TDropShadowText* rtilControl = static_cast<TDropShadowText*>(this->FindSubView(kControlTagRtil));
+  TDropShadowText* rtilControl = static_cast<TDropShadowText*>(FindSubView(kControlTagRtil));
   rtilControl->AssertValid();
   rtilControl->SetTextWithStrListID(0x2740, 0x1a, false);
   CRect rtilBounds;
   rtilControl->GetFrame(&rtilBounds);
   RECT rtilInval;
   CopyRect(&rtilInval, &rtilBounds);
-  this->InvalidateCityDialogRectRegion(&rtilInval, 1);
+  InvalidateCityDialogRectRegion(&rtilInval, 1);
   rtilControl->Show(1, 1);
   ApplyUiTextStyleAndThemeFlags(rtilControl, 0, 0x12, 0x2b6b, 0x2b6c);
 
@@ -98,16 +95,16 @@ void TDealBookPicture::Startup(short startupValue) {
 void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
   CString label;
 
-  if (nationId != this->selectedNationSlot) {
-    this->selectedNationSlot = nationId;
-    this->CalculatePages();
+  if (nationId != selectedNationSlot) {
+    selectedNationSlot = nationId;
+    CalculatePages();
   }
 
   int idx = pageIndex;
-  this->currentPageIndex = static_cast<short>(idx);
+  currentPageIndex = static_cast<short>(idx);
   ++idx;
 
-  TTradePageBuyView* buyCopy = this->cachedBuyPageView;
+  TTradePageBuyView* buyCopy = cachedBuyPageView;
   if (static_cast<short>(idx) > buyCopy->pageCount) {
     buyCopy->Show(0, 1);
   } else {
@@ -115,7 +112,7 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
     buyCopy->Show(1, 0);
   }
 
-  TTradePageSellView* sellCopy = this->cachedSellPageView;
+  TTradePageSellView* sellCopy = cachedSellPageView;
   if (static_cast<short>(idx) > sellCopy->pageCount) {
     sellCopy->Show(0, 1);
   } else {
@@ -123,16 +120,16 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
     sellCopy->Show(1, 0);
   }
 
-  TView* leftCtrl = this->FindSubView(kControlTagLcor);
+  TView* leftCtrl = FindSubView(kControlTagLcor);
   if (leftCtrl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x16e);
   }
-  TView* rightCtrl = this->FindSubView(kControlTagRcor);
+  TView* rightCtrl = FindSubView(kControlTagRcor);
   if (rightCtrl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x170);
   }
 
-  if (this->currentPageIndex != 0) {
+  if (currentPageIndex != 0) {
     leftCtrl->Show(1, 1);
     leftCtrl->ViewEnable(1, 1);
     g_pSimMgr->GetString(0x2730, 0xb, &label);
@@ -143,8 +140,8 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
   }
   SetControlHoverHelpTextAltEntry(label, leftCtrl);
 
-  short refRow = this->lastPageIndex;
-  if (this->currentPageIndex != refRow && refRow != 0) {
+  short refRow = lastPageIndex;
+  if (currentPageIndex != refRow && refRow != 0) {
     rightCtrl->Show(1, 1);
     rightCtrl->ViewEnable(1, 1);
     g_pSimMgr->GetString(0x2730, 0xa, &label);
@@ -277,7 +274,7 @@ void TDealBookPicture::CalculatePages() {
 // FUNCTION: IMPERIALISM 0x005bbc30
 void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 0x2af8) {
-    short tabIndex = static_cast<short>(commandId - 0x2af8);
+    short tabIndex = commandId - 0x2af8;
     short categorySlot = g_tradeBookCategoryByTabAndTechState
         [g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (categorySlot != -1) {

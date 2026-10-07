@@ -5,7 +5,7 @@
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
 
-TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
+TCdAudioDevice g_cdAudioDevice;
 
 // FUNCTION: IMPERIALISM 0x0047cca0
 void TCdAudioDevice::ResetAndOpenCdAudioDeviceHandle() {

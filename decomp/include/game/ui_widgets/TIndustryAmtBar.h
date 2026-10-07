@@ -19,6 +19,6 @@ public:
   DECLARE_DYNCREATE(TIndustryAmtBar)
   void DoPostCreate(int arg) override;
   void DrawAmt() override;
-  virtual void DrawMax(short selectedValue); // 0x00589540
+  virtual void DrawMax(short selectedValue);
 };
 ASSERT_SIZE(TIndustryAmtBar, 0x6c);

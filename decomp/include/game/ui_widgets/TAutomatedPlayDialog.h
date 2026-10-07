@@ -9,8 +9,8 @@
 class TAutomatedPlayDialog : public TDialogView {
 public:
   DECLARE_DYNCREATE(TAutomatedPlayDialog)
-  virtual ~TAutomatedPlayDialog() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;            // slot 0x28 0x5b46c0
+  virtual ~TAutomatedPlayDialog() override;
+  virtual void Close() override;
 
   // NOOP: verified empty in original 0x005b45f3
   TAutomatedPlayDialog() {}

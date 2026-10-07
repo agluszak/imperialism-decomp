@@ -9,8 +9,8 @@
 class TMinorTradeBidsDialog : public TDialogView {
 public:
   DECLARE_DYNCREATE(TMinorTradeBidsDialog)
-  virtual ~TMinorTradeBidsDialog() override; // slot 0x01 (scalar deleting destructor)
-  virtual void StuffValues();                // slot 0x68 0x5b2aa0
+  virtual ~TMinorTradeBidsDialog() override;
+  virtual void StuffValues();
 
   // NOOP: verified empty in original 0x005b29d3
   TMinorTradeBidsDialog() {}

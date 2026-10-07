@@ -201,7 +201,7 @@ void TView::RemoveSubView(class TView* child) {
     return;
   }
 
-  unsigned int tag = static_cast<unsigned int>(child->controlTag);
+  unsigned int tag = child->controlTag;
   POSITION pos = list->GetHeadPosition();
   int found = 0;
   while (pos != NULL) {

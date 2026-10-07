@@ -335,7 +335,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
 void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   int tag = sourceHandler->controlTag;
   if (commandId >= 0x2af8) {
-    short tabIndex = static_cast<short>(commandId - 0x2af8);
+    short tabIndex = commandId - 0x2af8;
     short selectionIndex = g_tradeBookCategoryByTabAndTechState
         [g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (!selectionActive) {

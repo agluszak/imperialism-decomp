@@ -10,8 +10,8 @@ class TMiniCivLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TMiniCivLine)
   // FUNCTION: IMPERIALISM 0x004ab650
-  virtual ~TMiniCivLine() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4ab740
+  virtual ~TMiniCivLine() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
   TCivUnit* civUnit;
 

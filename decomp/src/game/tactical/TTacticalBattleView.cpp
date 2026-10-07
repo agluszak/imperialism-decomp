@@ -1121,7 +1121,7 @@ void TTacticalBattleView::Scroll(MapScrollEdgeMaskStorage scrollDirection) {
 
 // FUNCTION: IMPERIALISM 0x005a8ca0
 void TTacticalBattleView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
-  short cursorId = static_cast<short>(GetCursorID());
+  short cursorId = GetCursorID();
   if (cursorId != -1) {
     CPoint mappedPoint = ViewToQDPt(point);
     if (PtInRgn(&mappedPoint, hitArg) != 0) {
@@ -1520,7 +1520,7 @@ short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentTy
       code++;
     }
   }
-  return static_cast<short>(orientationTable[code]);
+  return orientationTable[code];
 }
 
 // FUNCTION: IMPERIALISM 0x005aa7d0

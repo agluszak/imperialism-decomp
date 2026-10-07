@@ -200,7 +200,7 @@ TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900
 void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
-  this->IEventHandler(NULL);
+  IEventHandler(NULL);
   idleFrequencyTicks = idleFrequency;
   diplomacyQueueContext = 0;
   sessionReadyFlag = 0;

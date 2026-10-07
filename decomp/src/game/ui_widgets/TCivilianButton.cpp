@@ -25,14 +25,14 @@ TCivilianButton::~TCivilianButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058b460
 void TCivilianButton::SetButton(TCivUnit* selectedOrder) {
-  this->eventNumber = 0xc;
-  this->selectedCivilianOrder = selectedOrder;
+  eventNumber = 0xc;
+  selectedCivilianOrder = selectedOrder;
   if (selectedOrder != 0) {
     Show(1, 0);
     ViewEnable(1, 0);
 
     short mappedValue = g_pGlobalMapState->GetUnitOffset(selectedOrder);
-    this->mappedSelection = mappedValue;
+    mappedSelection = mappedValue;
     return;
   }
   Show(0, 1);

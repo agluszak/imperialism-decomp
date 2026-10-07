@@ -26,19 +26,19 @@ TArmyPlacard::~TArmyPlacard() {}
 // FUNCTION: IMPERIALISM 0x0058bf50
 void TArmyPlacard::SetValue(short value, bool refreshNow) {
   short activeNationId = g_pSimMgr->GetPlayerCountry();
-  short capValue = g_pTechMgr->nationCapRows1e8[activeNationId]
-                       .slots[this->controlTag - kControlTagArmyPlacardFirst];
+  short capValue =
+      g_pTechMgr->nationCapRows1e8[activeNationId].slots[controlTag - kControlTagArmyPlacardFirst];
   short pictureId = capValue + 0x4c4;
-  if (value != this->glyph) {
+  if (value != glyph) {
     if (value <= 0) {
       pictureId += 0x1e;
     }
-    this->SetPictureRsrcID(pictureId, true);
+    SetPictureRsrcID(pictureId, true);
     if (refreshNow) {
-      this->RefreshControl();
+      RefreshControl();
     }
   }
-  this->glyph = value;
+  glyph = value;
 }
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
@@ -47,9 +47,9 @@ void TArmyPlacard::Draw(RECT* rectBuffer) {
 
   TPicture::Draw(rectBuffer);
 
-  if (this->glyph != 0) {
+  if (glyph != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b67);
-    countText.Format(g_szDecimalFormat, static_cast<int>(this->glyph));
+    countText.Format(g_szDecimalFormat, static_cast<int>(glyph));
 
     short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&countText);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth - textWidth),
@@ -66,16 +66,16 @@ void TArmyPlacard::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x0058c140
 void TArmyPlacard::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagPlus) { // "plus"
-    short categoryId = this->controlTag - 0x6330;
+    short categoryId = controlTag - 0x6330;
     short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
     short unitCount = g_pMapContextActionManager->DeSelectUnitType(categoryId, tileIndex);
-    this->SetValue(unitCount, true);
+    SetValue(unitCount, true);
     return;
   }
   if (sourceHandler->controlTag == kControlTagMinu) { // "minu"
-    short categoryId = this->controlTag - 0x6330;
+    short categoryId = controlTag - 0x6330;
     short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
     short unitCount = g_pMapContextActionManager->SelectUnitType(categoryId, tileIndex);
-    this->SetValue(unitCount, true);
+    SetValue(unitCount, true);
   }
 }

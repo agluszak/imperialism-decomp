@@ -11,9 +11,8 @@ class THotspotBehavior : public TBehavior {
 public:
   DECLARE_DYNCREATE(THotspotBehavior)
   // FUNCTION: IMPERIALISM 0x004b0be0
-  virtual ~THotspotBehavior() override {} // slot 0x01 (scalar deleting destructor)
-  virtual bool DoSetCursor(CPoint* point,
-                           RgnHandle region); // slot 0x0e 0x4b0c00
+  virtual ~THotspotBehavior() override {}
+  virtual bool DoSetCursor(CPoint* point, RgnHandle region);
 
   THotspotBehavior();
 };

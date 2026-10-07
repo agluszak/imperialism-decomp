@@ -10,12 +10,12 @@
 
 // FUNCTION: IMPERIALISM 0x004be150
 short TInteriorMinister::GetExteriorNeedFor(int arg) {
-  return static_cast<short>(arg);
+  return arg;
 }
 
 // FUNCTION: IMPERIALISM 0x004be170
 short TInteriorMinister::GetHistoricalNeedFor(int arg) {
-  return static_cast<short>(arg);
+  return arg;
 }
 
 // FUNCTION: IMPERIALISM 0x004be190

@@ -5,9 +5,9 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-TimerSlotCallback g_timerSlotCallbacks[10]; // 0x006a5cf8
-UINT g_timerSlotIds[10];                    // 0x006a5c98
-int g_timerDispatchSuppressAssert;          // 0x006a5d24
+TimerSlotCallback g_timerSlotCallbacks[10];
+UINT g_timerSlotIds[10];
+int g_timerDispatchSuppressAssert;
 
 // FUNCTION: IMPERIALISM 0x005e0460
 void CALLBACK DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(HWND hwnd, UINT msg,

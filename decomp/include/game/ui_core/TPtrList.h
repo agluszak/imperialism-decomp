@@ -15,7 +15,7 @@ public:
   TPtrList() {}
   DECLARE_DYNCREATE(TPtrList)
 
-  virtual void PrependCopiedRecordToPtrList(void* record); // slot 0x48 0x488470
+  virtual void PrependCopiedRecordToPtrList(void* record);
 };
 
 ASSERT_SIZE(TPtrList, 0x18);

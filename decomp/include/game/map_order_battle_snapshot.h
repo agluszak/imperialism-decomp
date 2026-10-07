@@ -35,12 +35,12 @@ enum MapContextReportKind {
 typedef int MapContextReportKindStorage;
 
 struct MapOrderBattleSideChildRecord {
-  short resourceType;    // +0x00 -- child TShip::type
-  short stockOrRequired; // +0x02 -- child TShip::strength
-  char nameBuffer[0x20]; // +0x04 -- copy of child TShip::name
-  short strengthBucket;  // +0x24 -- child TShip::experience / 100
+  short resourceType;    // child TShip::type
+  short stockOrRequired; // child TShip::strength
+  char nameBuffer[0x20]; // copy of child TShip::name
+  short strengthBucket;  // child TShip::experience / 100
   char pad26[2];
-  unsigned int detailIdentity; // +0x28
+  unsigned int detailIdentity;
 
   MapOrderBattleSideChildRecord() {
     nameBuffer[0] = 0;
@@ -49,15 +49,15 @@ struct MapOrderBattleSideChildRecord {
 ASSERT_SIZE(MapOrderBattleSideChildRecord, 0x2c);
 
 struct MapOrderBattleSnapshot {
-  unsigned char nationIds[2];              // +0x00/+0x01, indexed by participant side
-  unsigned char reportParticipantIndex;    // +0x02
-  unsigned char displayedParticipantIndex; // +0x03
-  MapContextReportKindStorage reportKind;  // +0x04
-  void* targetObject;                      // +0x08
-  CStr32 nameBuffer[2];                    // +0x0c..+0x4b -- per-side terrain/nation label text
-  CStr255 overlayLabel[2];                 // +0x4c..+0x249 -- per-side selection overlay label text
-  short childCount[2];                     // +0x24a/+0x24c
-  MapOrderBattleSideChildRecord* childRecords[2]; // +0x250/+0x254
+  unsigned char nationIds[2]; // indexed by participant side
+  unsigned char reportParticipantIndex;
+  unsigned char displayedParticipantIndex;
+  MapContextReportKindStorage reportKind;
+  void* targetObject;
+  CStr32 nameBuffer[2];    // per-side terrain/nation label text
+  CStr255 overlayLabel[2]; // per-side selection overlay label text
+  short childCount[2];
+  MapOrderBattleSideChildRecord* childRecords[2];
 
   ~MapOrderBattleSnapshot() {
     delete[] childRecords[0];

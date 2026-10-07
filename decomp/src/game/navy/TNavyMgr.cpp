@@ -84,7 +84,7 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
   CopyCStringIntoFixedBuffer(snapshot->overlayLabel[side].data, 0xff,
                              static_cast<LPCSTR>(overlayLabel));
 
-  short childCount = static_cast<short>(entry->CountShips());
+  short childCount = entry->CountShips();
   snapshot->childCount[side] = childCount;
 
   MapOrderBattleSideChildRecord* records = NULL;
@@ -463,7 +463,7 @@ short TNavyMgr::GetInvasionCapacity(short nationSlot, Province* provinceTarget,
       total += sum;
     }
   }
-  return static_cast<short>(total);
+  return total;
 }
 
 // FUNCTION: IMPERIALISM 0x00557210
@@ -736,7 +736,7 @@ void TNavyMgr::CarryOutOrders() {
               static_cast<short>(entry->GetDeciSpeed() + 0x32 - other->GetDeciSpeed());
           int totalChildren = other->CountShips() + entry->CountShips();
           if (totalChildren > 10)
-            threshold = static_cast<short>(threshold + (totalChildren - 10));
+            threshold += (totalChildren - 10);
           proceed = (rand() % 100) < threshold;
         }
 
@@ -850,7 +850,7 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
       continue;
     }
 
-    short shipOrders = static_cast<short>(entry->shipOrders);
+    short shipOrders = entry->shipOrders;
     bool contextMatch = shipOrders == 6 && entry->target == portZoneContext;
     bool activeContextMatch = false;
     if (shipOrders == 3) {
@@ -872,8 +872,8 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
     short activeChildRating =
         static_cast<short>(CalculateActiveChildAverageDescriptorWeightX10(entry->shipList));
     TCity* nationCity = nationState != NULL ? nationState->city : NULL;
-    short cityWeight1 = static_cast<short>(nationCity->GetMerchantMarineDeciSpeed());
-    short cityWeight0 = static_cast<short>(nationCity->GetMerchantMarineAverageCargoHold());
+    short cityWeight1 = nationCity->GetMerchantMarineDeciSpeed();
+    short cityWeight0 = nationCity->GetMerchantMarineAverageCargoHold();
     short offerPerCityWeight = cityWeight0;
     if (offerPerCityWeight > 0) {
       offerPerCityWeight = static_cast<short>(offerAmount / offerPerCityWeight);
@@ -919,7 +919,7 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
         candidateStrength += candidateNode->payload->GetBattleStrengthRating();
       }
       int orderTypePriority[3] = {200, 100, 50};
-      short nationStrength = static_cast<short>(nationEntry->GetBattleStrengthRating());
+      short nationStrength = nationEntry->GetBattleStrengthRating();
       if (static_cast<short>(candidateStrength) * 100 <
           orderTypePriority[entry->aggression] * nationStrength) {
         eligible = false;
@@ -974,8 +974,8 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
     if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(nation, entry->nation)) {
       return true;
     }
-    short roll = static_cast<short>(rand() % 100);
-    short bias = static_cast<short>(entryChildren + 10);
+    short roll = rand() % 100;
+    short bias = entryChildren + 10;
     if (roll >= bias) {
       if (roll < bias * 2) {
         outResult->directionFlags |= 1;
@@ -1094,9 +1094,9 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
               movedTrackedCounter = true;
             }
 
-            short detailCount = static_cast<short>(transferredWeight + 1);
+            short detailCount = transferredWeight + 1;
             if (passMismatch && (directionFlags & 2) != 0) {
-              detailCount = static_cast<short>(detailCount + 1);
+              ++detailCount;
             }
             snapshot.childCount[1] = detailCount;
             snapshot.childRecords[1] = new MapOrderBattleSideChildRecord[detailCount];
@@ -1192,7 +1192,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           }
         }
         if (selectedChildCount > 0) {
-          short childStrengthDelta = static_cast<short>((strengthDelta * 3) / selectedChildCount);
+          short childStrengthDelta = (strengthDelta * 3) / selectedChildCount;
           for (TMapOrderChildLinkNode* childNode = selection.selectedEntry->shipList;
                childNode != NULL; childNode = childNode->next) {
             TShip* ship = childNode->payload;
@@ -1363,7 +1363,7 @@ bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags) {
     return true;
   }
   case 11: {
-    TTaskForce* entry = this->orderQueueHead;
+    TTaskForce* entry = orderQueueHead;
     while (entry != 0 && entry->ingotTileIndex != nTileIndex) {
       entry = entry->nextForce;
     }
@@ -1564,7 +1564,7 @@ static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildL
 
 static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[ship->type];
-  short strengthBucket = static_cast<short>(ship->experience / 100);
+  short strengthBucket = ship->experience / 100;
   short navyPriorityBucket =
       static_cast<short>((strengthBucket + descriptor.BattleSpeedDword() * 10 + 5) / 10);
   short resolveBucket =

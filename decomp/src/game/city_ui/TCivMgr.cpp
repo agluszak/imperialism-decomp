@@ -69,9 +69,9 @@ TCivUnit* TCivMgr::Cycle(short nationId) {
   }
 
   if (candidate != NULL) {
-    this->SetDimming(candidate);
+    SetDimming(candidate);
   }
-  this->selectedEntry = candidate;
+  selectedEntry = candidate;
 
   if (candidate != NULL && candidate->completionMarker != -1) {
     g_pSfxPlaybackSystem->PlaySoundEffect(candidate->completionMarker, 0, 1);
@@ -272,7 +272,7 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
 unsigned short TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
                                                                         short nInputHint) {
   CivilianTileActionCodeStorage actionCode =
-      this->ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
+      ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
   return g_civilianTileOrderCursorTokenTable[actionCode];
 }
 
@@ -311,7 +311,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
   }
 
   if (IsMappedShortcutKeyPressed(2)) {
-    if (this->CanDeployUnit(nTileIndex)) {
+    if (CanDeployUnit(nTileIndex)) {
       return kCivilianTileActionMoveUnit;
     }
     return kCivilianTileActionBlocked;
@@ -351,7 +351,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
                                          : kCivilianTileActionShowOrderReport;
     }
   }
-  if (this->CanDeployUnit(nTileIndex)) {
+  if (CanDeployUnit(nTileIndex)) {
     return kCivilianTileActionMoveUnit;
   }
   return kCivilianTileActionBlocked;
@@ -359,8 +359,8 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
 
 // FUNCTION: IMPERIALISM 0x004d2c60
 void TCivMgr::SelectUnit(TCivUnit* entryContext, bool refreshCommandPanel) {
-  this->selectedEntry = entryContext;
-  this->SetDimming(entryContext);
+  selectedEntry = entryContext;
+  SetDimming(entryContext);
   if (entryContext == NULL) {
     return;
   }
@@ -384,7 +384,7 @@ void TCivMgr::SelectUnit(TCivUnit* entryContext, bool refreshCommandPanel) {
 
 // FUNCTION: IMPERIALISM 0x004d2cf0
 void TCivMgr::OrderAndCycle(UnitOrder order) {
-  TCivUnit* entry = this->selectedEntry;
+  TCivUnit* entry = selectedEntry;
   if (entry != NULL) {
     entry->SetOrders(order, 0);
   }
@@ -397,7 +397,7 @@ void TCivMgr::OrderAndCycle(UnitOrder order) {
 
 // FUNCTION: IMPERIALISM 0x004d2d30
 void TCivMgr::DisbandSelected() {
-  TCivUnit* entry = this->selectedEntry;
+  TCivUnit* entry = selectedEntry;
   if (entry == NULL) {
     return;
   }
@@ -435,12 +435,12 @@ void TCivMgr::DisbandSelected() {
 
 // FUNCTION: IMPERIALISM 0x004d2ef0
 bool TCivMgr::TryQueueCivilianMoveOrderToTile(short nTileIndex) {
-  bool canAssign = this->CanDeployUnit(nTileIndex);
+  bool canAssign = CanDeployUnit(nTileIndex);
   if (canAssign) {
-    TCivUnit* entry = this->selectedEntry;
+    TCivUnit* entry = selectedEntry;
     entry->SetOrders(kUnitOrderRedeploy, entry->tileIndex);
     g_pSfxPlaybackSystem->PlaySoundEffect(9000, 0, 1);
-    this->MoveAndRedrawUnit(nTileIndex, entry);
+    MoveAndRedrawUnit(nTileIndex, entry);
   }
   return canAssign;
 }
@@ -449,7 +449,7 @@ bool TCivMgr::TryQueueCivilianMoveOrderToTile(short nTileIndex) {
 bool TCivMgr::CanDeployUnit(short nTileIndex) {
   TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
   short tileTerrainClass = tile->ownerNationTag;
-  TCivUnit* entry = this->selectedEntry;
+  TCivUnit* entry = selectedEntry;
   if ((entry->tileIndex != nTileIndex) && (tile->gateFlag != 0) &&
       (((tile->activeFlags & 1) == 0) ||
        (entry->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer)))) {
@@ -521,7 +521,7 @@ void TCivMgr::InfoBox(TCivUnit* pCivilianOrderEntry) {
 
   pCivilianOrderEntry->SetOrders(kUnitOrderIdle, subtypeOrTargetProvince);
   if ((subtypeOrTargetProvince != 0) && (subtypeOrTargetProvince != -1)) {
-    this->MoveAndRedrawUnit(subtypeOrTargetProvince, pCivilianOrderEntry);
+    MoveAndRedrawUnit(subtypeOrTargetProvince, pCivilianOrderEntry);
   }
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
@@ -530,8 +530,8 @@ void TCivMgr::InfoBox(TCivUnit* pCivilianOrderEntry) {
   }
   g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
 
-  this->selectedEntry = pCivilianOrderEntry;
-  this->SetDimming(pCivilianOrderEntry);
+  selectedEntry = pCivilianOrderEntry;
+  SetDimming(pCivilianOrderEntry);
   if (pCivilianOrderEntry != NULL) {
     pCivilianOrderEntry->MoveTo(pCivilianOrderEntry->tileIndex);
 
@@ -581,7 +581,7 @@ bool TCivMgr::ImprovementClick(short nTileIndex) {
   }
 
   selectedEntry->SetOrders(kUnitOrderDevelopResource, selectedEntry->tileIndex);
-  this->MoveAndRedrawUnit(nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
+  MoveAndRedrawUnit(nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
 
   static const short kOrderQueuedSfxByOrderType[9] = {0x232d, 0, 0x2332, 0x2331, 0,
                                                       0x2333, 0, 0x2335, 0x2339};
@@ -635,7 +635,7 @@ bool TCivMgr::PurchaseClick(short nTileIndex) {
     if (g_pViewMgr->ModalMessage(4, titleText, formattedText, g_ptCivilianOrderModalMessage, 0,
                                  1)) {
       selectedEntry->SetOrders(kUnitOrderPurchaseLand, selectedEntry->tileIndex);
-      this->MoveAndRedrawUnit(nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
+      MoveAndRedrawUnit(nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
       g_pSfxPlaybackSystem->PlaySoundEffect(0x2335, 0, 1);
       g_apNationStates[g_pSimMgr->GetPlayerCountry()]->AddToTreasury(-purchaseCost);
       g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
@@ -679,7 +679,7 @@ bool TCivMgr::ProspectorClick(short nTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x004d3a60
 bool TCivMgr::EngineerClick(short nTileIndex) {
-  TCivUnit* pCiv = this->selectedEntry;
+  TCivUnit* pCiv = selectedEntry;
   if (pCiv == NULL) {
     return false;
   }
@@ -805,7 +805,7 @@ bool TCivMgr::EngineerClick(short nTileIndex) {
   }
 
   if (actionFinalized) {
-    this->MoveAndRedrawUnit(nTileIndex, pCiv);
+    MoveAndRedrawUnit(nTileIndex, pCiv);
 
     int startTick = GetTickCountDiv16();
     while (true) {

@@ -30,11 +30,11 @@ public:
     ReleaseBitmapResource();
   }
 
-  virtual void EnsureBitmapResourceLoadedAndCopyRectSize(); // slot 0x00 0x495b70
-  virtual void ReleaseBitmapResource();                     // slot 0x01 0x495c00
+  virtual void EnsureBitmapResourceLoadedAndCopyRectSize();
+  virtual void ReleaseBitmapResource();
   virtual int ReportUnimplementedResourceVirtualSlot02();
-  unsigned char GetLoaderFlags() const;        // 0x00495440
-  void SetLoaderFlags(unsigned char newFlags); // 0x00495460
+  unsigned char GetLoaderFlags() const;
+  void SetLoaderFlags(unsigned char newFlags);
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 

@@ -9,8 +9,8 @@
 class TGarrisonView : public TMilitaryPageView {
 public:
   DECLARE_DYNCREATE(TGarrisonView)
-  virtual ~TGarrisonView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;     // slot 0x28 0x4a8a20
+  virtual ~TGarrisonView() override;
+  virtual void Close() override;
 
   TGarrisonView();
   void StuffValues(short tileIndex);

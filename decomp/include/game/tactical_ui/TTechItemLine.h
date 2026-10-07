@@ -8,11 +8,11 @@ class TTechItemLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TTechItemLine)
   // FUNCTION: IMPERIALISM 0x005b1070
-  virtual ~TTechItemLine() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5b1160
+  virtual ~TTechItemLine() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
-  int nationSlot; // +0x10 — forwarded to ITechItemView
-  int techId;     // +0x14 — forwarded to ITechItemView
+  int nationSlot; // forwarded to ITechItemView
+  int techId;     // forwarded to ITechItemView
 
   // NOOP: verified empty in original 0x005b10c3
   TTechItemLine() {}

@@ -7,7 +7,7 @@ struct IndustryCapabilityClassSlotEntry {
   int raw[8];
 };
 
-extern POINT g_ptTechCapabilityModalMessage; // @ 0x6a57c8
+extern POINT g_ptTechCapabilityModalMessage;
 
 extern TTechMgr* g_pTechMgr;
 

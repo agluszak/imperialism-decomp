@@ -62,8 +62,8 @@ void TCitySiteView::DoPostCreate(int arg) {
     if (tileColumn < minColumn) {
       minColumn = tileColumn;
     }
-    tileRow = static_cast<short>(tileRow - 5);
-    tileColumn = static_cast<short>(tileColumn + (3 - g_wMapDialogViewportTileSpan));
+    tileRow -= 5;
+    tileColumn += (3 - g_wMapDialogViewportTileSpan);
     if (tileRow > maxRow) {
       maxRow = tileRow;
     }
@@ -101,8 +101,8 @@ void TCitySiteView::SetMapViewCellCoordinates(int column, int row) {
 
 // FUNCTION: IMPERIALISM 0x0051c320
 void TCitySiteView::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode) {
-  short c = static_cast<short>(col);
-  short r = static_cast<short>(row);
+  short c = col;
+  short r = row;
   if (c < minColumn) {
     c = static_cast<short>(minColumn);
   }
@@ -122,7 +122,7 @@ void TCitySiteView::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int 
 void TCitySiteView::FrameCursorArea() {
   short neighborTiles[6] = {-1, -1, -1, -1, -1, -1};
   bool updateNeighborHighlights = false;
-  short currentTile = static_cast<short>(hoveredTileIndex);
+  short currentTile = hoveredTileIndex;
 
   if (g_pGlobalMapState->terrainStateTable[currentTile].recruitSearchVisited == 0) {
     updateNeighborHighlights = true;
@@ -140,7 +140,7 @@ void TCitySiteView::FrameCursorArea() {
     }
   }
 
-  short previousTile = static_cast<short>(paintedHoverTileIndex);
+  short previousTile = paintedHoverTileIndex;
   signed char previousMarker = g_pGlobalMapState->terrainStateTable[previousTile].markerSlotIndex;
   if (previousMarker != -1 && tileMarkers[previousMarker].flag) {
     short projectedY;

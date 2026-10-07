@@ -14,10 +14,10 @@ public:
   // FUNCTION: IMPERIALISM 0x00492ca0
   ~TEvent() override {}
 
-  int commandNumber;            // 0x04
-  int dispatchMessage;          // 0x08
-  TEventHandler* sourceHandler; // 0x0c
-  TEventHandler* targetHandler; // 0x10
+  int commandNumber;
+  int dispatchMessage;
+  TEventHandler* sourceHandler;
+  TEventHandler* targetHandler;
 
   TEvent() : commandNumber(0), dispatchMessage(0), sourceHandler(0), targetHandler(0) {}
 };

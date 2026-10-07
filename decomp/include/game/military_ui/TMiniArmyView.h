@@ -11,13 +11,12 @@ class TMilitaryUnit;
 class TMiniArmyView : public TControl {
 public:
   DECLARE_DYNCREATE(TMiniArmyView)
-  virtual ~TMiniArmyView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x004ab1d0
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4aaeb0
-  virtual void Hilite();                        // slot 0x71 0x4aad20
+  virtual ~TMiniArmyView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void Hilite();
   // The displayed unit: name (CString) and tileIndex read by Draw/DoEvent.
-  TMilitaryUnit* militaryUnit; // +0x84
+  TMilitaryUnit* militaryUnit;
 
   // NOOP: verified empty in original 0x004aadc6
   TMiniArmyView() {}

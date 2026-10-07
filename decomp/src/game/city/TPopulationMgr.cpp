@@ -58,7 +58,7 @@ void TPopulationMgr::SetPopulation(short lowSkillCount, short mediumSkillCount,
   strength = static_cast<short>(
       productionSlots->lowSkillCount +
       (productionSlots->mediumSkillCount + productionSlots->highSkillCount * 2) * 2);
-  short total = static_cast<short>(mediumSkillCount + highSkillCount + lowSkillCount);
+  short total = mediumSkillCount + highSkillCount + lowSkillCount;
   populationCount = total;
   populationCountFloat = static_cast<float>(total);
 
@@ -97,28 +97,28 @@ void TPopulationMgr::Eat() {
       static_cast<short>(city->stockByType[kResourceFish] + city->stockByType[kResourceLivestock]);
   short unmetFoodNeed = 0;
 
-  short grainNeed = static_cast<short>((population + 1) / 2);
+  short grainNeed = (population + 1) / 2;
   if (grainRemaining < grainNeed) {
     unmetFoodNeed = static_cast<short>(grainNeed - grainRemaining);
     grainRemaining = 0;
   } else {
-    grainRemaining = static_cast<short>(grainRemaining - grainNeed);
+    grainRemaining -= grainNeed;
   }
 
-  short fruitNeed = static_cast<short>((population + 2) / 4);
+  short fruitNeed = (population + 2) / 4;
   if (fruitRemaining < fruitNeed) {
-    unmetFoodNeed = static_cast<short>(unmetFoodNeed + fruitNeed - fruitRemaining);
+    unmetFoodNeed += fruitNeed - fruitRemaining;
     fruitRemaining = 0;
   } else {
-    fruitRemaining = static_cast<short>(fruitRemaining - fruitNeed);
+    fruitRemaining -= fruitNeed;
   }
 
-  short animalFoodNeed = static_cast<short>(population / 4);
+  short animalFoodNeed = population / 4;
   if (animalFoodRemaining < animalFoodNeed) {
-    unmetFoodNeed = static_cast<short>(unmetFoodNeed + animalFoodNeed - animalFoodRemaining);
+    unmetFoodNeed += animalFoodNeed - animalFoodRemaining;
     animalFoodRemaining = 0;
   } else {
-    animalFoodRemaining = static_cast<short>(animalFoodRemaining - animalFoodNeed);
+    animalFoodRemaining -= animalFoodNeed;
   }
 
   if (unmetFoodNeed != 0) {
@@ -128,7 +128,7 @@ void TPopulationMgr::Eat() {
       city->VerifyStocks();
       unmetFoodNeed = 0;
     } else {
-      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city->stockByType[kResourceFood]);
+      unmetFoodNeed -= city->stockByType[kResourceFood];
       city->stockByType[kResourceFood] = 0;
       city->VerifyStocks();
     }
@@ -136,24 +136,24 @@ void TPopulationMgr::Eat() {
     if (unmetFoodNeed != 0) {
       short deficitBeforeSubstitution = unmetFoodNeed;
       if (grainRemaining < unmetFoodNeed) {
-        unmetFoodNeed = static_cast<short>(unmetFoodNeed - grainRemaining);
+        unmetFoodNeed -= grainRemaining;
         grainRemaining = 0;
         if (fruitRemaining < unmetFoodNeed) {
-          unmetFoodNeed = static_cast<short>(unmetFoodNeed - fruitRemaining);
+          unmetFoodNeed -= fruitRemaining;
           fruitRemaining = 0;
           if (animalFoodRemaining < unmetFoodNeed) {
-            unmetFoodNeed = static_cast<short>(unmetFoodNeed - animalFoodRemaining);
+            unmetFoodNeed -= animalFoodRemaining;
             animalFoodRemaining = 0;
           } else {
-            animalFoodRemaining = static_cast<short>(animalFoodRemaining - unmetFoodNeed);
+            animalFoodRemaining -= unmetFoodNeed;
             unmetFoodNeed = 0;
           }
         } else {
-          fruitRemaining = static_cast<short>(fruitRemaining - unmetFoodNeed);
+          fruitRemaining -= unmetFoodNeed;
           unmetFoodNeed = 0;
         }
       } else {
-        grainRemaining = static_cast<short>(grainRemaining - unmetFoodNeed);
+        grainRemaining -= unmetFoodNeed;
         unmetFoodNeed = 0;
       }
       substitutedFoodCount = deficitBeforeSubstitution - unmetFoodNeed;
@@ -177,13 +177,13 @@ void TPopulationMgr::Eat() {
     }
 
     if (city->stockByType[kResourceLivestock] < livestockRemaining) {
-      short shift = static_cast<short>(livestockRemaining - city->stockByType[kResourceLivestock]);
-      livestockRemaining = static_cast<short>(livestockRemaining - shift);
-      fishRemaining = static_cast<short>(fishRemaining + shift);
+      short shift = livestockRemaining - city->stockByType[kResourceLivestock];
+      livestockRemaining -= shift;
+      fishRemaining += shift;
     } else if (city->stockByType[kResourceFish] < fishRemaining) {
-      short shift = static_cast<short>(fishRemaining - city->stockByType[kResourceFish]);
-      fishRemaining = static_cast<short>(fishRemaining - shift);
-      livestockRemaining = static_cast<short>(livestockRemaining + shift);
+      short shift = fishRemaining - city->stockByType[kResourceFish];
+      fishRemaining -= shift;
+      livestockRemaining += shift;
     }
     city->stockByType[kResourceLivestock] = livestockRemaining;
     city->VerifyStocks();
@@ -229,45 +229,45 @@ void TPopulationMgr::PretendToEat(short& substitutionCount, short& starvationCou
       static_cast<short>(owner->needTargetByType[0x13] + owner->needTargetByType[0x14]);
   short unmetFoodNeed = 0;
 
-  short grainNeed = static_cast<short>((population + 1) / 2);
+  short grainNeed = (population + 1) / 2;
   if (grainRemaining < grainNeed) {
     unmetFoodNeed = static_cast<short>(grainNeed - grainRemaining);
     grainRemaining = 0;
   } else {
-    grainRemaining = static_cast<short>(grainRemaining - grainNeed);
+    grainRemaining -= grainNeed;
   }
 
-  short fruitNeed = static_cast<short>((population + 2) / 4);
+  short fruitNeed = (population + 2) / 4;
   if (fruitRemaining < fruitNeed) {
-    unmetFoodNeed = static_cast<short>(unmetFoodNeed + fruitNeed - fruitRemaining);
+    unmetFoodNeed += fruitNeed - fruitRemaining;
     fruitRemaining = 0;
   } else {
-    fruitRemaining = static_cast<short>(fruitRemaining - fruitNeed);
+    fruitRemaining -= fruitNeed;
   }
 
-  short animalFoodNeed = static_cast<short>(population / 4);
+  short animalFoodNeed = population / 4;
   if (animalFoodRemaining < animalFoodNeed) {
-    unmetFoodNeed = static_cast<short>(unmetFoodNeed + animalFoodNeed - animalFoodRemaining);
+    unmetFoodNeed += animalFoodNeed - animalFoodRemaining;
     animalFoodRemaining = 0;
   } else {
-    animalFoodRemaining = static_cast<short>(animalFoodRemaining - animalFoodNeed);
+    animalFoodRemaining -= animalFoodNeed;
   }
 
   if (unmetFoodNeed != 0) {
     if (unmetFoodNeed < city->stockByType[kResourceFood]) {
       unmetFoodNeed = 0;
     } else {
-      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city->stockByType[kResourceFood]);
+      unmetFoodNeed -= city->stockByType[kResourceFood];
     }
 
     if (unmetFoodNeed != 0) {
       short deficitBeforeSubstitution = unmetFoodNeed;
       if (grainRemaining < unmetFoodNeed) {
-        unmetFoodNeed = static_cast<short>(unmetFoodNeed - grainRemaining);
+        unmetFoodNeed -= grainRemaining;
         if (fruitRemaining < unmetFoodNeed) {
-          unmetFoodNeed = static_cast<short>(unmetFoodNeed - fruitRemaining);
+          unmetFoodNeed -= fruitRemaining;
           if (animalFoodRemaining < unmetFoodNeed) {
-            unmetFoodNeed = static_cast<short>(unmetFoodNeed - animalFoodRemaining);
+            unmetFoodNeed -= animalFoodRemaining;
           } else {
             unmetFoodNeed = 0;
           }
@@ -327,7 +327,7 @@ short* TPopulationMgr::PredictedNeeds() {
   rotationCounts[1] = 0;
   rotationCounts[2] = 0;
 
-  short cycles = static_cast<short>(skilledPopulation / 10);
+  short cycles = skilledPopulation / 10;
   short rotation = fieldAt20;
   while (cycles != 0) {
     ++rotationCounts[rotation];
@@ -356,7 +356,7 @@ bool TPopulationMgr::Strike() {
   consumptionByResource[1] = 0;
   consumptionByResource[2] = 0;
 
-  short cycles = static_cast<short>(skilledPopulation / 10);
+  short cycles = skilledPopulation / 10;
   while (cycles != 0) {
     ++consumptionByResource[fieldAt20];
     fieldAt20 = fieldAt20 == 3 ? 0 : static_cast<short>(fieldAt20 + 1);
@@ -393,7 +393,7 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
       strength = static_cast<short>(strength - remaining);
       remaining = 0;
     } else {
-      remaining = static_cast<short>(remaining - available);
+      remaining -= available;
       baselineSlots->lowSkillCount = 0;
       productionSlots->lowSkillCount = 0;
       startingSkillBand = 2;
@@ -410,7 +410,7 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
       strength = static_cast<short>(strength - remaining * 2);
       remaining = 0;
     } else {
-      remaining = static_cast<short>(remaining - available);
+      remaining -= available;
       baselineSlots->mediumSkillCount = 0;
       productionSlots->mediumSkillCount = 0;
       startingSkillBand = 4;
@@ -427,14 +427,14 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
       strength = static_cast<short>(strength - remaining * 4);
       remaining = 0;
     } else {
-      remaining = static_cast<short>(remaining - available);
+      remaining -= available;
       baselineSlots->highSkillCount = 0;
       productionSlots->highSkillCount = 0;
       strength = static_cast<short>(strength - remaining * 4);
     }
   }
 
-  short removed = static_cast<short>(amount - remaining);
+  short removed = amount - remaining;
   populationCount = static_cast<short>(populationCount - removed);
   populationCountFloat -= static_cast<float>(removed);
 }

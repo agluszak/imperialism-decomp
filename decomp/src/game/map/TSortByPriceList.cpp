@@ -15,5 +15,5 @@ void TSortByPriceList::ISortByPriceList() {
 short TSortByPriceList::Compare(void* a, void* b) {
   short aKey = static_cast<short*>(a)[1];
   short bKey = static_cast<short*>(b)[1];
-  return static_cast<short>(((aKey <= bKey) - 1 & 2) - 1);
+  return ((aKey <= bKey) - 1 & 2) - 1;
 }

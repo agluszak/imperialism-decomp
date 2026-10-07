@@ -8,7 +8,7 @@ class TCivUnit;
 // VTABLE: IMPERIALISM 0x668128
 class TCivReport : public TPicture {
 public:
-  virtual ~TCivReport() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TCivReport() override;
   TCivReport();
   DECLARE_DYNCREATE(TCivReport)
   virtual void StuffValues(TCivUnit* civilianOrderEntry);

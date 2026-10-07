@@ -9,7 +9,7 @@ public:
 
   TMyNumberText();
 
-  int UpdateControlCachedIntFromWindowText() override; // slot 0x7a 0x5b5050
+  int UpdateControlCachedIntFromWindowText() override;
 };
 
 ASSERT_SIZE(TMyNumberText, 0xac);

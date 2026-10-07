@@ -34,9 +34,9 @@ TCivToolbar::~TCivToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x0058eb20
 void TCivToolbar::SetSelectedUnit(TCivUnit* selectedOrder) {
-  this->civilianClassId = selectedOrder ? selectedOrder->orderType : -1;
+  civilianClassId = selectedOrder ? selectedOrder->orderType : -1;
 
-  TControl* unitControl = static_cast<TControl*>(this->FindSubView(kControlTagUnit));
+  TControl* unitControl = static_cast<TControl*>(FindSubView(kControlTagUnit));
   if (unitControl == 0) {
     return;
   }
@@ -45,12 +45,12 @@ void TCivToolbar::SetSelectedUnit(TCivUnit* selectedOrder) {
     unitControl->Show(0, 1);
   } else {
     static_cast<TPicture*>(unitControl)
-        ->SetPictureRsrcID(static_cast<short>(this->civilianClassId + 0x438), 1);
+        ->SetPictureRsrcID(static_cast<short>(civilianClassId + 0x438), 1);
     unitControl->Show(1, 1);
   }
 
   TCivDescription* backControl =
-      static_cast<TCivDescription*>(static_cast<TView*>(this->FindSubView(kControlTagBack)));
+      static_cast<TCivDescription*>(static_cast<TView*>(FindSubView(kControlTagBack)));
   if (backControl == 0) {
     return;
   }
@@ -60,10 +60,10 @@ void TCivToolbar::SetSelectedUnit(TCivUnit* selectedOrder) {
     return;
   }
 
-  if (this->civilianClassId != backControl->selectedCivilianClass) {
-    backControl->selectedCivilianClass = this->civilianClassId;
+  if (civilianClassId != backControl->selectedCivilianClass) {
+    backControl->selectedCivilianClass = civilianClassId;
 
-    switch (this->civilianClassId) {
+    switch (civilianClassId) {
     case 0:
     case 1:
     case 2:
@@ -98,7 +98,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   selectedCivilianState = g_pSelectedCivilianOrderState;
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); ++slotIndex) {
-    stackButton = static_cast<TControl*>(this->FindSubView(kControlTagStackSlotFirst + slotIndex));
+    stackButton = static_cast<TControl*>(FindSubView(kControlTagStackSlotFirst + slotIndex));
     if (stackButton == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15d1);
     }
@@ -111,7 +111,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     selectedTileEntry = static_cast<TCivUnit*>(selectedTileEntry->nextAtLocation);
   }
   while (slotIndex < 6) {
-    stackButton = static_cast<TControl*>(this->FindSubView(kControlTagStackSlotFirst + slotIndex));
+    stackButton = static_cast<TControl*>(FindSubView(kControlTagStackSlotFirst + slotIndex));
     if (stackButton == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15df);
     }
@@ -123,20 +123,20 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   if (selectedStackButton != 0) {
     selectedSlotTag = selectedStackButton->controlTag;
   }
-  this->SetCurrentChoice(selectedSlotTag);
+  SetCurrentChoice(selectedSlotTag);
 
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
-  stackButton = static_cast<TControl*>(this->FindSubView(kControlTagDfnd));
+  stackButton = static_cast<TControl*>(FindSubView(kControlTagDfnd));
   if (stackButton == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15eb);
   }
   stackButton->ViewEnable(commandEnabled, 1);
-  stackButton = static_cast<TControl*>(this->FindSubView(kControlTagLatr));
+  stackButton = static_cast<TControl*>(FindSubView(kControlTagLatr));
   if (stackButton == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15ed);
   }
   stackButton->ViewEnable(commandEnabled, 1);
-  stackButton = static_cast<TControl*>(this->FindSubView(kControlTagDone));
+  stackButton = static_cast<TControl*>(FindSubView(kControlTagDone));
   if (stackButton == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15ef);
   }
@@ -149,12 +149,12 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
 
   TCivMgr* selectedCivilianOrderState = g_pSelectedCivilianOrderState;
   if (commandId == 0xc) {
-    unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
+    unsigned int controlTag = sourceHandler->controlTag;
     if ((kControlTagStackSlotFirst <= controlTag) && (controlTag <= kControlTagStackSlotLast)) {
       TCivilianButton* stackButton = static_cast<TCivilianButton*>(sourceHandler);
       TCivUnit* boundStackEntry = stackButton->selectedCivilianOrder;
       selectedCivilianOrderState->SelectUnit(boundStackEntry, false);
-      this->TCluster::DoEvent(0xc, sourceHandler, event);
+      TCluster::DoEvent(0xc, sourceHandler, event);
       return;
     }
   } else if (commandId == 10) {
@@ -162,29 +162,29 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     if (controlTag < kControlTagDono) {
       if (controlTag == kControlTagDone) {
         selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(4));
-        this->TCluster::DoEvent(10, sourceHandler, event);
+        TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
       if (controlTag == kControlTagDfnd) {
         selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(2));
-        this->TCluster::DoEvent(10, sourceHandler, event);
+        TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
     } else {
       if (controlTag == kControlTagGarr) {
-        unsigned short ctrlState = static_cast<unsigned short>(GetAsyncKeyState(0x11));
+        unsigned short ctrlState = GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
           g_pViewMgr->ShowCivilianLedgerDialogAndSelectUnit();
-          this->TCluster::DoEvent(10, sourceHandler, event);
+          TCluster::DoEvent(10, sourceHandler, event);
           return;
         }
         selectedCivilianOrderState->DisbandSelected();
       } else if (controlTag == kControlTagLatr) {
         selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(3));
-        this->TCluster::DoEvent(10, sourceHandler, event);
+        TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
     }
   }
-  this->TCluster::DoEvent(commandId, sourceHandler, event);
+  TCluster::DoEvent(commandId, sourceHandler, event);
 }

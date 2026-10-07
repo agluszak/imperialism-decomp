@@ -9,7 +9,7 @@ public:
 
   TRadio() : TCtlMgr() {}
 
-  virtual ~TRadio() override; // slot 0x01 (scalar deleting destructor 0x48edd0)
+  virtual ~TRadio() override;
 };
 
 ASSERT_SIZE(TRadio, 0x84);

@@ -28,12 +28,12 @@ void TFileStream::IFileStream(ArchiveStreamAdapter* backingArchive) {
 
 // FUNCTION: IMPERIALISM 0x00489180
 int TFileStream::GetPosition() {
-  return static_cast<int>(BackingArchive(backingArchiveOrStream)->GetFile()->GetPosition());
+  return BackingArchive(backingArchiveOrStream)->GetFile()->GetPosition();
 }
 
 // FUNCTION: IMPERIALISM 0x004891a0
 int TFileStream::GetLength() {
-  return static_cast<int>(BackingArchive(backingArchiveOrStream)->GetFile()->GetLength());
+  return BackingArchive(backingArchiveOrStream)->GetFile()->GetLength();
 }
 
 // FUNCTION: IMPERIALISM 0x004891c0
@@ -48,39 +48,39 @@ void TFileStream::SetLength(int length) {
 
 // FUNCTION: IMPERIALISM 0x00489220
 void TFileStream::ReadBytes(void* destination, int requestedCount) {
-  if (this->backingArchiveOrStream == 0) {
+  if (backingArchiveOrStream == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\McAppStream.cpp", 0x3cc);
   }
-  BackingArchive(this->backingArchiveOrStream)
+  BackingArchive(backingArchiveOrStream)
       ->Read(destination, static_cast<unsigned int>(requestedCount));
 }
 
 // FUNCTION: IMPERIALISM 0x00489290
 void TFileStream::WriteBytes(const void* source, int byteCount) {
-  if (this->backingArchiveOrStream == 0) {
+  if (backingArchiveOrStream == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\McAppStream.cpp", 0x410);
   }
-  BackingArchive(this->backingArchiveOrStream)->Write(source, static_cast<unsigned int>(byteCount));
+  BackingArchive(backingArchiveOrStream)->Write(source, static_cast<unsigned int>(byteCount));
 }
 
 // FUNCTION: IMPERIALISM 0x00489300
 bool TFileStream::ReadObject(void* outObject) {
-  *static_cast<void**>(outObject) = BackingArchive(this->backingArchiveOrStream)
-                                        ->ReadObject(static_cast<const CRuntimeClass*>(0));
+  *static_cast<void**>(outObject) =
+      BackingArchive(backingArchiveOrStream)->ReadObject(static_cast<const CRuntimeClass*>(0));
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00489330
 void TFileStream::WriteObject(void* objectRef, int flag) {
-  BackingArchive(this->backingArchiveOrStream)->WriteObject(static_cast<const CObject*>(objectRef));
+  BackingArchive(backingArchiveOrStream)->WriteObject(static_cast<const CObject*>(objectRef));
 }
 
 // FUNCTION: IMPERIALISM 0x00489360
 void TFileStream::ReadSharedString(CString* dest, int maxLen) {
-  *BackingArchive(this->backingArchiveOrStream) >> *dest;
+  *BackingArchive(backingArchiveOrStream) >> *dest;
 }
 
 // FUNCTION: IMPERIALISM 0x00489390
 void TFileStream::WriteSharedString(CString* sharedString) {
-  *BackingArchive(this->backingArchiveOrStream) << *sharedString;
+  *BackingArchive(backingArchiveOrStream) << *sharedString;
 }

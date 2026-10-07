@@ -11,7 +11,7 @@ class TMilitaryUnit;
 
 struct GlobalMapTileRecord {
   char pad_00_to_1f[0x20];
-  TCivUnit* firstCivilianOrder; // 0x20
+  TCivUnit* firstCivilianOrder;
 };
 
 struct ScenarioTileDiskRecord {
@@ -31,7 +31,7 @@ ASSERT_SIZE(ScenarioTileDiskRecord, 0x24);
 struct MapPixelSourceView {
   int unknown00;
   int unknown04;
-  const short* packedTiles; // +0x08
+  const short* packedTiles;
 };
 
 struct TTerrainStateRecord {

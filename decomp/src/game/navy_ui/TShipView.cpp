@@ -112,12 +112,12 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
           categoryControl->FindSubView(kControlTagCls0 + resourceType));
       if (delta > 0) {
         if (shipFraction->selectedShipCount < shipFraction->availableShipCount) {
-          short newValue = static_cast<short>(shipFraction->selectedShipCount + 1);
+          short newValue = shipFraction->selectedShipCount + 1;
           shipFraction->selectedShipCount = newValue;
           shipFraction->shipCountButton->SetValue(newValue, true);
         }
       } else if (shipFraction->selectedShipCount > 0) {
-        short newValue = static_cast<short>(shipFraction->selectedShipCount - 1);
+        short newValue = shipFraction->selectedShipCount - 1;
         shipFraction->selectedShipCount = newValue;
         shipFraction->shipCountButton->SetValue(newValue, true);
       }

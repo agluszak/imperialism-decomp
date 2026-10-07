@@ -8,9 +8,9 @@
 class TFloatWindow : public TWindow {
 public:
   DECLARE_DYNCREATE(TFloatWindow)
-  virtual ~TFloatWindow() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;    // slot 0x28 0x492330
-  virtual int GetWindowTypeTag();   // slot 0x77 0x492310
+  virtual ~TFloatWindow() override;
+  virtual void Close() override;
+  virtual int GetWindowTypeTag();
 
   TFloatWindow();
 };

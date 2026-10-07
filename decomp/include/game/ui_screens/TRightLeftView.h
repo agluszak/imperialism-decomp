@@ -7,10 +7,9 @@
 class TRightLeftView : public TControl {
 public:
   DECLARE_DYNCREATE(TRightLeftView)
-  virtual ~TRightLeftView() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TRightLeftView() override;
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint,
-                          bool commandFlag) override; // slot 0x68 0x583fb0
+                          CPoint& currentPoint, bool commandFlag) override;
 
   int repeatTick;
 

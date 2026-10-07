@@ -81,7 +81,7 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
   if (commandId == 10) {
     unsigned int tag = sourceHandler->controlTag;
     if (tag >= kControlTagTab0 && tag <= kControlTagTab9) {
-      int newIndex = static_cast<int>(tag - kControlTagTab0);
+      int newIndex = tag - kControlTagTab0;
       if (newIndex != comparisonMode) {
         TView* newTab = FindSubView(kControlTagTab0 + newIndex);
         newTab->AssertValid();

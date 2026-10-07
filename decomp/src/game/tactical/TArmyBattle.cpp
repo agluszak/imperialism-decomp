@@ -197,7 +197,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
   int enemyTileIndex = enemyPlayer->armyStack->tileIndex;
   stream->WriteBytes(&enemyTileIndex, 4);
 
-  unsigned short unitRecordCount = static_cast<unsigned short>(recordList->GetCount());
+  unsigned short unitRecordCount = recordList->GetCount();
   stream->WriteBytes(&unitRecordCount, sizeof(unitRecordCount));
   CIterator recordIter(recordList);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(recordIter.Reset()); recordIter.More();

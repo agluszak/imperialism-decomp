@@ -71,7 +71,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
     button->SetFrame(&buttonBounds, true);
   }
 
-  short x = static_cast<short>(frameWidth);
+  short x = frameWidth;
   short y = 0x50;
   for (short resourceIndex = 0; resourceIndex < kResourceKindCount; ++resourceIndex) {
     short count = town->resourceYieldByType[resourceIndex];
@@ -79,10 +79,10 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
       continue;
     }
 
-    x = static_cast<short>(x + 0x2c);
+    x += 0x2c;
     if (x > frameWidth - 0x10) {
       x = 0x10;
-      y = static_cast<short>(y + 0x20);
+      y += 0x20;
     }
 
     TNumberedItem* item = new TNumberedItem();
@@ -95,7 +95,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   short secondaryFood = town->resourceYieldByType[kResourceFruit];
   short alternateFood = static_cast<short>(town->resourceYieldByType[kResourceFish] +
                                            town->resourceYieldByType[kResourceLivestock]);
-  short totalFood = static_cast<short>(primaryFood + secondaryFood + alternateFood);
+  short totalFood = primaryFood + secondaryFood + alternateFood;
   short sustainablePopulation = 0;
   for (int unit = 0; unit < totalFood; ++unit) {
     short* foodPool = &primaryFood;

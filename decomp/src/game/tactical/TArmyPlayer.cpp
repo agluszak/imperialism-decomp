@@ -94,7 +94,7 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
   this->watchFlag = watchFlag; // duplicate store present in the original
   notWatchedFlag = (watchFlag == 0);
   lastAppliedCursorMode = -1;
-  unsigned char coinFlip = static_cast<unsigned char>(rand() & 1);
+  unsigned char coinFlip = rand() & 1;
   cachedFortBombardmentTargetTile = -1;
   randomParityByte50 = coinFlip;
   hasArtilleryOrSappers = false;

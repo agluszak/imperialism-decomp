@@ -62,21 +62,21 @@ void StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer(unsigned char* des
       continue;
     }
     if (opcode == 0xc6 && end - instruction >= 3 && instruction[0] == 0x40) {
-      signed char displacement = static_cast<signed char>(instruction[1]);
+      signed char displacement = instruction[1];
       destinationBase[displacement] = instruction[2];
       instruction += 3;
       continue;
     }
     if (opcode == 0x66 && end - instruction >= 5 && instruction[0] == 0xc7 &&
         instruction[1] == 0x40) {
-      signed char displacement = static_cast<signed char>(instruction[2]);
+      signed char displacement = instruction[2];
       destinationBase[displacement] = instruction[3];
       destinationBase[displacement + 1] = instruction[4];
       instruction += 5;
       continue;
     }
     if (opcode == 0xc7 && end - instruction >= 6 && instruction[0] == 0x40) {
-      signed char displacement = static_cast<signed char>(instruction[1]);
+      signed char displacement = instruction[1];
       memcpy(destinationBase + displacement, instruction + 2, 4);
       instruction += 6;
       continue;
@@ -111,7 +111,7 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
           displacement -= advance;
           generatedBaseOffset += advance;
 
-          unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor);
+          unsigned int opcodeIndex = opcodeAppendCursor;
           opcodeAppendCursor = static_cast<int>(opcodeIndex) + 1;
           opcodeBytes[opcodeIndex] = 0x05;
 
@@ -169,7 +169,7 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
   }
 
   g_pResourceMgr->ReleaseRecordById(static_cast<short>(resourceId));
-  unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor);
+  unsigned int opcodeIndex = opcodeAppendCursor;
   opcodeAppendCursor = static_cast<int>(opcodeIndex) + 1;
   opcodeBytes[opcodeIndex] = 0xc3;
   opcodeBytes.Compact();
@@ -200,7 +200,7 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
 
 // FUNCTION: IMPERIALISM 0x004d5580
 StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int value) {
-  unsigned int index = static_cast<unsigned int>(opcodeAppendCursor);
+  unsigned int index = opcodeAppendCursor;
   opcodeAppendCursor = static_cast<int>(index) + 1;
   opcodeBytes[index] = static_cast<unsigned char>(value);
   return this;

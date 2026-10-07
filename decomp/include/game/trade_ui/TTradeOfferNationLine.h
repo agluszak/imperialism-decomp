@@ -9,11 +9,11 @@ class TTradeOfferNationLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TTradeOfferNationLine)
   // FUNCTION: IMPERIALISM 0x005bcfa0
-  virtual ~TTradeOfferNationLine() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5bd090
+  virtual ~TTradeOfferNationLine() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
-  short categorySlot; // 0x10
-  short nationSlot;   // 0x12
+  short categorySlot;
+  short nationSlot;
 
   // NOOP: verified empty in original 0x005bcff3
   TTradeOfferNationLine() {}

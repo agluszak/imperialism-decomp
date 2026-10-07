@@ -10,7 +10,7 @@ public:
   ~CMcEditWindow() override {}
 
 protected:
-  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags); // 0x00489e70
+  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 
   DECLARE_MESSAGE_MAP()
 };

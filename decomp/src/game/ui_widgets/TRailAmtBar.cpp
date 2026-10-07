@@ -32,7 +32,7 @@ TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 void TRailAmtBar::DoPostCreate(int arg) {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
-  int summaryTag = this->ownerContext->controlTag;
+  int summaryTag = ownerContext->controlTag;
 
   short recordIndex = 0;
   if (static_cast<unsigned int>(summaryTag) < kControlTagPopv) {
@@ -70,16 +70,15 @@ void TRailAmtBar::DoPostCreate(int arg) {
     stepOrCurrentValue = 9999;
   } else {
     short selectedStep = selectedMetricRecord->MaxOrder();
-    stepOrCurrentValue = (short)((static_cast<int>(selectedStep) * this->frameWidth) /
+    stepOrCurrentValue = (short)((static_cast<int>(selectedStep) * frameWidth) /
                                  static_cast<int>(productionOrCapValue));
   }
   auxValueA = productionOrCapValue;
   if (productionOrCapValue == 0) {
     rangeOrMaxValue = 9999;
   } else {
-    rangeOrMaxValue =
-        (short)((this->frameWidth * static_cast<int>(selectedMetricRecord->quantity)) /
-                static_cast<int>(productionOrCapValue));
+    rangeOrMaxValue = (short)((frameWidth * static_cast<int>(selectedMetricRecord->quantity)) /
+                              static_cast<int>(productionOrCapValue));
   }
   auxValueB = 0x3a;
   TView::DoPostCreate(arg);
@@ -111,7 +110,7 @@ void TRailAmtBar::DrawAmt() {
       }
 
       short overlayOffsetX = control->stepOrCurrentValue;
-      short overlayOffsetY = static_cast<short>(control->frameHeight);
+      short overlayOffsetY = control->frameHeight;
       SetQuickDrawTextOriginWithContextOffset(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();

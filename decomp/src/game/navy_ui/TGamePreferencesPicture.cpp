@@ -36,7 +36,7 @@ IMPLEMENT_DYNCREATE(TGamePreferencesPicture, TPicture)
 void TGamePreferencesPicture::DoPostCreate(int arg) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   CString text;
-  this->TView::DoPostCreate(arg);
+  TView::DoPostCreate(arg);
 
   g_pCursorControlPanel = static_cast<TInfoBarText*>(activeDialog->FindSubView(kControlTagCurs));
   g_pCursorControlPanel->AssertValid();
@@ -93,8 +93,8 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   TTwoPicSlider* musicSlider = static_cast<TTwoPicSlider*>(FindSubView(kControlTagMusi));
   musicSlider->AssertValid();
   musicSlider->SetPicture(0x1036);
-  short musicSpan = static_cast<short>(musicSlider->frameHeight - 0xc);
-  short musicSplit = static_cast<short>(g_pSimMgr->preferenceValues[3] * musicSpan / 0xff);
+  short musicSpan = musicSlider->frameHeight - 0xc;
+  short musicSplit = g_pSimMgr->preferenceValues[3] * musicSpan / 0xff;
   musicSlider->splitPosition = static_cast<short>((musicSplit == 0) ? 0 : musicSplit + 0xc);
   musicSlider->mode = 1;
   LoadUiStringByGroupAndIndexToControlObject(0x2743, 0x27, musicSlider);
@@ -102,8 +102,8 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   TTwoPicSlider* soundSlider = static_cast<TTwoPicSlider*>(FindSubView(kControlTagSoun));
   soundSlider->AssertValid();
   soundSlider->SetPicture(0x1038);
-  short soundSpan = static_cast<short>(soundSlider->frameHeight - 0xc);
-  short soundSplit = static_cast<short>(g_pSimMgr->preferenceValues[2] * soundSpan / 100);
+  short soundSpan = soundSlider->frameHeight - 0xc;
+  short soundSplit = g_pSimMgr->preferenceValues[2] * soundSpan / 100;
   soundSlider->splitPosition = static_cast<short>((soundSplit == 0) ? 0 : soundSplit + 0xc);
   soundSlider->mode = 2;
   LoadUiStringByGroupAndIndexToControlObject(0x2743, 0x26, soundSlider);

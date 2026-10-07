@@ -69,7 +69,7 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
   if (PointInBoundsAndActionable(&currentPoint) != 0) {
     CRect bounds;
     BuildInsetContentRect(&bounds);
-    short localY = static_cast<short>(currentPoint.y - bounds.top);
+    short localY = currentPoint.y - bounds.top;
     if (localY > 0 && localY < frameHeight / 2) {
       visualState = 2;
     } else if (localY > frameHeight / 2 && localY < frameHeight) {

@@ -512,7 +512,7 @@ void TSimMgr::CreatePlanet(int rebuild, const char* mapName, int wrapHorizontall
     }
   }
 
-  char rebuildFlag = static_cast<char>(rebuild);
+  char rebuildFlag = rebuild;
   if (((rebuildFlag != 0) && (!g_bMultiplayerScenarioSetupActive)) ||
       ((rebuildFlag == 0) && (g_bMultiplayerScenarioSetupActive))) {
     if (g_pActiveMapOrderContext != NULL) {
@@ -632,7 +632,7 @@ void TSimMgr::CreateCountries(int activate) {
 
 // FUNCTION: IMPERIALISM 0x0057cda0
 void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
-  short nationSlot = static_cast<short>(slotIndex);
+  short nationSlot = slotIndex;
   int nationIndex = nationSlot;
 
   if (g_apNationStates[nationIndex] != NULL) {
@@ -769,7 +769,7 @@ void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
 
 // FUNCTION: IMPERIALISM 0x0057d520
 void TSimMgr::CreateMinor(int slotIndex) {
-  short nationSlot = static_cast<short>(slotIndex);
+  short nationSlot = slotIndex;
   if (nationSlot < kMajorNationCount) {
     g_apSecondaryNationStateSlots[nationSlot] = NULL;
     return;
@@ -855,13 +855,13 @@ void TSimMgr::SetDifficultyLevel(eDifficulty difficulty) {
   difficultyLevel = difficulty;
   if (difficulty != kDifficultyIntroductory) {
     if (difficulty > kDifficultyIntroductory && difficulty <= kDifficultyNighOnImpossible) {
-      this->preferenceValues[10] = zeroFlag;
+      preferenceValues[10] = zeroFlag;
       return;
     }
   } else {
     zeroFlag = true;
   }
-  this->preferenceValues[10] = zeroFlag;
+  preferenceValues[10] = zeroFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x0057d8b0
@@ -909,9 +909,9 @@ void TSimMgr::EnterOptionalPhase(eGamePhaseNewStyle gamePhase) {
     }
   }
 
-  eGamePhaseNewStyle oldPhase = this->turnStateCode;
-  this->turnStateCode = gamePhase;
-  this->previousMode = mode;
+  eGamePhaseNewStyle oldPhase = turnStateCode;
+  turnStateCode = gamePhase;
+  previousMode = mode;
   previousTurnStateCode = oldPhase;
   StartNextPhase();
 }
@@ -2035,7 +2035,7 @@ void TSimMgr::NameCapitals() {
       continue;
     }
 
-    const short cityRecordIndex = static_cast<short>(country->GetCapitolProvince());
+    const short cityRecordIndex = country->GetCapitolProvince();
     CString capitalNameTemplate;
     CString countryName = GetCountryName(nationSlot);
     CString capitalName;
@@ -2171,7 +2171,7 @@ void TSimMgr::ScSetCapacity(STurnInstructionCursor* instruction) {
     city = g_apNationStates[static_cast<int>(nationToken)]->city;
   }
   int index = static_cast<short>(indexToken);
-  short value = static_cast<short>(valueToken);
+  short value = valueToken;
   short* accum = &city->productionAccum[index];
   *accum = static_cast<short>(*accum + (value - city->productionOrderTable[index]));
   city->productionOrderTable[index] = value;
@@ -2227,7 +2227,7 @@ void TSimMgr::ScAddArmy(STurnInstructionCursor* instruction) {
   ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(countToken);
 
-  int remaining = static_cast<int>(countToken);
+  int remaining = countToken;
   int ownerNationCode =
       g_pGlobalMapState->cityScoreTable[static_cast<int>(regionToken)].ownerNationCode;
   while (remaining > 0) {
@@ -2281,8 +2281,8 @@ void TSimMgr::ScAddShip(STurnInstructionCursor* instruction) {
   ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(countToken);
 
-  short orderType = static_cast<short>(orderTypeToken);
-  int nationSlot = static_cast<int>(nationToken);
+  short orderType = orderTypeToken;
+  int nationSlot = nationToken;
   TZone* context = FindMapActionContextByNodeId(static_cast<short>(contextToken));
   TCity* city;
   if (g_apNationStates[nationSlot] == 0) {
@@ -2293,7 +2293,7 @@ void TSimMgr::ScAddShip(STurnInstructionCursor* instruction) {
   city->orderCountByType[orderType] =
       static_cast<short>(city->orderCountByType[orderType] + static_cast<short>(countToken));
 
-  int remaining = static_cast<int>(countToken);
+  int remaining = countToken;
   while (remaining != 0) {
     CreateNavyPrimaryOrderNodeAndAssignDisplayName(orderType, context, nationSlot, 0);
     --remaining;
@@ -2329,7 +2329,7 @@ void TSimMgr::ScSetDevLevel(STurnInstructionCursor* instruction) {
   ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(tileToken);
-  short tileIndex = static_cast<short>(tileToken);
+  short tileIndex = tileToken;
 
   unsigned int valueToken;
   valueToken = *cursor;
@@ -2355,7 +2355,7 @@ void TSimMgr::ScAddRailhead(STurnInstructionCursor* instruction) {
   token = *cursor;
   instruction->tokenCursor = cursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(token);
-  short tileIndex = static_cast<short>(token);
+  short tileIndex = token;
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   g_pGlobalMapState->BuildRailhead(tileIndex, static_cast<short>(nationTag));
   if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
@@ -2370,7 +2370,7 @@ void TSimMgr::ScAddPort(STurnInstructionCursor* instruction) {
   token = *cursor;
   instruction->tokenCursor = cursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(token);
-  short tileIndex = static_cast<short>(token);
+  short tileIndex = token;
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   g_pGlobalMapState->BuildPort(tileIndex, static_cast<short>(nationTag));
   if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
@@ -2438,9 +2438,9 @@ void TSimMgr::ScSetEmbassy(STurnInstructionCursor* instruction) {
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
-  int nationA = static_cast<int>(nationAToken);
-  int nationB = static_cast<int>(nationBToken);
-  short value = static_cast<short>(valueToken);
+  int nationA = nationAToken;
+  int nationB = nationBToken;
+  short value = valueToken;
   TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
   diplomacy->relationSideEffectMatrix[nationA * 0x17 + nationB] = value;
   diplomacy->relationSideEffectMatrix[nationB * 0x17 + nationA] = value;
@@ -2486,8 +2486,8 @@ void TSimMgr::ScSetTreaty(STurnInstructionCursor* instruction) {
   ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(relationToken);
 
-  int sourceNation = static_cast<int>(sourceToken);
-  int targetNation = static_cast<int>(targetToken);
+  int sourceNation = sourceToken;
+  int targetNation = targetToken;
   DiplomacyRelationship relationship = static_cast<DiplomacyRelationship>(relationToken);
   g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(sourceNation, targetNation,
                                                                         relationship);
@@ -2544,7 +2544,7 @@ void TSimMgr::ScSetSeazoneName(STurnInstructionCursor* instruction) {
 
   CString contextName(rawName);
   instruction->tokenCursor += 0x10;
-  short contextId = static_cast<short>(contextToken);
+  short contextId = contextToken;
   if (FindMapActionContextByNodeId(contextId) != 0) {
     TZone* context = FindMapActionContextByNodeId(contextId);
     context->displayName = contextName;
@@ -2568,7 +2568,7 @@ void TSimMgr::ScSetCountryName(STurnInstructionCursor* instruction) {
   CString unusedNamePartB;
   CString unusedNamePartC;
 
-  int countryIndex = static_cast<int>(countryToken);
+  int countryIndex = countryToken;
   g_apTerrainTypeDescriptorTable[countryIndex]->SetNationDisplayNameAndLocalizationSlotRef(
       countryName);
   g_apTerrainTypeDescriptorTable[countryIndex]->identitySharedString1 = countryName;
@@ -2637,7 +2637,7 @@ void TSimMgr::ScSetFlags(STurnInstructionCursor* instruction) {
   token = *cursor;
   instruction->tokenCursor = cursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(token);
-  short index = static_cast<short>(token);
+  short index = token;
   mapArtSet = index;
   g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(index);
   g_pMacViewMgr->ReloadMapArtAtlases();
@@ -2677,8 +2677,8 @@ void TSimMgr::ScSetTransportBar(STurnInstructionCursor* instruction) {
   ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(valueToken);
 
-  short needIndex = static_cast<short>(typeToken);
-  int value = static_cast<int>(valueToken);
+  short needIndex = typeToken;
+  int value = valueToken;
 
   if (g_apNationStates[ownerToken]->needCurrentByType[needIndex] < value) {
     g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
@@ -2705,7 +2705,7 @@ void TSimMgr::ScClearTransport(STurnInstructionCursor* instruction) {
   nationToken = *cursor;
   instruction->tokenCursor = cursor + 1;
   DECODE_SCENARIO_DWORD_TOKEN(nationToken);
-  int nation = static_cast<int>(nationToken);
+  int nation = nationToken;
 
   g_apNationStates[nation]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
   for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
@@ -2730,7 +2730,7 @@ void TSimMgr::ScSetCouncilMeeting(STurnInstructionCursor* instruction) {
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(stateToken);
 
-  int slot = static_cast<int>(slotToken);
+  int slot = slotToken;
   councilByDecade[slot] = static_cast<unsigned char>(stateToken);
   if (stateToken == 2) {
     finalCouncilYear = static_cast<short>(static_cast<short>(slotToken) * 10 + 0x717);

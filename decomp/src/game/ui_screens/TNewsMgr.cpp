@@ -169,7 +169,7 @@ void TNewsMgr::CreateNewspaper(int nation) {
     int id = tmpl->storyId;
     if (id > 9 && id % 10 == 0) {
       // Decade feature: visible only while the year index is inside [id-10, id).
-      short year = static_cast<short>(g_pSimMgr->economicTurn / 4);
+      short year = g_pSimMgr->economicTurn / 4;
       if (year < id - 10 || year >= id) {
         continue;
       }
@@ -455,7 +455,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
     if (*majorCursor > 2) {
       return;
     }
-    short target = static_cast<short>(nation);
+    short target = nation;
     if (pass != 0) {
       target = 999;
     }
@@ -723,7 +723,7 @@ bool TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsStory* sto
   int kind = templateRow->storyId;
   short otherNation;
   if (kind > 9 && kind % 10 == 0) {
-    short period = static_cast<short>(g_pSimMgr->economicTurn / 4);
+    short period = g_pSimMgr->economicTurn / 4;
     if (period < kind - 10 || period >= kind) {
       return false;
     }

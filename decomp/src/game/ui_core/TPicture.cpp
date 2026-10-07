@@ -86,64 +86,63 @@ void TPicture::IPicture(TView* panel, int* offsetLayout, int* sizeLayout, int la
 void TPicture::Draw(RECT* rectBuffer) {
   if (GetAsyncKeyState(VK_CONTROL) & 0x8000) {
     CRect bounds;
-    this->GetQDExtent(&bounds);
+    GetQDExtent(&bounds);
   }
 
   if (GetActiveQuickDrawSurfaceDib() != 0 &&
-      this->cachedBitmap->m_pInfoHeader->bmiHeader.biBitCount == 8 &&
-      this->cachedBitmap->m_pInfoHeader->bmiHeader.biCompression == 0) {
+      cachedBitmap->m_pInfoHeader->bmiHeader.biBitCount == 8 &&
+      cachedBitmap->m_pInfoHeader->bmiHeader.biCompression == 0) {
     CRect bounds;
-    this->GetQDExtent(&bounds);
+    GetQDExtent(&bounds);
     int width = bounds.right - bounds.left;
     int height = bounds.bottom - bounds.top;
     CDib* surface = GetActiveQuickDrawSurfaceDib();
-    this->cachedBitmap->BlitSurfaceRectSkippingTransparentColor(surface, 0, 0, width, height,
-                                                                bounds.left, bounds.top, -1);
+    cachedBitmap->BlitSurfaceRectSkippingTransparentColor(surface, 0, 0, width, height, bounds.left,
+                                                          bounds.top, -1);
     return;
   }
 
   g_pResourceMgr->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(GetActiveQuickDrawDc(), 0);
 
-  int srcHeight = this->cachedBitmap->m_pInfoHeader->bmiHeader.biHeight;
+  int srcHeight = cachedBitmap->m_pInfoHeader->bmiHeader.biHeight;
   if (srcHeight <= 0) {
     srcHeight = -srcHeight;
   }
   {
     CPoint posForX;
     CPoint posForY;
-    this->cachedBitmap->StretchDibitsRectToDc(
-        GetActiveQuickDrawDc(), this->GetAbsolutePosition(&posForX)->x,
-        this->GetAbsolutePosition(&posForY)->y, this->frameWidth, this->frameHeight, 0, 0,
-        this->cachedBitmap->m_pInfoHeader->bmiHeader.biWidth, srcHeight);
+    cachedBitmap->StretchDibitsRectToDc(
+        GetActiveQuickDrawDc(), GetAbsolutePosition(&posForX)->x, GetAbsolutePosition(&posForY)->y,
+        frameWidth, frameHeight, 0, 0, cachedBitmap->m_pInfoHeader->bmiHeader.biWidth, srcHeight);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048f520
 void TPicture::ReleasePicture() {
-  if (this->glyphBase != -1) {
-    g_pResourceMgr->ReleaseRecordById(this->glyphBase);
+  if (glyphBase != -1) {
+    g_pResourceMgr->ReleaseRecordById(glyphBase);
   }
-  this->glyphBase = -1;
-  this->bitmapId = 0;
-  this->resourceNamespaceId = 0;
-  this->cachedBitmap = 0;
+  glyphBase = -1;
+  bitmapId = 0;
+  resourceNamespaceId = 0;
+  cachedBitmap = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048f570
 void TPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
-  this->ReleasePicture();
-  this->glyphBase = nPictureId;
+  ReleasePicture();
+  glyphBase = nPictureId;
   if (nPictureId != -1) {
-    this->cachedBitmap = g_pResourceMgr->LoadBmpResourceByIdCached(nPictureId);
+    cachedBitmap = g_pResourceMgr->LoadBmpResourceByIdCached(nPictureId);
   }
-  if (this->cachedBitmap == 0) {
+  if (cachedBitmap == 0) {
     PictureFallbackSizeScratch sizeScratch;
-    sizeScratch.Set(this->frameWidth, this->frameHeight);
-    this->cachedBitmap = g_pResourceMgr->BuildIndexedBmpResourceById(nPictureId, this->frameWidth,
-                                                                     this->frameHeight, 0);
+    sizeScratch.Set(frameWidth, frameHeight);
+    cachedBitmap =
+        g_pResourceMgr->BuildIndexedBmpResourceById(nPictureId, frameWidth, frameHeight, 0);
   }
   if (fRefreshNow) {
-    this->RefreshControl();
+    RefreshControl();
   }
 }
 

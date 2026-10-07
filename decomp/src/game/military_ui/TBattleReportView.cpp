@@ -540,7 +540,7 @@ void TBattleReportView::DisplayBattle(MapContextActionRecord* record) {
   }
 
   short participantIndex = static_cast<signed char>(record->displayedParticipantIndex);
-  short otherParticipantIndex = static_cast<short>(1 - participantIndex);
+  short otherParticipantIndex = 1 - participantIndex;
   int activeSideRelation;
   if (static_cast<signed char>(
           record->nationIds[static_cast<signed char>(record->reportParticipantIndex)]) ==

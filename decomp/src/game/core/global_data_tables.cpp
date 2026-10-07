@@ -2290,21 +2290,21 @@ short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 
 
 // GLOBAL: IMPERIALISM 0x006994c0
 TacticalTileHeuristicScorerFn g_apfnTacticalTileHeuristicScorers[15] = {
-    &TArmyPlayer::FactorStayPut,                              // [0]  0x59d6b0
-    &TArmyPlayer::FactorTargetEnemy,                          // [1]  0x59d6e0
-    &TArmyPlayer::FactorSapFort,                              // [2]  0x59d810
-    &TArmyPlayer::FactorMeleeEnemy,                           // [3]  0x59d8a0
-    &TArmyPlayer::FactorEnemyFire,                            // [4]  0x59d940
-    &TArmyPlayer::FactorRetreat,                              // [5]  0x59da20
-    &TArmyPlayer::FactorRoughTerrain,                         // [6]  0x59dac0
-    &TArmyPlayer::FactorNearCowards,                          // [7]  0x59db00
-    &TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance,      // [8]  0x59dba0
-    &TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing,  // [9]  0x59dbe0
-    &TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn, // [10] 0x59dcd0
-    &TArmyPlayer::FactorHitByArty,                            // [11] 0x59dd40
-    &TArmyPlayer::FactorTargetMaxRange,                       // [12] 0x59de30
-    &TArmyPlayer::FactorHitEnemyArtillery,                    // [13] 0x59dfe0
-    &TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus,  // [14] 0x59e0d0
+    &TArmyPlayer::FactorStayPut,
+    &TArmyPlayer::FactorTargetEnemy,
+    &TArmyPlayer::FactorSapFort,
+    &TArmyPlayer::FactorMeleeEnemy,
+    &TArmyPlayer::FactorEnemyFire,
+    &TArmyPlayer::FactorRetreat,
+    &TArmyPlayer::FactorRoughTerrain,
+    &TArmyPlayer::FactorNearCowards,
+    &TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance,
+    &TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing,
+    &TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn,
+    &TArmyPlayer::FactorHitByArty,
+    &TArmyPlayer::FactorTargetMaxRange,
+    &TArmyPlayer::FactorHitEnemyArtillery,
+    &TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus,
 };
 
 // Tactical AI cursor-mode ratio thresholds and projection factors (.rdata FP pool).

@@ -40,7 +40,7 @@ public:
   virtual int DesertBand(int row, int percentChance);
   // Places a city marker and probabilistically spreads it to neighbors. slot 22 / 0x58
   virtual int PlantForestCluster(int tileIndex, int retryBudget, bool markerVariant);
-  virtual void CreateRivers(); // slot 23 / 0x5c
+  virtual void CreateRivers();
   // Recursively grows a river segment toward water. slot 24 / 0x60
   virtual bool GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
                          bool startedOnHills);
@@ -48,7 +48,7 @@ public:
   virtual void AssignOrCompactCityRegionIdsAndRebuildBorders(int mode);
   // Post-attempt validity probe: nonzero means the driver must regenerate. slot 26 / 0x68
   virtual bool ErrorCheck();
-  virtual void TargetValidationSucceeded(); // slot 27 / 0x6c
+  virtual void TargetValidationSucceeded();
   virtual void EraseZones(long coarseIndex);
   void ClearRegionClassIndexReferences(int classIndex) {
     signed char* regionClassGridFlat = &regionClassGrid[0][0];
@@ -77,14 +77,13 @@ public:
   virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
                                                     short unusedClass, short northClass,
                                                     short unusedClass2);
-  virtual MapGeneratorTileRecord*
-  GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
+  virtual MapGeneratorTileRecord* GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex);
 
   // LAYOUT: the vtable ends at slot 0x21; slots 0x22..0x28 are null.
 
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
-  void TranslateZones(); // 0x005272c0
+  void TranslateZones();
 
   bool CheckProvs();
 
@@ -124,7 +123,7 @@ public:
   void GenerateNewMap(char* tileGrid, Province* cityTable, CString* tuningString);
 
   // --- data fields (raw pad except the ones the ported passes read) ---
-  char pad_04[0x08 - 0x04]; // +0x04
+  char pad_04[0x08 - 0x04];
   void CompactCityRegionIds();
 
   int AssignSequentialValuesToRegionPlaceholders(short* tileValues, int* nextValue);
@@ -137,22 +136,22 @@ public:
 
   char* mapTileGrid; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
 
-  int CountSeaTilesInColumn(int column); // 0x00529910
+  int CountSeaTilesInColumn(int column);
   bool IsSeaTile(int tileIndex);
   // Coordinate overload: the first argument is column and the second is row.
-  bool IsSeaTile(int column, int row); // 0x0052a630
+  bool IsSeaTile(int column, int row);
   // Stores the sea-zone ordinal in the tile's owner tag, biased by kNationSlotCount.
   void SetSeaZoneIndex(int tileIndex, char zoneIndex);
   Province* cityScoreTable;
   // +0x10 region-class grid: 15 rows x 27 columns of region-class bytes (-1 = unassigned).
   signed char regionClassGrid[15][27];
-  char pad_1a5[0x1a8 - 0x1a5]; // +0x1a5
+  char pad_1a5[0x1a8 - 0x1a5];
   int groupMemberLists[7][3];
   int cityRegionNextId;
   int cityRegionIds[0x17];
   char unusedHole25c[0x29c - 0x25c];
   int lastMinorSeedCandidate;
-  char pad_2a0[0x2a1 - 0x2a0]; // +0x2a0
+  char pad_2a0[0x2a1 - 0x2a0];
   // +0x2a1 mode byte copied in by the GenerateMap caller.
   unsigned char modeByte2a1;
   char pad_2a2[2];

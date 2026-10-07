@@ -11,11 +11,10 @@ class TMapUberPicture;
 class TMiniMapView : public TControl {
 public:
   DECLARE_DYNCREATE(TMiniMapView)
-  virtual ~TMiniMapView() override;             // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x59a540
+  virtual ~TMiniMapView() override;
+  virtual void Draw(RECT* rectBuffer) override;
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint,
-                          bool commandFlag) override; // slot 0x68 0x59a920
+                          CPoint& currentPoint, bool commandFlag) override;
   TMapUberPicture* ownerPicture;
   int scrollTileColumn;
   int scrollTileRow;

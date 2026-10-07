@@ -287,13 +287,13 @@ void TToolBarCluster::SetReadouts(short nationId) {
   if (g_pSimMgr->ReallyInTheGame(nationId)) {
     g_pSimMgr->NumToCurrency(g_apNationStates[nationId]->treasuryValue, &treaText);
   }
-  TView* treaControl = this->FindSubView(kControlTagTrea); // 'trea'
+  TView* treaControl = FindSubView(kControlTagTrea); // 'trea'
   if (treaControl != NULL) {
     static_cast<TStaticText*>(treaControl)->SetTextAndMaybeRefresh(&treaText, true);
   }
 
   // 'seas' tag: "<season>, <year>" turn-status text (present on the main map toolbar).
-  TView* seasControl = this->FindSubView(kControlTagSeas); // 'seas'
+  TView* seasControl = FindSubView(kControlTagSeas); // 'seas'
   if (seasControl != NULL) {
     CString seasonText;
     g_pSimMgr->GetSeason(&seasonText);
@@ -305,7 +305,7 @@ void TToolBarCluster::SetReadouts(short nationId) {
     return;
   }
 
-  TView* forcControl = this->FindSubView(kControlTagForc); // 'forc'
+  TView* forcControl = FindSubView(kControlTagForc); // 'forc'
   if (forcControl == NULL) {
     return;
   }

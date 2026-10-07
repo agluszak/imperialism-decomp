@@ -83,7 +83,7 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
 void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceHandler,
                                            TEvent* event) {
   if (commandId == 0x14 || commandId == 0xa || commandId == 0x22 || commandId == 0xd) {
-    unsigned int tag = static_cast<unsigned int>(sourceHandler->controlTag);
+    unsigned int tag = sourceHandler->controlTag;
 
     if (tag == kControlTagLoad || tag == kControlTagJoin || tag == kControlTagRand ||
         tag == kControlTagScen) {
@@ -110,7 +110,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
     }
 
     // Second dispatch: the actual per-tag action.
-    unsigned int actionTag = static_cast<unsigned int>(sourceHandler->controlTag);
+    unsigned int actionTag = sourceHandler->controlTag;
     if (actionTag == kControlTagLoad) {
       g_pGameFlowState->scenarioSelectionTag = kControlTagLoad;
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {

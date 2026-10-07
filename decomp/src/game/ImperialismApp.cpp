@@ -40,8 +40,8 @@
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-#include <io.h>  // CRT _findfirst/_findnext/_findclose (LIBRARY 0x5e7ae0/0x5e7c10/0x5e7d30)
-#include <new.h> // CRT _set_new_handler (LIBRARY 0x5e7a80)
+#include <io.h>  // CRT _findfirst/_findnext/_findclose
+#include <new.h> // CRT _set_new_handler
 #include <string.h>
 
 namespace {
@@ -396,7 +396,7 @@ void ImperialismApp::OnSwitchGreatPower() {
   dialog.slider.SetPos(g_pSimMgr->GetPlayerCountry());
 
   if (dialog.DoModal() == IDOK) {
-    short nationSlot = static_cast<short>(dialog.slider.GetPos());
+    short nationSlot = dialog.slider.GetPos();
     g_pSimMgr->SetPlayerCountry(nationSlot);
     if (g_pSimMgr->mode == kGamePhaseTechnology) {
       g_apNationStates[g_pSimMgr->GetPlayerCountry()]
@@ -435,7 +435,7 @@ void ImperialismApp::OnBequeathGoodies() {
       city->VerifyStocks();
     }
 
-    short populationDelta = static_cast<short>(-static_cast<int>(dialog.populationAdjustment));
+    short populationDelta = -static_cast<int>(dialog.populationAdjustment);
     city->productionSummary->RemovePopulation(1, populationDelta);
     city->productionSummary->RemovePopulation(2, populationDelta);
     city->productionSummary->RemovePopulation(4, populationDelta);
@@ -547,7 +547,7 @@ LPCTSTR ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix() {
           break;
         }
       }
-      driveIndex = static_cast<char>(driveIndex + 1);
+      ++driveIndex;
     }
   }
   return static_cast<LPCTSTR>(installDrivePrefix);

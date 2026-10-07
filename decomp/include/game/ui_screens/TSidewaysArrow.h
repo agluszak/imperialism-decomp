@@ -8,13 +8,12 @@ class TSidewaysArrow : public TUpDownPictureButton {
 public:
   // FUNCTION: IMPERIALISM 0x00583bb0
   ~TSidewaysArrow() override {}
-  DECLARE_DYNCREATE(TSidewaysArrow) // GetRuntimeClass slot 0x00 0x583b30
+  DECLARE_DYNCREATE(TSidewaysArrow) // GetRuntimeClass slot 0x00
   TSidewaysArrow();
-  int repeatDeadlineTick; // 0x94
+  int repeatDeadlineTick;
 
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint,
-                          bool commandFlag) override; // slot 0x68 0x583bd0
+                          CPoint& currentPoint, bool commandFlag) override;
 };
 
 ASSERT_SIZE(TSidewaysArrow, 0x98);

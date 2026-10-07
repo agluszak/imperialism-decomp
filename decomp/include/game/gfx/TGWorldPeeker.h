@@ -11,8 +11,8 @@ struct TQuickDrawSurfaceContext;
 class TGWorldPeeker : public TView {
 public:
   DECLARE_DYNCREATE(TGWorldPeeker)
-  virtual ~TGWorldPeeker() override;            // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4ff2f0
+  virtual ~TGWorldPeeker() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   TGWorldPeeker() : peekSurface(NULL) {}
 

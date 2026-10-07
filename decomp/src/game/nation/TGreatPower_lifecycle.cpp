@@ -95,12 +95,12 @@ int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
       sqrtf((sumPowerSq - 2.0f * mean * sumPower + mean * mean * count) / (count - 1.0f));
 
   int myWeightSum = 0;
-  CIterator myUnitIter(this->militaryUnitList);
+  CIterator myUnitIter(militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(myUnitIter.Reset()); myUnitIter.More();
        unit = static_cast<TMilitaryUnit*>(myUnitIter.Advance())) {
     myWeightSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
   }
-  float myPower = static_cast<float>(myWeightSum + this->GetArmsInNavy() + 4);
+  float myPower = static_cast<float>(myWeightSum + GetArmsInNavy() + 4);
 
   if (myPower > mean + 2.0f * stddev) {
     return 4;
@@ -184,36 +184,36 @@ void TGreatPower::ReassessMissions(int unused) {}
 
 // FUNCTION: IMPERIALISM 0x004d8c00
 short TGreatPower::GetMerchantCapacity(void) {
-  return this->availableMerchantCapacity;
+  return availableMerchantCapacity;
 }
 
 // FUNCTION: IMPERIALISM 0x004d8cc0
 void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) {
-  this->InitializeNationStateIdentityAndOwnedRegionList(nationSlotIndex);
+  InitializeNationStateIdentityAndOwnedRegionList(nationSlotIndex);
 
-  this->treasuryValue = g_anNationStartingTreasuryByLocale[g_pSimMgr->difficultyLevel];
+  treasuryValue = g_anNationStartingTreasuryByLocale[g_pSimMgr->difficultyLevel];
 
-  this->diplomacyEligibility = (humanControlledFlag == 1) ? 1 : 0;
+  diplomacyEligibility = (humanControlledFlag == 1) ? 1 : 0;
 
   TCity* cityModel = new TCity();
   if (cityModel != 0) {
     cityModel->ICity(this);
   }
-  this->city = cityModel;
+  city = cityModel;
 
-  this->townMarkerList = new TList();
+  townMarkerList = new TList();
 
-  this->grantTotalCost = 0;
-  this->transportCapacity = 0x0F;
-  this->armyTransportRemaining = 0x0F;
+  grantTotalCost = 0;
+  transportCapacity = 0x0F;
+  armyTransportRemaining = 0x0F;
 
-  this->turnEventQueue = new TPtrList();
-  this->turnEventQueue->recordSize = 4;
+  turnEventQueue = new TPtrList();
+  turnEventQueue->recordSize = 4;
 
-  this->proposalQueue = new TPtrList();
-  this->proposalQueue->recordSize = 4;
+  proposalQueue = new TPtrList();
+  proposalQueue->recordSize = 4;
 
-  if (this->diplomacyEligibility != 0) {
+  if (diplomacyEligibility != 0) {
     TForeignMinister* foreignMinister = new TForeignMinister();
     foreignMinister->IForeignMinister(this);
     this->foreignMinister = foreignMinister;
@@ -231,13 +231,13 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
   while (listIndex < kDiplomacyTrackedSlotCount) {
     TPtrList* trackedSlotList = new TPtrList();
     trackedSlotList->recordSize = 0x0C;
-    this->diplomacyTrackedSlots[listIndex] = trackedSlotList;
+    diplomacyTrackedSlots[listIndex] = trackedSlotList;
     ++listIndex;
   }
 
-  short* diplomacyNeedState = this->diplomacyPolicyByNation;
-  short* diplomacyGrantState = this->diplomacyGrantByNation;
-  unsigned char* diplomacyFlags = this->colonyBoycottFlags;
+  short* diplomacyNeedState = diplomacyPolicyByNation;
+  short* diplomacyGrantState = diplomacyGrantByNation;
+  unsigned char* diplomacyFlags = colonyBoycottFlags;
   int nationSlot = 0;
   while (nationSlot < kNationSlotCount) {
     diplomacyNeedState[nationSlot] = -1;
@@ -246,49 +246,49 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
     ++nationSlot;
   }
 
-  this->trackedObjectList = new TList();
+  trackedObjectList = new TList();
 
   int candidateIndex = 0;
   while (candidateIndex < kNationSlotCount) {
-    this->enemyFlags[candidateIndex] = 0;
+    enemyFlags[candidateIndex] = 0;
     ++candidateIndex;
   }
-  this->turnFinished = 1;
+  turnFinished = 1;
 
-  this->turnSummaryQueue = new TPtrList();
-  this->turnSummaryQueue->recordSize = 8;
+  turnSummaryQueue = new TPtrList();
+  turnSummaryQueue->recordSize = 8;
 
-  this->turnStartEvents = new TList();
-  this->militaryExpenses = 0;
+  turnStartEvents = new TList();
+  militaryExpenses = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d9160
 void TGreatPower::Free(void) {
-  if (this->city != 0) {
-    this->city->Free();
+  if (city != 0) {
+    city->Free();
   }
-  this->city = 0;
-  if (this->turnEventQueue != 0) {
-    this->turnEventQueue->FreeList();
+  city = 0;
+  if (turnEventQueue != 0) {
+    turnEventQueue->FreeList();
   }
-  this->turnEventQueue = 0;
-  if (this->proposalQueue != 0) {
-    this->proposalQueue->FreeList();
+  turnEventQueue = 0;
+  if (proposalQueue != 0) {
+    proposalQueue->FreeList();
   }
-  this->proposalQueue = 0;
-  if (this->foreignMinister != 0) {
-    this->foreignMinister->Free();
+  proposalQueue = 0;
+  if (foreignMinister != 0) {
+    foreignMinister->Free();
   }
-  this->foreignMinister = 0;
-  if (this->interiorMinister != 0) {
-    this->interiorMinister->Free();
+  foreignMinister = 0;
+  if (interiorMinister != 0) {
+    interiorMinister->Free();
   }
-  this->interiorMinister = 0;
-  if (this->defenseMinister != 0) {
-    this->defenseMinister->Free();
+  interiorMinister = 0;
+  if (defenseMinister != 0) {
+    defenseMinister->Free();
   }
-  this->defenseMinister = 0;
-  TPtrList** trackedSlots = this->diplomacyTrackedSlots;
+  defenseMinister = 0;
+  TPtrList** trackedSlots = diplomacyTrackedSlots;
   for (int trackedSlotCount = 0; trackedSlotCount < 0x11; ++trackedSlotCount) {
     if (*trackedSlots != 0) {
       (*trackedSlots)->FreeList();
@@ -296,29 +296,29 @@ void TGreatPower::Free(void) {
     *trackedSlots = 0;
     ++trackedSlots;
   }
-  if (this->townMarkerList != 0) {
-    this->townMarkerList->FreeList();
+  if (townMarkerList != 0) {
+    townMarkerList->FreeList();
   }
-  this->townMarkerList = 0;
-  if (this->trackedObjectList != 0) {
-    this->trackedObjectList->FreeList();
+  townMarkerList = 0;
+  if (trackedObjectList != 0) {
+    trackedObjectList->FreeList();
   }
-  this->trackedObjectList = 0;
-  if (this->turnSummaryQueue != 0) {
-    this->turnSummaryQueue->FreeList();
+  trackedObjectList = 0;
+  if (turnSummaryQueue != 0) {
+    turnSummaryQueue->FreeList();
   }
-  this->turnSummaryQueue = 0;
-  if (this->turnStartEvents != 0) {
-    this->turnStartEvents->FreeList();
+  turnSummaryQueue = 0;
+  if (turnStartEvents != 0) {
+    turnStartEvents->FreeList();
   }
-  this->turnStartEvents = 0;
-  if (this->militaryUnitList != 0) {
-    this->militaryUnitList->FreeList();
+  turnStartEvents = 0;
+  if (militaryUnitList != 0) {
+    militaryUnitList->FreeList();
   }
-  this->militaryUnitList = 0;
-  if (this->ownedRegionList != 0) {
-    this->ownedRegionList->Free();
-    this->ownedRegionList = 0;
+  militaryUnitList = 0;
+  if (ownedRegionList != 0) {
+    ownedRegionList->Free();
+    ownedRegionList = 0;
   }
   delete this;
 }
@@ -326,205 +326,202 @@ void TGreatPower::Free(void) {
 // FUNCTION: IMPERIALISM 0x004d92e0
 void TGreatPower::ReadFrom(TStream* stream) {
   TCountry::ReadFrom(stream);
-  stream->ReadBytes(&this->diplomacyEligibility, 1);
-  stream->ReadBytes(&this->availableMerchantCapacity, 2);
-  stream->ReadBytes(&this->merchantCapacity, 2);
-  stream->ReadBytes(&this->transportCapacity, 2);
-  stream->ReadBytes(&this->reservedTransportCapacity, 2);
+  stream->ReadBytes(&diplomacyEligibility, 1);
+  stream->ReadBytes(&availableMerchantCapacity, 2);
+  stream->ReadBytes(&merchantCapacity, 2);
+  stream->ReadBytes(&transportCapacity, 2);
+  stream->ReadBytes(&reservedTransportCapacity, 2);
   if (g_nSaveFormatVersion < 0x3E) {
-    stream->ReadBytes(&this->grantTotalCost, 2);
+    stream->ReadBytes(&grantTotalCost, 2);
   } else {
-    stream->ReadBytes(&this->grantTotalCost, 4);
+    stream->ReadBytes(&grantTotalCost, 4);
   }
-  stream->ReadBytes(&this->unfilledTradeOfferCount, 2);
-  stream->ReadBytes(this->diplomacyPolicyByNation, 0x2E);
-  SwapShortArrayBytes(this->diplomacyPolicyByNation, kNationSlotCount);
-  stream->ReadBytes(this->diplomacyGrantByNation, 0x2E);
-  SwapShortArrayBytes(this->diplomacyGrantByNation, kNationSlotCount);
-  stream->ReadBytes(this->needCurrentByType, sizeof(this->needCurrentByType));
-  SwapShortArrayBytes(this->needCurrentByType, kResourceKindCount);
-  stream->ReadBytes(this->needTargetByType, sizeof(this->needTargetByType));
-  SwapShortArrayBytes(this->needTargetByType, kResourceKindCount);
-  stream->ReadBytes(this->relationDeltaCurrent, sizeof(this->relationDeltaCurrent));
-  SwapShortArrayBytes(this->relationDeltaCurrent, kResourceKindCount);
-  stream->ReadBytes(this->purchasedItemsByResource, sizeof(this->purchasedItemsByResource));
-  SwapShortArrayBytes(this->purchasedItemsByResource, kResourceKindCount);
-  stream->ReadBytes(this->itemPotentials, sizeof(this->itemPotentials));
-  SwapShortArrayBytes(this->itemPotentials, kResourceKindCount);
+  stream->ReadBytes(&unfilledTradeOfferCount, 2);
+  stream->ReadBytes(diplomacyPolicyByNation, 0x2E);
+  SwapShortArrayBytes(diplomacyPolicyByNation, kNationSlotCount);
+  stream->ReadBytes(diplomacyGrantByNation, 0x2E);
+  SwapShortArrayBytes(diplomacyGrantByNation, kNationSlotCount);
+  stream->ReadBytes(needCurrentByType, sizeof(needCurrentByType));
+  SwapShortArrayBytes(needCurrentByType, kResourceKindCount);
+  stream->ReadBytes(needTargetByType, sizeof(needTargetByType));
+  SwapShortArrayBytes(needTargetByType, kResourceKindCount);
+  stream->ReadBytes(relationDeltaCurrent, sizeof(relationDeltaCurrent));
+  SwapShortArrayBytes(relationDeltaCurrent, kResourceKindCount);
+  stream->ReadBytes(purchasedItemsByResource, sizeof(purchasedItemsByResource));
+  SwapShortArrayBytes(purchasedItemsByResource, kResourceKindCount);
+  stream->ReadBytes(itemPotentials, sizeof(itemPotentials));
+  SwapShortArrayBytes(itemPotentials, kResourceKindCount);
 
   if (g_nSaveFormatVersion >= 0x17) {
-    stream->ReadBytes(this->unfilledTradeTurnCountsByResource,
-                      sizeof(this->unfilledTradeTurnCountsByResource));
-    SwapShortArrayBytes(this->unfilledTradeTurnCountsByResource, kResourceKindCount);
+    stream->ReadBytes(unfilledTradeTurnCountsByResource, sizeof(unfilledTradeTurnCountsByResource));
+    SwapShortArrayBytes(unfilledTradeTurnCountsByResource, kResourceKindCount);
   }
 
-  stream->ReadBytes(this->transportedItemsByResource, sizeof(this->transportedItemsByResource));
-  SwapShortArrayBytes(this->transportedItemsByResource, kResourceKindCount);
-  stream->ReadBytes(this->rememberedTradeOffersByResource,
-                    sizeof(this->rememberedTradeOffersByResource));
-  SwapShortArrayBytes(this->rememberedTradeOffersByResource, kResourceKindCount);
+  stream->ReadBytes(transportedItemsByResource, sizeof(transportedItemsByResource));
+  SwapShortArrayBytes(transportedItemsByResource, kResourceKindCount);
+  stream->ReadBytes(rememberedTradeOffersByResource, sizeof(rememberedTradeOffersByResource));
+  SwapShortArrayBytes(rememberedTradeOffersByResource, kResourceKindCount);
 
-  stream->ReadBytes(&this->budgetPoolBase, 4);
-  stream->ReadBytes(&this->budgetPoolDelta, 4);
-  stream->ReadBytes(this->aidAllocationMatrix, 0x5C0);
-  ReverseDwordArrayBytes(this->aidAllocationMatrix, 0x170);
+  stream->ReadBytes(&budgetPoolBase, 4);
+  stream->ReadBytes(&budgetPoolDelta, 4);
+  stream->ReadBytes(aidAllocationMatrix, 0x5C0);
+  ReverseDwordArrayBytes(aidAllocationMatrix, 0x170);
 
-  stream->ReadBytes(&this->pendingActionStatus, sizeof(this->pendingActionStatus));
-  stream->ReadBytes(this->field8d6, 0x1A);
-  SwapShortArrayBytes(this->field8d6, 0x0D);
+  stream->ReadBytes(&pendingActionStatus, sizeof(pendingActionStatus));
+  stream->ReadBytes(field8d6, 0x1A);
+  SwapShortArrayBytes(field8d6, 0x0D);
 
-  this->turnEventQueue->ReadFrom(stream);
-  this->proposalQueue->ReadFrom(stream);
+  turnEventQueue->ReadFrom(stream);
+  proposalQueue->ReadFrom(stream);
   int listIndex = 0;
   while (listIndex < kDiplomacyTrackedSlotCount) {
-    this->diplomacyTrackedSlots[listIndex]->ReadFrom(stream);
+    diplomacyTrackedSlots[listIndex]->ReadFrom(stream);
     ++listIndex;
   }
 
   if (g_nSaveFormatVersion < 0x1D) {
-    if (this->encodedNationSlot == -1) {
-      bool remote = this->IsRemote();
+    if (encodedNationSlot == -1) {
+      bool remote = IsRemote();
       if (!remote) {
-        this->foreignMinister->ReadFrom(stream);
-        this->interiorMinister->ReadFrom(stream);
-        this->defenseMinister->ReadFrom(stream);
+        foreignMinister->ReadFrom(stream);
+        interiorMinister->ReadFrom(stream);
+        defenseMinister->ReadFrom(stream);
       }
-      this->city->ReadFrom(stream);
+      city->ReadFrom(stream);
     } else {
       // Each `= 0` sits after its free-if, not inside it (0x4d9621 and friends).
-      if (this->foreignMinister != 0) {
-        this->foreignMinister->Free();
+      if (foreignMinister != 0) {
+        foreignMinister->Free();
       }
-      this->foreignMinister = 0;
-      if (this->interiorMinister != 0) {
-        this->interiorMinister->Free();
+      foreignMinister = 0;
+      if (interiorMinister != 0) {
+        interiorMinister->Free();
       }
-      this->interiorMinister = 0;
-      if (this->defenseMinister != 0) {
-        this->defenseMinister->Free();
+      interiorMinister = 0;
+      if (defenseMinister != 0) {
+        defenseMinister->Free();
       }
-      this->defenseMinister = 0;
-      if (this->city != 0) {
-        this->city->Free();
+      defenseMinister = 0;
+      if (city != 0) {
+        city->Free();
       }
-      this->city = 0;
+      city = 0;
     }
   } else {
     char ministerMask = stream->ReadByte();
 
     if ((ministerMask & 1) != 0) {
-      if (this->foreignMinister == 0) {
+      if (foreignMinister == 0) {
         TForeignMinister* created = new TForeignMinister();
-        this->foreignMinister = created;
+        foreignMinister = created;
         created->IForeignMinister(this);
       }
-      this->foreignMinister->ReadFrom(stream);
+      foreignMinister->ReadFrom(stream);
     } else {
-      if (this->foreignMinister != 0) {
-        this->foreignMinister->Free();
+      if (foreignMinister != 0) {
+        foreignMinister->Free();
       }
-      this->foreignMinister = 0;
+      foreignMinister = 0;
     }
 
     if ((ministerMask & 2) != 0) {
-      if (this->interiorMinister == 0) {
+      if (interiorMinister == 0) {
         TCityInteriorMinister* created = new TCityInteriorMinister();
-        this->interiorMinister = created;
+        interiorMinister = created;
         created->InitializeCityInteriorState(this);
       }
-      this->interiorMinister->ReadFrom(stream);
+      interiorMinister->ReadFrom(stream);
     } else {
-      if (this->interiorMinister != 0) {
-        this->interiorMinister->Free();
+      if (interiorMinister != 0) {
+        interiorMinister->Free();
       }
-      this->interiorMinister = 0;
+      interiorMinister = 0;
     }
 
     if ((ministerMask & 4) != 0) {
-      if (this->defenseMinister == 0) {
+      if (defenseMinister == 0) {
         TDefenseMinister* created = new TDefenseMinister();
-        this->defenseMinister = created;
+        defenseMinister = created;
         created->IDefenseMinister(this);
       }
-      this->defenseMinister->ReadFrom(stream);
+      defenseMinister->ReadFrom(stream);
     } else {
-      if (this->defenseMinister != 0) {
-        this->defenseMinister->Free();
+      if (defenseMinister != 0) {
+        defenseMinister->Free();
       }
-      this->defenseMinister = 0;
+      defenseMinister = 0;
     }
 
     if ((ministerMask & 8) != 0) {
-      this->city->ReadFrom(stream);
+      city->ReadFrom(stream);
     } else {
-      if (this->city != 0) {
-        this->city->Free();
+      if (city != 0) {
+        city->Free();
       }
-      this->city = 0;
+      city = 0;
     }
   }
 
-  if (this->townMarkerList->GetCount() != 0) {
-    this->townMarkerList->FreePayloads();
+  if (townMarkerList->GetCount() != 0) {
+    townMarkerList->FreePayloads();
   }
-  this->townMarkerList->ReadFrom(stream);
+  townMarkerList->ReadFrom(stream);
 
   int entryCount;
   stream->ReadBytes(&entryCount, 4);
   for (int townOrdinal = 1; townOrdinal <= entryCount; ++townOrdinal) {
     TTown* townMarker = new TTown();
     townMarker->ReadFrom(stream);
-    this->townMarkerList->AddTail(townMarker);
+    townMarkerList->AddTail(townMarker);
   }
 
-  if (entryCount > 0 && this->city != NULL) {
-    this->city->SetSelectedTownMarker(
-        static_cast<TTown*>(this->townMarkerList->GetEntryByOrdinal(1)));
+  if (entryCount > 0 && city != NULL) {
+    city->SetSelectedTownMarker(static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(1)));
   }
 
-  if (this->trackedObjectList->GetCount() != 0) {
-    this->trackedObjectList->FreePayloads();
+  if (trackedObjectList->GetCount() != 0) {
+    trackedObjectList->FreePayloads();
   }
-  this->trackedObjectList->ReadFrom(stream);
+  trackedObjectList->ReadFrom(stream);
 
   stream->ReadBytes(&entryCount, 4);
   for (int orderOrdinal = 1; orderOrdinal <= entryCount; ++orderOrdinal) {
     TCivUnit* civOrderObj = new TCivUnit();
-    civOrderObj->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);
+    civOrderObj->ICivUnit(kCivilianUnitMiner, -1, nationSlot);
     civOrderObj->ReadFrom(stream);
   }
 
-  stream->ReadBytes(this->enemyFlags, 0x17);
+  stream->ReadBytes(enemyFlags, 0x17);
 
-  stream->ReadBytes(&this->diplomacyBudgetBase, 4);
-  stream->ReadBytes(&this->escalationCounter, 1);
-  stream->ReadBytes(&this->pendingCommitmentCost, 4);
-  stream->ReadBytes(&this->pressureCounter, 1);
-  stream->ReadBytes(&this->armyTransportRemaining, 4);
-  stream->ReadBytes(&this->turnFinished, 1);
+  stream->ReadBytes(&diplomacyBudgetBase, 4);
+  stream->ReadBytes(&escalationCounter, 1);
+  stream->ReadBytes(&pendingCommitmentCost, 4);
+  stream->ReadBytes(&pressureCounter, 1);
+  stream->ReadBytes(&armyTransportRemaining, 4);
+  stream->ReadBytes(&turnFinished, 1);
 
   if (g_nSaveFormatVersion > 0x0E) {
-    this->turnStartEvents->ReadFrom(stream);
+    turnStartEvents->ReadFrom(stream);
 
     int eventCount = 0;
     stream->ReadBytes(&eventCount, 4);
     for (int eventOrdinal = 1; eventOrdinal <= eventCount; ++eventOrdinal) {
       TTurnStartEvent* event = 0;
       if (stream->ReadObject(&event)) {
-        this->turnStartEvents->AddTail(event);
+        turnStartEvents->AddTail(event);
       }
     }
   }
 
   if (g_nSaveFormatVersion >= 0x26) {
-    stream->ReadBytes(&this->specialResourceTradeBalance, 4);
-    stream->ReadBytes(&this->aidAllocationTotal, 4);
+    stream->ReadBytes(&specialResourceTradeBalance, 4);
+    stream->ReadBytes(&aidAllocationTotal, 4);
   }
   if (g_nSaveFormatVersion > 0x2F) {
-    stream->ReadBytes(this->colonyBoycottFlags, kNationSlotCount);
+    stream->ReadBytes(colonyBoycottFlags, kNationSlotCount);
   }
   if (g_nSaveFormatVersion > 0x34) {
-    stream->ReadBytes(&this->militaryExpenses, 4);
+    stream->ReadBytes(&militaryExpenses, 4);
   }
 }
 
@@ -532,120 +529,120 @@ void TGreatPower::ReadFrom(TStream* stream) {
 void TGreatPower::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
 
-  stream->WriteBytes(&this->diplomacyEligibility, 1);
-  stream->WriteBytes(&this->availableMerchantCapacity, 2);
-  stream->WriteBytes(&this->merchantCapacity, 2);
-  stream->WriteBytes(&this->transportCapacity, 2);
-  stream->WriteBytes(&this->reservedTransportCapacity, 2);
-  stream->WriteBytes(&this->grantTotalCost, 4);
-  stream->WriteBytes(&this->unfilledTradeOfferCount, 2);
+  stream->WriteBytes(&diplomacyEligibility, 1);
+  stream->WriteBytes(&availableMerchantCapacity, 2);
+  stream->WriteBytes(&merchantCapacity, 2);
+  stream->WriteBytes(&transportCapacity, 2);
+  stream->WriteBytes(&reservedTransportCapacity, 2);
+  stream->WriteBytes(&grantTotalCost, 4);
+  stream->WriteBytes(&unfilledTradeOfferCount, 2);
 
-  WriteShortArrayElems(stream, this->diplomacyPolicyByNation, 0x17);
-  WriteShortArrayElems(stream, this->diplomacyGrantByNation, 0x17);
-  WriteShortArrayElems(stream, this->needCurrentByType, kResourceKindCount);
-  WriteShortArrayElems(stream, this->needTargetByType, kResourceKindCount);
-  WriteShortArrayElems(stream, this->relationDeltaCurrent, kResourceKindCount);
-  WriteShortArrayElems(stream, this->purchasedItemsByResource, kResourceKindCount);
-  WriteShortArrayElems(stream, this->itemPotentials, kResourceKindCount);
-  WriteShortArrayElems(stream, this->unfilledTradeTurnCountsByResource, kResourceKindCount);
-  WriteShortArrayElems(stream, this->transportedItemsByResource, kResourceKindCount);
-  WriteShortArrayElems(stream, this->rememberedTradeOffersByResource, kResourceKindCount);
+  WriteShortArrayElems(stream, diplomacyPolicyByNation, 0x17);
+  WriteShortArrayElems(stream, diplomacyGrantByNation, 0x17);
+  WriteShortArrayElems(stream, needCurrentByType, kResourceKindCount);
+  WriteShortArrayElems(stream, needTargetByType, kResourceKindCount);
+  WriteShortArrayElems(stream, relationDeltaCurrent, kResourceKindCount);
+  WriteShortArrayElems(stream, purchasedItemsByResource, kResourceKindCount);
+  WriteShortArrayElems(stream, itemPotentials, kResourceKindCount);
+  WriteShortArrayElems(stream, unfilledTradeTurnCountsByResource, kResourceKindCount);
+  WriteShortArrayElems(stream, transportedItemsByResource, kResourceKindCount);
+  WriteShortArrayElems(stream, rememberedTradeOffersByResource, kResourceKindCount);
 
-  stream->WriteBytes(&this->budgetPoolBase, 4);
-  stream->WriteBytes(&this->budgetPoolDelta, 4);
-  WriteIntArrayElems(stream, this->aidAllocationMatrix, 0x170);
+  stream->WriteBytes(&budgetPoolBase, 4);
+  stream->WriteBytes(&budgetPoolDelta, 4);
+  WriteIntArrayElems(stream, aidAllocationMatrix, 0x170);
 
-  stream->WriteBytes(&this->pendingActionStatus, sizeof(this->pendingActionStatus));
-  WriteShortArrayElemsRev(stream, this->field8d6, 0xd);
+  stream->WriteBytes(&pendingActionStatus, sizeof(pendingActionStatus));
+  WriteShortArrayElemsRev(stream, field8d6, 0xd);
 
-  this->turnEventQueue->WriteTo(stream);
-  this->proposalQueue->WriteTo(stream);
+  turnEventQueue->WriteTo(stream);
+  proposalQueue->WriteTo(stream);
   for (int slotIndex = 0; slotIndex < kDiplomacyTrackedSlotCount; ++slotIndex) {
-    this->diplomacyTrackedSlots[slotIndex]->WriteTo(stream);
+    diplomacyTrackedSlots[slotIndex]->WriteTo(stream);
   }
 
   unsigned char presenceFlags = 0;
-  if (this->foreignMinister != 0) {
+  if (foreignMinister != 0) {
     presenceFlags = 1;
   }
-  if (this->interiorMinister != 0) {
-    presenceFlags = static_cast<unsigned char>(presenceFlags | 2);
+  if (interiorMinister != 0) {
+    presenceFlags |= 2;
   }
-  if (this->defenseMinister != 0) {
-    presenceFlags = static_cast<unsigned char>(presenceFlags | 4);
+  if (defenseMinister != 0) {
+    presenceFlags |= 4;
   }
-  if (this->city != 0) {
-    presenceFlags = static_cast<unsigned char>(presenceFlags | 8);
+  if (city != 0) {
+    presenceFlags |= 8;
   }
   stream->WriteByte(presenceFlags);
-  if (this->foreignMinister != 0) {
-    this->foreignMinister->WriteTo(stream);
+  if (foreignMinister != 0) {
+    foreignMinister->WriteTo(stream);
   }
-  if (this->interiorMinister != 0) {
-    this->interiorMinister->WriteTo(stream);
+  if (interiorMinister != 0) {
+    interiorMinister->WriteTo(stream);
   }
-  if (this->defenseMinister != 0) {
-    this->defenseMinister->WriteTo(stream);
+  if (defenseMinister != 0) {
+    defenseMinister->WriteTo(stream);
   }
-  if (this->city != 0) {
-    this->city->WriteTo(stream);
+  if (city != 0) {
+    city->WriteTo(stream);
   }
 
-  this->townMarkerList->WriteTo(stream);
+  townMarkerList->WriteTo(stream);
   {
-    int entryCount = this->townMarkerList->GetCount();
+    int entryCount = townMarkerList->GetCount();
     stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-      TUnit* entry = static_cast<TUnit*>(this->townMarkerList->GetEntryByOrdinal(ordinal));
+      TUnit* entry = static_cast<TUnit*>(townMarkerList->GetEntryByOrdinal(ordinal));
       entry->WriteTo(stream);
     }
   }
-  this->trackedObjectList->WriteTo(stream);
+  trackedObjectList->WriteTo(stream);
   {
-    int entryCount = this->trackedObjectList->GetCount();
+    int entryCount = trackedObjectList->GetCount();
     stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-      TUnit* entry = static_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
+      TUnit* entry = static_cast<TUnit*>(trackedObjectList->GetEntryByOrdinal(ordinal));
       entry->WriteTo(stream);
     }
   }
 
-  stream->WriteBytes(this->enemyFlags, 0x17);
-  stream->WriteBytes(&this->diplomacyBudgetBase, 4);
-  stream->WriteBytes(&this->escalationCounter, 1);
-  stream->WriteBytes(&this->pendingCommitmentCost, 4);
-  stream->WriteBytes(&this->pressureCounter, 1);
-  stream->WriteBytes(&this->armyTransportRemaining, 4);
-  stream->WriteBytes(&this->turnFinished, 1);
+  stream->WriteBytes(enemyFlags, 0x17);
+  stream->WriteBytes(&diplomacyBudgetBase, 4);
+  stream->WriteBytes(&escalationCounter, 1);
+  stream->WriteBytes(&pendingCommitmentCost, 4);
+  stream->WriteBytes(&pressureCounter, 1);
+  stream->WriteBytes(&armyTransportRemaining, 4);
+  stream->WriteBytes(&turnFinished, 1);
 
-  this->turnStartEvents->WriteTo(stream);
-  int eventCount = this->turnStartEvents->GetCount();
+  turnStartEvents->WriteTo(stream);
+  int eventCount = turnStartEvents->GetCount();
   stream->WriteBytes(&eventCount, 4);
   for (int eventOrdinal = 1; eventOrdinal <= eventCount; ++eventOrdinal) {
     TTurnStartEvent* event =
-        static_cast<TTurnStartEvent*>(this->turnStartEvents->GetEntryByOrdinal(eventOrdinal));
+        static_cast<TTurnStartEvent*>(turnStartEvents->GetEntryByOrdinal(eventOrdinal));
     stream->WriteObject(event, 0);
   }
 
-  stream->WriteBytes(&this->specialResourceTradeBalance, 4);
-  stream->WriteBytes(&this->aidAllocationTotal, 4);
-  stream->WriteBytes(this->colonyBoycottFlags, 0x17);
-  stream->WriteBytes(&this->militaryExpenses, 4);
+  stream->WriteBytes(&specialResourceTradeBalance, 4);
+  stream->WriteBytes(&aidAllocationTotal, 4);
+  stream->WriteBytes(colonyBoycottFlags, 0x17);
+  stream->WriteBytes(&militaryExpenses, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004da3e0
 void TGreatPower::MultiReadFrom(TStream* stream, int unusedArg) {
   TCountry::MultiReadFrom(stream, unusedArg);
 
-  if (this->trackedObjectList->GetCount() != 0) {
-    this->trackedObjectList->FreePayloads();
+  if (trackedObjectList->GetCount() != 0) {
+    trackedObjectList->FreePayloads();
   }
-  this->trackedObjectList->ReadFrom(stream);
+  trackedObjectList->ReadFrom(stream);
 
   int orderCount = stream->ReadInteger();
   for (; orderCount > 0; --orderCount) {
     TCivUnit* civOrder = new TCivUnit();
-    civOrder->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);
+    civOrder->ICivUnit(kCivilianUnitMiner, -1, nationSlot);
     civOrder->ReadFrom(stream);
   }
 }
@@ -654,11 +651,11 @@ void TGreatPower::MultiReadFrom(TStream* stream, int unusedArg) {
 void TGreatPower::MultiWriteTo(TStream* stream) {
   TCountry::MultiWriteTo(stream);
 
-  this->trackedObjectList->WriteTo(stream);
-  int orderCount = this->trackedObjectList->GetCount();
+  trackedObjectList->WriteTo(stream);
+  int orderCount = trackedObjectList->GetCount();
   stream->WriteInteger(orderCount);
   for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
-    TUnit* order = static_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
+    TUnit* order = static_cast<TUnit*>(trackedObjectList->GetEntryByOrdinal(ordinal));
     order->WriteTo(stream);
   }
 }
@@ -668,84 +665,82 @@ void TGreatPower::NoOpNationPendingActionHook(void) {}
 
 // FUNCTION: IMPERIALISM 0x004da5e0
 void TGreatPower::DispatchPendingStatusPrompts(void) {
-  signed char* flags = this->pendingActionStatus.byAction;
+  signed char* flags = pendingActionStatus.byAction;
   bool flag5Handled = (flags[5]) >= 0x33;
-  if (!flag5Handled &&
-      g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(5, this->field8d6[5]);
+  if (!flag5Handled && g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) {
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(5, field8d6[5]);
   }
   if (flags[6] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(6, this->field8d6[6]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(6, field8d6[6]);
   }
   if (flags[7] == 0x32) {
-    if (this->field8d6[7] == 2) {
-      TCity* cityPtr = this->city;
+    if (field8d6[7] == 2) {
+      TCity* cityPtr = city;
       cityPtr->stockByType[kResourcePaper] += 10;
       cityPtr->VerifyStocks();
-      g_pViewMgr->BuildAndShowTurnOverlayByMode(7, this->field8d6[7]);
-    } else if (this->field8d6[7] == 3) {
-      TCity* cityPtr = this->city;
+      g_pViewMgr->BuildAndShowTurnOverlayByMode(7, field8d6[7]);
+    } else if (field8d6[7] == 3) {
+      TCity* cityPtr = city;
       cityPtr->stockByType[kResourcePaper] += 10;
       cityPtr->VerifyStocks();
       g_pViewMgr->BuildAndShowTurnOverlayByMode(7, -1);
     }
   }
   if (flags[8] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(8, this->field8d6[8]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(8, field8d6[8]);
   }
   if (flags[9] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(9, this->field8d6[9]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(9, field8d6[9]);
   }
   if (flags[10] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(10, this->field8d6[10]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(10, field8d6[10]);
   }
   if (flags[11] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(11, this->field8d6[11]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(11, field8d6[11]);
   }
   if (flags[12] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(12, this->field8d6[12]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(12, field8d6[12]);
   }
   if (flags[0] == 0x32) {
     g_pViewMgr->BuildAndShowTurnOverlayByMode(0, g_pTechMgr->activeZoneIndex);
   }
   if (flags[1] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(1, this->field8d6[1]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(1, field8d6[1]);
   }
   if (flags[2] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(2, this->field8d6[2]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(2, field8d6[2]);
   }
   if (flags[3] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(3, this->field8d6[3]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(3, field8d6[3]);
   }
   if (flags[4] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(4, this->field8d6[4]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(4, field8d6[4]);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004da860
 void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
-  if (g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
-    this->pendingActionStatus.byAction[5] = 0x33;
+  if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) {
+    pendingActionStatus.byAction[5] = 0x33;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004da8a0
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
-  signed char* flags = this->pendingActionStatus.byAction;
+  signed char* flags = pendingActionStatus.byAction;
   bool flag5Handled = (flags[5]) >= 0x33;
-  if (!flag5Handled &&
-      g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
+  if (!flag5Handled && g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) {
     flags[5] = 0x33;
   }
   if (flags[6] == 0x32) {
     flags[6] = 0x33;
   }
   if (flags[7] == 0x32) {
-    if (this->field8d6[7] == 2) {
+    if (field8d6[7] == 2) {
       flags[7] = 0x33;
-    } else if (this->field8d6[7] == 3) {
+    } else if (field8d6[7] == 3) {
       flags[7] = 0x34;
-      this->field8d6[7] = -1;
+      field8d6[7] = -1;
     }
   }
   if (flags[8] == 0x32) {
@@ -764,10 +759,10 @@ void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
     flags[12] = 0x33;
   }
   if (flags[0] == 0x32) {
-    flags[0] = static_cast<unsigned char>(static_cast<char>(this->field8d6[0]) + 0x33);
+    flags[0] = static_cast<unsigned char>(static_cast<char>(field8d6[0]) + 0x33);
   }
   if (flags[1] == 0x32) {
-    flags[1] = static_cast<unsigned char>(static_cast<char>(this->field8d6[1]) + 0x33);
+    flags[1] = static_cast<unsigned char>(static_cast<char>(field8d6[1]) + 0x33);
   }
   if (flags[2] == 0x32) {
     flags[2] = 0x33;
@@ -783,24 +778,24 @@ void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
 // FUNCTION: IMPERIALISM 0x004daa10
 void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload) {
   if (g_nSaveFormatVersion != -3) {
-    this->pendingActionStatus.byAction[index] = 0x32;
-    this->field8d6[index] = payload;
+    pendingActionStatus.byAction[index] = 0x32;
+    field8d6[index] = payload;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004daa50
 void TGreatPower::AddTurnStartEvent(TTurnStartEvent* event) {
-  this->turnStartEvents->AddTail(event);
+  turnStartEvents->AddTail(event);
 }
 
 // FUNCTION: IMPERIALISM 0x004daa80
 void TGreatPower::DisplayTurnStartEvents() {
-  CIterator eventIter(this->turnStartEvents);
+  CIterator eventIter(turnStartEvents);
   for (TTurnStartEvent* event = static_cast<TTurnStartEvent*>(eventIter.Reset()); eventIter.More();
        event = static_cast<TTurnStartEvent*>(eventIter.Advance())) {
     event->Execute();
   }
-  this->turnStartEvents->FreePayloads();
+  turnStartEvents->FreePayloads();
 }
 
 // FUNCTION: IMPERIALISM 0x004dab00
@@ -808,22 +803,22 @@ void TGreatPower::NoOpNationQueuedOrderHook(void) {}
 
 // FUNCTION: IMPERIALISM 0x004dab20
 void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
-  TCity* cityPtr = this->city;
+  TCity* cityPtr = city;
   cityPtr->ProduceUnits();
 
   short nationSlot = this->nationSlot;
 
   // Land recruit order (pending status 1 == '2').
-  if (this->pendingActionStatus.byAction[1] == 0x32) {
+  if (pendingActionStatus.byAction[1] == 0x32) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
-    int nodeContext = this->GetCapitolProvince();
+    int nodeContext = GetCapitolProvince();
     short capValue = g_pTechMgr->nationCapRows1e8[nationSlot].slots[9];
     militaryOrder->IMilitaryUnit(capValue, nodeContext, nationSlot);
-    this->AnnounceLater(3, capValue, 1);
+    AnnounceLater(3, capValue, 1);
   }
 
   // Navy primary/secondary order (pending status 0 == '2').
-  if (this->pendingActionStatus.byAction[0] == 0x32) {
+  if (pendingActionStatus.byAction[0] == 0x32) {
     short zoneIndex = g_pTechMgr->activeZoneIndex;
     TZone* portZone = g_pActiveMapOrderContext->GetPortZone(nationSlot);
     TShip* primaryOrder =
@@ -834,12 +829,12 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     TAdmiral* secondaryNode = new TAdmiral(nationSlot);
     secondaryNode->AssignToShip(primaryOrder);
 
-    this->AnnounceLater(3, 0x2508, 1);
-    this->AnnounceLater(0, g_pTechMgr->activeZoneIndex, 1);
+    AnnounceLater(3, 0x2508, 1);
+    AnnounceLater(0, g_pTechMgr->activeZoneIndex, 1);
   }
 
   // Civil work order (pending status 2 < '3').
-  if (this->pendingActionStatus.byAction[2] < 0x33) {
+  if (pendingActionStatus.byAction[2] < 0x33) {
     bool needsCivOrder = false;
     TCountry** minorEntry = &g_apTerrainTypeDescriptorTable[kMajorNationCount];
     short zoneCursor = 7;
@@ -863,26 +858,26 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
     if (needsCivOrder) {
       TCivUnit* civOrder = new TCivUnit();
-      civOrder->ICivUnit(kCivilianUnitDeveloper,
-                         g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
-                             this->homeTileIndex, false),
-                         nationSlot);
-      this->SetNationPendingActionStateAndPayload(2, -1);
+      civOrder->ICivUnit(
+          kCivilianUnitDeveloper,
+          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeTileIndex, false),
+          nationSlot);
+      SetNationPendingActionStateAndPayload(2, -1);
     }
   }
 
   // Final pending-action flush (pending status 0x0a == '2').
-  if (this->pendingActionStatus.byAction[10] == 0x32) {
-    this->city->orderCountByType[6] += 2; // navy secondary-order counter
-    this->AnnounceLater(1, 6, 2);
+  if (pendingActionStatus.byAction[10] == 0x32) {
+    city->orderCountByType[6] += 2; // navy secondary-order counter
+    AnnounceLater(1, 6, 2);
   }
-  this->NameUnits();
+  NameUnits();
 }
 
 // FUNCTION: IMPERIALISM 0x004dae70
 bool TGreatPower::HasDeveloper(void) {
   bool found = false;
-  CIterator orderIter(this->trackedObjectList);
+  CIterator orderIter(trackedObjectList);
   TUnit* order = static_cast<TUnit*>(orderIter.Reset());
   if (orderIter.More()) {
     while (order->orderType != EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
@@ -906,12 +901,12 @@ void TGreatPower::SellStockToCoverDebt(void) {
   int liquidationOrder[] = {0x0F, 0x0E, 0x0D, 0x10, 0x0C, 0x08, 0x0A, 0x09, 0x0B,
                             0x06, 0x03, 0x04, 0x05, 0x00, 0x01, 0x02, 0x07, -1};
 
-  if (this->IsRemote()) {
+  if (IsRemote()) {
     return;
   }
 
   int pressureThreshold = g_anDebtLiquidationThresholdByDifficulty[g_pSimMgr->difficultyLevel];
-  if (pressureThreshold > static_cast<int>(this->pressureCounter)) {
+  if (pressureThreshold > static_cast<int>(pressureCounter)) {
     return;
   }
 
@@ -926,11 +921,11 @@ void TGreatPower::SellStockToCoverDebt(void) {
 
   int* resourceCursor = liquidationOrder;
   while (*resourceCursor != -1) {
-    if (proceeds + this->treasuryValue >= 0) {
+    if (proceeds + treasuryValue >= 0) {
       break;
     }
 
-    short resourceKind = static_cast<short>(*resourceCursor);
+    short resourceKind = *resourceCursor;
     TCity* city = this->city;
     short* stock = city->stockByType + resourceKind;
     short soldAmount = *stock;
@@ -960,7 +955,7 @@ void TGreatPower::SellStockToCoverDebt(void) {
     ++resourceCursor;
   }
 
-  this->AddToTreasury(proceeds);
+  AddToTreasury(proceeds);
 
   if (proceeds > 0) {
     CString headerText;
@@ -982,53 +977,53 @@ bool TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
   }
 
   int treasuryValue = this->treasuryValue;
-  int basePressure = this->GetTotalOverseasProfits();
-  basePressure += static_cast<int>(this->needTargetByType[kResourceGold]) * 200;
-  basePressure += static_cast<int>(this->needTargetByType[kResourceGems]) * 500;
-  basePressure += this->budgetPoolBase;
+  int basePressure = GetTotalOverseasProfits();
+  basePressure += static_cast<int>(needTargetByType[kResourceGold]) * 200;
+  basePressure += static_cast<int>(needTargetByType[kResourceGems]) * 500;
+  basePressure += budgetPoolBase;
   int pressureFloor = g_anNationBasePressureByLocale[localeIndex];
   if (basePressure < pressureFloor) {
     basePressure = pressureFloor;
   }
 
-  int smoothedPressure = (this->diplomacyBudgetBase * 0x5A + basePressure * 1000) / 100;
-  this->diplomacyBudgetBase = smoothedPressure;
+  int smoothedPressure = (diplomacyBudgetBase * 0x5A + basePressure * 1000) / 100;
+  diplomacyBudgetBase = smoothedPressure;
   int pressureBand = smoothedPressure / 100;
 
   if (treasuryValue < 0) {
     int halfBand = pressureBand / 2;
     if (-treasuryValue <= halfBand) {
-      this->pressureCounter = 1;
+      pressureCounter = 1;
     } else if (-treasuryValue <= pressureBand) {
-      if (this->pressureCounter > 1) {
+      if (pressureCounter > 1) {
         int nextPressureValue =
-            this->escalationCounter +
+            escalationCounter +
             static_cast<signed char>(g_anGreatPowerPressureRiseStepByLocale[localeIndex]);
         int pressureRiseCap = g_anGreatPowerPressureRiseCapByLocale[localeIndex];
         if (nextPressureValue > pressureRiseCap) {
           nextPressureValue = pressureRiseCap;
         }
-        this->escalationCounter = static_cast<signed char>(nextPressureValue);
+        escalationCounter = static_cast<signed char>(nextPressureValue);
       }
-      this->pressureCounter = 2;
+      pressureCounter = 2;
     } else {
       CString sharedMessageRef;
       int nextPressureValue =
-          this->escalationCounter +
+          escalationCounter +
           static_cast<signed char>(g_anGreatPowerPressureRiseStepByLocale[localeIndex]);
       int pressureRiseCap = g_anGreatPowerPressureRiseCapByLocale[localeIndex];
       if (nextPressureValue > pressureRiseCap) {
         nextPressureValue = pressureRiseCap;
       }
-      this->escalationCounter = static_cast<signed char>(nextPressureValue);
+      escalationCounter = static_cast<signed char>(nextPressureValue);
 
-      if (this->pressureCounter < 3) {
-        this->pressureCounter = 3;
+      if (pressureCounter < 3) {
+        pressureCounter = 3;
       } else {
-        this->pressureCounter = static_cast<signed char>(this->pressureCounter + 1);
+        pressureCounter = static_cast<signed char>(pressureCounter + 1);
       }
 
-      int pressureTier = static_cast<int>(this->pressureCounter);
+      int pressureTier = pressureCounter;
       if (pressureTier >= g_anGreatPowerPressureHardAlertThresholdByLocale[localeIndex]) {
         g_pSimMgr->GetString(0x274b, 4, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
@@ -1039,7 +1034,7 @@ bool TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       if (pressureTier >= compileThreshold) {
         g_pSimMgr->GetString(0x274b, 1, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
-        this->SellStockToCoverDebt();
+        SellStockToCoverDebt();
       } else if (pressureTier == (compileThreshold - 1)) {
         g_pSimMgr->GetString(0x274b, 3, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
@@ -1049,27 +1044,27 @@ bool TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       }
     }
   } else {
-    if (this->pressureCounter != 0) {
+    if (pressureCounter != 0) {
       int nextPressureValue =
-          this->escalationCounter -
+          escalationCounter -
           static_cast<signed char>(g_anGreatPowerPressureDecayStepByLocale[localeIndex]);
       int pressureMinFloor = g_anGreatPowerPressureMinFloorByLocale[localeIndex];
       if (nextPressureValue < pressureMinFloor) {
         nextPressureValue = pressureMinFloor;
       }
-      this->escalationCounter = static_cast<signed char>(nextPressureValue);
-      this->pressureCounter = 0;
+      escalationCounter = static_cast<signed char>(nextPressureValue);
+      pressureCounter = 0;
     }
   }
 
   treasuryValue = this->treasuryValue;
   if (treasuryValue >= 0) {
-    this->pendingCommitmentCost = 0;
+    pendingCommitmentCost = 0;
     return false;
   }
 
-  int drainAmount = (0xC7 - static_cast<int>(this->escalationCounter) * treasuryValue) / 200;
-  this->pendingCommitmentCost = drainAmount;
+  int drainAmount = (0xC7 - static_cast<int>(escalationCounter) * treasuryValue) / 200;
+  pendingCommitmentCost = drainAmount;
   this->treasuryValue = treasuryValue - drainAmount;
   return false;
 }

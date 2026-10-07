@@ -32,7 +32,7 @@ void TUnitsView::DoStartup() {
       int sizeLayout[2] = {0x20, 0x18};
       icon->IPicture(this, offsetLayout, sizeLayout, 5, 5, 0x222e);
       icon->controlTag = kControlTagIcon; // 'icon'
-      y = static_cast<short>(y + 0x18);
+      y += 0x18;
     }
   }
 }

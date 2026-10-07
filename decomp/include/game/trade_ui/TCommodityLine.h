@@ -8,8 +8,8 @@ class TCommodityLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TCommodityLine)
   // FUNCTION: IMPERIALISM 0x005c1520
-  virtual ~TCommodityLine() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5c1580
+  virtual ~TCommodityLine() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
   TCommodityLine();
 

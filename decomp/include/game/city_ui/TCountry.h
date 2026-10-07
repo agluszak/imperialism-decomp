@@ -19,9 +19,9 @@ public:
   // FUNCTION: IMPERIALISM 0x004d6880
   ~TCountry() override {}
 
-  void WriteTo(TStream* stream) override;  // body 0x004d6e60
-  void ReadFrom(TStream* stream) override; // body 0x004d6bf0
-  void Free() override;                    // body 0x004d6ba0
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
 
   virtual void MultiWriteTo(TStream* stream);
   virtual void MultiReadFrom(TStream* stream, int unusedArg);
@@ -75,7 +75,7 @@ public:
   int GetLandForceIn(int nodeIndex);
 
   void InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot);
-  void GenerateEthnicName(CString* out) const; // 0x4d7eb0
+  void GenerateEthnicName(CString* out) const;
   void FormatOverlayTerrainLabelText(CString* out);
   void GetName(CString* destString);
   void GetNameWithCode(CString* destString);
@@ -99,7 +99,7 @@ public:
   short field42;
   TSortedList* militaryUnitList;
   short unitNameOrdinalByType[0x1e];
-  short unitNameCounter; // 0x84 — monotonically increasing name tag (stored at +0x1a)
+  short unitNameCounter; // monotonically increasing name tag (stored at +0x1a)
   short pad_86;
   int homeTileIndex;
   int overlayAnchorTileCache;

@@ -20,25 +20,25 @@ public:
   TMinister();
   void IMinister(TGreatPower* ownerContext);
   // FUNCTION: IMPERIALISM 0x0052ebd0
-  virtual ~TMinister() override {} // slot 1
+  virtual ~TMinister() override {}
 
   DECLARE_DYNCREATE(TMinister)
-  void WriteTo(TStream* stream) override;                   // 5 (0x14)
-  void ReadFrom(TStream* stream) override;                  // 6 (0x18)
-  void Free() override;                                     // 7 (0x1c)
-  virtual short GetRankingCriterionForGP(short nationSlot); // 10 (0x28)
-  virtual void FigureOutRanking();                          // 11 (0x2c)
-  virtual short GetRankOf(short nationSlot);                // 12 (0x30)
-  virtual short GetCountryInRank(short rank);               // 13 (0x34)
-  virtual short GetCountryAt(short index);                  // 14 (0x38)
-  virtual short GetRankOfCountryAt(short index);            // 15 (0x3c)
-  virtual short GetInfoOfCountryAt(short index);            // 16 (0x40)
-  virtual void MakeNewCity(TCity* city);                    // 17 (0x44)
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
+  virtual short GetRankingCriterionForGP(short nationSlot);
+  virtual void FigureOutRanking();
+  virtual short GetRankOf(short nationSlot);
+  virtual short GetCountryInRank(short rank);
+  virtual short GetCountryAt(short index);
+  virtual short GetRankOfCountryAt(short index);
+  virtual short GetInfoOfCountryAt(short index);
+  virtual void MakeNewCity(TCity* city);
   // LAYOUT: TMinister's own vtable ends at slot 17; later slots belong to derived ministers.
 
-  TGreatPower* greatPower;    // +0x4
-  TIndexAndRankList* ranking; // +0x8 — great powers ranked by GetRankingCriterionForGP
-  short skillIndex;           // +0xC
+  TGreatPower* greatPower;
+  TIndexAndRankList* ranking; // great powers ranked by GetRankingCriterionForGP
+  short skillIndex;
   unsigned char pad0e[0x10 - 0x0E];
 };
 ASSERT_SIZE(TMinister, 0x10);

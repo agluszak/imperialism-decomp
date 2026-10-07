@@ -9,11 +9,10 @@
 class TTacticalHolaPicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TTacticalHolaPicture)
-  virtual ~TTacticalHolaPicture() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TTacticalHolaPicture() override;
 
   TTacticalHolaPicture();
 
-  void StuffValues(int nationA, int nationB, int nationAIsLocalSide,
-                                              int battleSiteIndex);
+  void StuffValues(int nationA, int nationB, int nationAIsLocalSide, int battleSiteIndex);
 };
 ASSERT_SIZE(TTacticalHolaPicture, 0x90);

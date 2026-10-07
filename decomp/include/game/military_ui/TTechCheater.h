@@ -9,8 +9,8 @@
 class TTechCheater : public TCheater {
 public:
   DECLARE_DYNCREATE(TTechCheater)
-  virtual ~TTechCheater() override; // slot 0x01 (scalar deleting destructor)
-  void ApplyCheats() override;      // slot 0x68 0x4b1990; Mac symbol oracle
+  virtual ~TTechCheater() override;
+  void ApplyCheats() override; // Mac symbol oracle
 
   void ITechCheater(TView* panel);
 

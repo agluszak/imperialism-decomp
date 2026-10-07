@@ -16,23 +16,22 @@ class TControl;
 class TTradeBookView : public TView {
 public:
   DECLARE_DYNCREATE(TTradeBookView)
-  virtual ~TTradeBookView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x005be370
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5bdef0
+  virtual ~TTradeBookView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
 
   // NOOP: verified empty in original 0x005bde65
   TTradeBookView() {}
 
-  TControl* previousPageButton;  // 0x60, tag 'lcor'
-  TControl* nextPageButton;      // 0x64, tag 'rcor'
-  TTradePageBuyView* buyPanel;   // 0x68, tag 'tbou'
-  TTradePageSellView* sellPanel; // 0x6c, tag 'tsol'
-  int pageCount;                 // 0x70
-  int currentPage;               // 0x74
+  TControl* previousPageButton;  // tag 'lcor'
+  TControl* nextPageButton;      // tag 'rcor'
+  TTradePageBuyView* buyPanel;   // tag 'tbou'
+  TTradePageSellView* sellPanel; // tag 'tsol'
+  int pageCount;
+  int currentPage;
 
-  void SetItem(short categorySlot); // 0x5be150
+  void SetItem(short categorySlot);
 
-  void ShowPage(int page); // 0x5be3e0
+  void ShowPage(int page);
 };
 ASSERT_SIZE(TTradeBookView, 0x78);

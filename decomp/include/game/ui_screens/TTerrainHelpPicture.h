@@ -11,13 +11,12 @@ class TDeluxeText;
 class TTerrainHelpPicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TTerrainHelpPicture)
-  virtual ~TTerrainHelpPicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x005059d0
+  virtual ~TTerrainHelpPicture() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex);
 
-  TDeluxeText* infoTextPane; // +0x90
-  short menuItemIds[12];     // +0x94..0xab
+  TDeluxeText* infoTextPane;
+  short menuItemIds[12];
 
   TTerrainHelpPicture();
 

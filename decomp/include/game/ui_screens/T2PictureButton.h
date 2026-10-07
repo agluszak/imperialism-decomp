@@ -7,7 +7,7 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x65eb60
 class T2PictureButton : public TPictureButton {
 public:
-  virtual void SetAvailability(char isAvailable, char refreshNow); // slot 0x74 0x570c30
+  virtual void SetAvailability(char isAvailable, char refreshNow);
   T2PictureButton();
   virtual ~T2PictureButton() override;
   DECLARE_DYNCREATE(T2PictureButton)

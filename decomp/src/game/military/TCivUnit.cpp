@@ -18,16 +18,15 @@ TCivUnit::TCivUnit() {
 
 // FUNCTION: IMPERIALISM 0x005c2940
 void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOwnerNationId) {
-  this->IUnit(EncodeCivilianUnitKind(unitKind), anchorIndex,
-              static_cast<short>(nOrderOwnerNationId), 0);
-  this->remainingTurns = 0;
-  this->completionMarker = -1;
+  IUnit(EncodeCivilianUnitKind(unitKind), anchorIndex, static_cast<short>(nOrderOwnerNationId), 0);
+  remainingTurns = 0;
+  completionMarker = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2980
 bool TCivUnit::CanBeOrdered() {
-  if (this->unitOrder != kUnitOrderIdle && (this->unitOrder < static_cast<UnitOrder>(2) ||
-                                            this->unitOrder > static_cast<UnitOrder>(3))) {
+  if (unitOrder != kUnitOrderIdle &&
+      (unitOrder < static_cast<UnitOrder>(2) || unitOrder > static_cast<UnitOrder>(3))) {
     return false;
   }
   return true;

@@ -9,8 +9,8 @@
 class TBackgroundPicture : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(TBackgroundPicture)
-  virtual ~TBackgroundPicture() override;       // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x572d00
+  virtual ~TBackgroundPicture() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   TBackgroundPicture();
 };

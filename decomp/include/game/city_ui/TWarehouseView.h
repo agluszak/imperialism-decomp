@@ -11,11 +11,10 @@ class TPictureNumberText;
 class TWarehouseView : public TBuildingView {
 public:
   DECLARE_DYNCREATE(TWarehouseView)
-  virtual ~TWarehouseView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin) override; // slot 0x47 0x4c7330
-  virtual void DoStartup() override;                   // slot 0x75 0x4c7360
-  virtual void UpdateFields() override;                // slot 0x76 0x4c7d90
+  virtual ~TWarehouseView() override;
+  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
+  virtual void DoStartup() override;
+  virtual void UpdateFields() override;
 
   TWarehouseView();
 

@@ -52,31 +52,24 @@ public:
   DECLARE_DYNCREATE(TDiplomacyMapView)
   // FUNCTION: IMPERIALISM 0x004f3cc0
   virtual ~TDiplomacyMapView() override {}
-  void Free() override; // slot 0x07 0x4f3e60
-  void DoEvent(int commandId, TEventHandler* sourceHandler,
-               TEvent* event) override;           // slot 0x0f 0x4f70c0
-  void DoKeyEvent(TToolboxEvent* event) override; // slot 0x12 0x4f7130
-  void Close() override;                          // slot 0x28 0x4f3e30
-  void DoSetCursor(CPoint* point,
-                   RgnHandle hitArg) override; // slot 0x2c 0x4f5f90
+  void Free() override;
+  void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void DoKeyEvent(TToolboxEvent* event) override;
+  void Close() override;
+  void DoSetCursor(CPoint* point, RgnHandle hitArg) override;
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                           RgnHandle hitArg) override; // slot 0x35
-  void DoPostCreate(int arg) override;                                                 // slot 0x37
-  void Draw(RECT* rectBuffer) override;                                                // slot 0x44
-  void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                      CPoint origin) override; // slot 0x47 0x4f5410
+                                                           RgnHandle hitArg) override;
+  void DoPostCreate(int arg) override;
+  void Draw(RECT* rectBuffer) override;
+  void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
-  virtual void DrawCountries(RECT* presentRect); // slot 0x73
-  virtual void InvalidateCountries();            // slot 0x74
-  virtual void ShowTreaties(int activeNationSlot,
-                            const RECT* presentRect);      // slot 0x75
-  virtual void VisitNationSlotsForOverlay(int unusedMode); // slot 0x76
-  virtual void ShowRelations(int activeNationSlot,
-                             const RECT* presentRect); // slot 0x77
-  virtual void FillRegionWithPict(short maskIndex,
-                                  int bmpId); // slot 0x78
-  virtual void PoseOffer(short sourceNation, short targetNation,
-                         short offerType); // slot 0x79 0x4f7080
+  virtual void DrawCountries(RECT* presentRect);
+  virtual void InvalidateCountries();
+  virtual void ShowTreaties(int activeNationSlot, const RECT* presentRect);
+  virtual void VisitNationSlotsForOverlay(int unusedMode);
+  virtual void ShowRelations(int activeNationSlot, const RECT* presentRect);
+  virtual void FillRegionWithPict(short maskIndex, int bmpId);
+  virtual void PoseOffer(short sourceNation, short targetNation, short offerType);
   void CreateDrawGeometries();
 
   TDiplomacyMapView();
@@ -86,7 +79,7 @@ public:
   char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
                     int promptCode);
   void DrawVoteNuggets();
-  void SetOverlay(int overlay); // 0x4f7170, Mac oracle eDipDrawStatus
+  void SetOverlay(int overlay); // Mac oracle eDipDrawStatus
   void DrawNames(const RECT* presentRect);
   void DrawIcons(RECT* presentRect);
 
@@ -124,16 +117,16 @@ public:
 
 protected:
   short activeNation;
-  CRect nationTextHitRects[23]; // 0x0c4..0x234
-  CRect nationLabelRects[23];   // 0x234..0x3a4
-  CRect nationAnchorRects[23];  // 0x3a4..0x514
+  CRect nationTextHitRects[23];
+  CRect nationLabelRects[23];
+  CRect nationAnchorRects[23];
   // +0x514..+0x520 -- map origin/extents.
   CRect mapViewportRect;
   int legendSurfaceMode;
   short visibleVoteTier;
   short currentCursorResourceId;
   bool tileHasOwnerFlags[kProvinceCount];
-  CRect tileMarkerRects[kProvinceCount]; // 0x6ac..0x1eac
+  CRect tileMarkerRects[kProvinceCount];
   DiplomacyMaskBufferRun maskRuns[0x17];
   StrategicMapCallbackRecord packedColorRuns[0x17];
 };

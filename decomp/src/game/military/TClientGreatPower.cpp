@@ -33,7 +33,7 @@ void TClientGreatPower::AcceptOffer(short proposalIndex) {
   packet.fromNetworkId = 0;
   packet.toNetworkId = -1;
   packet.messageLength = 0x20;
-  packet.nationSlot = this->nationSlot;
+  packet.nationSlot = nationSlot;
   packet.acceptedFlag = true;
   packet.proposalIndex = proposalIndex;
   g_pNetMgr->Send(&packet, false);
@@ -48,7 +48,7 @@ void TClientGreatPower::RejectOffer(short proposalQueueIndex) {
   packet.fromNetworkId = 0;
   packet.toNetworkId = -1;
   packet.messageLength = 0x20;
-  packet.nationSlot = this->nationSlot;
+  packet.nationSlot = nationSlot;
   packet.acceptedFlag = false;
   packet.proposalIndex = proposalQueueIndex;
   g_pNetMgr->Send(&packet, false);
@@ -135,5 +135,5 @@ int TClientGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNat
 
 // FUNCTION: IMPERIALISM 0x00541790
 void TClientGreatPower::SorryYouLose(void) {
-  g_pGameFlowState->SendGameControl(kControlTagLose, this->nationSlot, -1);
+  g_pGameFlowState->SendGameControl(kControlTagLose, nationSlot, -1);
 }

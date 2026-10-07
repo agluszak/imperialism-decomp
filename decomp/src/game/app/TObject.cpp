@@ -9,7 +9,7 @@ IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY
 // FUNCTION: IMPERIALISM 0x00415ce0
 TObject* TObject::ShallowFree() {
   CRuntimeClass* runtimeClass = GetRuntimeClass();
-  unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
+  unsigned int payloadSize = runtimeClass->m_nObjectSize;
   runtimeClass = GetRuntimeClass();
   CObject* destObject = runtimeClass->CreateObject();
   if (destObject == 0) {

@@ -9,14 +9,14 @@
 // VTABLE: IMPERIALISM 0x0064ab58
 class TStaticText : public TControl {
 public:
-  CString* text;             // 0x84
-  int stringResourceGroupId; // 0x88, -1 means no string resource
-  int stringResourceIndex;   // 0x8c
-  short textAlignmentCode;   // 0x90, -2 left, 1 center, -1 right while drawing
-  short textOptionFlags; // 0x92
+  CString* text;
+  int stringResourceGroupId; // -1 means no string resource
+  int stringResourceIndex;
+  short textAlignmentCode; // -2 left, 1 center, -1 right while drawing
+  short textOptionFlags;
 
   TStaticText();
-  TStaticText(const TStaticText& source); // 0x0048f9d0
+  TStaticText(const TStaticText& source);
   virtual ~TStaticText() override;
 
   void CopyViewStateFromSource(TView* source);
@@ -26,19 +26,16 @@ public:
 
   DECLARE_DYNCREATE(TStaticText)
 
-  TObject* ShallowClone() override;     // 0x20 0x48fc00
-  void Draw(RECT* rectBuffer) override; // 0x110 0x48ffb0
+  TObject* ShallowClone() override;
+  void Draw(RECT* rectBuffer) override;
 
   void SetText(CString* text);
 
-  virtual void SetJustification(short alignmentCode,
-                                               bool refreshFlag); // 0x1c4 0x48ff70
-  virtual void SetTextAndMaybeRefresh(CString* sharedString,
-                                      bool refreshNow); // 0x1c8 0x48fe60
+  virtual void SetJustification(short alignmentCode, bool refreshFlag);
+  virtual void SetTextAndMaybeRefresh(CString* sharedString, bool refreshNow);
   virtual void SetTextWithStrListID(short stringResourceGroup, short stringResourceIndex,
-                                         bool refreshNow); // 0x1cc 0x48fed0
-  virtual void CopyTextTo(CString* out);                   // 0x1d0 0x4294d0
-  virtual void ImageText(const char* textChars, int textLength, RECT* rect,
-                               short alignmentCode); // 0x1d4 0x4900a0
+                                    bool refreshNow);
+  virtual void CopyTextTo(CString* out);
+  virtual void ImageText(const char* textChars, int textLength, RECT* rect, short alignmentCode);
 };
 ASSERT_SIZE(TStaticText, 0x94);

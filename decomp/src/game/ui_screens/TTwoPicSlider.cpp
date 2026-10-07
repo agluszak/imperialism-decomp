@@ -121,9 +121,9 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
       ResolveUiThemeColor(0x2b6c, &textShadowColor);
       ResolveUiThemeColor(0x2b67, &textMainColor);
 
-      short textCenterY = static_cast<short>(slider->frameHeight / 2);
+      short textCenterY = slider->frameHeight / 2;
       short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&statusText);
-      short textLeft = static_cast<short>((slider->frameWidth / 2) - (textWidth / 2));
+      short textLeft = (slider->frameWidth / 2) - (textWidth / 2);
 
       SetQuickDrawColorAndSyncGlobals(textMainColor);
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textLeft + 1),

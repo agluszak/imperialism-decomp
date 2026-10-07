@@ -11,14 +11,14 @@ class TLineData : public TObject {
 public:
   DECLARE_DYNCREATE(TLineData)
   // FUNCTION: IMPERIALISM 0x0056f400
-  virtual ~TLineData() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout); // slot 0x0a 0x56f460
-  virtual void RemoveViews();                                 // slot 0x0b 0x56f480
+  virtual ~TLineData() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout);
+  virtual void RemoveViews();
 
-  short column;     // 0x04
-  short row;        // 0x06
-  int layoutWidth;  // 0x08
-  int layoutHeight; // 0x0c
+  short column;
+  short row;
+  int layoutWidth;
+  int layoutHeight;
 
   TLineData();
   void ILineData(short rowArg, short colArg, int* bounds);

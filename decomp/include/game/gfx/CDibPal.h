@@ -10,8 +10,8 @@ class CDibPal : public CPalette {
 public:
   LOGPALETTE* m_pLogPalette; // 0x08 transient LOGPALETTE buffer (malloc/free)
 
-  CDibPal();                   // 0x0047e360
-  virtual ~CDibPal() override; // 0x0047e3c0 (scalar dtor 0x0047e390)
+  CDibPal();
+  virtual ~CDibPal() override;
 
   // Build the HPALETTE from a CDib's RGBQUAD color table and Attach it. 0x0047e440
   int BuildPaletteFromBitmapColorTable(CDib* dib);
@@ -23,12 +23,12 @@ public:
 
   // Load a RIFF PAL palette, prompting for a file when fileName is null or empty
   int LoadPaletteFile(LPCSTR fileName);
-  int LoadPalette(CFile* file);      // 0x0047ec70
-  int LoadPalette(UINT fileHandle);  // 0x0047ecf0
-  int LoadPalette(HMMIO mmioHandle); // 0x0047ed70
-  int SavePalette(CFile* file);      // 0x0047eea0
-  int SavePalette(UINT fileHandle);  // 0x0047ef20
-  int SavePalette(HMMIO mmioHandle); // 0x0047efa0
+  int LoadPalette(CFile* file);
+  int LoadPalette(UINT fileHandle);
+  int LoadPalette(HMMIO mmioHandle);
+  int SavePalette(CFile* file);
+  int SavePalette(UINT fileHandle);
+  int SavePalette(HMMIO mmioHandle);
 };
 
 ASSERT_SIZE(CDibPal, 0x0c);

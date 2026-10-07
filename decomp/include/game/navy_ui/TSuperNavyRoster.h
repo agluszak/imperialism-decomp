@@ -10,9 +10,9 @@ class TZone;
 class TSuperNavyRoster : public TPageView {
 public:
   DECLARE_DYNCREATE(TSuperNavyRoster)
-  virtual ~TSuperNavyRoster() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TSuperNavyRoster() override;
   virtual void PopulateNavyOrderPageEntriesByMapContext(TView* panel, int* offsetLayout,
-                                                        int* sizeLayout); // slot 0x6e 0x5698e0
+                                                        int* sizeLayout);
 
   TZone* selectedZone;
   TTaskForce* selectedTaskForce;

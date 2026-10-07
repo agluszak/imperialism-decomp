@@ -36,8 +36,7 @@ void THostGreatPower::WriteTo(TStream* stream) {
 bool THostGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                         ResourceKindStorage resourceKind) {
   if (TGreatPower::ReplyToTradeOffer(targetNationSlot, amount, price, resourceKind)) {
-    g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot, amount, price,
-                                     resourceKind);
+    g_pGameFlowState->SendTradeOffer(nationSlot, targetNationSlot, amount, price, resourceKind);
     return true;
   }
   return false;

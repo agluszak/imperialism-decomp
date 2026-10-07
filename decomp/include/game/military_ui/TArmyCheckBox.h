@@ -9,20 +9,17 @@
 class TArmyCheckBox : public TControl {
 public:
   DECLARE_DYNCREATE(TArmyCheckBox)
-  virtual ~TArmyCheckBox() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x004aa280
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x4aa2f0
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4aa100
-  virtual void HiliteState(unsigned char hilited,
-                           bool drawImmediate) override;                // slot 0x70 0x4aa310
-  virtual unsigned char IsOn();                                         // slot 0x71 0x4aa340
-  virtual void SetState(unsigned char on, unsigned char drawImmediate); // slot 0x72 0x4aa360
-  virtual void CheckTheLook(unsigned char drawImmediate);               // slot 0x73 0x4aa030
-  virtual void Toggle(bool drawImmediate);                              // slot 0x74 0x4aa3a0
-  virtual void ToggleIf(unsigned char expectedState,
-                        unsigned char drawImmediate); // slot 0x75 0x4aa3e0
-  virtual void DrawImmediate();                       // slot 0x76 0x4aa430
+  virtual ~TArmyCheckBox() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void HiliteState(unsigned char hilited, bool drawImmediate) override;
+  virtual unsigned char IsOn();
+  virtual void SetState(unsigned char on, unsigned char drawImmediate);
+  virtual void CheckTheLook(unsigned char drawImmediate);
+  virtual void Toggle(bool drawImmediate);
+  virtual void ToggleIf(unsigned char expectedState, unsigned char drawImmediate);
+  virtual void DrawImmediate();
   unsigned char isOn;
   unsigned char pad85[3];
   int iconStripHorizontalOffset;

@@ -16,10 +16,10 @@ THandleStream::THandleStream() {
 // FUNCTION: IMPERIALISM 0x00489660
 void THandleStream::IHandleStream(HGLOBAL memoryHandle, int growthSize) {
   this->growthSize = growthSize;
-  this->streamPosition = 0;
+  streamPosition = 0;
   if (memoryHandle != 0) {
-    this->attachedSizeBytes = GlobalSize(memoryHandle);
-    this->attachedGlobalHandle = memoryHandle;
+    attachedSizeBytes = GlobalSize(memoryHandle);
+    attachedGlobalHandle = memoryHandle;
   }
 }
 

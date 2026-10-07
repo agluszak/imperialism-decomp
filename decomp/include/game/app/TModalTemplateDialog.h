@@ -18,12 +18,12 @@ class TLowDiskWarningDialog : public TModalTemplateDialog {
 public:
   // FUNCTION: IMPERIALISM 0x00415b70
   ~TLowDiskWarningDialog() override {}
-  explicit TLowDiskWarningDialog(void* initParam = NULL); // 0x005e1bc0
+  explicit TLowDiskWarningDialog(void* initParam = NULL);
 
-  CString promptText; // 0x74
+  CString promptText;
 
 protected:
-  BOOL OnInitDialog() override;                     // 0x005e1ce0 (vtable index 49)
-  void DoDataExchange(CDataExchange* pDX) override; // 0x005e1c90 (vtable index 35)
-  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x005e1cc0 (index 12)
+  BOOL OnInitDialog() override;
+  void DoDataExchange(CDataExchange* pDX) override;
+  DECLARE_MESSAGE_MAP() // GetMessageMap 0x005e1cc0 (index 12)
 };

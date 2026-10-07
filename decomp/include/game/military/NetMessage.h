@@ -6,10 +6,10 @@
 #include "game/nation_domain_types.h"
 
 struct NetMessage {
-  int eventCode;     // +0x00 — turn-event code ('what')
-  int fromNetworkId; // +0x04 — sender network id ('from'); overwritten by TNetMgr::Send
-  int toNetworkId;   // +0x08 — destination network id ('to'); -1 = broadcast
-  int messageLength; // +0x0c — total packet size in bytes ('messageLen')
+  int eventCode;     // turn-event code ('what')
+  int fromNetworkId; // sender network id ('from'); overwritten by TNetMgr::Send
+  int toNetworkId;   // destination network id ('to'); -1 = broadcast
+  int messageLength; // total packet size in bytes ('messageLen')
 
   void DestinateToGP(int nationSlot);
 
@@ -21,15 +21,15 @@ struct TurnEventQueuePacket : NetMessage {
 };
 
 struct TimelyMessageHeader : NetMessage {
-  int messageTag;               // +0x10 — 'time'
-  unsigned char activeNationId; // +0x14
+  int messageTag; // 'time'
+  unsigned char activeNationId;
   unsigned char pad15[3];
 
   TimelyMessageHeader* InitializeEmitEventHeaderWithActiveNation();
 };
 
 struct TimelyNetMessagePrefix : TimelyMessageHeader {
-  GamePhaseStorage syncPhase; // +0x18
+  GamePhaseStorage syncPhase;
 
   void SetTimeEmitPacketGameFlowTurnId();
 };
@@ -65,10 +65,10 @@ struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
 };
 
 struct TurnEvent1DWarTransitionPacket : TimelyNetMessagePrefix {
-  char actionCode;       // +0x1c - 'i' selects the two-arg check
-  signed char nationA1D; // +0x1d
-  signed char nationB1E; // +0x1e
-  unsigned char mode1F;  // +0x1f, total 0x20
+  char actionCode; // 'i' selects the two-arg check
+  signed char nationA1D;
+  signed char nationB1E;
+  unsigned char mode1F;
 };
 
 #pragma pack(push, 1)
@@ -94,14 +94,14 @@ struct TurnEvent2DeltaPayload {
 };
 
 struct TurnEvent2SyncPacket : NetMessage {
-  int pad10;                  // +0x10 - zeroed, no 'time' tag on this packet
-  int pad14;                  // +0x14
-  GamePhaseStorage syncPhase; // +0x18
-  unsigned char pad1a[6];     // +0x1a
-  bool flag20;                // +0x20 - cleared by the caller after the baseline refresh
-  unsigned char deltaKind;    // +0x21 - 2 = delta pairs, 0 = full block
+  int pad10; // zeroed, no 'time' tag on this packet
+  int pad14;
+  GamePhaseStorage syncPhase;
+  unsigned char pad1a[6];
+  bool flag20;             // cleared by the caller after the baseline refresh
+  unsigned char deltaKind; // 2 = delta pairs, 0 = full block
   unsigned char pad22[2];
-  TurnEvent2DeltaPayload payload; // +0x24 - variable-length wire records
+  TurnEvent2DeltaPayload payload; // variable-length wire records
 
   void ApplyEncodedDeltaPayloadToBufferByMode(void* buffer);
 

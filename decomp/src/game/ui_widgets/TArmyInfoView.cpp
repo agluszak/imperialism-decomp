@@ -108,7 +108,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
 
   short cityOwner = g_pGlobalMapState->FindCountry(cityRecordIndex);
   short activeNation = g_pSimMgr->GetPlayerCountry();
-  short orderTemplateIndex = static_cast<short>(cityOwner == activeNation ? 0xa : 0xe);
+  short orderTemplateIndex = cityOwner == activeNation ? 0xa : 0xe;
   g_pSimMgr->GetString(0x2744, orderTemplateIndex, &orderTemplate);
   g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
   scanBracketExpressions(g_pSimMgr, &reportText, static_cast<LPCSTR>(orderTemplate),

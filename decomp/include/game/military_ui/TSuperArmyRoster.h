@@ -7,9 +7,8 @@
 class TSuperArmyRoster : public TPageView {
 public:
   DECLARE_DYNCREATE(TSuperArmyRoster)
-  virtual ~TSuperArmyRoster() override; // slot 0x01 (scalar deleting destructor)
-  virtual void PopulateArmyOrderPageEntries(TView* panel, int* offsetLayout,
-                                            int* sizeLayout); // slot 0x6e 0x4aa540
+  virtual ~TSuperArmyRoster() override;
+  virtual void PopulateArmyOrderPageEntries(TView* panel, int* offsetLayout, int* sizeLayout);
 
   short selectedCityRecordIndex;
   short pad86;

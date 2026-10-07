@@ -9,9 +9,9 @@
 class TTradePageBuyView : public TPageView {
 public:
   DECLARE_DYNCREATE(TTradePageBuyView)
-  virtual ~TTradePageBuyView() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TTradePageBuyView() override;
 
-  short lastBuiltCategorySlot; // 0x84
+  short lastBuiltCategorySlot;
 
   TTradePageBuyView();
   void SetItem(short categorySlot);

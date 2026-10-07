@@ -468,7 +468,7 @@ void TShipyardView::SetStats(short shipType) {
 
 // FUNCTION: IMPERIALISM 0x004c9d20
 void TShipyardView::SetStats(TView* sourceControl) {
-  short row = static_cast<short>(sourceControl->controlTag & 0xf);
+  short row = sourceControl->controlTag & 0xf;
   if (row != selectedStatsRow && buildQueueSlotValues[row] != 0) {
     selectedStatsRow = row;
     SetStats(buildQueueSlotValues[row]);

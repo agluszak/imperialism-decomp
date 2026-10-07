@@ -15,7 +15,7 @@ TPictureRadioButton::~TPictureRadioButton() {}
 // FUNCTION: IMPERIALISM 0x00570de0
 void TPictureRadioButton::ViewEnable(char isEnabled, char refreshNow) {
   short pictureId = glyphBase;
-  short alternatePictureId = static_cast<short>(controlValue);
+  short alternatePictureId = controlValue;
   char currentState = IsEnabled();
   if (((isEnabled != 0 && currentState == 0) || (isEnabled == 0 && currentState != 0)) &&
       alternatePictureId != 0) {

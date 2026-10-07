@@ -30,7 +30,7 @@ short TShip::GetTypeBattleSpeed(short shipType) {
 
 // FUNCTION: IMPERIALISM 0x00550ea0
 short TShip::GetTypeToolbarSlot(short shipType) {
-  return static_cast<short>(g_NavyOrderResourceDescriptorTable[shipType].ToolbarSlot());
+  return g_NavyOrderResourceDescriptorTable[shipType].ToolbarSlot();
 }
 
 // FUNCTION: IMPERIALISM 0x00550ed0
@@ -40,6 +40,5 @@ short TShip::GetTypeSailingSpeed(short shipType) {
 
 // FUNCTION: IMPERIALISM 0x00550f30
 short TShip::GetTypeStat(short shipType, short statColumn) {
-  return static_cast<short>(
-      g_NavyOrderResourceDescriptorTable[shipType].valueByColumn[statColumn]);
+  return static_cast<short>(g_NavyOrderResourceDescriptorTable[shipType].valueByColumn[statColumn]);
 }

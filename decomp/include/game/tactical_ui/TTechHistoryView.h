@@ -9,7 +9,7 @@
 class TTechHistoryView : public TView {
 public:
   DECLARE_DYNCREATE(TTechHistoryView)
-  virtual ~TTechHistoryView() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TTechHistoryView() override;
 
   // NOOP: verified empty in original 0x005b2263
   TTechHistoryView() {}

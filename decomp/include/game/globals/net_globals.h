@@ -20,9 +20,9 @@ extern CList<void*, void*> g_WNetPendingPacketList;
 
 extern POINT g_ptNetworkModalMessage;
 
-extern POINT g_ptNationAwolModalMessage; // @ 0x6a3d08
+extern POINT g_ptNationAwolModalMessage;
 
-extern const char* const g_pszClientSavePrefix; // "cli_" @ 0x65bf5c
+extern const char* const g_pszClientSavePrefix; // "cli_" @
 
 extern char g_szUiOpenParen[];
 

@@ -18,9 +18,8 @@ public:
   // FUNCTION: IMPERIALISM 0x004b8d30
   ~TCapacityOrder() override {}
 
-  void Produce() override; // slot 0x0d 0x4b8dd0
+  void Produce() override;
   virtual void ICapacityOrder(TCity* city, short resourceType, short primaryInputResource,
-                              short secondaryInputResource,
-                              short productionSlot); // slot 0x12 0x4b8d50
+                              short secondaryInputResource, short productionSlot);
 };
 ASSERT_SIZE(TCapacityOrder, 0x54);

@@ -11,20 +11,19 @@
 class TLoungeDialog : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(TLoungeDialog)
-  virtual ~TLoungeDialog() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;      // slot 0x07 0x54d6f0
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x0054e1f0
-  virtual bool DoIdle(int action) override;     // slot 0x13 0x54db40
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x54d730
+  virtual ~TLoungeDialog() override;
+  virtual void Free() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual bool DoIdle(int action) override;
+  virtual void DoPostCreate(int arg) override;
 
   // NOOP: verified empty in original 0x0054d686
   TLoungeDialog() {}
 
   void YouHaveNewGameData();
 
-  void NationalClick(int nationSlot); // 0x54dfc0
+  void NationalClick(int nationSlot);
 
-  int selectedNationSlot; // 0x94, initialized to -1 after the lounge controls are bound
+  int selectedNationSlot; // initialized to -1 after the lounge controls are bound
 };
 ASSERT_SIZE(TLoungeDialog, 0x98);

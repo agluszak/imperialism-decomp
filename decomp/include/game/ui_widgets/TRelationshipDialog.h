@@ -9,9 +9,9 @@
 class TRelationshipDialog : public TDialogView {
 public:
   DECLARE_DYNCREATE(TRelationshipDialog)
-  virtual ~TRelationshipDialog() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;           // slot 0x28 0x5b2da0
-  virtual void StuffValues();              // slot 0x68 0x5b2f10
+  virtual ~TRelationshipDialog() override;
+  virtual void Close() override;
+  virtual void StuffValues();
 
   // NOOP: verified empty in original 0x005b2cd3
   TRelationshipDialog() {}

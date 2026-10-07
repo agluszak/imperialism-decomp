@@ -14,14 +14,14 @@ public:
   // FUNCTION: IMPERIALISM 0x00413580
   virtual ~ImperialismCommandLineInfo() override {}
 
-  virtual void ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bLast) override; // 0x004133d0
+  virtual void ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bLast) override;
 
-  CString* m_pLanguageName;     // 0x24 — points at the caller's language CString
-  unsigned char field_28;       // 0x28 — set to 0x20 at construction; no reader found yet
+  CString* m_pLanguageName;     // points at the caller's language CString
+  unsigned char field_28;       // set to 0x20 at construction; no reader found yet
   int m_bQuitAfterLanguageScan; // 0x2c — "L!"
   int m_bShowSetupDialog;       // 0x30 — "L" or "L!"
   int m_bClearRegistrySettings; // 0x34 — "C"
-  CString m_strMainWindowTitle; // 0x38 — "T<text>"
+  CString m_strMainWindowTitle; // "T<text>"
   int m_bForceAutoResOn;        // 0x3c — "R"
   int m_bForceAutoResOff;       // 0x40 — "S"
 };

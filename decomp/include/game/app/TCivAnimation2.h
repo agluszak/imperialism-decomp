@@ -9,11 +9,11 @@ class TCivAnimation2 : public TAnimation {
 public:
   DECLARE_DYNCREATE(TCivAnimation2)
   // FUNCTION: IMPERIALISM 0x0049f660
-  virtual ~TCivAnimation2() override {}               // slot 0x01 (scalar deleting destructor)
-  virtual void Tick() override;                       // slot 0x0a 0x49f7c0
-  virtual void DrawNextFrame(POINT* offset) override; // slot 0x0b 0x49f8e0
-  short kindIndex;                                    // +0x2c
-  short pad2e;                                        // +0x2e
+  virtual ~TCivAnimation2() override {}
+  virtual void Tick() override;
+  virtual void DrawNextFrame(POINT* offset) override;
+  short kindIndex;
+  short pad2e;
 
   // NOOP: verified empty in original 0x0049f602
   TCivAnimation2() {}

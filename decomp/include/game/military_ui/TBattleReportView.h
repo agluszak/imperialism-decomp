@@ -10,18 +10,16 @@ struct MapContextActionRecord;
 class TBattleReportView : public TDiplomacyMapView {
 public:
   DECLARE_DYNCREATE(TBattleReportView)
-  ~TBattleReportView() override; // slot 0x01 scalar deleting dtor
+  ~TBattleReportView() override;
 
-  void Free() override; // slot 0x07 0x4ad560
-  void DoEvent(int commandId, TEventHandler* sourceHandler,
-               TEvent* event) override; // slot 0x0f 0x4ad7a0
-  bool DoIdle(int action) override;     // slot 0x13 0x4ad5a0
+  void Free() override;
+  void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  bool DoIdle(int action) override;
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                           RgnHandle hitArg) override; // slot 0x35
-  void DoPostCreate(int arg) override;                                                 // slot 0x37
-  void Draw(RECT* rectBuffer) override;                                                // slot 0x44
-  void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                      CPoint origin) override; // slot 0x47 0x4adcb0
+                                                           RgnHandle hitArg) override;
+  void DoPostCreate(int arg) override;
+  void Draw(RECT* rectBuffer) override;
+  void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
   bool ShouldDisplay(MapContextActionRecord* record) const;
   MapContextActionRecord* GetBattleAt(const CPoint& point) const;

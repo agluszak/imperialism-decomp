@@ -43,7 +43,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   this->productionView = productionView;
 
   city->GetMaxBuildingCapacity(buildingSlotId);
-  this->SetPictureRsrcID(static_cast<short>((buildingSlotId + 0x73a) * 5), 1);
+  SetPictureRsrcID(static_cast<short>((buildingSlotId + 0x73a) * 5), 1);
 
   if (buildingSlotId == 0xb) {
     city->BuildPowerPlant(false);
@@ -61,12 +61,12 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   case 2:
   case 4:
   case 6:
-    this->formatMode = 2;
+    formatMode = 2;
     break;
   case 1:
   case 3:
   case 5:
-    this->formatMode = 1;
+    formatMode = 1;
     break;
   }
 
@@ -204,8 +204,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4e8);
     }
     short originalQuantity = order->quantity;
-    short buildingType = static_cast<short>(city->GetBuildingType(slot));
-    short needed = static_cast<short>(city->GetMaxBuildingCapacity(slot) - buildingType);
+    short buildingType = city->GetBuildingType(slot);
+    short needed = city->GetMaxBuildingCapacity(slot) - buildingType;
     eligible = order->SetQuantity(needed);
     order->SetQuantity(originalQuantity);
   }
@@ -237,7 +237,7 @@ void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x519);
     }
     if (dialogActionTag == kControlTagOkay) { // 'okay'
-      short previousBuildingType = static_cast<short>(city->GetBuildingType(buildingSlotId));
+      short previousBuildingType = city->GetBuildingType(buildingSlotId);
       order->SetQuantity(
           static_cast<short>(city->GetMaxBuildingCapacity(buildingSlotId) - previousBuildingType));
     } else if (order->quantity > 0) {

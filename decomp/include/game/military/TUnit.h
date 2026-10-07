@@ -9,29 +9,29 @@ public:
   // --- TObject overrides ---
   DECLARE_DYNCREATE(TUnit)
   // FUNCTION: IMPERIALISM 0x005c2510
-  ~TUnit() override {} // slot 0x04
+  ~TUnit() override {}
 
-  void WriteTo(TStream* stream) override;  // slot 0x14
-  void ReadFrom(TStream* stream) override; // slot 0x18
-  void Free() override;                    // slot 0x1c
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
 
-  virtual void MoveTo(short nTileIndex);                // slot 0x28
-  virtual void ContinueOrders();                        // slot 0x2c, Mac oracle
-  virtual void Vaporize();                              // slot 0x30
-  virtual void SetOrders(UnitOrder order, int payload); // slot 0x34
+  virtual void MoveTo(short nTileIndex);
+  virtual void ContinueOrders();
+  virtual void Vaporize();
+  virtual void SetOrders(UnitOrder order, int payload);
 
-  short orderType; // 0x04
+  short orderType;
   short tileIndex;
-  UnitOrder unitOrder;           // 0x08
-  short orderTargetIndex;        // 0x0c
-  short pad0E;                   // 0x0e
-  TUnit* previousAtLocation;     // 0x10
-  TUnit* nextAtLocation;         // 0x14
-  short ownerNationSlot;         // 0x18
-  short unitRosterId;            // 0x1a
-  bool militaryRegistrationFlag; // 0x1c
-  unsigned char pad1d[3];        // 0x1d
-  int persistentUnitId;          // 0x20
+  UnitOrder unitOrder;
+  short orderTargetIndex;
+  short pad0E;
+  TUnit* previousAtLocation;
+  TUnit* nextAtLocation;
+  short ownerNationSlot;
+  short unitRosterId;
+  bool militaryRegistrationFlag;
+  unsigned char pad1d[3];
+  int persistentUnitId;
 
   TUnit() {
     previousAtLocation = 0;

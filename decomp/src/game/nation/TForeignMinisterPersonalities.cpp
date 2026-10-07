@@ -68,7 +68,7 @@ static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, sh
   if (g_pTradeMgr->GetPrice(0x10) > threshold &&
       !g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(owner->nationSlot)) {
     short available = owner->GetStockpile(kResourceArms);
-    short amount = static_cast<short>(available / 10);
+    short amount = available / 10;
     if (amount > 2) {
       owner->SetItemPotentials(kResourceArms, amount);
     } else if (owner->GetStockpile(kResourceArms) > 6) {
@@ -199,7 +199,7 @@ void TTedForeignMinister::ReplyToTradeOffer(short targetNation, short requestedA
   }
   if (resourceCode == kResourceTimber || resourceCode == kResourceIron ||
       resourceCode == kResourceOil) {
-    short available = static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode));
+    short available = owner->GetUnreservedMerchantCapacity(resourceCode);
     if (available >= requestedAmount) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, requestedAmount, maximumAmount,
                                   resourceCode, 0, false);
@@ -236,7 +236,7 @@ void TTedForeignMinister::DoFirstTurnDiplomacy() {
       return;
     }
     ++attempts;
-    short candidate = static_cast<short>(abs(rand()) % 0x10 + 7);
+    short candidate = abs(rand()) % 0x10 + 7;
     bool duplicate = false;
     for (int index = 0; index < selectedCount; ++index) {
       if (selectedNations[index] == candidate) {
@@ -435,7 +435,7 @@ void TBillForeignMinister::DoFirstTurnDiplomacy() {
       return;
     }
     ++attempts;
-    short candidate = static_cast<short>(abs(rand()) % 0x10 + 7);
+    short candidate = abs(rand()) % 0x10 + 7;
     if ((selectedCount == 0 || selectedNations[0] != candidate) &&
         !g_pGlobalMapState->IsSameContinent(greatPower->nationSlot, candidate) &&
         g_apTerrainTypeDescriptorTable[candidate] != 0) {
@@ -460,7 +460,7 @@ void TBillForeignMinister::DoSecondTurnDiplomacy() {
 // FUNCTION: IMPERIALISM 0x00532650
 void TBillForeignMinister::MakeNewCity(TCity* city) {
   city->orderCountByType[1] = 3;
-  short nextLevel = static_cast<short>(city->GetBuildingType(2) + 2);
+  short nextLevel = city->GetBuildingType(2) + 2;
   city->productionAccum[2] =
       static_cast<short>(city->productionAccum[2] + nextLevel - city->productionOrderTable[2]);
   city->productionOrderTable[2] = nextLevel;
@@ -695,7 +695,7 @@ void TTextileForeignMinister::SetTradeBids() {
     owner->SetItemPotentials(kResourceClothing, textileAmount);
   }
   if (owner->treasuryValue < 0 || owner->GetTradeOffersFor(kResourceClothing) == 0) {
-    short budget = static_cast<short>(merchantCapacity / 2);
+    short budget = merchantCapacity / 2;
     short firstResource = 0x0e;
     short secondResource = 0x0f;
     if (g_pTradeMgr->GetPrice(0x0f) > g_pTradeMgr->GetPrice(0x0e)) {
@@ -705,7 +705,7 @@ void TTextileForeignMinister::SetTradeBids() {
     short firstAmount =
         owner->GetStockpile(firstResource) <= budget ? owner->GetStockpile(firstResource) : budget;
     owner->SetItemPotentials(firstResource, firstAmount);
-    short remaining = static_cast<short>(budget - firstAmount);
+    short remaining = budget - firstAmount;
     short secondAmount = owner->GetStockpile(secondResource) < remaining
                              ? owner->GetStockpile(secondResource)
                              : remaining;
@@ -737,7 +737,7 @@ void TTextileForeignMinister::ReplyToTradeOffer(short targetNation, short reques
 void TTextileForeignMinister::MakeNewCity(TCity* city) {
   city->orderCountByType[2] += 2;
   city->orderCountByType[1] += 1;
-  short nextLevel = static_cast<short>(city->GetBuildingType(2) + 2);
+  short nextLevel = city->GetBuildingType(2) + 2;
   city->productionAccum[2] =
       static_cast<short>(city->productionAccum[2] + nextLevel - city->productionOrderTable[2]);
   city->productionOrderTable[2] = nextLevel;
@@ -795,14 +795,14 @@ void TTraderForeignMinister::SetTradeBids() {
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
   short divisor = owner->treasuryValue < 0 ? 1 : 4;
-  short budget = static_cast<short>(owner->merchantCapacity / divisor);
+  short budget = owner->merchantCapacity / divisor;
   int selectedOrdinal = 3;
   short allocated = 0;
   while (budget > allocated && selectedOrdinal >= 1) {
     short resourceCode = GetSortedResourceCode(prices, selectedOrdinal);
     short amount = owner->GetStockpile(resourceCode);
     owner->SetItemPotentials(resourceCode, amount);
-    allocated = static_cast<short>(allocated + owner->GetStockpile(resourceCode));
+    allocated += owner->GetStockpile(resourceCode);
     --selectedOrdinal;
   }
   prices->FreeList();
@@ -820,7 +820,7 @@ void TTraderForeignMinister::ReplyToTradeOffer(short targetNation, short request
     return;
   }
   TGreatPower* owner = greatPower;
-  short available = static_cast<short>(owner->GetUnreservedMerchantCapacity(resourceCode));
+  short available = owner->GetUnreservedMerchantCapacity(resourceCode);
   if (available >= requestedAmount) {
     g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, requestedAmount, maximumAmount,
                                 resourceCode, 0, false);
@@ -842,7 +842,7 @@ void TTraderForeignMinister::DoFirstTurnDiplomacy() {
       return;
     }
     ++attempts;
-    short candidate = static_cast<short>(abs(rand()) % 0x10 + 7);
+    short candidate = abs(rand()) % 0x10 + 7;
     bool duplicate = false;
     for (int index = 0; index < selectedCount; ++index) {
       if (selectedNations[index] == candidate) {
@@ -905,7 +905,7 @@ void TArmsForeignMinister::SetTradeBids() {
   AddSortedResourcePrice(prices, 0x0d);
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
-  short budget = static_cast<short>(owner->merchantCapacity / 2);
+  short budget = owner->merchantCapacity / 2;
   int selectedOrdinal = 3;
   short allocated = 0;
   while (allocated < budget && selectedOrdinal >= 1) {
@@ -913,14 +913,14 @@ void TArmsForeignMinister::SetTradeBids() {
     short amount =
         MinShort(owner->GetStockpile(resourceCode), static_cast<short>(budget - allocated));
     owner->SetItemPotentials(resourceCode, amount);
-    allocated = static_cast<short>(allocated + amount);
+    allocated += amount;
     --selectedOrdinal;
   }
   prices->FreeList();
   if (owner->treasuryValue < 0 &&
       !g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(owner->nationSlot)) {
     short available = owner->GetStockpile(kResourceArms);
-    short amount = static_cast<short>(available / 10);
+    short amount = available / 10;
     if (amount > 10) {
       amount = 10;
     }

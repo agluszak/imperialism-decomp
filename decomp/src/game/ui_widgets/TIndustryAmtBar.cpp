@@ -33,9 +33,9 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   short summaryTagIndex = 0;
   int mappedTag = g_pTradeSummarySelectionMap[summaryTagIndex];
-  int summaryTag = this->ownerContext->controlTag;
+  int summaryTag = ownerContext->controlTag;
   while (mappedTag != summaryTag) {
-    summaryTagIndex = static_cast<short>(summaryTagIndex + 1);
+    ++summaryTagIndex;
     mappedTag = g_pTradeSummarySelectionMap[summaryTagIndex];
   }
 
@@ -44,8 +44,8 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
       static_cast<TItemOrder*>(selectedMetricRecord)->productionSlot);
 
   short stepValue = selectedMetricRecord->MaxOrder();
-  short productionCap = static_cast<short>(productionValue);
-  int rangeRaw = this->frameWidth;
+  short productionCap = productionValue;
+  int rangeRaw = frameWidth;
   stepOrCurrentValue = static_cast<short>((stepValue * rangeRaw) / productionCap);
 
   auxValueA = productionCap;
@@ -81,7 +81,7 @@ void TIndustryAmtBar::DrawAmt() {
       }
 
       short overlayOffsetX = control->stepOrCurrentValue;
-      short overlayOffsetY = static_cast<short>(control->frameHeight);
+      short overlayOffsetY = control->frameHeight;
       SetQuickDrawTextOriginWithContextOffset(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();

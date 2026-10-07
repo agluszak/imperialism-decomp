@@ -141,7 +141,7 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
 
   int economicQuarter = g_pSimMgr->economicTurn / 4;
   stream->WriteBytes(&economicQuarter, 2);
-  unsigned char difficultyLevel = static_cast<unsigned char>(g_pSimMgr->difficultyLevel);
+  unsigned char difficultyLevel = g_pSimMgr->difficultyLevel;
   stream->WriteBytes(&difficultyLevel, 1);
   unsigned char activeNationSlot = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   stream->WriteBytes(&activeNationSlot, 1);

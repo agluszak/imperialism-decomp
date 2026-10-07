@@ -9,12 +9,12 @@
 class TTradeTotalsView : public TView {
 public:
   DECLARE_DYNCREATE(TTradeTotalsView)
-  virtual ~TTradeTotalsView() override;         // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5c1bd0
+  virtual ~TTradeTotalsView() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   TTradeTotalsView();
 
-  void ITradeTotalsView(TView* panel, int* offsetLayout, int* sizeLayout, short nation); // 0x5c1b90
+  void ITradeTotalsView(TView* panel, int* offsetLayout, int* sizeLayout, short nation);
 
   short nationSlot;
   short unused62;

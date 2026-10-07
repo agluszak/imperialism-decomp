@@ -11,12 +11,11 @@ class TEventHandler;
 // VTABLE: IMPERIALISM 0x6653c8
 class TProductionCluster : public TUberCluster {
 public:
-  virtual ~TProductionCluster() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;               // slot 0x0f 0x005869c0
-  virtual void SetLaborRate(short laborRate);                 // slot 0x74 0x586a60
-  virtual void SetStockpileRate(short stockpileRate);         // slot 0x75 0x586ab0
-  virtual void SetStockpiles(short* current, short* maximum); // slot 0x76 0x586a80
+  virtual ~TProductionCluster() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void SetLaborRate(short laborRate);
+  virtual void SetStockpileRate(short stockpileRate);
+  virtual void SetStockpiles(short* current, short* maximum);
   int field88;
   short laborRate;
   short stockpileRate;

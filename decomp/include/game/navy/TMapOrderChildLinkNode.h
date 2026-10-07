@@ -6,10 +6,10 @@ class TShip;
 
 class TMapOrderChildLinkNode {
 public:
-  TShip* payload;               // +0x00
-  TMapOrderChildLinkNode* next; // +0x04
-  TMapOrderChildLinkNode* prev; // +0x08
-  unsigned char active;         // +0x0c
+  TShip* payload;
+  TMapOrderChildLinkNode* next;
+  TMapOrderChildLinkNode* prev;
+  unsigned char active;
   unsigned char padding0D[3];
 
   // NOOP: verified empty in original 0x00553c25
@@ -32,9 +32,9 @@ public:
     }
   }
 
-  TMapOrderChildLinkNode* FindNodeMatching(TShip* child); // 0x552510
+  TMapOrderChildLinkNode* FindNodeMatching(TShip* child);
 
-  void SetChainActiveFlag(unsigned char flag); // 0x536f70
+  void SetChainActiveFlag(unsigned char flag);
 
   TMapOrderChildLinkNode* DeleteMapOrderChildLinkAndReturnNext();
   TMapOrderChildLinkNode* RemoveLinkedOrderNodeByValueRecursive(TShip* child);

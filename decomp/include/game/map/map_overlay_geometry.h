@@ -6,8 +6,8 @@
 
 // A route/overlay edge endpoint (overlay x,y). Used by the scanline region-fill pass.
 struct MapEdgePoint {
-  int x; // +0x00
-  int y; // +0x04
+  int x;
+  int y;
 
   // 1 if both coordinates match `other`, else 0.
   unsigned int Equals(const MapEdgePoint* other) const;
@@ -18,7 +18,7 @@ int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction);
 int* WrapExtendedMapXCoordinateInPlace(int* x);
 
 // Converts a hex tile index to its overlay-grid coordinate for the given edge side.
-int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side); // 0x0052c990
+int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side);
 
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags);
 

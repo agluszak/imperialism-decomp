@@ -316,23 +316,23 @@ void TMinor::IMinor(NationSlot nationSlot) {
 // FUNCTION: IMPERIALISM 0x004e41c0
 void TMinor::ReadFrom(TStream* stream) {
   TCountry::ReadFrom(stream);
-  stream->ReadBytes(this->needCurrentByType, sizeof(this->needCurrentByType));
-  SwapShortArrayBytes(this->needCurrentByType, 0x17);
-  stream->ReadBytes(this->tradeOffersByResource, sizeof(this->tradeOffersByResource));
-  SwapShortArrayBytes(this->tradeOffersByResource, 0x17);
-  stream->ReadBytes(this->grantAmountsByResource, sizeof(this->grantAmountsByResource));
-  SwapShortArrayBytes(this->grantAmountsByResource, 0x17);
-  stream->ReadBytes(&this->primaryManufacturedPriceThreshold, 2);
-  stream->ReadBytes(&this->secondaryManufacturedPriceThreshold, 2);
-  stream->ReadBytes(&this->generalOfferPriceThreshold, 2);
-  stream->ReadBytes(&this->randomOfferPriceThreshold, 2);
-  stream->ReadBytes(&this->coalOfferPriceThreshold, 2);
-  stream->ReadBytes(&this->ironOfferPriceThreshold, 2);
-  stream->ReadBytes(&this->oilOfferPriceThreshold, 2);
-  stream->ReadBytes(&this->primaryManufacturedRequest, 2);
-  stream->ReadBytes(&this->secondaryManufacturedRequest, 2);
-  stream->ReadBytes(&this->primaryManufacturedRequestFulfilledAmount, 2);
-  stream->ReadBytes(&this->secondaryManufacturedRequestFulfilledAmount, 2);
+  stream->ReadBytes(needCurrentByType, sizeof(needCurrentByType));
+  SwapShortArrayBytes(needCurrentByType, 0x17);
+  stream->ReadBytes(tradeOffersByResource, sizeof(tradeOffersByResource));
+  SwapShortArrayBytes(tradeOffersByResource, 0x17);
+  stream->ReadBytes(grantAmountsByResource, sizeof(grantAmountsByResource));
+  SwapShortArrayBytes(grantAmountsByResource, 0x17);
+  stream->ReadBytes(&primaryManufacturedPriceThreshold, 2);
+  stream->ReadBytes(&secondaryManufacturedPriceThreshold, 2);
+  stream->ReadBytes(&generalOfferPriceThreshold, 2);
+  stream->ReadBytes(&randomOfferPriceThreshold, 2);
+  stream->ReadBytes(&coalOfferPriceThreshold, 2);
+  stream->ReadBytes(&ironOfferPriceThreshold, 2);
+  stream->ReadBytes(&oilOfferPriceThreshold, 2);
+  stream->ReadBytes(&primaryManufacturedRequest, 2);
+  stream->ReadBytes(&secondaryManufacturedRequest, 2);
+  stream->ReadBytes(&primaryManufacturedRequestFulfilledAmount, 2);
+  stream->ReadBytes(&secondaryManufacturedRequestFulfilledAmount, 2);
   stream->ReadBytes(consortiumMembers, 8);
   SwapShortArrayBytes(consortiumMembers, 4);
   if (g_nSaveFormatVersion >= 0x3a) {
@@ -344,20 +344,20 @@ void TMinor::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004e4390
 void TMinor::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
-  WriteShortArrayElems(stream, this->needCurrentByType, 0x17);
-  WriteShortArrayElems(stream, this->tradeOffersByResource, 0x17);
-  WriteShortArrayElems(stream, this->grantAmountsByResource, 0x17);
-  stream->WriteBytes(&this->primaryManufacturedPriceThreshold, 2);
-  stream->WriteBytes(&this->secondaryManufacturedPriceThreshold, 2);
-  stream->WriteBytes(&this->generalOfferPriceThreshold, 2);
-  stream->WriteBytes(&this->randomOfferPriceThreshold, 2);
-  stream->WriteBytes(&this->coalOfferPriceThreshold, 2);
-  stream->WriteBytes(&this->ironOfferPriceThreshold, 2);
-  stream->WriteBytes(&this->oilOfferPriceThreshold, 2);
-  stream->WriteBytes(&this->primaryManufacturedRequest, 2);
-  stream->WriteBytes(&this->secondaryManufacturedRequest, 2);
-  stream->WriteBytes(&this->primaryManufacturedRequestFulfilledAmount, 2);
-  stream->WriteBytes(&this->secondaryManufacturedRequestFulfilledAmount, 2);
+  WriteShortArrayElems(stream, needCurrentByType, 0x17);
+  WriteShortArrayElems(stream, tradeOffersByResource, 0x17);
+  WriteShortArrayElems(stream, grantAmountsByResource, 0x17);
+  stream->WriteBytes(&primaryManufacturedPriceThreshold, 2);
+  stream->WriteBytes(&secondaryManufacturedPriceThreshold, 2);
+  stream->WriteBytes(&generalOfferPriceThreshold, 2);
+  stream->WriteBytes(&randomOfferPriceThreshold, 2);
+  stream->WriteBytes(&coalOfferPriceThreshold, 2);
+  stream->WriteBytes(&ironOfferPriceThreshold, 2);
+  stream->WriteBytes(&oilOfferPriceThreshold, 2);
+  stream->WriteBytes(&primaryManufacturedRequest, 2);
+  stream->WriteBytes(&secondaryManufacturedRequest, 2);
+  stream->WriteBytes(&primaryManufacturedRequestFulfilledAmount, 2);
+  stream->WriteBytes(&secondaryManufacturedRequestFulfilledAmount, 2);
   WriteShortArrayElems(stream, consortiumMembers, 4);
   WriteShortArrayElems(stream, independentResourceCountByType, 0x17);
 }
@@ -375,8 +375,8 @@ bool TMinor::IsInConsortiumWith(short policyCode) {
 
 // FUNCTION: IMPERIALISM 0x004e4630
 short TMinor::GetAmtUnsold(short resourceKind) {
-  short sum = static_cast<short>(this->needCurrentByType[resourceKind] +
-                                 this->grantAmountsByResource[resourceKind]);
+  short sum =
+      static_cast<short>(needCurrentByType[resourceKind] + grantAmountsByResource[resourceKind]);
   if (sum < 0) {
     sum = 0;
   }
@@ -385,12 +385,12 @@ short TMinor::GetAmtUnsold(short resourceKind) {
 
 // FUNCTION: IMPERIALISM 0x004e4660
 short TMinor::GetStockpile(short resourceKind) {
-  return this->needCurrentByType[resourceKind];
+  return needCurrentByType[resourceKind];
 }
 
 // FUNCTION: IMPERIALISM 0x004e4680
 short TMinor::GetTradeOffersFor(short resourceKind) {
-  return this->tradeOffersByResource[resourceKind];
+  return tradeOffersByResource[resourceKind];
 }
 
 // FUNCTION: IMPERIALISM 0x004e46a0
@@ -412,7 +412,7 @@ void TMinor::InitializeTradeStatus(void) {
 
   int tileIndex;
   for (tileIndex = 0; static_cast<short>(tileIndex) < kStrategicTileCount; ++tileIndex) {
-    if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag == this->nationSlot) {
+    if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag == nationSlot) {
       short tileGreatPower =
           g_pGlobalMapState->terrainStateTable[tileIndex].secondaryOwnerNationTag;
       if (tileGreatPower == -1) {
@@ -450,9 +450,9 @@ void TMinor::InitializeTradeStatus(void) {
       if (goldYieldControlledByPower != 0) {
         g_apNationStates[power]->AddOverseasProfitFrom(
             g_pDiplomacyTurnStateManager
-                    ->relationStandingScores[this->nationSlot * kNationSlotCount + power] *
+                    ->relationStandingScores[nationSlot * kNationSlotCount + power] *
                 goldYieldControlledByPower * 200 / 255,
-            kResourceGold, this->nationSlot);
+            kResourceGold, nationSlot);
       }
       short gemYieldControlledByPower =
           foreignControlledResourceYieldByTypeAndMajorNation[kResourceGems]
@@ -460,9 +460,9 @@ void TMinor::InitializeTradeStatus(void) {
       if (gemYieldControlledByPower != 0) {
         g_apNationStates[power]->AddOverseasProfitFrom(
             g_pDiplomacyTurnStateManager
-                    ->relationStandingScores[this->nationSlot * kNationSlotCount + power] *
+                    ->relationStandingScores[nationSlot * kNationSlotCount + power] *
                 gemYieldControlledByPower * 500 / 255,
-            kResourceGems, this->nationSlot);
+            kResourceGems, nationSlot);
       }
     }
   }
@@ -474,34 +474,33 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
   short deltaShort = amount;
 
   if (deltaShort >= 1 && resourceSlot >= 0xd && resourceSlot <= 0x10) {
-    if (resourceSlot == this->primaryManufacturedRequest) {
-      this->primaryManufacturedRequestFulfilledAmount = deltaShort;
-    } else if (resourceSlot == this->secondaryManufacturedRequest) {
-      this->secondaryManufacturedRequestFulfilledAmount = deltaShort;
+    if (resourceSlot == primaryManufacturedRequest) {
+      primaryManufacturedRequestFulfilledAmount = deltaShort;
+    } else if (resourceSlot == secondaryManufacturedRequest) {
+      secondaryManufacturedRequestFulfilledAmount = deltaShort;
     }
   } else if (resourceSlot < 0 || resourceSlot > 6) {
     if (resourceSlot == 7) {
-      this->grantAmountsByResource[7] =
-          static_cast<short>(this->grantAmountsByResource[7] + deltaShort);
+      grantAmountsByResource[7] = static_cast<short>(grantAmountsByResource[7] + deltaShort);
     }
   } else {
-    this->grantAmountsByResource[resourceSlot] =
-        static_cast<short>(this->grantAmountsByResource[resourceSlot] + deltaShort);
-    if (this->foreignControlledResourceYieldByType[resourceSlot] != 0) {
+    grantAmountsByResource[resourceSlot] =
+        static_cast<short>(grantAmountsByResource[resourceSlot] + deltaShort);
+    if (foreignControlledResourceYieldByType[resourceSlot] != 0) {
       for (int majorNationSlot = 0; majorNationSlot < kMajorNationCount; ++majorNationSlot) {
         if (g_apTerrainTypeDescriptorTable[majorNationSlot] == 0) {
           continue;
         }
-        short linkValue = this->foreignControlledResourceYieldByTypeAndMajorNation[resourceSlot]
+        short linkValue = foreignControlledResourceYieldByTypeAndMajorNation[resourceSlot]
                               .amountByMajorNation[majorNationSlot];
         if (linkValue == 0) {
           continue;
         }
 
-        short needCurrent = this->needCurrentByType[resourceSlot];
+        short needCurrent = needCurrentByType[resourceSlot];
         short standing =
             g_pDiplomacyTurnStateManager
-                ->relationStandingScores[this->nationSlot * kNationSlotCount + majorNationSlot];
+                ->relationStandingScores[nationSlot * kNationSlotCount + majorNationSlot];
         int negDelta = -static_cast<int>(deltaShort);
         int intFactor = negDelta;
         if (linkValue < negDelta) {
@@ -515,13 +514,13 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
         floatAmount *= g_ApplyIndexedResourceDeltaScale;
         float integerAmount =
             static_cast<float>(intFactor * static_cast<int>(standing) * price / 255);
-        int integerGrantAmount = static_cast<int>(integerAmount);
-        int grantAmount = static_cast<int>(floatAmount);
+        int integerGrantAmount = integerAmount;
+        int grantAmount = floatAmount;
         if (integerGrantAmount > grantAmount) {
           grantAmount = integerGrantAmount;
         }
         g_apNationStates[majorNationSlot]->AddOverseasProfitFrom(grantAmount, resourceSlot,
-                                                                 this->nationSlot);
+                                                                 nationSlot);
       }
     }
   }
@@ -529,9 +528,9 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
 
 // FUNCTION: IMPERIALISM 0x004e4bd0
 void TMinor::SetTradeBids(void) {
-  short savedPredicate = this->primaryManufacturedRequest;
+  short savedPredicate = primaryManufacturedRequest;
   short proposalWeight = 0;
-  if (this == 0 || this->encodedNationSlot <= 99 || this->encodedNationSlot >= 200) {
+  if (this == 0 || encodedNationSlot <= 99 || encodedNationSlot >= 200) {
     int randomBucket = static_cast<int>(rand()) % 100;
     int resourceType = 0;
     if (randomBucket < 0x19) {
@@ -543,51 +542,51 @@ void TMinor::SetTradeBids(void) {
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(resourceType);
-    if (this->randomOfferPriceThreshold < proposalWeight) {
-      this->tradeOffersByResource[resourceType] = this->needCurrentByType[resourceType];
+    if (randomOfferPriceThreshold < proposalWeight) {
+      tradeOffersByResource[resourceType] = needCurrentByType[resourceType];
     }
 
     for (int policySlot = 0; policySlot < 8; ++policySlot) {
       proposalWeight = g_pTradeMgr->GetPrice(policySlot);
-      if (this->generalOfferPriceThreshold < proposalWeight) {
-        this->tradeOffersByResource[policySlot] = this->needCurrentByType[policySlot];
+      if (generalOfferPriceThreshold < proposalWeight) {
+        tradeOffersByResource[policySlot] = needCurrentByType[policySlot];
       }
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(3);
-    if (this->coalOfferPriceThreshold < proposalWeight) {
-      this->tradeOffersByResource[3] = this->needCurrentByType[3];
-    } else if (this->foreignControlledResourceYieldByType[3] != 0) {
-      this->tradeOffersByResource[3] = this->foreignControlledResourceYieldByType[3];
+    if (coalOfferPriceThreshold < proposalWeight) {
+      tradeOffersByResource[3] = needCurrentByType[3];
+    } else if (foreignControlledResourceYieldByType[3] != 0) {
+      tradeOffersByResource[3] = foreignControlledResourceYieldByType[3];
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(4);
-    if (this->ironOfferPriceThreshold < proposalWeight) {
-      this->tradeOffersByResource[4] = this->needCurrentByType[4];
-    } else if (this->foreignControlledResourceYieldByType[4] != 0) {
-      this->tradeOffersByResource[4] = this->foreignControlledResourceYieldByType[4];
+    if (ironOfferPriceThreshold < proposalWeight) {
+      tradeOffersByResource[4] = needCurrentByType[4];
+    } else if (foreignControlledResourceYieldByType[4] != 0) {
+      tradeOffersByResource[4] = foreignControlledResourceYieldByType[4];
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(6);
-    if (this->oilOfferPriceThreshold < proposalWeight) {
-      this->tradeOffersByResource[6] = this->needCurrentByType[6];
-    } else if (this->foreignControlledResourceYieldByType[6] != 0) {
-      this->tradeOffersByResource[6] = this->foreignControlledResourceYieldByType[6];
+    if (oilOfferPriceThreshold < proposalWeight) {
+      tradeOffersByResource[6] = needCurrentByType[6];
+    } else if (foreignControlledResourceYieldByType[6] != 0) {
+      tradeOffersByResource[6] = foreignControlledResourceYieldByType[6];
     }
 
-    if (this->tradeOffersByResource[0] == 0) {
-      this->tradeOffersByResource[0] = this->foreignControlledResourceYieldByType[0];
+    if (tradeOffersByResource[0] == 0) {
+      tradeOffersByResource[0] = foreignControlledResourceYieldByType[0];
     }
-    if (this->tradeOffersByResource[1] == 0) {
-      this->tradeOffersByResource[1] = this->foreignControlledResourceYieldByType[1];
+    if (tradeOffersByResource[1] == 0) {
+      tradeOffersByResource[1] = foreignControlledResourceYieldByType[1];
     }
-    if (this->tradeOffersByResource[2] == 0) {
-      this->tradeOffersByResource[2] = this->foreignControlledResourceYieldByType[2];
+    if (tradeOffersByResource[2] == 0) {
+      tradeOffersByResource[2] = foreignControlledResourceYieldByType[2];
     }
   }
 
-  if (savedPredicate == this->primaryManufacturedRequest) {
-    short rolledPredicate = this->primaryManufacturedRequest;
+  if (savedPredicate == primaryManufacturedRequest) {
+    short rolledPredicate = primaryManufacturedRequest;
     do {
       int roll = static_cast<int>(rand()) % 100;
       if (roll < 0x1e) {
@@ -597,43 +596,43 @@ void TMinor::SetTradeBids(void) {
       } else {
         rolledPredicate = static_cast<short>((roll > 0x59) + 0xf);
       }
-    } while (rolledPredicate == this->primaryManufacturedRequest);
+    } while (rolledPredicate == primaryManufacturedRequest);
     proposalWeight = g_pTradeMgr->GetPrice(rolledPredicate);
-    if (this->primaryManufacturedPriceThreshold < proposalWeight) {
-      this->primaryManufacturedRequest = -10;
+    if (primaryManufacturedPriceThreshold < proposalWeight) {
+      primaryManufacturedRequest = -10;
     } else {
-      this->primaryManufacturedRequest = rolledPredicate;
+      primaryManufacturedRequest = rolledPredicate;
     }
   }
 
-  this->secondaryManufacturedRequest = -10;
+  secondaryManufacturedRequest = -10;
   int candidatePredicate = 0xd;
   do {
     proposalWeight = g_pTradeMgr->GetPrice(candidatePredicate);
-    if (proposalWeight < this->secondaryManufacturedPriceThreshold &&
-        candidatePredicate != this->primaryManufacturedRequest) {
-      this->secondaryManufacturedRequest = static_cast<short>(candidatePredicate);
+    if (proposalWeight < secondaryManufacturedPriceThreshold &&
+        candidatePredicate != primaryManufacturedRequest) {
+      secondaryManufacturedRequest = static_cast<short>(candidatePredicate);
       candidatePredicate = 0x11;
     }
     ++candidatePredicate;
   } while (candidatePredicate < 0x11);
 
-  if (this->primaryManufacturedRequest != -10) {
-    this->tradeOffersByResource[this->primaryManufacturedRequest] = -1;
+  if (primaryManufacturedRequest != -10) {
+    tradeOffersByResource[primaryManufacturedRequest] = -1;
   }
-  if (this->secondaryManufacturedRequest != -10) {
-    this->tradeOffersByResource[this->secondaryManufacturedRequest] = -1;
+  if (secondaryManufacturedRequest != -10) {
+    tradeOffersByResource[secondaryManufacturedRequest] = -1;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e4ee0
 bool TMinor::StillBuyingItem(ResourceKindStorage resourceKind) {
   if (resourceKind > kResourceFuel && resourceKind < kResourceGrain) {
-    if (resourceKind == this->primaryManufacturedRequest) {
-      return this->primaryManufacturedRequestFulfilledAmount == 0;
+    if (resourceKind == primaryManufacturedRequest) {
+      return primaryManufacturedRequestFulfilledAmount == 0;
     }
-    if (resourceKind == this->secondaryManufacturedRequest) {
-      return this->secondaryManufacturedRequestFulfilledAmount == 0;
+    if (resourceKind == secondaryManufacturedRequest) {
+      return secondaryManufacturedRequestFulfilledAmount == 0;
     }
   }
   return true;
@@ -642,24 +641,23 @@ bool TMinor::StillBuyingItem(ResourceKindStorage resourceKind) {
 // FUNCTION: IMPERIALISM 0x004e4f50
 bool TMinor::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                ResourceKindStorage resourceKind) {
-  if (!this->StillBuyingItem(resourceKind)) {
+  if (!StillBuyingItem(resourceKind)) {
     return false;
   }
 
-  g_pTradeMgr->SetDealResults(this->nationSlot, targetNationSlot, amount, price, resourceKind, 1,
-                              false);
+  g_pTradeMgr->SetDealResults(nationSlot, targetNationSlot, amount, price, resourceKind, 1, false);
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004e4fa0
 void TMinor::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
-  short targetNationSlot = static_cast<short>(nationSlot);
+  short targetNationSlot = nationSlot;
   short policyValue = tradePolicy;
   if (targetNationSlot != this->nationSlot) {
-    if (policyValue != this->tradePolicyByNation[targetNationSlot]) {
-      this->tradePolicyByNation[targetNationSlot] = policyValue;
+    if (policyValue != tradePolicyByNation[targetNationSlot]) {
+      tradePolicyByNation[targetNationSlot] = policyValue;
       if (policyValue == 300) {
-        this->DeportCiviliansIn(-1, false);
+        DeportCiviliansIn(-1, false);
       }
     }
   }
@@ -668,11 +666,11 @@ void TMinor::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
 // FUNCTION: IMPERIALISM 0x004e4ff0
 bool TMinor::WouldAcceptOffer(NationSlot targetNationSlot,
                               DiplomacyProposalCodeStorage proposalCode) {
-  if (proposalCode != kDiplomacyProposalJoinEmpire || this->encodedNationSlot != -1) {
+  if (proposalCode != kDiplomacyProposalJoinEmpire || encodedNationSlot != -1) {
     return false;
   }
 
-  const int source = this->nationSlot;
+  const int source = nationSlot;
   short standing = g_pDiplomacyTurnStateManager
                        ->relationStandingScores[source * kNationSlotCount + targetNationSlot];
   if (standing <= 0xf9) {
@@ -698,52 +696,50 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
   NationSlot targetNation = sourceNationSlot;
   if (proposalCode == kDiplomacyProposalJoinEmpire) {
     bool canPropose = 0;
-    if (this->encodedNationSlot == -1) {
-      canPropose = this->WouldAcceptOffer(targetNation, proposalCode);
+    if (encodedNationSlot == -1) {
+      canPropose = WouldAcceptOffer(targetNation, proposalCode);
     }
     if (canPropose != 0) {
-      if (!g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(this->nationSlot,
-                                                                       targetNation)) {
-        this->ChangeMaster(targetNation, 1);
-        g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
-                                   targetNation, false);
+      if (!g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(nationSlot, targetNation)) {
+        ChangeMaster(targetNation, 1);
+        g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, nationSlot, targetNation,
+                                   false);
         return;
       }
       g_apNationStates[targetNation]->AddOfferFrom(
-          this->nationSlot, kDiplomacyProposalJoinEmpireWithWarEntanglements);
-      g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
-                                 targetNation, false);
+          nationSlot, kDiplomacyProposalJoinEmpireWithWarEntanglements);
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, nationSlot, targetNation,
+                                 false);
       return;
     }
     if (g_apNationStates[targetNation] != 0) {
-      g_apNationStates[targetNation]->AddNoticeFrom(this->nationSlot,
-                                                    -static_cast<int>(proposalCode));
+      g_apNationStates[targetNation]->AddNoticeFrom(nationSlot, -static_cast<int>(proposalCode));
     }
-    g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireRejected, targetNation, this->nationSlot,
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireRejected, targetNation, nationSlot,
                                false);
     return;
   }
 
   if (proposalCode == kDiplomacyProposalNonAggressionPact) {
-    if (this->encodedNationSlot == -1) {
+    if (encodedNationSlot == -1) {
       g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
-          this->nationSlot, targetNation, kDiplomacyRelationshipNonAggressionPact);
+          nationSlot, targetNation, kDiplomacyRelationshipNonAggressionPact);
       if (g_apNationStates[targetNation] != 0) {
-        g_apNationStates[targetNation]->AddNoticeFrom(this->nationSlot, proposalCode);
+        g_apNationStates[targetNation]->AddNoticeFrom(nationSlot, proposalCode);
       }
-      g_pNewsMgr->AddTreatyEvent(kInterNationEventNonAggressionPactAccepted, this->nationSlot,
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventNonAggressionPactAccepted, nationSlot,
                                  targetNation, false);
     }
     return;
   }
 
-  if (proposalCode == kDiplomacyProposalPeaceTreaty && this->encodedNationSlot == -1) {
+  if (proposalCode == kDiplomacyProposalPeaceTreaty && encodedNationSlot == -1) {
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
-        this->nationSlot, targetNation, kDiplomacyRelationshipPeace);
+        nationSlot, targetNation, kDiplomacyRelationshipPeace);
     if (g_apNationStates[targetNation] != 0) {
-      g_apNationStates[targetNation]->AddNoticeFrom(this->nationSlot, proposalCode);
+      g_apNationStates[targetNation]->AddNoticeFrom(nationSlot, proposalCode);
     }
-    g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceTreatyAccepted, this->nationSlot, targetNation,
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceTreatyAccepted, nationSlot, targetNation,
                                false);
   }
 }
@@ -751,61 +747,61 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
 // FUNCTION: IMPERIALISM 0x004e5300
 void TMinor::AddNoticeFrom(short sourceNation, short actionCode) {
   if (actionCode == kDiplomacyProposalDeclareWar) {
-    this->KillEnemyCiviliansIn(-1);
-    this->KillBoycottedForeignCompanies();
+    KillEnemyCiviliansIn(-1);
+    KillBoycottedForeignCompanies();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e5340
 void TMinor::BecomeProtectorateOf(int targetNationSlot) {
-  short decodedNationSlot = this->encodedNationSlot;
+  short decodedNationSlot = encodedNationSlot;
   if (decodedNationSlot >= 200) {
-    decodedNationSlot = static_cast<short>(decodedNationSlot - 200);
+    decodedNationSlot -= 200;
   } else if (decodedNationSlot >= 100) {
-    decodedNationSlot = static_cast<short>(decodedNationSlot - 100);
+    decodedNationSlot -= 100;
   } else {
-    decodedNationSlot = this->nationSlot;
+    decodedNationSlot = nationSlot;
   }
-  this->HandleNetworkPortConstructionOrder(targetNationSlot);
+  HandleNetworkPortConstructionOrder(targetNationSlot);
 
-  if (this->encodedNationSlot < 200) {
-    this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
+  if (encodedNationSlot < 200) {
+    encodedNationSlot = static_cast<short>(targetNationSlot + 100);
 
     for (int eligibleNationSlot = 0; eligibleNationSlot < kNationSlotCount; ++eligibleNationSlot) {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(eligibleNationSlot)) &&
-          eligibleNationSlot != this->nationSlot && eligibleNationSlot != targetNationSlot) {
+          eligibleNationSlot != nationSlot && eligibleNationSlot != targetNationSlot) {
         TCountry* terrain = g_apTerrainTypeDescriptorTable[eligibleNationSlot];
-        terrain->NewStatusFor(this->nationSlot, 100);
+        terrain->NewStatusFor(nationSlot, 100);
       }
     }
-    g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
+    g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(nationSlot);
 
     for (int majorNationSlot = 0; majorNationSlot < kMajorNationCount; ++majorNationSlot) {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(majorNationSlot))) {
         TGreatPower* majorNation = g_apNationStates[majorNationSlot];
         if (majorNation->diplomacyEligibility == 0) {
-          majorNation->AddNoticeFrom(this->nationSlot, kDiplomacyProposalDeclareWar);
+          majorNation->AddNoticeFrom(nationSlot, kDiplomacyProposalDeclareWar);
         }
-        g_pDiplomacyTurnStateManager->SetTreatyStatus(this->nationSlot, majorNationSlot,
+        g_pDiplomacyTurnStateManager->SetTreatyStatus(nationSlot, majorNationSlot,
                                                       kDiplomacyRelationshipWar, 0);
-        g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, majorNationSlot, 0x31);
+        g_pDiplomacyTurnStateManager->SetRelationship(nationSlot, majorNationSlot, 0x31);
       }
     }
 
     for (int minorSlot = 7; minorSlot < kNationSlotCount; ++minorSlot) {
-      g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, minorSlot, 0x6e);
+      g_pDiplomacyTurnStateManager->SetRelationship(nationSlot, minorSlot, 0x6e);
     }
   } else {
     TGreatPower* targetMajor = g_apNationStates[decodedNationSlot];
-    targetMajor->AddNoticeFrom(this->nationSlot, 0x13c);
+    targetMajor->AddNoticeFrom(nationSlot, 0x13c);
     g_pNewsMgr->AddTreatyEvent(kInterNationEventMinorEmpireAffiliationChanged, decodedNationSlot,
-                               this->nationSlot, false);
+                               nationSlot, false);
 
     for (int resetNationSlot = 0; resetNationSlot < kNationSlotCount; ++resetNationSlot) {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(resetNationSlot))) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
-            this->nationSlot, resetNationSlot, kDiplomacyRelationshipPeace);
-        g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, resetNationSlot, 0x5a);
+            nationSlot, resetNationSlot, kDiplomacyRelationshipPeace);
+        g_pDiplomacyTurnStateManager->SetRelationship(nationSlot, resetNationSlot, 0x5a);
       }
     }
 
@@ -815,13 +811,13 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
       ownedRegionIds[index] = -1;
     }
 
-    int ownedCount = this->ownedRegionList->GetSize();
+    int ownedCount = ownedRegionList->GetSize();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
-      short regionId = static_cast<short>(this->ownedRegionList->At(oneBasedIndex));
+      short regionId = ownedRegionList->At(oneBasedIndex);
       ownedRegionIds[oneBasedIndex] = regionId;
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetSize();
+      ownedCount = ownedRegionList->GetSize();
     }
 
     for (index = 0; index < 20; ++index) {
@@ -830,57 +826,55 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
         continue;
       }
       short regionOwner = g_pMapContextActionManager->perTileOwnerNationCodeCache[regionId];
-      if (regionOwner == this->nationSlot || regionOwner == decodedNationSlot) {
+      if (regionOwner == nationSlot || regionOwner == decodedNationSlot) {
         g_pGlobalMapState->ChangeProvinceOwner(static_cast<short>(regionId), decodedNationSlot);
       }
     }
 
-    this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
+    encodedNationSlot = static_cast<short>(targetNationSlot + 100);
     for (int linkNationSlot = 0; linkNationSlot < kNationSlotCount; ++linkNationSlot) {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(linkNationSlot)) &&
-          linkNationSlot != this->nationSlot && linkNationSlot != targetNationSlot) {
+          linkNationSlot != nationSlot && linkNationSlot != targetNationSlot) {
         TCountry* terrain = g_apTerrainTypeDescriptorTable[linkNationSlot];
-        terrain->NewStatusFor(this->nationSlot, 100);
+        terrain->NewStatusFor(nationSlot, 100);
       }
     }
-    g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
+    g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(nationSlot);
   }
 
   for (int standingNationSlot = 0; standingNationSlot < kMajorNationCount; ++standingNationSlot) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(standingNationSlot))) {
       if (standingNationSlot == targetNationSlot) {
-        this->SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), kTradePolicyNormal);
-        g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot,
-                                                               kTradePolicyNormal);
-        g_apNationStates[standingNationSlot]->SetGrantPolicyTo(this->nationSlot,
+        SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), kTradePolicyNormal);
+        g_apNationStates[standingNationSlot]->SetTradePolicyTo(nationSlot, kTradePolicyNormal);
+        g_apNationStates[standingNationSlot]->SetGrantPolicyTo(nationSlot,
                                                                static_cast<unsigned short>(-1));
       } else {
-        this->SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), kTradePolicyBoycott);
-        g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot,
-                                                               kTradePolicyBoycott);
+        SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), kTradePolicyBoycott);
+        g_apNationStates[standingNationSlot]->SetTradePolicyTo(nationSlot, kTradePolicyBoycott);
       }
     }
   }
 
-  this->ClearTileActivityOverlayByProvinceId(-1);
+  ClearTileActivityOverlayByProvinceId(-1);
   TGreatPower* previousOwner = g_apNationStates[decodedNationSlot];
   if (previousOwner->pendingActionStatus.byAction[6] < '3') {
-    previousOwner->SetNationPendingActionStateAndPayload(6, this->nationSlot);
+    previousOwner->SetNationPendingActionStateAndPayload(6, nationSlot);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e5730
 void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
   unsigned char nationTileFlags = static_cast<unsigned char>(
-      g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)].activeFlags);
+      g_pGlobalMapState->terrainStateTable[static_cast<short>(homeTileIndex)].activeFlags);
   if ((nationTileFlags >> 2 & 1) != 0) {
     return;
   }
 
   TTown* marker = new TTown();
-  marker->ITown("", this->homeTileIndex, true, static_cast<short>(nationId));
+  marker->ITown("", homeTileIndex, true, static_cast<short>(nationId));
   marker->activeFlag = true;
-  g_pGlobalMapState->SetTileTransportFlags(static_cast<short>(this->homeTileIndex), 0x15);
+  g_pGlobalMapState->SetTileTransportFlags(static_cast<short>(homeTileIndex), 0x15);
   TGreatPower* targetNation = g_apNationStates[nationId];
   targetNation->townMarkerList->AddTail(marker);
 }
@@ -888,8 +882,8 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
 // FUNCTION: IMPERIALISM 0x004e5840
 void TMinor::BecomeColonyOf(int targetNationSlot) {
   // MATCH: the original inlines TCountry::BecomeColonyOf here instead of calling it.
-  this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
-  this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
+  encodedNationSlot = static_cast<short>(targetNationSlot + 200);
+  SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
 
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
@@ -902,11 +896,11 @@ void TMinor::BecomeColonyOf(int targetNationSlot) {
 
   TGreatPower* targetNation = g_apNationStates[targetNationSlot];
   targetNation->AddColony(this->nationSlot);
-  this->ChangeArmyOwnership(targetNationSlot);
-  this->SetBoycottPoliciesToMatch(static_cast<NationSlot>(targetNationSlot));
+  ChangeArmyOwnership(targetNationSlot);
+  SetBoycottPoliciesToMatch(static_cast<NationSlot>(targetNationSlot));
   g_pDiplomacyTurnStateManager->SetRelationshipsToMatch(this->nationSlot, targetNationSlot);
-  this->KillEnemyCiviliansIn(-1);
-  this->DeportCiviliansIn(-1, false);
+  KillEnemyCiviliansIn(-1);
+  DeportCiviliansIn(-1, false);
 
   if (targetNation->pendingActionStatus.byAction[10] < '3') {
     targetNation->SetNationPendingActionStateAndPayload(10, this->nationSlot);
@@ -919,19 +913,19 @@ void TMinor::BecomeColonyOf(int targetNationSlot) {
 // FUNCTION: IMPERIALISM 0x004e59d0
 void TMinor::RegainIndependence(void) {
   short decodedSlot;
-  if (this->encodedNationSlot < 200) {
-    if (this->encodedNationSlot < 100) {
+  if (encodedNationSlot < 200) {
+    if (encodedNationSlot < 100) {
       decodedSlot = this->nationSlot;
     } else {
-      decodedSlot = static_cast<short>(this->encodedNationSlot - 100);
+      decodedSlot = static_cast<short>(encodedNationSlot - 100);
     }
   } else {
-    decodedSlot = static_cast<short>(this->encodedNationSlot - 200);
+    decodedSlot = static_cast<short>(encodedNationSlot - 200);
   }
-  this->encodedNationSlot = -1;
-  this->AssimilateTroopsOf(decodedSlot);
+  encodedNationSlot = -1;
+  AssimilateTroopsOf(decodedSlot);
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyNormal);
+    SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyNormal);
   }
 }
 
@@ -942,9 +936,9 @@ void TMinor::SetBoycottPoliciesToMatch(int targetNationSlot) {
         (nationSlot == this->nationSlot ||
          (g_apNationStates[targetNationSlot] != 0 &&
           g_apNationStates[targetNationSlot]->colonyBoycottFlags[nationSlot] == 0))) {
-      this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyNormal);
+      SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyNormal);
     } else {
-      this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyBoycott);
+      SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyBoycott);
     }
   }
 }
@@ -953,10 +947,10 @@ void TMinor::SetBoycottPoliciesToMatch(int targetNationSlot) {
 void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
   TTerrainStateRecord* terrainTiles = g_pGlobalMapState->terrainStateTable;
   if (provinceId == -1) {
-    int ownedCount = this->ownedRegionList->GetSize();
+    int ownedCount = ownedRegionList->GetSize();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
-      int regionId = this->ownedRegionList->At(oneBasedIndex);
+      int regionId = ownedRegionList->At(oneBasedIndex);
       Province* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
@@ -967,7 +961,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
         }
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetSize();
+      ownedCount = ownedRegionList->GetSize();
     }
     return;
   }
@@ -988,16 +982,16 @@ void TMinor::KillBoycottedForeignCompanies(void) {
   int majorSlot;
   char needLevel300ByMajorSlot[kMajorNationCount];
   for (majorSlot = 0; majorSlot < kMajorNationCount; ++majorSlot) {
-    needLevel300ByMajorSlot[majorSlot] = (this->tradePolicyByNation[majorSlot] == 300) ? 1 : 0;
+    needLevel300ByMajorSlot[majorSlot] = (tradePolicyByNation[majorSlot] == 300) ? 1 : 0;
   }
 
   char notifyMajorSlots[kMajorNationCount] = {0};
   TTerrainStateRecord* terrainTiles = g_pGlobalMapState->terrainStateTable;
 
-  int ownedCount = this->ownedRegionList->GetSize();
+  int ownedCount = ownedRegionList->GetSize();
   int oneBasedIndex = 1;
   while (oneBasedIndex <= ownedCount) {
-    int regionId = this->ownedRegionList->At(oneBasedIndex);
+    int regionId = ownedRegionList->At(oneBasedIndex);
     Province* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
     if (regionRecord->linkedRegionCount > 0) {
       int linkedIndex = 0;
@@ -1012,14 +1006,14 @@ void TMinor::KillBoycottedForeignCompanies(void) {
       }
     }
     oneBasedIndex++;
-    ownedCount = this->ownedRegionList->GetSize();
+    ownedCount = ownedRegionList->GetSize();
   }
 
   for (majorSlot = 0; majorSlot < kMajorNationCount; ++majorSlot) {
     if (g_apNationStates[majorSlot] != 0 && notifyMajorSlots[majorSlot] != 0) {
-      g_apNationStates[majorSlot]->AddNoticeFrom(this->nationSlot, 0x137);
+      g_apNationStates[majorSlot]->AddNoticeFrom(nationSlot, 0x137);
       g_pNewsMgr->AddTreatyEvent(kInterNationEventMinorTerritoryRelationshipAffected, majorSlot,
-                                 this->nationSlot, false);
+                                 nationSlot, false);
     }
   }
 }
@@ -1029,10 +1023,10 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
   NationSlot ownerNationSlot;
   if (provinceId != -1) {
     ownerNationSlot = g_pGlobalMapState->cityScoreTable[provinceId].ownerNationCode;
-  } else if (this->encodedNationSlot >= 200) {
-    ownerNationSlot = this->encodedNationSlot - 200;
-  } else if (this->encodedNationSlot >= 100) {
-    ownerNationSlot = this->encodedNationSlot - 100;
+  } else if (encodedNationSlot >= 200) {
+    ownerNationSlot = encodedNationSlot - 200;
+  } else if (encodedNationSlot >= 100) {
+    ownerNationSlot = encodedNationSlot - 100;
   } else {
     ownerNationSlot = this->nationSlot;
   }
@@ -1074,10 +1068,10 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
     return;
   }
 
-  int ownedCount = this->ownedRegionList->GetSize();
+  int ownedCount = ownedRegionList->GetSize();
   int oneBasedIndex = 1;
   while (oneBasedIndex <= ownedCount) {
-    int regionId = this->ownedRegionList->At(oneBasedIndex);
+    int regionId = ownedRegionList->At(oneBasedIndex);
     Province* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
     if (regionRecord->linkedRegionCount > 0) {
       int linkedIndex = 0;
@@ -1097,7 +1091,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
       }
     }
     oneBasedIndex++;
-    ownedCount = this->ownedRegionList->GetSize();
+    ownedCount = ownedRegionList->GetSize();
   }
 }
 
@@ -1106,10 +1100,10 @@ void TMinor::AssimilateTroopsOf(int priorOwnerNationSlot) {
   TSortedList* priorOwnerManager =
       g_apTerrainTypeDescriptorTable[priorOwnerNationSlot]->militaryUnitList;
 
-  int ownedCount = this->ownedRegionList->GetSize();
+  int ownedCount = ownedRegionList->GetSize();
   int oneBasedIndex = 1;
   while (oneBasedIndex <= ownedCount) {
-    short regionId = static_cast<short>(this->ownedRegionList->At(oneBasedIndex));
+    short regionId = ownedRegionList->At(oneBasedIndex);
     if (regionId < 0 || regionId >= kProvinceCount) {
       oneBasedIndex++;
       continue;
@@ -1119,33 +1113,33 @@ void TMinor::AssimilateTroopsOf(int priorOwnerNationSlot) {
       TUnit* unit = unitNode;
       TMilitaryUnit* nextNode = static_cast<TMilitaryUnit*>(unitNode->nextAtLocation);
       if (unit->ownerNationSlot == priorOwnerNationSlot) {
-        unit->ownerNationSlot = this->nationSlot;
+        unit->ownerNationSlot = nationSlot;
         CPtrList* sourceList = &priorOwnerManager->listState;
         POSITION pos = sourceList->Find(unit, 0);
         if (pos != 0) {
           sourceList->RemoveAt(pos);
         }
-        this->militaryUnitList->AddTail(unit);
+        militaryUnitList->AddTail(unit);
       }
       unitNode = nextNode;
     }
     oneBasedIndex++;
-    ownedCount = this->ownedRegionList->GetSize();
+    ownedCount = ownedRegionList->GetSize();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e6150
 void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
   if (!includeAllPolicyTargets) {
-    this->KillBoycottedForeignCompanies();
+    KillBoycottedForeignCompanies();
   }
 
   NationSlot ownerNationSlot;
   if (provinceId == -1) {
-    if (this->encodedNationSlot >= 200) {
-      ownerNationSlot = this->encodedNationSlot - 200;
-    } else if (this->encodedNationSlot >= 100) {
-      ownerNationSlot = this->encodedNationSlot - 100;
+    if (encodedNationSlot >= 200) {
+      ownerNationSlot = encodedNationSlot - 200;
+    } else if (encodedNationSlot >= 100) {
+      ownerNationSlot = encodedNationSlot - 100;
     } else {
       ownerNationSlot = this->nationSlot;
     }
@@ -1194,10 +1188,10 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
     return;
   }
 
-  int ownedCount = this->ownedRegionList->GetSize();
+  int ownedCount = ownedRegionList->GetSize();
   int oneBasedIndex = 1;
   while (oneBasedIndex <= ownedCount) {
-    int regionId = this->ownedRegionList->At(oneBasedIndex);
+    int regionId = ownedRegionList->At(oneBasedIndex);
     Province* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
     if (regionRecord->linkedRegionCount > 0) {
       int linkedIndex = 0;
@@ -1224,21 +1218,21 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
       }
     }
     oneBasedIndex++;
-    ownedCount = this->ownedRegionList->GetSize();
+    ownedCount = ownedRegionList->GetSize();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e64a0
 void TMinor::LoseProvince(int regionId) {
-  this->ownedRegionList->Delete(regionId);
-  this->ClearTileActivityOverlayByProvinceId(regionId);
-  this->KillEnemyCiviliansIn(regionId);
-  this->DeportCiviliansIn(regionId, true);
+  ownedRegionList->Delete(regionId);
+  ClearTileActivityOverlayByProvinceId(regionId);
+  KillEnemyCiviliansIn(regionId);
+  DeportCiviliansIn(regionId, true);
 }
 
 // FUNCTION: IMPERIALISM 0x004e64f0
 void TMinor::AddProvince(int regionId) {
-  this->ownedRegionList->InsertLast(regionId);
+  ownedRegionList->InsertLast(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004e6520
@@ -1246,11 +1240,11 @@ void TMinor::ChangeArmyOwnership(int destinationNationSlot) {
   TSortedList* destinationManager =
       g_apTerrainTypeDescriptorTable[destinationNationSlot]->militaryUnitList;
 
-  CIterator unitCursor(this->militaryUnitList);
+  CIterator unitCursor(militaryUnitList);
   TUnit* unit = static_cast<TUnit*>(unitCursor.Reset());
   while (unitCursor.More() != 0) {
     unit->ownerNationSlot = static_cast<short>(destinationNationSlot);
-    CPtrList* sourceList = &this->militaryUnitList->listState;
+    CPtrList* sourceList = &militaryUnitList->listState;
     POSITION pos = sourceList->Find(unit, 0);
     if (pos != 0) {
       sourceList->RemoveAt(pos);

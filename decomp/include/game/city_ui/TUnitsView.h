@@ -8,8 +8,8 @@
 class TUnitsView : public TBuildingView {
 public:
   DECLARE_DYNCREATE(TUnitsView)
-  virtual ~TUnitsView() override;    // slot 0x01 (scalar deleting destructor)
-  virtual void DoStartup() override; // slot 0x75 0x4c8050
+  virtual ~TUnitsView() override;
+  virtual void DoStartup() override;
 
   TUnitsView();
 };

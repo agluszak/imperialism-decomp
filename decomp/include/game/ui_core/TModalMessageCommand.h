@@ -7,11 +7,11 @@
 class TModalMessageCommand : public TCommand {
 public:
   DECLARE_DYNCREATE(TModalMessageCommand)
-  virtual ~TModalMessageCommand() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoIt() override;             // slot 0x0b 0x5dcd10
+  virtual ~TModalMessageCommand() override;
+  virtual void DoIt() override;
 
-  CString message; // +0x18
-  int payload;     // +0x1c
+  CString message;
+  int payload;
 
   TModalMessageCommand() : TCommand() {}
 };

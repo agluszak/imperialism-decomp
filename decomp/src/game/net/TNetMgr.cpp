@@ -237,7 +237,7 @@ unsigned char TNetMgr::Host(const char* seedPath, const char* localPlayerName,
   if (!result) {
     HandleError(g_NetworkSessionManager006a5f60.lastErrorCode);
   }
-  return static_cast<unsigned char>(result);
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c00
@@ -268,12 +268,12 @@ unsigned char TNetMgr::SelectGame(int selectionTag, CString* outGameName, const 
       }
     }
   }
-  return static_cast<unsigned char>(result);
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3d40
 bool TNetMgr::Send(NetMessage* message, bool queueOnly) {
-  unsigned int sizeBytes = static_cast<unsigned int>(message->messageLength);
+  unsigned int sizeBytes = message->messageLength;
   message->fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId;
   int nationId = message->toNetworkId;
   if (message->toNetworkId == -1) {

@@ -14,8 +14,8 @@ public:
 
   DECLARE_DYNCREATE(TTechMgr)
   TTechMgr();
-  void WriteTo(TStream* stream) override;  // slot 0x14 (0x005af710)
-  void ReadFrom(TStream* stream) override; // slot 0x18 (0x005af460)
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
   short prioritySlots[0x1d];
   short capabilityValueByNationAndResource[7][23];
   unsigned char perTechUnlockFlag[0x1d];

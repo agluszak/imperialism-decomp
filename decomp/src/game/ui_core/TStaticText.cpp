@@ -50,17 +50,17 @@ TStaticText::~TStaticText() {
 void TStaticText::CopyViewStateFromSource(TView* source) {
   TView::CopyViewStateFromSource(source);
   TStaticText* src = static_cast<TStaticText*>(source);
-  this->eventNumber = src->eventNumber;
-  this->controlState = src->controlState;
-  this->contentInsets = src->contentInsets;
-  this->textStyle = src->textStyle;
-  this->text = new CString();
-  *this->text = *src->text;
+  eventNumber = src->eventNumber;
+  controlState = src->controlState;
+  contentInsets = src->contentInsets;
+  textStyle = src->textStyle;
+  text = new CString();
+  *text = *src->text;
 }
 
 // FUNCTION: IMPERIALISM 0x0048fc00
 TObject* TStaticText::ShallowClone() {
-  TObject* cloned = this->ShallowFree();
+  TObject* cloned = ShallowFree();
   if (cloned != 0) {
     static_cast<TStaticText*>(cloned)->CopyViewStateFromSource(this);
   }
@@ -87,7 +87,7 @@ void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, 
   }
   resourceContext = 0;
   InstallTextStyle(g_UiResourceEntryDefaultTextStyle, 0);
-  this->stringResourceGroupId = stringResourceGroup;
+  stringResourceGroupId = stringResourceGroup;
   this->stringResourceIndex = stringResourceIndex;
   if (stringResourceGroup != -1) {
     CString loadedString;

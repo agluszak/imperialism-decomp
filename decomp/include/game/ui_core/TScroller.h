@@ -10,7 +10,7 @@ public:
 
   TScroller() : TView() {}
 
-  virtual ~TScroller() override; // slot 0x01 (scalar deleting destructor 0x48cad0)
+  virtual ~TScroller() override;
 
   void InitializeScrollerPlacement(TView* owner, int* offsetLayout, int* sizeLayout);
 };

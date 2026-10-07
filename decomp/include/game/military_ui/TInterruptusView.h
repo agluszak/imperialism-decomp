@@ -9,8 +9,8 @@
 class TInterruptusView : public TItemBoyView {
 public:
   DECLARE_DYNCREATE(TInterruptusView)
-  virtual ~TInterruptusView() override;         // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4afda0
+  virtual ~TInterruptusView() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   // NOOP: verified empty in original 0x004afcf3
   TInterruptusView() {}

@@ -9,8 +9,8 @@
 class TDialogView : public TView {
 public:
   DECLARE_DYNCREATE(TDialogView)
-  virtual ~TDialogView() override;            // slot 0x01 (scalar deleting destructor)
-  virtual void EnsureStylePayload() override; // slot 0x42 0x49d880
+  virtual ~TDialogView() override;
+  virtual void EnsureStylePayload() override;
 
   // NOOP: verified empty in original 0x0049d725
   TDialogView() {}

@@ -1216,7 +1216,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
 void TMacViewMgr::SelectCitySite(int unusedArg1, int unusedArg2) {
   TView* dialog = activeCityProductionView;
   g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), 0);
-  short completionFlag = static_cast<short>(dialog->lastIdleTick);
+  short completionFlag = dialog->lastIdleTick;
   while (completionFlag == 0) {
     PumpUiMessagesAndBackgroundTasks(1);
     completionFlag = static_cast<short>(dialog->lastIdleTick);
@@ -1381,7 +1381,7 @@ void TMacViewMgr::FastDrawPicture(TBitmapResourceLoader** loaderHandle,
   CDib* dib = (*loaderHandle)->bitmapResource;
   unsigned char* sourceRow = static_cast<unsigned char*>(dib->m_dibBits);
   unsigned int rowWidth = dib->m_pInfoHeader->bmiHeader.biWidth;
-  short sourceStride = static_cast<short>((rowWidth + 3) & ~3);
+  short sourceStride = (rowWidth + 3) & ~3;
   int rowCount = dib->m_pInfoHeader->bmiHeader.biHeight;
   if (rowCount < 1) {
     rowCount = -rowCount;

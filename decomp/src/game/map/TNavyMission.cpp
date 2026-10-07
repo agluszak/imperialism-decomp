@@ -863,7 +863,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
       if (normalizationBase != 0) {
         float scale =
             static_cast<float>(orderNode->strength) / static_cast<float>(normalizationBase);
-        int category = static_cast<int>(orderNode->strength % normalizationBase);
+        int category = orderNode->strength % normalizationBase;
         int contribution =
             orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
         vector[0] += static_cast<float>(contribution) * scale;
@@ -911,7 +911,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
       if (normalizationBase != 0) {
         float scale =
             static_cast<float>(orderNode->strength) / static_cast<float>(normalizationBase);
-        int category = static_cast<int>(orderNode->strength % normalizationBase);
+        int category = orderNode->strength % normalizationBase;
         int contribution =
             orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
         vector[0] += static_cast<float>(contribution) * scale;

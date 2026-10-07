@@ -8,8 +8,7 @@
 class TRearFloatWindow : public TFloatWindow {
 public:
   DECLARE_DYNCREATE(TRearFloatWindow)
-  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event,
-                               CPoint origin) override; // slot 0x46 0x4f3960
+  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
   TRearFloatWindow();
 };

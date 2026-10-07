@@ -72,7 +72,7 @@ void TPlacard::Draw(RECT* rectBuffer) {
   ResolveUiThemeColor(0x2b6c, &textColor);
   ResolveUiThemeColor(0x2b67, &shadowColor);
 
-  short textY = static_cast<short>(frameHeight - 2);
+  short textY = frameHeight - 2;
   SetQuickDrawColorAndSyncGlobals(shadowColor);
   SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX + 1),
                                           static_cast<short>(textY + 1));

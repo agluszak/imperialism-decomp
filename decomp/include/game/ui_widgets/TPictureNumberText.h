@@ -8,8 +8,8 @@
 class TPictureNumberText : public TNumberText {
 public:
   DECLARE_DYNCREATE(TPictureNumberText)
-  ~TPictureNumberText() override; // slot 0x01 (0x5b5210)
+  ~TPictureNumberText() override;
 
-  TPictureNumberText(); // constructor (0x5b51e0)
+  TPictureNumberText(); // constructor
 };
 ASSERT_SIZE(TPictureNumberText, 0xac);

@@ -9,8 +9,8 @@
 class TLanguageMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TLanguageMgr)
-  virtual ~TLanguageMgr() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;     // slot 0x07 0x507e20
+  virtual ~TLanguageMgr() override;
+  virtual void Free() override;
   unsigned char firstColumn;
   unsigned char padding05[3];
   int columnCount;
@@ -40,7 +40,7 @@ public:
                 unsigned char lastExtraRow);
   void ParseRow(const char* line);
   CString Localize(const char* data, unsigned char formatChar) const;
-  char PickGender(const char* name) const; // 0x00508910
+  char PickGender(const char* name) const;
   CString StripCodeStr(const CString& name) const;
   bool SetLanguage(unsigned long languageTag);
 };

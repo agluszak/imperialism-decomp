@@ -418,7 +418,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
 
   if (grid[tileIndex].deployMark == 1) {
     fortCell = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
-    short fortSpriteCell = static_cast<short>(fortCell * 3);
+    short fortSpriteCell = fortCell * 3;
     short fortSpriteX = fortSpriteCell * static_cast<short>(unitSpriteCellWidth);
     RECT fortSrc = {fortSpriteX, 0, fortSpriteX + unitSpriteCellWidth, tileRowHeightPx};
     RECT fortDst = tileScreenRect;

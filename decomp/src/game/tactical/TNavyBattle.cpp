@@ -99,7 +99,7 @@ void TNavyBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targetTi
   if (targetX < attackerX) {
     targetX = attackerX * 2 - targetX;
   }
-  int targetRowSigned = static_cast<int>(targetRow);
+  int targetRowSigned = targetRow;
   if (targetRowSigned < attackerRow) {
     targetRowSigned = attackerRow * 2 - targetRowSigned;
   }

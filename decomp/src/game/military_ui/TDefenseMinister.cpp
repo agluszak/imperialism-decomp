@@ -41,7 +41,7 @@ TDefenseMinister::TDefenseMinister() : TMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::IDefenseMinister(TGreatPower* owner) {
-  this->IMinister(owner);
+  IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -85,7 +85,7 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004ec3d0
 short TDefenseMinister::GetRankingCriterionForGP(short nationSlot) {
   TSortedList* units = g_apNationStates[nationSlot]->militaryUnitList;
-  short unitCount = static_cast<short>(units->GetCount());
+  short unitCount = units->GetCount();
   int strengthTotal = 0;
   short ranking = 0;
   for (int ordinal = 1; ordinal <= unitCount; ++ordinal) {
@@ -133,7 +133,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
     }
   }
 
-  unsigned char* priorityMap = this->CreatePeaceDefenseMap(ownedRegionsList);
+  unsigned char* priorityMap = CreatePeaceDefenseMap(ownedRegionsList);
 
   TList* bucket1 = new TList();
   if (bucket1 == NULL) {
@@ -445,7 +445,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
 
 // FUNCTION: IMPERIALISM 0x004ed560
 void TNapoleonMinister::INapoleonMinister(TGreatPower* owner) {
-  this->IMinister(owner);
+  IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -467,7 +467,7 @@ void TNapoleonMinister::INapoleonMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004ed890
 void TBismarckMinister::IBismarckMinister(TGreatPower* owner) {
-  this->IMinister(owner);
+  IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -489,7 +489,7 @@ void TBismarckMinister::IBismarckMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004edb80
 void TPirateMinister::IPirateMinister(TGreatPower* owner) {
-  this->IMinister(owner);
+  IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -511,7 +511,7 @@ void TPirateMinister::IPirateMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004ede60
 void TDefenderMinister::IDefenderMinister(TGreatPower* owner) {
-  this->IMinister(owner);
+  IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -533,7 +533,7 @@ void TDefenderMinister::IDefenderMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004ee150
 void TBullyMinister::IBullyMinister(TGreatPower* owner) {
-  this->IMinister(owner);
+  IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;

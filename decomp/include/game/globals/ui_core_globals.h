@@ -14,14 +14,14 @@ int GetMcAppUiActiveFlag();
 
 extern TView* g_pUiResourceContext;
 
-extern POINT g_ptNationComparisonModalMessage; // @ 0x6a3180
+extern POINT g_ptNationComparisonModalMessage;
 
-extern POINT g_ptUiPromptModalMessage; // @ 0x6a5be0
+extern POINT g_ptUiPromptModalMessage;
 
-extern POINT g_ptCitySiteSelectionDialogPlacement; // @ 0x6a5b58
+extern POINT g_ptCitySiteSelectionDialogPlacement;
 
 extern int g_nationInfoGoldResourceOverride;
-extern int g_nViewMgrModalAssertGate; // @ 0x6a5bb0
+extern int g_nViewMgrModalAssertGate;
 
 extern int g_lastTurnAlertTick;
 
@@ -70,11 +70,11 @@ extern bool g_bQuickDrawCachedFontDirty;
 
 extern const char* const g_apszQuickDrawFontFaceNames[5];
 
-extern CFont* g_pQuickDrawCachedMeasureFont; // 0x6a1d48
+extern CFont* g_pQuickDrawCachedMeasureFont;
 
-extern TextStyle g_QuickDrawMeasureFontPreset; // 0x6a1d4c
+extern TextStyle g_QuickDrawMeasureFontPreset;
 
-extern bool g_bQuickDrawMeasureFontDirty; // 0x6a1d56
+extern bool g_bQuickDrawMeasureFontDirty;
 
 extern COLORREF g_QuickDrawBackgroundColor;
 
@@ -145,9 +145,9 @@ extern int g_McAppUiDefaultPosX;
 extern int g_McAppUiDefaultPosY;
 
 // Mouse-capture drag/repeat state used by TControl's input slots.
-extern TMouseCaptureState g_McAppMouseCaptureState; // 0x6a1a68
+extern TMouseCaptureState g_McAppMouseCaptureState;
 
-extern unsigned int g_McAppUiMouseCaptureTimerId; // 0x6a1adc
+extern unsigned int g_McAppUiMouseCaptureTimerId;
 
 extern char g_szMcAppUiSourcePath[];
 
@@ -185,7 +185,7 @@ extern "C" const char s_SourcePathUHelpMgr[];
 
 extern "C" const char s_SourcePathUMacViewMgr[];
 
-extern const char* const g_pszEmptyTextPointer; // = g_szEmptyString @ 0x656f60
+extern const char* const g_pszEmptyTextPointer; // = g_szEmptyString @
 
 extern TextStyle g_UiResourceEntryDefaultTextStyle;
 

@@ -88,13 +88,13 @@ TShip::~TShip() {}
 // FUNCTION: IMPERIALISM 0x0054f640
 void TShip::Free() {
   if (g_pNavyPrimaryOrderListHead == this) {
-    g_pNavyPrimaryOrderListHead = this->next;
+    g_pNavyPrimaryOrderListHead = next;
   }
-  if (this->next != 0) {
-    this->next->previous = this->previous;
+  if (next != 0) {
+    next->previous = previous;
   }
-  if (this->previous != 0) {
-    this->previous->next = this->next;
+  if (previous != 0) {
+    previous->next = next;
   }
   if (mission != 0) {
     mission->RejectConstituent(this, true);
@@ -457,7 +457,7 @@ TTaskForce* TShip::DemandExclusiveTaskForce() {
 
 // FUNCTION: IMPERIALISM 0x00550510
 short TShip::GetToolbarSlot() const {
-  return static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
+  return g_NavyOrderResourceDescriptorTable[type].ToolbarSlot();
 }
 
 // FUNCTION: IMPERIALISM 0x00550530
@@ -469,7 +469,7 @@ short TShip::GetBattleSpeed() const {
 short TShip::GetTurnDistanceTo(TZone* otherZone) const {
   short hopDistance = location->GetDistanceTo(otherZone);
   short descriptorWeight = g_NavyOrderResourceDescriptorTable[type].SailingSpeed();
-  return static_cast<short>((descriptorWeight - 1 + hopDistance) / descriptorWeight);
+  return (descriptorWeight - 1 + hopDistance) / descriptorWeight;
 }
 
 // FUNCTION: IMPERIALISM 0x005505a0
@@ -556,8 +556,8 @@ TShip* TShip::Finest(TShip* candidate, bool preferUnassigned) {
         }
         return candidate;
       }
-      short selfBucket = static_cast<short>(experience / 100);
-      short candidateBucket = static_cast<short>(candidate->experience / 100);
+      short selfBucket = experience / 100;
+      short candidateBucket = candidate->experience / 100;
       if (selfBucket != candidateBucket) {
         if (candidateBucket <= selfBucket) {
           return this;
@@ -575,7 +575,7 @@ TShip* TShip::Finest(TShip* candidate, bool preferUnassigned) {
 // FUNCTION: IMPERIALISM 0x005507b0
 int TShip::GetFirepower() const {
   int scaledBase = g_NavyOrderResourceDescriptorTable[type].FirepowerDword() * 5;
-  short experienceTier = static_cast<short>(experience / 100);
+  short experienceTier = experience / 100;
   return (experienceTier + scaledBase * 2 + 5) / 10;
 }
 
@@ -587,7 +587,7 @@ short TShip::GetRange() const {
 // FUNCTION: IMPERIALISM 0x00550840
 int TShip::GetSpeed() const {
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[type];
-  short strengthBucket = static_cast<short>(experience / 100);
+  short strengthBucket = experience / 100;
   return (strengthBucket + 5 + desc.BattleSpeedDword() * 10) / 10;
 }
 
@@ -598,13 +598,13 @@ short TShip::GetArmorFactor() const {
 
 // FUNCTION: IMPERIALISM 0x005508d0
 int TShip::ModByExp(int value) const {
-  short experienceTier = static_cast<short>(experience / 100);
+  short experienceTier = experience / 100;
   return (experienceTier + value * 10 + 5) / 10;
 }
 
 // FUNCTION: IMPERIALISM 0x00550920
 float TShip::ModByExp(float value) const {
-  short experienceTier = static_cast<short>(experience / 100);
+  short experienceTier = experience / 100;
   return (experienceTier - value * -10.0) * 0.1;
 }
 
@@ -623,8 +623,8 @@ int TShip::GetInvasionCapacity() const {
 
 // FUNCTION: IMPERIALISM 0x005509c0
 void TShip::Sink() {
-  TTaskForce* ownerEntry = this->taskForce;
-  this->strength = -666;
+  TTaskForce* ownerEntry = taskForce;
+  strength = -666;
   if (ownerEntry != 0) {
     TMapOrderChildLinkNode* head = ownerEntry->shipList;
     if (head != 0) {
@@ -652,20 +652,20 @@ void TShip::Sink() {
       ownerEntry->defeated = 1;
     }
   } else {
-    this->Free();
+    Free();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00550aa0
 int TShip::GetBattleStrengthRating() const {
   short resourceType = type;
-  short strengthBucket = static_cast<short>(experience / 100);
+  short strengthBucket = experience / 100;
 
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[resourceType];
   int navyPriorityScore = strengthBucket + 5 + desc.BattleSpeedDword() * 10;
-  short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+  short navyPriorityBucket = navyPriorityScore / 10;
   int resolveScore = strengthBucket + 5 + desc.FirepowerDword() * 10;
-  short resolveBucket = static_cast<short>(resolveScore / 10);
+  short resolveBucket = resolveScore / 10;
 
   return ((navyPriorityBucket + desc.BattleRange()) * 100 + resolveBucket + strength) /
          desc.Armor();
@@ -674,8 +674,8 @@ int TShip::GetBattleStrengthRating() const {
 // FUNCTION: IMPERIALISM 0x00550b60
 int TShip::GetStudliness() const {
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
-  short quantityTerm = static_cast<short>(experience / 100);
-  short navyTerm = static_cast<short>((quantityTerm + descriptor.BattleSpeedDword() * 10 + 5) / 10);
+  short quantityTerm = experience / 100;
+  short navyTerm = (quantityTerm + descriptor.BattleSpeedDword() * 10 + 5) / 10;
   return ((navyTerm + descriptor.BattleRange()) * 100 +
           static_cast<short>((quantityTerm + descriptor.FirepowerDword() * 10 + 5) / 10) +
           strength) /
@@ -808,7 +808,7 @@ void TShip::SetTaskForce(TTaskForce* newEntry) {
   // Cache the entry's aggression dword.
   aggression = newEntry->aggression;
 
-  short kind = static_cast<short>(newEntry->shipOrders);
+  short kind = newEntry->shipOrders;
   if (kind != 0 && kind != 7 && kind != 8 && kind != 4) {
     selection = 0;
   }
@@ -824,7 +824,7 @@ int FindCumulativeWeightBucketIndex(short* weightTable, short roll) {
   int index = -1;
   do {
     ++index;
-    roll = static_cast<short>(roll - weightTable[index]);
+    roll -= weightTable[index];
   } while (roll > 0);
   return index;
 }

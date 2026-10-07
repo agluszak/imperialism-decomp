@@ -15,19 +15,16 @@ public:
   TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission);
   virtual ~TBeachheadMission() override;
 
-  virtual bool Matches(eMissionType missionType, int key,
-                       TZone* zoneContext) const override; // slot 0x13 0x53a7b0
+  virtual bool Matches(eMissionType missionType, int key, TZone* zoneContext) const override;
 
-  virtual TMission*
-  GetArmyMission() override; // slot 0x16 0x53a920 -- returns parentMission (not `this`)
-  virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x53a3b0
-  virtual bool IsHospitalMission() const override;         // slot 0x19 0x53a390
+  virtual TMission* GetArmyMission() override; // returns parentMission (not `this`)
+  virtual bool IsDefensiveSeaZoneMission() const override;
+  virtual bool IsHospitalMission() const override;
 
-  virtual bool SmokeEmIfYouGotEm()
-      override; // slot 0x26 0x53a940 -- clears blockade-port child order links if ready
+  virtual bool SmokeEmIfYouGotEm() override; // clears blockade-port child order links if ready
 
-  virtual void GiveActionOrders(TTaskForce* mapOrderEntry)
-      override; // slot 0x27 0x53a800 -- try-queue province order from context message
+  virtual void GiveActionOrders(
+      TTaskForce* mapOrderEntry) override; // try-queue province order from context message
 
   virtual void CalculateNeeds() override;
 };

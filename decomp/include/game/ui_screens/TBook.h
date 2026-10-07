@@ -10,16 +10,15 @@
 class TBook : public TPicture {
 public:
   DECLARE_DYNCREATE(TBook)
-  virtual ~TBook() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x0056f5e0
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x56f560
+  virtual ~TBook() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
 
   TBook();
 
-  TView* previousPageButton; // 0x90, resolved by tag 'lcor'
-  TView* nextPageButton;     // 0x94, resolved by tag 'rcor'
+  TView* previousPageButton; // resolved by tag 'lcor'
+  TView* nextPageButton;     // resolved by tag 'rcor'
 
-  void ShowPage(int currentPage); // 0x56f6c0
+  void ShowPage(int currentPage);
 };
 ASSERT_SIZE(TBook, 0x98);

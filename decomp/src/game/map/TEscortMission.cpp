@@ -72,7 +72,7 @@ void TEscortMission::CalculateImportance() {
 // FUNCTION: IMPERIALISM 0x00539e70
 void TEscortMission::CalculateNeeds() {
   float total = 1.0f;
-  short year = static_cast<short>(g_pSimMgr->economicTurn / 4);
+  short year = g_pSimMgr->economicTurn / 4;
   float yearThreshold = static_cast<float>(year) + 110.0f;
 
   for (int i = 7; i < 23; ++i) {
@@ -134,7 +134,8 @@ void TEscortMission::CalculateNeeds() {
       float delta = 0.0f;
       const short* weights = &g_Populate_Beachhead_Mission_LookupTable[4];
       for (int c = 0; c < 4; ++c) {
-        float diff = vector[c] / sum - static_cast<float>(static_cast<short>(weights[c])) * 0.01;
+        float diff = static_cast<float>(vector[c] / sum -
+                                        static_cast<float>(static_cast<short>(weights[c])) * 0.01);
         if (diff <= 0.0f) {
           diff = -diff;
         }

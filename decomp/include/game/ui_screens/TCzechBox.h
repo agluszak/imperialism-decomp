@@ -9,18 +9,15 @@
 class TCzechBox : public TUpDownPictureButton {
 public:
   DECLARE_DYNCREATE(TCzechBox)
-  virtual ~TCzechBox() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x00571cb0
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x571cf0
-  virtual void HiliteState(unsigned char fEnabledState,
-                           bool fRefreshNow) override;                 // slot 0x70 0x571d10
-  virtual unsigned char IsOn();                                        // slot 0x74 0x571de0
-  virtual void SetState(unsigned char isOn, unsigned char refreshNow); // slot 0x75 0x571e00
-  virtual void CheckTheLook(unsigned char refreshNow);                 // slot 0x76 0x571d40
-  virtual void Toggle(bool refreshNow);                                // slot 0x77 0x571e40
-  virtual void ToggleIf(unsigned char expectedState,
-                        unsigned char refreshNow); // slot 0x78 0x571e80
+  virtual ~TCzechBox() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void HiliteState(unsigned char fEnabledState, bool fRefreshNow) override;
+  virtual unsigned char IsOn();
+  virtual void SetState(unsigned char isOn, unsigned char refreshNow);
+  virtual void CheckTheLook(unsigned char refreshNow);
+  virtual void Toggle(bool refreshNow);
+  virtual void ToggleIf(unsigned char expectedState, unsigned char refreshNow);
 
   TCzechBox();
 

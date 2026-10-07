@@ -37,20 +37,20 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
   }
 
   short centerTile = g_pGlobalMapState->mapViewOriginTile;
-  short sourceColumn = static_cast<short>(centerTile % 108);
-  short sourceRow = static_cast<short>(centerTile / 108);
-  sourceColumn = static_cast<short>(sourceColumn - ((frameWidth / 2 - markerBoxWidth) / 2) - 1);
-  sourceRow = static_cast<short>(sourceRow - ((frameHeight / 2 - markerBoxHeight) / 2) - 1);
+  short sourceColumn = centerTile % 108;
+  short sourceRow = centerTile / 108;
+  sourceColumn -= ((frameWidth / 2 - markerBoxWidth) / 2) - 1;
+  sourceRow -= ((frameHeight / 2 - markerBoxHeight) / 2) - 1;
 
   int verticalClipOffset = 0;
   if (sourceColumn < 0) {
-    sourceColumn = static_cast<short>(sourceColumn + 108);
+    sourceColumn += 108;
   }
   if (sourceRow < 0) {
     verticalClipOffset = sourceRow * 2;
     sourceRow = 0;
   } else {
-    short visibleRows = static_cast<short>((frameHeight + 1) / 2);
+    short visibleRows = (frameHeight + 1) / 2;
     if (sourceRow + visibleRows > 60) {
       verticalClipOffset = (sourceRow + visibleRows) * 2 - 120;
       sourceRow = static_cast<short>(60 - visibleRows);
@@ -94,10 +94,10 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
     }
   }
 
-  short markerX = static_cast<short>(markerBoxX);
-  short markerY = static_cast<short>(markerBoxY);
+  short markerX = markerBoxX;
+  short markerY = markerBoxY;
   if (g_applyMiniMapVerticalClipOffset) {
-    markerY = static_cast<short>(markerY + verticalClipOffset);
+    markerY += verticalClipOffset;
   }
   SetQuickDrawFillColor(0xffffff);
   SetQuickDrawTextOriginWithContextOffset(markerX, markerY);

@@ -28,7 +28,7 @@ void TShipAmtBar::DoPostCreate(int arg) {
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   selectedMetricRecord = province->shipOrderSlots[0];
   short productionCap = province->productionSummary->strength;
-  stepOrCurrentValue = static_cast<short>(this->frameWidth);
+  stepOrCurrentValue = static_cast<short>(frameWidth);
   auxValueA = productionCap;
   auxValueB = 0x3a;
   rangeOrMaxValue = static_cast<short>(0 / static_cast<int>(productionCap));

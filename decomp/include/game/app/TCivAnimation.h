@@ -10,8 +10,8 @@ class TCivAnimation : public TAnimation {
 public:
   DECLARE_DYNCREATE(TCivAnimation)
   // FUNCTION: IMPERIALISM 0x0049f4b0
-  virtual ~TCivAnimation() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void Tick() override;        // slot 0x0a 0x49f580
+  virtual ~TCivAnimation() override {}
+  virtual void Tick() override;
 
   // NOOP: verified empty in original 0x0049f452
   TCivAnimation() {}

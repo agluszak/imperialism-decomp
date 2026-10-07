@@ -13,8 +13,8 @@ public:
 
   DECLARE_DYNCREATE(TNavyHumanPlayer)
   // NOOP: verified empty in original 0x0059ef50
-  virtual ~TNavyHumanPlayer() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void DeploymentClick(TacticalTileIndex tileIndex); // slot 0x12 0x59efc0
+  virtual ~TNavyHumanPlayer() override {}
+  virtual void DeploymentClick(TacticalTileIndex tileIndex);
 
   // NOOP: verified empty in original 0x0059eef2
   TNavyHumanPlayer() {}

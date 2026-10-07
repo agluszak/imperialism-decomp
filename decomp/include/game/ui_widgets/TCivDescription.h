@@ -13,12 +13,11 @@ public:
   DECLARE_DYNCREATE(TCivDescription)
   virtual ~TCivDescription() override;
 
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x58f550
-  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin) override; // slot 0x47 0x58f1a0
-  virtual void DrawProspector(RECT* bounds);           // slot 0x68 0x58fec0
-  virtual void DrawEngineer(RECT* bounds);             // slot 0x69 0x58f7b0
-  virtual void DrawDeveloper(RECT* bounds);            // slot 0x6a 0x5903c0
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
+  virtual void DrawProspector(RECT* bounds);
+  virtual void DrawEngineer(RECT* bounds);
+  virtual void DrawDeveloper(RECT* bounds);
   CivilianUnitKindStorage selectedCivilianClass;
   NationSlot ownerNationId;
   short targetTileCountsBySlot[5];

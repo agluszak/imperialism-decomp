@@ -12,21 +12,20 @@ class TTwoPicSlider : public TControl {
 public:
   DECLARE_DYNCREATE(TTwoPicSlider)
   virtual ~TTwoPicSlider() override;
-  virtual void Free() override; // slot 0x07 0x0056e2f0
+  virtual void Free() override;
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint,
-                          bool commandFlag) override; // slot 0x68 0x0056e640
-  virtual void Draw(RECT* rectBuffer) override;       // slot 0x44 0x0056e370
+                          CPoint& currentPoint, bool commandFlag) override;
+  virtual void Draw(RECT* rectBuffer) override;
 
-  TQuickDrawSurfaceContext* lowerSurface;     // 0x84
-  TQuickDrawSurfaceContext* upperSurface;     // 0x88
-  TQuickDrawSurfaceContext* compositeSurface; // 0x8C
-  short splitPosition;                        // 0x90
+  TQuickDrawSurfaceContext* lowerSurface;
+  TQuickDrawSurfaceContext* upperSurface;
+  TQuickDrawSurfaceContext* compositeSurface;
+  short splitPosition;
   unsigned char pad92[2];
-  int mode; // 0x94
+  int mode;
 
   TTwoPicSlider();
 
-  void SetPicture(int baseBitmapId); // 0x0056e200
+  void SetPicture(int baseBitmapId);
 };
 ASSERT_SIZE(TTwoPicSlider, 0x98);

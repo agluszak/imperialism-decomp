@@ -9,14 +9,14 @@ class THandleStream : public TStream {
 public:
   // clang-format off
   // NOOP: verified empty in original 0x00489640
-  virtual ~THandleStream() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override; // slot 0x07 0x4896a0
-  virtual int GrowthSize(int requestedSize); // slot 0x31 0x489720
+  virtual ~THandleStream() override {}
+  virtual void Free() override;
+  virtual int GrowthSize(int requestedSize);
   // clang-format on
-  HGLOBAL attachedGlobalHandle; // +0x04
-  int streamPosition;           // +0x08
-  int attachedSizeBytes;        // +0x0c
-  int growthSize;               // +0x10
+  HGLOBAL attachedGlobalHandle;
+  int streamPosition;
+  int attachedSizeBytes;
+  int growthSize;
   unsigned char unclassifiedByte14;
 
   DECLARE_DYNCREATE(THandleStream)

@@ -13,34 +13,32 @@
 class TApplication : public TCommandHandler {
 public:
   // Windows override: post the queued command pointer to the main-frame 0xBC0 handler.
-  virtual void DispatchQueuedUiCommandAndRelease(void* payload) override; // slot 0x0d 0x486b50
-  virtual void DoMenuCommand(int param) override;                         // slot 0x11 0x486ba0
-  virtual void SetTarget(TEventHandler* view);                            // slot 0x26 0x486880
-  virtual TEventHandler* GetTarget();                                     // slot 0x27 0x4868a0
+  virtual void DispatchQueuedUiCommandAndRelease(void* payload) override;
+  virtual void DoMenuCommand(int param) override;
+  virtual void SetTarget(TEventHandler* view);
+  virtual TEventHandler* GetTarget();
   // MacApp TApplication::GetDefaultCursorRegion(CPoint, Region**); no-op on Windows.
-  virtual void GetDefaultCursorRegion(int x, int y,
-                                      void* cursorRegion); // slot 0x28 0x486990
+  virtual void GetDefaultCursorRegion(int x, int y, void* cursorRegion);
   // MacApp TApplication::InstallCohandler(TEventHandler*, Boolean).
-  virtual void InstallCohandler(TEventHandler* cohandler,
-                                bool install); // slot 0x29 0x4869b0
+  virtual void InstallCohandler(TEventHandler* cohandler, bool install);
   // MacApp TApplication::Idle(IdlePhase): HandleIdle every installed cohandler.
-  virtual void Idle(int idlePhase); // slot 0x2a 0x486b10
+  virtual void Idle(int idlePhase);
   TApplication();
 
   void CreateAndQueueTurnEventPacketTagGWEN();
   ~TApplication() override;
 
-  void PostTurnEventCodeMessage(TurnEventCodeStorage eventCode); // 0x414720
-  void PostWmCloseToMainThreadWindow();                          // 0x4146d0
+  void PostTurnEventCodeMessage(TurnEventCodeStorage eventCode);
+  void PostWmCloseToMainThreadWindow();
 
-  BOOL InModalState(); // 0x486960
+  BOOL InModalState();
 
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
   DECLARE_DYNCREATE(TApplication)
 
-  TEventHandler* currentTarget; // 0x20
-  int screenMode;               // 0x24
-  BOOL cursorRegionInvalid;     // 0x28
+  TEventHandler* currentTarget;
+  int screenMode;
+  BOOL cursorRegionInvalid;
   CList<void*, void*> cohandlers;
 };
 

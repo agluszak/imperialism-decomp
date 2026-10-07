@@ -8,23 +8,22 @@
 class TTextLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TTextLine)
-  virtual ~TTextLine() override; // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x570500
+  virtual ~TTextLine() override;
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
-  CString captionText; // 0x10
+  CString captionText;
   // Font/theme preset consumed by CreateFontFromPresetAndAttachRegionHandle et al.
-  TextStyle styleDescriptor; // 0x14
+  TextStyle styleDescriptor;
   // Passed directly to TStaticText::SetJustification.
-  short textAlignmentCode; // 0x1e
+  short textAlignmentCode;
 
   TTextLine();
   void ITextLine(short rowArg, short colArg, int* bounds, short styleGroupCode, short styleIndex);
   void SetTheTextStyle(const TextStyle* descriptor);
   void SetTextLineStyleComponents(short fontCode, short styleCode, short sizeCode,
-                                  unsigned char red, unsigned char green,
-                                  unsigned char blue); // 0x570470
+                                  unsigned char red, unsigned char green, unsigned char blue);
   void SetTheJustification(short value);
-  void SetCaptionText(CString* caption); // 0x00570420
+  void SetCaptionText(CString* caption);
 };
 
 ASSERT_SIZE(TTextLine, 0x20);

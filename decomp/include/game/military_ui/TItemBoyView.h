@@ -10,14 +10,14 @@
 class TItemBoyView : public TView {
 public:
   DECLARE_DYNCREATE(TItemBoyView)
-  virtual ~TItemBoyView() override;             // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4af9f0
+  virtual ~TItemBoyView() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   // NOOP: verified empty in original 0x004af943
   TItemBoyView() {}
 
   void ActuallyDraw(CString* header);
 
-  BattleReportDetailRecord* battleDetail; // +0x60
+  BattleReportDetailRecord* battleDetail;
 };
 ASSERT_SIZE(TItemBoyView, 0x64);

@@ -12,8 +12,8 @@ class TCommandHandler : public TEventHandler {
 public:
   DECLARE_DYNCREATE(TCommandHandler)
   // FUNCTION: IMPERIALISM 0x00486610
-  virtual ~TCommandHandler() override {}          // slot 0x01 (scalar deleting destructor)
-  virtual void PerformCommand(TCommand* command); // slot 0x25 0x486650
+  virtual ~TCommandHandler() override {}
+  virtual void PerformCommand(TCommand* command);
 
   TCommandHandler() : TEventHandler() {}
 };

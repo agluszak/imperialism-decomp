@@ -11,11 +11,10 @@ class TShip;
 class TMiniShipView : public TControl {
 public:
   DECLARE_DYNCREATE(TMiniShipView)
-  virtual ~TMiniShipView() override;            // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x569eb0
-  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin) override; // slot 0x47 0x56a330
-  virtual void Hilite();                               // slot 0x71 0x569d50
+  virtual ~TMiniShipView() override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
+  virtual void Hilite();
 
   // NOOP: verified empty in original 0x00569df6
   TMiniShipView() {}

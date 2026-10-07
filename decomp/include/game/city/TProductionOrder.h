@@ -21,26 +21,26 @@ class TProductionOrder : public TObject {
 public:
   DECLARE_DYNCREATE(TProductionOrder)
   // FUNCTION: IMPERIALISM 0x004b4f50
-  virtual ~TProductionOrder() override {}          // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4b4fe0
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4b5060
-  virtual void IProductionOrder(TCity* city, short resourceType);      // slot 0x0a 0x4b4f70
-  virtual bool SetQuantity(short newQuantity);                         // slot 0x0b 0x4b5100
-  virtual short MaxOrder();                                            // slot 0x0c 0x4b50e0
-  virtual void Produce();                                              // slot 0x0d 0x4b5160
-  virtual void Restock();                                              // slot 0x0e 0x4b5140
-  virtual void ResetOrderSheet(OrderSheet* orderSheet);                // slot 0x0f 0x4b5180
-  virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity); // slot 0x10 0x4b51b0
+  virtual ~TProductionOrder() override {}
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual void IProductionOrder(TCity* city, short resourceType);
+  virtual bool SetQuantity(short newQuantity);
+  virtual short MaxOrder();
+  virtual void Produce();
+  virtual void Restock();
+  virtual void ResetOrderSheet(OrderSheet* orderSheet);
+  virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity);
   // The order-slot family shares this 0x4c-byte prefix; TUnitOrder appends fields.
-  short quantity;                          // 0x04 — pending order quantity
-  TCity* ownerCity;                        // 0x08 — owning city
-  TPopulationMgr* productionSummary;       // 0x0c — city population/production summary
-  short trackingSlots[kResourceKindCount]; // 0x10..0x3e — per-resource tracking slots
-  short reservedWorkforce;                 // 0x3e — labor committed to this order
-  short limitingConstraint;                // 0x40 — ProductionOrderLimitKind
-  int accumulatedValue; // 0x44 — summed by TGreatPower::SumCommodityRecordAccumulatedValues (0x004e06d0)
-  short resourceTypeIndex; // 0x48 — resource/entry type index
-  short unused4a;          // 0x4a — field-xrefs show zero accesses; layout padding/reserved
+  short quantity;                          // pending order quantity
+  TCity* ownerCity;                        // owning city
+  TPopulationMgr* productionSummary;       // city population/production summary
+  short trackingSlots[kResourceKindCount]; // per-resource tracking slots
+  short reservedWorkforce;                 // labor committed to this order
+  short limitingConstraint;                // ProductionOrderLimitKind
+  int accumulatedValue;    // summed by TGreatPower::SumCommodityRecordAccumulatedValues
+  short resourceTypeIndex; // resource/entry type index
+  short unused4a;          // field-xrefs show zero accesses; layout padding/reserved
 
   // The base order has no initialized fields until IProductionOrder is called.
   // FUNCTION: IMPERIALISM 0x004b4f00

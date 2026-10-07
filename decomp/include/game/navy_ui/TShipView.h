@@ -12,10 +12,9 @@ class TShip;
 class TShipView : public TView {
 public:
   DECLARE_DYNCREATE(TShipView)
-  virtual ~TShipView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x005658d0
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5654e0
+  virtual ~TShipView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   // NOOP: verified empty in original 0x00565433
   TShipView() {}

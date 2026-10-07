@@ -155,7 +155,7 @@ void TOceanDialog::ConvertPoint(const CPoint& point, short& outColumn, short& ou
     int tileIndex = TileIndexFromColumnRow(outColumn, outRow);
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     if ((tile.activeFlags & 1) != 0) {
-      short ownerNation = static_cast<short>(tile.ownerNationTag);
+      short ownerNation = tile.ownerNationTag;
       if (ownerNation == g_pSimMgr->GetPlayerCountry() || ownerNation >= kMajorNationCount) {
         outRegionBand = 1;
       }
@@ -757,18 +757,18 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
     g_pViewMgr->SetForeColor(0x3c);
     int routeIndex = 0;
     short viewportRow = scrollRowOffset;
-    short viewportColumnX2 = static_cast<short>(scrollColOffset * 2 + 1);
+    short viewportColumnX2 = scrollColOffset * 2 + 1;
     if (g_pActiveMapOrderContext->routeNodeCount > 0) {
       do {
         CRect& route = g_pActiveMapOrderContext->routeSegments[routeIndex];
-        short endX = static_cast<short>((route.right - viewportColumnX2 + 0xd8) % 0xd8);
-        short startX = static_cast<short>((route.left - viewportColumnX2 + 0xd8) % 0xd8);
+        short endX = (route.right - viewportColumnX2 + 0xd8) % 0xd8;
+        short startX = (route.left - viewportColumnX2 + 0xd8) % 0xd8;
         int span = abs(static_cast<int>(startX) - static_cast<int>(endX));
         if (span > 0x6c) {
           if (startX > 0x6c) {
-            startX = static_cast<short>(startX - 0xd8);
+            startX -= 0xd8;
           } else if (endX > 0x6c) {
-            endX = static_cast<short>(endX - 0xd8);
+            endX -= 0xd8;
           }
         }
         SetQuickDrawTextOriginWithContextOffset(static_cast<short>((startX * 0x10) / 2),
@@ -867,10 +867,10 @@ void DrawOceanRouteSegment(short sourceColumn, int sourceRow, short destinationC
   if (abs(difference) > 0x6c) {
     if (sourceColumn < 0x6d) {
       if (destinationColumn > kStrategicMapColumns) {
-        destinationColumn = static_cast<short>(destinationColumn - 0xd8);
+        destinationColumn -= 0xd8;
       }
     } else {
-      sourceColumn = static_cast<short>(sourceColumn - 0xd8);
+      sourceColumn -= 0xd8;
     }
   }
   SetQuickDrawTextOriginWithContextOffset(static_cast<short>((sourceColumn * 0x10) / 2),
@@ -921,7 +921,7 @@ void TOceanDialog::DrawGarrison(short tileIndex, CRect* dstRect, int flag) {
 
   short spriteStripOffset = g_pGlobalMapState->GetMapImprovementTileSpriteOffset(tileIndex);
   if (alternateOverlayEnabled) {
-    spriteStripOffset = static_cast<short>(spriteStripOffset + 0x10);
+    spriteStripOffset += 0x10;
   } else {
     int ownerNation =
         static_cast<int>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag);
@@ -950,13 +950,13 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
     return;
   }
 
-  short spriteX = static_cast<short>(tileActionClass * 0x10);
+  short spriteX = tileActionClass * 0x10;
   if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pViewMgr->SetForeColor(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(dstRect);
   } else {
-    spriteX = static_cast<short>(spriteX + 0x10);
+    spriteX += 0x10;
   }
 
   CRect sourceRect(spriteX, 0, spriteX + 0x10, 0x10);
@@ -977,7 +977,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
     g_pViewMgr->SetForeColor(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&leftSatelliteRect);
   }
-  spriteX = static_cast<short>(spriteX + 0x20);
+  spriteX += 0x20;
   sourceRect.SetRect(spriteX, 0, spriteX + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
   BlitRectWithOptionalTransparency(g_pMacViewMgr->nationFleetWorld->GetBlitSurface(),
@@ -993,7 +993,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
     g_pViewMgr->SetForeColor(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&rightSatelliteRect);
   }
-  spriteX = static_cast<short>(spriteX + 0x20);
+  spriteX += 0x20;
   sourceRect.SetRect(spriteX, 0, spriteX + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
   BlitRectWithOptionalTransparency(g_pMacViewMgr->nationFleetWorld->GetBlitSurface(),
@@ -1007,7 +1007,7 @@ void TOceanDialog::TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigi
                                       short* outVerticalOffset, short* outHorizontalOffset,
                                       int projectionScale) {
 
-  short mapTileIndex = static_cast<short>(tileIndex);
+  short mapTileIndex = tileIndex;
   int row = mapTileIndex / kStrategicMapColumns;
   *outVerticalOffset = static_cast<short>((row - scrollRowOffset) << 4);
   *outHorizontalOffset =
@@ -1040,10 +1040,10 @@ void TOceanDialog::BuildTileViewportRect(short tileIndex, CRect* outRect) {
 
 // FUNCTION: IMPERIALISM 0x005687b0
 bool TOceanDialog::IsTileVisible(short tileIndex) {
-  short tileRow = static_cast<short>(tileIndex / kStrategicMapColumns);
-  short tileColumn = static_cast<short>(tileIndex % kStrategicMapColumns);
+  short tileRow = tileIndex / kStrategicMapColumns;
+  short tileColumn = tileIndex % kStrategicMapColumns;
   if (tileColumn < scrollColOffset) {
-    tileColumn = static_cast<short>(tileColumn + kStrategicMapColumns);
+    tileColumn += kStrategicMapColumns;
   }
 
   if (tileRow < scrollRowOffset || tileRow >= scrollRowOffset + 0x1c ||
@@ -1058,13 +1058,13 @@ bool TOceanDialog::IsTileVisible(short tileIndex) {
 int TOceanDialog::ComputeWrappedTileIndexFromViewportPoint(const CPoint* point) {
   int y = point->y;
   int yQuotient = (y + (y >> 31 & 0xf)) >> 4;
-  short row = static_cast<short>(scrollRowOffset + yQuotient);
+  short row = scrollRowOffset + yQuotient;
   int x = point->x;
   if ((row & 1) == 0) {
     x += 8;
   }
   int xQuotient = (x + (x >> 31 & 0xf)) >> 4;
-  short column = static_cast<short>(scrollColOffset + xQuotient);
+  short column = scrollColOffset + xQuotient;
   NormalizeWrappedMapCoord108x60(&column, &row);
   return column + row * kStrategicMapColumns;
 }
@@ -1107,7 +1107,7 @@ void TOceanDialog::SetMapViewCellCoordinates(int column, int row) {
 
 // FUNCTION: IMPERIALISM 0x005689f0
 void TOceanDialog::CenterOn(int tileIndex) {
-  short centeredTileIndex = static_cast<short>(tileIndex);
+  short centeredTileIndex = tileIndex;
   int row = centeredTileIndex / kStrategicMapColumns;
   int col = centeredTileIndex % kStrategicMapColumns;
   SetMapViewCellCoordinates(col - 0x10, row - 0xe);
@@ -1133,8 +1133,8 @@ void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directio
 
 // FUNCTION: IMPERIALISM 0x00568ab0
 int TOceanDialog::GetCenterTile() {
-  short row = static_cast<short>(scrollRowOffset + 0xe);
-  short col = static_cast<short>(scrollColOffset + 0x10);
+  short row = scrollRowOffset + 0xe;
+  short col = scrollColOffset + 0x10;
   NormalizeWrappedMapCoord108x60(&col, &row);
   return col + row * kStrategicMapColumns;
 }

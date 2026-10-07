@@ -9,17 +9,16 @@ struct MciMovieWindowState;
 class TMovieView : public TPicture {
 public:
   DECLARE_DYNCREATE(TMovieView)
-  virtual ~TMovieView() override;               // slot 0x01 (scalar deleting destructor)
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5e23f0
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5e2490
-  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event,
-                               CPoint origin) override; // slot 0x46 0x5e2520
-  MciMovieWindowState* movieWindowState;                // +0x90
+  virtual ~TMovieView() override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
+  MciMovieWindowState* movieWindowState;
 
   TMovieView();
-  bool OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath); // 0x5e24b0
-  void PlayTheMovie();                                    // 0x5e24e0 (MCI_PLAY)
-  void StopMovie();                                       // 0x5e2500 (MCI_STOP / skip)
+  bool OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath);
+  void PlayTheMovie(); // 0x5e24e0 (MCI_PLAY)
+  void StopMovie();    // 0x5e2500 (MCI_STOP / skip)
 };
 
 ASSERT_SIZE(TMovieView, 0x94);

@@ -9,8 +9,8 @@
 class TMinorTreatyDialog : public TDialogView {
 public:
   DECLARE_DYNCREATE(TMinorTreatyDialog)
-  virtual ~TMinorTreatyDialog() override; // slot 0x01 (scalar deleting destructor)
-  virtual void StuffValues();             // slot 0x68 0x5b4090
+  virtual ~TMinorTreatyDialog() override;
+  virtual void StuffValues();
 
   // NOOP: verified empty in original 0x005b3fc3
   TMinorTreatyDialog() {}

@@ -45,37 +45,37 @@ public:
   DECLARE_DYNCREATE(TGreatPower)
   // FUNCTION: IMPERIALISM 0x004d8c50
   ~TGreatPower() override {}
-  void WriteTo(TStream* stream) override;  // body 0x004d9c70
-  void ReadFrom(TStream* stream) override; // body 0x004d92e0
-  void Free() override;                    // body 0x004d9160
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
   void MultiWriteTo(TStream* stream) override;
   void MultiReadFrom(TStream* stream, int unusedArg) override;
 
   // ---- diplomacy grants / policies / proposal queue ----
   void SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) override;
   void ChangeMaster(int targetNationSlot, int mode) override;
-  void BecomeProtectorateOf(int targetNationSlot) override; // slot 0x14
+  void BecomeProtectorateOf(int targetNationSlot) override;
   void LoseProvince(int regionId) override;
   void AddProvince(int regionId) override;
   void NewStatusFor(int targetNationSlot, int policyCode) override;
   void DeliverItem(short amount) override;
-  short GetAmtUnsold(short resourceKind) override;      // slot 0x1c
-  short GetMerchantCapacity(void) override;             // slot 0x1d
-  short GetStockpile(short resourceKind) override;      // slot 0x1e
-  short GetTradeOffersFor(short resourceKind) override; // slot 0x1f
+  short GetAmtUnsold(short resourceKind) override;
+  short GetMerchantCapacity(void) override;
+  short GetStockpile(short resourceKind) override;
+  short GetTradeOffersFor(short resourceKind) override;
   void PurchaseItem(short resourceKind, short amount, short price) override;
-  bool StillBuyingItem(ResourceKindStorage resourceKind) override; // slot 0x21
+  bool StillBuyingItem(ResourceKindStorage resourceKind) override;
   bool ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override;
   void AddOfferFrom(NationSlot sourceNationSlot,
                     DiplomacyProposalCodeStorage proposalCode) override;
-  void AddNoticeFrom(short sourceNation, short actionCode) override; // slot 0x94
+  void AddNoticeFrom(short sourceNation, short actionCode) override;
   virtual void NoOpNationPendingActionHook(void);
 
   virtual void MarkStatusFlag5HandledIfCapabilityActive(void);
   virtual void MarkAllPendingStatusFlagsHandled(void);
   virtual void DispatchPendingStatusPrompts(void);
-  virtual void SetNationPendingActionStateAndPayload(int index, short payload); // slot 0x2e
+  virtual void SetNationPendingActionStateAndPayload(int index, short payload);
   virtual void AddTurnStartEvent(TTurnStartEvent* event);
   virtual void DisplayTurnStartEvents();
   virtual void NoOpNationQueuedOrderHook(void);
@@ -100,73 +100,69 @@ public:
   // ORACLE: Mac TGreatPower::UpdateCountryStockpile(short*); the base body is empty.
   virtual void UpdateCountryStockpile(short* needVector);
   virtual unsigned int GetUnreservedMerchantCapacity(int proposalCode);
-  virtual void AddTransportedItems(void); // slot 0x41
-  virtual void AddPurchasedItems(void);   // slot 0x42
+  virtual void AddTransportedItems(void);
+  virtual void AddPurchasedItems(void);
 
   virtual void AddCreatedItems(void);
   virtual void SetNationResourceNeedCurrentByType(int needType, int currentValue);
-  virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
-  virtual bool IsNeedTargetEqualCurrent(short needIndex);                          // slot 0x46
-  virtual short GetNeedTargetByType(short needIndex);                              // slot 0x47
+  virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value);
+  virtual bool IsNeedTargetEqualCurrent(short needIndex);
+  virtual short GetNeedTargetByType(short needIndex);
   virtual void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
   virtual bool IsTransportCapacityExceeded(void);
-  virtual bool IncreaseRollingStock(void);   // slot 0x4a
-  virtual bool IncreaseMerchantMarine(void); // slot 0x4b
-  virtual void ContinueCivilianOrders(void); // slot 0x4c
+  virtual bool IncreaseRollingStock(void);
+  virtual bool IncreaseMerchantMarine(void);
+  virtual void ContinueCivilianOrders(void);
   virtual void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   virtual void AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void);
-  virtual bool AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
+  virtual bool AnyNeedCurrentExceedsTargetWhenCapMismatch(void);
   virtual bool HasAnyCommodityRecordBelowStepValue(void);
   virtual short ComputeTreasuryStatusPromptCode(void);
   virtual bool IsCapitolThreatened(int mode);
   virtual bool BuildGreatPowerMapContextTriggeredNationEventMessages(CString* outMessageText);
   virtual bool BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString* outMessageText);
   virtual void SortTrackedOrdersByTypePriority(void);
-  virtual void MoveCivilians(void); // Mac oracle
-  virtual void MoveArmy(void);      // Mac oracle
+  virtual void MoveCivilians(void);
+  virtual void MoveArmy(void);
   virtual void TellColoniesToBoycott(int targetNationSlot, int isBoycottEnabled);
   virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);
   virtual void InitializeTradeStatus(void);
   virtual void RecallTradeBids(void);
-  virtual void InitializeDealBook(void); // slot 0x5c
+  virtual void InitializeDealBook(void);
   virtual void AddOverseasProfitFrom(int amount, short columnIndex, short rowIndex);
   virtual int GetOverseasProfitFrom(NationSlot targetNationSlot);
-  virtual int GetTotalOverseasProfits(void); // slot 0x5f
+  virtual int GetTotalOverseasProfits(void);
   virtual int ComputeRemainingDiplomacyAidBudget(void);
   virtual void SetTradeBids(void);
   virtual void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
-  virtual void SetStockpile(short targetSlot, short value);   // slot 0x63
-  virtual void AddToStockpile(short targetSlot, short value); // slot 0x64
+  virtual void SetStockpile(short targetSlot, short value);
+  virtual void AddToStockpile(short targetSlot, short value);
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
-  virtual void ConsumeMerchantCapacityForPurchase(int delta);             // slot 0x66
-  virtual void SetTradeOffersFor(short resourceKind, short offerContext); // slot 0x19c
-  virtual bool WereAllOfferedGoodsSold(void);                             // slot 0x68
-  virtual void SetItemPotentials(short resourceKind, short value);        // slot 0x69
-  virtual void RememberTradeBids(void);                                   // slot 0x6a
+  virtual void ConsumeMerchantCapacityForPurchase(int delta);
+  virtual void SetTradeOffersFor(short resourceKind, short offerContext);
+  virtual bool WereAllOfferedGoodsSold(void);
+  virtual void SetItemPotentials(short resourceKind, short value);
+  virtual void RememberTradeBids(void);
   virtual void ClearTradeOfferForResource(short targetSlot);
   virtual void AddToDealBook(short kind, NationSlot targetNation, short value, short slotIndex,
                              int payload);
-  virtual short GetNumDealsIn(short targetSlot);  // slot 0x6d
-  virtual bool WasItemDeclined(short targetSlot); // slot 0x6e
+  virtual short GetNumDealsIn(short targetSlot);
+  virtual bool WasItemDeclined(short targetSlot);
   virtual void GetDealInfo(short slotIndex, short ordinal, short* outKind, short* outValue,
                            short* outTargetNation, int* outPayload);
-  virtual void DealInterupted(int targetSlot, int matchKey,
-                              int payload); // slot 0x70
-  virtual void ClearTradeOffers(void);      // index 113
-  virtual void SetDiplomacyPolicies();      // index 114
-  virtual void ResetPolicies(void);         // index 115
-  virtual bool SetDiplomacyPolicyTo(short targetClass,
-                                    short policyCode); // index 116
-  virtual bool SetGrantPolicyTo(int targetNation,
-                                int grantValue);  // index 117
-  virtual void GiveGrantTo(int targetNationSlot); // index 118
-  virtual bool CanAffordGrantTo(NationSlot targetNationSlot,
-                                unsigned short proposedGrantEntry); // index 119
-  virtual void FinishDiplomacyPhase();                              // index 120 — body 0x004de7e0
-  virtual void ImproveTradePolicyTo(NationSlot nationSlot);         // index 121
-  virtual bool CanAfford(short additionalCost);                     // index 122
-  virtual void AcceptOffer(short proposalIndex);                    // index 123
-  virtual void RejectOffer(short proposalQueueIndex);               // index 124
+  virtual void DealInterupted(int targetSlot, int matchKey, int payload);
+  virtual void ClearTradeOffers(void);
+  virtual void SetDiplomacyPolicies();
+  virtual void ResetPolicies(void);
+  virtual bool SetDiplomacyPolicyTo(short targetClass, short policyCode);
+  virtual bool SetGrantPolicyTo(int targetNation, int grantValue);
+  virtual void GiveGrantTo(int targetNationSlot);
+  virtual bool CanAffordGrantTo(NationSlot targetNationSlot, unsigned short proposedGrantEntry);
+  virtual void FinishDiplomacyPhase();
+  virtual void ImproveTradePolicyTo(NationSlot nationSlot);
+  virtual bool CanAfford(short additionalCost);
+  virtual void AcceptOffer(short proposalIndex);
+  virtual void RejectOffer(short proposalQueueIndex);
   virtual bool IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
                                                          int targetNation);
   virtual void InitializeDiplomacyOffers(void);
@@ -176,49 +172,42 @@ public:
   virtual int ClassifyNationProductionTierVsPeers(void);
 
   virtual bool HasEnemy(void);
-  virtual void SetEnemy(int targetNation);             // body 0x004e0420
-  virtual void StopBeingEnemiesWith(int targetNation); // index 133 — body 0x004e0440
+  virtual void SetEnemy(int targetNation);
+  virtual void StopBeingEnemiesWith(int targetNation);
   virtual int GetArmsInNavy(void);
-  virtual int CountMapActionContextNodesWithNationBit(void); // slot 0x87
-  virtual double GetWarNumber(void);                         // slot 0x88
-  virtual double GetSeekAllianceNumber(void);                // slot 0x89
-  virtual double GetAcceptAllianceNumber(void);              // slot 0x8a
-  virtual double GetSeekPeaceNumber(void);                   // slot 0x8b
-  virtual double GetAcceptPeaceNumber(void);                 // slot 0x8c
-  virtual int GetBuildingCapacity(short buildingSlot);       // slot 0x8d
+  virtual int CountMapActionContextNodesWithNationBit(void);
+  virtual double GetWarNumber(void);
+  virtual double GetSeekAllianceNumber(void);
+  virtual double GetAcceptAllianceNumber(void);
+  virtual double GetSeekPeaceNumber(void);
+  virtual double GetAcceptPeaceNumber(void);
+  virtual int GetBuildingCapacity(short buildingSlot);
 
   virtual int GetReinforcementPotential(void);
   virtual float GetMilitaryPower(void);
   virtual float GetTotalNavalForce(void);
-  virtual float ComputeArmyScoreRatioVsNation(int targetNation);         // slot 0x91
-  virtual float ComputeArmyScoreStandingRatioVsNation(int targetNation); // slot 0x92
-  virtual float ComputeNavyScoreRatioVsNation(int targetNation);         // slot 0x93
-  virtual float ComputeNavyScoreStandingRatioVsNation(int targetNation); // slot 0x94
-  virtual float ComputeArmyScoreRatioVsNationWithSecondary(int targetNation,
-                                                           int secondarySlot); // slot 0x95
-  virtual float ComputeArmyScoreStandingRatioVsNationPair(int targetNation,
-                                                          int partnerNation); // slot 0x96
-  virtual float ComputeNavyScoreRatioVsNationWithSecondary(int targetNation,
-                                                           int secondarySlot); // slot 0x97
-  virtual float ComputeNavyScoreStandingRatioVsNationPair(int targetNation,
-                                                          int partnerNation); // slot 0x98
-  virtual float ComputeArmyScoreRatioForNationPair(int nationA, int nationB,
-                                                   char swapRoles); // slot 0x99
+  virtual float ComputeArmyScoreRatioVsNation(int targetNation);
+  virtual float ComputeArmyScoreStandingRatioVsNation(int targetNation);
+  virtual float ComputeNavyScoreRatioVsNation(int targetNation);
+  virtual float ComputeNavyScoreStandingRatioVsNation(int targetNation);
+  virtual float ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot);
+  virtual float ComputeArmyScoreStandingRatioVsNationPair(int targetNation, int partnerNation);
+  virtual float ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot);
+  virtual float ComputeNavyScoreStandingRatioVsNationPair(int targetNation, int partnerNation);
+  virtual float ComputeArmyScoreRatioForNationPair(int nationA, int nationB, char swapRoles);
   virtual float ComputeArmyScoreStandingRatioForNationPair(int nationA, int nationB,
-                                                           char swapRoles); // slot 0x9a
-  virtual float ComputeNavyScoreRatioForNationPair(int nationA, int nationB,
-                                                   char swapRoles); // slot 0x9b
+                                                           char swapRoles);
+  virtual float ComputeNavyScoreRatioForNationPair(int nationA, int nationB, char swapRoles);
   virtual float ComputeNavyScoreStandingRatioForNationPair(int nationA, int nationB,
-                                                           char swapRoles); // slot 0x9c
-  virtual bool PassesDiplomacyStrengthThresholdForTarget(int targetNation); // body 0x004e1c00
+                                                           char swapRoles);
+  virtual bool PassesDiplomacyStrengthThresholdForTarget(int targetNation);
   virtual bool EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
-  virtual int ConsiderWarOfIntervention(int targetNation, int sourceNation); // slot 0x27c
-  virtual int ConsiderWarOfAlliance(int targetNation, int sourceNation,
-                                    char swapRoles); // slot 0x280
+  virtual int ConsiderWarOfIntervention(int targetNation, int sourceNation);
+  virtual int ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles);
   virtual void DeclareWarOn(int targetNationSlot, int transitionMode, int sourceNationSlot);
-  virtual void SelectAndQueueAdvisoryMapMissions(void); // body 0x004e1f20
+  virtual void SelectAndQueueAdvisoryMapMissions(void);
   virtual float GetPeaceThreat(int targetNation);
-  virtual void ReplaceObsoleteMissions(); // slot 0xa4 — body 0x004e2190
+  virtual void ReplaceObsoleteMissions();
   virtual void ClearCivilianOrders(void);
   virtual void KillUnitsIn(int regionId);
   virtual void AddColony(int targetNation);
@@ -243,9 +232,9 @@ public:
     return availableBudget & (static_cast<int>(availableBudget <= 0) - 1);
   }
 
-  TForeignMinister* foreignMinister;       // +0x94
-  TCityInteriorMinister* interiorMinister; // +0x98
-  TDefenseMinister* defenseMinister;       // +0x9c
+  TForeignMinister* foreignMinister;
+  TCityInteriorMinister* interiorMinister;
+  TDefenseMinister* defenseMinister;
   unsigned char diplomacyEligibility;
   unsigned char pad_a1;
   short availableMerchantCapacity;
@@ -290,7 +279,7 @@ public:
   unsigned char turnFinished;
   unsigned char pad_905[3];
   TPtrList* turnSummaryQueue;
-  TSortedList* turnStartEvents; // +0x90c; owns TTurnStartEvent payloads
+  TSortedList* turnStartEvents; // owns TTurnStartEvent payloads
   int specialResourceTradeBalance;
   int aidAllocationTotal;
   unsigned char colonyBoycottFlags[kNationSlotCount];
@@ -332,7 +321,7 @@ public:
   int SumNavyOrderPriorityForNation();
   void IGreatPower(short nationSlotIndex, short humanControlledFlag);
 
-  void GenerateGameScore(void); // 0x004e32a0
+  void GenerateGameScore(void);
 
   void PayForMilitary();
 

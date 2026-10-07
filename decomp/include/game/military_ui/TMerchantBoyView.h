@@ -10,12 +10,12 @@
 class TMerchantBoyView : public TView {
 public:
   DECLARE_DYNCREATE(TMerchantBoyView)
-  virtual ~TMerchantBoyView() override;         // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4af780
+  virtual ~TMerchantBoyView() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   // NOOP: verified empty in original 0x004af6d3
   TMerchantBoyView() {}
 
-  BattleReportDetailRecord* battleDetail; // +0x60
+  BattleReportDetailRecord* battleDetail;
 };
 ASSERT_SIZE(TMerchantBoyView, 0x64);

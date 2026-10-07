@@ -30,14 +30,14 @@ TProductionCluster::~TProductionCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005869c0
 void TProductionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TNumberText* valueControl = static_cast<TNumberText*>(this->FindSubView(kControlTagValu));
+  TNumberText* valueControl = static_cast<TNumberText*>(FindSubView(kControlTagValu));
   if (valueControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
   if (currentStockpile != 0 && field88 != 0 && commandId > 99 && commandId < 0x66) {
     ownerContext->HandleEvent(commandId, this, 0);
   }
-  this->TCluster::DoEvent(commandId, sourceHandler, event);
+  TCluster::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00586a60

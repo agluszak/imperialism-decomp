@@ -9,10 +9,9 @@
 class TTacticalAdiosPicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TTacticalAdiosPicture)
-  virtual ~TTacticalAdiosPicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x005ad650
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5ad4d0
+  virtual ~TTacticalAdiosPicture() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
 
   // NOOP: verified empty in original 0x005ad466
   TTacticalAdiosPicture() {}

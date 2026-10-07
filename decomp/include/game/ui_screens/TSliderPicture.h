@@ -9,8 +9,8 @@
 class TSliderPicture : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(TSliderPicture)
-  virtual ~TSliderPicture() override;           // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x573aa0
+  virtual ~TSliderPicture() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   TSliderPicture();
 };

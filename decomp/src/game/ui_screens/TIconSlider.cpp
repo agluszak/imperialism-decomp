@@ -51,7 +51,7 @@ void TIconSlider::SetNumIcons(short numIcons) {
 char TIconSlider::KnobContainsMouse(const CPoint& point) {
   RECT knobRect;
   GetKnobRect(knobRect);
-  return static_cast<char>(PtInRect(&knobRect, point));
+  return PtInRect(&knobRect, point);
 }
 
 // FUNCTION: IMPERIALISM 0x005065f0
@@ -88,7 +88,7 @@ void TIconSlider::DrawKnob() {
 // FUNCTION: IMPERIALISM 0x00506710
 void TIconSlider::GetKnobRect(RECT& knobRect) {
   knobRect = knobBaseRect;
-  short offset = static_cast<short>(value * iconSpacing - knobWidth / 2 + iconSpacing / 2);
+  short offset = value * iconSpacing - knobWidth / 2 + iconSpacing / 2;
   OffsetRect(&knobRect, offset, 0);
 }
 

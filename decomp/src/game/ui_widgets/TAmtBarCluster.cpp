@@ -51,7 +51,7 @@ void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineMoveAdjustMove);
     }
-    short moveValue = static_cast<short>(moveControl->UpdateControlCachedIntFromWindowText());
+    short moveValue = moveControl->UpdateControlCachedIntFromWindowText();
 
     TNumberText* availableControl = static_cast<TNumberText*>(FindSubView(kControlTagAvai));
     if (availableControl == 0) {

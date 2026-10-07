@@ -16,16 +16,16 @@ public:
       : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeSegments(0),
         selectedTaskForce(0) {}
   DECLARE_DYNCREATE(TOcean)
-  virtual ~TOcean() override;                      // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5628f0
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x562340
-  virtual void Free() override;                    // slot 0x07 0x5621e0
-  short nationCount;                               // +0x04
-  TZone* contextArray;                             // +0x08
-  short routeNodeCount;                            // +0x0c number of route records in routeSegments
-  char pad0e[2];                                   // +0x0e
-  CRect* routeSegments;          // +0x10 heap buffer of routeNodeCount map-route line segments
-  TTaskForce* selectedTaskForce; // +0x14
+  virtual ~TOcean() override;
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual void Free() override;
+  short nationCount;
+  TZone* contextArray;
+  short routeNodeCount; // +0x0c number of route records in routeSegments
+  char pad0e[2];
+  CRect* routeSegments; // +0x10 heap buffer of routeNodeCount map-route line segments
+  TTaskForce* selectedTaskForce;
 
   // Reallocate routeSegments to hold `count` 0x10-byte route records.
   void SetNumSeaZones(short count);
@@ -54,9 +54,9 @@ public:
 
   TZone* FindPortZoneBySelectedTile(TCity* city);
 
-  void CommitForce(TTaskForce* entry); // 0x5642e0
+  void CommitForce(TTaskForce* entry);
 
-  void ForgetForce(TTaskForce* entry); // 0x564400
+  void ForgetForce(TTaskForce* entry);
 
   TTaskForce* AssembleUIForce(TZone* pMapOrderContextZone);
 };
@@ -64,8 +64,8 @@ public:
 ASSERT_SIZE(TOcean, 0x18);
 
 // Map-action-context maintenance passes (bodies in TZone.cpp).
-void PopulatePortZoneAdjacencyToNearbyCityContexts();   // 0x00563da0
-void RefreshPortZoneNeighborContextLinksAndFallbacks(); // 0x00563f50
-void RegenerateAllMapActionContextStatusCodes();        // 0x00563220
+void PopulatePortZoneAdjacencyToNearbyCityContexts();
+void RefreshPortZoneNeighborContextLinksAndFallbacks();
+void RegenerateAllMapActionContextStatusCodes();
 
 TTaskForce* GetActiveMapOrderEntry();

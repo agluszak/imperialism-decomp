@@ -57,7 +57,7 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   if (zone == NULL) {
     return false;
   }
-  unsigned char excludeOwnerMask = static_cast<unsigned char>((1 << (primaryOwner & 0x1f)) ^ 0x7f);
+  unsigned char excludeOwnerMask = (1 << (primaryOwner & 0x1f)) ^ 0x7f;
   while ((zone->nationKeyMask & excludeOwnerMask) == 0 ||
          !zone->ContainsCityStatePointerInZoneArrayByCityIndex(static_cast<short>(tileIndex))) {
     zone = zone->prev18;
@@ -111,7 +111,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
       g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext)));
 
   Province* sourceRecord = &g_pGlobalMapState->cityScoreTable[nodeContext];
-  int sourceNation = static_cast<int>(sourceRecord->ownerNationCode);
+  int sourceNation = sourceRecord->ownerNationCode;
 
   for (int nationIndex = 0; nationIndex < kMajorNationCount; ++nationIndex) {
     short navyBudget =
@@ -123,11 +123,11 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
     short candidateNation =
         static_cast<short>(g_pGlobalMapState->cityScoreTable[regionIndex].ownerNationCode);
     if (candidateNation < kMajorNationCount) {
-      int candidateNationIndex = static_cast<int>(candidateNation);
+      int candidateNationIndex = candidateNation;
       if (candidateNationIndex != sourceNation &&
           g_pDiplomacyTurnStateManager->AreAtWar(candidateNation, sourceNation)) {
         if (g_pGlobalMapState->IsProvinceAdjacentTo(nodeContext, regionIndex)) {
-          short checkedRegion = static_cast<short>(regionIndex);
+          short checkedRegion = regionIndex;
           TMilitaryUnit* unit = 0;
           if (checkedRegion >= 0 && checkedRegion < kProvinceCount) {
             unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain;
@@ -139,7 +139,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
           }
         } else if (remainingBudgetByNation[candidateNationIndex] > 0 &&
                    g_pGlobalMapState->HasPortInProvince(regionIndex)) {
-          short checkedRegion = static_cast<short>(regionIndex);
+          short checkedRegion = regionIndex;
           TMilitaryUnit* unit = 0;
           if (checkedRegion >= 0 && checkedRegion < kProvinceCount) {
             unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain;
@@ -176,7 +176,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
   short unitOrderWeight =
       g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
 
-  short regionIndex = static_cast<short>(nodeContext);
+  short regionIndex = nodeContext;
   TMilitaryUnit* unit = 0;
   if (regionIndex >= 0 && regionIndex < kProvinceCount) {
     unit = g_pGlobalMapState->cityScoreTable[regionIndex].stationedUnitChain;
@@ -245,7 +245,7 @@ void TDefendProvinceMission::CalculateImportance() {
   const Province& cityRecord = g_pGlobalMapState->cityScoreTable[tileIndex];
 
   float score = static_cast<float>(cityRecord.cityScoreValue);
-  int adjacentCount = static_cast<int>(cityRecord.adjacentRegionCount);
+  int adjacentCount = cityRecord.adjacentRegionCount;
   int ownedNeighborCount = 0;
 
   if (adjacentCount > 0) {

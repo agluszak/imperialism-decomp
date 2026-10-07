@@ -14,15 +14,14 @@ class TItemOrder;
 class TOrderView : public TView {
 public:
   DECLARE_DYNCREATE(TOrderView)
-  virtual ~TOrderView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;                  // slot 0x0f 0x00507240
-  virtual void StuffValues(TGreatPower* power, short orderSlot); // slot 0x68 0x506b00
-  virtual void UpdateFields();                                   // slot 0x69 0x506f90
-  TCity* city;                                                   // +0x60
+  virtual ~TOrderView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void StuffValues(TGreatPower* power, short orderSlot);
+  virtual void UpdateFields();
+  TCity* city;
 
   TOrderView();
 
-  TItemOrder* order; // +0x64 — selected city-production item order
+  TItemOrder* order; // selected city-production item order
 };
 ASSERT_SIZE(TOrderView, 0x68);

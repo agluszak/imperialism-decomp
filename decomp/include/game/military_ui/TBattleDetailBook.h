@@ -9,9 +9,8 @@
 class TBattleDetailBook : public TBook {
 public:
   DECLARE_DYNCREATE(TBattleDetailBook)
-  virtual ~TBattleDetailBook() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x004aea90
+  virtual ~TBattleDetailBook() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   // NOOP: verified empty in original 0x004aea08
   TBattleDetailBook() {}

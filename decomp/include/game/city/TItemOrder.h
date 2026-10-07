@@ -10,18 +10,16 @@ class TItemOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TItemOrder)
   // FUNCTION: IMPERIALISM 0x004b5270
-  virtual ~TItemOrder() override {}                  // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;    // slot 0x05 0x4b5670
-  virtual void ReadFrom(TStream* stream) override;   // slot 0x06 0x4b5710
-  virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b53d0
-  virtual short MaxOrder() override;                 // slot 0x0c 0x4b5310
-  virtual void Produce() override;                   // slot 0x0d 0x4b5580
-  virtual void Restock() override;                   // slot 0x0e 0x4b5620
-  virtual void FillOrderSheet(OrderSheet* orderSheet,
-                              short quantity) override; // slot 0x10 0x4b5510
+  virtual ~TItemOrder() override {}
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual bool SetQuantity(short quantity) override;
+  virtual short MaxOrder() override;
+  virtual void Produce() override;
+  virtual void Restock() override;
+  virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity) override;
   virtual void IItemOrder(TCity* city, short outputResourceType, short primaryInputResourceId,
-                          short secondaryInputResourceId,
-                          short productionSlot); // slot 0x11 0x4b5290
+                          short secondaryInputResourceId, short productionSlot);
   short requestedQuantity;        // desired quantity retained across availability clamps
   short primaryInputResourceId;   // first stockByType / trackingSlots resource index
   short secondaryInputResourceId; // second resource index, or -1 for two units of primary

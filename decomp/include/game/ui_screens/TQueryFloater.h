@@ -9,10 +9,9 @@
 class TQueryFloater : public TPicture {
 public:
   DECLARE_DYNCREATE(TQueryFloater)
-  virtual ~TQueryFloater() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x0056ea20
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x56e8e0
+  virtual ~TQueryFloater() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
 
   // NOOP: verified empty in original 0x0056e876
   TQueryFloater() {}

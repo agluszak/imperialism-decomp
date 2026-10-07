@@ -7,15 +7,14 @@
 class TInfoPanelView : public TPanelView {
 public:
   DECLARE_DYNCREATE(TInfoPanelView)
-  virtual ~TInfoPanelView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x004fad60
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x4fa010
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4fa190
-  virtual void Setup() override;                // slot 0x68 0x4facc0
-  virtual void SetInfoCountry(short countryId); // slot 0x69 0x4fae00
-  short countryInfoCategoryIndices[4];          // 0x64
-  int selectedOverlayMode;                      // 0x6c
+  virtual ~TInfoPanelView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void Setup() override;
+  virtual void SetInfoCountry(short countryId);
+  short countryInfoCategoryIndices[4];
+  int selectedOverlayMode;
 
   TInfoPanelView();
 };

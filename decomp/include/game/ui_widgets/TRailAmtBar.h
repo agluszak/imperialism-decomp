@@ -15,6 +15,6 @@ public:
 
   void DoPostCreate(int arg) override;
   void DrawAmt() override;
-  void DrawMax(short selectedValue) override; // slot 0x6b 0x0058a3b0
+  void DrawMax(short selectedValue) override;
 };
 ASSERT_SIZE(TRailAmtBar, 0x6c);

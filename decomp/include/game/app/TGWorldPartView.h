@@ -9,14 +9,14 @@ struct TQuickDrawSurfaceContext;
 class TGWorldPartView : public TView {
 public:
   DECLARE_DYNCREATE(TGWorldPartView)
-  virtual ~TGWorldPartView() override;          // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4ac880
+  virtual ~TGWorldPartView() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   TGWorldPartView();
 
-  void SetSourceRectFromGridCell(int column, int row); // 0x577df0
+  void SetSourceRectFromGridCell(int column, int row);
 
-  TQuickDrawSurfaceContext* sourceSurface; // 0x60 — ctor 0x45b000 zeroes it
-  RECT sourceRect;                         // 0x64
+  TQuickDrawSurfaceContext* sourceSurface; // ctor 0x45b000 zeroes it
+  RECT sourceRect;
 };
 ASSERT_SIZE(TGWorldPartView, 0x74);

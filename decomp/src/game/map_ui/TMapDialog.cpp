@@ -170,13 +170,13 @@ short g_mapProjectionSeamColumn = static_cast<short>(g_mapProjectionColumnScale 
 // FUNCTION: IMPERIALISM 0x00512440
 void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
                                                   short* outY, short* outX, short scale) {
-  unsigned int row = static_cast<unsigned int>(tileIndex / kStrategicMapColumns);
+  unsigned int row = tileIndex / kStrategicMapColumns;
   *outY = static_cast<short>(row) * 0x40 - static_cast<short>(viewportOrigin->y);
   short projectedX = static_cast<short>((tileIndex % kStrategicMapColumns) << 6) -
                      static_cast<short>(viewportOrigin->x);
   *outX = projectedX;
   if ((row & 1U) != 0) {
-    projectedX = static_cast<short>(projectedX + 0x20);
+    projectedX += 0x20;
     *outX = projectedX;
     if (projectedX >= 0x1ae0) {
       *outX = static_cast<short>(projectedX - 0x1b00);
@@ -233,7 +233,7 @@ void ProjectMapCoordinatesToScaledViewport(short row, short column, short* outRo
 // FUNCTION: IMPERIALISM 0x005126d0
 void ProjectTileIndexToScaledViewport(short tileIndex, short* outRow, short* outColumn,
                                       const CPoint* viewportOrigin) {
-  unsigned int row = static_cast<unsigned int>(tileIndex / kStrategicMapColumns);
+  unsigned int row = tileIndex / kStrategicMapColumns;
   *outColumn = static_cast<short>(tileIndex % kStrategicMapColumns);
   *outRow = static_cast<short>(row);
   if (*outColumn >= kStrategicMapColumns) {
@@ -258,9 +258,9 @@ void ProjectTileIndexToScaledViewport(short tileIndex, short* outRow, short* out
 // FUNCTION: IMPERIALISM 0x005128b0
 short GetWrappedHexDirectionColumnDelta(short direction) {
   if (direction < 0) {
-    direction = static_cast<short>(direction + 6);
+    direction += 6;
   } else if (direction > 5) {
-    direction = static_cast<short>(direction - 6);
+    direction -= 6;
   }
   return g_hexColumnStepByDirection[direction];
 }
@@ -361,7 +361,7 @@ void TMapDialog::FrameCursorArea() {
     return;
   }
 
-  short hoveredTile = static_cast<short>(hoveredTileIndex);
+  short hoveredTile = hoveredTileIndex;
   if (cursorId == 0x3eb) {
     TCivUnit* selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
     CivilianUnitKindStorage unitKind =
@@ -386,7 +386,7 @@ void TMapDialog::FrameCursorArea() {
     }
   }
 
-  short paintedTile = static_cast<short>(paintedHoverTileIndex);
+  short paintedTile = paintedHoverTileIndex;
   signed char paintedMarker = g_pGlobalMapState->terrainStateTable[paintedTile].markerSlotIndex;
   if (paintedMarker != -1 && tileMarkers[paintedMarker].flag) {
     short projectedY;
@@ -570,7 +570,7 @@ void TMapDialog::ConvertPoint(const CPoint& point, short& outRow, short& outCol,
   NormalizeWrappedMapCoord108x60(&outRow, &outCol);
 
   int wrappedY = viewportOrigin.y + point.y;
-  short bandRow = static_cast<short>(wrappedY % 0x40);
+  short bandRow = wrappedY % 0x40;
 
   short bandCol = 0;
   if ((outCol & 1) != 0) {
@@ -917,13 +917,13 @@ void TMapDialog::Draw(RECT* rectBuffer) {
     }
 
     int firstRowValue = viewportOrigin.y + rectBuffer->top;
-    short firstRow = static_cast<short>(DivideMapPixelOffsetBy64(firstRowValue));
+    short firstRow = DivideMapPixelOffsetBy64(firstRowValue);
     int rowSpan = rectBuffer->bottom - rectBuffer->top;
-    short lastRow = static_cast<short>(firstRow + DivideMapPixelOffsetBy64(rowSpan) + 1);
+    short lastRow = firstRow + DivideMapPixelOffsetBy64(rowSpan) + 1;
     int firstColValue = viewportOrigin.x + rectBuffer->left + 0x20;
-    short firstCol = static_cast<short>(DivideMapPixelOffsetBy64(firstColValue) - 1);
+    short firstCol = DivideMapPixelOffsetBy64(firstColValue) - 1;
     int colSpan = rectBuffer->right - rectBuffer->left;
-    short lastCol = static_cast<short>(firstCol + DivideMapPixelOffsetBy64(colSpan) + 1);
+    short lastCol = firstCol + DivideMapPixelOffsetBy64(colSpan) + 1;
 
     GetPixBaseAddr(GetGWorldPixMap(quickDrawSurface));
     GetPixBaseAddr(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
@@ -939,7 +939,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           col += 108;
         }
 
-        short tileIndex = static_cast<short>(TileIndexFromColumnRow(static_cast<int>(col), row));
+        short tileIndex = TileIndexFromColumnRow(static_cast<int>(col), row);
         short projectedY;
         short projectedX;
         ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &projectedY,
@@ -1041,19 +1041,19 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   CTemporaryRegion temporaryRegion;
   TBitmapSurfaceNode** destinationSurfaceObject = GetGWorldPixMap(quickDrawSurface);
   unsigned char* destinationPixels = GetPixBaseAddr(destinationSurfaceObject);
-  short destinationStride = static_cast<short>((*destinationSurfaceObject)->stride & 0x3fff);
+  short destinationStride = (*destinationSurfaceObject)->stride & 0x3fff;
   destinationPixels += static_cast<int>(screenY) * destinationStride + screenX;
 
   TBitmapSurfaceNode** sourceSurfaceObject = GetGWorldPixMap(g_pMacViewMgr->terrainTileWorld);
   unsigned char* sourcePixels = GetPixBaseAddr(sourceSurfaceObject);
-  short sourceStride = static_cast<short>((*sourceSurfaceObject)->stride & 0x3fff);
+  short sourceStride = (*sourceSurfaceObject)->stride & 0x3fff;
 
   const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
   const bool isOcean = terrain.GetTerrainKind() == kStrategicTerrainWater;
   bool usedWrappedSeamTile = false;
   if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
     int tileColumn = tileIndex % 108;
-    short centerTile = static_cast<short>(GetCenterTile());
+    short centerTile = GetCenterTile();
     int centerColumn = centerTile % 108;
     if ((tileColumn == 0 && centerColumn > 54) || (tileColumn == 107 && centerColumn < 54)) {
       short seamOffset = g_pGlobalMapState->GetWrapSeamOffset();
@@ -1222,7 +1222,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
   if (terrain.adjacencyBits != 0 || terrain.railFlags != 0) {
     for (int direction = 0; direction < 6; ++direction) {
-      unsigned char directionBit = static_cast<unsigned char>(1 << direction);
+      unsigned char directionBit = 1 << direction;
       StrategicMapCallbackRecord* routeMask = 0;
       if ((static_cast<unsigned char>(terrain.adjacencyBits) & directionBit) != 0) {
         routeMask = &g_pMacViewMgr->strategicTileMasks[0x18 + direction];
@@ -2421,7 +2421,7 @@ void TMapDialog::DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, 
 
   short spriteOffset = g_pGlobalMapState->GetUnitOffset(orderEntry);
   if (flag != 0) {
-    spriteOffset = static_cast<short>(spriteOffset + 0x240);
+    spriteOffset += 0x240;
   }
   CRect spriteSourceRect(spriteOffset, 0, spriteOffset + 0x40, 0x40);
   UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -2496,7 +2496,7 @@ void TMapDialog::DrawGarrison(short tileIndex, CRect* dstRect, int flag) {
   short countSpriteX =
       static_cast<short>(g_pGlobalMapState->ComputeTerrainRecordByteOffsetForIndex(countBucket));
   if (flag != 0) {
-    countSpriteX = static_cast<short>(countSpriteX + 0x12);
+    countSpriteX += 0x12;
   }
   CRect countSourceRect(countSpriteX, 0, countSpriteX + 0x12, 0x26);
   CRect countDestinationRect;
@@ -2708,8 +2708,8 @@ void TMapDialog::CoastWedgeSW(unsigned char* src, unsigned char* dest, short src
 // FUNCTION: IMPERIALISM 0x00525670
 void TMapDialog::NewCopy64(unsigned char* src, unsigned char* dest, short srcStride,
                            short destStride) {
-  short srcStrideDwords = static_cast<short>(srcStride / 4);
-  short destStrideDwords = static_cast<short>(destStride / 4);
+  short srcStrideDwords = srcStride / 4;
+  short destStrideDwords = destStride / 4;
   int row = 0x40;
   do {
     int inner = 2;

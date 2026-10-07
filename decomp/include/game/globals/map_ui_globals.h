@@ -1,7 +1,7 @@
 #pragma once
 #include "game/globals/global_types.h"
 
-extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
+extern int g_wMapDialogViewportTileSpan;
 
 // Most recently clicked strategic-map tile.
 extern int g_lastClickedMapTileIndex;

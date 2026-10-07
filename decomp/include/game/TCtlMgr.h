@@ -11,9 +11,9 @@ public:
 
   TCtlMgr() {}
 
-  virtual ~TCtlMgr() override; // slot 0x01 (scalar deleting destructor 0x492de0)
+  virtual ~TCtlMgr() override;
 
-  virtual void AssertMcAppUiInvalidationFlagSet(int arg1, int arg2); // slot 0x71 0x492db0
+  virtual void AssertMcAppUiInvalidationFlagSet(int arg1, int arg2);
 };
 
 ASSERT_SIZE(TCtlMgr, 0x84);

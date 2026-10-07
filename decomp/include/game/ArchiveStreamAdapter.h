@@ -5,7 +5,7 @@
 // VTABLE: IMPERIALISM 0x00645f98
 class ArchiveStreamAdapter : public TObject {
 public:
-  CArchive* archive; // 0x04
+  CArchive* archive;
 
   ArchiveStreamAdapter(CArchive* pArchive) : archive(pArchive) {}
   ~ArchiveStreamAdapter() override;

@@ -125,8 +125,8 @@ bool TWNetSessionManager::CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortNa
 
 // FUNCTION: IMPERIALISM 0x0047fd30
 bool TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
-  long destroyResult = this->directPlayInterface->DestroyPlayer(idPlayer);
-  this->lastErrorCode = destroyResult;
+  long destroyResult = directPlayInterface->DestroyPlayer(idPlayer);
+  lastErrorCode = destroyResult;
   return destroyResult >= 0;
 }
 
@@ -326,10 +326,10 @@ BOOL TDirectPlaySessionManagerBase::ShowJoinGameSelectionDialogAndCaptureChoice(
 
 // FUNCTION: IMPERIALISM 0x00480850
 int TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount) {
-  IDirectPlay2* directPlay = this->directPlayInterface;
+  IDirectPlay2* directPlay = directPlayInterface;
   if (directPlay != 0) {
-    long sendResult = directPlay->Send(this->localPlayerId, nationId, 1, packet, byteCount);
-    this->lastErrorCode = sendResult;
+    long sendResult = directPlay->Send(localPlayerId, nationId, 1, packet, byteCount);
+    lastErrorCode = sendResult;
     return sendResult >= 0;
   }
   return 0;
@@ -355,7 +355,7 @@ int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromI
       *bufferHandle = grownBuffer;
     }
     receiveResult = directPlayInterface->Receive(fromId, toId, 1, *bufferHandle, &neededSize);
-    this->lastErrorCode = receiveResult;
+    lastErrorCode = receiveResult;
   } while (receiveResult != DPERR_NOMESSAGES &&
            (*bufferHandle == 0 || receiveResult == DPERR_BUFFERTOOSMALL));
   if (receiveResult < 0 && receiveResult != DPERR_NOMESSAGES) {

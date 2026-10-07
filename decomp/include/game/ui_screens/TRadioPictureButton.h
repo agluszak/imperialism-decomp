@@ -8,10 +8,9 @@
 class TRadioPictureButton : public TUpDownPictureButton {
 public:
   DECLARE_DYNCREATE(TRadioPictureButton)
-  virtual ~TRadioPictureButton() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;       // slot 0x0f 0x00571850
-  virtual void SetState(bool state, bool refreshNow); // slot 0x74 0x5718f0
+  virtual ~TRadioPictureButton() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void SetState(bool state, bool refreshNow);
   // The ctor (0x5717c0) zeroes a single byte at +0x94; the rest is layout padding.
   unsigned char reserved94;
   unsigned char padding95[3];

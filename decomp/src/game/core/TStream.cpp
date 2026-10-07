@@ -15,7 +15,7 @@ bool TStream::AtEnd() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488ab0
-void TStream::Free() { // slot 0x1c override
+void TStream::Free() {
   delete this;
 }
 
@@ -78,17 +78,17 @@ int TStream::ReadLong() {
 
 // FUNCTION: IMPERIALISM 0x00488c50
 void TStream::ReadSharedString(CString* dest, int maxLen) {
-  int length = this->ReadInteger();
+  int length = ReadInteger();
   char* buffer = dest->GetBuffer(length + 1);
-  this->ReadBytes(buffer, length);
+  ReadBytes(buffer, length);
   buffer[length] = 0;
   dest->ReleaseBuffer(-1);
 }
 
 // FUNCTION: IMPERIALISM 0x00488ca0
 void TStream::ReadString(void* buffer, int maxLen) {
-  int length = this->ReadInteger();
-  this->ReadBytes(buffer, length);
+  int length = ReadInteger();
+  ReadBytes(buffer, length);
   static_cast<char*>(buffer)[length] = 0;
 }
 
@@ -221,15 +221,15 @@ void TStream::WriteWordAlign() {
 // FUNCTION: IMPERIALISM 0x00489030
 void TStream::WriteSharedString(CString* sharedString) {
   int length = sharedString->GetLength();
-  this->WriteInteger(length);
-  this->WriteBytes(static_cast<LPCSTR>(*sharedString), length);
+  WriteInteger(length);
+  WriteBytes(static_cast<LPCSTR>(*sharedString), length);
 }
 
 // FUNCTION: IMPERIALISM 0x00489070
 void TStream::WriteString(char* text) {
   unsigned int length = strlen(text);
-  this->WriteInteger(length);
-  this->WriteBytes(text, length);
+  WriteInteger(length);
+  WriteBytes(text, length);
 }
 
 // FUNCTION: IMPERIALISM 0x00489980

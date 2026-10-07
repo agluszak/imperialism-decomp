@@ -7,11 +7,11 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x664238
 class TBoycottButton : public TToggleButton {
 public:
-  virtual ~TBoycottButton() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TBoycottButton() override;
   TBoycottButton();
   DECLARE_DYNCREATE(TBoycottButton)
 
-  void Select(bool isPressed, bool notifyParent) override; // slot 0x1d0
+  void Select(bool isPressed, bool notifyParent) override;
 };
 
 ASSERT_SIZE(TBoycottButton, 0x90);

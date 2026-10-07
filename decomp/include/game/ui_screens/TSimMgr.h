@@ -14,13 +14,13 @@
 class TStream;
 
 struct GameSetup {
-  unsigned char multiplayerGameActive; // +0x00
+  unsigned char multiplayerGameActive;
   unsigned char pad01;
-  short nationControlModes[kMajorNationCount]; // +0x02
-  short cityMinisterPolicyIds[7];              // +0x10
-  short foreignMinisterPolicyIds[7];           // +0x1e
-  short defenseMinisterPolicyIds[7];           // +0x2c
-  unsigned char reloadPoliticalMapState;       // +0x3a
+  short nationControlModes[kMajorNationCount];
+  short cityMinisterPolicyIds[7];
+  short foreignMinisterPolicyIds[7];
+  short defenseMinisterPolicyIds[7];
+  unsigned char reloadPoliticalMapState;
   unsigned char pad3b[3];
 };
 
@@ -40,100 +40,99 @@ public:
 
   // --- TObject overrides (occupy the inherited base slots) ---
   DECLARE_DYNCREATE(TSimMgr)
-  ~TSimMgr() override;                     // slot 0x04  scalar deleting dtor 0x0057bb50
-  void WriteTo(TStream* stream) override;  // slot 0x14  0x0057c230
+  ~TSimMgr() override;
+  void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override; // slot 0x18  0x0057bea0  (scenario setup / rebuild)
   void Free() override;                    // slot 0x1c  0x0057bd20  (manager teardown)
 
   // --- TSimMgr-introduced virtuals, in exact slot order (byte = index * 4) ---
-  virtual void RebuildNationStateSlotsNoOp();                    // 0x28  0x0057c390
-  virtual void CreateGreatPower(int slotIndex, char activate);   // 0x2c 0x0057cda0
-  virtual void CreateMinor(int slotIndex);                       // 0x30  0x0057d520
-  virtual void GetSeason(CString* destString);                   // 0x34  0x0057d830
-  virtual void SetGameSetupValues(GameSetup* setup);             // 0x38  0x0057d8d0
-  virtual short GetEconomicTurn();                               // 0x3c  0x0057d8b0
-  virtual void AdvanceSeason();                                  // 0x40  0x0057d950
-  virtual void StartNextPhase();                                 // 0x44  0x0057d970
-  virtual void EnterOptionalPhase(eGamePhaseNewStyle gamePhase); // 0x48  0x0057d990, Mac oracle
-  virtual void AdvanceGlobalTurnStateMachine();                  // 0x4c  0x0057da70
-  virtual bool InLinearPhase();                                  // 0x50  0x0057f110
-  virtual void DoCityAndTransport();                             // 0x54  0x0057f140, Mac oracle
-  virtual void DoCivilians();                                    // 0x58  0x0057f200, Mac oracle
-  virtual void DoMilitary();                                     // 0x5c  0x0057f280, Mac oracle
-  virtual void DoTrade();                                        // 0x60  0x0057f3c0, Mac oracle
-  virtual bool AllHumansFinished();                              // 0x64  0x0057f4f0
-  virtual void ResetTurnFlags();                                 // 0x68  0x0057f530
-  void MultiSync();                                              // 0x0057f570
-  virtual int PlayerLost();                                      // 0x6c  0x0057f490, Mac oracle
-  virtual void SetFlags(unsigned int flags);                     // 0x70  0x0057f4b0
-  virtual void NumToCurrency(int value, CString* destString);    // 0x74  0x0057f5b0
-  virtual void NumToOrdinal(int value, CString* destString);     // 0x78  0x0057f8f0
+  virtual void RebuildNationStateSlotsNoOp();
+  virtual void CreateGreatPower(int slotIndex, char activate);
+  virtual void CreateMinor(int slotIndex);
+  virtual void GetSeason(CString* destString);
+  virtual void SetGameSetupValues(GameSetup* setup);
+  virtual short GetEconomicTurn();
+  virtual void AdvanceSeason();
+  virtual void StartNextPhase();
+  virtual void EnterOptionalPhase(eGamePhaseNewStyle gamePhase);
+  virtual void AdvanceGlobalTurnStateMachine();
+  virtual bool InLinearPhase();
+  virtual void DoCityAndTransport();
+  virtual void DoCivilians();
+  virtual void DoMilitary();
+  virtual void DoTrade();
+  virtual bool AllHumansFinished();
+  virtual void ResetTurnFlags();
+  void MultiSync();
+  virtual int PlayerLost();
+  virtual void SetFlags(unsigned int flags);
+  virtual void NumToCurrency(int value, CString* destString);
+  virtual void NumToOrdinal(int value, CString* destString);
   // Copy string-resource group 0x2711 (commodity names) entry `offset` into dest.
-  virtual void GetCommodityName(short offset, CString* destString);           // 0x7c  0x0057fe90
-  virtual void ReinitializeRandomSeed();                                      // 0x80  0x0057fec0
-  virtual void GetString(short codeGroup, short offset, CString* destString); // 0x84 0x00580760
+  virtual void GetCommodityName(short offset, CString* destString);
+  virtual void ReinitializeRandomSeed();
+  virtual void GetString(short codeGroup, short offset, CString* destString);
   CString GetCountryName(short slot);
   CString GetCountryNameWithCode(short slot);
-  virtual CString
-  DiplomacyNoticeString(const DiplomacyNotice* notice); // 0x88 0x00580790, Mac oracle
+  virtual CString DiplomacyNoticeString(const DiplomacyNotice* notice);
 
   bool TestTurnFlowStatusFlagMask(unsigned int mask);
 
   // --- non-virtual helpers ---
-  int GetNumGPs();                  // Mac oracle; 0x5811e0
-  void ReduceNumGPs();              // Mac oracle; 0x581200
-  int GetNumMinorCountries() const; // 0x581220
-  int GetNumCountries();            // Mac oracle; great powers + minor countries, 0x581240
-  void DoPerTurnMissionAIStuff(int replanMode); // 0x57d7a0
+  int GetNumGPs();
+  void ReduceNumGPs();
+  int GetNumMinorCountries() const;
+  int GetNumCountries(); // Mac oracle; great powers + minor countries
+  void DoPerTurnMissionAIStuff(int replanMode);
 
-  NationSlot GetPlayerCountry(); // Mac oracle; 0x581260
+  NationSlot GetPlayerCountry();
   // ORACLE: the country exists and has not been absorbed. ABI: thiscall; `this` is unused.
   bool ReallyInTheGame(NationSlot nationSlot);
-  void EliminateGP(NationSlot nationSlot); // Mac oracle; 0x581300
+  void EliminateGP(NationSlot nationSlot);
   // Forwards to the player's TGreatPower::SorryYouLose.
   void NotifyActiveNationLost();
   void SetDifficultyLevel(eDifficulty difficulty);
   void ISimMgr();
   void ResetTurnFlowStateAndRandomSeed();
-  void UpdatePreferences(bool writeBack); // Mac oracle
-  void AddHighScore(); // Mac oracle; inserts the player into scores.dat's top ten. 0x581510
-  void CreateSimObjects(bool flag);                                          // Mac oracle; 0x57c3b0
-  void CreatePlanet(int rebuild, const char* mapName, int wrapHorizontally); // Mac oracle; 0x57c7c0
-  unsigned char LoadScenario(int scenarioIndex);                             // Mac oracle; 0x57c9a0
-  void CreateCountries(int flag);                                            // Mac oracle; 0x57cad0
-  void NameCapitals();                                                       // 0x581c00
-  void ProcessScenarioScript();                                              // 0x581e60
+  void UpdatePreferences(bool writeBack);
+  void AddHighScore(); // Mac oracle; inserts the player into scores.dat's top ten.
+  void CreateSimObjects(bool flag);
+  void CreatePlanet(int rebuild, const char* mapName, int wrapHorizontally);
+  unsigned char LoadScenario(int scenarioIndex);
+  void CreateCountries(int flag);
+  void NameCapitals();
+  void ProcessScenarioScript();
   // Sets mapArtSet and reloads that picture language pack.
   void SelectMapArtSet(short index);
-  void SetPlayerCountry(NationSlot nationSlot); // Mac oracle; 0x5837c0
+  void SetPlayerCountry(NationSlot nationSlot);
 
-  void ScSetYear(STurnInstructionCursor* instruction);           // 0x582ed0
-  void ScSetFlags(STurnInstructionCursor* instruction);          // 0x583400
-  void ScSetTechDate(STurnInstructionCursor* instruction);       // 0x583470
-  void ScSetTransportBar(STurnInstructionCursor* instruction);   // 0x583510
-  void ScSetTreasury(STurnInstructionCursor* instruction);       // 0x583360
-  void ScSetTransport(STurnInstructionCursor* instruction);      // 0x582860
-  void ScClearTransport(STurnInstructionCursor* instruction);    // 0x583670
-  void ScSetProvince(STurnInstructionCursor* instruction);       // 0x582f20
-  void ScSetRelationship(STurnInstructionCursor* instruction);   // 0x5831d0
-  void ScSetProvinceName(STurnInstructionCursor* instruction);   // 0x583270
-  void ScSetCouncilMeeting(STurnInstructionCursor* instruction); // 0x583700
-  void ScSetEmbassy(STurnInstructionCursor* instruction);        // 0x582bf0
-  void ScSetWarehouse(STurnInstructionCursor* instruction);      // 0x5823e0
-  void ScSetCapacity(STurnInstructionCursor* instruction);       // 0x5822c0
-  void ScSetLabor(STurnInstructionCursor* instruction);          // 0x582120
-  void ScAddArmy(STurnInstructionCursor* instruction);           // 0x5824c0
-  void ScAddCivilian(STurnInstructionCursor* instruction);       // 0x582630
-  void ScAddShip(STurnInstructionCursor* instruction);           // 0x582720
-  void ScAddRailhead(STurnInstructionCursor* instruction);       // 0x5829b0
-  void ScAddPort(STurnInstructionCursor* instruction);           // 0x582a40
-  void ScSetDevLevel(STurnInstructionCursor* instruction);       // 0x5828f0
-  void ScAddTech(STurnInstructionCursor* instruction);           // 0x582ad0
-  void ScSetPrice(STurnInstructionCursor* instruction);          // 0x582b70
-  void ScSetSubsidy(STurnInstructionCursor* instruction);        // 0x582ce0
-  void ScSetTreaty(STurnInstructionCursor* instruction);         // 0x582da0
-  void ScSetSeazoneName(STurnInstructionCursor* instruction);    // 0x582fa0
-  void ScSetCountryName(STurnInstructionCursor* instruction);    // 0x583070
+  void ScSetYear(STurnInstructionCursor* instruction);
+  void ScSetFlags(STurnInstructionCursor* instruction);
+  void ScSetTechDate(STurnInstructionCursor* instruction);
+  void ScSetTransportBar(STurnInstructionCursor* instruction);
+  void ScSetTreasury(STurnInstructionCursor* instruction);
+  void ScSetTransport(STurnInstructionCursor* instruction);
+  void ScClearTransport(STurnInstructionCursor* instruction);
+  void ScSetProvince(STurnInstructionCursor* instruction);
+  void ScSetRelationship(STurnInstructionCursor* instruction);
+  void ScSetProvinceName(STurnInstructionCursor* instruction);
+  void ScSetCouncilMeeting(STurnInstructionCursor* instruction);
+  void ScSetEmbassy(STurnInstructionCursor* instruction);
+  void ScSetWarehouse(STurnInstructionCursor* instruction);
+  void ScSetCapacity(STurnInstructionCursor* instruction);
+  void ScSetLabor(STurnInstructionCursor* instruction);
+  void ScAddArmy(STurnInstructionCursor* instruction);
+  void ScAddCivilian(STurnInstructionCursor* instruction);
+  void ScAddShip(STurnInstructionCursor* instruction);
+  void ScAddRailhead(STurnInstructionCursor* instruction);
+  void ScAddPort(STurnInstructionCursor* instruction);
+  void ScSetDevLevel(STurnInstructionCursor* instruction);
+  void ScAddTech(STurnInstructionCursor* instruction);
+  void ScSetPrice(STurnInstructionCursor* instruction);
+  void ScSetSubsidy(STurnInstructionCursor* instruction);
+  void ScSetTreaty(STurnInstructionCursor* instruction);
+  void ScSetSeazoneName(STurnInstructionCursor* instruction);
+  void ScSetCountryName(STurnInstructionCursor* instruction);
 
   eGamePhaseNewStyle turnStateCode;
   eGamePhaseNewStyle mode;
@@ -188,4 +187,4 @@ void __cdecl DeleteFileWithErrorReporting(CString* path);
 void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode);
 
 void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
-                                                   LPCTSTR defaultValue); // 0x5e01a0
+                                                   LPCTSTR defaultValue);

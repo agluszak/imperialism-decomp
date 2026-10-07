@@ -7,9 +7,9 @@ class CSubViewIterator {
 public:
   CSubViewIterator(const TView* owner); // 0x004919a0 (default forward)
   CSubViewIterator(const TView* owner, char forward);
-  TView* FirstSubView(); // 0x00491a00
-  TView* NextSubView();  // 0x00491a70
-  int MoreSubViews();    // 0x00491ab0
+  TView* FirstSubView();
+  TView* NextSubView();
+  int MoreSubViews();
 
   POSITION position00;    // +0x00 current CList position (node)
   const TView* ownerView; // +0x04 view whose childList is walked

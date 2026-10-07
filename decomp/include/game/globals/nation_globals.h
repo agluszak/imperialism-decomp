@@ -18,7 +18,7 @@ struct AiCityActionCostProfile {
 };
 ASSERT_SIZE(AiCityActionCostProfile, 14);
 
-extern POINT g_ptGreatPowerModalMessage; // @ 0x6a2df0
+extern POINT g_ptGreatPowerModalMessage;
 
 extern int g_anTechItemResearchCostByTechId[29];
 
@@ -133,7 +133,7 @@ extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6];
 
 extern "C" const int g_anNationStartingTreasuryByLocale[6];
 
-extern double g_Evaluate_Advisory_Case11_Value; // 0.5
+extern double g_Evaluate_Advisory_Case11_Value;
 
 extern const double g_AiPressureUnsetSentinel;
 

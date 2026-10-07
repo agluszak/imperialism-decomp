@@ -44,7 +44,7 @@ bool TCityTask::Execute(TTaskList* taskList) {
   TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlots[citySlotIndex]);
   if (order != 0) {
     short maxOrder = order->MaxOrder();
-    short headroom = static_cast<short>(maxOrder - order->quantity);
+    short headroom = maxOrder - order->quantity;
     if (headroom < requestedAmount && order->limitingConstraint == kProductionOrderLimitResources) {
       OrderSheet sheet;
       order->FillOrderSheet(&sheet, requestedAmount);

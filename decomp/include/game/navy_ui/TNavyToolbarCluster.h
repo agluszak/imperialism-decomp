@@ -9,11 +9,10 @@
 class TNavyToolbarCluster : public TUberCluster {
 public:
   DECLARE_DYNCREATE(TNavyToolbarCluster)
-  virtual ~TNavyToolbarCluster() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;         // slot 0x0f 0x00569550
-  virtual void SetCurrentChoice(int childTag) override; // slot 0x72 0x5696f0
-  virtual bool IsTradeControlAtMinimum() override;      // slot 0x73 0x5696d0
+  virtual ~TNavyToolbarCluster() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void SetCurrentChoice(int childTag) override;
+  virtual bool IsTradeControlAtMinimum() override;
 
   TNavyToolbarCluster();
 };

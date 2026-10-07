@@ -13,8 +13,8 @@ class TSortedPtrList : public CPtrArray {
 public:
   DECLARE_DYNCREATE(TSortedPtrList)
 
-  short recordSize; // +0x14
-  short pad16;      // +0x16
+  short recordSize;
+  short pad16;
 
   // NOOP: verified empty in original 0x00488063
   TSortedPtrList() {}
@@ -22,19 +22,19 @@ public:
   virtual ~TSortedPtrList() override;
 
   // List-operation virtuals introduced by TSortedPtrList (slots 5-17):
-  virtual void WriteTo(TStream* stream);                                    // 5  (0x14) 0x5e1f10
-  virtual void ReadFrom(TStream* stream);                                   // 6  (0x18) 0x5e1e50
-  virtual void DeleteAll();                                                 // 7  (0x1c) 0x4880a0
-  virtual void InvokePtrListResetHook();                                    // 8  (0x20) 0x4880f0
-  virtual void FreeList();                                                  // 9  (0x24) 0x488110
-  virtual void SelfDelete();                                                // 10 (0x28) 0x488140
-  virtual void* GetPtrListEntryByOneBasedIndex(int oneBasedIndex);          // 11 (0x2c) 0x488160
-  virtual void RemovePtrListEntryByOneBasedIndexAndFree(int oneBasedIndex); // 12 (0x30) 0x488190
-  virtual void* First();                                                    // 13 (0x34) 0x4881d0
-  virtual void Insert(void* record);                                        // 14 (0x38) 0x4881f0
-  virtual void AppendCopiedRecordToPtrList(void* record);                   // 15 (0x3c) 0x4882c0
-  virtual void InsertCopiedRecordAtFrontOfPtrList(void* record);            // 16 (0x40) 0x488310
-  virtual short Compare(void* a, void* b);                                  // 17 (0x44) 0x488360
+  virtual void WriteTo(TStream* stream);
+  virtual void ReadFrom(TStream* stream);
+  virtual void DeleteAll();
+  virtual void InvokePtrListResetHook();
+  virtual void FreeList();
+  virtual void SelfDelete();
+  virtual void* GetPtrListEntryByOneBasedIndex(int oneBasedIndex);
+  virtual void RemovePtrListEntryByOneBasedIndexAndFree(int oneBasedIndex);
+  virtual void* First();
+  virtual void Insert(void* record);
+  virtual void AppendCopiedRecordToPtrList(void* record);
+  virtual void InsertCopiedRecordAtFrontOfPtrList(void* record);
+  virtual short Compare(void* a, void* b);
 };
 
 ASSERT_SIZE(TSortedPtrList, 0x18);

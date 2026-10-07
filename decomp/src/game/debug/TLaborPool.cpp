@@ -38,7 +38,7 @@ short TLaborPool::TransferWorst(TLaborPool* destination, short amount) {
   }
 
   destination->lowSkillCount = static_cast<short>(destination->lowSkillCount + lowSkillCount);
-  amount = static_cast<short>(amount - lowSkillCount);
+  amount -= lowSkillCount;
   lowSkillCount = 0;
   if (mediumSkillCount >= amount) {
     mediumSkillCount = static_cast<short>(mediumSkillCount - amount);
@@ -48,7 +48,7 @@ short TLaborPool::TransferWorst(TLaborPool* destination, short amount) {
 
   destination->mediumSkillCount =
       static_cast<short>(destination->mediumSkillCount + mediumSkillCount);
-  amount = static_cast<short>(amount - mediumSkillCount);
+  amount -= mediumSkillCount;
   mediumSkillCount = 0;
   if (highSkillCount >= amount) {
     highSkillCount = static_cast<short>(highSkillCount - amount);
@@ -70,7 +70,7 @@ short TLaborPool::TransferToHighSkillFirst(TLaborPool* destination, short amount
   }
 
   destination->highSkillCount = static_cast<short>(destination->highSkillCount + highSkillCount);
-  amount = static_cast<short>(amount - highSkillCount);
+  amount -= highSkillCount;
   highSkillCount = 0;
   if (mediumSkillCount >= amount) {
     mediumSkillCount = static_cast<short>(mediumSkillCount - amount);
@@ -80,7 +80,7 @@ short TLaborPool::TransferToHighSkillFirst(TLaborPool* destination, short amount
 
   destination->mediumSkillCount =
       static_cast<short>(destination->mediumSkillCount + mediumSkillCount);
-  amount = static_cast<short>(amount - mediumSkillCount);
+  amount -= mediumSkillCount;
   mediumSkillCount = 0;
   if (lowSkillCount >= amount) {
     lowSkillCount = static_cast<short>(lowSkillCount - amount);

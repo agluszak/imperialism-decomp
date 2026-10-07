@@ -6,9 +6,9 @@ bool AreTileIndicesHexAdjacent(short tileFrom, short tileTo);
 // FUNCTION: IMPERIALISM 0x00512f10
 bool AreTileIndicesHexAdjacent(short tileFrom, short tileTo) {
   short rowFrom = tileFrom / kStrategicMapColumns;
-  short columnFrom = static_cast<short>(rowFrom % 2 + (tileFrom % kStrategicMapColumns) * 2);
+  short columnFrom = rowFrom % 2 + (tileFrom % kStrategicMapColumns) * 2;
   short rowTo = tileTo / kStrategicMapColumns;
-  short columnTo = static_cast<short>(rowTo % 2 + (tileTo % kStrategicMapColumns) * 2);
+  short columnTo = rowTo % 2 + (tileTo % kStrategicMapColumns) * 2;
   if (rowTo == rowFrom) {
     if (columnTo != columnFrom + 2 && columnTo != columnFrom - 2 && columnTo != columnFrom + 0xd6 &&
         columnTo != columnFrom - 0xd6) {

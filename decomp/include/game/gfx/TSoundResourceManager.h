@@ -12,32 +12,32 @@
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class IDirectSoundBuffer {
 public:
-  virtual int __stdcall QueryInterface(void* riid, void** ppvObj) = 0; // 0x00
-  virtual unsigned long __stdcall AddRef() = 0;                        // 0x04
-  virtual unsigned long __stdcall Release() = 0;                       // 0x08
-  virtual int __stdcall GetCaps(void* pDSBufferCaps) = 0;              // 0x0c
+  virtual int __stdcall QueryInterface(void* riid, void** ppvObj) = 0;
+  virtual unsigned long __stdcall AddRef() = 0;
+  virtual unsigned long __stdcall Release() = 0;
+  virtual int __stdcall GetCaps(void* pDSBufferCaps) = 0;
   virtual int __stdcall GetCurrentPosition(DWORD* pdwCurrentPlayCursor,
-                                           DWORD* pdwCurrentWriteCursor) = 0; // 0x10
+                                           DWORD* pdwCurrentWriteCursor) = 0;
   virtual int __stdcall GetFormat(void* pwfxFormat, DWORD dwSizeAllocated,
-                                  DWORD* pdwSizeWritten) = 0;                     // 0x14
-  virtual int __stdcall GetVolume(long* plVolume) = 0;                            // 0x18
-  virtual int __stdcall GetPan(long* plPan) = 0;                                  // 0x1c
-  virtual int __stdcall GetFrequency(DWORD* pdwFrequency) = 0;                    // 0x20
-  virtual int __stdcall GetStatus(DWORD* pdwStatus) = 0;                          // 0x24
-  virtual int __stdcall Initialize(void* pDirectSound, void* pcDSBufferDesc) = 0; // 0x28
+                                  DWORD* pdwSizeWritten) = 0;
+  virtual int __stdcall GetVolume(long* plVolume) = 0;
+  virtual int __stdcall GetPan(long* plPan) = 0;
+  virtual int __stdcall GetFrequency(DWORD* pdwFrequency) = 0;
+  virtual int __stdcall GetStatus(DWORD* pdwStatus) = 0;
+  virtual int __stdcall Initialize(void* pDirectSound, void* pcDSBufferDesc) = 0;
   virtual int __stdcall Lock(DWORD dwOffset, DWORD dwBytes, void** ppvAudioPtr1,
                              DWORD* pdwAudioBytes1, void** ppvAudioPtr2, DWORD* pdwAudioBytes2,
-                             DWORD dwFlags) = 0;                                      // 0x2c
-  virtual int __stdcall Play(DWORD dwReserved1, DWORD dwPriority, DWORD dwFlags) = 0; // 0x30
-  virtual int __stdcall SetCurrentPosition(DWORD dwNewPosition) = 0;                  // 0x34
-  virtual int __stdcall SetFormat(void* pcfxFormat) = 0;                              // 0x38
-  virtual int __stdcall SetVolume(long lVolume) = 0;                                  // 0x3c
-  virtual int __stdcall SetPan(long lPan) = 0;                                        // 0x40
-  virtual int __stdcall SetFrequency(DWORD dwFrequency) = 0;                          // 0x44
-  virtual int __stdcall Stop() = 0;                                                   // 0x48
+                             DWORD dwFlags) = 0;
+  virtual int __stdcall Play(DWORD dwReserved1, DWORD dwPriority, DWORD dwFlags) = 0;
+  virtual int __stdcall SetCurrentPosition(DWORD dwNewPosition) = 0;
+  virtual int __stdcall SetFormat(void* pcfxFormat) = 0;
+  virtual int __stdcall SetVolume(long lVolume) = 0;
+  virtual int __stdcall SetPan(long lPan) = 0;
+  virtual int __stdcall SetFrequency(DWORD dwFrequency) = 0;
+  virtual int __stdcall Stop() = 0;
   virtual int __stdcall Unlock(void* pvAudioPtr1, DWORD dwAudioBytes1, void* pvAudioPtr2,
-                               DWORD dwAudioBytes2) = 0; // 0x4c
-  virtual int __stdcall Restore() = 0;                   // 0x50
+                               DWORD dwAudioBytes2) = 0;
+  virtual int __stdcall Restore() = 0;
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
@@ -46,30 +46,30 @@ IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class IDirectSound {
 public:
-  virtual int __stdcall QueryInterface(void* riid, void** ppvObj) = 0; // 0x00
-  virtual unsigned long __stdcall AddRef() = 0;                        // 0x04
-  virtual unsigned long __stdcall Release() = 0;                       // 0x08
+  virtual int __stdcall QueryInterface(void* riid, void** ppvObj) = 0;
+  virtual unsigned long __stdcall AddRef() = 0;
+  virtual unsigned long __stdcall Release() = 0;
   virtual int __stdcall CreateSoundBuffer(void* pcDSBufferDesc, IDirectSoundBuffer** ppDSBuffer,
-                                          void* pUnkOuter) = 0; // 0x0c
-  virtual int __stdcall GetCaps(void* pDSCaps) = 0;             // 0x10
+                                          void* pUnkOuter) = 0;
+  virtual int __stdcall GetCaps(void* pDSCaps) = 0;
   virtual int __stdcall DuplicateSoundBuffer(IDirectSoundBuffer* pDSBufferOriginal,
-                                             IDirectSoundBuffer** ppDSBufferDuplicate) = 0; // 0x14
-  virtual int __stdcall SetCooperativeLevel(void* hwnd, DWORD dwLevel) = 0;                 // 0x18
-  virtual int __stdcall Compact() = 0;                                                      // 0x1c
-  virtual int __stdcall GetSpeakerConfig(DWORD* pdwSpeakerConfig) = 0;                      // 0x20
-  virtual int __stdcall SetSpeakerConfig(DWORD dwSpeakerConfig) = 0;                        // 0x24
-  virtual int __stdcall Initialize(void* pcGuidDevice) = 0;                                 // 0x28
+                                             IDirectSoundBuffer** ppDSBufferDuplicate) = 0;
+  virtual int __stdcall SetCooperativeLevel(void* hwnd, DWORD dwLevel) = 0;
+  virtual int __stdcall Compact() = 0;
+  virtual int __stdcall GetSpeakerConfig(DWORD* pdwSpeakerConfig) = 0;
+  virtual int __stdcall SetSpeakerConfig(DWORD dwSpeakerConfig) = 0;
+  virtual int __stdcall Initialize(void* pcGuidDevice) = 0;
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 #define DSSCL_NORMAL 1
 
 struct DSBUFFERDESC {
-  DWORD dwSize;              // 0x00
-  DWORD dwFlags;             // 0x04
-  DWORD dwBufferBytes;       // 0x08
-  DWORD dwReserved;          // 0x0c
-  WAVEFORMATEX* lpwfxFormat; // 0x10
+  DWORD dwSize;
+  DWORD dwFlags;
+  DWORD dwBufferBytes;
+  DWORD dwReserved;
+  WAVEFORMATEX* lpwfxFormat;
 };
 
 struct DSBCAPS {
@@ -82,10 +82,10 @@ struct DSBCAPS {
 
 class WaveLoadDescriptor {
 public:
-  DWORD cbWaveSize;          // 0x00 — byte size of the loaded 'data' chunk
-  DWORD cSamples;            // 0x04 — sample-count out slot (never filled by the loader)
-  WAVEFORMATEX* pwfx;        // 0x08 — GlobalAlloc'd wave format header
-  unsigned char* pbWaveData; // 0x0c — GlobalAlloc'd wave data bytes
+  DWORD cbWaveSize;          // byte size of the loaded 'data' chunk
+  DWORD cSamples;            // sample-count out slot (never filled by the loader)
+  WAVEFORMATEX* pwfx;        // GlobalAlloc'd wave format header
+  unsigned char* pbWaveData; // GlobalAlloc'd wave data bytes
 
   WaveLoadDescriptor() : cbWaveSize(0), cSamples(0), pwfx(0), pbWaveData(0) {}
   ~WaveLoadDescriptor() {
@@ -121,9 +121,9 @@ public:
   void ReleaseDirectSoundDeviceAndChannels();
   int CreateChannelBuffer(IDirectSoundBuffer** ppChannel);
 
-  IDirectSound* m_device;            // 0x00 — DirectSound device object
-  IDirectSoundBuffer* m_channels[6]; // 0x04..0x18
-  DSBUFFERDESC m_channelBufferDesc;  // 0x1c..0x2f — scratch buffer descriptor (0x24=dwBufferBytes)
-  HMODULE m_module;                  // 0x30 (wave-pack module datafile)
-  int m_field34;                     // 0x34 (last DirectSound result)
+  IDirectSound* m_device; // DirectSound device object
+  IDirectSoundBuffer* m_channels[6];
+  DSBUFFERDESC m_channelBufferDesc; // scratch buffer descriptor (0x24=dwBufferBytes)
+  HMODULE m_module;                 // 0x30 (wave-pack module datafile)
+  int m_field34;                    // 0x34 (last DirectSound result)
 };

@@ -47,9 +47,9 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   short currentCapacity = city->GetMaxBuildingCapacity(buildingSlotId);
 
   // Building picture = next-level tier + per-slot picture base, refreshed immediately.
-  this->SetPictureRsrcID(static_cast<short>(this->city->GetNextBuildingLevel(buildingSlotId) +
-                                            (buildingSlotId + 0x73a) * 5),
-                         1);
+  SetPictureRsrcID(static_cast<short>(this->city->GetNextBuildingLevel(buildingSlotId) +
+                                      (buildingSlotId + 0x73a) * 5),
+                   1);
 
   // 'name' localized building title (string group 0x2719, indexed by slot).
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
@@ -99,7 +99,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
 
   // Probe whether the full upgrade quantity is achievable, then restore the order.
   short originalQuantity = order->quantity;
-  short buildingType = static_cast<short>(this->city->GetBuildingType(this->buildingSlotId));
+  short buildingType = this->city->GetBuildingType(this->buildingSlotId);
   short needed =
       static_cast<short>(this->city->GetMaxBuildingCapacity(this->buildingSlotId) - buildingType);
   bool upgradeQueued = order->SetQuantity(needed);
@@ -147,7 +147,7 @@ void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xac6);
   }
   if (dialogActionTag == kControlTagOkay) { // 'okay'
-    short previousBuildingType = static_cast<short>(city->GetBuildingType(buildingSlotId));
+    short previousBuildingType = city->GetBuildingType(buildingSlotId);
     order->SetQuantity(
         static_cast<short>(city->GetMaxBuildingCapacity(buildingSlotId) - previousBuildingType));
   } else if (order->quantity > 0) {

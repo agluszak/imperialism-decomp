@@ -7,11 +7,11 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x65e928
 class TAlwaysPictureButton : public TPictureButton {
 public:
-  virtual ~TAlwaysPictureButton() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TAlwaysPictureButton() override;
   TAlwaysPictureButton();
   DECLARE_DYNCREATE(TAlwaysPictureButton)
   void HiliteState(unsigned char enabledState, bool refreshNow) override;
-  virtual void Select(bool isPressed, bool notifyParent); // slot 0x1d0
+  virtual void Select(bool isPressed, bool notifyParent);
 };
 
 ASSERT_SIZE(TAlwaysPictureButton, 0x94);

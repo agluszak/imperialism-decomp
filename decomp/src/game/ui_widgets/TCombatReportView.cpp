@@ -261,7 +261,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
                                        &iconSrcRect, &iconDstRect, 0x24, 0);
 
       if (record->widthParam != 0) {
-        short overlayWidth = static_cast<short>(record->widthParam * 2 - 0x18);
+        short overlayWidth = record->widthParam * 2 - 0x18;
         int overlayRight = overlayWidth + 0x1f;
         RECT overlaySrcRect = {0, 0x12, overlayWidth, 0x17};
         RECT overlayDstRect = {0x1f, y + 0xb, overlayRight, y + 0x13};
@@ -293,7 +293,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x0058d950
 void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
-    unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
+    unsigned int controlTag = sourceHandler->controlTag;
 
     if (controlTag == kControlTagPgup) { // 'pgup'
       if (reportValue < 2) {

@@ -13,26 +13,22 @@ public:
   TScatteredShipsMission(TZone* targetZone) : TNavyMission(targetZone) {}
   virtual ~TScatteredShipsMission() override;
 
-  virtual bool
-  IsANoBrainer() const override; // slot 0x0a 0x535680 -- returns true (capability flag)
+  virtual bool IsANoBrainer() const override; // returns true (capability flag)
 
-  virtual void Initialize() override;          // slot 0x0c 0x53bb90 -- reset state/score to default
-  virtual void SetStateByte8To2() override;    // slot 0x0d 0x53bc00 -- state08 = 3
-  virtual void CalculateImportance() override; // slot 0x0e 0x53bc20
-  virtual void
-  CalculateNeeds() override; // slot 0x0f 0x53bc40 -- resource weights from nation navy pressure
+  virtual void Initialize() override;       // reset state/score to default
+  virtual void SetStateByte8To2() override; // state08 = 3
+  virtual void CalculateImportance() override;
+  virtual void CalculateNeeds() override; // resource weights from nation navy pressure
 
-  virtual void Reassess() override; // slot 0x10 0x53bbb0 -- state-update pipeline
-  virtual void
-  GiveOrders() override; // slot 0x11 0x53bdd0 -- select context, promote mission order chain
-  virtual TMission* GetReplacement() override; // slot 0x12 0x53bbe0 -- passthrough
-  virtual bool Matches(eMissionType missionType, int key,
-                       TZone* zoneContext) const override; // slot 0x13 0x53bcc0
+  virtual void Reassess() override;            // state-update pipeline
+  virtual void GiveOrders() override;          // select context, promote mission order chain
+  virtual TMission* GetReplacement() override; // passthrough
+  virtual bool Matches(eMissionType missionType, int key, TZone* zoneContext) const override;
 
-  virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x535660 -- returns true
-  virtual bool IsHospitalMission() const override;         // slot 0x19 0x535640 -- returns true
+  virtual bool IsDefensiveSeaZoneMission() const override; // returns true
+  virtual bool IsHospitalMission() const override;         // returns true
 
-  virtual TZone* PickAmassingZone() override; // slot 0x28 0x53bf90 -- returns null
+  virtual TZone* PickAmassingZone() override; // returns null
 };
 
 ASSERT_SIZE(TScatteredShipsMission, 0x3c);

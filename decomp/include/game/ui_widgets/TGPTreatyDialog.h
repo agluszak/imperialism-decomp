@@ -9,8 +9,8 @@
 class TGPTreatyDialog : public TDialogView {
 public:
   DECLARE_DYNCREATE(TGPTreatyDialog)
-  virtual ~TGPTreatyDialog() override; // slot 0x01 (scalar deleting destructor)
-  virtual void StuffValues();          // slot 0x68 0x5b3be0
+  virtual ~TGPTreatyDialog() override;
+  virtual void StuffValues();
 
   // NOOP: verified empty in original 0x005b3b13
   TGPTreatyDialog() {}

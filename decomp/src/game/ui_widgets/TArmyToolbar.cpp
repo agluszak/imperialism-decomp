@@ -89,7 +89,7 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   unsigned int controlTag = sourceHandler->controlTag;
 
   if ((kControlTagArmyRatioFirst <= controlTag) && (controlTag <= kControlTagArmyRatioLast)) {
-    short categoryId = static_cast<short>(sourceHandler->controlTag);
+    short categoryId = sourceHandler->controlTag;
     categoryId -= 0x7230;
     short selectedRatioOrMode = 0;
     if (commandId == 100) {
@@ -105,7 +105,7 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 
   if (controlTag == kControlTagGarr) {
-    unsigned short ctrlState = static_cast<unsigned short>(GetAsyncKeyState(0x11));
+    unsigned short ctrlState = GetAsyncKeyState(0x11);
     if ((ctrlState & 0x8000) != 0) {
       g_pViewMgr->ShowArmyRosterDialogAndActivateProvinceSelection();
       return;

@@ -35,7 +35,7 @@ struct StrategicMapCallbackRecord {
                                                    int destinationRowStride,
                                                    unsigned char transparentPixel);
   void ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels);
-  void SetDestinationHeightNoOp(int unusedHeight); // 0x004d4bd0
+  void SetDestinationHeightNoOp(int unusedHeight);
 
   StrategicMapOpcodeByteStretch opcodeBytes;
   int opcodeAppendCursor;

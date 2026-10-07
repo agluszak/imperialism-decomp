@@ -22,7 +22,7 @@ public:
   void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint, CPoint& currentPoint,
                   bool commandFlag) override;
 
-  virtual void SetValue(short value84, bool refreshFlag); // slot 0x71 0x58c330
+  virtual void SetValue(short value84, bool refreshFlag);
   void SetState(short value86, unsigned char refreshFlag);
 };
 ASSERT_SIZE(TNumberedArrowButton, 0x88);

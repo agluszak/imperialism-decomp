@@ -41,7 +41,7 @@ void TAssetMgr::OpenFilesFor(short fileSet) {}
 // FUNCTION: IMPERIALISM 0x005df410
 void TAssetMgr::CloseFilesFor(short fileSet) {}
 
-int g_resourceStreamOpenSuppressAssert; // 0x6a5d20
+int g_resourceStreamOpenSuppressAssert;
 
 // FUNCTION: IMPERIALISM 0x005df430
 CFile* TAssetMgr::LoadTableResourceStreamByName(CString name) {
@@ -161,7 +161,7 @@ unsigned char TAssetMgr::SaveTheGame(const CString& savePath) {
   CAmbitDocument* document = static_cast<CAmbitDocument*>(frame->GetActiveView()->GetDocument());
   TScopedWaitCursor waitCursor;
   document->SetPathName(path, FALSE);
-  unsigned char saved = static_cast<unsigned char>(document->DoSave(document->GetPathName(), TRUE));
+  unsigned char saved = document->DoSave(document->GetPathName(), TRUE);
   document->SetPathName(g_szSavedDocumentMarker, FALSE);
   return saved;
 }
@@ -247,10 +247,10 @@ CString TAssetMgr::FormatVersionStringFromVersionResource() {
           static_cast<const LoadedVersionResourceBlock*>(static_cast<const void*>(loadedResource));
       unsigned int fileVersionMS = versionInfo->fixedInfo.dwFileVersionMS;
       unsigned int fileVersionLS = versionInfo->fixedInfo.dwFileVersionLS;
-      short major = static_cast<short>(fileVersionMS >> 16);
-      short minor = static_cast<short>(fileVersionMS);
-      short build = static_cast<short>(fileVersionLS >> 16);
-      short revision = static_cast<short>(fileVersionLS);
+      short major = fileVersionMS >> 16;
+      short minor = fileVersionMS;
+      short build = fileVersionLS >> 16;
+      short revision = fileVersionLS;
       if (revision != 0) {
         versionText.Format("(v. %d.%d.%d.%d)", major, minor, build, revision);
       } else if (fileVersionLS != 0) {

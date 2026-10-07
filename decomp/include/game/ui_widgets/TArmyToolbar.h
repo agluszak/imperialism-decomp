@@ -8,14 +8,14 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x00667ad0
 class TArmyToolbar : public TUnitToolbarCluster {
 public:
-  short selectedProvinceIndex; // +0x88; -1 clears the toolbar selection
+  short selectedProvinceIndex; // -1 clears the toolbar selection
 
   TArmyToolbar();
   ~TArmyToolbar() override;
 
   DECLARE_DYNCREATE(TArmyToolbar)
   void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  virtual void SetProvince(short provinceIndex); // slot 0x74 0x0058df60
+  virtual void SetProvince(short provinceIndex);
 };
 
 ASSERT_SIZE(TArmyToolbar, 0x8c);

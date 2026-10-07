@@ -11,10 +11,9 @@ struct TQuickDrawSurfaceContext;
 class TGWorldButton : public TControl {
 public:
   DECLARE_DYNCREATE(TGWorldButton)
-  virtual ~TGWorldButton() override;            // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x572270
-  virtual void HiliteState(unsigned char fEnabledState,
-                           bool fRefreshNow) override; // slot 0x70 0x572200
+  virtual ~TGWorldButton() override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void HiliteState(unsigned char fEnabledState, bool fRefreshNow) override;
 
   TGWorldButton();
   void IGWorldButton(TView* panel, int* offsetLayout, int* sizeLayout,

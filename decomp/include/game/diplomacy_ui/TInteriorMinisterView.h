@@ -9,9 +9,8 @@
 class TInteriorMinisterView : public TMinisterView {
 public:
   DECLARE_DYNCREATE(TInteriorMinisterView)
-  virtual ~TInteriorMinisterView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x004f3710
+  virtual ~TInteriorMinisterView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   TInteriorMinisterView();
 };

@@ -36,19 +36,16 @@ public:
   virtual void FreeList();
   virtual void RemoveAll();
   virtual void SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag);
-  virtual void Sort();                                                // slot 0x64 0x487d90
-  virtual void SortBy(TSortedListCompareFunc compare, void* context); // slot 0x68 0x487dd0
-  virtual short Compare(void* a, void* b);                            // slot 0x6c 0x487b30
-  virtual void QuickSort(int lo, int hi, TSortedListCompareFunc compare,
-                         void* context); // slot 0x70 0x487b60
+  virtual void Sort();
+  virtual void SortBy(TSortedListCompareFunc compare, void* context);
+  virtual short Compare(void* a, void* b);
+  virtual void QuickSort(int lo, int hi, TSortedListCompareFunc compare, void* context);
   // Hoare partition core over ordinals [lo, hi]; pivot = payload at ordinal lo.
-  virtual int QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare,
-                              void* context); // slot 0x74 0x487bd0
+  virtual int QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare, void* context);
   // ORACLE: Mac QSPartition: swaps a random ordinal into the pivot position, then runs the core.
-  virtual int QSPartition(int lo, int hi, TSortedListCompareFunc compare,
-                          void* context); // slot 0x78 0x487cc0
+  virtual int QSPartition(int lo, int hi, TSortedListCompareFunc compare, void* context);
 
-  CPtrList listState; // +0x04
+  CPtrList listState;
 
   // FUNCTION: IMPERIALISM 0x004a8640
   TSortedList() : listState(10) {}

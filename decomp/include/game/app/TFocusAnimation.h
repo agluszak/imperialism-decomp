@@ -14,15 +14,15 @@ public:
   ~TFocusAnimation() override {}
   TFocusAnimation() : TAnimation(), enabledFlag(1) {}
 
-  virtual void Tick() override;                             // slot 10 / 0x28 0x4a0140
-  virtual void DrawNextFrame(POINT* unusedOffset) override; // slot 11 / 0x2c 0x4a0250
-  virtual void IdleDraw();                                  // slot 13 / 0x34 0x4a0190
-  virtual void ClipAndPaste();                              // slot 14 / 0x38 0x4a0280
+  virtual void Tick() override;
+  virtual void DrawNextFrame(POINT* unusedOffset) override;
+  virtual void IdleDraw();
+  virtual void ClipAndPaste();
 
   void IFocusAnimation(TView* ownerView, RECT* rect, short frameCount, short frameResourceBaseId,
                        int ticksPerFrame, int registryTag);
 
-  bool enabledFlag; // 0x2c
+  bool enabledFlag;
 
   char padding2D[3];
 };

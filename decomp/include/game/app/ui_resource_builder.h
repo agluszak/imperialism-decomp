@@ -10,7 +10,7 @@ void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root);
 
 class TUiStyleRef {
 public:
-  TUiStyleRef(int value); // 0x4270e0
+  TUiStyleRef(int value);
   int value;
 };
 

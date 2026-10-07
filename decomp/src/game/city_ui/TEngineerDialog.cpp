@@ -37,13 +37,13 @@ TEngineerDialog::~TEngineerDialog() {}
 
 // FUNCTION: IMPERIALISM 0x004d05e0
 void TEngineerDialog::Free() {
-  if (this->headerSurface != 0) {
+  if (headerSurface != 0) {
     g_pDisplayMgr->RemoveGWorld(headerSurface);
   }
-  if (this->footerSurface != 0) {
+  if (footerSurface != 0) {
     g_pDisplayMgr->RemoveGWorld(footerSurface);
   }
-  if (this->bodyTileSurface != 0) {
+  if (bodyTileSurface != 0) {
     g_pDisplayMgr->RemoveGWorld(bodyTileSurface);
   }
   TView::Free();
@@ -51,7 +51,7 @@ void TEngineerDialog::Free() {
 
 // FUNCTION: IMPERIALISM 0x004d0650
 void TEngineerDialog::Draw(RECT* rectBuffer) {
-  if (this->headerSurface == 0) {
+  if (headerSurface == 0) {
     return;
   }
 
@@ -71,27 +71,27 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
   dstRect.left = 0;
   dstRect.right = 0x148;
 
-  BlitRectWithOptionalTransparency(this->headerSurface->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(headerSurface->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &headerRect,
                                    &headerRect, 0);
 
   bodyY = 0x38;
-  int bodyRowCount = (static_cast<short>(this->frameHeight) - 0x46) / 0x0e;
+  int bodyRowCount = (static_cast<short>(frameHeight) - 0x46) / 0x0e;
   if (bodyRowCount > 0) {
     do {
       dstRect.top = bodyY;
       dstRect.bottom = bodyY + 0x0e;
-      BlitRectWithOptionalTransparency(this->bodyTileSurface->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(bodyTileSurface->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &bodyTileRect, &dstRect, 0);
-      bodyY = static_cast<short>(bodyY + 0x0e);
+      bodyY += 0x0e;
       --bodyRowCount;
     } while (bodyRowCount != 0);
   }
 
   dstRect.top = bodyY;
   dstRect.bottom = bodyY + 0x0e;
-  BlitRectWithOptionalTransparency(this->footerSurface->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(footerSurface->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                    &bodyTileRect, &dstRect, 0);
 }
@@ -106,32 +106,32 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   bool productionAllowed = true;
 
   // Release + reload the three offscreen dialog strip surfaces.
-  if (this->headerSurface != 0) {
-    g_pDisplayMgr->RemoveGWorld(this->headerSurface);
+  if (headerSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(headerSurface);
   }
-  if (this->footerSurface != 0) {
-    g_pDisplayMgr->RemoveGWorld(this->footerSurface);
+  if (footerSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(footerSurface);
   }
-  if (this->bodyTileSurface != 0) {
-    g_pDisplayMgr->RemoveGWorld(this->bodyTileSurface);
+  if (bodyTileSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(bodyTileSurface);
   }
-  this->headerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c30);
-  if (this->headerSurface == 0) {
+  headerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c30);
+  if (headerSurface == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcef);
   }
-  this->footerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c31);
-  if (this->footerSurface == 0) {
+  footerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c31);
+  if (footerSurface == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf0);
   }
-  this->bodyTileSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c32);
-  if (this->bodyTileSurface == 0) {
+  bodyTileSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c32);
+  if (bodyTileSurface == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf1);
   }
 
   // Panel title.
   TextStyle titleStyle;
   BuildUiTextStyleDescriptor(&titleStyle, 0, 0xa, 0x2b6a);
-  TStaticText* title = static_cast<TStaticText*>(this->FindSubView(kControlTagTitl));
+  TStaticText* title = static_cast<TStaticText*>(FindSubView(kControlTagTitl));
   title->AssertValid();
   ConfigureUiControlStyleValueAndCaptionFromStringResource(title, 0, 0xe, 0x2b6a, 1, 0x1c20, 6);
 
@@ -249,7 +249,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
     railLabel->BuildCityViewProductionControls_Impl(0x1c20, 1);
     railLabel->CenterVertically(false);
 
-    layoutY = static_cast<short>(layoutY + 0x2a);
+    layoutY += 0x2a;
 
     for (int i = 0; i < 23; i++) {
       if (fortAccum[i] == 0) {
@@ -257,9 +257,9 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
       }
       TIconBar* iconRow = new TIconBar();
       int iconPos[2] = {0x54, layoutY};
-      int iconSize[2] = {this->frameWidth - 0x60, 0x18};
+      int iconSize[2] = {frameWidth - 0x60, 0x18};
       iconRow->IIconBar(this, iconPos, iconSize, 5, 5, static_cast<short>(i + 0x2bc), fortAccum[i]);
-      layoutY = static_cast<short>(layoutY + 0x1c);
+      layoutY += 0x1c;
     }
   }
 
@@ -279,7 +279,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
     portLabel->BuildCityViewProductionControls_Impl(0x1c20, 2);
     portLabel->CenterVertically(false);
 
-    layoutY = static_cast<short>(layoutY + 0x2a);
+    layoutY += 0x2a;
 
     for (int i = 0; i < 23; i++) {
       if (portAccum[i] == 0) {
@@ -287,9 +287,9 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
       }
       TIconBar* iconRow = new TIconBar();
       int iconPos[2] = {0x54, layoutY};
-      int iconSize[2] = {this->frameWidth - 0x60, 0x18};
+      int iconSize[2] = {frameWidth - 0x60, 0x18};
       iconRow->IIconBar(this, iconPos, iconSize, 5, 5, static_cast<short>(i + 0x2bc), portAccum[i]);
-      layoutY = static_cast<short>(layoutY + 0x1c);
+      layoutY += 0x1c;
     }
   }
 
@@ -302,7 +302,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   cancelBtn->eventNumber = 0x22;
   cancelBtn->ViewEnable(1, 0);
 
-  layoutY = static_cast<short>(layoutY + 0x1e);
+  layoutY += 0x1e;
 
   TWindow* window = GetWindow();
   if (window == 0) {

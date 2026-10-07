@@ -19,13 +19,13 @@ IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 // VTABLE: IMPERIALISM 0x0065c74c
 class TZonePrimaryNeighborStretch : public stretch<TZone*> {
 public:
-  TZone** Add(TZone* zone) override; // 0x55e8e0
+  TZone** Add(TZone* zone) override;
 };
 
 // VTABLE: IMPERIALISM 0x0065c748
 class TZoneSecondaryNeighborStretch : public stretch<Province*> {
 public:
-  Province** Add(Province* entry) override; // 0x55e9c0
+  Province** Add(Province* entry) override;
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
@@ -33,61 +33,59 @@ IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 class TZone : public TObject {
 public:
   DECLARE_DYNCREATE(TZone)
-  ~TZone() override;                       // slot 0x01 vector dtor 0x562880
-  void WriteTo(TStream* stream) override;  // slot 0x05 0x55eff0
-  void ReadFrom(TStream* stream) override; // slot 0x06 0x55ed20
-  void Free() override;                    // slot 0x07 0x55ec60
-  void Vanish();                           // 0x55ecd0, Mac oracle
-  virtual void NameThyself(unsigned char* usedCityFlags,
-                           const char* overrideName);                     // slot 0x0a 0x55f780
-  virtual void AssignZoneDisplayNameToOutputRef(CString* outputRef);      // slot 0x0b 0x55f070
-  virtual void AssignZoneDisplayNameAliasToOutputRef(CString* outputRef); // slot 0x0c 0x55f090
-  virtual bool IsSeaZone();                                               // slot 0x0d 0x55e820
-  virtual bool IsPortZone();                                              // slot 0x0e 0x55e840
-  virtual bool IsProvincial();                                            // slot 0x0f 0x55e860
-  virtual bool IsFriendlyWith(NationSlot nationSlot);                     // slot 0x10 0x55e880
-  virtual bool IsEnemyOf(NationSlot nationSlot);                          // slot 0x11 0x55e8a0
-  virtual bool CanBeTargetOf(TTaskForce* force);                          // slot 0x12 0x55e8c0
-  virtual short PickPennantIngotTile();                                   // slot 0x13 0x55fe60
-  virtual short PickIngotTile();                                          // slot 0x14 0x55fef0
-  virtual short PickInvasionIngotTile(Province* contextProvince);         // slot 0x15 0x560150
-  virtual void ShowFocusIngot(unsigned char show);                        // slot 0x16 0x560580
+  ~TZone() override; // slot 0x01 vector dtor
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
+  void Vanish();
+  virtual void NameThyself(unsigned char* usedCityFlags, const char* overrideName);
+  virtual void AssignZoneDisplayNameToOutputRef(CString* outputRef);
+  virtual void AssignZoneDisplayNameAliasToOutputRef(CString* outputRef);
+  virtual bool IsSeaZone();
+  virtual bool IsPortZone();
+  virtual bool IsProvincial();
+  virtual bool IsFriendlyWith(NationSlot nationSlot);
+  virtual bool IsEnemyOf(NationSlot nationSlot);
+  virtual bool CanBeTargetOf(TTaskForce* force);
+  virtual short PickPennantIngotTile();
+  virtual short PickIngotTile();
+  virtual short PickInvasionIngotTile(Province* contextProvince);
+  virtual void ShowFocusIngot(unsigned char show);
 
   short GetContextOrdinalOrInvalid();
-  void GenerateZoneStatusCodeIfUnset(); // 0x55f5c0
-  void ReconsiderFocusIngot();          // 0x5604e0
+  void GenerateZoneStatusCodeIfUnset();
+  void ReconsiderFocusIngot();
   void AddNeighbor(TZone* zone);
   void AppendUniqueSecondaryNeighbor(Province* province);
-  bool HasNeighbor(TZone* zone);        // 0x55f320, Mac oracle
-  bool HasNeighbor(Province* province); // 0x55f3c0, Mac oracle
+  bool HasNeighbor(TZone* zone);
+  bool HasNeighbor(Province* province);
   TZone* GetSafestNearbyZoneFor(short nationSlot) const;
-  void LightDistanceRecursive(short level); // 0x560f80
-  short GetDistanceTo(TZone* other);        // 0x5610b0
+  void LightDistanceRecursive(short level);
+  short GetDistanceTo(TZone* other);
   bool IsAdjacentToCountry(short nationTag);
   int IsVisibleToCountry(short key);
   bool ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
   bool HasFreeShipsOfPlayer(int nation, bool skipField34Check);
-  void LightUp(int remainingDepth,
-               bool markAdjacentCities); // 0x560ba0
+  void LightUp(int remainingDepth, bool markAdjacentCities);
   TAdmiral* GetSeniorOfficerOf(int nation);
   void GetNavalAuthority(CString* out, short nation);
   int GetStrategicValue();
 
-  short statusCode;                             // +0x04
-  char pad06[2];                                // +0x06
-  CString displayName;                          // +0x08
-  int tileOrTerrainId;                          // +0x0c tile / terrain id storage
-  unsigned short nationKeyMask;                 // +0x10 (key mask in nation context slices)
-  short seedNationId;                           // +0x12 seed nation id arg
-  short contextOrdinal;                         // +0x14 context ordinal
-  char pad16[2];                                // +0x16
-  TZone* prev18;                                // +0x18 older in g_pMapActionContextListHead chain
-  TZone* next1c;                                // +0x1c newer link
-  short activeTileIndex;                        // +0x20 active tile index
-  char pad22[2];                                // +0x22
-  TZonePrimaryNeighborStretch primaryNeighbors; // +0x24
-  TZoneSecondaryNeighborStretch secondaryNeighbors; // +0x34
-  short distanceLevel;                              // +0x44
+  short statusCode;
+  char pad06[2];
+  CString displayName;
+  int tileOrTerrainId;          // +0x0c tile / terrain id storage
+  unsigned short nationKeyMask; // +0x10 (key mask in nation context slices)
+  short seedNationId;           // +0x12 seed nation id arg
+  short contextOrdinal;         // +0x14 context ordinal
+  char pad16[2];
+  TZone* prev18;         // +0x18 older in g_pMapActionContextListHead chain
+  TZone* next1c;         // +0x1c newer link
+  short activeTileIndex; // +0x20 active tile index
+  char pad22[2];
+  TZonePrimaryNeighborStretch primaryNeighbors;
+  TZoneSecondaryNeighborStretch secondaryNeighbors;
+  short distanceLevel;
 
   TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
@@ -118,7 +116,7 @@ ASSERT_SIZE(TZonePrimaryNeighborStretch, 0x10);
 ASSERT_SIZE(TZoneSecondaryNeighborStretch, 0x10);
 ASSERT_SIZE(TZone, 0x48);
 
-TZone* GetLastMapActionContext();                  // 0x55f0d0
-TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
+TZone* GetLastMapActionContext();
+TZone* FindMapActionContextByNodeId(short nodeId);
 
-void ResetMapActionContextActivityAndNationFlags(); // 0x560e20
+void ResetMapActionContextActivityAndNationFlags();

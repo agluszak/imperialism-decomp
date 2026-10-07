@@ -10,17 +10,17 @@ struct TQuickDrawSurfaceContext;
 // VTABLE: IMPERIALISM 0x652d60
 class TEngineerDialog : public TView {
 public:
-  TQuickDrawSurfaceContext* headerSurface;   // 0x60
-  TQuickDrawSurfaceContext* footerSurface;   // 0x64
-  TQuickDrawSurfaceContext* bodyTileSurface; // 0x68
+  TQuickDrawSurfaceContext* headerSurface;
+  TQuickDrawSurfaceContext* footerSurface;
+  TQuickDrawSurfaceContext* bodyTileSurface;
 
   TEngineerDialog();
   virtual ~TEngineerDialog() override;
 
   DECLARE_DYNCREATE(TEngineerDialog)
-  void Free() override;                 // 0x1c 0x4d05e0
-  void Draw(RECT* rectBuffer) override; // 0x110 0x4d0650
+  void Free() override;
+  void Draw(RECT* rectBuffer) override;
 
-  virtual void StuffValues(short nBuildingSlotId); // slot 0x68
+  virtual void StuffValues(short nBuildingSlotId);
 };
 ASSERT_SIZE(TEngineerDialog, 0x6c);

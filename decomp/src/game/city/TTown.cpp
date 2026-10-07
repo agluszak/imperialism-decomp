@@ -28,16 +28,16 @@ TTown::~TTown() {}
 
 // FUNCTION: IMPERIALISM 0x005b6cd0
 void TTown::ITown(const char* markerName, short tileIndex, bool enabledFlag, short ownerNation) {
-  strcpy(this->name, markerName);
+  strcpy(name, markerName);
   this->ownerNation = ownerNation;
   this->tileIndex = tileIndex;
   this->enabledFlag = enabledFlag;
-  this->activeFlag = !enabledFlag;
-  this->field16 = 0;
-  this->field18 = 0;
-  this->createdTurnTick = g_pSimMgr->GetEconomicTurn();
-  this->transportLinked = false;
-  memset(this->resourceYieldByType, 0, sizeof(this->resourceYieldByType));
+  activeFlag = !enabledFlag;
+  field16 = 0;
+  field18 = 0;
+  createdTurnTick = g_pSimMgr->GetEconomicTurn();
+  transportLinked = false;
+  memset(resourceYieldByType, 0, sizeof(resourceYieldByType));
 }
 
 // FUNCTION: IMPERIALISM 0x005b6d70
@@ -211,14 +211,14 @@ void TTown::CalculateCityResources() {
 void TTown::Grow() {
   TGreatPower* owner = g_apNationStates[ownerNation];
   TCity* city = owner != 0 ? owner->city : 0;
-  short age = static_cast<short>(g_pSimMgr->GetEconomicTurn() - createdTurnTick);
+  short age = g_pSimMgr->GetEconomicTurn() - createdTurnTick;
 
   if (age > 4 && (age & 1) == 0) {
     short rawTextile = static_cast<short>(resourceYieldByType[kResourceCotton] +
                                           resourceYieldByType[kResourceWool]);
     if (rawTextile != 0) {
       short& fabric = resourceYieldByType[kResourceFabric];
-      short capacity = static_cast<short>(city->GetBuildingType(1) / 4);
+      short capacity = city->GetBuildingType(1) / 4;
       if (fabric < capacity && fabric < rawTextile / 2) {
         ++fabric;
       }
@@ -226,7 +226,7 @@ void TTown::Grow() {
 
     if (resourceYieldByType[kResourceTimber] != 0) {
       short& lumber = resourceYieldByType[kResourceLumber];
-      short capacity = static_cast<short>(city->GetBuildingType(5) / 4);
+      short capacity = city->GetBuildingType(5) / 4;
       if (lumber < capacity && lumber < resourceYieldByType[kResourceTimber] / 2) {
         ++lumber;
       }
@@ -237,7 +237,7 @@ void TTown::Grow() {
                         ? resourceYieldByType[kResourceCoal]
                         : resourceYieldByType[kResourceIron];
       short& steel = resourceYieldByType[kResourceSteel];
-      short capacity = static_cast<short>(city->GetBuildingType(3) / 4);
+      short capacity = city->GetBuildingType(3) / 4;
       if (steel < capacity && steel < input / 2) {
         ++steel;
       }
@@ -278,9 +278,8 @@ void TTown::SetName(const char* townName) {
 
 // FUNCTION: IMPERIALISM 0x005b7830
 int TTown::IsUnblockedPort(void) const {
-  if (this->enabledFlag != 0) {
-    if (g_pGlobalMapState->HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(
-            this->tileIndex)) {
+  if (enabledFlag != 0) {
+    if (g_pGlobalMapState->HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(tileIndex)) {
       return 1;
     }
   }

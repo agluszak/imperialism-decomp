@@ -204,7 +204,7 @@ CDib* TResourceMgr::BuildIndexedBmpResourceById(short bmpId, int width, int heig
   }
   dib->EnsureDibSectionCreated(NULL);
 
-  unsigned int remaining = static_cast<unsigned int>(dib->m_pixelBytes);
+  unsigned int remaining = dib->m_pixelBytes;
   unsigned char* dest = static_cast<unsigned char*>(dib->m_dibBits);
   unsigned char value = 0;
   if (patternMode == 0) {

@@ -10,11 +10,10 @@ class TCivUnit;
 class TMiniCivView : public TControl {
 public:
   DECLARE_DYNCREATE(TMiniCivView)
-  virtual ~TMiniCivView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x004ac320
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4ac000
-  virtual void Hilite();                        // slot 0x71 0x4ab800
+  virtual ~TMiniCivView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void Hilite();
 
   // The civilian unit this row describes (stored by the second-phase init).
   TCivUnit* civUnit;

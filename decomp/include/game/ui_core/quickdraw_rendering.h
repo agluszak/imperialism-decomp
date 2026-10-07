@@ -33,7 +33,7 @@ void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex);
 
 short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text);
 short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short offset,
-                                                       short length); // 0x00494d20
+                                                       short length);
 
 void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth);
 
@@ -47,7 +47,7 @@ void SetQuickDrawTextFace(short value); // 0x00495290 (txFace)
 void SetQuickDrawTextSize(short value); // 0x00495260 (txSize)
 
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
-void __cdecl ConfigureWhiteQuickDrawPen(unsigned char widePen); // 0x0051e160
+void __cdecl ConfigureWhiteQuickDrawPen(unsigned char widePen);
 
 void HiliteColor(const RGBQUAD* color);
 

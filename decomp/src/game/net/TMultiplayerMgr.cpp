@@ -36,64 +36,64 @@
 #include "game/ImperialismApp.h"
 
 struct TurnEvent2CPacket : TimelyNetMessagePrefix {
-  short nationSlot; // +0x1c
+  short nationSlot;
   unsigned char pad1e[2];
-  int specialResourceTradeBalance;                          // +0x20
-  int aidAllocationTotal;                                   // +0x24
-  unsigned char pad28[6];                                   // +0x28
-  short militaryRecruitCountByKind[kMilitaryUnitKindCount]; // +0x2e
-  short civilianRecruitCountByKind[kCivilianUnitKindCount]; // +0x6a
-  short orderCountByType[kIndustryActionSlotCount];         // +0x7c
-  int cityRollingItemProductionScore;                       // +0x98
-  short cityFieldB4;                                        // +0x9c
-  short cityStock[kResourceKindCount];                      // +0x9e
-  short productionOrderTable[0x10];                         // +0xcc
-  short productionAccum[0x10];                              // +0xec
-  short populationGrowthPenaltyTicks;                       // +0x10c
+  int specialResourceTradeBalance;
+  int aidAllocationTotal;
+  unsigned char pad28[6];
+  short militaryRecruitCountByKind[kMilitaryUnitKindCount];
+  short civilianRecruitCountByKind[kCivilianUnitKindCount];
+  short orderCountByType[kIndustryActionSlotCount];
+  int cityRollingItemProductionScore;
+  short cityFieldB4;
+  short cityStock[kResourceKindCount];
+  short productionOrderTable[0x10];
+  short productionAccum[0x10];
+  short populationGrowthPenaltyTicks;
   unsigned char pad10e[2];
-  int orderAccumulatedValues[0x17]; // +0x110
-  short popFieldAt8;                // +0x16c
+  int orderAccumulatedValues[0x17];
+  short popFieldAt8;
   unsigned char pad16e[2];
-  float popFieldAtC;       // +0x170 — mirrors TPopulationMgr::populationCountFloat
-  short popStockLevel;     // +0x174
-  short popExtraAt1e;      // +0x176
-  short popFieldAt20;      // +0x178
-  short popBucketWords[9]; // +0x17a - baseline/production/pendingDelta valueAt4/6/8
-}; // total 0x18c
+  float popFieldAtC; // mirrors TPopulationMgr::populationCountFloat
+  short popStockLevel;
+  short popExtraAt1e;
+  short popFieldAt20;
+  short popBucketWords[9]; // baseline/production/pendingDelta valueAt4/6/8
+};
 
 struct TurnEvent19Packet : TimelyNetMessagePrefix {
-  short nationSlot;                                 // +0x1c
-  short transportCapacity;                          // +0x1e
-  short orderCountByType[kIndustryActionSlotCount]; // +0x20
-  short externalStateByTarget[0x17];                // +0x3c
-  short metricBySlot7C[0x11];                       // +0x6a
-  short diplomacyPolicyByNation[kNationSlotCount];  // +0x8c
-  short diplomacyGrantByNation[kNationSlotCount];   // +0xba
-  short tradePolicyByNation[kNationSlotCount];      // +0xe8
-  unsigned char pad116[2];                          // total 0x118
+  short nationSlot;
+  short transportCapacity;
+  short orderCountByType[kIndustryActionSlotCount];
+  short externalStateByTarget[0x17];
+  short metricBySlot7C[0x11];
+  short diplomacyPolicyByNation[kNationSlotCount];
+  short diplomacyGrantByNation[kNationSlotCount];
+  short tradePolicyByNation[kNationSlotCount];
+  unsigned char pad116[2];
 };
 
 // Turn-event-0x15 payload: the sender nation's full diplomacy need-state block.
 struct TurnEvent15Packet : TimelyMessageHeader {
-  short nationSlot; // +0x18
+  short nationSlot;
   unsigned char pad1a[2];
-  int treasuryValue;                                  // +0x1c
-  int grantTotalCost;                                 // +0x20
-  short needCurrentByType[kResourceKindCount];        // +0x24
-  short needTargetByType[kResourceKindCount];         // +0x52
-  short relationDeltaCurrent[0x17];                   // +0x80
-  short purchasedItemsByResource[kResourceKindCount]; // +0xae
-  short itemPotentials[kResourceKindCount];           // +0xdc
+  int treasuryValue;
+  int grantTotalCost;
+  short needCurrentByType[kResourceKindCount];
+  short needTargetByType[kResourceKindCount];
+  short relationDeltaCurrent[0x17];
+  short purchasedItemsByResource[kResourceKindCount];
+  short itemPotentials[kResourceKindCount];
   unsigned char pad10a[2];
-  int aidAllocationMatrix[0x170]; // +0x10c
-  int budgetPoolBase;             // +0x6cc
-  int budgetPoolDelta;            // +0x6d0
-  int diplomacyBudgetBase;        // +0x6d4
-  signed char escalationCounter;  // +0x6d8
+  int aidAllocationMatrix[0x170];
+  int budgetPoolBase;
+  int budgetPoolDelta;
+  int diplomacyBudgetBase;
+  signed char escalationCounter;
   unsigned char pad6d9[3];
-  int pendingCommitmentCost;   // +0x6dc
-  signed char pressureCounter; // +0x6e0
-  unsigned char pad6e1[3];     // total 0x6e4
+  int pendingCommitmentCost;
+  signed char pressureCounter;
+  unsigned char pad6e1[3];
 };
 #include "game/nation/TGreatPower.h"
 #include "game/map/TMapMgr.h"
@@ -164,109 +164,109 @@ struct TurnEvent12Packet : TimelyMessageHeader {
 };
 
 struct TurnEventCKickMessagePacket : TimelyMessageHeader {
-  char messageText[0x100];           // +0x18
-  unsigned char targetNationBitmask; // +0x118 - 1 << slot per addressed nation
+  char messageText[0x100];
+  unsigned char targetNationBitmask; // 1 << slot per addressed nation
   signed char kickerNationId;        // +0x119 + 1 = no specific kicker
-  unsigned char pad11a[2];           // total 0x11c
+  unsigned char pad11a[2];
 };
 
 // Event-0x11 masked byte/word/dword poke into one of the two global map tables.
 struct TurnEvent11MapPokePacket : TimelyMessageHeader {
-  signed char pokeWidthCode; // +0x18 - 1 byte / 2 word / 4 dword
+  signed char pokeWidthCode; // 1 byte / 2 word / 4 dword
   unsigned char pad19[3];
-  int bufferSelector; // +0x1c - 0 terrainStateTable, 1 cityScoreTable, else null base
-  int byteOffset;     // +0x20 - raw byte offset into the selected table
-  short pokeValue;    // +0x24
-  short pokeMask;     // +0x26, total 0x28
+  int bufferSelector; // 0 terrainStateTable, 1 cityScoreTable, else null base
+  int byteOffset;     // raw byte offset into the selected table
+  short pokeValue;
+  short pokeMask;
 };
 
 struct TurnEvent20TreatyNewsPacket : TimelyMessageHeader {
-  short eventKind;     // +0x18 InterNationEventKind
-  signed char nationA; // +0x1a
-  signed char nationB; // +0x1b
+  short eventKind; // +0x18 InterNationEventKind
+  signed char nationA;
+  signed char nationB;
 };
 ASSERT_SIZE(TurnEvent20TreatyNewsPacket, 0x1c);
 struct TurnEvent21ShortageNewsPacket : TimelyMessageHeader {
-  signed char subjectNation;  // +0x18
-  signed char affectedNation; // +0x19
-  signed char relatedNation;  // +0x1a
+  signed char subjectNation;
+  signed char affectedNation;
+  signed char relatedNation;
   unsigned char pad1b;
 };
 ASSERT_SIZE(TurnEvent21ShortageNewsPacket, 0x1c);
 struct TurnEvent22MiscNewsPacket : TimelyMessageHeader {
-  signed char nationSlotOrAll; // +0x18
+  signed char nationSlotOrAll;
   unsigned char pad19;
-  short storyCode; // +0x1a
+  short storyCode;
 };
 ASSERT_SIZE(TurnEvent22MiscNewsPacket, 0x1c);
 
 // Event-0x1A nation action + per-nation counterA2 words.
 struct TurnEvent1ANationActionPacket : TimelyNetMessagePrefix {
-  short respondingNation;   // +0x1c
-  short offeringNation;     // +0x1e
-  short proposedAmount;     // +0x20
-  short maxAmount;          // +0x22
-  short commodityType;      // +0x24
-  short counterA2BySlot[7]; // +0x26, total 0x34
+  short respondingNation;
+  short offeringNation;
+  short proposedAmount;
+  short maxAmount;
+  short commodityType;
+  short counterA2BySlot[7];
 };
 
 // Event-0x1B one tracked-slot entry.
 struct TurnEvent1BDealBookEntryPacket : TimelyNetMessagePrefix {
-  short nationSlot;       // +0x1c
-  short trackedKind;      // +0x1e
-  short targetNation;     // +0x20
-  short trackedValue;     // +0x22
-  short trackedSlotIndex; // +0x24
+  short nationSlot;
+  short trackedKind;
+  short targetNation;
+  short trackedValue;
+  short trackedSlotIndex;
   unsigned char pad26[2];
-  int trackedPayload; // +0x28, total 0x2c
+  int trackedPayload;
 };
 
 // Event-0x1C trade deal result.
 struct TurnEvent1CDealResultPacket : TimelyNetMessagePrefix {
-  short sourceNation;  // +0x1c
-  short targetNation;  // +0x1e
-  short maximumAmount; // +0x20
-  short commodityType; // +0x22
-  short amount;        // +0x24
-  short shortfallFlag; // +0x26
+  short sourceNation;
+  short targetNation;
+  short maximumAmount;
+  short commodityType;
+  short amount;
+  short shortfallFlag;
 };
 ASSERT_SIZE(TurnEvent1CDealResultPacket, 0x28);
 
 // Event-0x1E diplomacy relation action.
 struct TurnEvent1EDiplomacyActionPacket : TimelyNetMessagePrefix {
-  signed char nation;     // +0x1c
-  signed char nationA1D;  // +0x1d
-  signed char nationB1E;  // +0x1e
-  char actionCode;        // +0x1f - 'a' or 'i'
-  unsigned char flag20;   // +0x20 - role-swap selector
-  unsigned char flag21;   // +0x21 - gate for the slot-0x284 paths
-  unsigned char pad22[2]; // total 0x24
+  signed char nation;
+  signed char nationA1D;
+  signed char nationB1E;
+  char actionCode;      // +0x1f - 'a' or 'i'
+  unsigned char flag20; // role-swap selector
+  unsigned char flag21; // gate for the slot-0x284 paths
+  unsigned char pad22[2];
 };
 
 // Event-0x24 one city-score record (receive side: the 0xa8-byte record is contiguous).
 struct TurnEvent24CityRecordPacket : TimelyNetMessagePrefix {
-  short cityRecordIndex; // +0x1c
+  short cityRecordIndex;
   unsigned char pad1e[2];
-  Province record; // +0x20
+  Province record;
 };
 ASSERT_SIZE(TurnEvent24CityRecordPacket, 0xc8);
 ASSERT_OFFSET(TurnEvent24CityRecordPacket, record, 0x20);
 
 // Event-0x27 join-empire dispatch.
 struct TurnEvent27JoinEmpirePacket : TimelyMessageHeader {
-  int terrainSlot;      // +0x18 - index into g_apTerrainTypeDescriptorTable
-  int targetNationSlot; // +0x1c
-  int mode;             // +0x20, total 0x24
+  int terrainSlot; // index into g_apTerrainTypeDescriptorTable
+  int targetNationSlot;
+  int mode;
 };
 
 // Events 0x29/0x2A tactical battle commands by fourcc tag.
 struct TacticalCommandPacket : TimelyMessageHeader {
   int commandTag; // +0x18 'sele'/'move'/'mine'/'digg'/'depl'/'raly' (0x29), 'fire' (0x2a)
-  int unitId;     // +0x1c - resolved via SeekLinkedListCursorByNestedId
-  int arg20;      // +0x20
-  int arg24;      // +0x24
-  int arg28;      // +0x28 ('fire' only)
-  int arg2C;      // +0x2c ('fire' only), total 0x30
+  int unitId;     // resolved via SeekLinkedListCursorByNestedId
+  int arg20;
+  int arg24;
+  int arg28; // +0x28 ('fire' only)
+  int arg2C; // total 0x30
 };
 
 // FUNCTION: IMPERIALISM 0x00543280
@@ -1637,7 +1637,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     }
     case kControlTagQuit:   // 'quit'
     case kControlTagNewg: { // 'newg' - session ending: optional notice, then close or restart
-      unsigned char restartFlag = static_cast<unsigned char>(gameState->controlValue);
+      unsigned char restartFlag = gameState->controlValue;
       bool clientSessionQuit = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
       if (clientSessionQuit) {
         CString messageQuit;
@@ -2234,7 +2234,7 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
 void TMultiplayerMgr::ReceiveStreamMessage(NetMessage* packet) {
   g_nSaveFormatVersion = kSessionTagNetX;
 
-  unsigned long packetBytes = static_cast<unsigned long>(packet->messageLength);
+  unsigned long packetBytes = packet->messageLength;
   HGLOBAL packetBlock = ::GlobalAlloc(GMEM_MOVEABLE, packetBytes);
   void* blockBytes = ::GlobalLock(packetBlock);
   memmove(blockBytes, packet, packetBytes);

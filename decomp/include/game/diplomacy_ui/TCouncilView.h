@@ -9,12 +9,11 @@ public:
   DECLARE_DYNCREATE(TCouncilView)
 
   TCouncilView();
-  virtual ~TCouncilView() override; // slot 0x01 (scalar deleting destructor 0x430660)
+  virtual ~TCouncilView() override;
 
-  void DoEvent(int commandId, TEventHandler* sourceHandler,
-               TEvent* event) override; // slot 0x0f 0x4fbd60
+  void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                           RgnHandle hitArg) override; // slot 0x35
+                                                           RgnHandle hitArg) override;
   void DoPostCreate(int arg) override;
 
   void DisplayStats();
@@ -23,8 +22,8 @@ public:
 
   void NextTick();
 
-  short councilNationCount; // +0x24c8 — compared (+2) against visibleVoteTier on hover
-  short tickerSlots[10];    // +0x24ca — zeroed by the slot-0x37 rebuild
+  short councilNationCount; // compared (+2) against visibleVoteTier on hover
+  short tickerSlots[10];    // zeroed by the slot-0x37 rebuild
   short pad24de;
 };
 

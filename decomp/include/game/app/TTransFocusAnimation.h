@@ -19,14 +19,14 @@ public:
   // FUNCTION: IMPERIALISM 0x004a0460
   virtual ~TTransFocusAnimation() override {}
 
-  virtual void Free() override;                       // slot 7 / 0x1c
-  virtual void DrawNextFrame(POINT* offset) override; // slot 11 / 0x2c 0x4a0810
-  virtual void IdleDraw() override;                   // slot 13 / 0x34 0x4a0770
+  virtual void Free() override;
+  virtual void DrawNextFrame(POINT* offset) override;
+  virtual void IdleDraw() override;
 
   // TTransFocusAnimation-introduced virtual (past TFocusAnimation's own slots).
-  virtual void UpdateBackground(); // slot 0x3c 0x4a05c0
+  virtual void UpdateBackground();
 
-  TQuickDrawSurfaceContext* transientSurfaceContext; // 0x30 — offscreen scratch surface
-  TQuickDrawSurfaceContext* insetBitmapSurface;      // 0x34 — bitmap resource f0c's surface
+  TQuickDrawSurfaceContext* transientSurfaceContext; // offscreen scratch surface
+  TQuickDrawSurfaceContext* insetBitmapSurface;      // bitmap resource f0c's surface
 };
 ASSERT_SIZE(TTransFocusAnimation, 0x38);

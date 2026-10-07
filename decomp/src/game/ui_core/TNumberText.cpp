@@ -12,30 +12,30 @@ IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 // FUNCTION: IMPERIALISM 0x00491060
 void TNumberText::INumberText(TView* panel, int* offsetLayout, int* sizeLayout, int value,
                               int minimumValue, int maximumValue) {
-  this->IStaticText(panel, offsetLayout, sizeLayout, 5, 5, -1, 0);
-  this->maxCharacterCount = 0xff;
-  this->SetEnable(1);
+  IStaticText(panel, offsetLayout, sizeLayout, 5, 5, -1, 0);
+  maxCharacterCount = 0xff;
+  SetEnable(1);
   this->maximumValue = maximumValue;
   this->minimumValue = minimumValue;
-  this->SetControlValue(value, 0);
+  SetControlValue(value, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004910e0
 void TNumberText::SetControlValue(int val, int refresh) {
-  this->value = val;
+  value = val;
   CString formatted;
   formatted.Format("%d", val);
-  this->InitDialogWindowAndSyncTitleIfChanged(&formatted, refresh);
+  InitDialogWindowAndSyncTitleIfChanged(&formatted, refresh);
 }
 
 // FUNCTION: IMPERIALISM 0x004911c0
 int TNumberText::UpdateControlCachedIntFromWindowText() {
-  if (this->editWindow != NULL) {
+  if (editWindow != NULL) {
     CString textVal;
-    this->editWindow->GetWindowText(textVal);
-    this->value = atoi(textVal);
+    editWindow->GetWindowText(textVal);
+    value = atoi(textVal);
   }
-  return this->value;
+  return value;
 }
 
 // FUNCTION: IMPERIALISM 0x00491260
@@ -48,11 +48,11 @@ void TEditText::CopyEditTextStateFromSource(TEditText* source) {
 
 // FUNCTION: IMPERIALISM 0x004912b0
 TObject* TNumberText::ShallowClone() {
-  TObject* cloned = this->ShallowFree();
+  TObject* cloned = ShallowFree();
   TNumberText* dest = static_cast<TNumberText*>(cloned);
   dest->CopyViewStateFromSource(this);
-  dest->editWindow = this->editWindow;
-  dest->editFont = this->editFont;
-  dest->maxCharacterCount = this->maxCharacterCount;
+  dest->editWindow = editWindow;
+  dest->editFont = editFont;
+  dest->maxCharacterCount = maxCharacterCount;
   return cloned;
 }

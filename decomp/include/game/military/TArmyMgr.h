@@ -15,24 +15,24 @@ class TArmyStack;
 struct TextStyle;
 
 struct MapContextActionRecord {
-  unsigned char nationIds[2];              // +0x00
-  unsigned char reportParticipantIndex;    // +0x02
-  unsigned char displayedParticipantIndex; // +0x03, serialized
-  MapContextReportKindStorage reportKind;  // +0x04
-  void* location;                          // +0x08
+  unsigned char nationIds[2];
+  unsigned char reportParticipantIndex;
+  unsigned char displayedParticipantIndex; // serialized
+  MapContextReportKindStorage reportKind;
+  void* location;
   // LAYOUT: +0x0c..+0x257 match the per-side tail of MapOrderBattleSnapshot.
-  CStr32 nameBuffer[2];    // +0x0c/+0x2c
-  CStr255 overlayLabel[2]; // +0x4c/+0x14b
-  short childCount[2];     // +0x24a/+0x24c
+  CStr32 nameBuffer[2];
+  CStr255 overlayLabel[2];
+  short childCount[2];
   unsigned char pad24e[2]; // +0x24e (alignment pad before the pointer array)
   // Owned per-side arrays, released by CleanUpStacks.
-  MapOrderBattleSideChildRecord* sideChildRecords[2]; // +0x250/+0x254
-  int markerPixelX;                                   // +0x258
-  int markerPixelY;                                   // +0x25c
-  bool placedFlag;                                    // +0x260
-  unsigned char pad261;                               // +0x261
-  short markerSpriteCode;                             // +0x262
-  short listOrdinal;                                  // +0x264
+  MapOrderBattleSideChildRecord* sideChildRecords[2];
+  int markerPixelX;
+  int markerPixelY;
+  bool placedFlag;
+  unsigned char pad261;
+  short markerSpriteCode;
+  short listOrdinal;
   unsigned char pad266[0x268 - 0x266];
 
   ~MapContextActionRecord() {
@@ -40,47 +40,41 @@ struct MapContextActionRecord {
     delete[] sideChildRecords[1];
   }
 
-  void ReadFrom(TStream* stream); // 0x4a13c0
-  void WriteTo(TStream* stream);  // 0x4a1640
+  void ReadFrom(TStream* stream);
+  void WriteTo(TStream* stream);
 };
 
 // VTABLE: IMPERIALISM 0x0064c928
 class TArmyMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TArmyMgr)
-  virtual ~TArmyMgr() override;                    // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4a1dd0
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a1b80
-  virtual void Free() override;                    // slot 0x07 0x4a1a00
+  virtual ~TArmyMgr() override;
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual void Free() override;
   // Retail Mac identities, confirmed against the Windows call chain and bodies.
-  virtual void DoCombatMoves(); // slot 0x0a 0x4a1e40
-  virtual void FormStacks();    // slot 0x0b 0x4a1f80
+  virtual void DoCombatMoves();
+  virtual void FormStacks();
   // Moves or fights each pending stack from nextStackOrdinal until a battle view opens.
-  virtual void ResolveNextMove();                            // slot 0x0c 0x4a2390
-  virtual void ClearPendingStacksAndFinalizeMilitaryUnits(); // slot 0x0d 0x4a2500
+  virtual void ResolveNextMove();
+  virtual void ClearPendingStacksAndFinalizeMilitaryUnits();
   // Splits the stack into our and enemy units; relocates peacefully or opens a battle.
-  virtual bool ResolveConflict(TArmyStack* stack,
-                               short ownerNationCode); // slot 0x0e 0x4a3200
+  virtual bool ResolveConflict(TArmyStack* stack, short ownerNationCode);
   // Retreats the stack's movable units to a random adjacent friendly region.
-  virtual void RetreatDefender(TArmyStack* stack,
-                               short tileIndex);   // slot 0x0f 0x4a35e0
-  virtual void RetreatAttacker(TArmyStack* stack); // slot 0x10 0x4a37b0
-  virtual bool StrategicCombat(TArmyStack* stack1,
-                               TArmyStack* stack2); // slot 0x11 0x4a3830
-  virtual void DoOwnershipChanges();                // slot 0x12 0x4a3bc0
+  virtual void RetreatDefender(TArmyStack* stack, short tileIndex);
+  virtual void RetreatAttacker(TArmyStack* stack);
+  virtual bool StrategicCombat(TArmyStack* stack1, TArmyStack* stack2);
+  virtual void DoOwnershipChanges();
   // tileActionCode 1/4 selects a unit (slot 0x14); 7 commits the action cost (slot 0x15).
-  virtual void OrderArmies(int contextArg,
-                           short tileActionCode); // slot 0x13 0x4a3d90
+  virtual void OrderArmies(int contextArg, short tileActionCode);
   // contextArg is the TUnit::SetOrders payload; returns whether a unit was commanded.
-  virtual bool MoveArmies(int contextArg); // slot 0x14 0x4a3e50
+  virtual bool MoveArmies(int contextArg);
   // Returns whether the tile's move cost was affordable and committed.
-  virtual bool DeploySelectedArmies(int contextArg); // slot 0x15 0x4a3f30
-  virtual void OrderSelectedArmies(int mode);        // slot 0x16 0x4a4260
-  virtual bool HandleMapClickByComputedCursorState(short tileIndex,
-                                                   short mode); // slot 0x17 0x4a4870
+  virtual bool DeploySelectedArmies(int contextArg);
+  virtual void OrderSelectedArmies(int mode);
+  virtual bool HandleMapClickByComputedCursorState(short tileIndex, short mode);
   // Civilian-cursor counterpart of HandleMapClickByComputedCursorState.
-  virtual bool HandleMapClickByCivilianCursorState(short tileIndex,
-                                                   short mode); // slot 0x18 0x4a4ad0
+  virtual bool HandleMapClickByCivilianCursorState(short tileIndex, short mode);
 
   // ABI: thiscall on the singleton; the body ignores `this`.
   int GetLandForceIn(int nodeIndex);
@@ -136,9 +130,8 @@ public:
   short Cycle(short nationId);
 
   // ABI: thiscall on the singleton; the bodies ignore `this`.
-  unsigned short LookupMapCursorTokenByStateIndex(short tileIndex, short mode); // 0x4a4930
-  unsigned short LookupCivilianMapCursorTokenByStateIndex(short tileIndex,
-                                                          short mode); // 0x4a4aa0
+  unsigned short LookupMapCursorTokenByStateIndex(short tileIndex, short mode);
+  unsigned short LookupCivilianMapCursorTokenByStateIndex(short tileIndex, short mode);
 
   // Civilian counterpart of ComputeMapCursorStateIndex.
   int GetTileSelection(short tileIndex, short mode);
@@ -154,7 +147,7 @@ public:
 
   void CheckForDrownedUnits(char nationId, int cityIndex, struct MapOrderBattleSnapshot* snapshot);
 
-  bool HasBattlesToReport() const; // Mac oracle; 0x4a6dd0
+  bool HasBattlesToReport() const;
 
   void CleanUpStacks();
 

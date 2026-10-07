@@ -9,8 +9,8 @@
 class TTradeScreenPicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TTradeScreenPicture)
-  virtual ~TTradeScreenPicture() override;      // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5ba7a0
+  virtual ~TTradeScreenPicture() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   TTradeScreenPicture();
 };

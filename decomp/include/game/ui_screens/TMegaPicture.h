@@ -7,20 +7,16 @@
 class TMegaPicture : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(TMegaPicture)
-  virtual ~TMegaPicture() override;             // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;                 // slot 0x07 0x573650
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x573270
-  virtual void
-  SetPictureRsrcID(short nPictureId,
-                                 unsigned char fRefreshNow) override; // slot 0x72 0x573430
-  virtual void ClearModeBits(unsigned short mask, char useAndMask,
-                                                     char refreshNow); // slot 0x74 0x5736c0
+  virtual ~TMegaPicture() override;
+  virtual void Free() override;
+  virtual void Draw(RECT* rectBuffer) override;
+  virtual void SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) override;
+  virtual void ClearModeBits(unsigned short mask, char useAndMask, char refreshNow);
   // Overwrites modeFlags wholesale, then optionally refreshes.
-  virtual void SetMode(unsigned short value,
-                                            bool refreshNow); // slot 0x75 0x573690
+  virtual void SetMode(unsigned short value, bool refreshNow);
   struct TQuickDrawSurfaceContext* surfaceContext; // +0x94 the picture's own bitmap
   unsigned short modeFlags; // +0x98 bit0 = transparent-blit + opaque-fill-first, bit2 =
-                          // use contentSubRect instead of the full passed-in rect
+                            // use contentSubRect instead of the full passed-in rect
   unsigned char pad9a[2];
   CRect contentSubRect; // +0x9c cached content sub-rect (used when modeFlags & 4)
 

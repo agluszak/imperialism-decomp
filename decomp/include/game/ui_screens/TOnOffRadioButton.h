@@ -9,11 +9,9 @@
 class TOnOffRadioButton : public TPictureButton {
 public:
   DECLARE_DYNCREATE(TOnOffRadioButton)
-  virtual ~TOnOffRadioButton() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x00571a80
-  virtual void SetState(bool on,
-                        bool drawImmediate); // slot 0x74 0x571b20
+  virtual ~TOnOffRadioButton() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void SetState(bool on, bool drawImmediate);
 
   TOnOffRadioButton();
 

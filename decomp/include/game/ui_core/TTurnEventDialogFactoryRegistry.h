@@ -11,18 +11,14 @@ typedef TView*(__cdecl* TurnEventDialogFactoryProc)(CWnd* pHostWindow, int nEven
 // VTABLE: IMPERIALISM 0x0064b2e8
 class TTurnEventDialogFactoryRegistry : public TObject {
 public:
-  virtual ~TTurnEventDialogFactoryRegistry()
-      override; // slot 0x01 0x491b10 (scalar deleting destructor)
+  virtual ~TTurnEventDialogFactoryRegistry() override;
 
-  virtual TView* ResolveDialogNodeByMessageContext(TurnEventId messageContext,
-                                                   int contextSlot); // slot 0x0a 0x491c80
+  virtual TView* ResolveDialogNodeByMessageContext(TurnEventId messageContext, int contextSlot);
   virtual TView* InvokeDialogFactoryFromPacket(int nContextId, TView* pEventPacket,
-                                               TurnEventId nEventCode,
-                                               const CPoint& anchorPoint); // slot 0x0b 0x491d80
-  virtual TView*
-  RunRegisteredDialogFactoriesByEventCode(int nContextId, TView* pEventPacket,
-                                          TurnEventId nEventCode,
-                                          const CPoint& anchorPoint); // slot 0x0c 0x491cc0
+                                               TurnEventId nEventCode, const CPoint& anchorPoint);
+  virtual TView* RunRegisteredDialogFactoriesByEventCode(int nContextId, TView* pEventPacket,
+                                                         TurnEventId nEventCode,
+                                                         const CPoint& anchorPoint);
 
   TTurnEventDialogFactoryRegistry();
   void RegisterDialogFactoryCallback(TurnEventDialogFactoryProc factory);

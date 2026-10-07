@@ -9,7 +9,7 @@
 class TPictureText : public TStaticText {
 public:
   DECLARE_DYNCREATE(TPictureText)
-  virtual ~TPictureText() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TPictureText() override;
 
   TPictureText();
 };

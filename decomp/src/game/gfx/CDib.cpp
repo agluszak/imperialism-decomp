@@ -1098,7 +1098,7 @@ int CDib::BuildMonochromeOutlineMaskInPlace() {
   memset(outline, 0, m_pixelBytes);
 
   for (int offset = 0; offset < byteCount; ++offset) {
-    unsigned char outside = static_cast<unsigned char>(~pixels[offset]);
+    unsigned char outside = ~pixels[offset];
     if (offset - rowStride >= 0) {
       outline[offset] =
           static_cast<unsigned char>(outline[offset] | (pixels[offset - rowStride] & outside));

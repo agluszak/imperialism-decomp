@@ -31,7 +31,7 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   if (commandId >= 100 && commandId <= 0x65) {
     short nationId = g_pSimMgr->GetPlayerCountry();
     TGreatPower* nation = g_apNationStates[nationId];
-    int metricSlot = static_cast<int>(resourceMetricSlot);
+    int metricSlot = resourceMetricSlot;
     short targetAmount;
     short currentAmount;
     if (metricSlot == 0) {

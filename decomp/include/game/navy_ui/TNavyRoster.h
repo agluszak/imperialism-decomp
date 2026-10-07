@@ -12,9 +12,9 @@ class TTaskForce;
 class TNavyRoster : public TMilitaryPageView {
 public:
   DECLARE_DYNCREATE(TNavyRoster)
-  virtual ~TNavyRoster() override;                 // slot 0x01 (scalar deleting destructor)
-  virtual void Close() override;                   // slot 0x28 0x564fe0
-  virtual void StuffValues(TTaskForce* taskForce); // slot 0x6e 0x564dc0
+  virtual ~TNavyRoster() override;
+  virtual void Close() override;
+  virtual void StuffValues(TTaskForce* taskForce);
 
   TNavyRoster();
 

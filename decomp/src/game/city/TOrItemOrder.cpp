@@ -17,7 +17,7 @@ void TOrItemOrder::IOrItemOrder(TCity* city, short resourceType, short primaryIn
 // FUNCTION: IMPERIALISM 0x004b58f0
 short TOrItemOrder::MaxOrder() {
   short currentQuantity = quantity;
-  short workforceLimit = static_cast<short>(productionSummary->strength / 2 + currentQuantity);
+  short workforceLimit = productionSummary->strength / 2 + currentQuantity;
   short availableResources = trackingSlots[secondaryInputResourceId];
   availableResources =
       static_cast<short>(availableResources + trackingSlots[primaryInputResourceId]);
@@ -25,9 +25,9 @@ short TOrItemOrder::MaxOrder() {
       static_cast<short>(availableResources + ownerCity->stockByType[secondaryInputResourceId]);
   availableResources =
       static_cast<short>(availableResources + ownerCity->stockByType[primaryInputResourceId]);
-  short resourceLimit = static_cast<short>(availableResources / 2);
+  short resourceLimit = availableResources / 2;
   short productionLimit = ownerCity->productionAccum[productionSlot];
-  productionLimit = static_cast<short>(productionLimit + currentQuantity);
+  productionLimit += currentQuantity;
 
   limitingConstraint = kProductionOrderLimitCapacity;
   short limit = productionLimit;
@@ -44,7 +44,7 @@ short TOrItemOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b5990
 bool TOrItemOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - this->quantity);
+  short delta = quantity - this->quantity;
   if (!TProductionOrder::SetQuantity(quantity)) {
     return false;
   }
@@ -67,13 +67,13 @@ bool TOrItemOrder::SetQuantity(short quantity) {
   }
 
   if (primaryAvailable < primaryChange) {
-    short shortfall = static_cast<short>(primaryChange - primaryAvailable);
-    primaryChange = static_cast<short>(primaryChange - shortfall);
-    secondaryChange = static_cast<short>(secondaryChange + shortfall);
+    short shortfall = primaryChange - primaryAvailable;
+    primaryChange -= shortfall;
+    secondaryChange += shortfall;
   } else if (secondaryAvailable < secondaryChange) {
-    short shortfall = static_cast<short>(secondaryChange - secondaryAvailable);
-    secondaryChange = static_cast<short>(secondaryChange - shortfall);
-    primaryChange = static_cast<short>(primaryChange + shortfall);
+    short shortfall = secondaryChange - secondaryAvailable;
+    secondaryChange -= shortfall;
+    primaryChange += shortfall;
   }
   if (delta < 0) {
     primaryChange = static_cast<short>(-primaryChange);
@@ -91,7 +91,7 @@ bool TOrItemOrder::SetQuantity(short quantity) {
   trackingSlots[secondaryInputResourceId] =
       static_cast<short>(trackingSlots[secondaryInputResourceId] + secondaryChange);
 
-  short workforceChange = static_cast<short>(delta * 2);
+  short workforceChange = delta * 2;
   productionSummary->strength = static_cast<short>(productionSummary->strength - workforceChange);
   reservedWorkforce = static_cast<short>(reservedWorkforce + workforceChange);
   ownerCity->productionAccum[productionSlot] =

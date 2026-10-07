@@ -5,7 +5,7 @@
 #include <mmsystem.h>
 
 struct TCdAudioDevice {
-  MCIDEVICEID m_deviceId; // 0x00
+  MCIDEVICEID m_deviceId;
 
   TCdAudioDevice() {
     ResetAndOpenCdAudioDeviceHandle();
@@ -17,15 +17,15 @@ struct TCdAudioDevice {
   void ApplyMciPlaybackRangeFromAudioManager(int trackIndex);
   void ResetAndOpenCdAudioDeviceHandle();
   void CloseDevice();
-  void CloseDeviceAndClearHandle(); // 0x0047cd30
+  void CloseDeviceAndClearHandle();
   void EnsureCdAudioDeviceHandleInitialized();
   void StopPlayback();
   int ApplyAuxOutputVolumeFromScalar(int scalar);
   BOOL IsPlaybackActive();
-  int GetAuxOutputVolume();             // 0x0047cda0
-  unsigned int GetMediaPresent() const; // 0x0047ce10
-  unsigned int GetCurrentTrack() const; // 0x0047ce30
-  unsigned int GetTrackCount() const;   // 0x0047ce50
+  int GetAuxOutputVolume();
+  unsigned int GetMediaPresent() const;
+  unsigned int GetCurrentTrack() const;
+  unsigned int GetTrackCount() const;
 };
 
 int __stdcall SetAuxOutputVolumeFromScalar(int scalar);

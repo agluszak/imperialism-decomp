@@ -9,11 +9,11 @@ class TOneTimeAnimation : public TAnimation {
 public:
   DECLARE_DYNCREATE(TOneTimeAnimation)
   // FUNCTION: IMPERIALISM 0x0049fd20
-  virtual ~TOneTimeAnimation() override {} // slot 0x01 (scalar deleting destructor); dtor 0x49fd20
+  virtual ~TOneTimeAnimation() override {}
 
-  virtual void Tick() override; // slot 0x0a 0x49fde0
+  virtual void Tick() override;
 
-  bool completeFlag; // 0x2c — set once all frames have played (stops the modal pump)
+  bool completeFlag; // set once all frames have played (stops the modal pump)
   char pad2d[3];
 
   void InitializeOneTimeAnimation(TView* view, RECT* rect, short frameCountArg, short effectId,

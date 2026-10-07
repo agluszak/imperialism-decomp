@@ -90,7 +90,7 @@ void TCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* even
 
 // FUNCTION: IMPERIALISM 0x00491770
 int TCluster::GetCurrentChoice() {
-  return this->selectedChildTag;
+  return selectedChildTag;
 }
 
 // FUNCTION: IMPERIALISM 0x00491790
@@ -116,6 +116,6 @@ void TCluster::SetCurrentChoice(int childTag) {
 TObject* TCluster::ShallowClone() {
   TCluster* clone = static_cast<TCluster*>(ShallowFree());
   clone->CopyViewStateFromSource(this);
-  clone->selectedChildTag = this->selectedChildTag;
+  clone->selectedChildTag = selectedChildTag;
   return clone;
 }

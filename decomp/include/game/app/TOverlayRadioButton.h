@@ -9,13 +9,13 @@ public:
   DECLARE_DYNCREATE(TOverlayRadioButton)
 
   TOverlayRadioButton();
-  virtual ~TOverlayRadioButton() override; // slot 0x01 (scalar deleting destructor 0x453830)
+  virtual ~TOverlayRadioButton() override;
 
-  void Draw(RECT* rectBuffer) override; // slot 0x44 0x4cab10
+  void Draw(RECT* rectBuffer) override;
 
-  TQuickDrawSurfaceContext* overlaySurfaceContext; // +0x98 — 0 when no overlay attached
-  RECT overlaySrcRect;                             // +0x9c
-  RECT overlayDstRect;                             // +0xac
+  TQuickDrawSurfaceContext* overlaySurfaceContext; // 0 when no overlay attached
+  RECT overlaySrcRect;
+  RECT overlayDstRect;
 };
 
 ASSERT_SIZE(TOverlayRadioButton, 0xbc);

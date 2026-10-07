@@ -1,7 +1,7 @@
 #pragma once
 #include "game/globals/global_types.h"
 
-extern POINT g_ptCityInteriorMinisterModalMessage; // @ 0x6a2c18
+extern POINT g_ptCityInteriorMinisterModalMessage;
 
 extern short g_cityProductionReserveByPolicyBand[4];
 
@@ -17,7 +17,7 @@ extern short g_cityBuildingSoundCueOffsets[16];
 
 extern "C" {
 // Horizontal inset of each ship icon inside its eight shipyard queue buttons.
-extern short g_shipyardQueueIconLeftBySlot[8]; // @ 0x696508
+extern short g_shipyardQueueIconLeftBySlot[8];
 
 extern float g_AiDevelopmentResourceBudgetScale;
 

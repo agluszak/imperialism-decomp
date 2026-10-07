@@ -48,8 +48,8 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
   ResolveUiThemeColor(0x2b68, &styleForeground);
 
   g_pSimMgr->GetString(0x2733, 0x20, &labelText);
-  short headerX = static_cast<short>(0x48 - ownerLocalX);
-  short headerY = static_cast<short>(0x16f - ownerLocalY);
+  short headerX = 0x48 - ownerLocalX;
+  short headerY = 0x16f - ownerLocalY;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(headerX + 1, headerY + 1);
   DrawTextWithCachedQuickDrawStyleState(&labelText);
@@ -65,9 +65,9 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
 
   for (int i = 0; i < 7; ++i) {
     g_pSimMgr->GetString(0x2733, static_cast<short>(i + 6), &labelText);
-    short y = static_cast<short>(kTreatyRowY[i] - ownerLocalY);
+    short y = kTreatyRowY[i] - ownerLocalY;
     short width = MeasureTextExtentWithCachedQuickDrawStyle(&labelText);
-    short x = static_cast<short>(kTreatyRowCenterX[i] - width / 2 - ownerLocalX);
+    short x = kTreatyRowCenterX[i] - width / 2 - ownerLocalX;
     SetQuickDrawColorAndSyncGlobals(styleForeground);
     SetQuickDrawTextOriginWithContextOffset(x + 1, y + 1);
     DrawTextWithCachedQuickDrawStyleState(&labelText);

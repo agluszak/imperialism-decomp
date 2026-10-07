@@ -12,10 +12,9 @@ class TCityProductionView;
 class TBuildingExpansionView : public TPicture {
 public:
   DECLARE_DYNCREATE(TBuildingExpansionView)
-  virtual ~TBuildingExpansionView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void StuffValues(short buildingSlotId, TCity* city,
-                           TCityProductionView* productionView); // slot 0x73 0x4ce5a0
-  virtual void DoClosingAction(unsigned long dialogActionTag);   // slot 0x74 0x4cebb0
+  virtual ~TBuildingExpansionView() override;
+  virtual void StuffValues(short buildingSlotId, TCity* city, TCityProductionView* productionView);
+  virtual void DoClosingAction(unsigned long dialogActionTag);
 
   TBuildingExpansionView();
 

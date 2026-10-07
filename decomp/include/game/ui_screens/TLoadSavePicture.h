@@ -8,19 +8,18 @@
 class TLoadSavePicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TLoadSavePicture)
-  virtual ~TLoadSavePicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;            // slot 0x0f 0x0056cd10
-  virtual void DoKeyEvent(TToolboxEvent* event) override;  // slot 0x12 0x56d1e0
-  virtual void DoPostCreate(int arg) override;             // slot 0x37 0x56bcc0
-  virtual void HandleSaveGameSlotSelectionAndPromptFlow(); // slot 0x73 0x56d2a0
-  virtual void HandleTurnFlowStateTickOrShowMainMenu();    // slot 0x74 0x56d190
+  virtual ~TLoadSavePicture() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoKeyEvent(TToolboxEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void HandleSaveGameSlotSelectionAndPromptFlow();
+  virtual void HandleTurnFlowStateTickOrShowMainMenu();
 
   void LoadHeader(short slotMode);
 
-  bool loadModeFlag; // +0x90
+  bool loadModeFlag;
   unsigned char pad91;
-  short selectedSlot; // +0x92 — currently selected save slot (-1 = none)
+  short selectedSlot; // currently selected save slot (-1 = none)
   TextStyle styleAt94;
   TextStyle styleAt9e;
 

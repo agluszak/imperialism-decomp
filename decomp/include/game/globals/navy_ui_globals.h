@@ -14,7 +14,7 @@ extern "C" const char s_SourcePathUOceanViews[];
 } // extern "C"
 
 extern "C" {
-extern char* g_pGamePreferencesSharedText;             // @ 0x65ddc8
-extern const char* const g_pGamePreferencesAutoResKey; // @ 0x65ddcc
-extern const int g_anGamePreferenceIndexByRow[5];      // @ 0x65dde0
+extern char* g_pGamePreferencesSharedText;
+extern const char* const g_pGamePreferencesAutoResKey;
+extern const int g_anGamePreferenceIndexByRow[5];
 }

@@ -35,14 +35,14 @@ void TSidewaysArrow::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
 
   CPoint* point = &currentPoint;
-  if (!this->PointInBoundsAndActionable(point)) {
+  if (!PointInBoundsAndActionable(point)) {
     return;
   }
 
-  if (this->controlTag == kControlTagRght) {
-    this->HandleEvent(100, this, NULL);
+  if (controlTag == kControlTagRght) {
+    HandleEvent(100, this, NULL);
     return;
   }
 
-  this->HandleEvent(101, this, NULL);
+  HandleEvent(101, this, NULL);
 }

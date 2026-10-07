@@ -11,22 +11,22 @@ TAlwaysPictureButton::~TAlwaysPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570a70
 void TAlwaysPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
-  if (static_cast<unsigned char>(enabledState) != this->controlState) {
-    this->controlState = enabledState;
+  if (static_cast<unsigned char>(enabledState) != controlState) {
+    controlState = enabledState;
     short pictureId;
     if (enabledState == 0) {
-      pictureId = this->glyphBase + 100;
+      pictureId = glyphBase + 100;
     } else {
-      pictureId = this->glyphBase - 100;
+      pictureId = glyphBase - 100;
     }
-    this->SetPictureRsrcID(pictureId, true);
+    SetPictureRsrcID(pictureId, true);
     if (refreshNow) {
-      this->DrawImmediate();
+      DrawImmediate();
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00570ae0
 void TAlwaysPictureButton::Select(bool isPressed, bool notifyParent) {
-  this->Show(isPressed, notifyParent);
+  Show(isPressed, notifyParent);
 }

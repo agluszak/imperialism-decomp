@@ -9,9 +9,8 @@
 class TCloseParentButton : public TButton {
 public:
   DECLARE_DYNCREATE(TCloseParentButton)
-  virtual ~TCloseParentButton() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x00584d30
+  virtual ~TCloseParentButton() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   TCloseParentButton();
 };

@@ -5,6 +5,6 @@
 
 struct CTemporaryRegion {
   RgnHandle tempRgn;
-  CTemporaryRegion();  // 0x00497320
-  ~CTemporaryRegion(); // 0x00497390
+  CTemporaryRegion();
+  ~CTemporaryRegion();
 };

@@ -21,14 +21,14 @@ void TItemOrder::IItemOrder(TCity* city, short outputResourceType, short primary
 // FUNCTION: IMPERIALISM 0x004b5310
 short TItemOrder::MaxOrder() {
   short currentQuantity = quantity;
-  short workforceLimit = static_cast<short>(productionSummary->strength / 2 + currentQuantity);
+  short workforceLimit = productionSummary->strength / 2 + currentQuantity;
   short productionLimit =
       static_cast<short>(ownerCity->productionAccum[productionSlot] + currentQuantity);
   short resourceLimit = static_cast<short>(trackingSlots[primaryInputResourceId] +
                                            ownerCity->stockByType[primaryInputResourceId]);
 
   if (secondaryInputResourceId < 0) {
-    resourceLimit = static_cast<short>(resourceLimit / 2);
+    resourceLimit /= 2;
   } else {
     short secondaryLimit = static_cast<short>(trackingSlots[secondaryInputResourceId] +
                                               ownerCity->stockByType[secondaryInputResourceId]);
@@ -52,7 +52,7 @@ short TItemOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b53d0
 bool TItemOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - this->quantity);
+  short delta = quantity - this->quantity;
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
@@ -81,7 +81,7 @@ bool TItemOrder::SetQuantity(short quantity) {
         static_cast<short>(trackingSlots[secondaryInputResourceId] + delta);
   }
 
-  short workforceChange = static_cast<short>(delta * 2);
+  short workforceChange = delta * 2;
   productionSummary->strength = static_cast<short>(productionSummary->strength - workforceChange);
   reservedWorkforce = static_cast<short>(reservedWorkforce + workforceChange);
   ownerCity->productionAccum[productionSlot] =
@@ -92,13 +92,13 @@ bool TItemOrder::SetQuantity(short quantity) {
 
 // FUNCTION: IMPERIALISM 0x004b5510
 void TItemOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->ResetOrderSheet(orderSheet);
-  if (this->secondaryInputResourceId >= 0) {
-    orderSheet->ForResourceCode(this->primaryInputResourceId) = quantity;
-    orderSheet->ForResourceCode(this->secondaryInputResourceId) = quantity;
+  ResetOrderSheet(orderSheet);
+  if (secondaryInputResourceId >= 0) {
+    orderSheet->ForResourceCode(primaryInputResourceId) = quantity;
+    orderSheet->ForResourceCode(secondaryInputResourceId) = quantity;
     orderSheet->slotByResourceCode[0x3d] = static_cast<short>(quantity * 2);
   } else {
-    orderSheet->ForResourceCode(this->primaryInputResourceId) = static_cast<short>(quantity * 2);
+    orderSheet->ForResourceCode(primaryInputResourceId) = static_cast<short>(quantity * 2);
     orderSheet->slotByResourceCode[0x3d] = static_cast<short>(quantity * 2);
   }
 }

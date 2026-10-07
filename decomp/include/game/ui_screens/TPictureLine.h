@@ -10,14 +10,14 @@ class TPictureLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TPictureLine)
   // FUNCTION: IMPERIALISM 0x005700d0
-  virtual ~TPictureLine() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x570130
+  virtual ~TPictureLine() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
   // NOOP: verified empty in original 0x00570032
   TPictureLine() {}
 
   void SetPictureLineRowBoundsAndResource(short rowArg, short colArg, int* bounds,
-                                          short pictureResourceId); // 0x5700f0
+                                          short pictureResourceId);
 
   short pictureResourceId;
   short reserved12;

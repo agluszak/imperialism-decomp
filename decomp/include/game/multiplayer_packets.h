@@ -28,18 +28,18 @@ struct StreamMessagePayload32 {
 };
 
 struct TurnEvent8NameAnnouncePacket : TimelyMessageHeader {
-  char nationSlot;        // +0x18
-  char senderName[0x21];  // +0x19
-  char messageText[0x2a]; // +0x3a, total 0x64
+  char nationSlot;
+  char senderName[0x21];
+  char messageText[0x2a];
 };
 
 // Event-9 lobby chat/seat-state packet.
 struct LobbyChatEvent9Packet : TimelyMessageHeader {
-  unsigned char nationSlot; // +0x18
+  unsigned char nationSlot;
   unsigned char pad19[3];
-  int sessionId;          // +0x1c - zeroed by seat-state messages
-  char senderName[0x21];  // +0x20
-  char messageText[0x23]; // +0x41, total 0x64
+  int sessionId; // zeroed by seat-state messages
+  char senderName[0x21];
+  char messageText[0x23];
 };
 
 struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
@@ -50,92 +50,92 @@ struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
 
 // Event-0xE host session-init record.
 struct TurnEventESessionInitPacket : TimelyMessageHeader {
-  char mapSeedText[0x21];       // +0x18 - passed to CreatePlanet
-  unsigned char mapParamByte39; // +0x39 - third Rebuild arg
-  char hostGameName[0x22];      // +0x3a
-  int saveSlotDword5C;          // +0x5c -> queueSyncDword
-  int scenarioTag;              // +0x60 -> scenarioSelectionTag
-  signed char difficultyLevel;  // +0x64
-  unsigned char nameTableFlag;  // +0x65 -> useLocalizedNameTables
-  unsigned char pad66[2];       // total 0x68
+  char mapSeedText[0x21];       // passed to CreatePlanet
+  unsigned char mapParamByte39; // third Rebuild arg
+  char hostGameName[0x22];
+  int saveSlotDword5C; // > queueSyncDword
+  int scenarioTag;     // > scenarioSelectionTag
+  signed char difficultyLevel;
+  unsigned char nameTableFlag; // > useLocalizedNameTables
+  unsigned char pad66[2];
 };
 
 // Event-0x13 nine-dword nation-news payload.
 struct TurnEvent13NewsPacket : TimelyMessageHeader {
-  short nationSlot; // +0x18
+  short nationSlot;
   unsigned char pad1a[2];
-  NewsEvent newsEvent; // +0x1c, total 0x40
+  NewsEvent newsEvent;
 };
 
 // Event-0x26 full diplomacy-matrix snapshot.
 struct TurnEvent26DiplomacyMatrixPacket : TimelyMessageHeader {
-  short relationCodeMatrix[kProvinceCount];              // +0x018
-  unsigned char pendingPolicyCodeMatrix[kProvinceCount]; // +0x318
-  short pendingPolicyTierMatrix[kProvinceCount];         // +0x498
-  CongressLeadership congressLeadership;                 // +0x798
-  CongressSupportTally congressSupport;                  // +0x79c..+0x7a1
-  unsigned char pad7a2[2];                               // +0x7a2
-  unsigned char relationTailBlock[0x70];                 // +0x7a4, total 0x814
+  short relationCodeMatrix[kProvinceCount];
+  unsigned char pendingPolicyCodeMatrix[kProvinceCount];
+  short pendingPolicyTierMatrix[kProvinceCount];
+  CongressLeadership congressLeadership;
+  CongressSupportTally congressSupport;
+  unsigned char pad7a2[2];
+  unsigned char relationTailBlock[0x70];
 };
 
 // Turn-event-1 payload: the remaining turn-resume pending-nation bitmask.
 struct TurnEvent1PendingMaskPacket : TimelyMessageHeader {
-  int pendingMask; // +0x18, total 0x1c
+  int pendingMask;
 };
 
 // Turn-event-0xA payload: the resuming nation announces its home region and city name.
 struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
-  unsigned char nationId; // +0x1c
+  unsigned char nationId;
   unsigned char pad1d;
-  short homeTile;      // +0x1e
-  char cityName[0x24]; // +0x20 (strncpy'd 0x21), total 0x44
+  short homeTile;
+  char cityName[0x24]; // total 0x44
 };
 
 struct TurnEventBNationDirectoryPacket : TimelyNetMessagePrefix {
-  short homeTileBySlot[kNationSlotCount];        // +0x1c
-  char cityNameBySlot[kNationSlotCount][0x17];   // +0x4a
-  unsigned char pad25b[0xe6];                    // reserve to 0x17 * 0x21
-  char nationNameBySlot[kNationSlotCount][0x17]; // +0x341
-  unsigned char pad552[0xe6];                    // reserve to 0x17 * 0x21
-  short portZoneOrdinalBySlot[kNationSlotCount]; // +0x638
-  unsigned char pad666[2];                       // total 0x668
+  short homeTileBySlot[kNationSlotCount];
+  char cityNameBySlot[kNationSlotCount][0x17];
+  unsigned char pad25b[0xe6]; // reserve to 0x17 * 0x21
+  char nationNameBySlot[kNationSlotCount][0x17];
+  unsigned char pad552[0xe6]; // reserve to 0x17 * 0x21
+  short portZoneOrdinalBySlot[kNationSlotCount];
+  unsigned char pad666[2];
 };
 
 struct TurnEvent18DiplomacyArraysPacket : TimelyNetMessagePrefix {
-  short diplomacyPolicyByNation[kMajorNationCount][kNationSlotCount]; // +0x1c
-  short diplomacyGrantByNation[kMajorNationCount][kNationSlotCount];  // +0x15e
-  short tradePolicyByNation[kMajorNationCount][kNationSlotCount];     // +0x2a0
-  unsigned char pad3e2[2];                                            // total 0x3e4
+  short diplomacyPolicyByNation[kMajorNationCount][kNationSlotCount];
+  short diplomacyGrantByNation[kMajorNationCount][kNationSlotCount];
+  short tradePolicyByNation[kMajorNationCount][kNationSlotCount];
+  unsigned char pad3e2[2];
 };
 
 struct TurnEvent1FStatusPacket : TimelyMessageHeader {
-  int statusTag;    // +0x18 - 'aced'/'abdi'/'uhed'/'cgam'/'lose'/'foff'/...
-  int controlValue; // +0x1c, total 0x20
+  int statusTag; // 'aced'/'abdi'/'uhed'/'cgam'/'lose'/'foff'/...
+  int controlValue;
 };
 
 // Turn-event-0x23 payload: one map tile's 0x24-byte terrain state record.
 struct TurnEvent23TileStatePacket : TimelyNetMessagePrefix {
-  short tileIndex; // +0x1c
+  short tileIndex;
   unsigned char pad1e[2];
-  TTerrainStateRecord record; // +0x20, total 0x44
+  TTerrainStateRecord record;
 };
 
 struct NationStatusEvent25Packet : TimelyMessageHeader {
-  int statusTags[7]; // +0x18 - four-cc per-nation status ('unkn' default)
+  int statusTags[7]; // four-cc per-nation status ('unkn' default)
 
   void InitializeNationStatusEvent25PayloadDefaults();
 };
 
 struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
-  unsigned char replyRequestFlag; // +0x18 - nonzero requests the echo reply
-  signed char nationMask;         // +0x19 - OR'd (signed) into the accumulator
-  unsigned char pad1a[2];         // total 0x1c
+  unsigned char replyRequestFlag; // nonzero requests the echo reply
+  signed char nationMask;         // OR'd (signed) into the accumulator
+  unsigned char pad1a[2];
 };
 
 // Turn-event-0x2D payload: a minor nation's need-level array.
 struct TurnEvent2DMinorNeedPacket : TimelyNetMessagePrefix {
-  short nationSlot;                            // +0x1c
-  short tradePolicyByNation[kNationSlotCount]; // +0x1e, total 0x4c
+  short nationSlot;
+  short tradePolicyByNation[kNationSlotCount];
 };
 
 ASSERT_SIZE(TaggedSerializablePayload, 0x8);

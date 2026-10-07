@@ -29,7 +29,7 @@ short TTrainingOrder::MaxOrder() {
     paperPerUnit = 2;
     cashPerUnit = 1000;
     workforceLimit = productionSummary->productionSlots->mediumSkillCount;
-    short strengthLimit = static_cast<short>(productionSummary->strength / 2);
+    short strengthLimit = productionSummary->strength / 2;
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
     }
@@ -50,7 +50,7 @@ short TTrainingOrder::MaxOrder() {
     }
   }
 
-  short paperLimit = static_cast<short>(ownerCity->stockByType[kResourcePaper] / paperPerUnit);
+  short paperLimit = ownerCity->stockByType[kResourcePaper] / paperPerUnit;
   limitingConstraint = kProductionOrderLimitWorkforce;
   short limit = workforceLimit;
   if (cashLimit < limit) {
@@ -65,12 +65,12 @@ short TTrainingOrder::MaxOrder() {
   if (quantity + limit > 99) {
     limit = static_cast<short>(99 - quantity);
   }
-  return static_cast<short>(quantity + limit);
+  return quantity + limit;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6cd0
 bool TTrainingOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - this->quantity);
+  short delta = quantity - this->quantity;
   if (!TProductionOrder::SetQuantity(quantity)) {
     return false;
   }
@@ -94,8 +94,8 @@ bool TTrainingOrder::SetQuantity(short quantity) {
 
 // FUNCTION: IMPERIALISM 0x004b6de0
 void TTrainingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->ResetOrderSheet(orderSheet);
-  if (this->resourceTypeIndex == 1) {
+  ResetOrderSheet(orderSheet);
+  if (resourceTypeIndex == 1) {
     orderSheet->slotByResourceCode[0x0a] = quantity;
     return;
   }

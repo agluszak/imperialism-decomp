@@ -14,24 +14,23 @@ class TCityTask : public TTask {
 public:
   DECLARE_DYNCREATE(TCityTask)
   // FUNCTION: IMPERIALISM 0x005add70
-  virtual ~TCityTask() override {}                 // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5ae570
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5ae5e0
-  virtual bool Execute(TTaskList* taskList) override;   // slot 0x0a 0x5adde0
-  virtual void IncompleteTraining(TTaskList* taskList); // slot 0x0b 0x5ae010
-  virtual void IncompleteMaterials();                   // slot 0x0c 0x5ae420
-  virtual void IncompleteCapacity(TTaskList* taskList); // slot 0x0d 0x5ae0e0
-  virtual void IncompleteLandUnit(TTaskList* taskList); // slot 0x0e 0x5ae240
-  virtual void IncompleteGoods(TTaskList* taskList);    // slot 0x0f 0x5ae4b0
+  virtual ~TCityTask() override {}
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual bool Execute(TTaskList* taskList) override;
+  virtual void IncompleteTraining(TTaskList* taskList);
+  virtual void IncompleteMaterials();
+  virtual void IncompleteCapacity(TTaskList* taskList);
+  virtual void IncompleteLandUnit(TTaskList* taskList);
+  virtual void IncompleteGoods(TTaskList* taskList);
 
-  TCityTask(); // 0x005add20
+  TCityTask();
 
-  void ICityTask(short citySlotType, TCity* owner,
-                 short amount); // 0x005add90
+  void ICityTask(short citySlotType, TCity* owner, short amount);
 
-  TCity* ownerCity;                 // +0x08
-  short requestedAmount;            // +0x0c — quantity still needed
-  short alreadyQueuedFlag;          // +0x0e — set after a follow-up task is queued
-  unsigned char serializedTaskKind; // +0x10 — 1 for TCityTask, 2 for TShipBuildingTask
+  TCity* ownerCity;
+  short requestedAmount;            // quantity still needed
+  short alreadyQueuedFlag;          // set after a follow-up task is queued
+  unsigned char serializedTaskKind; // 1 for TCityTask, 2 for TShipBuildingTask
 };
 ASSERT_SIZE(TCityTask, 0x14);

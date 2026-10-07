@@ -11,20 +11,19 @@
 class TStatusPicture : public TPicture {
 public:
   DECLARE_DYNCREATE(TStatusPicture)
-  virtual ~TStatusPicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x005942f0
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x593f20
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x594540
-  int comparisonMode;      // +0x90 -- selects which per-nation metric fills values
-  int values[7];           // +0x94 per-entry sort key (score)
-  short pictureIds[7];     // +0xb0 per-entry picture id (-1 = empty slot)
-  char padBE[0xc0 - 0xbe]; // +0xbe
+  virtual ~TStatusPicture() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  int comparisonMode;  // selects which per-nation metric fills values
+  int values[7];       // +0x94 per-entry sort key (score)
+  short pictureIds[7]; // +0xb0 per-entry picture id (-1 = empty slot)
+  char padBE[0xc0 - 0xbe];
 
   TStatusPicture();
 
   void DrawBar(short rowY, short width, short nationSlot);
-  void SwitchStatusMode(int comparisonMode); // 0x005941e0
+  void SwitchStatusMode(int comparisonMode);
   void SortByBarLength();
   void CalcCouncilGraph();
   void CalcStandardGraph() {

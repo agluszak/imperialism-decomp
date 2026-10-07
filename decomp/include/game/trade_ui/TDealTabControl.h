@@ -9,13 +9,12 @@
 class TDealTabControl : public TControl {
 public:
   DECLARE_DYNCREATE(TDealTabControl)
-  virtual ~TDealTabControl() override;          // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;                 // slot 0x07 0x5bcb20
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5bc7f0
+  virtual ~TDealTabControl() override;
+  virtual void Free() override;
+  virtual void Draw(RECT* rectBuffer) override;
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint,
-                          bool commandFlag) override;                         // slot 0x68 0x5bc9f0
-  virtual void Setup(short bitmapResourceId, unsigned char useAlternatePair); // slot 0x71 0x5bc780
+                          CPoint& currentPoint, bool commandFlag) override;
+  virtual void Setup(short bitmapResourceId, unsigned char useAlternatePair);
   short selectedRow;     // +0x84 selected row index, -1 = none
   short rowHeightPixels; // +0x86 pixel height of one row
   short tabCount;        // +0x88 Setup default: 15

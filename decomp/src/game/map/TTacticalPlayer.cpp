@@ -61,7 +61,7 @@ TTacticalUnit* TTacticalPlayer::GetNextUnit() {
   do {
     ++cursorIndex;
     if (cursorIndex > unitList->GetCount()) {
-      cursorIndex = 1; // 1-based ordinal wrap
+      cursorIndex = 1; // based ordinal wrap
     }
     unit = static_cast<TTacticalUnit*>(unitList->GetEntryByOrdinal(cursorIndex));
     if (cursorIndex == startCursor) {

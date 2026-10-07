@@ -23,23 +23,23 @@ TPageView::~TPageView() {}
 // FUNCTION: IMPERIALISM 0x0056fa50
 void TPageView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  this->orderedEntries = new TList();
-  this->optionEntries = new TList();
-  this->pageStartIndices = new TLongintList();
-  this->pageRect.bottom = this->frameHeight - 1;
-  this->pageRect.top = 0;
-  this->pageRect.left = 0;
-  this->pageRect.right = this->frameWidth - 1;
+  orderedEntries = new TList();
+  optionEntries = new TList();
+  pageStartIndices = new TLongintList();
+  pageRect.bottom = frameHeight - 1;
+  pageRect.top = 0;
+  pageRect.left = 0;
+  pageRect.right = frameWidth - 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbb0
 POSITION TPageView::AddOrderedEntry(TLineData* item) {
-  return this->orderedEntries->AddTail(item);
+  return orderedEntries->AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbd0
 POSITION TPageView::AddOptionEntry(TLineData* item) {
-  return this->optionEntries->AddTail(item);
+  return optionEntries->AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbf0
@@ -81,7 +81,7 @@ void TPageView::CalculatePageStarts() {
       y += static_cast<short>(header->layoutHeight);
     }
 
-    short height = static_cast<short>(entry->layoutHeight);
+    short height = entry->layoutHeight;
     if (y + entry->column + height > pageRect.bottom) {
       ++pages;
       y = static_cast<short>(pageRect.top + height);
@@ -114,7 +114,7 @@ void TPageView::ShowPage(short pageNumber) {
 
     short y = static_cast<short>(pageRect.top);
     int perColumnWidth = frameWidth / visibleColumnCount;
-    short x = static_cast<short>(pageRect.left + perColumnWidth * (column - pageNumber));
+    short x = pageRect.left + perColumnWidth * (column - pageNumber);
     short currentIndex = static_cast<short>(pageStartIndices->At(column));
 
     while (currentIndex <= orderedEntries->GetCount()) {
@@ -143,24 +143,24 @@ void TPageView::ShowPage(short pageNumber) {
 
 // FUNCTION: IMPERIALISM 0x0056ff90
 void TPageView::Clear() {
-  this->ResetSelectableOptionEntriesExceptColorAndOkay();
-  this->optionEntries->RemoveAll();
-  this->orderedEntries->RemoveAll();
-  this->pageStartIndices->RemoveAll();
-  this->currentPage = 0;
-  this->pageCount = 0;
+  ResetSelectableOptionEntriesExceptColorAndOkay();
+  optionEntries->RemoveAll();
+  orderedEntries->RemoveAll();
+  pageStartIndices->RemoveAll();
+  currentPage = 0;
+  pageCount = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0056ffe0
 void TPageView::Free() {
-  if (this->optionEntries != NULL) {
-    this->optionEntries->FreeList();
+  if (optionEntries != NULL) {
+    optionEntries->FreeList();
   }
-  if (this->orderedEntries != NULL) {
-    this->orderedEntries->FreeList();
+  if (orderedEntries != NULL) {
+    orderedEntries->FreeList();
   }
-  if (this->pageStartIndices != NULL) {
-    this->pageStartIndices->Free();
+  if (pageStartIndices != NULL) {
+    pageStartIndices->Free();
   }
   TView::Free();
 }

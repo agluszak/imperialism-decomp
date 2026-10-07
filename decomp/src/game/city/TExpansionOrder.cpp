@@ -47,8 +47,8 @@ void TExpansionOrder::Produce() {
     newValue = city->productionOrderTable[resourceTypeIndex];
   }
 
-  newValue = static_cast<short>(newValue + quantity);
-  short delta = static_cast<short>(newValue - city->productionOrderTable[resourceTypeIndex]);
+  newValue += quantity;
+  short delta = newValue - city->productionOrderTable[resourceTypeIndex];
   city->productionAccum[resourceTypeIndex] =
       static_cast<short>(city->productionAccum[resourceTypeIndex] + delta);
   city->productionOrderTable[resourceTypeIndex] = newValue;
@@ -63,7 +63,7 @@ short TExpansionOrder::MaxOrder() {
   short limit = static_cast<short>(trackingSlots[primaryInputResourceId] +
                                    ownerCity->stockByType[primaryInputResourceId]);
   if (secondaryInputResourceId < 0) {
-    limit = static_cast<short>(limit / 2);
+    limit /= 2;
   } else {
     short secondaryLimit = static_cast<short>(trackingSlots[secondaryInputResourceId] +
                                               ownerCity->stockByType[secondaryInputResourceId]);
@@ -76,7 +76,7 @@ short TExpansionOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b9260
 bool TExpansionOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - this->quantity);
+  short delta = quantity - this->quantity;
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
@@ -99,13 +99,13 @@ bool TExpansionOrder::SetQuantity(short quantity) {
 
 // FUNCTION: IMPERIALISM 0x004b9360
 void TExpansionOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  this->ResetOrderSheet(orderSheet);
-  orderSheet->ForResourceCode(this->primaryInputResourceId) = quantity;
-  if (orderSheet->ForResourceCode(this->primaryInputResourceId) < 0) {
-    orderSheet->ForResourceCode(this->primaryInputResourceId) = 0;
+  ResetOrderSheet(orderSheet);
+  orderSheet->ForResourceCode(primaryInputResourceId) = quantity;
+  if (orderSheet->ForResourceCode(primaryInputResourceId) < 0) {
+    orderSheet->ForResourceCode(primaryInputResourceId) = 0;
   }
-  orderSheet->ForResourceCode(this->secondaryInputResourceId) = quantity;
-  if (orderSheet->ForResourceCode(this->secondaryInputResourceId) < 0) {
-    orderSheet->ForResourceCode(this->secondaryInputResourceId) = 0;
+  orderSheet->ForResourceCode(secondaryInputResourceId) = quantity;
+  if (orderSheet->ForResourceCode(secondaryInputResourceId) < 0) {
+    orderSheet->ForResourceCode(secondaryInputResourceId) = 0;
   }
 }

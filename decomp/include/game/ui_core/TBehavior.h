@@ -10,15 +10,15 @@ class TEventHandler;
 class TBehavior : public TObject {
 public:
   // FUNCTION: IMPERIALISM 0x00487240
-  virtual ~TBehavior() override {} // slot 0x01 (scalar deleting destructor)
+  virtual ~TBehavior() override {}
   TBehavior();
 
   DECLARE_DYNCREATE(TBehavior)
-  void SetBehaviorTag(unsigned long tag);      // 0x00487260
-  virtual void SetOwner(TEventHandler* owner); // slot 0x0a byte 0x28 0x487280
-  virtual unsigned char IsEnabled();           // slot 0x0b byte 0x2c 0x4872a0
-  virtual void SetEnabled(bool enabled);       // slot 0x0c byte 0x30 0x4872c0
-  virtual void Draw(RECT* bounds);             // slot 0x0d byte 0x34 0x4872e0
+  void SetBehaviorTag(unsigned long tag);
+  virtual void SetOwner(TEventHandler* owner);
+  virtual unsigned char IsEnabled();
+  virtual void SetEnabled(bool enabled);
+  virtual void Draw(RECT* bounds);
 
   unsigned long behaviorTag;
   TEventHandler* owner;

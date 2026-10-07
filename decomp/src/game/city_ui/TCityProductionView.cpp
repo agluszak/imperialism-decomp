@@ -153,7 +153,7 @@ IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x004ba7b0
 void TCityProductionView::Draw(RECT* rectBuffer) {
   // Turn-event snapshot mode: blit the cached surface straight through and finish.
-  if (g_pDisplayMgr->clipSnapshotEvent == 0x7db && !this->needsRefresh) {
+  if (g_pDisplayMgr->clipSnapshotEvent == 0x7db && !needsRefresh) {
     RECT snapshot = *rectBuffer;
     BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &snapshot,
@@ -161,7 +161,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     DrawTopLevel();
     return;
   }
-  this->needsRefresh = false;
+  needsRefresh = false;
   TPicture::Draw(rectBuffer);
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::Pulse();
@@ -311,7 +311,7 @@ void TCityProductionView::DrawTopLevel() {
     time(&epochSeconds);
     struct tm* now = localtime(&epochSeconds);
 
-    short minuteMark = static_cast<short>(now->tm_min / 5);
+    short minuteMark = now->tm_min / 5;
     clockMinuteMark = minuteMark;
     clockHour = static_cast<short>(now->tm_hour);
     if (minuteMark > 6) {
@@ -407,7 +407,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
                                  static_cast<LPCSTR>(hoverText));
         } else {
           TProductionOrder* order = city->trailingOrderSlots[slot + 2];
-          short buildingType = static_cast<short>(city->GetBuildingType(slot));
+          short buildingType = city->GetBuildingType(slot);
           firstQuantityText.Format(g_szDecimalFormat, buildingType - city->productionAccum[slot]);
           secondQuantityText.Format(g_szDecimalFormat, buildingType);
           g_pSimMgr->GetString(0x2734, 0x18, &qualifierText);
@@ -638,7 +638,7 @@ void TCityProductionView::UpdateToolbar() {
   }
 
   for (int group = 0; group < 8; ++group) {
-    short buildingSlot = static_cast<short>(group < 7 ? group : 11);
+    short buildingSlot = group < 7 ? group : 11;
     bool enabled;
     if (buildingSlot == 11) {
       enabled = !city->powerPlantUpgradeQueuedFlag && city->trailingOrderSlots[1]->quantity > 0;
@@ -788,7 +788,7 @@ void TCityProductionView::SetBuildingPicture(short buildingSlot, short buildingT
   CTemporaryRegion surface;
 
   CRect boundsRecord;
-  this->GetFrame(&boundsRecord);
+  GetFrame(&boundsRecord);
 
   RECT clipRect;
   clipRect.left = boundsRecord.left;
@@ -806,7 +806,7 @@ void TCityProductionView::SetBuildingPicture(short buildingSlot, short buildingT
   ClipRect(&clipRect);
 
   needsRefresh = true;
-  this->Draw(&boundsRecord);
+  Draw(&boundsRecord);
 
   SetGWorld(previousSurface, contextFlags);
   SetClip(surface.tempRgn);
@@ -820,7 +820,7 @@ void TCityProductionView::UpdateFields() {
 
   short total = 0;
   for (i = 0; i < 14; ++i) {
-    total = static_cast<short>(total + city->orderCountByType[i]);
+    total += city->orderCountByType[i];
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionShipyardPrefix + numberText;
@@ -837,7 +837,7 @@ void TCityProductionView::UpdateFields() {
     if (order == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x5f2);
     }
-    total = static_cast<short>(total + order->quantity);
+    total += order->quantity;
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionArmoryPrefix + numberText;
@@ -853,7 +853,7 @@ void TCityProductionView::UpdateFields() {
     if (order == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x600);
     }
-    total = static_cast<short>(total + order->quantity);
+    total += order->quantity;
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionUniversityPrefix + numberText;

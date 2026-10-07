@@ -257,7 +257,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
     mapPreview->Draw(&previewBounds);
   }
 
-  unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
+  unsigned int controlTag = sourceHandler->controlTag;
   if (controlTag == kControlTagGlob &&
       (static_cast<unsigned short>(GetAsyncKeyState(VK_CONTROL)) & 0x8000) != 0) {
     controlTag = kControlTagPlan; // 'plan'

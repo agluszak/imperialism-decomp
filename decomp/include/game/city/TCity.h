@@ -66,37 +66,36 @@ public:
   int GetMerchantMarineDeciSpeed();
   int GetMerchantMarineAverageCargoHold();
 
-  bool powerPlantUpgradeQueuedFlag; // +0x04 — BuildPowerPlant queue flag
+  bool powerPlantUpgradeQueuedFlag; // BuildPowerPlant queue flag
   unsigned char pad05;
-  short foodSubstitutionCount;    // +0x06 — workers reassigned after food substitution
-  short starvationPopulationLoss; // +0x08 — population lost during the last Eat pass
+  short foodSubstitutionCount;    // workers reassigned after food substitution
+  short starvationPopulationLoss; // population lost during the last Eat pass
   short serializedState;
   short cityPhaseCounter;
   short militaryRecruitCountByKind[kMilitaryUnitKindCount];
   short civilianRecruitCountByKind[kCivilianUnitKindCount];
   short orderCountByType[kIndustryActionSlotCount];
   int rollingItemProductionScore;
-  bool lowProductionFlag; // +0x7c — PredictedNeeds
-  bool lowStockFlag;      // +0x7d — PredictedNeeds
+  bool lowProductionFlag; // PredictedNeeds
+  bool lowStockFlag;      // PredictedNeeds
   short reservedByType[kResourceKindCount];
-  class TGreatPower* ownerNation; // 0xAC — owning nation state (0x004b4dc0)
-  TTown* homeTownMarker;          // +0xb0
+  class TGreatPower* ownerNation; // owning nation state
+  TTown* homeTownMarker;
   short powerAvailable;
   short stockByType[kResourceKindCount];
-  TProductionOrder* orderSlots[0x19];         // +0xe4..+0x147
-  TUnitOrder* buildOrderSlots[0x12];          // +0x148..+0x18f
-  TShipOrder* shipOrderSlots[8];              // +0x190..+0x1af
-  TProductionOrder* trailingOrderSlots[0x0a]; // +0x1b0..+0x1d7
-  TPopulationMgr*
-      productionSummary; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
+  TProductionOrder* orderSlots[0x19];
+  TUnitOrder* buildOrderSlots[0x12];
+  TShipOrder* shipOrderSlots[8];
+  TProductionOrder* trailingOrderSlots[0x0a];
+  TPopulationMgr* productionSummary; // city population / summary
   short productionOrderTable[0x10];
-  short productionAccum[0x10];         // 0x1FC — ctor-cleared
-  unsigned char productionFlags[0x10]; // 0x21C — ctor-cleared
-  short production22c[0x10];           // 0x22C — GetBuildingWindowState outCurrent
-  short production24c[0x10];           // 0x24C — GetBuildingWindowState outAccum
-  short populationGrowthPenaltyTicks;  // 0x26C — GrowthRate penalty counter
+  short productionAccum[0x10];         // ctor-cleared
+  unsigned char productionFlags[0x10]; // ctor-cleared
+  short production22c[0x10];           // GetBuildingWindowState outCurrent
+  short production24c[0x10];           // GetBuildingWindowState outAccum
+  short populationGrowthPenaltyTicks;  // GrowthRate penalty counter
   short pad26e;
-  TTaskList* trackedOrderList; // 0x270 — released via FreeList
+  TTaskList* trackedOrderList; // released via FreeList
   class TPtrList* eventQueue;
   short unmetResourceRetryCount[kResourceKindCount];
   short consumedProductionInputByType[kResourceKindCount];

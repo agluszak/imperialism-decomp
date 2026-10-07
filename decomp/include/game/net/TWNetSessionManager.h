@@ -39,16 +39,16 @@ public:
   virtual void InitializeSessionDescription();
   virtual void ResetSessionDescription();
   virtual BOOL GetRuntimeSelectionAuxStatus(void* value);
-  BOOL ConnectDirectPlayFromLobbySettingsAndStoreResult(); // 0x47fbc0
+  BOOL ConnectDirectPlayFromLobbySettingsAndStoreResult();
   virtual BOOL ExtendEnumSessionsTimeoutWhileCtrlHeld(DWORD* timeoutMs);
   virtual BOOL SelectRuntimeProvider(GUID* providerGuid);
   virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid);
 
   BOOL GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut);
-  BOOL CreateDirectPlayLobbyAndStoreResult(); // 0x0047fb80
-  BOOL FindHostPlayerIdByEnumeration();       // 0x005e2980
+  BOOL CreateDirectPlayLobbyAndStoreResult();
+  BOOL FindHostPlayerIdByEnumeration();
   // Free the runtime selection entries and release the DirectPlay interfaces.
-  void ResetRuntimeSelectionRecordBuffer(); // 0x00480400
+  void ResetRuntimeSelectionRecordBuffer();
 
   IDirectPlay2* directPlayInterface;
   IDirectPlayLobbyA* directPlayLobby;
@@ -69,27 +69,26 @@ public:
   TRadioTextCluster* activeProtocolControl;
 
   TWNetSessionManager();
-  ~TWNetSessionManager(); // 0x005e2a20 — frees the serialized-record scratch arrays
+  ~TWNetSessionManager(); // frees the serialized-record scratch arrays
   virtual BOOL OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR providerName,
                                           DWORD majorVersion, DWORD minorVersion) override;
   virtual BOOL OnEnumerateJoinableSession(const DPSESSIONDESC2* sessionDescription, DWORD* timeout,
                                           DWORD flags) override;
   virtual void InitializeSessionDescription() override;
   virtual void ResetSessionDescription() override;
-  virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(
-      GUID* selectedSessionGuid) override; // slot 0x08 0x5e30c0
+  virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid) override;
 
   // Returns nonzero on success (original callers test the full EAX).
   int TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount);
   int TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromId, DWORD* toId, void** bufferHandle);
-  bool OpenCurrentSessionDescriptionForJoin(); // 0x4803d0
+  bool OpenCurrentSessionDescriptionForJoin();
   bool DestroyPlayerAndStoreResult(DWORD idPlayer);
-  bool InitializeDirectPlayForProviderGuidOrEnumerate(const GUID* providerGuid); // 0x47fe50
-  BOOL OpenRuntimeSelectionSourceFromCurrentContext();                           // 0x480030
-  bool CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName);                // 0x47fcb0
-  BOOL SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size);                // 0x480990
-  BOOL OpenRuntimeSelectionSourceWithUserChoice();                               // 0x480150
-  BOOL RebuildRuntimeSelectionSource();                                          // 0x47fd90
+  bool InitializeDirectPlayForProviderGuidOrEnumerate(const GUID* providerGuid);
+  BOOL OpenRuntimeSelectionSourceFromCurrentContext();
+  bool CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName);
+  BOOL SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size);
+  BOOL OpenRuntimeSelectionSourceWithUserChoice();
+  BOOL RebuildRuntimeSelectionSource();
 };
 ASSERT_SIZE(TWNetSessionManager, 0xb4);
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR

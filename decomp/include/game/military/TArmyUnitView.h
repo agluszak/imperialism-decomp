@@ -10,11 +10,10 @@
 class TArmyUnitView : public TView {
 public:
   DECLARE_DYNCREATE(TArmyUnitView)
-  virtual ~TArmyUnitView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x004a9990
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4a95b0
-  class TMilitaryUnit* militaryUnit; // +0x60
+  virtual ~TArmyUnitView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void Draw(RECT* rectBuffer) override;
+  class TMilitaryUnit* militaryUnit;
 
   // Non-virtual: runs the rename dialog for militaryUnit in response to the 'name' command.
   void RenameUnit();

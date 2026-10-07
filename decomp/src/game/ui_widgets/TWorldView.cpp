@@ -188,7 +188,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
 
 // FUNCTION: IMPERIALISM 0x00595810
 void TWorldView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
-  short cursorId = static_cast<short>(GetCursorID());
+  short cursorId = GetCursorID();
   if (cursorId != -1) {
     CPoint mappedPoint = ViewToQDPt(point);
     if (PtInRgn(&mappedPoint, hitArg) != 0) {
@@ -215,7 +215,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
     return;
   }
 
-  short tileIndex = static_cast<short>(hoveredTileIndex);
+  short tileIndex = hoveredTileIndex;
   hoveredTileCityRecordIndex =
       static_cast<unsigned short>(g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex);
   short interactionMode = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex;

@@ -147,7 +147,7 @@ void TLanguageMgr::ParseRow(const char* line) {
     while (!IsNewsTableColumnDelimiter(*end)) {
       ++end;
     }
-    const int length = static_cast<int>(end - text);
+    const int length = end - text;
     rowTextTable[rowIndex][column] = new char[length + 1];
     memcpy(rowTextTable[rowIndex][column], text, length);
     rowTextTable[rowIndex][column][length] = '\0';
@@ -162,7 +162,7 @@ CString TLanguageMgr::Localize(const char* data, unsigned char formatChar) const
   }
 
   CString result;
-  const unsigned char dataCode = static_cast<unsigned char>(*data);
+  const unsigned char dataCode = *data;
   const bool columnInRange = formatChar >= firstColumn && formatChar - firstColumn < columnCount;
   const bool primaryRowInRange =
       dataCode >= firstPrimaryRow && dataCode - firstPrimaryRow < primaryRowCount;
@@ -299,7 +299,7 @@ char TLanguageMgr::PickGender(const char* name) const {
   char rowBase = selectedIndex < primaryRowCount ? firstPrimaryRow : firstExtraRow;
   dialog->Close();
   dialog->Free();
-  return static_cast<char>(selectedIndex + rowBase);
+  return selectedIndex + rowBase;
 }
 
 // FUNCTION: IMPERIALISM 0x00508c50

@@ -9,8 +9,8 @@ struct MappedFlavorTextNationVariantEntry {
   short pad;
 };
 
-extern POINT g_ptArmyOrderModalMessage;      // @ 0x6a2318
-extern POINT g_ptArmyValidationModalMessage; // @ 0x6a2288
+extern POINT g_ptArmyOrderModalMessage;
+extern POINT g_ptArmyValidationModalMessage;
 
 extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
 
@@ -37,14 +37,14 @@ extern int g_anFortLevelAttackerPenaltyPercentByLevel[4];
 // Per-military-unit-kind blink/boost eligibility flag.
 extern unsigned char g_abUnitTypeBlinkEligibilityFlag[kMilitaryUnitKindCount];
 
-extern int g_anWeightClassByOrderType[kMilitaryUnitKindCount]; // 0x64c790
+extern int g_anWeightClassByOrderType[kMilitaryUnitKindCount];
 
-extern short g_anScaledFactorByOrderType[kMilitaryUnitKindCount]; // 0x64c660
+extern short g_anScaledFactorByOrderType[kMilitaryUnitKindCount];
 
-extern float g_afPercentEfficiencyByOrderType[kMilitaryUnitKindCount];    // 0x64c6a0
-extern float g_afRandomizedMeterDecayByOrderType[kMilitaryUnitKindCount]; // 0x64c718
+extern float g_afPercentEfficiencyByOrderType[kMilitaryUnitKindCount];
+extern float g_afRandomizedMeterDecayByOrderType[kMilitaryUnitKindCount];
 
-extern int g_anCountWeightByOrderType[kMilitaryUnitKindCount]; // 0x695578
+extern int g_anCountWeightByOrderType[kMilitaryUnitKindCount];
 
 extern const signed char g_MapContextStaticTable_00695448[0x20];
 

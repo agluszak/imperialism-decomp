@@ -21,7 +21,7 @@ public:
   TIndexAndRankList();
   void IIndexAndRankList();
 
-  short Compare(void* a, void* b) override; // slot 0x44 0x534910
+  short Compare(void* a, void* b) override;
 };
 
 ASSERT_SIZE(TIndexAndRankList, 0x18);

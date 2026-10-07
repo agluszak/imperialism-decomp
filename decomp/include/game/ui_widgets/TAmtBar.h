@@ -7,11 +7,11 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x665cc8
 class TAmtBar : public TView {
 public:
-  virtual ~TAmtBar() override; // slot 0x01 (scalar deleting destructor)
-  short rangeOrMaxValue;       // 0x60
-  short stepOrCurrentValue;    // 0x62
-  short auxValueA;             // 0x64
-  short auxValueB;             // 0x66
+  virtual ~TAmtBar() override;
+  short rangeOrMaxValue;
+  short stepOrCurrentValue;
+  short auxValueA;
+  short auxValueB;
 
   // Source evidence: unreferenced retained COMDAT in retail.
   TAmtBar() : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}

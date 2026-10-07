@@ -15,12 +15,11 @@
 class TPictureRadioButton : public TToggleButton {
 public:
   DECLARE_DYNCREATE(TPictureRadioButton)
-  virtual ~TPictureRadioButton() override; // slot 0x01 (scalar deleting destructor)
-  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event,
-                               CPoint origin) override;            // slot 0x46 0x570fb0
-  virtual void Select(bool isPressed, bool notifyParent) override; // slot 0x74 0x570f40
-  virtual void ViewEnable(char isEnabled, char refreshNow);        // slot 0x75 0x570de0
-  virtual void DefaultSize(bool refreshNow);                       // slot 0x76 0x570ea0
+  virtual ~TPictureRadioButton() override;
+  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
+  virtual void Select(bool isPressed, bool notifyParent) override;
+  virtual void ViewEnable(char isEnabled, char refreshNow);
+  virtual void DefaultSize(bool refreshNow);
 
   TPictureRadioButton();
 };

@@ -12,8 +12,8 @@ class TMiniArmyLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TMiniArmyLine)
   // FUNCTION: IMPERIALISM 0x004aa870
-  virtual ~TMiniArmyLine() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4aa960
+  virtual ~TMiniArmyLine() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
   // NOOP: verified empty in original 0x004aa8c3
   TMiniArmyLine() {}

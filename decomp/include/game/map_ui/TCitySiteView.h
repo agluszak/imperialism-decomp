@@ -9,10 +9,10 @@ class TTown;
 class TCitySiteView : public TMapDialog {
 public:
   TTown* pendingTown;
-  int minColumn; // +0x368
-  int maxColumn; // +0x36c
-  int minRow;    // +0x370
-  int maxRow;    // +0x374
+  int minColumn;
+  int maxColumn;
+  int minRow;
+  int maxRow;
 
   DECLARE_DYNCREATE(TCitySiteView)
   virtual ~TCitySiteView() override;

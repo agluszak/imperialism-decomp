@@ -62,7 +62,7 @@ void TEditText::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004906d0
 char TEditText::IsEnabled() {
-  return static_cast<char>(enabled);
+  return enabled;
 }
 
 // FUNCTION: IMPERIALISM 0x004906f0

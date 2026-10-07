@@ -293,12 +293,12 @@ bool TZone::HasNeighbor(Province* province) {
 
 // FUNCTION: IMPERIALISM 0x0055f440
 bool TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
-  unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
+  unsigned int entryCount = secondaryNeighbors.Count();
   const Province* target = &g_pGlobalMapState->cityScoreTable[cityIndex];
   Province* const* entrySlot = 0;
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
-    if (this->secondaryNeighbors.Data()[entryIndex] == target) {
-      entrySlot = this->secondaryNeighbors.Data() + entryIndex;
+    if (secondaryNeighbors.Data()[entryIndex] == target) {
+      entrySlot = secondaryNeighbors.Data() + entryIndex;
       break;
     }
   }
@@ -307,13 +307,13 @@ bool TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
 
 // FUNCTION: IMPERIALISM 0x0055f4d0
 bool TZone::IsAdjacentToCountry(short nationTag) {
-  unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
+  unsigned int entryCount = secondaryNeighbors.Count();
   if (entryCount == 0) {
     return false;
   }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     Province* const* entrySlot =
-        (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
+        (entryIndex < entryCount) ? secondaryNeighbors.Data() + entryIndex : 0;
     short entryNationTag = (*entrySlot)->ownerNationCode;
     if (entryNationTag == nationTag) {
       return true;
@@ -324,14 +324,14 @@ bool TZone::IsAdjacentToCountry(short nationTag) {
 
 // FUNCTION: IMPERIALISM 0x0055f540
 int TZone::IsVisibleToCountry(short key) {
-  unsigned char keyBit = static_cast<unsigned char>(1 << key);
+  unsigned char keyBit = 1 << key;
   if ((keyBit & nationKeyMask) != 0) {
     return 1;
   }
-  unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
+  unsigned int entryCount = secondaryNeighbors.Count();
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     Province* const* entrySlot =
-        (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
+        (entryIndex < entryCount) ? secondaryNeighbors.Data() + entryIndex : 0;
     short entryKey = (*entrySlot)->ownerNationCode;
     if (entryKey == key) {
       return 1;
@@ -352,7 +352,7 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
     category = static_cast<short>(primaryNeighbors.Count());
     if (category == 2) {
       TZone* neighbor0 = primaryNeighbors[0];
-      unsigned int neighborCount = static_cast<unsigned int>(neighbor0->primaryNeighbors.Count());
+      unsigned int neighborCount = neighbor0->primaryNeighbors.Count();
       if (neighborCount != 0) {
         TZone** scan = neighbor0->primaryNeighbors.Data();
         TZone* target = primaryNeighbors[1];
@@ -408,12 +408,12 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
       if (g_pSimMgr->useLocalizedNameTables != 0) {
         if (g_mapActionContextDisplayNameCacheId == -1) {
           unsigned int randomValue = g_zoneStatusCodePrngSeed * 0x15a4e35U + 1;
-          int nameIndex = static_cast<int>((randomValue >> 0xc) & 0x7fff);
+          int nameIndex = (randomValue >> 0xc) & 0x7fff;
           g_mapActionContextDisplayNameCacheId = nameIndex % 0x25;
           unsigned int nextRandomValue = randomValue * 0x15a4e35U + 1;
           g_zoneStatusCodePrngSeed = nextRandomValue;
           int strides[4] = {1, 7, 0xb, 0x17};
-          int strideSelector = static_cast<int>((nextRandomValue >> 0xc) & 0x7fff);
+          int strideSelector = (nextRandomValue >> 0xc) & 0x7fff;
           int strideIndex = SignedRemainderByFour(strideSelector);
           g_mapActionContextDisplayNameCacheStep = strides[strideIndex];
         }
@@ -441,7 +441,7 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
 // FUNCTION: IMPERIALISM 0x0055fb60
 void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex) {
   seedNationId = static_cast<short>(nationSeedId);
-  unsigned short resolvedTile = static_cast<unsigned short>(tileIndex);
+  unsigned short resolvedTile = tileIndex;
   if (resolvedTile == 0xffff) {
     resolvedTile = static_cast<unsigned short>(
         g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(
@@ -471,13 +471,12 @@ void TZone::HandleKeyDown(int key_id) {
   short sVarSlotId;
   short sVarActiveSlot;
   TShip* pvNode;
-  int nSlotsRemaining;
   bool bSlotIsActive;
   unsigned int uSlotIndex;
   unsigned int uSlotCountLocal;
   Province** piSlotEntry;
   Province** slotTable = secondaryNeighbors.Data();
-  unsigned int slotCount = static_cast<unsigned int>(secondaryNeighbors.GetSize());
+  unsigned int slotCount = secondaryNeighbors.GetSize();
 
   if ((nationKeyMask & (1U << (static_cast<unsigned char>(key_id) & 0x1f))) == 0) {
     nationKeyMask = static_cast<unsigned short>(
@@ -538,12 +537,12 @@ void TZone::HandleKeyDown(int key_id) {
 // FUNCTION: IMPERIALISM 0x0055fe60
 short TZone::PickPennantIngotTile() {
   short stepSign = 1;
-  short tileIndex = static_cast<short>(tileOrTerrainId + 0xd8);
+  short tileIndex = tileOrTerrainId + 0xd8;
   short stepMagnitude = 1;
   for (;;) {
     TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tileRecord.tileActionState == kMapTileActionStateNone) {
-      short nationId = static_cast<short>(tileRecord.ownerNationTag);
+      short nationId = tileRecord.ownerNationTag;
       TZone* contextZone = 0;
       if (nationId >= kNationSlotCount && g_pActiveMapOrderContext != 0) {
         contextZone = &g_pActiveMapOrderContext->contextArray[nationId - 0x17];
@@ -552,21 +551,21 @@ short TZone::PickPennantIngotTile() {
         return tileIndex;
       }
     }
-    tileIndex = static_cast<short>(tileIndex + stepSign * stepMagnitude);
-    stepMagnitude = static_cast<short>(stepMagnitude + 1);
+    tileIndex += stepSign * stepMagnitude;
+    ++stepMagnitude;
     stepSign = static_cast<short>(-stepSign);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0055fef0
 short TZone::PickIngotTile() {
-  short tileIndex = static_cast<short>(tileOrTerrainId);
+  short tileIndex = tileOrTerrainId;
   short stepSign = 1;
   short stepMagnitude = 1;
   for (;;) {
     TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tileRecord.tileActionState == kMapTileActionStateNone) {
-      short nationId = static_cast<short>(tileRecord.ownerNationTag);
+      short nationId = tileRecord.ownerNationTag;
       TZone* contextZone = 0;
       if (nationId >= kNationSlotCount && g_pActiveMapOrderContext != 0) {
         contextZone = &g_pActiveMapOrderContext->contextArray[nationId - 0x17];
@@ -575,8 +574,8 @@ short TZone::PickIngotTile() {
         return tileIndex;
       }
     }
-    tileIndex = static_cast<short>(tileIndex + stepMagnitude * stepSign);
-    stepMagnitude = static_cast<short>(stepMagnitude + 1);
+    tileIndex += stepMagnitude * stepSign;
+    ++stepMagnitude;
     stepSign = static_cast<short>(-stepSign);
   }
 }
@@ -607,7 +606,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
     if (neighborTile != -1) {
       TTerrainStateRecord& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
       if (neighborRecord.GetTerrainKind() == kStrategicTerrainWater) {
-        signed char neighborSubtype = static_cast<signed char>(neighborRecord.tileActionState);
+        signed char neighborSubtype = neighborRecord.tileActionState;
         if (neighborSubtype == kMapTileActionStateAnchor ||
             neighborSubtype == kMapTileActionStateDockedFleet) {
           TZone* portZone = TZone::FindPortZoneByTile(neighborTile);
@@ -681,7 +680,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
         }
       }
     }
-    tileCandidate = static_cast<short>(tileCandidate + 1);
+    ++tileCandidate;
     if (tileCandidate >= kStrategicTileCount) {
       break;
     }
@@ -692,7 +691,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
   }
 
   short bestTile = tileCandidate;
-  int bestTileIndex = static_cast<int>(bestTile);
+  int bestTileIndex = bestTile;
   int bestScore =
       ScoreCoastalTileForContextAndCityStateAffinity(bestTileIndex, this, contextProvince);
 
@@ -775,7 +774,7 @@ void TZone::ShowFocusIngot(unsigned char flag) {
       g_pViewMgr->mapUberPicture->InvalidateTile(activeTileIndex);
       return;
     }
-    int magnitude = static_cast<int>(sign);
+    int magnitude = sign;
     short centerTile = activeTileIndex;
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         centerTile, magnitude * kMapTileActionStateZoneCenterMarkerFrame);
@@ -843,7 +842,7 @@ TTaskForce* TZone::AssembleTaskForce(short nation) {
   if (resolvedNation == -1) {
     resolvedNation = g_pSimMgr->GetPlayerCountry();
   }
-  unsigned char nationBit = static_cast<unsigned char>(1 << static_cast<short>(resolvedNation));
+  unsigned char nationBit = 1 << static_cast<short>(resolvedNation);
   if ((nationKeyMask & nationBit) != 0) {
     for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
       if (ship->location == this && ship->nation == resolvedNation && ship->taskForce == 0) {
@@ -863,7 +862,7 @@ bool TZone::HasFreeShipsOfPlayer(int nation, bool skipField34Check) {
   if (nation == -1) {
     nation = g_pSimMgr->GetPlayerCountry();
   }
-  unsigned char nationBit = static_cast<unsigned char>(1 << nation);
+  unsigned char nationBit = 1 << nation;
   if ((nationKeyMask & nationBit) == 0) {
     return false;
   }
@@ -885,7 +884,7 @@ bool TZone::HasFreeShipsOfPlayer(int nation, bool skipField34Check) {
 
 // FUNCTION: IMPERIALISM 0x00560ba0
 void TZone::LightUp(int remainingDepth, bool markAdjacentCities) {
-  short depth = static_cast<short>(remainingDepth);
+  short depth = remainingDepth;
   if (distanceLevel > depth) {
     return;
   }
@@ -1016,7 +1015,7 @@ int TZone::CountDiplomaticallyRelatedNationsInKeyMask(int nation) {
   int count = 0;
   for (int slot = 0; slot < 7; ++slot) {
     if (g_apTerrainTypeDescriptorTable[slot] != 0) {
-      unsigned char nationBit = static_cast<unsigned char>(1 << static_cast<short>(slot));
+      unsigned char nationBit = 1 << static_cast<short>(slot);
       if ((static_cast<unsigned char>(nationKeyMask) & nationBit) != 0 &&
           g_pDiplomacyTurnStateManager->AreAtWar(nation, slot)) {
         ++count;
@@ -1130,7 +1129,7 @@ TZone* TZone::GetFirstPort() {
 
 // FUNCTION: IMPERIALISM 0x00561d40
 TZone* TZone::GetNextPort() {
-  TZone* cursor = this->prev18;
+  TZone* cursor = prev18;
   while (cursor != 0 && cursor->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
     cursor = cursor->prev18;
   }
@@ -1191,7 +1190,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
       // Inlined FindPortZoneByTile(tileIndex): match a port zone by any of its tile ids.
       context = TZone::GetFirstPort();
       while (context != 0) {
-        short ti = static_cast<short>(tileIndex);
+        short ti = tileIndex;
         if (static_cast<short>(context->tileOrTerrainId) == ti || context->activeTileIndex == ti ||
             static_cast<TPortZone*>(context)->portTileIndex == ti) {
           break;
@@ -1263,7 +1262,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
 
     if (zone != 0 && zone->IsPortZone()) {
       if (zone->primaryNeighbors.Count() == 0) {
-        short tileIdx = static_cast<short>(zone->tileOrTerrainId);
+        short tileIdx = zone->tileOrTerrainId;
         short ownerNation = g_pGlobalMapState->terrainStateTable[tileIdx].ownerNationTag;
         TZone* contextElement = &g_pActiveMapOrderContext->contextArray[ownerNation - 0x17];
         zone->primaryNeighbors.Add(contextElement);

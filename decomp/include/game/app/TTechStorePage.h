@@ -11,9 +11,9 @@ class CityDialogController;
 class TTechStorePage : public TPageView {
 public:
   DECLARE_DYNCREATE(TTechStorePage)
-  virtual ~TTechStorePage() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TTechStorePage() override;
 
-  void StuffValues(int nationSlot); // 0x005b0f10
+  void StuffValues(int nationSlot);
 
   TTechStorePage();
 };

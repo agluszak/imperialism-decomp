@@ -59,8 +59,8 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
   ResolveUiThemeColor(0x2b68, &foregroundStyle);
 
   g_pSimMgr->GetString(0x2733, 0x2a, &strA);
-  short baseX = static_cast<short>(0x48 - ownerLocalX);
-  short baseY = static_cast<short>(0x16f - ownerLocalY);
+  short baseX = 0x48 - ownerLocalX;
+  short baseY = 0x16f - ownerLocalY;
   SetQuickDrawColorAndSyncGlobals(foregroundStyle);
   SetQuickDrawTextOriginWithContextOffset(baseX + 1, baseY + 1);
   DrawTextWithCachedQuickDrawStyleState(&strA);
@@ -72,8 +72,8 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
 
   for (int i = 0; i < 6; ++i) {
     g_pSimMgr->GetString(0x2733, i + 0x2b, &strA);
-    short rowX = static_cast<short>(kTradePanelRowX[i] - ownerLocalX);
-    short rowY = static_cast<short>(kTradePanelRowY[i] - ownerLocalY);
+    short rowX = kTradePanelRowX[i] - ownerLocalX;
+    short rowY = kTradePanelRowY[i] - ownerLocalY;
     SetQuickDrawColorAndSyncGlobals(foregroundStyle);
     SetQuickDrawTextOriginWithContextOffset(rowX + 1, rowY + 1);
     DrawTextWithCachedQuickDrawStyleState(&strA);
@@ -85,8 +85,8 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
   for (int j = 0; j < 3; ++j) {
     g_pSimMgr->GetString(0x2733, j + 0x31, &strA);
     short measuredWidth = MeasureTextExtentWithCachedQuickDrawStyle(&strA);
-    short colY = static_cast<short>(kTradePanelColumnY[j] - ownerLocalY);
-    short colX = static_cast<short>(kTradePanelColumnX[j] - measuredWidth / 2 - ownerLocalX);
+    short colY = kTradePanelColumnY[j] - ownerLocalY;
+    short colX = kTradePanelColumnX[j] - measuredWidth / 2 - ownerLocalX;
     SetQuickDrawColorAndSyncGlobals(foregroundStyle);
     SetQuickDrawTextOriginWithContextOffset(colX + 1, colY + 1);
     DrawTextWithCachedQuickDrawStyleState(&strA);

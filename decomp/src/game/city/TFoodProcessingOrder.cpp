@@ -14,10 +14,10 @@ void TFoodProcessingOrder::IFoodProcessingOrder(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b7ed0
 short TFoodProcessingOrder::MaxOrder() {
-  short limit = static_cast<short>(ownerCity->stockByType[kResourceGrain] / 2);
+  short limit = ownerCity->stockByType[kResourceGrain] / 2;
   short fishAndLivestock = static_cast<short>(ownerCity->stockByType[kResourceFish] +
                                               ownerCity->stockByType[kResourceLivestock]);
-  short workforceLimit = static_cast<short>(productionSummary->strength / 2);
+  short workforceLimit = productionSummary->strength / 2;
   if (ownerCity->stockByType[kResourceFruit] < limit) {
     limit = ownerCity->stockByType[kResourceFruit];
   }
@@ -27,7 +27,7 @@ short TFoodProcessingOrder::MaxOrder() {
   if (workforceLimit < limit) {
     limit = workforceLimit;
   }
-  return static_cast<short>(quantity + limit * 2);
+  return quantity + limit * 2;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7f50
@@ -41,7 +41,7 @@ bool TFoodProcessingOrder::SetQuantity(short quantity) {
   }
   this->quantity = quantity;
 
-  short halfDelta = static_cast<short>((quantity - previousQuantity) / 2);
+  short halfDelta = (quantity - previousQuantity) / 2;
   ownerCity->stockByType[kResourceGrain] =
       static_cast<short>(ownerCity->stockByType[kResourceGrain] - halfDelta * 2);
   ownerCity->VerifyStocks();
@@ -80,9 +80,9 @@ void TFoodProcessingOrder::Restock() {}
 // FUNCTION: IMPERIALISM 0x004b80c0
 void TFoodProcessingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   if (quantity & 1) {
-    quantity = static_cast<short>(quantity + 1);
+    ++quantity;
   }
-  this->ResetOrderSheet(orderSheet);
+  ResetOrderSheet(orderSheet);
   orderSheet->slotByResourceCode[0x11] = quantity;
   orderSheet->slotByResourceCode[0x12] = static_cast<short>(quantity / 2);
   orderSheet->slotByResourceCode[0x14] = static_cast<short>(quantity / 2);

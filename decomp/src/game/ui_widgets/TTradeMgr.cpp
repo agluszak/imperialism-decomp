@@ -30,8 +30,8 @@ TTradeMgr::~TTradeMgr() {}
 // FUNCTION: IMPERIALISM 0x005b7a90
 void TTradeMgr::ITradeMgr() {
   const short* presetCursor = g_aTradeItemBasePriceByCategory;
-  TDealList** rankListCursor = this->categoryRankLists;
-  NationMetricCategoryRow* row = this->categoryRows;
+  TDealList** rankListCursor = categoryRankLists;
+  NationMetricCategoryRow* row = categoryRows;
   for (int rowCount = 0; rowCount < 0x11; ++rowCount) {
     row->numRequests = 0;
     row->numOffers = 0;
@@ -63,7 +63,7 @@ void TTradeMgr::ITradeMgr() {
 
 // FUNCTION: IMPERIALISM 0x005b7bc0
 void TTradeMgr::Free() {
-  TDealList** p = this->categoryRankLists;
+  TDealList** p = categoryRankLists;
   for (int i = 0; i < 0x11; ++i) {
     if (*p != 0) {
       (*p)->FreeList();
@@ -98,7 +98,7 @@ void TTradeMgr::ReadFrom(TStream* stream) {
   } else {
     stream->ReadBytes(&categoryRows[0].previousPrice, 0xaa0);
   }
-  TDealList** p = this->categoryRankLists;
+  TDealList** p = categoryRankLists;
   for (int i = 0; i < 0x11; ++i) {
     (*p)->DeleteAll();
     (*p)->ReadFrom(stream);
@@ -124,7 +124,7 @@ void TTradeMgr::WriteTo(TStream* stream) {
     ++row;
   }
 
-  TDealList** p = this->categoryRankLists;
+  TDealList** p = categoryRankLists;
   for (int i = 0; i < 0x11; ++i) {
     (*p)->WriteTo(stream);
     ++p;
@@ -188,10 +188,10 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               event.dispatchScore =
-                  this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
-                                     categoryRows[row].price, categoryRows[row].basePrice);
+                  GetDealPrice(static_cast<short>(source), static_cast<short>(target),
+                               categoryRows[row].price, categoryRows[row].basePrice);
               event.category = static_cast<short>(row);
-              this->categoryRankLists[row]->Insert(&event);
+              categoryRankLists[row]->Insert(&event);
             }
             ++source;
           } while (source < 7);
@@ -218,10 +218,10 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
               event.dispatchScore =
-                  this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
-                                     categoryRows[row].price, categoryRows[row].basePrice);
+                  GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
+                               categoryRows[row].price, categoryRows[row].basePrice);
               event.category = static_cast<short>(row);
-              this->categoryRankLists[row]->Insert(&event);
+              categoryRankLists[row]->Insert(&event);
             }
             ++source;
           } while (source < 7);
@@ -251,10 +251,10 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               event.dispatchScore =
-                  this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
-                                     categoryRows[midRow].price, categoryRows[midRow].basePrice);
+                  GetDealPrice(static_cast<short>(source), static_cast<short>(target),
+                               categoryRows[midRow].price, categoryRows[midRow].basePrice);
               event.category = static_cast<short>(midRow);
-              this->categoryRankLists[midRow]->Insert(&event);
+              categoryRankLists[midRow]->Insert(&event);
             }
             ++source;
           } while (source < 7);
@@ -280,10 +280,10 @@ void TTradeMgr::CalculateDealOrder() {
                 event.relationStanding =
                     RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
                 event.dispatchScore =
-                    this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
-                                       categoryRows[7].price, categoryRows[7].basePrice);
+                    GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
+                                 categoryRows[7].price, categoryRows[7].basePrice);
                 event.category = 7;
-                this->categoryRankLists[7]->Insert(&event);
+                categoryRankLists[7]->Insert(&event);
               }
               ++source;
             } while (source < 7);
@@ -314,10 +314,10 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               event.dispatchScore =
-                  this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
-                                     categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
+                  GetDealPrice(static_cast<short>(source), static_cast<short>(target),
+                               categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
               event.category = static_cast<short>(lastRow);
-              this->categoryRankLists[lastRow]->Insert(&event);
+              categoryRankLists[lastRow]->Insert(&event);
             }
             ++source;
           } while (source < 7);
@@ -334,11 +334,11 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationDelta = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, secondarySource, target);
-              event.dispatchScore = this->GetDealPrice(
-                  static_cast<short>(secondarySource), static_cast<short>(target),
-                  categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
+              event.dispatchScore =
+                  GetDealPrice(static_cast<short>(secondarySource), static_cast<short>(target),
+                               categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
               event.category = static_cast<short>(lastRow);
-              this->categoryRankLists[lastRow]->Insert(&event);
+              categoryRankLists[lastRow]->Insert(&event);
             }
             ++secondarySource;
           } while (secondarySource < 0x17);
@@ -351,49 +351,45 @@ void TTradeMgr::CalculateDealOrder() {
 void TTradeMgr::CalculateNewWorldPrices() {
   int slot = 0;
   do {
-    this->CalculateNewItemPrice(static_cast<short>(slot));
+    CalculateNewItemPrice(static_cast<short>(slot));
     ++slot;
   } while (static_cast<short>(slot) < 0x11);
 }
 
 // FUNCTION: IMPERIALISM 0x005b8ad0
 void TTradeMgr::CalculateNewItemPrice(short item) {
-  NationMetricCategoryRow* row = &this->categoryRows[item];
+  NationMetricCategoryRow* row = &categoryRows[item];
   row->previousPrice = row->price;
 
   int result;
   short via;
   switch (item) {
   case 8:
-    result = static_cast<int>(this->categoryRows[0].price) +
-             static_cast<int>(this->categoryRows[1].price);
-    via = this->categoryRows[0xd].price;
+    result = static_cast<int>(categoryRows[0].price) + static_cast<int>(categoryRows[1].price);
+    via = categoryRows[0xd].price;
     result = (static_cast<int>(via) / 3 + (result / 2) * 3) / 2;
     break;
   case 9:
-    result =
-        (static_cast<int>(this->categoryRows[0xe].price) / 3 + this->categoryRows[2].price * 3) / 2;
+    result = (static_cast<int>(categoryRows[0xe].price) / 3 + categoryRows[2].price * 3) / 2;
     break;
   case 0xa:
-    result = this->categoryRows[2].price * 3;
+    result = categoryRows[2].price * 3;
     break;
   case 0xb:
-    result = static_cast<int>(this->categoryRows[4].price) +
-             static_cast<int>(this->categoryRows[3].price);
-    via = this->categoryRows[0xf].price;
+    result = static_cast<int>(categoryRows[4].price) + static_cast<int>(categoryRows[3].price);
+    via = categoryRows[0xf].price;
     result = (static_cast<int>(via) / 3 + (result / 2) * 3) / 2;
     break;
   case 0xc:
-    result = this->categoryRows[6].price * 3;
+    result = categoryRows[6].price * 3;
     break;
   case 0x10:
-    result =
-        (static_cast<int>(this->categoryRows[0xf].price) + this->categoryRows[0xb].price * 3) / 2;
+    result = (static_cast<int>(categoryRows[0xf].price) + categoryRows[0xb].price * 3) / 2;
     break;
   default: {
     double weighted = row->adjustedNumOffers;
     double diff = static_cast<double>(row->numRequests) - weighted;
-    int pw = static_cast<int>(row->price);
+    int pw = row->price;
     if (diff < 0.0) {
       int a = static_cast<int>(static_cast<double>(pw) + diff);
       int b = static_cast<int>((1.0 + diff * 0.01) * static_cast<double>(pw));
@@ -417,12 +413,12 @@ void TTradeMgr::CalculateNewItemPrice(short item) {
 
 // FUNCTION: IMPERIALISM 0x005b8d40
 double TTradeMgr::GetAdjNumOffers(short item) {
-  return this->categoryRows[item].adjustedNumOffers;
+  return categoryRows[item].adjustedNumOffers;
 }
 
 // FUNCTION: IMPERIALISM 0x005b8d70
 short TTradeMgr::GetAmtOffered(short item) {
-  return this->categoryRows[item].amountOffered;
+  return categoryRows[item].amountOffered;
 }
 
 // FUNCTION: IMPERIALISM 0x005b8da0
@@ -433,9 +429,9 @@ int TTradeMgr::GetDealPrice(short sourceSlot, short targetSlot, short scoreA, sh
 
   short prefTarget = g_apTerrainTypeDescriptorTable[targetSlot]->encodedNationSlot;
   if (prefTarget >= 200) {
-    prefTarget = static_cast<short>(prefTarget - 200);
+    prefTarget -= 200;
   } else if (prefTarget >= 100) {
-    prefTarget = static_cast<short>(prefTarget - 100);
+    prefTarget -= 100;
   } else {
     prefTarget = g_apTerrainTypeDescriptorTable[targetSlot]->nationSlot;
   }
@@ -445,9 +441,9 @@ int TTradeMgr::GetDealPrice(short sourceSlot, short targetSlot, short scoreA, sh
 
   short prefSource = g_apTerrainTypeDescriptorTable[sourceSlot]->encodedNationSlot;
   if (prefSource >= 200) {
-    prefSource = static_cast<short>(prefSource - 200);
+    prefSource -= 200;
   } else if (prefSource >= 100) {
-    prefSource = static_cast<short>(prefSource - 100);
+    prefSource -= 100;
   } else {
     prefSource = g_apTerrainTypeDescriptorTable[sourceSlot]->nationSlot;
   }
@@ -478,12 +474,12 @@ int TTradeMgr::GetDealPrice(short sourceSlot, short targetSlot, short scoreA, sh
 
 // FUNCTION: IMPERIALISM 0x005b8f80
 short TTradeMgr::GetNumOffers(short item) {
-  return this->categoryRows[item].numOffers;
+  return categoryRows[item].numOffers;
 }
 
 // FUNCTION: IMPERIALISM 0x005b8fb0
 short TTradeMgr::GetNumRequests(short item) {
-  return this->categoryRows[item].numRequests;
+  return categoryRows[item].numRequests;
 }
 
 // FUNCTION: IMPERIALISM 0x005b8fe0
@@ -494,17 +490,17 @@ short TTradeMgr::GetPrice(short item) {
   if (item == 0x15) {
     return 500;
   }
-  return this->categoryRows[item].price;
+  return categoryRows[item].price;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9030
 short TTradeMgr::GetBasePrice(short item) {
-  return this->categoryRows[item].basePrice;
+  return categoryRows[item].basePrice;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9060
 void TTradeMgr::OfferItemDeals(short item) {
-  TDealList* list = this->categoryRankLists[item];
+  TDealList* list = categoryRankLists[item];
   short entryOrdinal = 1;
   while (entryOrdinal <= list->GetSize()) {
     TradeDealEntry* entry =
@@ -531,14 +527,14 @@ void TTradeMgr::StartDeals() {
   do {
     short i = categoryRows[0].dealCategoryOrderIndex;
     short idx = g_aTradeDealCategoryOrder[i];
-    TDealList* list = this->categoryRankLists[idx];
+    TDealList* list = categoryRankLists[idx];
     if (list->GetSize() != 0) {
       break;
     }
     next = categoryRows[0].dealCategoryOrderIndex + 1;
     categoryRows[0].dealCategoryOrderIndex = next;
   } while (next < 0x11);
-  this->NextTradeDeal();
+  NextTradeDeal();
 }
 
 // FUNCTION: IMPERIALISM 0x005b91e0
@@ -624,13 +620,13 @@ void TTradeMgr::EndTradeOffers() {
 void TTradeMgr::OfferTradeDeals() {
   short slot;
   for (slot = 0xd; slot <= 0x10; ++slot) {
-    this->OfferItemDeals(slot);
+    OfferItemDeals(slot);
   }
   for (slot = 7; slot <= 0xc; ++slot) {
-    this->OfferItemDeals(slot);
+    OfferItemDeals(slot);
   }
   for (slot = 0; slot <= 6; ++slot) {
-    this->OfferItemDeals(slot);
+    OfferItemDeals(slot);
   }
 
   TGreatPower** np = g_apNationStates;
@@ -676,7 +672,7 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
     g_apNationStates[sourceNation]->ClearTradeOfferForResource(commodityType);
   }
   if (amount > 0) {
-    int sourceNationIndex = static_cast<int>(sourceNation);
+    int sourceNationIndex = sourceNation;
     g_apTerrainTypeDescriptorTable[sourceNationIndex]->PurchaseItem(commodityType, amount,
                                                                     maximumAmount);
     g_apTerrainTypeDescriptorTable[targetNation]->PurchaseItem(commodityType, -amount,
@@ -707,7 +703,7 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
 
 // FUNCTION: IMPERIALISM 0x005b9790
 void TTradeMgr::UpdatePrice(short item, short value) {
-  this->categoryRows[item].price = value;
+  categoryRows[item].price = value;
 }
 
 // FUNCTION: IMPERIALISM 0x005b97c0
@@ -753,13 +749,13 @@ void TTradeMgr::SetMinorsTradeBids() {
     }
     ++p;
   }
-  this->TallyMinorsTradeBids();
+  TallyMinorsTradeBids();
 }
 
 // FUNCTION: IMPERIALISM 0x005b98d0
 void TTradeMgr::TallyTradeBids() {
   short turnCount = g_pSimMgr->economicTurn;
-  short bucket = static_cast<short>(static_cast<int>(turnCount) / 4);
+  short bucket = static_cast<int>(turnCount) / 4;
   double base;
   if (bucket < 0xb) {
     base = 1.1;
@@ -808,7 +804,7 @@ void TTradeMgr::TallyTradeBids() {
             factor = 1.0;
           } else {
             int exponent = (metric < 0x19) ? (metric - 1) : 0x17;
-            factor = this->Power(base, static_cast<short>(exponent));
+            factor = Power(base, static_cast<short>(exponent));
             if (2.0 < factor) {
               factor = 2.0;
             }
@@ -828,7 +824,7 @@ void TTradeMgr::TallyTradeBids() {
 // FUNCTION: IMPERIALISM 0x005b9b30
 void TTradeMgr::TallyMinorsTradeBids() {
   short turnCount = g_pSimMgr->economicTurn;
-  short band = static_cast<short>(static_cast<int>(turnCount) / 4);
+  short band = static_cast<int>(turnCount) / 4;
   double base;
   if (band < 0xb) {
     base = 1.1;
@@ -866,16 +862,16 @@ void TTradeMgr::TallyMinorsTradeBids() {
           value = (*mp)->GetStockpile(static_cast<short>(metricRow));
         }
         ++row->numOffers;
-        short sv = static_cast<short>(value);
+        short sv = value;
         row->amountOffered += sv;
         double factor;
-        if (this->GetPrice(static_cast<short>(metricRow)) < (*mp)->GetRandomOfferPriceThreshold()) {
+        if (GetPrice(static_cast<short>(metricRow)) < (*mp)->GetRandomOfferPriceThreshold()) {
           factor = 0.0;
         } else if (sv == 1) {
           factor = 1.0;
         } else {
           int exponent = (sv < 0x19) ? (value - 1) : 0x17;
-          factor = this->Power(base, static_cast<short>(exponent));
+          factor = Power(base, static_cast<short>(exponent));
         }
         row->adjustedNumOffers = factor + row->adjustedNumOffers;
       }
@@ -899,9 +895,9 @@ void TTradeMgr::TallyMinorsTradeBids() {
       if (metric == 1) {
         factor = 1.0;
       } else if (metric > 0x18) {
-        factor = this->Power(base, 0x17);
+        factor = Power(base, 0x17);
       } else {
-        factor = this->Power(base, static_cast<short>(metric - 1));
+        factor = Power(base, static_cast<short>(metric - 1));
       }
       aggregateRow->adjustedNumOffers = factor + aggregateRow->adjustedNumOffers;
     }
@@ -945,13 +941,13 @@ double TTradeMgr::Power(double base, short exponent) {
 
 // FUNCTION: IMPERIALISM 0x005b9f70
 bool TTradeMgr::DidBidOn(int item, int nationSlot) {
-  short* cells = &this->categoryRows[0].tradeOfferCells[0];
+  short* cells = &categoryRows[0].tradeOfferCells[0];
   return cells[item * 0x50 + nationSlot] < 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9fa0
 bool TTradeMgr::DidOffer(int item, int nationSlot) {
-  short* cells = &this->categoryRows[0].tradeOfferCells[0];
+  short* cells = &categoryRows[0].tradeOfferCells[0];
   return 0 < cells[item * 0x50 + nationSlot];
 }
 
@@ -959,7 +955,7 @@ bool TTradeMgr::DidOffer(int item, int nationSlot) {
 TLongintList* TTradeMgr::GetBidderList(int item, int nationSlot) {
   TLongintList* node = new TLongintList();
   short idx = 1;
-  TDealList* list = this->categoryRankLists[item];
+  TDealList* list = categoryRankLists[item];
   int count = list->GetSize();
   if (count > 0) {
     int i = 1;

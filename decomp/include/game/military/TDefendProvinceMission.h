@@ -7,31 +7,26 @@
 class TDefendProvinceMission : public TArmyMission {
   DECLARE_SERIAL(TDefendProvinceMission)
 public:
-  virtual ~TDefendProvinceMission() override; // slot 0x01 dtor 0x00535800 / ??_G 0x005357d0
+  virtual ~TDefendProvinceMission() override; // slot 0x01 dtor 0x00535800 / ??_G
 public:
   // Default constructor
   TDefendProvinceMission() : TArmyMission() {}
 
   TDefendProvinceMission(int nodeKey) : TArmyMission(nodeKey) {}
 
-  virtual void Initialize() override; // slot 0x0c (TMission) 0x53eff0
+  virtual void Initialize() override; // slot 0x0c (TMission)
   virtual void
   Free() override; // slot 0x1c (TObject) 0x53ebe0 -- releases orderList and deletes self
 
-  virtual bool IsANoBrainer() const override;      // slot 0x28 0x5357b0
-  virtual bool IsHospitalMission() const override; // slot 0x64 0x535790
-  virtual void
-  GiveOrders() override; // slot 0x44 0x535770 -- propagates target tile to linked units
-  virtual TMission* GetReplacement() override; // slot 0x48 0x53f040
-  virtual bool Matches(eMissionType missionType, int key,
-                       TZone* zoneContext) const override; // slot 0x4c 0x53f010
+  virtual bool IsANoBrainer() const override;
+  virtual bool IsHospitalMission() const override;
+  virtual void GiveOrders() override; // propagates target tile to linked units
+  virtual TMission* GetReplacement() override;
+  virtual bool Matches(eMissionType missionType, int key, TZone* zoneContext) const override;
 
-  virtual void
-  SetStateByte8To2() override; // slot 0x34 0x53ecc0 -- updates state by nation target match
-  virtual void
-  CalculateImportance() override; // slot 0x38 0x53ed00 -- computes terrain adjacency score
-  virtual void CalculateNeeds()
-      override; // slot 0x3c 0x53edf0 -- populates resource weights by diplomacy context
+  virtual void SetStateByte8To2() override;    // updates state by nation target match
+  virtual void CalculateImportance() override; // computes terrain adjacency score
+  virtual void CalculateNeeds() override;      // populates resource weights by diplomacy context
 
   static float ComputeLocalSupportVectorScore(int nodeContext);
   static float ComputeCrossNationSupportVectorScore(int nodeContext);

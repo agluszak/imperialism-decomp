@@ -114,7 +114,7 @@ int TWindow::PoseModally() {
     }
   }
   g_ModalViewStack.AddHead(this);
-  behavior->PoseModally(); // slot 0x12: run the modal message loop
+  behavior->PoseModally(); // run the modal message loop
   int armedCommand = behavior->armedCommandCode;
   POSITION pos = g_ModalViewStack.Find(this);
   if (pos != NULL) {

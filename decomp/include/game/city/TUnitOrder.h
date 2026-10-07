@@ -17,29 +17,28 @@ class TUnitOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TUnitOrder)
   // FUNCTION: IMPERIALISM 0x004b6fc0
-  virtual ~TUnitOrder() override {}                  // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;    // slot 0x05 0x4b7850
-  virtual void ReadFrom(TStream* stream) override;   // slot 0x06 0x4b7920
-  virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b7210
-  virtual short MaxOrder() override;                 // slot 0x0c 0x4b7080
+  virtual ~TUnitOrder() override {}
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual bool SetQuantity(short quantity) override;
+  virtual short MaxOrder() override;
 
   void ReplaceOrder(short resourceTypeIndex, short primaryInputResourceId,
-                           short primaryInputPerUnit, short secondaryInputResourceId,
-                           short secondaryInputPerUnit, short cashCostPerUnit, short workforceMode);
-  virtual void Produce() override; // slot 0x0d 0x4b73b0
-  virtual void FillOrderSheet(OrderSheet* orderSheet,
-                              short quantity) override; // slot 0x10 0x4b7320
+                    short primaryInputPerUnit, short secondaryInputResourceId,
+                    short secondaryInputPerUnit, short cashCostPerUnit, short workforceMode);
+  virtual void Produce() override;
+  virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity) override;
   virtual void IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputResourceId,
                           short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
                           short nSecondaryInputPerUnit, short nCashCostPerUnit,
-                          short nWorkforceMode, byte bSpecialistMode); // slot 0x11 0x4b6fe0
-  short primaryInputResourceId;   // 0x4c — nPrimaryInputResourceId
-  short secondaryInputResourceId; // 0x4e — nSecondaryInputResourceId
-  short primaryInputPerUnit;      // 0x50 — nPrimaryInputPerUnit
-  short secondaryInputPerUnit;    // 0x52 — nSecondaryInputPerUnit
-  short cashCostPerUnit;          // 0x54 — nCashCostPerUnit
-  short workforceMode;            // 0x56 — serialized eUnitOrderWorkforceMode value
-  unsigned char specialistMode;   // 0x58 — bSpecialistMode
+                          short nWorkforceMode, byte bSpecialistMode);
+  short primaryInputResourceId;   // nPrimaryInputResourceId
+  short secondaryInputResourceId; // nSecondaryInputResourceId
+  short primaryInputPerUnit;      // nPrimaryInputPerUnit
+  short secondaryInputPerUnit;    // nSecondaryInputPerUnit
+  short cashCostPerUnit;          // nCashCostPerUnit
+  short workforceMode;            // serialized eUnitOrderWorkforceMode value
+  unsigned char specialistMode;   // bSpecialistMode
   unsigned char pad59[0x5c - 0x59];
 
   TUnitOrder() {}

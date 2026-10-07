@@ -297,7 +297,7 @@ void TTacticalBattle::CalculateMoveMap(TTacticalUnit* unit) {
         int direction;
         TacticalTileIndex* neighborCursor = neighborTiles;
         for (direction = 0; direction < 6; ++direction, ++neighborCursor) {
-          short neighborIndex = static_cast<short>(*neighborCursor);
+          short neighborIndex = *neighborCursor;
           if (neighborIndex == -1) {
             continue;
           }
@@ -332,7 +332,7 @@ void TTacticalBattle::CalculateMoveMap(TTacticalUnit* unit) {
             continue;
           }
           bool blockedByAdjacentEnemy = false;
-          short prevDirection = static_cast<short>((direction > 0) ? direction - 1 : 5);
+          short prevDirection = (direction > 0) ? direction - 1 : 5;
           int prevNeighbor = neighborTiles[prevDirection];
           if (prevNeighbor != -1) {
             TTacticalUnit* prevOccupant = tileGrid[prevNeighbor].occupant;
@@ -341,7 +341,7 @@ void TTacticalBattle::CalculateMoveMap(TTacticalUnit* unit) {
             }
           }
           // ORACLE: retail uses neighbor index 1 for directions 0..4 and 0 otherwise.
-          short nextDirection = static_cast<short>((direction >= 5) ? 0 : 1);
+          short nextDirection = (direction >= 5) ? 0 : 1;
           int nextNeighbor = neighborTiles[nextDirection];
           if (nextNeighbor != -1) {
             TTacticalUnit* nextOccupant = tileGrid[nextNeighbor].occupant;
@@ -371,7 +371,7 @@ void TTacticalBattle::CalculateMoveMap(TTacticalUnit* unit) {
 // FUNCTION: IMPERIALISM 0x005a02e0
 void TTacticalBattle::CalculateDangerMap(TTacticalUnit* unit) {
   TacticalTileIndex neighborTiles[6];
-  char unitSide = static_cast<char>(unit->side);
+  char unitSide = unit->side;
   char* threatLevels = tileThreatLevelArray;
   TacticalTileIndex seedTile;
   for (seedTile = 0; seedTile < tacticalTileCount; ++seedTile) {
@@ -1712,7 +1712,7 @@ void TTacticalBattle::LaMine(TacticalTileIndex tileIndex, int amount, bool remot
 void TTacticalBattle::DigTunnel(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   unit->AssertValid();
   // Captured as a word before the dig/move mutate the unit.
-  short actionPointsBefore = static_cast<short>(unit->actionPoints);
+  short actionPointsBefore = unit->actionPoints;
   LaDig(unit, tileIndex, false);
   MoveTacticalUnitTowardTile(unit, tileIndex);
   unit->actionPoints = actionPointsBefore - g_awUnitTypeBaseActionPointTable[unit->unitType] / 2;

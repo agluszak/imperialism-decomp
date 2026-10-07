@@ -9,12 +9,11 @@
 class TTechItemView : public TView {
 public:
   DECLARE_DYNCREATE(TTechItemView)
-  virtual ~TTechItemView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x005b1e20
+  virtual ~TTechItemView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
-  int nationSlot; // +0x60 — TTechMgr capability-matrix row (hedged name)
-  int techId;     // +0x64 — read as short for string offsets, as int for the cost table
+  int nationSlot; // TTechMgr capability-matrix row (hedged name)
+  int techId;     // read as short for string offsets, as int for the cost table
 
   // NOOP: verified empty in original 0x005b1283
   TTechItemView() {}

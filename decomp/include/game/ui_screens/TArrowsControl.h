@@ -7,10 +7,9 @@
 class TArrowsControl : public TPicture {
 public:
   DECLARE_DYNCREATE(TArrowsControl)
-  virtual ~TArrowsControl() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TArrowsControl() override;
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint,
-                          bool commandFlag) override; // slot 0x68 0x5839f0
+                          CPoint& currentPoint, bool commandFlag) override;
   int nextRepeatTick;
 
   TArrowsControl();

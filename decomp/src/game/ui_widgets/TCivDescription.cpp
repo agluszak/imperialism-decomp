@@ -116,7 +116,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
   int provinceTileCount;
   int provinceTileOrdinal;
   short tileIndex;
-  RECT* legendRect = &this->legendRects[0];
+  RECT* legendRect = &legendRects[0];
   unsigned short* currentLegendSelectionCounter = g_awCivilianLegendSelectionCountsBySlot;
   int slotIndex = 0;
 
@@ -125,7 +125,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
       do {
         candidateOrdinal = 0;
         TLongintList* ownerNationProvinceCollection =
-            g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
+            g_apTerrainTypeDescriptorTable[ownerNationId]->ownedRegionList;
         provinceCount = ownerNationProvinceCollection->GetSize();
         if (provinceCount > 0) {
           provinceOrdinal = 1;
@@ -204,7 +204,6 @@ void TCivDescription::CountWorkableSpaces(TCivUnit* orderState) {
   Province* provinceRecord;
   short* targetCountSlot;
   int classSlotOrdinal;
-  int remainingSlots;
   int provinceOrdinal;
   short* provinceTileIndices;
   int provinceTileIndex;
@@ -271,9 +270,9 @@ void TCivDescription::Draw(RECT* rectBuffer) {
   short textWidth;
   short textOriginX;
 
-  if (this->targetTileCountsBySlot[4] == 0) {
+  if (targetTileCountsBySlot[4] == 0) {
     legendSelectionCountsBySlot = g_awCivilianLegendSelectionCountsBySlot;
-    RECT* legendRect = &this->legendRects[0];
+    RECT* legendRect = &legendRects[0];
     RECT zeroRect = {0, 0, 0, 0};
     do {
       *legendRect = zeroRect;
@@ -281,19 +280,19 @@ void TCivDescription::Draw(RECT* rectBuffer) {
       *legendSelectionCountsBySlot = 0;
       legendSelectionCountsBySlot++;
     } while (legendSelectionCountsBySlot < g_awCivilianLegendSelectionCountsBySlot + 16);
-    this->enabled = 0;
+    enabled = 0;
   }
 
-  selectedClass = this->selectedCivilianClass;
+  selectedClass = selectedCivilianClass;
   if (selectedClass == EncodeCivilianUnitKind(kCivilianUnitProspector)) {
-    this->DrawProspector(rectBuffer);
+    DrawProspector(rectBuffer);
   } else if (selectedClass == EncodeCivilianUnitKind(kCivilianUnitEngineer)) {
-    this->DrawEngineer(rectBuffer);
+    DrawEngineer(rectBuffer);
   } else if (selectedClass != EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
-    this->DrawDeveloper(rectBuffer);
+    DrawDeveloper(rectBuffer);
   }
 
-  this->targetTileCountsBySlot[4] = 1;
+  targetTileCountsBySlot[4] = 1;
   if (selectedClass != static_cast<short>(-1)) {
     stylePrimary = 0;
     styleSecondary = 0;
@@ -304,7 +303,7 @@ void TCivDescription::Draw(RECT* rectBuffer) {
     g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
 
     textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&localizedTextRef);
-    textOriginX = static_cast<short>((this->frameWidth / 2) - (textWidth / 2));
+    textOriginX = static_cast<short>((frameWidth / 2) - (textWidth / 2));
 
     SetQuickDrawColorAndSyncGlobals(styleSecondary);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textOriginX + 1), 0x47);
@@ -360,8 +359,7 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
 
   g_pSimMgr->GetString(0x272d, 10, &labelText); // Cannot Build In
   short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&labelText);
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(this->frameWidth / 2 - titleWidth / 2),
-                                          212);
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth / 2 - titleWidth / 2), 212);
   DrawTextWithCachedQuickDrawStyleState(&labelText);
 
   UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -406,10 +404,10 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
       BlitRectWithOptionalTransparency(iconAtlas, destination, &sourceRect, &destinationRect, 0, 0);
 
       if (iconX < 94) {
-        iconX = static_cast<short>(iconX + 28);
+        iconX += 28;
       } else {
         iconX = 10;
-        iconY = static_cast<short>(iconY + 22);
+        iconY += 22;
       }
     }
   }
@@ -522,8 +520,8 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
     g_pSimMgr->GetString(0x272d, 1, &text);
     short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&text);
-    SetQuickDrawTextOriginWithContextOffset(
-        static_cast<short>(this->frameWidth / 2 - titleWidth / 2), 0x6a);
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth / 2 - titleWidth / 2),
+                                            0x6a);
     DrawTextWithCachedQuickDrawStyleState(&text);
 
     short stripBase = g_anDevelopmentIconStripBaseXByCivilianClass[civilianClass];
@@ -543,8 +541,8 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     }
 
     RECT sourceRect = {stripBase + level * 38, 0, stripBase + level * 38 + 38, 0x1a};
-    RECT destinationRect = {this->frameWidth / 2 - 0xb, originY + 0x12c,
-                            this->frameWidth / 2 + 0x1b, originY + 0x146};
+    RECT destinationRect = {frameWidth / 2 - 0xb, originY + 0x12c, frameWidth / 2 + 0x1b,
+                            originY + 0x146};
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(g_pMacViewMgr->unitOverlayAtlas->GetBlitSurface(),
@@ -556,8 +554,8 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
     g_pSimMgr->GetString(0x272d, 2, &text);
     titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&text);
-    SetQuickDrawTextOriginWithContextOffset(
-        static_cast<short>(this->frameWidth / 2 - titleWidth / 2), 0xa2);
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth / 2 - titleWidth / 2),
+                                            0xa2);
     DrawTextWithCachedQuickDrawStyleState(&text);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
 

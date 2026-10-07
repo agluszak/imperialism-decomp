@@ -16,7 +16,7 @@ void SwapFirstTwoBytesInBuffer(short* value) {
 // FUNCTION: IMPERIALISM 0x004b94a0
 void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count) {
   for (; count > 0; --count) {
-    unsigned short buffer = static_cast<unsigned short>(*words);
+    unsigned short buffer = *words;
     unsigned char* bytes = static_cast<unsigned char*>(static_cast<void*>(&buffer));
     unsigned char tmp = bytes[0];
     bytes[0] = bytes[1];

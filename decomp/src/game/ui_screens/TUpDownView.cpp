@@ -18,24 +18,24 @@ void TUpDownView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previ
   }
 
   unsigned int ticks = GetTickCountDiv16();
-  if (ticks < static_cast<unsigned int>(this->repeatTick + 5)) {
+  if (ticks < static_cast<unsigned int>(repeatTick + 5)) {
     return;
   }
 
   unsigned int now = GetTickCountDiv16();
-  this->repeatTick = now;
+  repeatTick = now;
   if (phase == kTrackPhaseBegin) {
-    this->repeatTick = now + 10;
+    repeatTick = now + 10;
   }
 
   CPoint* point = &currentPoint;
-  if (!this->PointInBoundsAndActionable(point)) {
+  if (!PointInBoundsAndActionable(point)) {
     return;
   }
 
-  if (point->y <= this->frameHeight / 2) {
-    this->HandleEvent(100, this, NULL);
+  if (point->y <= frameHeight / 2) {
+    HandleEvent(100, this, NULL);
   } else {
-    this->HandleEvent(101, this, NULL);
+    HandleEvent(101, this, NULL);
   }
 }

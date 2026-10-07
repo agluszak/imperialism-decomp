@@ -8,14 +8,13 @@
 class TIndustryView : public TBuildingView {
 public:
   DECLARE_DYNCREATE(TIndustryView)
-  virtual ~TIndustryView() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x004ccf30
-  virtual void DoStartup() override;            // slot 0x75 0x4cc820
-  virtual void UpdateFields() override;         // slot 0x76 0x4cd040
+  virtual ~TIndustryView() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoStartup() override;
+  virtual void UpdateFields() override;
   int unresolvedZero;
   short selectedIndustryUnitType;
-  short padA6; // +0xa6
+  short padA6;
 
   TIndustryView();
 };

@@ -8,7 +8,7 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x668358
 class TArmyInfoView : public TPicture {
 public:
-  virtual ~TArmyInfoView() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TArmyInfoView() override;
   TArmyInfoView();
   DECLARE_DYNCREATE(TArmyInfoView)
   virtual void StuffValues(short cityRecordIndex, int* categoryCounts);

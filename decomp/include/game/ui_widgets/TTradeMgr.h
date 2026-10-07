@@ -16,69 +16,67 @@ class TLongintList;
 class TTradeMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TTradeMgr)
-  virtual ~TTradeMgr() override;           // slot 0x01 (scalar deleting destructor, 0x5b7a40)
-  void WriteTo(TStream* stream) override;  // slot 0x05 0x5b7d90
-  void ReadFrom(TStream* stream) override; // slot 0x06 0x5b7c10
-  void Free() override;                    // slot 0x07 0x5b7bc0
+  virtual ~TTradeMgr() override;
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
 
-  virtual void ResetNationMetricRowsAndClearCategoryRankLists(); // 0x0a 0x5b7fc0
-  virtual void CalculateDealOrder();                             // 0x0b 0x5b8080
-  virtual void CalculateNewWorldPrices();                        // 0x0c 0x5b8aa0
-  virtual void CalculateNewItemPrice(short item);                // 0x0d 0x5b8ad0
-  virtual double GetAdjNumOffers(short item);                    // 0x0e 0x5b8d40
-  virtual short GetAmtOffered(short item);                       // 0x0f 0x5b8d70
-  virtual int GetDealPrice(short sourceSlot, short targetSlot, short scoreA,
-                           short scoreB);   // 0x10 0x5b8da0
-  virtual short GetNumOffers(short item);   // 0x11 0x5b8f80
-  virtual short GetNumRequests(short item); // 0x12 0x5b8fb0
-  virtual short GetPrice(short item);       // 0x13 0x5b8fe0
-  virtual short GetBasePrice(short item);   // 0x14 0x5b9030
-  virtual void OfferItemDeals(short item);  // 0x15 0x5b9060
-  virtual void StartDeals();                // 0x16 0x5b9190
-  virtual void OfferTradeDeals();           // 0x17 0x5b9410
+  virtual void ResetNationMetricRowsAndClearCategoryRankLists();
+  virtual void CalculateDealOrder();
+  virtual void CalculateNewWorldPrices();
+  virtual void CalculateNewItemPrice(short item);
+  virtual double GetAdjNumOffers(short item);
+  virtual short GetAmtOffered(short item);
+  virtual int GetDealPrice(short sourceSlot, short targetSlot, short scoreA, short scoreB);
+  virtual short GetNumOffers(short item);
+  virtual short GetNumRequests(short item);
+  virtual short GetPrice(short item);
+  virtual short GetBasePrice(short item);
+  virtual void OfferItemDeals(short item);
+  virtual void StartDeals();
+  virtual void OfferTradeDeals();
   // ORACLE: Mac SetDealResults takes five shorts and two unsigned chars.
   virtual void SetDealResults(NationSlot sourceNation, NationSlot targetNation, short amount,
                               short maximumAmount, ResourceKindStorage commodityType,
-                              unsigned char shortfallFlag,
-                              bool remoteReplay);                   // 0x18 0x5b94d0
-  virtual void UpdatePrice(short item, short value);                // 0x19 0x5b9790
-  virtual void StartTradePhase();                                   // 0x1a 0x5b97c0
-  virtual void SetMinorsTradeBids();                                // 0x1b 0x5b9890
-  virtual void TallyMinorsTradeBids();                              // 0x1c 0x5b9b30
-  virtual void TallyTradeBids();                                    // 0x1d 0x5b98d0
-  virtual bool DidBidOn(int item, int nationSlot);                  // 0x1e 0x5b9f70
-  virtual bool DidOffer(int item, int nationSlot);                  // 0x1f 0x5b9fa0
-  virtual TLongintList* GetBidderList(int item, int nationSlot);    // 0x20 0x5b9fd0
-  virtual short WhoTradesFirst(short proposalCode, short category); // 0x21 0x5ba090
-  virtual double Power(double base, short exponent);                // 0x22 0x5b9f30
+                              unsigned char shortfallFlag, bool remoteReplay);
+  virtual void UpdatePrice(short item, short value);
+  virtual void StartTradePhase();
+  virtual void SetMinorsTradeBids();
+  virtual void TallyMinorsTradeBids();
+  virtual void TallyTradeBids();
+  virtual bool DidBidOn(int item, int nationSlot);
+  virtual bool DidOffer(int item, int nationSlot);
+  virtual TLongintList* GetBidderList(int item, int nationSlot);
+  virtual short WhoTradesFirst(short proposalCode, short category);
+  virtual double Power(double base, short exponent);
 
   TTradeMgr();
   void ITradeMgr();
-  void NextTradeDeal(); // 0x5b91e0
+  void NextTradeDeal();
   // Clamps each category row's turn history to the running max; the scan deliberately runs
   // past the logical row into the next one.
-  void EndTradeOffers(); // 0x5b9370
-  int GetMarketChange(); // 0x5ba0e0
+  void EndTradeOffers();
+  int GetMarketChange();
 
 #pragma pack(push, 4)
   struct NationMetricCategoryRow {
-    short dealCategoryOrderIndex;             // struct 0x00
-    short dealEntryOrdinal;                   // struct 0x02
-    short previousPrice;                      // struct 0x04
-    short price;                              // struct 0x06
-    short numRequests;                        // struct 0x08
-    short numOffers;                          // struct 0x0a
-    double adjustedNumOffers;                 // struct 0x0c
-    short amountOffered;                      // struct 0x14
-    short basePrice;                          // struct 0x16
-    short tradeOfferCells[(0xa0 - 0x18) / 2]; // struct 0x18..0x9f
+    short dealCategoryOrderIndex;
+    short dealEntryOrdinal;
+    short previousPrice;
+    short price;
+    short numRequests;
+    short numOffers;
+    double adjustedNumOffers;
+    short amountOffered;
+    short basePrice;
+    short tradeOfferCells[(0xa0 - 0x18) / 2];
   };
 #pragma pack(pop)
 
-  NationMetricCategoryRow categoryRows[0x11]; // 0x04 .. 0xaa3
-  unsigned char paddingAA4[0xaa8 - 0xaa4];    // 0xaa4 .. 0xaa7
-  TDealList* categoryRankLists[0x11];         // 0xaa8 .. 0xaeb (TDealList: vtable 0x66da38)
-  unsigned char paddingAEC[0xaf0 - 0xaec];    // 0xaec .. 0xaef
+  NationMetricCategoryRow categoryRows[0x11];
+  unsigned char paddingAA4[0xaa8 - 0xaa4];
+  TDealList* categoryRankLists[0x11]; // 0xaa8 .. 0xaeb
+  unsigned char paddingAEC[0xaf0 - 0xaec];
 };
 
 ASSERT_SIZE(TTradeMgr::NationMetricCategoryRow, 0xa0);

@@ -5,8 +5,8 @@
 #include "game/core/TStream.h"
 
 // TStream moves bytes without changing their big-endian serialized representation.
-void ByteSwapShortInPlace(short* value);      // 0x004f2970
-void SwapFirstTwoBytesInBuffer(short* value); // 0x004b9340
+void ByteSwapShortInPlace(short* value);
+void SwapFirstTwoBytesInBuffer(short* value);
 
 void ReadByteSwappedShortArrayFromStream(TStream* stream, short* values, int shortCount);
 void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count);

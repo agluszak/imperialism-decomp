@@ -41,7 +41,7 @@ void TDeluxeText::EnableEditing(bool enable) {
 void TDeluxeText::LoadTextResource(short stringId) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceById(&text, stringId);
-  this->UpdateTextEntrySharedStringAndMaybeNotify(&text, true);
+  UpdateTextEntrySharedStringAndMaybeNotify(&text, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6170

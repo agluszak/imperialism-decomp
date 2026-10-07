@@ -13,14 +13,13 @@ struct HelpSetRecord;
 class THelpPicture : public TPicture {
 public:
   DECLARE_DYNCREATE(THelpPicture)
-  virtual ~THelpPicture() override; // slot 0x01 (scalar deleting destructor)
-  virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override; // slot 0x0f 0x00503ed0
-  virtual void DoPostCreate(int arg) override;  // slot 0x37 0x503d10
-  virtual void ShowNextHelpSet();               // slot 0x73 0x504120
-  virtual void ShowPreviousHelpSet();           // slot 0x74 0x5041a0
-  virtual void ShowTopicList();                 // slot 0x75 0x5046c0
-  virtual void ShowTopic(short topic);          // slot 0x76 0x504220
+  virtual ~THelpPicture() override;
+  virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void DoPostCreate(int arg) override;
+  virtual void ShowNextHelpSet();
+  virtual void ShowPreviousHelpSet();
+  virtual void ShowTopicList();
+  virtual void ShowTopic(short topic);
 
   THelpPicture();
 

@@ -16,7 +16,7 @@ namespace {
 inline const char* PickWeighted(const char* const* strings, const int* weights, int range,
                                 bool useMask) {
   g_zoneStatusCodePrngSeed = g_zoneStatusCodePrngSeed * 0x15a4e35 + 1;
-  int sample = static_cast<int>((g_zoneStatusCodePrngSeed >> 0xc) & 0x7fff);
+  int sample = (g_zoneStatusCodePrngSeed >> 0xc) & 0x7fff;
   int remaining = (useMask ? (sample & range) : (sample % range)) - weights[0];
   int index = 0;
   while (remaining >= 0) {

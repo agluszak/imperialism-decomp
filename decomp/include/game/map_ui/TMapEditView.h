@@ -19,14 +19,14 @@ public:
 
   TMapEditView() : reservedFlag(0), editorActionMode(0), editorActionValue(0) {}
 
-  void DefaultResources(short tileIndex); // 0x0051d4f0
-  void PlaceProvince(short tileIndex);    // 0x0051d7e0
-  void PlaceResource(short tileIndex);    // 0x0051d970
-  void PlaceRiver(short tileIndex);       // 0x0051dba0
-  void PlaceCountySeat(short tileIndex);  // 0x0051dc90
+  void DefaultResources(short tileIndex);
+  void PlaceProvince(short tileIndex);
+  void PlaceResource(short tileIndex);
+  void PlaceRiver(short tileIndex);
+  void PlaceCountySeat(short tileIndex);
 
-  void PlaceTerrain(short tileIndex); // 0x0051d380
-  void PlaceRail(short tileIndex);    // 0x0051db30
+  void PlaceTerrain(short tileIndex);
+  void PlaceRail(short tileIndex);
 
   // +0x364 is only constructor-zeroed; retain the byte without inventing semantics.
   unsigned char reservedFlag;

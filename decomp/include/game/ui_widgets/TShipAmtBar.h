@@ -11,7 +11,7 @@ public:
   // FUNCTION: IMPERIALISM 0x0058abd0
   ~TShipAmtBar() override {}
   // The navy order currently driving the bar's display.
-  TShipOrder* selectedMetricRecord; // 0x68
+  TShipOrder* selectedMetricRecord;
 
   TShipAmtBar();
   DECLARE_DYNCREATE(TShipAmtBar)

@@ -22,22 +22,22 @@ public:
   ~CMainFrame() override;
 
   afx_msg BOOL PreCreateWindow(CREATESTRUCT& cs) override;
-  void WinHelp(DWORD dwData, UINT nCmd) override; // 0x00485c20
+  void WinHelp(DWORD dwData, UINT nCmd) override;
   afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
   // ON_COMMAND(100): the startup command InitInstance posts once the frame is up.
-  afx_msg void OnStartupCommand100(); // 0x00484fd0
+  afx_msg void OnStartupCommand100();
   // ON_MESSAGE(0x464): same handling as command 100, LRESULT-shaped.
-  afx_msg LRESULT OnMsg0464(WPARAM wParam, LPARAM lParam); // 0x00484fb0
+  afx_msg LRESULT OnMsg0464(WPARAM wParam, LPARAM lParam);
   afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
-  afx_msg BOOL OnQueryNewPalette();                    // 0x00484ff0
-  CDibPal* ReplacePaletteAndRealize(CDibPal* palette); // 0x00485150
+  afx_msg BOOL OnQueryNewPalette();
+  CDibPal* ReplacePaletteAndRealize(CDibPal* palette);
   afx_msg LRESULT OnTurnEventCodeMessage(WPARAM wParam, LPARAM lParam);
   afx_msg void OnResetPalette();
   afx_msg void OnWarpToScreen();
-  afx_msg void OnConductDiplomacy();                                      // 0x004855b0
-  afx_msg void OnPaint();                                                 // 0x00485bd0
-  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);             // 0x00485c00
-  afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized); // 0x00485c60
+  afx_msg void OnConductDiplomacy();
+  afx_msg void OnPaint();
+  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+  afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
   afx_msg void OnActivateApp(BOOL bActive, DWORD dwThreadID);
   afx_msg void OnShowDealBook();
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);

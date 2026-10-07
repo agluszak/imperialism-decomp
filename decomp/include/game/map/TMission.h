@@ -26,7 +26,7 @@ enum eMissionType {
 class TMission : public TObject {
 public:
   NationSlot nationId;   // 0x04 source-nation id (InitializeMission...)
-  short pathMarker;      // 0x06 path/dispatch marker (set 0xffff)
+  short pathMarker;      // 0x06 path/dispatch marker
   unsigned char state08; // 0x08 lifecycle state byte (ctor = 2)
   unsigned char padding09[3];
   float importanceScore;  // 0x0c cached score/value (ctor = 0.0f)
@@ -43,42 +43,37 @@ public:
   virtual ~TMission() override {}
 
   // --- TMission's own virtuals, exact vtable slot order ---
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x535820
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5358a0
-  virtual bool IsANoBrainer() const;               // 0x0a 0x534c00
-  virtual int AccumulateLack(int* accumulatedLack,
-                             bool includeExistingLack) const; // 0x0b 0x534c20
-  virtual void Initialize();                                  // 0x0c 0x534c40
-  virtual void SetStateByte8To2();                            // 0x0d 0x534c60
-  virtual void CalculateImportance();                         // 0x0e 0x534c80
-  virtual void CalculateNeeds();                              // 0x0f 0x534ca0
-  virtual void Reassess();                                    // 0x10 0x534cc0
-  virtual void GiveOrders();                                  // 0x11 0x534cf0
-  virtual TMission* GetReplacement();                         // 0x12 0x534d10
-  virtual bool Matches(eMissionType missionType, int key,
-                       TZone* zoneContext) const;                  // 0x13 0x534d30
-  virtual bool IsArmyMission() const;                              // 0x14 0x534d50
-  virtual bool IsNavyMission() const;                              // 0x15 0x534d70
-  virtual TMission* GetArmyMission();                              // 0x16 0x534d90
-  virtual TMission* GetNavyMission();                              // 0x17 0x534db0
-  virtual bool IsDefensiveSeaZoneMission() const;                  // 0x18 0x534dd0
-  virtual bool IsHospitalMission() const;                          // 0x19 0x534df0
-  virtual float GetWeightedSatisfaction();                         // 0x1a 0x534e10
-  virtual float IndustrialCostOfNeeds();                           // 0x1b 0x534e30
-  virtual float ValueOf(TShip* candidate);                         // 0x1d 0x534e50
-  virtual float ValueOf(TMilitaryUnit* candidateUnit);             // 0x1c 0x534e70
-  virtual float FitnessOf(TShip* candidate, float* targetProfile); // 0x1f 0x534e90
-  virtual float FitnessOf(TMilitaryUnit* candidateUnit,
-                          float* referenceVector);            // 0x1e 0x534eb0
-  virtual void AcceptReenforcement(TShip* ship, bool notify); // 0x21 0x534ed0
-  virtual void AcceptReenforcement(TMilitaryUnit* unit,
-                                   bool notify);            // 0x20 0x534ef0
-  virtual void RejectConstituent(TShip* ship, bool notify); // 0x23 0x534f10
-  virtual void RejectConstituent(TMilitaryUnit* unit,
-                                 bool notify);         // 0x22 0x534f30
-  virtual void ForgetTaskForce(TTaskForce* taskForce); // 0x24 0x534f50
-  virtual void Hold(bool value);                       // 0x25 0x534f70
-  virtual bool SmokeEmIfYouGotEm();                    // 0x26 0x534f90
+  virtual void WriteTo(TStream* stream) override;
+  virtual void ReadFrom(TStream* stream) override;
+  virtual bool IsANoBrainer() const;
+  virtual int AccumulateLack(int* accumulatedLack, bool includeExistingLack) const;
+  virtual void Initialize();
+  virtual void SetStateByte8To2();
+  virtual void CalculateImportance();
+  virtual void CalculateNeeds();
+  virtual void Reassess();
+  virtual void GiveOrders();
+  virtual TMission* GetReplacement();
+  virtual bool Matches(eMissionType missionType, int key, TZone* zoneContext) const;
+  virtual bool IsArmyMission() const;
+  virtual bool IsNavyMission() const;
+  virtual TMission* GetArmyMission();
+  virtual TMission* GetNavyMission();
+  virtual bool IsDefensiveSeaZoneMission() const;
+  virtual bool IsHospitalMission() const;
+  virtual float GetWeightedSatisfaction();
+  virtual float IndustrialCostOfNeeds();
+  virtual float ValueOf(TShip* candidate);
+  virtual float ValueOf(TMilitaryUnit* candidateUnit);
+  virtual float FitnessOf(TShip* candidate, float* targetProfile);
+  virtual float FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector);
+  virtual void AcceptReenforcement(TShip* ship, bool notify);
+  virtual void AcceptReenforcement(TMilitaryUnit* unit, bool notify);
+  virtual void RejectConstituent(TShip* ship, bool notify);
+  virtual void RejectConstituent(TMilitaryUnit* unit, bool notify);
+  virtual void ForgetTaskForce(TTaskForce* taskForce);
+  virtual void Hold(bool value);
+  virtual bool SmokeEmIfYouGotEm();
 
   void InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot);
 

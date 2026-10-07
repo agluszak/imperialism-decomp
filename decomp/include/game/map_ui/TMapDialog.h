@@ -19,34 +19,34 @@ void ProjectTileIndexToMapGridPoint(int tileIndex, int* outX, int* outY, int cel
                                     short referenceColumn, short referenceRow);
 
 struct TMapDialogTileMarker {
-  bool flag;  // +0x00
-  char pad01; // +0x01
-  short a;    // +0x02 (init 0xffff)
-  short b;    // +0x04 (init 0xffff)
-  short c;    // +0x06 (init 0xffff)
+  bool flag;
+  char pad01;
+  short a;
+  short b;
+  short c;
 };
 
 // VTABLE: IMPERIALISM 0x658a58
 class TMapDialog : public TWorldView {
 public:
   // CreateObject (0x00519c0e) allocates 0x364 bytes for the concrete object.
-  TMapDialogTileMarker tileMarkers[90]; // +0x7c .. +0x34c
-  bool suppressMarkerOverlay;           // +0x34c
+  TMapDialogTileMarker tileMarkers[90];
+  bool suppressMarkerOverlay;
   unsigned char pad34d[3];
   TQuickDrawSurfaceContext* quickDrawSurface;
   short unresolvedWord354; // +0x354 zeroed by the ctor; no confirmed reader yet
   short selectedTileIndex; // +0x356 ctor-init 0xffff (tile-index "none" sentinel)
   bool unresolvedFlag;     // +0x358 zeroed by the ctor; no confirmed reader yet
   unsigned char pad359[3];
-  TObject* overlayObject;       // Free() dispatches TObject::Free virtually, then clears it.
-  bool tileDebugOverlayEnabled; // +0x360
+  TObject* overlayObject; // Free() dispatches TObject::Free virtually, then clears it.
+  bool tileDebugOverlayEnabled;
   unsigned char pad361[3];
 
   DECLARE_DYNCREATE(TMapDialog)
   TMapDialog();
   virtual ~TMapDialog() override;
 
-  void Free() override; // slot 0x07 — 0x00519c90: release both owned resources.
+  void Free() override; // 0x00519c90: release both owned resources.
 
   void Draw(RECT* rectBuffer) override;
 
@@ -73,7 +73,7 @@ public:
   void SetMapViewCellCoordinates(int column, int row) override;
   virtual void FrameNeighbors(short* neighborTiles);
   // Resets the map-tile sprite variants and all 90 transient tile-marker slots to sentinels.
-  virtual void FlushCache(); // 0x0051e1a0
+  virtual void FlushCache();
   virtual void DeCache(short tileIndex);
   virtual void InvalidateTile(short tileIndex);
   virtual void DrawOneTile(short tileIndex, short screenY, short screenX);

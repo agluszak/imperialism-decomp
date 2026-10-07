@@ -10,19 +10,18 @@ class TShipOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TShipOrder)
   // FUNCTION: IMPERIALISM 0x004b8510
-  ~TShipOrder() override {} // slot 0x01 (scalar deleting destructor)
+  ~TShipOrder() override {}
 
-  bool SetQuantity(short quantity) override;                            // slot 0x0b 0x4b8800
-  short MaxOrder() override;                                            // slot 0x0c 0x4b86d0
-  void Produce() override;                                              // slot 0x0d 0x4b8970
-  void FillOrderSheet(OrderSheet* orderSheet, short quantity) override; // slot 0x10 0x4b8b80
-  virtual bool AutoCanMakeProduct();                                    // slot 0x11 0x4b85a0
-  virtual bool CanMakeProduct();                                        // slot 0x12 0x4b8630
-  virtual void LaunchShip();                                            // slot 0x13 0x4b89a0
+  bool SetQuantity(short quantity) override;
+  short MaxOrder() override;
+  void Produce() override;
+  void FillOrderSheet(OrderSheet* orderSheet, short quantity) override;
+  virtual bool AutoCanMakeProduct();
+  virtual bool CanMakeProduct();
+  virtual void LaunchShip();
 
   // Construction stores only the derived vptr; it does not clear tracking slots.
   TShipOrder() : TProductionOrder() {}
-
 };
 
 ASSERT_SIZE(TShipOrder, 0x4c);

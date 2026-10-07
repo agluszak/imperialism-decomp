@@ -113,9 +113,9 @@ public:
     return count;
   }
 
-  T* data;      // +0x04
-  int capacity; // +0x08
-  int count;    // +0x0c
+  T* data;
+  int capacity;
+  int count;
 };
 
 template <typename T> T* stretch<T>::FindEntry(T value) {

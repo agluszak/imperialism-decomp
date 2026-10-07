@@ -11,7 +11,7 @@ public:
   TSortByPriceList();
   void ISortByPriceList();
   // Ascending by the price short at record+2 (ties compare as 1).
-  short Compare(void* a, void* b) override; // slot 0x44 0x5347b0
+  short Compare(void* a, void* b) override;
 };
 
 ASSERT_SIZE(TSortByPriceList, 0x18);

@@ -2,9 +2,9 @@
 
 // FUNCTION: IMPERIALISM 0x005a39a0
 int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB) {
-  unsigned int rowA = static_cast<unsigned int>(tileIndexA / 0x1d);
+  unsigned int rowA = tileIndexA / 0x1d;
   int colA = (rowA & 1U) + (tileIndexA % 0x1d) * 2;
-  unsigned int rowB = static_cast<unsigned int>(tileIndexB / 0x1d);
+  unsigned int rowB = tileIndexB / 0x1d;
   int colB = (rowB & 1U) + (tileIndexB % 0x1d) * 2;
 
   if (colB < colA) {
@@ -14,7 +14,7 @@ int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB) {
     rowB = rowA * 2 - rowB;
   }
 
-  int rowDelta = static_cast<int>(rowB - rowA);
+  int rowDelta = rowB - rowA;
   colA = (colB - rowDelta) - colA;
   if (colA > 0) {
     return colA / 2 + rowDelta;

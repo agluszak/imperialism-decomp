@@ -11,8 +11,8 @@ class TBatRepDetLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TBatRepDetLine)
   // FUNCTION: IMPERIALISM 0x004b0000
-  virtual ~TBatRepDetLine() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4b0040
+  virtual ~TBatRepDetLine() override {}
+  virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
   // NOOP: verified empty in original 0x004aff93
   TBatRepDetLine() {}

@@ -10,12 +10,12 @@
 class TNavyBoyView : public TView {
 public:
   DECLARE_DYNCREATE(TNavyBoyView)
-  virtual ~TNavyBoyView() override;             // slot 0x01 (scalar deleting destructor)
-  virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4af0b0
+  virtual ~TNavyBoyView() override;
+  virtual void Draw(RECT* rectBuffer) override;
 
   // NOOP: verified empty in original 0x004af003
   TNavyBoyView() {}
 
-  BattleReportDetailRecord* battleDetail; // +0x60
+  BattleReportDetailRecord* battleDetail;
 };
 ASSERT_SIZE(TNavyBoyView, 0x64);

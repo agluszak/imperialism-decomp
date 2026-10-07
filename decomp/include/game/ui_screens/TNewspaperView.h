@@ -11,10 +11,10 @@
 class TNewspaperView : public TPicture {
 public:
   DECLARE_DYNCREATE(TNewspaperView)
-  virtual ~TNewspaperView() override; // slot 0x01 (scalar deleting destructor)
+  virtual ~TNewspaperView() override;
 
-  int summaryPageIndex; // 0x90
-  CFile* newsTexStream; // 0x94
+  int summaryPageIndex;
+  CFile* newsTexStream;
 
   TNewspaperView();
 

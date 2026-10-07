@@ -182,18 +182,18 @@ void TAutoGreatPower::IAutoGreatPower(int nationSlot, int nationInitializationMo
 
 // FUNCTION: IMPERIALISM 0x004e7230
 void TAutoGreatPower::Free(void) {
-  if (this->missionQueue != 0) {
-    int ordinal = this->missionQueue->GetCount();
+  if (missionQueue != 0) {
+    int ordinal = missionQueue->GetCount();
     for (; ordinal > 0; --ordinal) {
-      TMission* entry = static_cast<TMission*>(this->missionQueue->GetEntryByOrdinal(ordinal));
+      TMission* entry = static_cast<TMission*>(missionQueue->GetEntryByOrdinal(ordinal));
       entry->AssertValid();
-      this->missionQueue->RemoveAtOrdinal(ordinal);
+      missionQueue->RemoveAtOrdinal(ordinal);
       entry->Free();
     }
-    if (this->missionQueue != 0) {
-      this->missionQueue->FreeList();
+    if (missionQueue != 0) {
+      missionQueue->FreeList();
     }
-    this->missionQueue = 0;
+    missionQueue = 0;
   }
   TGreatPower::Free();
 }
@@ -201,28 +201,28 @@ void TAutoGreatPower::Free(void) {
 // FUNCTION: IMPERIALISM 0x004e72c0
 void TAutoGreatPower::ReadFrom(TStream* stream) {
   TGreatPower::ReadFrom(stream);
-  stream->ReadBytes(this->actionMetricByQuarter, 0x0C);
-  SwapShortArrayBytes(this->actionMetricByQuarter, 6);
+  stream->ReadBytes(actionMetricByQuarter, 0x0C);
+  SwapShortArrayBytes(actionMetricByQuarter, 6);
 
-  stream->ReadBytes(this->provinceStatus, sizeof(this->provinceStatus));
-  stream->ReadBytes(this->zoneStatus, 0x70);
+  stream->ReadBytes(provinceStatus, sizeof(provinceStatus));
+  stream->ReadBytes(zoneStatus, 0x70);
 
-  if (this->missionQueue->GetCount() != 0) {
-    this->missionQueue->FreePayloads();
+  if (missionQueue->GetCount() != 0) {
+    missionQueue->FreePayloads();
   }
-  this->missionQueue->ReadFrom(stream);
+  missionQueue->ReadFrom(stream);
 
   int missionCount;
   stream->ReadBytes(&missionCount, 4);
   for (int queueIndex = 1; queueIndex <= missionCount; ++queueIndex) {
     void* mission = 0;
     if (stream->ReadObject(&mission)) {
-      this->missionQueue->AddTail(mission);
+      missionQueue->AddTail(mission);
     }
   }
 
   if (g_nSaveFormatVersion < 0x39) {
-    this->CreateMission(kMissionTypeScatteredShips, -1, 0, -1);
+    CreateMission(kMissionTypeScatteredShips, -1, 0, -1);
   }
 }
 
@@ -230,38 +230,38 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
 void TAutoGreatPower::WriteTo(TStream* stream) {
   TGreatPower::WriteTo(stream);
 
-  WriteShortArrayElems(stream, this->actionMetricByQuarter, 6);
+  WriteShortArrayElems(stream, actionMetricByQuarter, 6);
 
-  stream->WriteBytes(this->provinceStatus, sizeof(this->provinceStatus));
-  stream->WriteBytes(this->zoneStatus, 0x70);
+  stream->WriteBytes(provinceStatus, sizeof(provinceStatus));
+  stream->WriteBytes(zoneStatus, 0x70);
 
-  this->missionQueue->WriteTo(stream);
-  int missionQueueCount = this->missionQueue->GetCount();
+  missionQueue->WriteTo(stream);
+  int missionQueueCount = missionQueue->GetCount();
   stream->WriteBytes(&missionQueueCount, 4);
   for (int index = 1; index <= missionQueueCount; ++index) {
-    stream->WriteObject(this->missionQueue->GetEntryByOrdinal(index), 0);
+    stream->WriteObject(missionQueue->GetEntryByOrdinal(index), 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::SorryYouLose(void) {
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_pGameFlowState->SendGameControl(kControlTagLost, this->nationSlot, -3);
+    g_pGameFlowState->SendGameControl(kControlTagLost, nationSlot, -3);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e7550
 void TAutoGreatPower::FinishCityPhase(void) {
-  if (this->city != 0) {
-    this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-    this->AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
+  if (city != 0) {
+    RebuildNationResourceYieldCountersAndDevelopmentTargets();
+    AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e7590
 void TAutoGreatPower::FillInteriorMinisterOrders(void) {
-  if (this->city != 0) {
-    this->interiorMinister->FillOrders();
+  if (city != 0) {
+    interiorMinister->FillOrders();
   }
 }
 
@@ -277,8 +277,8 @@ void TAutoGreatPower::PurchaseItem(short resourceKind, short amount, short price
   short resourceSlot = resourceKind;
   short resourceDelta = amount;
   if (resourceDelta < 0 && resourceSlot >= 7 && resourceSlot <= 0x0C) {
-    this->actionMetricByQuarter[resourceSlot - 7] =
-        static_cast<short>(this->actionMetricByQuarter[resourceSlot - 7] + resourceDelta);
+    actionMetricByQuarter[resourceSlot - 7] =
+        static_cast<short>(actionMetricByQuarter[resourceSlot - 7] + resourceDelta);
   }
 
   TGreatPower::PurchaseItem(resourceKind, amount, price);
@@ -289,36 +289,36 @@ void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) 
   if (g_apNationStates[static_cast<short>(offerContext)]->diplomacyEligibility != 0) {
     if (static_cast<short>(resourceKind) != 5) {
       short relationScore =
-          g_pDiplomacyTurnStateManager->relationStandingScores[this->nationSlot * kNationSlotCount +
+          g_pDiplomacyTurnStateManager->relationStandingScores[nationSlot * kNationSlotCount +
                                                                static_cast<short>(offerContext)];
       double scaledScore = static_cast<double>(relationScore) * 0.00392156862745098;
       int roll = rand();
       if (static_cast<double>(roll) > scaledScore * 32767.0) {
-        this->RaiseNeedPlanningMetrics(resourceKind);
+        RaiseNeedPlanningMetrics(resourceKind);
       }
       return;
     }
   } else if (static_cast<short>(resourceKind) != 5) {
     short metricCap = 10;
-    if (this->GetStockpile(static_cast<short>(resourceKind)) < 10) {
-      metricCap = this->GetStockpile(static_cast<short>(resourceKind));
+    if (GetStockpile(static_cast<short>(resourceKind)) < 10) {
+      metricCap = GetStockpile(static_cast<short>(resourceKind));
     }
-    if (this->merchantCapacity < metricCap) {
-      metricCap = this->merchantCapacity;
+    if (merchantCapacity < metricCap) {
+      metricCap = merchantCapacity;
     }
-    if (this->GetTradeOffersFor(static_cast<short>(resourceKind)) == -1) {
+    if (GetTradeOffersFor(static_cast<short>(resourceKind)) == -1) {
       return;
     }
-    this->SetItemPotentials(static_cast<short>(resourceKind), metricCap);
+    SetItemPotentials(static_cast<short>(resourceKind), metricCap);
     return;
   }
-  if (this->GetStockpile(kResourceHorses) != 0 && this->GetTradeOffersFor(kResourceHorses) != -1) {
-    short metric = this->GetStockpile(kResourceHorses);
+  if (GetStockpile(kResourceHorses) != 0 && GetTradeOffersFor(kResourceHorses) != -1) {
+    short metric = GetStockpile(kResourceHorses);
     int assignAmount = (metric != 1) + 1;
-    if (this->merchantCapacity < static_cast<short>(assignAmount)) {
-      assignAmount = this->merchantCapacity;
+    if (merchantCapacity < static_cast<short>(assignAmount)) {
+      assignAmount = merchantCapacity;
     }
-    this->SetItemPotentials(kResourceHorses, static_cast<short>(assignAmount));
+    SetItemPotentials(kResourceHorses, static_cast<short>(assignAmount));
   }
 }
 
@@ -326,26 +326,26 @@ void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) 
 void TAutoGreatPower::InitializeTradeStatus(void) {
   int total = 0;
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
-    total += TShip::GetTypeCargoHold(resourceType) * this->city->orderCountByType[resourceType];
+    total += TShip::GetTypeCargoHold(resourceType) * city->orderCountByType[resourceType];
   }
 
-  this->merchantCapacity = static_cast<short>(total);
-  this->availableMerchantCapacity = static_cast<short>(total);
-  this->unfilledTradeOfferCount = 0;
-  this->budgetPoolDelta = 0;
-  this->budgetPoolBase = 0;
+  merchantCapacity = static_cast<short>(total);
+  availableMerchantCapacity = static_cast<short>(total);
+  unfilledTradeOfferCount = 0;
+  budgetPoolDelta = 0;
+  budgetPoolBase = 0;
 
   for (int nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
-    this->itemPotentials[nationIndex] = 0;
+    itemPotentials[nationIndex] = 0;
     for (int rowIndex = 0; rowIndex < kAidAllocationRowCount; ++rowIndex) {
-      this->aidAllocationMatrix[rowIndex * kAidAllocationColumnCount + nationIndex] = 0;
+      aidAllocationMatrix[rowIndex * kAidAllocationColumnCount + nationIndex] = 0;
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e78d0
 void TAutoGreatPower::MoveCivilians(void) {
-  static_cast<TCityInteriorMinister*>(this->interiorMinister)->ProcessUnitOrders();
+  static_cast<TCityInteriorMinister*>(interiorMinister)->ProcessUnitOrders();
 }
 
 // FUNCTION: IMPERIALISM 0x004e78f0
@@ -367,34 +367,34 @@ void TAutoGreatPower::RememberTradeBids(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e7990
 void TAutoGreatPower::SetTradeBids(void) {
-  this->foreignMinister->SetTradeBids();
-  this->foreignMinister->DoUsualSubsidyRule();
+  foreignMinister->SetTradeBids();
+  foreignMinister->DoUsualSubsidyRule();
 }
 
 // FUNCTION: IMPERIALISM 0x004e79d0
 bool TAutoGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                         ResourceKindStorage resourceKind) {
-  if (this->StillBuyingItem(resourceKind)) {
-    this->foreignMinister->ReplyToTradeOffer(targetNationSlot, amount, price, resourceKind);
+  if (StillBuyingItem(resourceKind)) {
+    foreignMinister->ReplyToTradeOffer(targetNationSlot, amount, price, resourceKind);
     return false;
   }
-  this->AddToDealBook(kTrackedSlotOfferEntry, targetNationSlot, 0, resourceKind, 0);
+  AddToDealBook(kTrackedSlotOfferEntry, targetNationSlot, 0, resourceKind, 0);
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004e7a50
 void TAutoGreatPower::ClearTradeOffers(void) {
-  if (this->city != 0) {
-    this->foreignMinister->EndTradePhase();
-    short* pendingMetric = this->actionMetricByQuarter;
+  if (city != 0) {
+    foreignMinister->EndTradePhase();
+    short* pendingMetric = actionMetricByQuarter;
     for (short needSlot = 7; needSlot <= 0x0c; ++needSlot) {
       short pending = *pendingMetric;
       if (pending > 0) {
-        short current = this->GetStockpile(needSlot);
+        short current = GetStockpile(needSlot);
         if (current >= pending) {
-          this->SetStockpile(needSlot, static_cast<short>(current - pending));
+          SetStockpile(needSlot, static_cast<short>(current - pending));
         } else {
-          this->SetStockpile(needSlot, 0);
+          SetStockpile(needSlot, 0);
         }
       }
       *pendingMetric = 0;
@@ -406,8 +406,8 @@ void TAutoGreatPower::ClearTradeOffers(void) {
 
 // FUNCTION: IMPERIALISM 0x004e7af0
 void TAutoGreatPower::SetDiplomacyPolicies() {
-  if (this->city != 0) {
-    this->foreignMinister->SetDiplomacyPolicies();
+  if (city != 0) {
+    foreignMinister->SetDiplomacyPolicies();
   }
 }
 
@@ -425,8 +425,8 @@ void TAutoGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
     return;
   case kDiplomacyProposalAlliance:
   case kDiplomacyProposalJoinEmpireWithWarEntanglements: {
-    bool hasAllianceGuard = g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
-        sourceNationSlot, this->nationSlot);
+    bool hasAllianceGuard =
+        g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(sourceNationSlot, nationSlot);
     if (!hasAllianceGuard) {
       TGreatPower::AddOfferFrom(sourceNationSlot, proposalCode);
     }
@@ -440,19 +440,19 @@ void TAutoGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
 
 // FUNCTION: IMPERIALISM 0x004e7be0
 void TAutoGreatPower::ReplyToDiplomacyOffers(void) {
-  if (this->city == 0) {
+  if (city == 0) {
     return;
   }
 
   short rowIndex = 1;
-  if (this->proposalQueue->GetSize() >= rowIndex) {
+  if (proposalQueue->GetSize() >= rowIndex) {
     do {
-      this->foreignMinister->ReplyToDiplomacyOffers(rowIndex);
+      foreignMinister->ReplyToDiplomacyOffers(rowIndex);
       ++rowIndex;
-    } while (rowIndex <= this->proposalQueue->GetSize());
+    } while (rowIndex <= proposalQueue->GetSize());
   }
 
-  this->ResetPolicies();
+  ResetPolicies();
 }
 
 // FUNCTION: IMPERIALISM 0x004e7c50
@@ -462,7 +462,7 @@ void TAutoGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
     return;
   }
   if (actionCode == kDiplomacyProposalDeclareWar) {
-    this->SetEnemy(static_cast<short>(sourceNation));
+    SetEnemy(static_cast<short>(sourceNation));
   }
   TGreatPower::AddNoticeFrom(sourceNation, actionCode);
 }
@@ -479,26 +479,21 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
     if (nation >= kMajorNationCount) {
       break;
     }
-    if (g_pSimMgr->ReallyInTheGame(nation) && nation != this->nationSlot) {
-      if (!g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, nation) &&
+    if (g_pSimMgr->ReallyInTheGame(nation) && nation != nationSlot) {
+      if (!g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, nation) &&
           g_pDiplomacyTurnStateManager->AreAtWar(targetNation, nation)) {
-        bool borderLinked =
-            g_pGlobalMapState->AreNationsBorderLinked(targetNation, this->nationSlot);
+        bool borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, nationSlot);
         float combinedScore;
         if (borderLinked != 0) {
+          combinedScore = ComputeArmyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
           combinedScore =
-              this->ComputeArmyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
-          combinedScore =
-              this->ComputeArmyScoreStandingRatioVsNationPair(sourceNation, targetNation) +
-              combinedScore;
+              ComputeArmyScoreStandingRatioVsNationPair(sourceNation, targetNation) + combinedScore;
         } else {
+          combinedScore = ComputeNavyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
           combinedScore =
-              this->ComputeNavyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
-          combinedScore =
-              this->ComputeNavyScoreStandingRatioVsNationPair(sourceNation, targetNation) +
-              combinedScore;
+              ComputeNavyScoreStandingRatioVsNationPair(sourceNation, targetNation) + combinedScore;
         }
-        if (this->GetWarNumber() > combinedScore) {
+        if (GetWarNumber() > combinedScore) {
           allBeatable = false;
         } else {
           beatableByNation[nation] = true;
@@ -510,20 +505,20 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
   if (allBeatable) {
     for (int helperNation = 0; helperNation < kMajorNationCount; ++helperNation) {
       if (beatableByNation[helperNation]) {
-        this->DeclareWarOn(helperNation, 1, targetNation);
+        DeclareWarOn(helperNation, 1, targetNation);
       }
     }
     TMinor* minor = g_apSecondaryNationStateSlots[targetNation];
     short ownerSlot = minor->encodedNationSlot;
     if (ownerSlot >= 200) {
-      ownerSlot = static_cast<short>(ownerSlot - 200);
+      ownerSlot -= 200;
     } else if (ownerSlot >= 100) {
-      ownerSlot = static_cast<short>(ownerSlot - 100);
+      ownerSlot -= 100;
     } else {
       ownerSlot = minor->nationSlot;
     }
-    if (ownerSlot != this->nationSlot) {
-      minor->ChangeMaster(this->nationSlot, 1);
+    if (ownerSlot != nationSlot) {
+      minor->ChangeMaster(nationSlot, 1);
     }
   }
   return 1;
@@ -533,40 +528,40 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
 int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) {
   bool hasPolicy = false;
   if (swapRoles == 0) {
-    if (g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, sourceNation)) {
+    if (g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, sourceNation)) {
       hasPolicy = true;
     }
   } else {
-    if (g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, targetNation)) {
+    if (g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, targetNation)) {
       hasPolicy = true;
     }
   }
   if (!hasPolicy) {
-    bool borderLinked = g_pGlobalMapState->AreNationsBorderLinked(sourceNation, this->nationSlot);
+    bool borderLinked = g_pGlobalMapState->AreNationsBorderLinked(sourceNation, nationSlot);
     float ratioScore;
     float standingScore;
     if (borderLinked != 0) {
-      ratioScore = this->ComputeArmyScoreRatioForNationPair(sourceNation, targetNation, swapRoles);
+      ratioScore = ComputeArmyScoreRatioForNationPair(sourceNation, targetNation, swapRoles);
       standingScore =
-          this->ComputeArmyScoreStandingRatioForNationPair(sourceNation, targetNation, swapRoles);
+          ComputeArmyScoreStandingRatioForNationPair(sourceNation, targetNation, swapRoles);
     } else {
-      ratioScore = this->ComputeNavyScoreRatioForNationPair(sourceNation, targetNation, swapRoles);
+      ratioScore = ComputeNavyScoreRatioForNationPair(sourceNation, targetNation, swapRoles);
       standingScore =
-          this->ComputeNavyScoreStandingRatioForNationPair(sourceNation, targetNation, swapRoles);
+          ComputeNavyScoreStandingRatioForNationPair(sourceNation, targetNation, swapRoles);
     }
     float combinedScore = standingScore + ratioScore;
-    if (this->GetWarNumber() <= combinedScore) {
+    if (GetWarNumber() <= combinedScore) {
       if (swapRoles == 0) {
-        this->DeclareWarOn(sourceNation, 2, targetNation);
+        DeclareWarOn(sourceNation, 2, targetNation);
         return 1;
       }
-      this->DeclareWarOn(targetNation, 2, sourceNation);
+      DeclareWarOn(targetNation, 2, sourceNation);
       return 1;
     }
     if (swapRoles == 0) {
-      g_pDiplomacyTurnStateManager->TerminateAlliance(this->nationSlot, targetNation, 1);
+      g_pDiplomacyTurnStateManager->TerminateAlliance(nationSlot, targetNation, 1);
     } else {
-      g_pDiplomacyTurnStateManager->TerminateAlliance(this->nationSlot, sourceNation, 0);
+      g_pDiplomacyTurnStateManager->TerminateAlliance(nationSlot, sourceNation, 0);
     }
   }
   return 1;
@@ -574,30 +569,30 @@ int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, c
 
 // FUNCTION: IMPERIALISM 0x004e8040
 bool TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
-  if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNation, this->nationSlot)) {
+  if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNation, nationSlot)) {
     return false;
   }
   float allyNavyAccum = 0.0f;
   float allyArmyAccum = 0.0f;
-  float armyScore = this->GetMilitaryPower();
-  float navyScore = this->GetTotalNavalForce();
+  float armyScore = GetMilitaryPower();
+  float navyScore = GetTotalNavalForce();
   int allyIndex = 0;
-  if (g_pDiplomacyTurnStateManager->GetNumAllies(this->nationSlot) > 0) {
+  if (g_pDiplomacyTurnStateManager->GetNumAllies(nationSlot) > 0) {
     do {
-      int allyNation = g_pDiplomacyTurnStateManager->GetAllyNumber(allyIndex, this->nationSlot);
+      int allyNation = g_pDiplomacyTurnStateManager->GetAllyNumber(allyIndex, nationSlot);
       allyArmyAccum = g_apNationStates[allyNation]->GetMilitaryPower() + allyArmyAccum;
       allyNavyAccum = g_apNationStates[allyNation]->GetTotalNavalForce() + allyNavyAccum;
       ++allyIndex;
-    } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(this->nationSlot));
+    } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(nationSlot));
   }
-  int ownNavyInt = static_cast<int>(navyScore);
-  int ownStrength = static_cast<int>(armyScore);
+  int ownNavyInt = navyScore;
+  int ownStrength = armyScore;
   if (ownStrength <= ownNavyInt) {
     ownStrength = ownNavyInt;
   }
   float ownStrengthScore = static_cast<float>(ownStrength);
-  int allyNavyInt = static_cast<int>(allyNavyAccum);
-  int allyStrength = static_cast<int>(allyArmyAccum);
+  int allyNavyInt = allyNavyAccum;
+  int allyStrength = allyArmyAccum;
   if (allyStrength <= allyNavyInt) {
     allyStrength = allyNavyInt;
   }
@@ -621,7 +616,7 @@ bool TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
     tickQuarter = 0x3c;
   }
   short relationScore =
-      g_pDiplomacyTurnStateManager->relationStandingScores[this->nationSlot * kNationSlotCount +
+      g_pDiplomacyTurnStateManager->relationStandingScores[nationSlot * kNationSlotCount +
                                                            static_cast<short>(targetNation)];
   float combinedStrength = ownStrengthScore + allyQuarterScore;
   float combinedScore = static_cast<float>(
@@ -629,7 +624,7 @@ bool TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
        (static_cast<float>(relationScore) + ownStrengthScore) /
            ((static_cast<float>(tickQuarter) + combinedStrength) - g_Compute_Advisory_Map_Value)) *
       g_Evaluate_Advisory_Case11_Value);
-  return this->GetAcceptAllianceNumber() <= combinedScore;
+  return GetAcceptAllianceNumber() <= combinedScore;
 }
 
 // FUNCTION: IMPERIALISM 0x004e8300
@@ -661,26 +656,26 @@ void TAutoGreatPower::SetConquerLust(int nationSlot, char makeEnemy) {
 
 // FUNCTION: IMPERIALISM 0x004e83d0
 void TAutoGreatPower::CreateInitialMissions() {
-  TLongintList* regionList = this->ownedRegionList;
+  TLongintList* regionList = ownedRegionList;
   for (int i = 1; i <= regionList->GetSize(); i++) {
     int regionId = regionList->At(i);
     bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-        regionId, this->nationSlot);
-    this->provinceStatus[regionId] =
+        regionId, nationSlot);
+    provinceStatus[regionId] =
         unavailable ? kMissionDesirabilityUnmarked : kMissionDesirabilityCandidate;
     CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
   }
 
-  TZone* portZone = g_pActiveMapOrderContext->GetPortZone(this->nationSlot);
+  TZone* portZone = g_pActiveMapOrderContext->GetPortZone(nationSlot);
 
   TZone* firstEntry = portZone->primaryNeighbors[0];
 
   short index = firstEntry->GetContextOrdinalOrInvalid();
-  this->zoneStatus[index] = kMissionDesirabilityCandidate;
+  zoneStatus[index] = kMissionDesirabilityCandidate;
   CreateMission(kMissionTypeDefendProvince, -1, firstEntry, -1);
 
   index = portZone->GetContextOrdinalOrInvalid();
-  this->zoneStatus[index] = kMissionDesirabilityCandidate;
+  zoneStatus[index] = kMissionDesirabilityCandidate;
   CreateMission(kMissionTypeDefendProvince, -1, portZone, -1);
 
   CreateMission(kMissionTypeScatteredShips, -1, 0, -1);
@@ -690,13 +685,13 @@ void TAutoGreatPower::CreateInitialMissions() {
 void TAutoGreatPower::CreateMission(eMissionType missionType, int mapNodeIndex, TZone* zoneContext,
                                     int relatedMapNodeIndex) {
 
-  if (mapNodeIndex != -1 && this->provinceStatus[mapNodeIndex] != kMissionDesirabilityCandidate) {
+  if (mapNodeIndex != -1 && provinceStatus[mapNodeIndex] != kMissionDesirabilityCandidate) {
     return;
   }
 
   if ((zoneContext != 0) && (relatedMapNodeIndex == -1)) {
     short index = zoneContext->GetContextOrdinalOrInvalid();
-    if (this->zoneStatus[index] != kMissionDesirabilityCandidate) {
+    if (zoneStatus[index] != kMissionDesirabilityCandidate) {
       return;
     }
   }
@@ -707,8 +702,8 @@ void TAutoGreatPower::CreateMission(eMissionType missionType, int mapNodeIndex, 
     missionKind = kMissionTypeDefendProvince;
   }
 
-  TMission* missionObj = TMission::CreateMission(this->nationSlot, missionKind, mapNodeIndex,
-                                                 zoneContext, relatedMapNodeIndex);
+  TMission* missionObj = TMission::CreateMission(nationSlot, missionKind, mapNodeIndex, zoneContext,
+                                                 relatedMapNodeIndex);
   if (missionObj == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCountryAuto.cpp", 0x5ed);
   }
@@ -717,14 +712,14 @@ void TAutoGreatPower::CreateMission(eMissionType missionType, int mapNodeIndex, 
   missionQueue->AddTail(missionObj);
 
   if (mapNodeIndex != -1) {
-    this->provinceStatus[mapNodeIndex] = kMissionDesirabilityQueued;
+    provinceStatus[mapNodeIndex] = kMissionDesirabilityQueued;
   }
   if ((zoneContext != 0) && (relatedMapNodeIndex == -1)) {
     short index = zoneContext->GetContextOrdinalOrInvalid();
-    this->zoneStatus[index] = kMissionDesirabilityQueued;
+    zoneStatus[index] = kMissionDesirabilityQueued;
   }
   if (relatedMapNodeIndex != -1) {
-    this->provinceStatus[relatedMapNodeIndex] = kMissionDesirabilityQueued;
+    provinceStatus[relatedMapNodeIndex] = kMissionDesirabilityQueued;
   }
 }
 
@@ -794,8 +789,8 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         int region = g_apNationStates[slot]->ownedRegionList->At(j);
         if (provinceStatus[region] == kMissionDesirabilityUnmarked) {
           eMissionDesirability markValue = kMissionDesirabilityCandidate;
-          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                  region, this->nationSlot)) {
+          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(region,
+                                                                                      nationSlot)) {
             markValue = kMissionDesirabilityUnmarked;
           }
           provinceStatus[region] = markValue;
@@ -812,7 +807,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
               if (provinceStatus[minorRegion] == kMissionDesirabilityUnmarked) {
                 eMissionDesirability markValue = kMissionDesirabilityCandidate;
                 if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                        minorRegion, this->nationSlot)) {
+                        minorRegion, nationSlot)) {
                   markValue = kMissionDesirabilityUnmarked;
                 }
                 provinceStatus[minorRegion] = markValue;
@@ -834,8 +829,8 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         int region = g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->At(j);
         if (provinceStatus[region] == kMissionDesirabilityUnmarked) {
           eMissionDesirability markValue = kMissionDesirabilityCandidate;
-          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                  region, this->nationSlot)) {
+          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(region,
+                                                                                      nationSlot)) {
             markValue = kMissionDesirabilityUnmarked;
           }
           provinceStatus[region] = markValue;
@@ -844,7 +839,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
     }
   }
 
-  if (g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(this->nationSlot)) {
+  if (g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(nationSlot)) {
     // At war: purge the interior minister's queues for each advisory order type.
     int t;
     for (t = 0; t < 4; ++t) {
@@ -872,14 +867,13 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         if (owner == -1) {
           continue;
         }
-        if (g_pDiplomacyTurnStateManager->GetTreatyStatus(this->nationSlot, owner) ==
+        if (g_pDiplomacyTurnStateManager->GetTreatyStatus(nationSlot, owner) ==
             kDiplomacyRelationshipAlliance) {
           continue;
         }
         if (g_apTerrainTypeDescriptorTable[owner]->encodedNationSlot >= 200) {
           if (g_pDiplomacyTurnStateManager->GetTreatyStatus(
-                  this->nationSlot,
-                  g_apTerrainTypeDescriptorTable[owner]->DecodeOwnerNationSlot()) ==
+                  nationSlot, g_apTerrainTypeDescriptorTable[owner]->DecodeOwnerNationSlot()) ==
               kDiplomacyRelationshipAlliance) {
             continue;
           }
@@ -893,20 +887,20 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         }
 
         short score = g_pDiplomacyTurnStateManager
-                          ->relationStandingScores[this->nationSlot * kNationSlotCount + owner];
+                          ->relationStandingScores[nationSlot * kNationSlotCount + owner];
         int linkBonus;
         int nodeBuffer[12];
-        if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(rec, this->nationSlot, true)) {
+        if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(rec, nationSlot, true)) {
           linkBonus = 0;
         } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
-                       rec, this->nationSlot, nodeBuffer, true) != 0) {
+                       rec, nationSlot, nodeBuffer, true) != 0) {
           linkBonus = 0x14;
         } else if (g_pActiveMapOrderContext->GetSeaZoneAdjacentTo(rec) != 0) {
           linkBonus = 0x28;
         } else {
           continue;
         }
-        score = static_cast<short>(score + linkBonus);
+        score += linkBonus;
 
         struct ProvinceCandidateRecord {
           short regionIndex;
@@ -926,8 +920,8 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         int topRegion = topRecord[0];
         if (provinceStatus[topRegion] == kMissionDesirabilityUnmarked) {
           eMissionDesirability markValue = kMissionDesirabilityCandidate;
-          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                  topRegion, this->nationSlot)) {
+          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(topRegion,
+                                                                                      nationSlot)) {
             markValue = kMissionDesirabilityUnmarked;
           }
           provinceStatus[topRegion] = markValue;
@@ -938,7 +932,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
           if (provinceStatus[secondRegion] == kMissionDesirabilityUnmarked) {
             eMissionDesirability markValue = kMissionDesirabilityCandidate;
             if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                    secondRegion, this->nationSlot)) {
+                    secondRegion, nationSlot)) {
               markValue = kMissionDesirabilityUnmarked;
             }
             provinceStatus[secondRegion] = markValue;
@@ -973,7 +967,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
   bestDirectScore = 0.0f;
   directRegion = -1;
   queueSecondaryDefend = false;
-  if (this->city == 0) {
+  if (city == 0) {
     return;
   }
   bestScore = 0.0f;
@@ -1106,7 +1100,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
 
 // FUNCTION: IMPERIALISM 0x004e9ed0
 void TAutoGreatPower::DeclareWarOn(int targetNationSlot, int transitionMode, int sourceNationSlot) {
-  this->SetEnemy(targetNationSlot);
+  SetEnemy(targetNationSlot);
   TGreatPower::DeclareWarOn(targetNationSlot, transitionMode, sourceNationSlot);
 }
 
@@ -1116,19 +1110,19 @@ bool TAutoGreatPower::HasEnemy(void) {
   int candidate;
   for (candidate = 0; candidate < 7; ++candidate) {
     if (g_apNationStates[candidate] == 0) {
-      this->enemyFlags[candidate] = 0;
-    } else if (this->enemyFlags[candidate] != 0) {
+      enemyFlags[candidate] = 0;
+    } else if (enemyFlags[candidate] != 0) {
       anyActive = true;
     }
   }
   TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
   do {
-    if (this->enemyFlags[candidate] != 0) {
+    if (enemyFlags[candidate] != 0) {
       if ((*minorCursor)->ownedRegionList->GetSize() == 0) {
-        this->enemyFlags[candidate] = 0;
-        if (g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, candidate)) {
+        enemyFlags[candidate] = 0;
+        if (g_pDiplomacyTurnStateManager->AreAtWar(nationSlot, candidate)) {
           g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
-              this->nationSlot, candidate, kDiplomacyRelationshipPeace);
+              nationSlot, candidate, kDiplomacyRelationshipPeace);
         }
       } else {
         anyActive = true;
@@ -1142,20 +1136,20 @@ bool TAutoGreatPower::HasEnemy(void) {
 
 // FUNCTION: IMPERIALISM 0x004e9ff0
 void TAutoGreatPower::SetEnemy(int targetNation) {
-  if (this->HasEnemy()) {
+  if (HasEnemy()) {
     int nation = 0;
     TCountry** descriptorCursor = g_apTerrainTypeDescriptorTable;
     do {
-      if (*descriptorCursor != 0 && nation != static_cast<short>(this->nationSlot)) {
-        if (!g_pDiplomacyTurnStateManager->AreAtWar(nation, static_cast<short>(this->nationSlot))) {
-          this->StopBeingEnemiesWith(nation);
+      if (*descriptorCursor != 0 && nation != static_cast<short>(nationSlot)) {
+        if (!g_pDiplomacyTurnStateManager->AreAtWar(nation, static_cast<short>(nationSlot))) {
+          StopBeingEnemiesWith(nation);
         }
       }
       ++descriptorCursor;
       ++nation;
     } while (descriptorCursor < g_apTerrainTypeDescriptorTable + 0x17);
   }
-  this->enemyFlags[targetNation] = 1;
+  enemyFlags[targetNation] = 1;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
     if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetSize() > 0) {
       short ownerTag;
@@ -1165,7 +1159,7 @@ void TAutoGreatPower::SetEnemy(int targetNation) {
           199 < ownerTag) {
         TZone* portZone = g_pActiveMapOrderContext->GetPortZone(static_cast<short>(targetNation));
         short portZoneId = portZone->GetContextOrdinalOrInvalid();
-        this->zoneStatus[portZoneId] = kMissionDesirabilityCandidate;
+        zoneStatus[portZoneId] = kMissionDesirabilityCandidate;
       }
     }
   }
@@ -1173,12 +1167,12 @@ void TAutoGreatPower::SetEnemy(int targetNation) {
 
 // FUNCTION: IMPERIALISM 0x004ea0e0
 void TAutoGreatPower::StopBeingEnemiesWith(int targetNation) {
-  this->enemyFlags[targetNation] = 0;
+  enemyFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
     if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetSize() > 0) {
       TZone* portZone = g_pActiveMapOrderContext->GetPortZone(static_cast<short>(targetNation));
       short portZoneId = portZone->GetContextOrdinalOrInvalid();
-      this->zoneStatus[portZoneId] = kMissionDesirabilityUnmarked;
+      zoneStatus[portZoneId] = kMissionDesirabilityUnmarked;
     }
   }
 }
@@ -1189,24 +1183,24 @@ void TAutoGreatPower::BecomeProtectorateOf(int targetNationSlot) {
 
   int i = 0;
   for (i = 0; i < 6; ++i) {
-    this->actionMetricByQuarter[i] = 0;
+    actionMetricByQuarter[i] = 0;
   }
   for (i = 0; i < kProvinceCount; ++i) {
-    this->provinceStatus[i] = kMissionDesirabilityUnmarked;
+    provinceStatus[i] = kMissionDesirabilityUnmarked;
   }
   for (i = 0; i < kPortZoneCount; ++i) {
-    this->zoneStatus[i] = kMissionDesirabilityUnmarked;
+    zoneStatus[i] = kMissionDesirabilityUnmarked;
   }
   KillMissions();
 }
 
 // FUNCTION: IMPERIALISM 0x004ea1c0
 void TAutoGreatPower::LoseProvince(int regionId) {
-  CIterator missionCursor(this->missionQueue);
+  CIterator missionCursor(missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
     if (mission->Matches(kMissionTypeDefendProvince, regionId, NULL)) {
-      CPtrList* listState = &this->missionQueue->listState;
+      CPtrList* listState = &missionQueue->listState;
       POSITION pos = listState->Find(mission, 0);
       if (pos != 0) {
         listState->RemoveAt(pos);
@@ -1216,19 +1210,18 @@ void TAutoGreatPower::LoseProvince(int regionId) {
     }
     mission = static_cast<TMission*>(missionCursor.Advance());
   }
-  this->provinceStatus[regionId] = kMissionDesirabilityUnmarked;
+  provinceStatus[regionId] = kMissionDesirabilityUnmarked;
   TGreatPower::LoseProvince(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea290
 void TAutoGreatPower::AddProvince(int regionId) {
   TGreatPower::AddProvince(regionId);
-  this->provinceStatus[regionId] =
-      g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(regionId,
-                                                                              this->nationSlot)
+  provinceStatus[regionId] =
+      g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(regionId, nationSlot)
           ? kMissionDesirabilityUnmarked
           : kMissionDesirabilityCandidate;
-  this->CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
+  CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea300
@@ -1239,16 +1232,16 @@ void TAutoGreatPower::AddColony(int targetNation) {
   if (regionList->GetSize() > 0) {
     do {
       int regionId = regionList->At(ordinal);
-      this->provinceStatus[regionId] = kMissionDesirabilityCandidate;
-      this->CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
+      provinceStatus[regionId] = kMissionDesirabilityCandidate;
+      CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
       ++ordinal;
     } while (ordinal <= regionList->GetSize());
   }
   TZone* portZone = g_pActiveMapOrderContext->GetPortZone(static_cast<short>(targetNation));
   TZone* firstOrder = portZone->primaryNeighbors[0];
   short portZoneId = firstOrder->GetContextOrdinalOrInvalid();
-  this->zoneStatus[portZoneId] = kMissionDesirabilityCandidate;
-  this->CreateMission(kMissionTypeDefendProvince, -1, firstOrder, -1);
+  zoneStatus[portZoneId] = kMissionDesirabilityCandidate;
+  CreateMission(kMissionTypeDefendProvince, -1, firstOrder, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea430
@@ -1260,9 +1253,9 @@ void TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {}
 // FUNCTION: IMPERIALISM 0x004ea470
 void TAutoGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) {
   TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets();
-  short carryValue = this->needCurrentByType[0x13];
-  this->needCurrentByType[0x13] = 0;
-  this->needCurrentByType[0x14] = static_cast<short>(this->needCurrentByType[0x14] + carryValue);
+  short carryValue = needCurrentByType[0x13];
+  needCurrentByType[0x13] = 0;
+  needCurrentByType[0x14] = static_cast<short>(needCurrentByType[0x14] + carryValue);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea610
@@ -1526,7 +1519,7 @@ void TAutoGreatPower::MReassess() {
 // FUNCTION: IMPERIALISM 0x004eb0d0
 void TAutoGreatPower::ReplaceObsoleteMissions(void) {
   for (;;) {
-    CIterator missionCursor(this->missionQueue);
+    CIterator missionCursor(missionQueue);
     TMission* mission = static_cast<TMission*>(missionCursor.Reset());
     TMission* replacement;
     for (;;) {
@@ -1539,14 +1532,14 @@ void TAutoGreatPower::ReplaceObsoleteMissions(void) {
       }
       mission = static_cast<TMission*>(missionCursor.Advance());
     }
-    CPtrList* listState = &this->missionQueue->listState;
+    CPtrList* listState = &missionQueue->listState;
     POSITION pos = listState->Find(mission, 0);
     if (pos != 0) {
       listState->RemoveAt(pos);
     }
     mission->Free();
     if (replacement != 0) {
-      this->missionQueue->AddTail(replacement);
+      missionQueue->AddTail(replacement);
     }
   }
 }
