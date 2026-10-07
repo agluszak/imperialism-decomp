@@ -1872,10 +1872,10 @@ void TArmyMgr::CleanUpStacks() {
 void TArmyMgr::AddBattleRecord(MapOrderBattleSnapshot* record, int unusedArg2) {
   (void)unusedArg2;
   mapContextActionRecordList->AppendCopiedRecordToPtrList(record);
-  record->childRecords[1] = nullptr; // +0x254
-  record->childRecords[0] = nullptr; // +0x250
-  record->childCount[1] = 0;         // +0x24c
-  record->childCount[0] = 0;         // +0x24a
+  record->childRecords[1] = nullptr;
+  record->childRecords[0] = nullptr;
+  record->childCount[1] = 0;
+  record->childCount[0] = 0;
   battlesToReport = true;
 }
 

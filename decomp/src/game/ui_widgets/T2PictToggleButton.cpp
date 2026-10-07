@@ -11,10 +11,7 @@ T2PictToggleButton::~T2PictToggleButton() {}
 
 // FUNCTION: IMPERIALISM 0x005849b0
 bool T2PictToggleButton::IsSelected() {
-  if (this->glyphBase >= this->controlValue) {
-    return true;
-  }
-  return false;
+  return this->glyphBase >= this->controlValue;
 }
 
 // FUNCTION: IMPERIALISM 0x005849d0

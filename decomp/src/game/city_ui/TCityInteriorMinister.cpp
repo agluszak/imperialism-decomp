@@ -56,18 +56,12 @@ template <class T> static T* AllocateCityMinisterScratchArray(int count, int ass
 }
 // FUNCTION: IMPERIALISM 0x004bdf90
 bool IsResourceCodeInRange13To16(short resourceCode) {
-  if (resourceCode >= 0xd && resourceCode <= 0x10) {
-    return true;
-  }
-  return false;
+  return resourceCode >= 0xd && resourceCode <= 0x10;
 }
 
 // FUNCTION: IMPERIALISM 0x004bdfc0
 bool IsResourceCodeInRanges0To6Or17To22(short resourceCode) {
-  if ((resourceCode >= 0 && resourceCode <= 6) || (resourceCode >= 0x11 && resourceCode <= 0x16)) {
-    return true;
-  }
-  return false;
+  return (resourceCode >= 0 && resourceCode <= 6) || (resourceCode >= 0x11 && resourceCode <= 0x16);
 }
 
 // FUNCTION: IMPERIALISM 0x004be000

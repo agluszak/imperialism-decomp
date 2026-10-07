@@ -438,10 +438,7 @@ void TCountry::BecomeColonyOf(int targetNationSlot) {
 // FUNCTION: IMPERIALISM 0x004d7d20
 bool TCountry::IsColonyOf(int nationCode) {
   int adjusted = static_cast<short>(this->encodedNationSlot) - 0xc8;
-  if (adjusted == nationCode) {
-    return true;
-  }
-  return false;
+  return adjusted == nationCode;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7d50

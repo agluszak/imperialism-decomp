@@ -2072,18 +2072,12 @@ bool TTacticalBattle::ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex)
     if (column < 3) {
       return false;
     }
-    if (column > 5) {
-      return false;
-    }
-    return true;
+    return column <= 5;
   }
   if (column > battlefieldColumnCount - 3) {
     return false;
   }
-  if (column < battlefieldColumnCount - 5) {
-    return false;
-  }
-  return true;
+  return column >= battlefieldColumnCount - 5;
 }
 
 // FUNCTION: IMPERIALISM 0x005a4240

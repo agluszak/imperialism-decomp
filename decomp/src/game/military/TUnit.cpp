@@ -71,7 +71,7 @@ void TUnit::ContinueOrders() {
 void TUnit::Free() {
   TSortedList* manager = nullptr;
   if (this->militaryRegistrationFlag == 0) {
-    manager = g_apNationStates[this->ownerNationSlot]->trackedObjectList; // +0x89c
+    manager = g_apNationStates[this->ownerNationSlot]->trackedObjectList;
   } else {
     TCountry* terrain = g_apTerrainTypeDescriptorTable[this->ownerNationSlot];
     manager = terrain->militaryUnitList;

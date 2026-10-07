@@ -287,10 +287,7 @@ bool TTradeCluster::IsSelectionAllowed() {
   }
 
   bool actionable = bidControl->IsActionable();
-  if (!actionable) {
-    return false;
-  }
-  return true;
+  return actionable;
 }
 
 // FUNCTION: IMPERIALISM 0x00587a10

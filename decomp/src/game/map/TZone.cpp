@@ -648,7 +648,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
 
   for (;;) {
     TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileCandidate];
-    int isWater = tileRecord.GetTerrainKind() == kStrategicTerrainWater;
+    bool isWater = tileRecord.GetTerrainKind() == kStrategicTerrainWater;
     if (isWater) {
       TZone* zoneForTile;
       short tileActionState = static_cast<signed char>(tileRecord.tileActionState);

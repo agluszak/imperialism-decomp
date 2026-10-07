@@ -31,8 +31,8 @@ TMilitaryUnit::TMilitaryUnit()
   militaryRegistrationFlag = 1;
   strength = 0x1f4;
   eraIndex = 0;
-  CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
-  name = empty;                   // -> 0x00605a29 CString::operator=
+  CString empty(g_szEmptyString);
+  name = empty;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2f00

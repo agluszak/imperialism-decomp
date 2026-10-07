@@ -303,7 +303,7 @@ void TCityProductionView::DrawTopLevel() {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   TCity* subObject = 0;
   if (nationState != 0) {
-    subObject = nationState->city; // +0x894
+    subObject = nationState->city;
   }
   short nextBuildingType = subObject->GetNextBuildingType(0xe);
 

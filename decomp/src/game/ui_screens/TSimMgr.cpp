@@ -139,8 +139,8 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
 
   for (int i = 0; i < 0x17; ++i) {
     countryAvailable[i] = true;
-    CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
-    sharedTextSlots[i] = empty;     // -> 0x00605a29 CString::operator=
+    CString empty(g_szEmptyString);
+    sharedTextSlots[i] = empty;
   }
 
   economicTurn = 0;
@@ -1579,7 +1579,7 @@ void TSimMgr::DoTrade() {
   g_pTradeMgr->CalculateNewWorldPrices();
   g_pTradeMgr->CalculateDealOrder();
 
-  int shouldSendTradeBook = multiplayerSessionRole != kSessionRoleStandalone;
+  bool shouldSendTradeBook = multiplayerSessionRole != kSessionRoleStandalone;
   if (shouldSendTradeBook) {
     g_pGameFlowState->SendTradeBook();
   }

@@ -994,10 +994,7 @@ unsigned int TTaskForce::IsValidTarget(Province* province) {
 // FUNCTION: IMPERIALISM 0x00554620
 int TTaskForce::IsPassingThroughPort(TZone* port) const {
   bool isSailOrder = shipOrders == 1;
-  if (isSailOrder && (location == port || target == port)) {
-    return true;
-  }
-  return false;
+  return isSailOrder && (location == port || target == port);
 }
 
 // FUNCTION: IMPERIALISM 0x00554660

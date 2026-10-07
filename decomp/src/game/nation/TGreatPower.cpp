@@ -265,8 +265,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   short* currentNeedByType = this->needCurrentByType;
   short* developmentByType = &this->needCurrentByType[7]; // +0x11c overlays this runtime array.
   short* targetNeedByType = this->needTargetByType;
-  short& controlledRegionCount = this->needCurrentByType[0x13]; // +0x134
-
+  short& controlledRegionCount = this->needCurrentByType[0x13];
   for (int i = 0; i < kNationSlotCount; ++i) {
     currentNeedByType[i] = 0;
   }
@@ -524,10 +523,7 @@ bool TGreatPower::IsCapitolThreatened(int mode) {
     float localScore = TDefendProvinceMission::ComputeLocalSupportVectorScore(nodeContext);
     float crossNationScore =
         TDefendProvinceMission::ComputeCrossNationSupportVectorScore(nodeContext);
-    if (localScore < crossNationScore) {
-      return true;
-    }
-    return false;
+    return localScore < crossNationScore;
   } else {
     TZone* portZoneContext =
         g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
@@ -540,10 +536,7 @@ bool TGreatPower::IsCapitolThreatened(int mode) {
     float diplomacyFilteredScore =
         TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(this->nationSlot,
                                                                                  firstEntry);
-    if (exactSourceScore < diplomacyFilteredScore) {
-      return true;
-    }
-    return false;
+    return exactSourceScore < diplomacyFilteredScore;
   }
 }
 

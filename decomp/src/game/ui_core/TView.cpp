@@ -712,10 +712,7 @@ bool TView::EvaluateControlInputGate() {
 
 // FUNCTION: IMPERIALISM 0x0048c050
 bool TView::HasRenderableParentAndContent() {
-  if (childHitTestFlag && childList != 0 && !childList->IsEmpty()) {
-    return true;
-  }
-  return false;
+  return childHitTestFlag && childList != 0 && !childList->IsEmpty();
 }
 
 // FUNCTION: IMPERIALISM 0x0048c080
