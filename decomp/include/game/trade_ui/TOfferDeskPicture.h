@@ -17,10 +17,10 @@ public:
   virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual void PoseOfferSheet(short respondingNation, short offeringNation, short proposedAmount,
                               short maxAmount, short commodityType);
-  short respondingNationSlot; // +0x90 nation whose UI receives/responds to the offer
-  short offeringNationSlot;   // +0x92 offering nation, displayed as the seller
-  short maxAmount;            // +0x94 upper bound passed to SetDealResults's maximumAmount arg
-  short commodityType;        // +0x96 commodity/need-type index 0..0x16 (0/1 = Cotton+Wool pair)
+  short respondingNationSlot; // nation whose UI receives/responds to the offer
+  short offeringNationSlot;   // offering nation, displayed as the seller
+  short maxAmount;            // upper bound passed to SetDealResults's maximumAmount arg
+  short commodityType;        // commodity/need-type index 0..0x16 (0/1 = Cotton+Wool pair)
   short proposedAmount;
   short suppressEventFlag;
   unsigned char padding9c;

@@ -32,13 +32,13 @@ TScatteredShipsMission::~TScatteredShipsMission() {}
 
 // FUNCTION: IMPERIALISM 0x0053bb90
 void TScatteredShipsMission::Initialize() {
-  marker11 = 0;
+  requiredForces = 0;
   importanceScore = g_fScatteredShipsMissionDefaultScore;
 }
 
 // FUNCTION: IMPERIALISM 0x0053bbb0
 void TScatteredShipsMission::Reassess() {
-  SetStateByte8To2();
+  ResetPriority();
   CalculateImportance();
   CalculateNeeds();
 }
@@ -49,8 +49,8 @@ TMission* TScatteredShipsMission::GetReplacement() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053bc00
-void TScatteredShipsMission::SetStateByte8To2() {
-  state08 = 3;
+void TScatteredShipsMission::ResetPriority() {
+  priority = 3;
 }
 
 // FUNCTION: IMPERIALISM 0x0053bc20

@@ -100,7 +100,7 @@ public:
                              unsigned char relatedNation);
   void SendTradeOffer(short respondingNation, short offeringNation, short proposedAmount,
                       short maxAmount, short commodityType);
-  void SendStreamObject(unsigned long payloadTag, TObject* payloadObject, int destinationSlot);
+  void SendStreamObject(unsigned long payloadTag, TObject* payloadObject, short destinationSlot);
   void SendGameControl(int statusTag, int value, int nationSlotOrMode);
   // Event-8 lobby text packet: source slot plus the manager's player-name pair.
   void DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot);

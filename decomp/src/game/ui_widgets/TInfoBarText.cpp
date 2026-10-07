@@ -45,7 +45,7 @@ void TInfoBarText::Reset() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b6840
-void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary) {
+void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(short stylePrimary, int styleSecondary) {
   TextStyle styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
   SetTextStyle(styleDescriptor, false);
@@ -55,7 +55,7 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   layoutRect.right = 0;
   layoutRect.bottom = 0;
   COLORREF mappedFlags = 0;
-  ResolveUiThemeColor(static_cast<short>(stylePrimary), &mappedFlags);
+  ResolveUiThemeColor(stylePrimary, &mappedFlags);
   textColor = mappedFlags;
   ResolveUiThemeColor(static_cast<short>(styleSecondary), &mappedFlags);
   shadowTextColor = mappedFlags;

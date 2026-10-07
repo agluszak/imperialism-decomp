@@ -14,7 +14,7 @@ public:
   virtual ~TSpaceCommand() override;
   virtual void DoIt() override;
   TSetupRandomMapPicture* setupPicture;
-  unsigned char mode1c;
+  unsigned char mode;
   unsigned char pad1d[3];
 
   // NOOP: verified empty in original 0x005751b3

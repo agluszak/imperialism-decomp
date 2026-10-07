@@ -18,35 +18,35 @@ void TSteelCityMinister::ISteelCityMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004c5a90
 void TSteelCityMinister::FillLists() {
-  list28->InsertLast(15);
-  list28->InsertLast(16);
-  list28->InsertLast(11);
-  list28->InsertLast(14);
-  list28->InsertLast(9);
-  list28->InsertLast(12);
-  list28->InsertLast(13);
-  list28->InsertLast(8);
+  manufacturingPriority->InsertLast(15);
+  manufacturingPriority->InsertLast(16);
+  manufacturingPriority->InsertLast(11);
+  manufacturingPriority->InsertLast(14);
+  manufacturingPriority->InsertLast(9);
+  manufacturingPriority->InsertLast(12);
+  manufacturingPriority->InsertLast(13);
+  manufacturingPriority->InsertLast(8);
 
-  list2c->InsertLast(0);
-  list2c->InsertLast(0);
-  list2c->InsertLast(1);
-  list2c->InsertLast(2);
-  list2c->InsertLast(2);
-  list2c->InsertLast(3);
-  list2c->InsertLast(4);
-  list2c->InsertLast(4);
-  list2c->InsertLast(5);
-  list2c->InsertLast(2);
-  list2c->InsertLast(2);
-  list2c->InsertLast(3);
-  list2c->InsertLast(4);
-  list2c->InsertLast(4);
-  list2c->InsertLast(5);
-  list2c->InsertLast(2);
-  list2c->InsertLast(2);
-  list2c->InsertLast(3);
-  list2c->InsertLast(4);
-  list2c->InsertLast(2);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(1);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(2);
 }
 
 IMPLEMENT_DYNCREATE(TShipBuilderCityMinister, TCityInteriorMinister)
@@ -64,35 +64,35 @@ void TShipBuilderCityMinister::IShipBuilderCityMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004c5d90
 void TShipBuilderCityMinister::FillLists() {
-  list28->InsertLast(14);
-  list28->InsertLast(9);
-  list28->InsertLast(15);
-  list28->InsertLast(16);
-  list28->InsertLast(11);
-  list28->InsertLast(12);
-  list28->InsertLast(13);
-  list28->InsertLast(8);
+  manufacturingPriority->InsertLast(14);
+  manufacturingPriority->InsertLast(9);
+  manufacturingPriority->InsertLast(15);
+  manufacturingPriority->InsertLast(16);
+  manufacturingPriority->InsertLast(11);
+  manufacturingPriority->InsertLast(12);
+  manufacturingPriority->InsertLast(13);
+  manufacturingPriority->InsertLast(8);
 
-  list2c->InsertLast(4);
-  list2c->InsertLast(4);
-  list2c->InsertLast(5);
-  list2c->InsertLast(2);
-  list2c->InsertLast(2);
-  list2c->InsertLast(3);
-  list2c->InsertLast(0);
-  list2c->InsertLast(0);
-  list2c->InsertLast(1);
-  list2c->InsertLast(4);
-  list2c->InsertLast(4);
-  list2c->InsertLast(5);
-  list2c->InsertLast(2);
-  list2c->InsertLast(2);
-  list2c->InsertLast(3);
-  list2c->InsertLast(0);
-  list2c->InsertLast(0);
-  list2c->InsertLast(1);
-  list2c->InsertLast(4);
-  list2c->InsertLast(2);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(1);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(1);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(2);
 }
 
 IMPLEMENT_DYNCREATE(TEvenCityMinister, TCityInteriorMinister)
@@ -110,36 +110,36 @@ void TEvenCityMinister::IEvenCityMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004c6090
 void TEvenCityMinister::FillLists() {
-  list28->InsertLast(15);
-  list28->InsertLast(16);
-  list28->InsertLast(13);
-  list28->InsertLast(14);
-  list28->InsertLast(9);
-  list28->InsertLast(11);
-  list28->InsertLast(8);
-  list28->InsertLast(12);
+  manufacturingPriority->InsertLast(15);
+  manufacturingPriority->InsertLast(16);
+  manufacturingPriority->InsertLast(13);
+  manufacturingPriority->InsertLast(14);
+  manufacturingPriority->InsertLast(9);
+  manufacturingPriority->InsertLast(11);
+  manufacturingPriority->InsertLast(8);
+  manufacturingPriority->InsertLast(12);
 
-  list2c->InsertLast(4);
-  list2c->InsertLast(2);
-  list2c->InsertLast(0);
-  list2c->InsertLast(4);
-  list2c->InsertLast(2);
-  list2c->InsertLast(0);
-  list2c->InsertLast(3);
-  list2c->InsertLast(1);
-  list2c->InsertLast(5);
-  list2c->InsertLast(4);
-  list2c->InsertLast(2);
-  list2c->InsertLast(0);
-  list2c->InsertLast(3);
-  list2c->InsertLast(1);
-  list2c->InsertLast(5);
-  list2c->InsertLast(4);
-  list2c->InsertLast(2);
-  list2c->InsertLast(0);
-  list2c->InsertLast(4);
-  list2c->InsertLast(2);
-  list2c->InsertLast(0);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(1);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(1);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(0);
 }
 
 IMPLEMENT_DYNCREATE(TRailCityMinister, TCityInteriorMinister)
@@ -157,36 +157,36 @@ void TRailCityMinister::IRailCityMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004c63a0
 void TRailCityMinister::FillLists() {
-  list28->InsertLast(14);
-  list28->InsertLast(9);
-  list28->InsertLast(15);
-  list28->InsertLast(16);
-  list28->InsertLast(11);
-  list28->InsertLast(12);
-  list28->InsertLast(13);
-  list28->InsertLast(8);
+  manufacturingPriority->InsertLast(14);
+  manufacturingPriority->InsertLast(9);
+  manufacturingPriority->InsertLast(15);
+  manufacturingPriority->InsertLast(16);
+  manufacturingPriority->InsertLast(11);
+  manufacturingPriority->InsertLast(12);
+  manufacturingPriority->InsertLast(13);
+  manufacturingPriority->InsertLast(8);
 
-  list2c->InsertLast(0);
-  list2c->InsertLast(0);
-  list2c->InsertLast(1);
-  list2c->InsertLast(4);
-  list2c->InsertLast(4);
-  list2c->InsertLast(4);
-  list2c->InsertLast(5);
-  list2c->InsertLast(2);
-  list2c->InsertLast(2);
-  list2c->InsertLast(2);
-  list2c->InsertLast(3);
-  list2c->InsertLast(4);
-  list2c->InsertLast(4);
-  list2c->InsertLast(4);
-  list2c->InsertLast(5);
-  list2c->InsertLast(2);
-  list2c->InsertLast(2);
-  list2c->InsertLast(2);
-  list2c->InsertLast(3);
-  list2c->InsertLast(5);
-  list2c->InsertLast(3);
-  list2c->InsertLast(4);
-  list2c->InsertLast(2);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(1);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(2);
 }

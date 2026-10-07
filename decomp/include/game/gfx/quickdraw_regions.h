@@ -10,9 +10,9 @@
 struct TBitmapSurfaceNode;
 
 struct Region {
-  RECT rgnBBox;         // +0x00 bounding box, refreshed via ::GetRgnBox
-  int attachRegistered; // +0x10 BOOL result of CRgn::Attach in the ctor / RectRgn
-  CRgn rgn;             // +0x14 the real GDI region (m_hObject at +0x18)
+  RECT rgnBBox;         // bounding box, refreshed via ::GetRgnBox
+  int attachRegistered; // BOOL result of CRgn::Attach in the ctor / RectRgn
+  CRgn rgn;             // the real GDI region (m_hObject at +0x18)
 
   Region();
   ~Region();
@@ -48,7 +48,7 @@ void CopyRgn(RgnHandle src, RgnHandle dst);
 void SectRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);
 void OpenRgn(void);
 void CloseRgn(RgnHandle dst);
-void QDFrameRect(RECT* rect); // 0x00498180 (Win32 ::FrameRect collides)
+void QDFrameRect(RECT* rect); // (Win32 ::FrameRect collides)
 void QDFrameOval(RECT* rect);
 void QDPaintOval(RECT* rect);
 unsigned char EmptyRgn(RgnHandle rgn);

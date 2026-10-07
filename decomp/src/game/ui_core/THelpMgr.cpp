@@ -979,7 +979,7 @@ bool THelpMgr::NeedAdvice(unsigned int index) {
 // FUNCTION: IMPERIALISM 0x005038b0
 void THelpMgr::CheckUnitAdvice(TCivUnit* civilianOrderEntry) {
   int titleStringIndex = -1;
-  int messageStringIndex = -1;
+  short messageStringIndex = -1;
 
   if (civilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitProspector)) {
     if (civilianOrderEntry->completionMarker == 0x232f && ++civilianCompletionCounts[0] == 1) {
@@ -1016,13 +1016,13 @@ void THelpMgr::CheckUnitAdvice(TCivUnit* civilianOrderEntry) {
     CString titleText;
     CString messageText;
     g_pSimMgr->GetString(0x2753, static_cast<short>(titleStringIndex), &titleText);
-    g_pSimMgr->GetString(0x2753, static_cast<short>(messageStringIndex), &messageText);
+    g_pSimMgr->GetString(0x2753, messageStringIndex, &messageText);
     g_pViewMgr->ModalMessage(5, titleText, messageText, g_ptNationComparisonModalMessage, 2, 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00503ac0
-void THelpMgr::OpenTerrainHelpWindow(int mapContextIndex) {
+void THelpMgr::OpenTerrainHelpWindow(short mapContextIndex) {
   if (pendingDialogViewC == 0) {
     pendingDialogViewC = g_pAssetMgr->GetDialog(kTurnEventTerrainHelp);
     if (pendingDialogViewC == 0) {
@@ -1037,7 +1037,7 @@ void THelpMgr::OpenTerrainHelpWindow(int mapContextIndex) {
 
   TTerrainHelpPicture* terrainHelp =
       static_cast<TTerrainHelpPicture*>(pendingDialogViewC->FindSubView(kControlTagDialog));
-  terrainHelp->BuildMapTileActionContextMenu(static_cast<short>(mapContextIndex));
+  terrainHelp->BuildMapTileActionContextMenu(mapContextIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x00503b90

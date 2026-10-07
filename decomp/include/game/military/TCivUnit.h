@@ -15,14 +15,14 @@ public:
   virtual void MoveTo(short newTileIndex) override;
   virtual void ContinueOrders() override;
   virtual void Vaporize() override;
-  virtual void SetOrders(UnitOrder order, int payload) override;
+  virtual void SetOrders(UnitOrder order, short payload) override;
   virtual void ClearOrders();
   short remainingTurns;
   short completionMarker;
 
   TCivUnit();
 
-  void ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOwnerNationId);
+  void ICivUnit(CivilianUnitKind unitKind, int anchorIndex, short nOrderOwnerNationId);
   CivilianUnitKind GetCivilianUnitKind() const {
     return DecodeCivilianUnitKind(this->orderType);
   }

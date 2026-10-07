@@ -26,14 +26,14 @@ public:
 
   TArmyStack* armyStack;
   float projectionMetrics[5];
-  short maxUnitRange;             // +0x40 max GetUnitRange over active units
-  short maxNonArtilleryUnitRange; // +0x42 same, skipping aiClass-2 units
-  int lastAppliedCursorMode;      // +0x44 init -1; SelectAndApply... early-outs on equality
-  // Target-selection mode: == 1 also engages morale-broken (state1c == 1) units.
+  short maxUnitRange;             // max GetUnitRange over active units
+  short maxNonArtilleryUnitRange; // same, skipping aiClass-2 units
+  int lastAppliedCursorMode;      // init -1; SelectAndApply... early-outs on equality
+  // Target-selection mode: == 1 also engages morale-broken (status == 1) units.
   int targetingMode;
-  int cachedFortBombardmentTargetTile; // +0x4c init -1; cached fort-bombardment target tile for indirect fire
-  char randomParityByte50;             // +0x50 coin flip at side init (move-first side?)
-  bool hasArtilleryOrSappers; // +0x51 active units only
+  int cachedFortBombardmentTargetTile; // init -1; cached fort-bombardment target tile for indirect fire
+  char attacksFromTop;                 // coin flip at side init (move-first side?)
+  bool hasArtilleryOrSappers;          // active units only
 
   // NOOP: verified empty in original 0x0059b112
   TArmyPlayer() {}

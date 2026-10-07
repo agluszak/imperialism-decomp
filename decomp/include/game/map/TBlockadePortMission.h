@@ -8,7 +8,7 @@ class TZone;
 class TBlockadePortMission : public TControlSeaZoneMission {
   DECLARE_SERIAL(TBlockadePortMission)
 public:
-  TZone* portZoneContext; // +0x3c blockade-target port zone (deserialized by node id)
+  TZone* portZoneContext; // blockade-target port zone (deserialized by node id)
 
   TBlockadePortMission() : TControlSeaZoneMission(), portZoneContext(NULL) {}
 
@@ -19,8 +19,8 @@ public:
   virtual void ReadFrom(TStream* stream) override;
 
   virtual void Initialize() override;
-  virtual void SetStateByte8To2() override; // state08 = 3
-  virtual void CalculateNeeds() override;   // resource weights from navy context
+  virtual void ResetPriority() override;
+  virtual void CalculateNeeds() override; // resource weights from navy context
 
   virtual TMission* GetReplacement() override; // validate context / refresh child
   virtual bool Matches(eMissionType missionType, int key, TZone* zoneContext) const override;

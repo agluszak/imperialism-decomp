@@ -130,7 +130,7 @@ void TNavyBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targetTi
     if (battleView != 0) {
       battleView->InvalidateUnit(defenderUnit);
     }
-    if (defenderUnit->state1c == 3) {
+    if (defenderUnit->status == 3) {
       tileGrid[defenderUnit->tileIndex].occupant = 0;
       defenderUnit->tileIndex = -1;
       if (battleView != 0) {
@@ -247,7 +247,7 @@ void TNavyBattle::MoveAndCycle(TTacticalUnit* unit, TacticalTileIndex targetTile
       return;
     }
   }
-  if (unit->state1c == 0 && battleOutcome == kTacticalBattleInProgress) {
+  if (unit->status == 0 && battleOutcome == kTacticalBattleInProgress) {
     return;
   }
   FinishedMove();

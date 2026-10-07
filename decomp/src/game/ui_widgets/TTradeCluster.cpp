@@ -222,7 +222,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveSell);
     }
     short cappedValue = capacityControl->UpdateControlCachedIntFromWindowText();
-    int applyValue = maxByNationMetric;
+    short applyValue = maxByNationMetric;
     if (static_cast<int>(cappedValue) <= static_cast<int>(maxByNationMetric)) {
       applyValue = static_cast<int>(cappedValue);
     }
@@ -235,7 +235,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveBar);
     }
     barControl->ViewEnable(1, 0);
-    SetMoveAmount(static_cast<short>(applyValue));
+    SetMoveAmount(applyValue);
     return;
   }
   case 0x6a: {
@@ -503,8 +503,8 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
     if (barSteps != 0) {
       barScale = static_cast<float>(barRange) / static_cast<float>(barSteps);
     }
-    int scaledMetricValue = static_cast<int>(static_cast<float>(tradeMetricValue) * barScale);
-    barControl->SetAmt(static_cast<short>(scaledMetricValue), static_cast<short>(barRange));
+    short scaledMetricValue = static_cast<int>(static_cast<float>(tradeMetricValue) * barScale);
+    barControl->SetAmt(scaledMetricValue, static_cast<short>(barRange));
     return;
   }
 

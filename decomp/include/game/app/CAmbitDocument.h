@@ -23,7 +23,7 @@ public:
 
   afx_msg void OnStartNextPhase();
 
-  TAmbitFileBasedDocument* fileBasedDocument; // +0x50 (4-byte T-tree document adapter)
+  TAmbitFileBasedDocument* fileBasedDocument; // (4-byte T-tree document adapter)
 
   DECLARE_MESSAGE_MAP()
 };

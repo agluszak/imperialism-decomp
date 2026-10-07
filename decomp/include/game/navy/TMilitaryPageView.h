@@ -17,7 +17,7 @@ public:
 
   TMilitaryPageView();
   void AfterStuffValues();
-  void PrepareUnitCache(int bitmapResourceId, int maskResourceId, int height);
+  void PrepareUnitCache(unsigned short bitmapResourceId, int maskResourceId, int height);
 
   TQuickDrawSurfaceContext* primaryUnitAtlas;
 };

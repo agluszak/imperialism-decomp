@@ -30,7 +30,7 @@ IMPLEMENT_DYNCREATE(TTacticalUnit, TObject)
 void TTacticalUnit::ITacticalUnit() {
   tileIndex = -2;
   selectedFlag = false;
-  state1c = 0;
+  status = 0;
   actionPoints = GetBaseActionPoints();
   aiStateCode = 0;
   attackTarget = NULL;
@@ -41,7 +41,7 @@ void TTacticalUnit::ApplyDamage(int damageA, int damageB) {
   strength -= damageA;
   if (strength <= 0) {
     strength = 0;
-    state1c = 3;
+    status = 3;
   }
 }
 

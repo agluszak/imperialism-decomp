@@ -372,7 +372,7 @@ void TTacticalBattle::CalculateDangerMap(TTacticalUnit* unit) {
   TacticalTileIndex seedTile;
   for (seedTile = 0; seedTile < tacticalTileCount; ++seedTile) {
     TTacticalUnit* occupant = tileGrid[seedTile].occupant;
-    if (occupant != 0 && occupant->side != unitSide && occupant->state1c == 0) {
+    if (occupant != 0 && occupant->side != unitSide && occupant->status == 0) {
       occupant->AssertValid();
       threatLevels[seedTile] = static_cast<char>(occupant->GetUnitRange() + 1);
     } else {
@@ -708,14 +708,14 @@ void TTacticalBattle::Cycle() {
     }
     candidateUnit = static_cast<TTacticalUnit*>(recordList->GetEntryByOrdinal(position));
     candidateUnit->AssertValid();
-    if (candidateUnit->state1c != 3) {
+    if (candidateUnit->status != 3) {
       break;
     }
   }
 
   candidateUnit->AssertValid();
   LaSelect(candidateUnit, false);
-  if (candidateUnit->state1c == 1) {
+  if (candidateUnit->status == 1) {
     ProcessTacticalUnitState1TurnStep(candidateUnit);
     return;
   }
@@ -774,14 +774,14 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
     MoveTacticalUnitTowardTile(unit, bestTile);
   }
 
-  if (unit->state1c == 1) {
+  if (unit->status == 1) {
     TList* sideUnitList = (unit->side == 0) ? players[1]->unitList : players[0]->unitList;
 
     int nearbyThreshold = 0;
     CIterator cursor(sideUnitList);
     for (TTacticalUnit* candidate = static_cast<TTacticalUnit*>(cursor.Reset()); cursor.More();
          candidate = static_cast<TTacticalUnit*>(cursor.Advance())) {
-      if (candidate->state1c != 0) {
+      if (candidate->status != 0) {
         continue;
       }
       int distance = ComputeHexTileDistanceFromIndices(unit->tileIndex, candidate->tileIndex);
@@ -906,7 +906,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
   int side = unit->side;
   if ((side == 1 && exitColumn >= battlefieldColumnCount - 1) || (side == 0 && exitColumn == 0)) {
     bool unitMayLeave;
-    if (unit->state1c == 1) {
+    if (unit->status == 1) {
       unitMayLeave = 1;
     } else if (battleView != 0) {
       TTacticalPlayer* sidePlayer = (side == 0) ? players[0] : players[1];
@@ -914,7 +914,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
     }
     if (unitMayLeave != 0) {
       TacticalTileIndex exitTile = pathTiles[stepCount];
-      unit->state1c = 2;
+      unit->status = 2;
       unit->tileIndex = -2;
       tileGrid[exitTile].occupant = 0;
       CheckForVictory();
@@ -1046,7 +1046,7 @@ bool TTacticalBattle::CheckOpportunityFire(TacticalTileIndex tileIndex) {
   reactor->AssertValid();
   do {
     reactor->AssertValid();
-    if (reactor->state1c == 0 && reactor->selectedFlag) {
+    if (reactor->status == 0 && reactor->selectedFlag) {
       TacticalTileIndex reactorTileIndex = reactor->tileIndex;
       short categoryCode = g_awTacticalUnitCategoryCodeBySlot[reactor->unitType];
       if (IsTacticalTargetTileReachableForAction(
@@ -1091,7 +1091,7 @@ void TTacticalBattle::MoveAndCycle(TTacticalUnit* unit, TacticalTileIndex target
   if (g_awTacticalUnitCategoryCodeBySlot[unit->unitType] == 7) {
     unit->selectedFlag = false;
   }
-  if (unit->state1c == 0 && battleOutcome == kTacticalBattleInProgress) {
+  if (unit->status == 0 && battleOutcome == kTacticalBattleInProgress) {
     if (unit->selectedFlag) {
       if (ValidTargets()) {
         return;
@@ -1294,7 +1294,7 @@ void TTacticalBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targ
     CIterator leaderIter(defenderPlayer->unitList);
     for (TTacticalUnit* leaderUnit = static_cast<TTacticalUnit*>(leaderIter.Reset());
          leaderIter.More(); leaderUnit = static_cast<TTacticalUnit*>(leaderIter.Advance())) {
-      if (leaderUnit->unitType >= 0x1b && leaderUnit->state1c == 0) {
+      if (leaderUnit->unitType >= 0x1b && leaderUnit->status == 0) {
         double leaderValue = 2.0 - leaderUnit->qualityLevel * 0.2 - 0.2;
         if (leaderValue < leaderMoraleMultiplier) {
           leaderMoraleMultiplier = static_cast<float>(leaderValue);
@@ -1349,7 +1349,7 @@ void TTacticalBattle::LaFireOn(TTacticalUnit* attackerUnit, TTacticalUnit* targe
       battleView->InvalidateTile(targetTileIndex);
     }
   }
-  if (targetUnit->state1c == 3) {
+  if (targetUnit->status == 3) {
     if (battleView != 0) {
       battleView->InvalidateTile(targetUnit->tileIndex);
     }
@@ -1369,7 +1369,7 @@ float TTacticalBattle::FindMoraleBonus(unsigned char side) {
   CIterator unitIter((side == 0) ? players[0]->unitList : players[1]->unitList);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {
-    if (unit->unitType >= 0x1b && unit->state1c == 0) {
+    if (unit->unitType >= 0x1b && unit->status == 0) {
       float unitBonus = static_cast<float>(2.0 - unit->qualityLevel * 0.2 - 0.2);
       if (unitBonus < moraleBonus) {
         moraleBonus = unitBonus;
@@ -1402,7 +1402,7 @@ void TTacticalBattle::CheckForVictory() {
        unitIter.More() && (sideHasLiveUnit[0] == 0 || sideHasLiveUnit[1] == 0);
        unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {
     unit->AssertValid();
-    if (unit->state1c == 0 || unit->state1c == 1) {
+    if (unit->status == 0 || unit->status == 1) {
       sideHasLiveUnit[unit->side] = 1;
     }
   }
@@ -1493,7 +1493,7 @@ void TTacticalBattle::CheckForVictory() {
     for (TTacticalUnit* lossUnit = static_cast<TTacticalUnit*>(lossIter.Reset()); lossIter.More();
          lossUnit = static_cast<TTacticalUnit*>(lossIter.Advance())) {
       lossUnit->AssertValid();
-      if (lossUnit->state1c == 3) {
+      if (lossUnit->status == 3) {
         ++destroyedCountBySide[lossUnit->side];
       }
     }
@@ -1750,7 +1750,7 @@ void TTacticalBattle::LaDig(TTacticalUnit* unit, TacticalTileIndex targetTileInd
 
 // FUNCTION: IMPERIALISM 0x005a3810
 void TTacticalBattle::RallyUnit(TTacticalUnit* rallyingUnit, TArmyTacUnit* rallyTarget) {
-  int newState = rallyTarget->state1c;
+  int newState = rallyTarget->status;
   int newMorale = rallyTarget->morale;
   if (newState == 0) {
     newMorale += rallyTarget->strength / 10 * (rallyingUnit->qualityLevel + 3);
@@ -1774,7 +1774,7 @@ void TTacticalBattle::LaRally(TArmyTacUnit* unit, int newMorale, int newState, b
     }
   }
   int strength = unit->strength;
-  unit->state1c = newState;
+  unit->status = newState;
   if (newMorale > strength) {
     unit->morale = strength;
   } else {
@@ -1954,7 +1954,7 @@ void TTacticalBattle::CycleTarget() {
   }
 
   // If the current target is still valid and reachable, recenter the view on it.
-  if (marker != NULL && marker->state1c == 0) {
+  if (marker != NULL && marker->status == 0) {
     char reachable;
     if (!selectedUnit->selectedFlag) {
       reachable = 0;
@@ -1982,7 +1982,7 @@ void TTacticalBattle::CycleTarget() {
     }
     TTacticalUnit* candidate = static_cast<TTacticalUnit*>(list->GetEntryByOrdinal(next));
     candidate->AssertValid();
-    if (candidate->state1c == 0) {
+    if (candidate->status == 0) {
       char reachable;
       if (!selectedUnit->selectedFlag) {
         reachable = 0;

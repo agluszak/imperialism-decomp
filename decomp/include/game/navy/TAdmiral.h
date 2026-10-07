@@ -21,14 +21,14 @@ public:
   virtual void ReadFrom(TStream* stream) override;
   virtual void Free() override;
 
-  NationSlot nationSlot; // 0x04 (also indexes the nation's terrain descriptor; -1 = none)
+  NationSlot nationSlot; // (also indexes the nation's terrain descriptor; -1 = none)
   unsigned char pad06[2];
   TShip* assignedShip; // linked navy primary-order node
   CString displayName;
   short experiencePoints;
   unsigned char pad12[2];
-  TAdmiral* next; // 0x14 (toward older entries)
-  TAdmiral* prev; // 0x18 (toward newer entries)
+  TAdmiral* next; // (toward older entries)
+  TAdmiral* prev; // (toward newer entries)
 
   TAdmiral(NationSlot nationSlotArg = -1);
   virtual ~TAdmiral() override;

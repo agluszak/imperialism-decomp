@@ -83,27 +83,27 @@ public:
   void ReadFrom(TStream* stream) override;
   void Free() override;
 
-  TLongintList* list28;
-  TLongintList* list2c;                // +0x2c  (new TLongintList)
-  short nextProductionBuildingOrdinal; // based cursor into list2c
-  short pendingShipType;               // +0x32  ship type queued at city slot 0x2b
+  TLongintList* manufacturingPriority;
+  TLongintList* buildingUpgradePriority; // (new TLongintList)
+  short nextProductionBuildingOrdinal;   // cursor into buildingUpgradePriority
+  short pendingShipType;                 // ship type queued at city slot 0x2b
   short field34;
-  short pendingRecruitmentCommandIndex; // +0x36  maps to city order slot 0x22 + value
-  short pendingUnitCommandIndex;        // +0x38  maps to city order slot 0x19 + value
-  short resource15ProductionPercent;    // +0x3a  init 50
-  short railheadTargetTile;             // +0x3c  init -1
-  short accumulatedUnmetNeed;           // +0x3e  queued via command 0x33
-  short orderMetricTable[61];           // +0x40..0xba  (zeroed on init)
+  short pendingRecruitmentCommandIndex; // maps to city order slot 0x22 + value
+  short pendingUnitCommandIndex;        // maps to city order slot 0x19 + value
+  short resource15ProductionPercent;    // init 50
+  short railheadTargetTile;             // init -1
+  short accumulatedUnmetNeed;           // queued via command 0x33
+  short orderMetricTable[61];           // (zeroed on init)
   short orderShortTableBA[16];
   short deferredLaborShortfall;
   short orderShortTableDC[16];
   short orderTypeTableFC[23];
-  short exteriorNeedByType[23];   // +0x12a..0x158 (exterior need by order type)
-  short historicalNeedByType[23]; // +0x158..0x186 (historical need by order type)
+  short exteriorNeedByType[23];   // (exterior need by order type)
+  short historicalNeedByType[23]; // (historical need by order type)
   short temporarilyReservedShipArms;
-  TFuzzySet* cityPolicyFuzzySet; // +0x188 (new TFuzzySet, 4 policy curves)
-  TList* orderList;              // +0x18c (new TList; ctor 0x4be840 nulls it)
-  TLongintList* list190;         // +0x190 (new TLongintList)
+  TFuzzySet* cityPolicyFuzzySet;    // (new TFuzzySet, 4 policy curves)
+  TList* orderList;                 // (new TList; ctor 0x4be840 nulls it)
+  TLongintList* productionRequests; // (new TLongintList)
   short civilianOrderDemandByResourceType[23];
   short temporaryFurnitureSubstituteLumber;
 

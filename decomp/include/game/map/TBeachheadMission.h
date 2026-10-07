@@ -8,7 +8,7 @@ class TInvadeMission;
 class TBeachheadMission : public TControlSeaZoneMission {
   DECLARE_SERIAL(TBeachheadMission)
 public:
-  TInvadeMission* parentMission; // +0x3c owning composite invade mission
+  TInvadeMission* parentMission; // owning composite invade mission
 
   TBeachheadMission() : TControlSeaZoneMission(), parentMission(NULL) {}
 

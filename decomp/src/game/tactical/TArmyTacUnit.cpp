@@ -12,7 +12,7 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   unitType = source->orderType;
   tileIndex = -2;
   selectedFlag = false;
-  state1c = 0;
+  status = 0;
   actionPoints = GetBaseActionPoints();
   aiStateCode = 0;
   attackTarget = NULL;
@@ -71,12 +71,12 @@ void TArmyTacUnit::ApplyDamage(int damageA, int damageB) {
   morale -= damageB;
   if (morale <= 0) {
     morale = 0;
-    state1c = 1;
+    status = 1;
   }
   strength -= damageA;
   if (strength <= 0) {
     strength = 0;
-    state1c = 3;
+    status = 3;
   }
 }
 

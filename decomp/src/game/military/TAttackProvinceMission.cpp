@@ -70,7 +70,7 @@ void TAttackProvinceMission::Free() {
 
 // FUNCTION: IMPERIALISM 0x0053d950
 bool TAttackProvinceMission::SmokeEmIfYouGotEm() {
-  if (flag10 == 0) {
+  if (onHold == 0) {
     float vector[5];
     float total = 0.0f;
     float weighted = 0.0f;
@@ -274,8 +274,8 @@ TMission* TAttackProvinceMission::GetReplacement() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053e180
-void TAttackProvinceMission::SetStateByte8To2() {
-  state08 = 2;
+void TAttackProvinceMission::ResetPriority() {
+  priority = 2;
 }
 
 // FUNCTION: IMPERIALISM 0x0053e1a0
@@ -368,7 +368,7 @@ float TAttackProvinceMission::FitnessOf(TMilitaryUnit* candidateUnit, float* ref
 
 // FUNCTION: IMPERIALISM 0x0053e570
 void TAttackProvinceMission::Initialize() {
-  marker11 = 1;
+  requiredForces = 1;
   if (targetProvince != -1) {
     pathMarker =
         static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode);

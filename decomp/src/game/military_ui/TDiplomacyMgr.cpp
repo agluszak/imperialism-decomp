@@ -607,7 +607,7 @@ void TDiplomacyMgr::SetRelationship(NationSlot sourceNationSlot, NationSlot targ
     return;
   }
 
-  int clampedScore = requestedScore;
+  short clampedScore = requestedScore;
   if (requestedScore < 0) {
     clampedScore = 0;
   }
@@ -620,14 +620,14 @@ void TDiplomacyMgr::SetRelationship(NationSlot sourceNationSlot, NationSlot targ
     } else {
       clampedScore = requestedScore;
     }
-    if (static_cast<short>(clampedScore) < 0) {
+    if (clampedScore < 0) {
       clampedScore = 0;
     }
   }
 
-  *forwardScore = static_cast<short>(clampedScore);
+  *forwardScore = clampedScore;
   int reverseIndex = target * kNationSlotCount + source;
-  relationStandingScores[reverseIndex] = static_cast<short>(clampedScore);
+  relationStandingScores[reverseIndex] = clampedScore;
 
   if (IsGreatPower(sourceNationSlot)) {
     int minorNationSlot = 7;
@@ -1187,10 +1187,10 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
     }
   }
 
-  int neutralCount = totalOwnedCount - topSideCount - secondSideCount;
+  short neutralCount = totalOwnedCount - topSideCount - secondSideCount;
   congressSupport.chairmanSupportCount = static_cast<short>(topSideCount);
   congressSupport.counterpartSupportCount = static_cast<short>(secondSideCount);
-  congressSupport.neutralCount = static_cast<short>(neutralCount);
+  congressSupport.neutralCount = neutralCount;
 
   int winnerNationSlot = -1;
   if (secondSideCount < topSideCount) {
@@ -1600,7 +1600,7 @@ int TDiplomacyMgr::GetFavorite(int sourceNationSlot, int primaryOnlyFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f21f0
-int TDiplomacyMgr::GetFavorite(int sourceNationSlot, int primaryOnlyFlag, int sideEffectCode) {
+int TDiplomacyMgr::GetFavorite(int sourceNationSlot, int primaryOnlyFlag, short sideEffectCode) {
   if (static_cast<short>(sideEffectCode) == 0) {
     return GetFavorite(sourceNationSlot, primaryOnlyFlag);
   }

@@ -24,7 +24,7 @@ public:
   virtual TMission* GetReplacement() override;
   virtual bool Matches(eMissionType missionType, int key, TZone* zoneContext) const override;
 
-  virtual void SetStateByte8To2() override;    // updates state by nation target match
+  virtual void ResetPriority() override;       // updates state by nation target match
   virtual void CalculateImportance() override; // computes terrain adjacency score
   virtual void CalculateNeeds() override;      // populates resource weights by diplomacy context
 

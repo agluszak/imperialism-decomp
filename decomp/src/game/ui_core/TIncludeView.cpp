@@ -24,7 +24,7 @@ TIncludeView::~TIncludeView() {}
 
 // FUNCTION: IMPERIALISM 0x0048cf10
 void TIncludeView::IIncludeView(TView* resourceContext, TView* mainView, short eventCode,
-                                const CPoint& anchorPoint, CString* labelText, int flag) {
+                                const CPoint& anchorPoint, CString* labelText, short flag) {
   if (mainView != NULL) {
     nativeWindow = mainView->nativeWindow;
   }
@@ -44,7 +44,7 @@ void TIncludeView::IIncludeView(TView* resourceContext, TView* mainView, short e
   this->anchorPoint.x = anchorPoint.x;
   this->anchorPoint.y = anchorPoint.y;
   this->labelText = *labelText;
-  completionFlag = static_cast<short>(flag);
+  completionFlag = flag;
 }
 
 // FUNCTION: IMPERIALISM 0x0048cfd0

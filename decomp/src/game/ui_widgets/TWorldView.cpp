@@ -482,24 +482,24 @@ void TWorldView::NavalTileClick(int tileIndexArg, int inputFlags) {
 }
 
 // FUNCTION: IMPERIALISM 0x005963d0
-void TWorldView::ShiftClick(int stridedRecord, int dispatchContext) {
+void TWorldView::ShiftClick(short stridedRecord, int dispatchContext) {
   TEvent* event = new TEvent();
   event->dispatchMessage = 0x78;
   event->commandNumber = 0x78;
   event->sourceHandler = this;
   event->targetHandler = this;
-  stridedCellRecordIndex = static_cast<short>(stridedRecord);
+  stridedCellRecordIndex = stridedRecord;
   DispatchQueuedUiCommandAndRelease(event);
 }
 
 // FUNCTION: IMPERIALISM 0x00596440
-void TWorldView::CommandOptionClick(int stridedRecord, int dispatchContext) {
+void TWorldView::CommandOptionClick(short stridedRecord, int dispatchContext) {
   TEvent* event = new TEvent();
   event->dispatchMessage = 0x78;
   event->commandNumber = 0x78;
   event->sourceHandler = this;
   event->targetHandler = this;
-  stridedCellRecordIndex = static_cast<short>(stridedRecord);
+  stridedCellRecordIndex = stridedRecord;
   DispatchQueuedUiCommandAndRelease(event);
 }
 

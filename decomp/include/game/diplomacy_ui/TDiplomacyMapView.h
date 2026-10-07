@@ -67,14 +67,14 @@ public:
   virtual void ShowTreaties(int activeNationSlot, const RECT* presentRect);
   virtual void VisitNationSlotsForOverlay(int unusedMode);
   virtual void ShowRelations(int activeNationSlot, const RECT* presentRect);
-  virtual void FillRegionWithPict(short maskIndex, int bmpId);
+  virtual void FillRegionWithPict(short maskIndex, unsigned short bmpId);
   virtual void PoseOffer(short sourceNation, short targetNation, short offerType);
   void CreateDrawGeometries();
 
   TDiplomacyMapView();
 
   eDipAction GetAction(CPoint* clickPoint);
-  void PaintRegion(int maskIndex, int eventCode);
+  void PaintRegion(int maskIndex, short eventCode);
   char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
                     int promptCode);
   void DrawVoteNuggets();

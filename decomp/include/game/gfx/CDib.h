@@ -16,19 +16,19 @@ class CDibPal;
 // VTABLE: IMPERIALISM 0x00645fc8
 class CDib : public CObject {
 public:
-  void* m_colorTablePixels;  // 0x04  points at the packed color table / pixels (header + 0x28)
-  HBITMAP m_hBitmap;         // 0x08  compatible/DIB-section bitmap (DeleteObject on release)
-  void* m_dibBits;           // 0x0c  DIB section bits (owned when m_dibBitsOwned == 1)
-  BITMAPINFO* m_pInfoHeader; // 0x10  packed BITMAPINFOHEADER + RGBQUAD palette
-  HGLOBAL m_hGlobalInfo;     // 0x14  GlobalAlloc handle backing m_pInfoHeader (own mode 2)
+  void* m_colorTablePixels;  // points at the packed color table / pixels (header + 0x28)
+  HBITMAP m_hBitmap;         // compatible/DIB-section bitmap (DeleteObject on release)
+  void* m_dibBits;           // DIB section bits (owned when m_dibBitsOwned == 1)
+  BITMAPINFO* m_pInfoHeader; // packed BITMAPINFOHEADER + RGBQUAD palette
+  HGLOBAL m_hGlobalInfo;     // GlobalAlloc handle backing m_pInfoHeader (own mode 2)
   eDibInfoOwnershipMode m_infoOwnMode;
   BOOL m_dibBitsOwned;
-  int m_pixelBytes;      // 0x20  size of the pixel buffer in bytes
-  int m_paletteCount;    // 0x24  number of palette entries (biClrUsed)
-  HANDLE m_hFileMapping; // 0x28  file-mapping handle (memory-mapped bmp path)
-  HANDLE m_hFile;        // 0x2c  file handle for the mapping
-  void* m_mappedView;    // 0x30  MapViewOfFile base
-  HPALETTE m_hPalette;   // 0x34  palette built from the color table (DeleteObject)
+  int m_pixelBytes;      // size of the pixel buffer in bytes
+  int m_paletteCount;    // number of palette entries (biClrUsed)
+  HANDLE m_hFileMapping; // file-mapping handle (memory-mapped bmp path)
+  HANDLE m_hFile;        // file handle for the mapping
+  void* m_mappedView;    // MapViewOfFile base
+  HPALETTE m_hPalette;   // palette built from the color table (DeleteObject)
 
   CDib();
   CDib(int width, int height, int bitDepth);

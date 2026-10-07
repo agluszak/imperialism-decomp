@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TLonelyTileView)
   virtual ~TLonelyTileView() override;
   virtual void Draw(RECT* rectBuffer) override;
-  short tileIndex; // +0x60 tile index passed to the tile-sprite-variant lookup
+  short tileIndex; // tile index passed to the tile-sprite-variant lookup
 
   TLonelyTileView();
   void SetTile(short tileIndex);

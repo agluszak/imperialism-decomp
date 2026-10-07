@@ -16,8 +16,8 @@ public:
   virtual void DoPostCreate(int arg) override;
   virtual void Draw(RECT* rectBuffer) override;
   int comparisonMode;  // selects which per-nation metric fills values
-  int values[7];       // +0x94 per-entry sort key (score)
-  short pictureIds[7]; // +0xb0 per-entry picture id (-1 = empty slot)
+  int values[7];       // per-entry sort key (score)
+  short pictureIds[7]; // per-entry picture id (-1 = empty slot)
 
   TStatusPicture();
 

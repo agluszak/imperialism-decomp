@@ -41,9 +41,9 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text);
 void __cdecl RenderTradeScreenCommoditySummaryRows(CString* text, RECT* rect, short styleSel,
                                                    int unused);
 
-void SetQuickDrawTextFont(short value); // 0x00495230 (txFont)
-void SetQuickDrawTextFace(short value); // 0x00495290 (txFace)
-void SetQuickDrawTextSize(short value); // 0x00495260 (txSize)
+void SetQuickDrawTextFont(short value); // (txFont)
+void SetQuickDrawTextFace(short value); // (txFace)
+void SetQuickDrawTextSize(short value); // (txSize)
 
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
 void __cdecl ConfigureWhiteQuickDrawPen(unsigned char widePen);

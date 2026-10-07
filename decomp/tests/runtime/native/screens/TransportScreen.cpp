@@ -120,8 +120,8 @@ bool TransportScreen::CapacityLabelMatchesSplit() const {
   }
   CString current;
   CString capacity;
-  current.Format("%d", static_cast<int>(gauge->splitValue94));
-  capacity.Format("%d", static_cast<int>(gauge->splitValue96));
+  current.Format("%d", static_cast<int>(gauge->targetAmount));
+  capacity.Format("%d", static_cast<int>(gauge->capacity));
   return *label->text == current + kCapacitySeparator + capacity;
 }
 
@@ -151,7 +151,7 @@ short TransportScreen::FirstLowerableCommoditySlot() const {
       continue;
     }
     TTransportPicture* row = CommodityRow(slot);
-    if (row != 0 && row->splitValue94 > 0) {
+    if (row != 0 && row->targetAmount > 0) {
       return slot;
     }
   }

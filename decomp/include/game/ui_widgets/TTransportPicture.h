@@ -10,8 +10,8 @@ class TTransportPicture : public TPicture {
 public:
   short gaugeMetricId;
   short resourceMetricSlot;
-  short splitValue94;
-  short splitValue96;
+  short targetAmount;
+  short capacity;
   short splitLimit;
 
   TTransportPicture();

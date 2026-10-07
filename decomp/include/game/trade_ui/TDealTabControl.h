@@ -15,11 +15,11 @@ public:
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint, bool commandFlag) override;
   virtual void Setup(short bitmapResourceId, unsigned char useAlternatePair);
-  short selectedRow;                               // +0x84 selected row index, -1 = none
-  short rowHeightPixels;                           // +0x86 pixel height of one row
-  short tabCount;                                  // +0x88 Setup default: 15
-  struct TQuickDrawSurfaceContext* filledRowStrip; // +0x8c highlighted-row strip
-  struct TQuickDrawSurfaceContext* emptyRowStrip;  // +0x90 background strip
+  short selectedRow;                               // selected row index, -1 = none
+  short rowHeightPixels;                           // pixel height of one row
+  short tabCount;                                  // Setup default: 15
+  struct TQuickDrawSurfaceContext* filledRowStrip; // highlighted-row strip
+  struct TQuickDrawSurfaceContext* emptyRowStrip;  // background strip
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
   bool ActivateRow(short row);

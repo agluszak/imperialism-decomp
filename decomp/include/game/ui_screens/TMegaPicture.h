@@ -14,11 +14,11 @@ public:
   virtual void ClearModeBits(unsigned short mask, char useAndMask, char refreshNow);
   // Overwrites modeFlags wholesale, then optionally refreshes.
   virtual void SetMode(unsigned short value, bool refreshNow);
-  struct TQuickDrawSurfaceContext* surfaceContext; // +0x94 the picture's own bitmap
-  unsigned short modeFlags; // +0x98 bit0 = transparent-blit + opaque-fill-first, bit2 =
+  struct TQuickDrawSurfaceContext* surfaceContext; // the picture's own bitmap
+  unsigned short modeFlags; // bit0 = transparent-blit + opaque-fill-first, bit2 =
                             // use contentSubRect instead of the full passed-in rect
   unsigned char pad9a[2];
-  CRect contentSubRect; // +0x9c cached content sub-rect (used when modeFlags & 4)
+  CRect contentSubRect; // cached content sub-rect (used when modeFlags & 4)
 
   TMegaPicture();
 

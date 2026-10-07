@@ -27,7 +27,7 @@ public:
   bool CheckConnection();
   int GetPlayerID();
 
-  void NoOpDialogModeTagChangedHook(int arg); // 0x5e42a0 (empty)
+  void NoOpDialogModeTagChangedHook(int arg); // (empty)
   void DestroyPlayerIfLocal(int nationId);
 
   int Ping();

@@ -35,7 +35,7 @@ public:
   void RemoveGWorld(TQuickDrawSurfaceContext*& surface);
 
   TView* activeDialog;
-  short viewportMetric; // +0x08 (default 8)
+  short viewportMetric; // (default 8)
   short dialogActiveFlag;
   short field0c;
   short eventCode;

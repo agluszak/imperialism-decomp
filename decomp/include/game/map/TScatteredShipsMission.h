@@ -15,8 +15,8 @@ public:
 
   virtual bool IsANoBrainer() const override; // returns true (capability flag)
 
-  virtual void Initialize() override;       // reset state/score to default
-  virtual void SetStateByte8To2() override; // state08 = 3
+  virtual void Initialize() override; // reset state/score to default
+  virtual void ResetPriority() override;
   virtual void CalculateImportance() override;
   virtual void CalculateNeeds() override; // resource weights from nation navy pressure
 

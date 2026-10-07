@@ -49,8 +49,8 @@ public:
                             short& outRegionBand);
   virtual void ControlClick(int tileIndex, int dispatchContext);
   virtual void NavalTileClick(int tileIndexArg, int inputFlags);
-  virtual void ShiftClick(int stridedRecord, int dispatchContext);
-  virtual void CommandOptionClick(int stridedRecord, int dispatchContext);
+  virtual void ShiftClick(short stridedRecord, int dispatchContext);
+  virtual void CommandOptionClick(short stridedRecord, int dispatchContext);
   virtual void NormalClick(short nTileIndex, int nInputFlags);
   // ABI: overrides reuse the upper word of the promoted stack dword.
   virtual void CenterOn(int tileIndex);

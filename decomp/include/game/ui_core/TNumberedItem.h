@@ -14,8 +14,8 @@ public:
   DECLARE_DYNCREATE(TNumberedItem)
   virtual ~TNumberedItem() override;
   virtual void Draw(RECT* rectBuffer) override;
-  short iconRowIndex; // +0xac icon-strip row (badge background variant)
-  short badgeCount;   // +0xae the number drawn on the badge
+  short iconRowIndex; // icon-strip row (badge background variant)
+  short badgeCount;   // the number drawn on the badge
 
   TNumberedItem();
   void INumberedItem(TView* panel, int* position, int* size, short resourceIconIndex, short count);

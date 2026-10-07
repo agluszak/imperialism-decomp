@@ -224,8 +224,8 @@ void DrawHexCellBorderGuideLines(int baseX, int baseY, short cellValue, short* n
     DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX + 0xd), static_cast<short>(baseY));
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX + 0xd),
                                             static_cast<short>(baseY));
-    int endY = (neighborValues[0] == neighborValues[1]) ? baseY + 2 : baseY;
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX + 0xf), static_cast<short>(endY));
+    short endY = (neighborValues[0] == neighborValues[1]) ? baseY + 2 : baseY;
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX + 0xf), endY);
   }
   if (cellValue != neighborValues[1] && neighborValues[1] == neighborValues[2]) {
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX + 0xd),

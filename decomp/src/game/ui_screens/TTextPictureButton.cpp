@@ -7,7 +7,7 @@
 IMPLEMENT_DYNCREATE(TTextPictureButton, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005725d0
-TTextPictureButton::TTextPictureButton() : pointSize(0), themeCode9A(0), themeCode9C(0) {}
+TTextPictureButton::TTextPictureButton() : pointSize(0), textThemeCode(0), shadowThemeCode(0) {}
 
 // FUNCTION: IMPERIALISM 0x005726a0
 TTextPictureButton::~TTextPictureButton() {}
@@ -19,8 +19,8 @@ void TTextPictureButton::ITextPictureButton(TView* panel, int* offsetLayout, int
   IPicture(panel, offsetLayout, sizeLayout, 5, 5, pictureId);
   buttonText = *text;
   this->pointSize = pointSize;
-  themeCode9A = themeCodeA;
-  themeCode9C = themeCodeC;
+  textThemeCode = themeCodeA;
+  shadowThemeCode = themeCodeC;
 }
 
 // FUNCTION: IMPERIALISM 0x00572790
@@ -28,9 +28,9 @@ void TTextPictureButton::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
   int pressedOffset = (controlState != 0) ? 1 : 0;
 
-  ApplyTextStyle(0, pointSize, themeCode9C);
+  ApplyTextStyle(0, pointSize, shadowThemeCode);
   COLORREF shadowColor;
-  ResolveUiThemeColor(themeCode9C, &shadowColor);
+  ResolveUiThemeColor(shadowThemeCode, &shadowColor);
   SetQuickDrawColorAndSyncGlobals(shadowColor);
 
   short textWidth = MeasureText(&buttonText);
@@ -47,7 +47,7 @@ void TTextPictureButton::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&buttonText);
 
   COLORREF textColor;
-  ResolveUiThemeColor(themeCode9A, &textColor);
+  ResolveUiThemeColor(textThemeCode, &textColor);
   SetQuickDrawColorAndSyncGlobals(textColor);
 
   SetQuickDrawTextOriginWithContextOffset(

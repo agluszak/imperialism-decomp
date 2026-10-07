@@ -18,7 +18,7 @@ public:
   virtual void MoveTo(short nTileIndex);
   virtual void ContinueOrders();
   virtual void Vaporize();
-  virtual void SetOrders(UnitOrder order, int payload);
+  virtual void SetOrders(UnitOrder order, short payload);
 
   short orderType;
   short tileIndex;

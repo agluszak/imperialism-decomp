@@ -63,7 +63,7 @@ public:
   virtual int GetAllyNumber(int nthAllianceIndex, int sourceNation);
   // MATCH: VC5 emits this overload group in reverse order; keep the two-arg form first.
   virtual int GetFavorite(int sourceNation, int primaryOnlyFlag);
-  virtual int GetFavorite(int sourceNation, int primaryOnlyFlag, int sideEffectCode);
+  virtual int GetFavorite(int sourceNation, int primaryOnlyFlag, short sideEffectCode);
   virtual int GetFavoriteTradePartner(int minorNationSlot);
 
   bool BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation, int targetNation);

@@ -8,7 +8,7 @@ class TBeachheadMission;
 class TInvadeMission : public TAttackProvinceMission {
   DECLARE_SERIAL(TInvadeMission)
 public:
-  TBeachheadMission* beachhead; // +0x34 owned amphibious-landing child mission
+  TBeachheadMission* beachhead; // owned amphibious-landing child mission
 
   TInvadeMission() : TAttackProvinceMission(), beachhead(NULL) {}
 
@@ -23,9 +23,9 @@ public:
 
   virtual int AccumulateLack(int* accumulatedLack, bool includeExistingLack) const override;
 
-  virtual void Initialize() override;       // init from nation/target tile
-  virtual void SetStateByte8To2() override; // state08 = 2
-  virtual void CalculateNeeds() override;   // updates invade+beachhead child state
+  virtual void Initialize() override; // init from nation/target tile
+  virtual void ResetPriority() override;
+  virtual void CalculateNeeds() override; // updates invade+beachhead child state
 
   virtual void Reassess() override;            // advance composite handlers
   virtual void GiveOrders() override;          // refresh beachhead node / repath

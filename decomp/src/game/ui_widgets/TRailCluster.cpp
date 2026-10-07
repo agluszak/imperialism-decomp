@@ -58,7 +58,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
       selectedMetricStep = 2;
       selectedMetricValue =
           static_cast<short>(((labor->highSkillCount * 2 + labor->mediumSkillCount) * 2 +
-                              population->extraAt1e + labor->lowSkillCount) /
+                              population->powerPlantOutput + labor->lowSkillCount) /
                              2);
     }
   } else if (summaryTag < kControlTagProg) {
@@ -77,7 +77,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
     selectedMetricStep = 1;
     selectedMetricValue =
         static_cast<short>(((labor->highSkillCount * 2 + labor->mediumSkillCount) * 2 +
-                            labor->lowSkillCount + population->extraAt1e) /
+                            labor->lowSkillCount + population->powerPlantOutput) /
                            2);
   } else if (summaryTag == kSummaryTagTrai) {
     recordIndex = 0x17;
@@ -98,11 +98,11 @@ void TRailCluster::SetMoveAmount(short amount) {
 // FUNCTION: IMPERIALISM 0x005899f0
 void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
   short step = selectedMetricStep;
-  int quantizedDragValue = ((step / 2 + dragValue) / step) * step;
+  short quantizedDragValue = ((step / 2 + dragValue) / step) * step;
   TProductionOrder* selectedOrder = selectedMetricOrder;
   short previousValue = selectedOrder->quantity;
   if (selectedOrder != 0) {
-    selectedOrder->SetQuantity(static_cast<short>(quantizedDragValue));
+    selectedOrder->SetQuantity(quantizedDragValue);
   }
 
   if ((static_cast<char>(updateFlag) == 0) && (selectedOrder->quantity == previousValue)) {
@@ -140,12 +140,12 @@ void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
     barControl->auxValueB = 0x3a;
   }
 
-  int scaledMoveAmount = static_cast<int>(static_cast<float>(selectedOrder->quantity) * barScale);
-  int scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
-  barControl->SetAmt(static_cast<short>(scaledMoveAmount), static_cast<short>(scaledMaximum));
+  short scaledMoveAmount = static_cast<int>(static_cast<float>(selectedOrder->quantity) * barScale);
+  short scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
+  barControl->SetAmt(scaledMoveAmount, scaledMaximum);
 
   CPoint moveControlPosition;
-  moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
+  moveControlPosition.x = barControl->ownerLocalX + scaledMoveAmount - 2;
   moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
   moveControl->Locate(moveControlPosition, true);
   moveControl->GetFrame(&moveBoundsRect);

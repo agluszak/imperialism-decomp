@@ -17,19 +17,19 @@ public:
   virtual void ApplyDamage(int damageA, int damageB);
   virtual void FlipUnitSideAffiliation();
 
-  int strength;                // +0x04 current strength; ApplyDamage floors at 0 -> state1c = 3
-  TacticalTileIndex tileIndex; // +0x08 tactical grid index (init -2 = not yet placed)
-  int unitType;                // +0x0c unit-type id; indexes the 0x669858/0x669898 per-type tables
-  int qualityLevel;            // +0x10 = source unit experiencePercent / 100 at army init
-  int ownerNationIndex;        // +0x14 owning nation index (matched vs the stack's side)
+  int strength;                // current strength; ApplyDamage floors at 0 -> status = 3
+  TacticalTileIndex tileIndex; // tactical grid index (init -2 = not yet placed)
+  int unitType;                // unit-type id; indexes the 0x669858/0x669898 per-type tables
+  int qualityLevel;            // = source unit experiencePercent / 100 at army init
+  int ownerNationIndex;        // owning nation index (matched vs the stack's side)
   bool selectedFlag;
   unsigned char pad19[3];
-  int state1c;   // +0x1c 0 = ok, 1 = morale broken, 3 = destroyed
-  int side;      // +0x20 battle side (serialized)
-  short field24; // +0x24 serialized word
+  int status;    // 0 = ok, 1 = morale broken, 3 = destroyed
+  int side;      // battle side (serialized)
+  short field24; // serialized word
   short pad26;
-  int actionPoints; // +0x28 remaining action points (seeded from GetBaseActionPoints)
-  int aiStateCode;  // +0x2c AI stance code (indexes the 0x699500 weight rows)
+  int actionPoints; // remaining action points (seeded from GetBaseActionPoints)
+  int aiStateCode;  // AI stance code (indexes the 0x699500 weight rows)
   TTacticalUnit* attackTarget;
 
   // NOOP: verified empty in original 0x005a5d12

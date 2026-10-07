@@ -439,12 +439,12 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
 }
 
 // FUNCTION: IMPERIALISM 0x0055fb60
-void TZone::SetIngotTile(int nationSeedId, int tileIndex) {
-  seedNationId = static_cast<short>(nationSeedId);
+void TZone::SetIngotTile(short nationSeedId, int tileIndex) {
+  seedNationId = nationSeedId;
   unsigned short resolvedTile = tileIndex;
   if (resolvedTile == 0xffff) {
-    resolvedTile = static_cast<unsigned short>(
-        g_pGlobalMapState->GetNationCenterTile(static_cast<short>(nationSeedId), false));
+    resolvedTile =
+        static_cast<unsigned short>(g_pGlobalMapState->GetNationCenterTile(nationSeedId, false));
   }
   tileOrTerrainId = static_cast<short>(resolvedTile);
   activeTileIndex = static_cast<short>(tileOrTerrainId);
@@ -561,9 +561,8 @@ short TZone::PickIngotTile() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055ff70
-int TZone::ScoreCoastalTile(int tileIndex, TZone* contextZone, Province* contextProvince) {
-  TTerrainStateRecord& tileRecord =
-      g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)];
+int TZone::ScoreCoastalTile(short tileIndex, TZone* contextZone, Province* contextProvince) {
+  TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
   if (tileRecord.GetTerrainKind() != kStrategicTerrainWater) {
     return 0;
   }
@@ -572,7 +571,7 @@ int TZone::ScoreCoastalTile(int tileIndex, TZone* contextZone, Province* context
   }
   TZone* zoneForTile = 0;
   if (g_pActiveMapOrderContext != 0) {
-    zoneForTile = g_pActiveMapOrderContext->GetZoneAt(static_cast<short>(tileIndex));
+    zoneForTile = g_pActiveMapOrderContext->GetZoneAt(tileIndex);
   }
   if (zoneForTile != contextZone) {
     return 0x3e8;
@@ -580,8 +579,7 @@ int TZone::ScoreCoastalTile(int tileIndex, TZone* contextZone, Province* context
 
   int score = 0x1388;
   for (int neighborDir = 0; neighborDir < 6; ++neighborDir) {
-    short neighborTile =
-        TMapMgr::StepTile(static_cast<short>(tileIndex), static_cast<short>(neighborDir));
+    short neighborTile = TMapMgr::StepTile(tileIndex, static_cast<short>(neighborDir));
     if (neighborTile != -1) {
       TTerrainStateRecord& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
       if (neighborRecord.GetTerrainKind() == kStrategicTerrainWater) {

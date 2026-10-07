@@ -6,8 +6,8 @@
 class TAttackProvinceMission : public TArmyMission {
   DECLARE_SERIAL(TAttackProvinceMission)
 public:
-  short targetProvince;   // +0x30 target province/region index (ctor = -1)
-  short amassingProvince; // +0x32 amassing province/region index (ctor = -1)
+  short targetProvince;   // target province/region index (ctor = -1)
+  short amassingProvince; // amassing province/region index (ctor = -1)
 
   TAttackProvinceMission() : TArmyMission(-1) {
     this->targetProvince = -1;
@@ -23,8 +23,8 @@ public:
   virtual void ReadFrom(TStream* stream) override;
   virtual void Free() override;
 
-  virtual void Initialize() override;          // resolves movement class from target province
-  virtual void SetStateByte8To2() override;    // sets state08 = 2 (pending)
+  virtual void Initialize() override; // resolves movement class from target province
+  virtual void ResetPriority() override;
   virtual void CalculateImportance() override; // terrain adjacency score (shared w/ TInvadeMission)
   virtual void CalculateNeeds() override; // populates requiredEquipageByClass from target province
 

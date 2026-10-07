@@ -44,8 +44,8 @@ public:
   TLaborPool* productionSlots;
   TLaborPool* pendingDeltaSlots;
   short strength; // low-stock flag / trade production cap
-  short extraAt1e;
-  short fieldAt20; // snapshotted by the turn-event-0x2c packet
+  short powerPlantOutput;
+  short consumptionRotation; // snapshotted by the turn-event-0x2c packet
 
   short predictedNeedByResource[kResourceKindCount];
 

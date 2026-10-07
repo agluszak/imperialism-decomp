@@ -17,10 +17,10 @@ public:
     }
   }
 
-  CPoint startPoint;         // 0x00 point DoMouseCommand latched
-  CPoint lastPoint;          // 0x08 previous currentPoint, shifted down on each update
-  CPoint currentPoint;       // 0x10 latest tracked point
-  TControl* capturedControl; // 0x18 the control owning the capture; null when inactive
+  CPoint startPoint;         // point DoMouseCommand latched
+  CPoint lastPoint;          // previous currentPoint, shifted down on each update
+  CPoint currentPoint;       // latest tracked point
+  TControl* capturedControl; // the control owning the capture; null when inactive
 
   void BeginTracking(CPoint* point, TControl* control);
   void NotifyTracking(unsigned int nFlags, int x, int y);

@@ -16,7 +16,7 @@ public:
   virtual void SetNumIcons(short numIcons, unsigned char refreshNow);
 
   void IIconBar(TView* panel, int* position, int* size, int layoutParam4, int layoutParam5,
-                short pictureId, int numIcons);
+                short pictureId, short numIcons);
 
   short iconAtlasFrame;
   short numIcons;

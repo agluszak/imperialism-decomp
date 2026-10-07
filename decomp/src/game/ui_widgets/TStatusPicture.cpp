@@ -188,7 +188,7 @@ void TStatusPicture::CalcCouncilGraph() {
         TPopulationMgr* stats = city->productionSummary;
         TLaborPool* units = stats->productionSlots;
         values[i] = static_cast<short>((units->highSkillCount * 2 + units->mediumSkillCount) * 2 +
-                                       stats->extraAt1e + units->lowSkillCount)
+                                       stats->powerPlantOutput + units->lowSkillCount)
                     << 2;
         break;
       }

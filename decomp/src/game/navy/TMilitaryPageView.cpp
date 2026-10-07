@@ -45,14 +45,13 @@ void TMilitaryPageView::AfterStuffValues() {
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x00564a60
-void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int height) {
+void TMilitaryPageView::PrepareUnitCache(unsigned short bitmapResourceId, int width, int height) {
   TMapDialog* mapDialog = g_pViewMgr->mapUberPicture->subview2A8;
   primaryUnitAtlas = mapDialog->quickDrawSurface;
   mapDialog->suppressMarkerOverlay = true;
   mapDialog->FlushCache();
 
-  TBitmapResourceLoader** loaderHandle =
-      CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(bitmapResourceId));
+  TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(bitmapResourceId);
   RECT destination = {0, 0, height, height};
 
   TQuickDrawSurfaceContext* savedContext;

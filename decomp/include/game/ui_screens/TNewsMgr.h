@@ -10,9 +10,9 @@ class TStream;
 
 struct newsEntry {
   int storyId;            // match key; 0 in a story slot means "slot empty"
-  int headlineTextOffset; // +0x04 \ byte range in news.tex
+  int headlineTextOffset; // \ byte range in news.tex
   int headlineTextLength;
-  int storyTextOffset; // +0x0c \ second byte range in news.tex
+  int storyTextOffset; // \ second byte range in news.tex
   int storyTextLength;
   int reserved14; // byteswapped with the rest; no observed reader
 };

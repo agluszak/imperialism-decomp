@@ -64,11 +64,11 @@ void ResolveUiThemeColor(short themeCode, COLORREF* outColor) {
 
 // FUNCTION: IMPERIALISM 0x005c3e80
 void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int fontSize,
-                                int themeCode) {
+                                short themeCode) {
   CString deadLocal;
   styleDescriptor->fontStyleFlags = 0;
   COLORREF textColor = 0;
-  ResolveUiThemeColor(static_cast<short>(themeCode), &textColor);
+  ResolveUiThemeColor(themeCode, &textColor);
   styleDescriptor->textColor = textColor;
   styleDescriptor->fontSize = static_cast<short>(fontSize);
   styleDescriptor->fontFamily = (fontSize >= 0xc) ? 1 : 3;
@@ -76,11 +76,11 @@ void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int font
 
 // FUNCTION: IMPERIALISM 0x005c3f50
 void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, short pointSize,
-                                     int themeCode, short font) {
+                                     short themeCode, short font) {
   CString deadLocal;
   COLORREF textColor = 0;
   styleDescriptor->fontStyleFlags = face;
-  ResolveUiThemeColor(static_cast<short>(themeCode), &textColor);
+  ResolveUiThemeColor(themeCode, &textColor);
   styleDescriptor->fontSize = pointSize;
   styleDescriptor->textColor = textColor;
   styleDescriptor->fontFamily = font;
@@ -88,7 +88,7 @@ void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, sho
 
 // FUNCTION: IMPERIALISM 0x005c4020
 TStaticText* ApplyControlTheme(TStaticText* control, int unused2, int pointSize, int themeCode,
-                               int themeCode2, const char* caption) {
+                               short themeCode2, const char* caption) {
   control->AssertValid();
   TextStyle styleDescriptor;
   styleDescriptor.fontFamily = 0;
@@ -97,7 +97,7 @@ TStaticText* ApplyControlTheme(TStaticText* control, int unused2, int pointSize,
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  control->SetJustification(static_cast<short>(themeCode2), false);
+  control->SetJustification(themeCode2, false);
   if (caption != 0) {
     CString captionString(caption);
     control->SetTextAndMaybeRefresh(&captionString, false);
@@ -107,7 +107,7 @@ TStaticText* ApplyControlTheme(TStaticText* control, int unused2, int pointSize,
 
 // FUNCTION: IMPERIALISM 0x005c4180
 TStaticText* ConfigureControlFromStrings(TStaticText* control, int unused2, int pointSize,
-                                         int themeCode, int themeCode2, int stringResourceGroup,
+                                         int themeCode, short themeCode2, int stringResourceGroup,
                                          short stringResourceIndex) {
   CString caption;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&caption, stringResourceGroup,
@@ -120,7 +120,7 @@ TStaticText* ConfigureControlFromStrings(TStaticText* control, int unused2, int 
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  control->SetJustification(static_cast<short>(themeCode2), false);
+  control->SetJustification(themeCode2, false);
   if (static_cast<LPCSTR>(caption) != 0) {
     control->SetTextAndMaybeRefresh(&caption, false);
   }
@@ -182,23 +182,23 @@ void SetTextStyleAndApply(short face, short pointSize, int themeCode, short font
 
 // FUNCTION: IMPERIALISM 0x005c4590
 void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused, int pointSize,
-                                           int shadowThemeCode, int textThemeCode) {
+                                           short shadowThemeCode, int textThemeCode) {
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  ResolveUiThemeColor(static_cast<short>(shadowThemeCode), &control->shadowColor);
+  ResolveUiThemeColor(shadowThemeCode, &control->shadowColor);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4620
 void __cdecl ApplyUiNumberTextStyleAndThemeColor(TDropShadowNumberText* control, int unused,
-                                                 int pointSize, int shadowThemeCode,
+                                                 int pointSize, short shadowThemeCode,
                                                  int textThemeCode) {
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  ResolveUiThemeColor(static_cast<short>(shadowThemeCode), &control->shadowColor);
+  ResolveUiThemeColor(shadowThemeCode, &control->shadowColor);
 }
 
 // FUNCTION: IMPERIALISM 0x005c46b0

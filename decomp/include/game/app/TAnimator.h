@@ -29,9 +29,9 @@ public:
   void UpdateAniLocs(int dx, int dy, RECT clipRect);
 
   TQuickDrawSurfaceContext* renderSurfaceContext;
-  TList* registryList; // +0x24 transient-animation registry
+  TList* registryList; // transient-animation registry
   int overlayPhaseTickCount;
-  TMapUberPicture* mapUberPicture; // +0x2c active strategic-map root
+  TMapUberPicture* mapUberPicture; // active strategic-map root
 
   TAnimator();
 };

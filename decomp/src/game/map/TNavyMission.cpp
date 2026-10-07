@@ -211,7 +211,7 @@ void TNavyMission::Reassess() {
   float numerator = 0.0f;
   float denominator = 0.0f;
 
-  SetStateByte8To2();
+  ResetPriority();
   CalculateImportance();
   CalculateNeeds();
 
@@ -429,7 +429,7 @@ void TNavyMission::GiveTravelOrders(TZone* location) {
 
 // FUNCTION: IMPERIALISM 0x00537270
 float TNavyMission::ValueOf(TShip* candidate) {
-  if (flag10 != 0) {
+  if (onHold != 0) {
     return 0.0f;
   }
   TShip* orderNode = candidate;
@@ -530,7 +530,7 @@ float TNavyMission::FitnessOf(TShip* candidate, float* targetProfile) {
   }
   short clampedBucket = distanceBucket > 5 ? 5 : distanceBucket;
   float bucketWeight =
-      g_ArmyMissionCandidateScoreTable[static_cast<char>(state08) * 6 + clampedBucket];
+      g_ArmyMissionCandidateScoreTable[static_cast<char>(priority) * 6 + clampedBucket];
   float scale = static_cast<float>(orderNode->strength / orderNode->GetMaxStrength());
   profile[0] = static_cast<float>(orderNode->GetCategoryPercent(0)) * scale + profile[0];
   profile[1] = static_cast<float>(orderNode->GetCategoryPercent(1)) * scale + profile[1];
@@ -776,12 +776,11 @@ float TNavyMission::GetWeightedSatifactionWithout(TShip* candidateOrder) {
 }
 
 // FUNCTION: IMPERIALISM 0x005389f0
-float TNavyMission::ScoreEnemyMatch(int sourceNation, TZone* nodeContext) {
+float TNavyMission::ScoreEnemyMatch(short sourceNation, TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
-        g_pDiplomacyTurnStateManager->AreAtWar(static_cast<short>(sourceNation),
-                                               orderNode->nation)) {
+        g_pDiplomacyTurnStateManager->AreAtWar(sourceNation, orderNode->nation)) {
       short normalizationBase = orderNode->GetMaxStrength();
       if (normalizationBase != 0) {
         float scale =
@@ -822,11 +821,10 @@ float TNavyMission::ScoreEnemyMatch(int sourceNation, TZone* nodeContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x00538bf0
-float TNavyMission::ScoreNationMatch(int sourceNation, TZone* nodeContext) {
+float TNavyMission::ScoreNationMatch(short sourceNation, TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
-    if (orderNode->location == nodeContext &&
-        static_cast<short>(sourceNation) == orderNode->nation) {
+    if (orderNode->location == nodeContext && sourceNation == orderNode->nation) {
       short normalizationBase = orderNode->GetMaxStrength();
       if (normalizationBase != 0) {
         float scale =

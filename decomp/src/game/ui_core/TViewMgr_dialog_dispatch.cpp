@@ -183,14 +183,14 @@ void TViewMgr::MakeCombatReport(TCombatReportContext* reportContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dd0a0
-int TViewMgr::MakeEngineeringDialog(int dialogValue) {
+int TViewMgr::MakeEngineeringDialog(short dialogValue) {
   TWindow* node = g_pAssetMgr->GetDialog(kTurnEventEngineerBuildMenu);
   if (node == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x100);
   }
   TEngineerDialog* engineerDialog =
       static_cast<TEngineerDialog*>(node->FindSubView(kControlTagDialog));
-  engineerDialog->StuffValues(static_cast<short>(dialogValue));
+  engineerDialog->StuffValues(dialogValue);
   CPoint placement;
   GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
@@ -217,7 +217,7 @@ void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused)
 }
 
 // FUNCTION: IMPERIALISM 0x005dd220
-void TViewMgr::ShowTownNameDialog(int stringCode) {
+void TViewMgr::ShowTownNameDialog(short stringCode) {
   TWindow* node = g_pAssetMgr->GetDialog(kTurnEventTownNamesStringList);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x14a);
@@ -232,7 +232,7 @@ void TViewMgr::ShowTownNameDialog(int stringCode) {
   if (nameText == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x156);
   }
-  nameText->LoadTextResource(static_cast<short>(stringCode));
+  nameText->LoadTextResource(stringCode);
   node->Close();
   node->Free();
 }
@@ -341,7 +341,7 @@ void TViewMgr::ShowUnreachableCityDialog(void* selection) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dd900
-void TViewMgr::MakeGarrisonWindow(int tileIndex) {
+void TViewMgr::MakeGarrisonWindow(short tileIndex) {
   TWindow* node = g_pAssetMgr->GetDialog(kTurnEventGarrison);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1e2);
@@ -350,7 +350,7 @@ void TViewMgr::MakeGarrisonWindow(int tileIndex) {
   if (page == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1e3);
   }
-  static_cast<TGarrisonView*>(page)->StuffValues(static_cast<short>(tileIndex));
+  static_cast<TGarrisonView*>(page)->StuffValues(tileIndex);
 
   CPoint placement;
   GetTopLeftFor(node, &placement);
@@ -362,7 +362,7 @@ void TViewMgr::MakeGarrisonWindow(int tileIndex) {
 
   TMapUberPicture* mapView = mapUberPicture;
   static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex])
-      ->SetProvince(static_cast<short>(tileIndex));
+      ->SetProvince(tileIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005dda30

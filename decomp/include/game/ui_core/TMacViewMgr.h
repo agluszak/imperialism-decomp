@@ -35,7 +35,7 @@ public:
   virtual void LoadStrategicMapUnitOverlayAtlas751();
   virtual void CreateMiniFlagsGWorld();
   virtual void LoadStrategicMapMarkerAtlas1372();
-  virtual void GetTradeCluster(TTradeCluster* orderSource, int orderSlot, short nationSlot);
+  virtual void GetTradeCluster(TTradeCluster* orderSource, short orderSlot, short nationSlot);
   virtual void ShowTradeCluster(TView* view, short orderSlot, short nationIndex);
   virtual void ShowTransportEntry(short resourceSlot, short nationIndex, TView* hostView);
   virtual TView* MakeBookDialog(int dialogId);

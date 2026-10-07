@@ -45,7 +45,7 @@ void TMapEditView::DoPostCreate(int arg) {
 
   TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
   mapOwner->SetMapInteractionMode(5);
-  g_pGlobalMapState->field24 = true;
+  g_pGlobalMapState->revealAllTiles = true;
   g_pViewMgr->GenerateMiniMap();
   mapOwner->DisplayMiniMap();
 
@@ -120,9 +120,8 @@ void TMapEditView::ControlClick(int tileIndex, int dispatchContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051d060
-void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
-  short provinceId =
-      g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].cityRecordIndex;
+void TMapEditView::ShiftClick(short tileIndex, int dispatchContext) {
+  short provinceId = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   TNumberText* provinceNumber =
       static_cast<TNumberText*>(ownerContext->FindSubView(kControlTagPrnu));
   provinceNumber->AssertValid();

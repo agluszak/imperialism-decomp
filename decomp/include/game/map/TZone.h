@@ -75,23 +75,23 @@ public:
   short statusCode;
   char pad06[2];
   CString displayName;
-  int tileOrTerrainId;          // +0x0c tile / terrain id storage
-  unsigned short nationKeyMask; // +0x10 (key mask in nation context slices)
-  short seedNationId;           // +0x12 seed nation id arg
-  short contextOrdinal;         // +0x14 context ordinal
+  int tileOrTerrainId;          // tile / terrain id storage
+  unsigned short nationKeyMask; // (key mask in nation context slices)
+  short seedNationId;           // seed nation id arg
+  short contextOrdinal;         // context ordinal
   char pad16[2];
-  TZone* prev18;         // +0x18 older in g_pMapActionContextListHead chain
-  TZone* next1c;         // +0x1c newer link
-  short activeTileIndex; // +0x20 active tile index
+  TZone* prev18;         // older in g_pMapActionContextListHead chain
+  TZone* next1c;         // newer link
+  short activeTileIndex; // active tile index
   char pad22[2];
   TZonePrimaryNeighborStretch primaryNeighbors;
   TZoneSecondaryNeighborStretch secondaryNeighbors;
   short distanceLevel;
 
   TZone();
-  void SetIngotTile(int nationSeedId, int tileIndex);
+  void SetIngotTile(short nationSeedId, int tileIndex);
 
-  static int ScoreCoastalTile(int tileIndex, TZone* contextZone, Province* contextProvince);
+  static int ScoreCoastalTile(short tileIndex, TZone* contextZone, Province* contextProvince);
 
   void OccupyBy(int nation);
 

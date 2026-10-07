@@ -242,9 +242,9 @@ void ProjectMapCoordinatesToScaledViewport(short row, short column, short* outRo
 // FUNCTION: IMPERIALISM 0x005126d0
 void ProjectTileIndexToScaledViewport(short tileIndex, short* outRow, short* outColumn,
                                       const CPoint* viewportOrigin) {
-  unsigned int row = tileIndex / kStrategicMapColumns;
+  short row = tileIndex / kStrategicMapColumns;
   *outColumn = static_cast<short>(tileIndex % kStrategicMapColumns);
-  *outRow = static_cast<short>(row);
+  *outRow = row;
   if (*outColumn >= kStrategicMapColumns) {
     *outColumn = static_cast<short>(*outColumn - kStrategicMapColumns);
   } else if (*outColumn < 0) {
@@ -548,12 +548,12 @@ void TMapDialog::FrameNeighbors(short* neighborTiles) {
 
 // FUNCTION: IMPERIALISM 0x0051a900
 void TMapDialog::InvalidateTile(short tileIndex) {
-  int originalTileIndex = tileIndex;
+  short originalTileIndex = tileIndex;
   short projectedY;
-  ProjectTile(static_cast<short>(originalTileIndex), &viewportOrigin, &projectedY, &tileIndex, 1);
+  ProjectTile(originalTileIndex, &viewportOrigin, &projectedY, &tileIndex, 1);
 
   CRect invalidateRect(tileIndex, projectedY, tileIndex + 0x40, projectedY + 0x40);
-  DeCache(static_cast<short>(originalTileIndex));
+  DeCache(originalTileIndex);
   InvalidateCityDialogRectRegion(&invalidateRect, 1);
 }
 
@@ -1278,7 +1278,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       } else {
         const int activeNation = g_pSimMgr->GetPlayerCountry();
         bool tileVisible = (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0;
-        if (!tileVisible && g_pGlobalMapState->field24) {
+        if (!tileVisible && g_pGlobalMapState->revealAllTiles) {
           tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
                         terrain.GetTerrainKind() == kStrategicTerrainMountain ||
                         terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
@@ -1301,7 +1301,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       }
       const int activeNation = g_pSimMgr->GetPlayerCountry();
       bool tileVisible = (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0;
-      if (!tileVisible && g_pGlobalMapState->field24) {
+      if (!tileVisible && g_pGlobalMapState->revealAllTiles) {
         tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
                       terrain.GetTerrainKind() == kStrategicTerrainMountain ||
                       terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
@@ -1338,7 +1338,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       } else {
         const int activeNation = g_pSimMgr->GetPlayerCountry();
         bool tileVisible = (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0;
-        if (!tileVisible && g_pGlobalMapState->field24) {
+        if (!tileVisible && g_pGlobalMapState->revealAllTiles) {
           tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
                         terrain.GetTerrainKind() == kStrategicTerrainMountain ||
                         terrain.GetTerrainKind() == kStrategicTerrainSwamp ||

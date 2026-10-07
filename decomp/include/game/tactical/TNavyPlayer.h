@@ -18,9 +18,9 @@ public:
   virtual void RemoveCapturedUnit(TTacticalUnit* unit) override;
   virtual void AddCapturedUnit(TTacticalUnit* unit) override;
   // Navy slice (base TTacticalPlayer ends at +0x28).
-  class TTaskForce* taskForce; // +0x28 the side's fleet order node
+  class TTaskForce* taskForce; // the side's fleet order node
                                // eliminated and prunes its order head after commit)
-  NavyTargeting targetingMode; // +0x2c targeting mode set by the navy toolbar
+  NavyTargeting targetingMode; // targeting mode set by the navy toolbar
 
   void INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag, int nationIndex);
 

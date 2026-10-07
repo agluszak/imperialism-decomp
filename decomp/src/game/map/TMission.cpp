@@ -33,8 +33,8 @@ int TMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack) con
 void TMission::Initialize() {}
 
 // FUNCTION: IMPERIALISM 0x00534c60
-void TMission::SetStateByte8To2() {
-  state08 = 2;
+void TMission::ResetPriority() {
+  priority = 2;
 }
 
 // FUNCTION: IMPERIALISM 0x00534c80
@@ -47,7 +47,7 @@ void TMission::CalculateNeeds() {}
 
 // FUNCTION: IMPERIALISM 0x00534cc0
 void TMission::Reassess() {
-  SetStateByte8To2();
+  ResetPriority();
   CalculateImportance();
   CalculateNeeds();
 }
@@ -142,7 +142,7 @@ void TMission::ForgetTaskForce(TTaskForce* taskForce) {}
 
 // FUNCTION: IMPERIALISM 0x00534f70
 void TMission::Hold(bool value) {
-  flag10 = value;
+  onHold = value;
 }
 
 // FUNCTION: IMPERIALISM 0x00534f90
@@ -151,7 +151,7 @@ bool TMission::SmokeEmIfYouGotEm() {
 }
 
 // FUNCTION: IMPERIALISM 0x00535020
-TMission::TMission() : state08(2), importanceScore(0.0f), marker11(0xff) {}
+TMission::TMission() : priority(2), importanceScore(0.0f), requiredForces(0xff) {}
 
 // FUNCTION: IMPERIALISM 0x005350a0
 void TMission::IMission(NationSlot nationSlot) {
@@ -209,20 +209,20 @@ TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionK
 void TMission::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytes(&nationId, 2);
-  stream->WriteBytes(&state08, 1);
+  stream->WriteBytes(&priority, 1);
   stream->WriteBytes(&importanceScore, 4);
-  stream->WriteBytes(&flag10, 1);
+  stream->WriteBytes(&onHold, 1);
   stream->WriteBytes(&pathMarker, 2);
-  stream->WriteBytes(&marker11, 1);
+  stream->WriteBytes(&requiredForces, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005358a0
 void TMission::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&nationId, 2);
-  stream->ReadBytes(&state08, 1);
+  stream->ReadBytes(&priority, 1);
   stream->ReadBytes(&importanceScore, 4);
-  stream->ReadBytes(&flag10, 1);
+  stream->ReadBytes(&onHold, 1);
   if (g_nSaveFormatVersion < 0x10) {
     pathMarker = -1;
   } else {
@@ -232,7 +232,7 @@ void TMission::ReadFrom(TStream* stream) {
     Initialize();
     return;
   }
-  stream->ReadBytes(&marker11, 1);
+  stream->ReadBytes(&requiredForces, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00535940
@@ -258,10 +258,10 @@ short __cdecl CompareByMovementThenEfficiency(void* a, void* b, void* reverseOrd
 
   short greaterResult = (reverseOrder != NULL) ? 1 : -1;
   short lesserResult = (reverseOrder != NULL) ? -1 : 1;
-  if (static_cast<char>(missionB->state08) < static_cast<char>(missionA->state08)) {
+  if (static_cast<char>(missionB->priority) < static_cast<char>(missionA->priority)) {
     return greaterResult;
   }
-  if (static_cast<char>(missionA->state08) < static_cast<char>(missionB->state08)) {
+  if (static_cast<char>(missionA->priority) < static_cast<char>(missionB->priority)) {
     return lesserResult;
   }
 

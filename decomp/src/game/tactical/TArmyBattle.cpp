@@ -220,7 +220,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
 void TArmyBattle::LoadMap(int compositionClass, int fortLevel) {
   CString tabFileName;
   char nameBuf[64];
-  int byteCount = tacticalTileCount + 0xf; // 0x1b3 tiles + 15 row-terminator bytes
+  int byteCount = tacticalTileCount + 0xf; // tiles + 15 row-terminator bytes
   sprintf(nameBuf, g_szBattleSetupTabPathFormat, compositionClass + 1);
   tabFileName = CString(nameBuf);
 

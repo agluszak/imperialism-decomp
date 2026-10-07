@@ -116,17 +116,17 @@ bool TInvadeMission::SmokeEmIfYouGotEm() {
 // FUNCTION: IMPERIALISM 0x0053f580
 void TInvadeMission::Initialize() {
   beachhead->IMission(nationId);
-  marker11 = 1;
+  requiredForces = 1;
   if (targetProvince != -1) {
     pathMarker =
         static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode);
   }
-  marker11 = 3;
+  requiredForces = 3;
 }
 
 // FUNCTION: IMPERIALISM 0x0053f5f0
-void TInvadeMission::SetStateByte8To2() {
-  state08 = 2;
+void TInvadeMission::ResetPriority() {
+  priority = 2;
 }
 
 // FUNCTION: IMPERIALISM 0x0053f610
@@ -173,7 +173,7 @@ void TInvadeMission::GiveOrders() {
 // FUNCTION: IMPERIALISM 0x0053f7d0
 void TInvadeMission::Reassess() {
   beachhead->Reassess();
-  SetStateByte8To2();
+  ResetPriority();
   CalculateImportance();
   CalculateNeeds();
 }
@@ -238,7 +238,7 @@ bool TInvadeMission::IsArmyMission() const {
 // FUNCTION: IMPERIALISM 0x0053fac0
 float TInvadeMission::ValueOf(TMilitaryUnit* candidateUnit) {
   float delta;
-  if (flag10 != 0) {
+  if (onHold != 0) {
     delta = 0.0f;
   } else if (candidateUnit->ownerMission == this) {
     delta = GetWeightedSatisfaction() - GetWeightedSatifactionWithout(candidateUnit);
@@ -254,7 +254,7 @@ float TInvadeMission::ValueOf(TMilitaryUnit* candidateUnit) {
 
 // FUNCTION: IMPERIALISM 0x0053fb60
 float TInvadeMission::ValueOf(TShip* candidate) {
-  if (flag10 != 0) {
+  if (onHold != 0) {
     return 0.0f;
   }
   return beachhead->ValueOf(candidate);
@@ -262,7 +262,7 @@ float TInvadeMission::ValueOf(TShip* candidate) {
 
 // FUNCTION: IMPERIALISM 0x0053fb90
 void TInvadeMission::Hold(bool value) {
-  flag10 = value;
+  onHold = value;
   if (beachhead != NULL) {
     beachhead->Hold(value);
   }

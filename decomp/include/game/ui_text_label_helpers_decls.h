@@ -13,15 +13,15 @@ struct TextStyle;
 
 void ResolveUiThemeColor(short themeCode, COLORREF* outColor);
 void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int fontSize,
-                                int themeCode);
+                                short themeCode);
 void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, short pointSize,
-                                     int themeCode, short font);
+                                     short themeCode, short font);
 
 TStaticText* ApplyControlTheme(TStaticText* control, int unused2, int pointSize, int themeCode,
-                               int themeCode2, const char* caption);
+                               short themeCode2, const char* caption);
 
 TStaticText* ConfigureControlFromStrings(TStaticText* control, int unused2, int pointSize,
-                                         int themeCode, int themeCode2, int stringResourceGroup,
+                                         int themeCode, short themeCode2, int stringResourceGroup,
                                          short stringResourceIndex);
 
 void ApplyTextStyle(int unused, int styleWidth, int themeCode);
@@ -38,10 +38,10 @@ TStaticText* __cdecl RefreshAndTheme(unsigned int controlTag, int unused2, int p
                                      int themeCode, int themeCode2, const char* caption);
 
 void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused, int pointSize,
-                                           int shadowThemeCode, int textThemeCode);
+                                           short shadowThemeCode, int textThemeCode);
 
 void __cdecl ApplyUiNumberTextStyleAndThemeColor(TDropShadowNumberText* control, int unused,
-                                                 int pointSize, int shadowThemeCode,
+                                                 int pointSize, short shadowThemeCode,
                                                  int textThemeCode);
 
 void SetTaggedStringAndApply(short group, short index, unsigned int controlTag);

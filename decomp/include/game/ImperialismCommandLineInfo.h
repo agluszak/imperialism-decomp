@@ -18,10 +18,10 @@ public:
 
   CString* m_pLanguageName;     // points at the caller's language CString
   unsigned char field_28;       // set to 0x20 at construction; no reader found yet
-  int m_bQuitAfterLanguageScan; // 0x2c — "L!"
-  int m_bShowSetupDialog;       // 0x30 — "L" or "L!"
-  int m_bClearRegistrySettings; // 0x34 — "C"
+  int m_bQuitAfterLanguageScan; // "L!"
+  int m_bShowSetupDialog;       // "L" or "L!"
+  int m_bClearRegistrySettings; // "C"
   CString m_strMainWindowTitle; // "T<text>"
-  int m_bForceAutoResOn;        // 0x3c — "R"
-  int m_bForceAutoResOff;       // 0x40 — "S"
+  int m_bForceAutoResOn;        // "R"
+  int m_bForceAutoResOff;       // "S"
 };

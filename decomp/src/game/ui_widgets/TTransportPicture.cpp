@@ -20,7 +20,7 @@ IMPLEMENT_DYNCREATE(TTransportPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00591e70
 TTransportPicture::TTransportPicture()
-    : gaugeMetricId(0x3a), splitValue94(0), splitValue96(0), splitLimit(-1) {}
+    : gaugeMetricId(0x3a), targetAmount(0), capacity(0), splitLimit(-1) {}
 
 // FUNCTION: IMPERIALISM 0x00591ef0
 TTransportPicture::~TTransportPicture() {}
@@ -51,11 +51,11 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     if (commandId == 100) {
       if (targetAmount < currentAmount &&
           nation->transportCapacity != nation->reservedTransportCapacity) {
-        splitValue94 = static_cast<short>(targetAmount + 1);
+        targetAmount = static_cast<short>(targetAmount + 1);
         changed = true;
       }
     } else if (targetAmount > 0) {
-      splitValue94 = static_cast<short>(targetAmount - 1);
+      targetAmount = static_cast<short>(targetAmount - 1);
       changed = true;
     }
     if (changed) {
@@ -76,26 +76,26 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         }
 
         short primaryCurrentAmount = nation->needCurrentByType[primaryNeedIndex];
-        if (primaryCurrentAmount < splitValue94) {
+        if (primaryCurrentAmount < targetAmount) {
           nation->UpdateNeedTargetAndAccumulateOverCap(primaryNeedIndex, primaryCurrentAmount);
           nation->UpdateNeedTargetAndAccumulateOverCap(
-              secondaryNeedIndex, static_cast<short>(splitValue94 - primaryCurrentAmount));
+              secondaryNeedIndex, static_cast<short>(targetAmount - primaryCurrentAmount));
         } else {
-          nation->UpdateNeedTargetAndAccumulateOverCap(primaryNeedIndex, splitValue94);
+          nation->UpdateNeedTargetAndAccumulateOverCap(primaryNeedIndex, targetAmount);
           nation->UpdateNeedTargetAndAccumulateOverCap(secondaryNeedIndex, 0);
         }
       } else if (selectedMetricSlot == 0x13) {
         short primaryCurrentAmount = nation->needCurrentByType[kResourceFish];
-        if (primaryCurrentAmount < splitValue94) {
+        if (primaryCurrentAmount < targetAmount) {
           nation->UpdateNeedTargetAndAccumulateOverCap(0x13, primaryCurrentAmount);
           nation->UpdateNeedTargetAndAccumulateOverCap(
-              0x14, static_cast<short>(splitValue94 - primaryCurrentAmount));
+              0x14, static_cast<short>(targetAmount - primaryCurrentAmount));
         } else {
-          nation->UpdateNeedTargetAndAccumulateOverCap(0x13, splitValue94);
+          nation->UpdateNeedTargetAndAccumulateOverCap(0x13, targetAmount);
           nation->UpdateNeedTargetAndAccumulateOverCap(0x14, 0);
         }
       } else {
-        nation->UpdateNeedTargetAndAccumulateOverCap(selectedMetricSlot, splitValue94);
+        nation->UpdateNeedTargetAndAccumulateOverCap(selectedMetricSlot, targetAmount);
       }
 
       RefreshControl();
@@ -116,14 +116,14 @@ void TTransportPicture::Refresh() {
     trackLeft = 0x5d;
   }
 
-  float pixelsPerUnit = 113.0f / static_cast<float>(splitValue96);
-  float remainder = 113.0f - pixelsPerUnit * static_cast<float>(splitValue96);
+  float pixelsPerUnit = 113.0f / static_cast<float>(capacity);
+  float remainder = 113.0f - pixelsPerUnit * static_cast<float>(capacity);
   float markerOffset;
-  if (remainder < static_cast<float>(splitValue94)) {
+  if (remainder < static_cast<float>(targetAmount)) {
     markerOffset = remainder * (pixelsPerUnit + 1.0f) +
-                   (static_cast<float>(splitValue94) - remainder) * pixelsPerUnit;
+                   (static_cast<float>(targetAmount) - remainder) * pixelsPerUnit;
   } else {
-    markerOffset = static_cast<float>(splitValue94) * (pixelsPerUnit + 1.0f);
+    markerOffset = static_cast<float>(targetAmount) * (pixelsPerUnit + 1.0f);
   }
 
   GetClip(savedClip.tempRgn);
@@ -145,7 +145,7 @@ void TTransportPicture::Refresh() {
   fillRect.bottom = 0x11;
   if (controlTag == static_cast<int>(kControlTagTota)) {
     // The capacity total goes red once allocation reaches the cap.
-    g_pViewMgr->SetForeColor(splitValue96 == splitValue94 ? 0x34 : 0x33);
+    g_pViewMgr->SetForeColor(capacity == targetAmount ? 0x34 : 0x33);
   } else {
     g_pViewMgr->SetForeColor(gaugeMetricId);
   }
@@ -160,7 +160,7 @@ void TTransportPicture::Refresh() {
     limitRect.top = 0x12;
     limitRect.right = trackLeft + 0x72;
     limitRect.bottom = 0x14;
-    g_pViewMgr->SetForeColor(splitValue94 < splitLimit ? 0x33 : 0x34);
+    g_pViewMgr->SetForeColor(targetAmount < splitLimit ? 0x33 : 0x34);
     ClipRect(&limitRect);
     FillContextRect(&limitRect);
     SetClip(savedClip.tempRgn);
@@ -171,8 +171,8 @@ void TTransportPicture::Refresh() {
   if (text == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a59);
   }
-  currentText.Format(g_szDecimalFormat, static_cast<int>(splitValue94));
-  totalText.Format(g_szDecimalFormat, static_cast<int>(splitValue96));
+  currentText.Format(g_szDecimalFormat, static_cast<int>(targetAmount));
+  totalText.Format(g_szDecimalFormat, static_cast<int>(capacity));
   gaugeText = currentText + s_szGaugeCountSeparator + totalText;
   text->SetTextAndMaybeRefresh(&gaugeText, true);
 
@@ -182,14 +182,14 @@ void TTransportPicture::Refresh() {
     if (value == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a63);
     }
-    g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 200, &gaugeText);
+    g_pSimMgr->NumToCurrency(static_cast<int>(targetAmount) * 200, &gaugeText);
     value->SetTextAndMaybeRefresh(&gaugeText, true);
   } else if (resourceMetricSlot == 0x15) {
     TStaticText* value = static_cast<TStaticText*>(FindSubView(kControlTagValu));
     if (value == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a6a);
     }
-    g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 500, &gaugeText);
+    g_pSimMgr->NumToCurrency(static_cast<int>(targetAmount) * 500, &gaugeText);
     value->SetTextAndMaybeRefresh(&gaugeText, true);
   }
 
@@ -200,7 +200,7 @@ void TTransportPicture::Refresh() {
     if (totalPicture == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a77);
     }
-    totalPicture->splitValue94 =
+    totalPicture->targetAmount =
         static_cast<short>(nation->reservedTransportCapacity - nation->transportCapacity +
                            (nation != 0 ? nation->transportCapacity : 0));
     totalPicture->RefreshControl();

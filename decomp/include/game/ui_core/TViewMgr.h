@@ -52,7 +52,7 @@ public:
   virtual void ShowDealBookScreen(short nationSlot);
 
   // UI runtime helper functions
-  virtual void AddPendingTurnOverlayCode(int modeValue);
+  virtual void AddPendingTurnOverlayCode(short modeValue);
   virtual void ShowDiplomacyScreen(short nationSlot);
   virtual void MakeRelationshipDialog(int dialogContext);
   virtual void MakeMinorsTradeBidsDialog(int dialogContext);
@@ -84,12 +84,12 @@ public:
   virtual void ShowCitySiteMap(int nationSlot);
   virtual void NoOpTurnEventStateVtableSlotD4(int arg);
   virtual void MakeCombatReport(TCombatReportContext* reportContext);
-  virtual int MakeEngineeringDialog(int dialogValue = 0);
+  virtual int MakeEngineeringDialog(short dialogValue = 0);
   virtual void HandleGlobalMapNationContextSelection(int nationSlot, int unused = 0);
   // Modal town-name notice; stringCode indexes the town-names string list.
-  virtual void ShowTownNameDialog(int stringCode);
+  virtual void ShowTownNameDialog(short stringCode);
   virtual void ShowUnreachableCityDialog(void* selection);
-  virtual void MakeGarrisonWindow(int tileIndex);
+  virtual void MakeGarrisonWindow(short tileIndex);
   virtual TNavyRoster* MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry);
   virtual void StartPhaseMovie();
   virtual void SetUpMainMenuScreen();
@@ -134,9 +134,9 @@ public:
 
   void RefreshTechnologyStorePageAndHudText(int nationSlot);
 
-  TurnEventCodeStorage currentTurnEventCode; // +0x04 (turn-event dispatch code)
+  TurnEventCodeStorage currentTurnEventCode; // (turn-event dispatch code)
   short currentTurnEventNationSlot;
-  POINT dialogPlacement; // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
+  POINT dialogPlacement; // (seeded from g_ptCitySiteSelectionDialogPlacement)
   bool waitOverlayPending;
   unsigned char pad11[3];
   HCURSOR turnEventCursors[54];

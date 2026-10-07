@@ -803,8 +803,8 @@ void TTradeMgr::TallyTradeBids() {
           if (metric == 1) {
             factor = 1.0;
           } else {
-            int exponent = (metric < 0x19) ? (metric - 1) : 0x17;
-            factor = Power(base, static_cast<short>(exponent));
+            short exponent = (metric < 0x19) ? (metric - 1) : 0x17;
+            factor = Power(base, exponent);
             if (2.0 < factor) {
               factor = 2.0;
             }
@@ -870,8 +870,8 @@ void TTradeMgr::TallyMinorsTradeBids() {
         } else if (sv == 1) {
           factor = 1.0;
         } else {
-          int exponent = (sv < 0x19) ? (value - 1) : 0x17;
-          factor = Power(base, static_cast<short>(exponent));
+          short exponent = (sv < 0x19) ? (value - 1) : 0x17;
+          factor = Power(base, exponent);
         }
         row->adjustedNumOffers = factor + row->adjustedNumOffers;
       }

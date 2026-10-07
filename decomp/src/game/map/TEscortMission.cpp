@@ -38,7 +38,7 @@ TEscortMission::TEscortMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
 // FUNCTION: IMPERIALISM 0x00539a70
 void TEscortMission::Initialize() {
-  marker11 = 0;
+  requiredForces = 0;
   resolvedPortZone = missionTargetZone;
 }
 

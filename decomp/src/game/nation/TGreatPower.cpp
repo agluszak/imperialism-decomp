@@ -728,9 +728,9 @@ void TGreatPower::UpdateNeedTargetAndAccumulateOverCap(short needIndex, short va
 }
 
 // FUNCTION: IMPERIALISM 0x004dce10
-void TGreatPower::SetNationResourceNeedCurrentByType(int needType, int currentValue) {
+void TGreatPower::SetNationResourceNeedCurrentByType(int needType, short currentValue) {
   short needIndex = needType;
-  needCurrentByType[needIndex] = static_cast<short>(currentValue);
+  needCurrentByType[needIndex] = currentValue;
 }
 
 // FUNCTION: IMPERIALISM 0x004dce40
@@ -810,15 +810,14 @@ void TGreatPower::SetTradePolicyTo(NationSlot targetNationSlot, short tradePolic
 // FUNCTION: IMPERIALISM 0x004dd0c0
 void TGreatPower::TellColoniesToBoycott(int targetNationSlot, int isBoycottEnabled) {
   unsigned char boycottFlag = isBoycottEnabled;
-  int policyValue = boycottFlag ? kTradePolicyBoycott : kTradePolicyNormal;
+  short policyValue = boycottFlag ? kTradePolicyBoycott : kTradePolicyNormal;
   colonyBoycottFlags[targetNationSlot] = boycottFlag;
 
   for (int secondarySlot = kMajorNationCount; secondarySlot < kNationSlotCount; ++secondarySlot) {
     TMinor* secondaryState = g_apSecondaryNationStateSlots[secondarySlot];
     bool hasNationFlag = secondaryState->IsColonyOf(nationSlot);
     if (hasNationFlag != 0) {
-      secondaryState->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot),
-                                       static_cast<short>(policyValue));
+      secondaryState->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), policyValue);
     }
   }
 }
@@ -1107,9 +1106,8 @@ void TGreatPower::DeliverItem(short amount) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dda40
-void TGreatPower::ConsumeMerchantCapacityForPurchase(int delta) {
-  availableMerchantCapacity =
-      static_cast<short>(availableMerchantCapacity - static_cast<short>(delta));
+void TGreatPower::ConsumeMerchantCapacityForPurchase(short delta) {
+  availableMerchantCapacity = static_cast<short>(availableMerchantCapacity - delta);
 }
 
 // FUNCTION: IMPERIALISM 0x004dda60
@@ -2396,7 +2394,7 @@ short TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6() {
     TLaborPool* bucket = summary->productionSlots;
     short folded = bucket->highSkillCount * 2 + bucket->mediumSkillCount;
     folded *= 2 + bucket->lowSkillCount;
-    return folded + summary->extraAt1e;
+    return folded + summary->powerPlantOutput;
   }
   return 0;
 }

@@ -57,7 +57,7 @@ void TBlockadePortMission::Initialize() {
     }
   }
 
-  marker11 = 0;
+  requiredForces = 0;
   importanceScore = score / g_fMissionScoreNormalizationDivisor;
 }
 
@@ -83,8 +83,8 @@ TMission* TBlockadePortMission::GetReplacement() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053ae90
-void TBlockadePortMission::SetStateByte8To2() {
-  state08 = 3;
+void TBlockadePortMission::ResetPriority() {
+  priority = 3;
 }
 
 // FUNCTION: IMPERIALISM 0x0053aeb0

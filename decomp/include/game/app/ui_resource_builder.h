@@ -32,7 +32,7 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* 
 // Set the current context edit control's max-character-count word (+0x9c).
 void __cdecl SetUiResourceContextMaxCharCount(short maxChars);
 
-void __cdecl SetUiResourceContextPictureId(int nPictureId);
+void __cdecl SetUiResourceContextPictureId(short nPictureId);
 
 // Store a FourCC group/mode code as the current context cluster's selected child tag.
 void __cdecl SetUiResourceContextStringCode(int nCode);

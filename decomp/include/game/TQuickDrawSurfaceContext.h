@@ -44,7 +44,7 @@ struct TBitmapSurfaceNode {
   short pad06;
   CRect bounds;
   short bitDepth;
-  short pad1a; // +0x1a alignment filler before `dib`
+  short pad1a; // alignment filler before `dib`
   CDib* dib;
   TBitmapSurfaceNode();
   TBitmapSurfaceNode(int width, int height, int bitDepth);

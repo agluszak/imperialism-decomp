@@ -17,8 +17,8 @@ TCivUnit::TCivUnit() {
 }
 
 // FUNCTION: IMPERIALISM 0x005c2940
-void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOwnerNationId) {
-  IUnit(EncodeCivilianUnitKind(unitKind), anchorIndex, static_cast<short>(nOrderOwnerNationId), 0);
+void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, short nOrderOwnerNationId) {
+  IUnit(EncodeCivilianUnitKind(unitKind), anchorIndex, nOrderOwnerNationId, 0);
   remainingTurns = 0;
   completionMarker = -1;
 }
@@ -39,10 +39,10 @@ void TCivUnit::TickCivWorkOrderCountdownAndComplete() {
 }
 
 // FUNCTION: IMPERIALISM 0x005c29f0
-void TCivUnit::SetOrders(UnitOrder order, int payload) {
+void TCivUnit::SetOrders(UnitOrder order, short payload) {
   const short kRemainingTurnsByMode[14] = {0, 0, 0, 0, 0, 1, 3, 3, 1, 0, 3, 3, 4, 1};
   unitOrder = order;
-  orderTargetIndex = static_cast<short>(payload);
+  orderTargetIndex = payload;
   remainingTurns = kRemainingTurnsByMode[order];
 }
 

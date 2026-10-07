@@ -977,13 +977,13 @@ void TArmyMgr::OrderSelectedArmies(int mode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a42e0
-void TArmyMgr::DoTacticalCombat(TArmyStack* ourStack, TArmyStack* enemyStack, int battleContext) {
+void TArmyMgr::DoTacticalCombat(TArmyStack* ourStack, TArmyStack* enemyStack, short battleContext) {
   for (int unitType = 0; unitType < 30; ++unitType) {
     tacticalCombatUnitCountByType[1][unitType] = 0;
     tacticalCombatUnitCountByType[0][unitType] = 0;
   }
 
-  tacticalCombatContext = static_cast<short>(battleContext);
+  tacticalCombatContext = battleContext;
   tacticalCombatNationCode[0] = ourStack->categoryFlag;
   tacticalCombatNationCode[1] = enemyStack->categoryFlag;
 
@@ -1074,8 +1074,8 @@ void TArmyMgr::SetSelectedProvince(short cityRecordIndex) {
       unit = NULL;
     }
     for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
-      int orderState = unit->unitOrder;
-      if ((static_cast<short>(orderState) == 4 || static_cast<short>(orderState) == 3) &&
+      short orderState = unit->unitOrder;
+      if ((orderState == 4 || orderState == 3) &&
           g_awTacticalUnitCategoryCodeBySlot[unit->orderType] != 0) {
         unit->SetOrders(kUnitOrderIdle, -1);
       }

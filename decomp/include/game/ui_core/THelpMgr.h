@@ -59,7 +59,7 @@ public:
   void ShowLatestHelp();
   void ShowPendingHelpFrom(int idx);
   void SelectAndActivatePendingEventType1A0A();
-  void OpenTerrainHelpWindow(int mapContextIndex);
+  void OpenTerrainHelpWindow(short mapContextIndex);
 
   TPtrList* indexList;
   TWindow* pendingDialogView8;

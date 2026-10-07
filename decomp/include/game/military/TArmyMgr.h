@@ -106,7 +106,7 @@ public:
 
   void WakeAll(int nationId);
 
-  void DoTacticalCombat(TArmyStack* ourStack, TArmyStack* enemyStack, int battleContext);
+  void DoTacticalCombat(TArmyStack* ourStack, TArmyStack* enemyStack, short battleContext);
 
   void EndBattlePhase();
 

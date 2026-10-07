@@ -84,7 +84,7 @@ public:
 
   void SetDisplayName(const CString& name);
 
-  void SetCenterTile(int value);
+  void SetCenterTile(short value);
 
   bool IsProtectorate();
 

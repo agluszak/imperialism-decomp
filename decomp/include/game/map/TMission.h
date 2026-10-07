@@ -25,12 +25,12 @@ enum eMissionType {
 // VTABLE: IMPERIALISM 0x0065a4e8
 class TMission : public TObject {
 public:
-  NationSlot nationId;    // 0x04 source-nation id (InitializeMission...)
-  short pathMarker;       // 0x06 path/dispatch marker
-  unsigned char state08;  // 0x08 lifecycle state byte (ctor = 2)
-  float importanceScore;  // 0x0c cached score/value (ctor = 0.0f)
-  unsigned char flag10;   // 0x10 dispatch flag (SetMissionField10FromArgSlot94)
-  unsigned char marker11; // 0x11 status byte (ctor = 0xff)
+  NationSlot nationId;    // source-nation id (InitializeMission...)
+  short pathMarker;       // path/dispatch marker
+  unsigned char priority; // lower is more urgent
+  float importanceScore;  // cached score/value (ctor = 0.0f)
+  unsigned char onHold;
+  unsigned char requiredForces; // bit 0 army, bit 1 navy
   unsigned char padding12[2];
 
   TMission();
@@ -47,7 +47,7 @@ public:
   virtual bool IsANoBrainer() const;
   virtual int AccumulateLack(int* accumulatedLack, bool includeExistingLack) const;
   virtual void Initialize();
-  virtual void SetStateByte8To2();
+  virtual void ResetPriority();
   virtual void CalculateImportance();
   virtual void CalculateNeeds();
   virtual void Reassess();

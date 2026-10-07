@@ -19,10 +19,10 @@ enum TacticalBattleOutcome {
 typedef int TacticalBattleOutcomeStorage;
 
 struct TacticalTileRecord {
-  int terrainType; // +0x00 terrain code 0..4 (indexes the move-cost table row)
+  int terrainType; // terrain code 0..4 (indexes the move-cost table row)
   TTacticalUnit* occupant;
-  int deployMark;   // +0x08 1 = trench-deploy mark; > 1 = fort-wall level
-  int mineRunState; // +0x0c sap/mine-run state: -1 clear, 2 queued, 0/1 advance
+  int deployMark;   // 1 = trench-deploy mark; > 1 = fort-wall level
+  int mineRunState; // sap/mine-run state: -1 clear, 2 queued, 0/1 advance
   unsigned char trenchMask;
   unsigned char pad11[3];
 };
@@ -52,28 +52,28 @@ public:
   virtual void MineWall(TTacticalUnit* unit, TacticalTileIndex tileIndex);
   virtual void DigTunnel(TTacticalUnit* unit, TacticalTileIndex tileIndex);
 
-  TacticalTileRecord* tileGrid;    // +0x04 per-tile grid, allocated by battle setup
-  TTacticalBattleView* battleView; // +0x08 live view; null when the battle runs headless
-  int currentSide;                 // +0x0c side (0/1) of the current selection; serialized
-  int battleLive;                  // +0x10 serialized battle-header dword
+  TacticalTileRecord* tileGrid;    // per-tile grid, allocated by battle setup
+  TTacticalBattleView* battleView; // live view; null when the battle runs headless
+  int currentSide;                 // side (0/1) of the current selection; serialized
+  int battleLive;                  // serialized battle-header dword
   // Side players, indexed by currentSide and TTacticalUnit::side.
-  TTacticalPlayer* players[2]; // +0x14 side 0, +0x18 side 1
+  TTacticalPlayer* players[2]; // side 0, +0x18 side 1
   TTacticalUnit* selectedUnit;
   TList* recordList;
-  short* tileMoveCostArray;   // +0x24 per-tile move cost (-1 unreached); filled by slot 0x0a
-  char* tileThreatLevelArray; // +0x28 per-tile threat level; filled by slot 0x0b
+  short* tileMoveCostArray;   // per-tile move cost (-1 unreached); filled by slot 0x0a
+  char* tileThreatLevelArray; // per-tile threat level; filled by slot 0x0b
   int* tileCandidateScorePlane;
-  int* tileIntArray;          // +0x30 advance-distance field (0x5a4460); -1 = unreached
-  int battlefieldColumnCount; // +0x34 playable column count of this battle
-  int battleSiteIndex;        // +0x38 cityScoreTable row of the battle site
-  int tacticalTileCount;      // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
+  int* tileIntArray;          // advance-distance field (0x5a4460); -1 = unreached
+  int battlefieldColumnCount; // playable column count of this battle
+  int battleSiteIndex;        // cityScoreTable row of the battle site
+  int tacticalTileCount;      // = 0x1b3 (435 = 15*29 battle tiles)
   int tacticalTileStride;
   TacticalBattleOutcomeStorage battleOutcome;
   bool pendingEndOfActionFlag;
-  char fortLevel; // +0x49 serialized; nonzero suppresses depl trench-marking
+  char fortLevel; // serialized; nonzero suppresses depl trench-marking
   unsigned char pad4a[2];
-  int currentTacticalActionCode; // +0x4c serialized
-  int compositionClass;          // +0x50 stack-composition class of the battle
+  int currentTacticalActionCode; // serialized
+  int compositionClass;          // stack-composition class of the battle
   int fortStrengthPoints[8];
   int roundCounter;
 

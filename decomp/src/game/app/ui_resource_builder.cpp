@@ -51,8 +51,8 @@ void __cdecl SetUiResourceStateFlags(bool inputGateFlag, bool childHitTestFlag) 
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3d0
-void __cdecl SetUiResourceContextPictureId(int nPictureId) {
-  static_cast<TPicture*>(g_pUiResourceContext)->SetPictureRsrcID(static_cast<short>(nPictureId), 0);
+void __cdecl SetUiResourceContextPictureId(short nPictureId) {
+  static_cast<TPicture*>(g_pUiResourceContext)->SetPictureRsrcID(nPictureId, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0041b400

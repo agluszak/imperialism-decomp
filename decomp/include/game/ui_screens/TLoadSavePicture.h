@@ -19,8 +19,8 @@ public:
 
   bool loadModeFlag;
   short selectedSlot; // currently selected save slot (-1 = none)
-  TextStyle styleAt94;
-  TextStyle styleAt9e;
+  TextStyle newSlotStyle;
+  TextStyle slotStyle;
 
   TLoadSavePicture();
 };

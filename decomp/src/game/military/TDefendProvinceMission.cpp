@@ -227,13 +227,13 @@ float TDefendProvinceMission::AssessImmediateThreat() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053ecc0
-void TDefendProvinceMission::SetStateByte8To2() {
+void TDefendProvinceMission::ResetPriority() {
   TGreatPower* nation = g_apNationStates[nationId];
   short val = nation->GetCapitolProvince();
   if (val == presentLocation) {
-    state08 = 0;
+    priority = 0;
   } else {
-    state08 = 2;
+    priority = 2;
   }
 }
 
@@ -324,7 +324,7 @@ void TDefendProvinceMission::CalculateNeeds() {
 
 // FUNCTION: IMPERIALISM 0x0053eff0
 void TDefendProvinceMission::Initialize() {
-  marker11 = 0;
+  requiredForces = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0053f010

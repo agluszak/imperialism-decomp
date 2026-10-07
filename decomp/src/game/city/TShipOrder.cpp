@@ -74,52 +74,52 @@ bool TShipOrder::CanMakeProduct() {
 short TShipOrder::MaxOrder() {
   TCity* city = ownerCity;
   const short weightIndex = resourceTypeIndex;
-  int limit = 10000;
+  short limit = 10000;
   int candidate;
 
   if (ReadWeight(g_industryActionCostWeightResCode09, weightIndex) != 0) {
     candidate = static_cast<int>(city->stockByType[kResourceLumber]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode09, weightIndex));
-    if (static_cast<short>(candidate) < static_cast<short>(limit)) {
+    if (static_cast<short>(candidate) < limit) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode08, weightIndex) != 0) {
     candidate = static_cast<int>(city->stockByType[kResourceFabric]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode08, weightIndex));
-    if (static_cast<short>(candidate) < static_cast<short>(limit)) {
+    if (static_cast<short>(candidate) < limit) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode10, weightIndex) != 0) {
     candidate = static_cast<int>(city->stockByType[kResourceArms]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode10, weightIndex));
-    if (static_cast<short>(candidate) < static_cast<short>(limit)) {
+    if (static_cast<short>(candidate) < limit) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode03, weightIndex) != 0) {
     candidate = static_cast<int>(city->stockByType[kResourceCoal]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode03, weightIndex));
-    if (static_cast<short>(candidate) < static_cast<short>(limit)) {
+    if (static_cast<short>(candidate) < limit) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode0B, weightIndex) != 0) {
     candidate = static_cast<int>(city->stockByType[kResourceSteel]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode0B, weightIndex));
-    if (static_cast<short>(candidate) < static_cast<short>(limit)) {
+    if (static_cast<short>(candidate) < limit) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) != 0) {
     candidate = static_cast<int>(city->stockByType[kResourceFuel]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode0C, weightIndex));
-    if (static_cast<short>(candidate) < static_cast<short>(limit)) {
+    if (static_cast<short>(candidate) < limit) {
       limit = candidate;
     }
   }
-  return quantity + static_cast<short>(limit);
+  return quantity + limit;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8800

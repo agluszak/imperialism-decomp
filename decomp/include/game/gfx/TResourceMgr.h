@@ -60,7 +60,7 @@ public:
   // Retail-only empty cache hook reached by a dead global wrapper
   void NoOpRetailCacheHook();
 
-  CDibPal* m_dibPalette; // 0x00 global DIB palette companion
+  CDibPal* m_dibPalette; // global DIB palette companion
   CMap<short, short, CacheRecord*, CacheRecord*> m_recordsByResourceId;
   CMap<void*, void*, CacheRecord*, CacheRecord*> m_recordsByObject;
   HMODULE m_slots[4];

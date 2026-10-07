@@ -66,8 +66,7 @@ RuntimeActionResult RunProvinceLossWithStationedUnit(NativeTransition& transitio
   }
 
   const NationSlot nationSlot = ActiveNationSlot();
-  const StrategicTileIndex tile =
-      g_pGlobalMapState->cityScoreTable[province].linkedTileIndices[0];
+  const StrategicTileIndex tile = g_pGlobalMapState->cityScoreTable[province].linkedTileIndices[0];
   TCivUnit* civilian = new TCivUnit();
   civilian->ICivUnit(kCivilianUnitMiner, tile, nationSlot);
 
@@ -126,7 +125,7 @@ RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition) {
   for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
        mission = static_cast<TMission*>(missionIter.Advance())) {
     if (mission->Matches(kMissionTypeDefendProvince, province, 0)) {
-      // TMission's retail constructor leaves flag10 uninitialized. This case captures the
+      // TMission's retail constructor leaves onHold uninitialized. This case captures the
       // newly-created mission before normal AI planning calls Hold, so choose the Rust default.
       mission->Hold(0);
       return transition.Finish();

@@ -206,7 +206,7 @@ void TCivDescription::CountWorkableSpaces(TCivUnit* orderState) {
   int classSlotOrdinal;
   int provinceOrdinal;
   short* provinceTileIndices;
-  int provinceTileIndex;
+  short provinceTileIndex;
   TTerrainStateRecord* tileRecord;
   short tileProfileId;
   TLongintList* ownerNationProvinceCollection;
@@ -234,7 +234,7 @@ void TCivDescription::CountWorkableSpaces(TCivUnit* orderState) {
       provinceTileIndices = provinceRecord->linkedTileIndices;
       do {
         provinceTileIndex = (*provinceTileIndices);
-        tileRecord = &g_pGlobalMapState->terrainStateTable[static_cast<short>(provinceTileIndex)];
+        tileRecord = &g_pGlobalMapState->terrainStateTable[provinceTileIndex];
         if (tileRecord->recruitSearchVisited == 0) {
           tileProfileId = static_cast<short>(tileRecord->gateFlag);
           classSlotOrdinal = 0;

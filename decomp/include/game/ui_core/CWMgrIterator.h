@@ -7,7 +7,7 @@
 
 class CWMgrIterator {
 public:
-  CWMgrIterator* Reset(bool fForward); // 0x004923f0 (returns this; arg sign-extended)
+  CWMgrIterator* Reset(bool fForward); // (returns this; arg sign-extended)
   void* FirstWindow();
   void* NextWindow();
   int More();

@@ -48,9 +48,9 @@ void TUnit::IUnit(short nOrderType, int anchorIndex, short nOrderOwnerNationId, 
 void TUnit::MoveTo(short anchorIndex) {}
 
 // FUNCTION: IMPERIALISM 0x005c2630
-void TUnit::SetOrders(UnitOrder order, int payload) {
+void TUnit::SetOrders(UnitOrder order, short payload) {
   unitOrder = order;
-  orderTargetIndex = static_cast<short>(payload);
+  orderTargetIndex = payload;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2660

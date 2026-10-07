@@ -31,8 +31,8 @@
 
 // FUNCTION: IMPERIALISM 0x0043d8f0
 TLoadSavePicture::TLoadSavePicture() {
-  styleAt94.textColor = 0;
-  styleAt9e.textColor = 0;
+  newSlotStyle.textColor = 0;
+  slotStyle.textColor = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0043db20
@@ -45,8 +45,8 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   loadModeFlag = static_cast<unsigned char>(g_nSaveFormatVersion == -2);
   selectedSlot = -1;
   TPicture::DoPostCreate(arg);
-  BuildUiTextStyleDescriptor(&styleAt94, 1, 0xc, 0x2b68);
-  BuildUiTextStyleDescriptor(&styleAt9e, 0, 0xc, 0x2b6c);
+  BuildUiTextStyleDescriptor(&newSlotStyle, 1, 0xc, 0x2b68);
+  BuildUiTextStyleDescriptor(&slotStyle, 0, 0xc, 0x2b6c);
 
   TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(FindSubView(kControlTagCurs));
   g_pCursorControlPanel = cursorPanel;
@@ -84,7 +84,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
       slotCaption = saveHeader + 0xc;
       slotControl->SetTextAndMaybeRefresh(&slotCaption, true);
     }
-    slotControl->InstallTextStyle(styleAt9e, 0);
+    slotControl->InstallTextStyle(slotStyle, 0);
   }
 
   if (loadModeFlag) {
@@ -199,14 +199,14 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
           TControl* oldSlotControl =
               static_cast<TControl*>(FindSubView(kControlTagSlt0 + selectedSlot));
           oldSlotControl->AssertValid();
-          oldSlotControl->InstallTextStyle(styleAt9e, 0);
+          oldSlotControl->InstallTextStyle(slotStyle, 0);
           CRect oldBounds;
           oldSlotControl->GetFrame(&oldBounds);
           InvalidateCityDialogRectRegion(&oldBounds, 1);
         }
         // sourceHandler is the newly-clicked slot control itself.
         TControl* newSlotControl = static_cast<TControl*>(sourceHandler);
-        newSlotControl->InstallTextStyle(styleAt94, 0);
+        newSlotControl->InstallTextStyle(newSlotStyle, 0);
         CRect newBounds;
         newSlotControl->GetFrame(&newBounds);
         InvalidateCityDialogRectRegion(&newBounds, 1);
@@ -222,7 +222,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         slotControl->Show(0, 1);
         slotControl->CopyTextTo(&slotText);
 
-        editControl->InstallTextStyle(styleAt9e, 0);
+        editControl->InstallTextStyle(slotStyle, 0);
         editControl->InitDialogWindowAndSyncTitleIfChanged(&slotText, 0);
         editControl->PrepareForDrawing();
         editControl->BecomeTarget();
@@ -249,7 +249,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         TControl* oldSlotControl =
             static_cast<TControl*>(FindSubView(kControlTagSlt0 + selectedSlot));
         oldSlotControl->AssertValid();
-        oldSlotControl->InstallTextStyle(styleAt9e, 0);
+        oldSlotControl->InstallTextStyle(slotStyle, 0);
         CRect oldBounds;
         oldSlotControl->GetFrame(&oldBounds);
         InvalidateCityDialogRectRegion(&oldBounds, 1);

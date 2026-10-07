@@ -21,9 +21,9 @@ public:
   virtual void ShowCurrentUnit(TTacticalUnit* unit);
   virtual void UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit);
   class TTacticalBattle* battle;
-  class TTacticalUnit* currentUnit; // +0x8c current-unit control source
+  class TTacticalUnit* currentUnit; // current-unit control source
   class TArmyTacUnit* otherSideCurrentUnit;
-  struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface; // +0x94 the 0xee2 atlas
+  struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface; // the 0xee2 atlas
 
   void SetActionMode(int mode);
 

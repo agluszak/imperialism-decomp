@@ -300,7 +300,7 @@ RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transit
   }
 
   nation->pendingActionStatus.byAction[0] = 0x32;
-  nation->field8d6[0] = 1;
+  nation->pendingActionPayload[0] = 1;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
@@ -449,11 +449,11 @@ RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition) {
       continue;
     }
     nation->pendingActionStatus.byAction[0] = 0x32;
-    nation->field8d6[0] = 3;
+    nation->pendingActionPayload[0] = 3;
     nation->pendingActionStatus.byAction[1] = 0x32;
-    nation->field8d6[1] = 6;
+    nation->pendingActionPayload[1] = 6;
     nation->pendingActionStatus.byAction[3] = 0x32;
-    nation->field8d6[3] = -1;
+    nation->pendingActionPayload[3] = -1;
   }
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());

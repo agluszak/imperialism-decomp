@@ -22,9 +22,9 @@ public:
   virtual void Free() override;
   short nationCount;
   TZone* contextArray;
-  short routeNodeCount; // +0x0c number of route records in routeSegments
+  short routeNodeCount; // number of route records in routeSegments
   char pad0e[2];
-  CRect* routeSegments; // +0x10 heap buffer of routeNodeCount map-route line segments
+  CRect* routeSegments; // heap buffer of routeNodeCount map-route line segments
   TTaskForce* selectedTaskForce;
 
   // Reallocate routeSegments to hold `count` 0x10-byte route records.
@@ -43,7 +43,7 @@ public:
 
   int GetAverageSeaZoneValue();
 
-  void CreateZones(int nationCountArg);
+  void CreateZones(short nationCountArg);
 
   void UpdateOccupants();
 

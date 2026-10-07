@@ -128,8 +128,8 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   pendingUnitCommandIndex = -1;
   resource15ProductionPercent = 50;
 
-  list28 = new TLongintList();
-  list2c = new TLongintList();
+  manufacturingPriority = new TLongintList();
+  buildingUpgradePriority = new TLongintList();
   nextProductionBuildingOrdinal = 1;
 
   orderList = new TList();
@@ -159,7 +159,7 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   deferredLaborShortfall = 0;
   temporarilyReservedShipArms = 0;
 
-  list190 = new TLongintList();
+  productionRequests = new TLongintList();
 
   cityPolicyFuzzySet = new TFuzzySet();
   cityPolicyFuzzySet->IFuzzySet();
@@ -173,43 +173,43 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004becd0
 void TCityInteriorMinister::Free() {
-  if (list28 != 0) {
-    list28->Free();
+  if (manufacturingPriority != 0) {
+    manufacturingPriority->Free();
   }
-  list28 = 0;
-  if (list2c != 0) {
-    list2c->Free();
+  manufacturingPriority = 0;
+  if (buildingUpgradePriority != 0) {
+    buildingUpgradePriority->Free();
   }
-  list2c = 0;
+  buildingUpgradePriority = 0;
   if (cityPolicyFuzzySet != 0) {
     cityPolicyFuzzySet->Free();
   }
   if (orderList != 0) {
     orderList->FreeList();
   }
-  if (list190 != 0) {
-    list190->Free();
+  if (productionRequests != 0) {
+    productionRequests->Free();
   }
-  list190 = 0;
+  productionRequests = 0;
   TMinister::Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004bed60
 void TCityInteriorMinister::FillLists() {
-  list28->InsertLast(16);
-  list28->InsertLast(15);
-  list28->InsertLast(13);
-  list28->InsertLast(9);
-  list28->InsertLast(11);
-  list28->InsertLast(8);
+  manufacturingPriority->InsertLast(16);
+  manufacturingPriority->InsertLast(15);
+  manufacturingPriority->InsertLast(13);
+  manufacturingPriority->InsertLast(9);
+  manufacturingPriority->InsertLast(11);
+  manufacturingPriority->InsertLast(8);
 
-  list2c->InsertLast(2);
-  list2c->InsertLast(4);
-  list2c->InsertLast(0);
-  list2c->InsertLast(3);
-  list2c->InsertLast(5);
-  list2c->InsertLast(1);
-  list2c->InsertLast(6);
+  buildingUpgradePriority->InsertLast(2);
+  buildingUpgradePriority->InsertLast(4);
+  buildingUpgradePriority->InsertLast(0);
+  buildingUpgradePriority->InsertLast(3);
+  buildingUpgradePriority->InsertLast(5);
+  buildingUpgradePriority->InsertLast(1);
+  buildingUpgradePriority->InsertLast(6);
 }
 
 // FUNCTION: IMPERIALISM 0x004bee20
@@ -236,7 +236,7 @@ void TCityInteriorMinister::PleaseBuildShip(short orderKind) {
 
 // FUNCTION: IMPERIALISM 0x004beee0
 void TCityInteriorMinister::IndustryOrder(short industrySlot) {
-  list190->InsertLast(static_cast<long>(industrySlot) + 30);
+  productionRequests->InsertLast(static_cast<long>(industrySlot) + 30);
 }
 
 // FUNCTION: IMPERIALISM 0x004bef10
@@ -246,7 +246,7 @@ void TCityInteriorMinister::PleaseBuildCivilian(short commandIndex) {
 
 // FUNCTION: IMPERIALISM 0x004bef30
 void TCityInteriorMinister::PleaseBuildLandUnit(short unitType) {
-  list190->InsertLast(unitType);
+  productionRequests->InsertLast(unitType);
 }
 
 // FUNCTION: IMPERIALISM 0x004bef60
@@ -274,31 +274,31 @@ void TCityInteriorMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&temporarilyReservedShipArms, 2);
 
   {
-    list28->NoOpWriteTo(stream);
-    int entryCount = list28->GetSize();
+    manufacturingPriority->NoOpWriteTo(stream);
+    int entryCount = manufacturingPriority->GetSize();
     stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-      int entryValue = list28->At(ordinal);
+      int entryValue = manufacturingPriority->At(ordinal);
       stream->WriteBytes(&entryValue, 4);
     }
   }
 
   {
-    list2c->NoOpWriteTo(stream);
-    int entryCount = list2c->GetSize();
+    buildingUpgradePriority->NoOpWriteTo(stream);
+    int entryCount = buildingUpgradePriority->GetSize();
     stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-      int entryValue = list2c->At(ordinal);
+      int entryValue = buildingUpgradePriority->At(ordinal);
       stream->WriteBytes(&entryValue, 4);
     }
   }
 
   {
-    list190->NoOpWriteTo(stream);
-    int entryCount = list190->GetSize();
+    productionRequests->NoOpWriteTo(stream);
+    int entryCount = productionRequests->GetSize();
     stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-      int entryValue = list190->At(ordinal);
+      int entryValue = productionRequests->At(ordinal);
       stream->WriteBytes(&entryValue, 4);
     }
   }
@@ -354,44 +354,44 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
   SwapShortArrayBytes(historicalNeedByType, 23);
   stream->ReadBytes(&temporarilyReservedShipArms, 2);
   {
-    if (list28->GetSize() != 0) {
-      list28->RemoveAll();
+    if (manufacturingPriority->GetSize() != 0) {
+      manufacturingPriority->RemoveAll();
     }
-    list28->NoOpReadFrom(stream);
+    manufacturingPriority->NoOpReadFrom(stream);
     int entryCount;
     stream->ReadBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       int entryValue;
       stream->ReadBytes(&entryValue, 4);
-      list28->InsertLast(entryValue);
+      manufacturingPriority->InsertLast(entryValue);
     }
   }
 
   {
-    if (list2c->GetSize() != 0) {
-      list2c->RemoveAll();
+    if (buildingUpgradePriority->GetSize() != 0) {
+      buildingUpgradePriority->RemoveAll();
     }
-    list2c->NoOpReadFrom(stream);
+    buildingUpgradePriority->NoOpReadFrom(stream);
     int entryCount;
     stream->ReadBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       int entryValue;
       stream->ReadBytes(&entryValue, 4);
-      list2c->InsertLast(entryValue);
+      buildingUpgradePriority->InsertLast(entryValue);
     }
   }
 
   {
-    if (list190->GetSize() != 0) {
-      list190->RemoveAll();
+    if (productionRequests->GetSize() != 0) {
+      productionRequests->RemoveAll();
     }
-    list190->NoOpReadFrom(stream);
+    productionRequests->NoOpReadFrom(stream);
     int entryCount;
     stream->ReadBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       int entryValue;
       stream->ReadBytes(&entryValue, 4);
-      list190->InsertLast(entryValue);
+      productionRequests->InsertLast(entryValue);
     }
   }
   if (g_nSaveFormatVersion > 0x13) {
@@ -622,10 +622,10 @@ void TCityInteriorMinister::IncreaseCapacityMode(TCity* city, TTaskList* command
   }
 
   short selectedOrdinal = nextProductionBuildingOrdinal;
-  short lastOrdinal = list2c->GetSize();
+  short lastOrdinal = buildingUpgradePriority->GetSize();
   short commandCounts[7] = {0, 0, 0, 0, 0, 0, 0};
   while (commandBudget != 0) {
-    short selectedBuildingSlot = static_cast<short>(list2c->At(selectedOrdinal));
+    short selectedBuildingSlot = static_cast<short>(buildingUpgradePriority->At(selectedOrdinal));
     bool qualifies = false;
     if (selectedBuildingSlot == 0 || selectedBuildingSlot == 2 || selectedBuildingSlot == 4) {
       qualifies = true;
@@ -747,8 +747,9 @@ void TCityInteriorMinister::DistributeProduction(TCity* city) {
   accumulatedUnmetNeed = 0;
 
   int orderOrdinal = 1;
-  while (city->productionSummary->strength > 1 && orderOrdinal <= list28->GetSize()) {
-    short orderSlot = static_cast<short>(list28->At(orderOrdinal));
+  while (city->productionSummary->strength > 1 &&
+         orderOrdinal <= manufacturingPriority->GetSize()) {
+    short orderSlot = static_cast<short>(manufacturingPriority->At(orderOrdinal));
     TItemOrder* order = static_cast<TItemOrder*>(city->orderSlots[orderSlot]);
     order->AssertValid();
 
@@ -872,8 +873,9 @@ void TCityInteriorMinister::DistributeProduction(TCity* city) {
   short previousHeadroom = 0;
   while (needHeadroom > 0 && previousHeadroom != needHeadroom) {
     previousHeadroom = needHeadroom;
-    for (int ordinal = 1; ordinal <= list28->GetSize() && needHeadroom != 0; ++ordinal) {
-      short orderSlot = static_cast<short>(list28->At(ordinal));
+    for (int ordinal = 1; ordinal <= manufacturingPriority->GetSize() && needHeadroom != 0;
+         ++ordinal) {
+      short orderSlot = static_cast<short>(manufacturingPriority->At(ordinal));
       TItemOrder* order = static_cast<TItemOrder*>(city->orderSlots[orderSlot]);
       order->AssertValid();
       OrderSheet orderSheet;
@@ -1016,8 +1018,8 @@ int TCityInteriorMinister::SelectCitySite() {
   TTown* candidateTown = new TTown();
   candidateTown->ITown("Bleah", 0, true, nationSlot);
 
-  int bestScore = -1;
-  int bestTileIndex = -1;
+  short bestScore = -1;
+  short bestTileIndex = -1;
   int tileIndex = 0;
   do {
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
@@ -1092,7 +1094,7 @@ int TCityInteriorMinister::SelectCitySite() {
         if ((tile->activeFlags & 1) != 0) {
           score = 32000;
         }
-        if (static_cast<short>(bestScore) < score) {
+        if (bestScore < score) {
           bestScore = score;
           bestTileIndex = tileIndex;
         }
@@ -1102,12 +1104,12 @@ int TCityInteriorMinister::SelectCitySite() {
   } while (static_cast<short>(tileIndex) < kStrategicTileCount);
 
   candidateTown->Free();
-  if (static_cast<short>(bestTileIndex) == -1) {
+  if (bestTileIndex == -1) {
     CString message;
     g_pSimMgr->GetString(0x2737, 0x35, &message);
     g_pViewMgr->ModalMessage(message, g_ptCityInteriorMinisterModalMessage, 2, 0);
   }
-  return static_cast<short>(bestTileIndex);
+  return bestTileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x004c1510
@@ -1458,12 +1460,12 @@ void TCityInteriorMinister::ProspectAndDevelop() {
           hasActiveProspecting = true;
         }
       }
-      bool developmentBlocked =
-          (tile->pendingDevelopmentFlag & (1 << nationSlot)) != 0 ||
-          (g_pGlobalMapState->field24 && (tile->GetTerrainKind() == kStrategicTerrainHills ||
-                                          tile->GetTerrainKind() == kStrategicTerrainMountain ||
-                                          tile->GetTerrainKind() == kStrategicTerrainSwamp ||
-                                          tile->GetTerrainKind() == kStrategicTerrainDesert));
+      bool developmentBlocked = (tile->pendingDevelopmentFlag & (1 << nationSlot)) != 0 ||
+                                (g_pGlobalMapState->revealAllTiles &&
+                                 (tile->GetTerrainKind() == kStrategicTerrainHills ||
+                                  tile->GetTerrainKind() == kStrategicTerrainMountain ||
+                                  tile->GetTerrainKind() == kStrategicTerrainSwamp ||
+                                  tile->GetTerrainKind() == kStrategicTerrainDesert));
       if (!hasActiveProspecting && !developmentBlocked && prospectingOrderCount != 0 &&
           relationScale[minorNation] != 0.0f) {
         InsertTileCandidate(relationScale[minorNation], tileIndex, prospectingScores,
@@ -2005,11 +2007,11 @@ void TCityInteriorMinister::ProcessCityOrders() {
   city->VerifyStocks();
   temporarilyReservedShipArms = 0;
 
-  if (list190->GetSize() > 0 && g_pSimMgr->economicTurn / 4 > 3) {
+  if (productionRequests->GetSize() > 0 && g_pSimMgr->economicTurn / 4 > 3) {
     int ordinal = 1;
-    if (ordinal <= list190->GetSize()) {
+    if (ordinal <= productionRequests->GetSize()) {
       do {
-        short requestedCapability = static_cast<short>(list190->At(ordinal));
+        short requestedCapability = static_cast<short>(productionRequests->At(ordinal));
         short matchedOrderSlot = -1;
         if (requestedCapability < 0x1e) {
           if (AttemptUpgrade(requestedCapability)) {
@@ -2041,9 +2043,9 @@ void TCityInteriorMinister::ProcessCityOrders() {
           orderMetricTable[matchedOrderSlot] = 0;
         }
         ++ordinal;
-      } while (ordinal <= list190->GetSize());
+      } while (ordinal <= productionRequests->GetSize());
     }
-    list190->RemoveAll();
+    productionRequests->RemoveAll();
   }
 
   for (short navyMetricSlot = 0x2b; navyMetricSlot <= 50; ++navyMetricSlot) {

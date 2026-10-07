@@ -124,6 +124,6 @@ public:
   IDirectSound* m_device; // DirectSound device object
   IDirectSoundBuffer* m_channels[6];
   DSBUFFERDESC m_channelBufferDesc; // scratch buffer descriptor (0x24=dwBufferBytes)
-  HMODULE m_module;                 // 0x30 (wave-pack module datafile)
-  int m_field34;                    // 0x34 (last DirectSound result)
+  HMODULE m_module;                 // (wave-pack module datafile)
+  int m_field34;                    // (last DirectSound result)
 };

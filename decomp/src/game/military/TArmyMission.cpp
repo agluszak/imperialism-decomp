@@ -38,7 +38,7 @@ IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053c0a0
 TArmyMission::TArmyMission(int nodeKey) {
-  presentLocation = static_cast<short>(nodeKey);
+  presentLocation = nodeKey;
 
   TList* list = new TList;
   orderList = list;
@@ -424,7 +424,7 @@ float TArmyMission::IndustrialCostOfNeeds() {
 
 // FUNCTION: IMPERIALISM 0x0053d420
 float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
-  if (flag10 != 0) {
+  if (onHold != 0) {
     return 0.0f;
   }
 
@@ -450,7 +450,7 @@ float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVect
   if (weightIndex > 5) {
     weightIndex = 5;
   }
-  float baseline = g_ArmyMissionCandidateScoreTable[weightIndex + state08 * 6];
+  float baseline = g_ArmyMissionCandidateScoreTable[weightIndex + priority * 6];
 
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   AddUnitToPriorityVector(

@@ -50,11 +50,11 @@ struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
 
 // Event-0xE host session-init record.
 struct TurnEventESessionInitPacket : TimelyMessageHeader {
-  char mapSeedText[33];         // passed to CreatePlanet
-  unsigned char mapParamByte39; // third Rebuild arg
+  char mapSeedText[33];           // passed to CreatePlanet
+  unsigned char wrapHorizontally; // third Rebuild arg
   char hostGameName[34];
-  int saveSlotDword5C; // > queueSyncDword
-  int scenarioTag;     // > scenarioSelectionTag
+  int queueSync;   // > queueSyncDword
+  int scenarioTag; // > scenarioSelectionTag
   signed char difficultyLevel;
   unsigned char nameTableFlag; // > useLocalizedNameTables
   unsigned char pad66[2];

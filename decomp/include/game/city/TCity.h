@@ -91,15 +91,15 @@ public:
   short productionOrderTable[16];
   short productionAccum[16];          // ctor-cleared
   unsigned char productionFlags[16];  // ctor-cleared
-  short production22c[16];            // GetBuildingWindowState outCurrent
-  short production24c[16];            // GetBuildingWindowState outAccum
+  short buildingWindowX[16];          // GetBuildingWindowState outCurrent
+  short buildingWindowY[16];          // GetBuildingWindowState outAccum
   short populationGrowthPenaltyTicks; // GrowthRate penalty counter
   TTaskList* trackedOrderList;        // released via FreeList
   class TPtrList* eventQueue;
   short unmetResourceRetryCount[kResourceKindCount];
   short consumedProductionInputByType[kResourceKindCount];
 
-  TCity(); // 0x004b24b0 ("InitializeCityModel")
+  TCity(); // ("InitializeCityModel")
 
   short HomeTownTileId() const {
     if (homeTownMarker != 0) {

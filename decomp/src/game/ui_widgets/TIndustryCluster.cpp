@@ -104,12 +104,12 @@ void TIndustryCluster::SetMoveAmount(short dragValue, bool updateControls) {
     barControl->auxValueB = 0x3a;
   }
 
-  int scaledMoveAmount = static_cast<int>(static_cast<float>(selectedOrder->quantity) * barScale);
-  int scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
-  barControl->SetAmt(static_cast<short>(scaledMoveAmount), static_cast<short>(scaledMaximum));
+  short scaledMoveAmount = static_cast<int>(static_cast<float>(selectedOrder->quantity) * barScale);
+  short scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
+  barControl->SetAmt(scaledMoveAmount, scaledMaximum);
 
   CPoint moveControlPosition;
-  moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
+  moveControlPosition.x = barControl->ownerLocalX + scaledMoveAmount - 2;
   moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
   moveControl->Locate(moveControlPosition, true);
   moveControl->GetFrame(&moveBoundsRect);

@@ -64,7 +64,7 @@ public:
   virtual bool IsProvinceIsolated(ProvinceIndex cityRecordIndex, short nationTag);
   virtual int IsShiftKeyDown();
   virtual int IsAltKeyDown();
-  virtual short ComputeRepresentativeTileIndexForNation(int nationSlot);
+  virtual short ComputeRepresentativeTileIndexForNation(short nationSlot);
   virtual void RemoveGhostRail(StrategicTileIndex sourceTile, StrategicTileIndex destTile,
                                int unusedParam3);
   // Both lookup helpers take signed-word discriminants at the listing-proven stack boundary.
@@ -154,7 +154,7 @@ public:
   char hexNeighborWrapHorizontally;
   char pad21;
   StrategicTileIndex pendingRiverMouthTile; // pending river-mouth tile
-  bool field24;                             // zeroed by the ctor; no observed reader yet
+  bool revealAllTiles;                      // zeroed by the ctor; no observed reader yet
 
   static void GetNeighborTileIDArray(StrategicTileIndex tileIndex,
                                      StrategicTileIndex* neighborTiles,

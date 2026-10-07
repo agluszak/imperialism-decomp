@@ -11,7 +11,7 @@ class TTaskForce;
 struct TMapOrderInteractionSelection {
   short offerNationCode;
   short pad02;
-  unsigned int directionFlags; // +0x04 packed direction bits (bit0/bit1)
+  unsigned int directionFlags; // packed direction bits (bit0/bit1)
   TTaskForce* selectedEntry;
 };
 

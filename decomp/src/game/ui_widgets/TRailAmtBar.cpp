@@ -60,7 +60,7 @@ void TRailAmtBar::DoPostCreate(int arg) {
     TPopulationMgr* scenario = province->productionSummary;
     TLaborPool* slots = scenario->productionSlots;
     productionOrCapValue = (short)(((slots->highSkillCount * 2 + slots->mediumSkillCount) * 2 +
-                                    scenario->extraAt1e + slots->lowSkillCount) /
+                                    scenario->powerPlantOutput + slots->lowSkillCount) /
                                    2);
   } else {
     productionOrCapValue = selectedMetricRecord->MaxOrder();

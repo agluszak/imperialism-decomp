@@ -72,7 +72,7 @@ TMapMgr::TMapMgr() : TObject(), cityScoreTable(0) {
   strategicMapPalettePreviewReady = false;
   terrainStateTable = 0;
   recruitSearchActive = 1;
-  field24 = false;
+  revealAllTiles = false;
   pendingRiverMouthTile = -1;
 }
 
@@ -245,7 +245,7 @@ bool TMapMgr::GenerateMap(const char* mapStreamName, char* tuningOverride) {
 
   bool sessionActive;
   sessionActive = g_pSimMgr->reloadPoliticalMapState || g_pSimMgr->scenarioMapIndexPlusOne != 0;
-  mapMaker->modeByte2a1 = hexNeighborWrapHorizontally;
+  mapMaker->wrapHorizontally = hexNeighborWrapHorizontally;
 
   if (sessionActive) {
     if (g_pSimMgr->reloadPoliticalMapState) {
@@ -1480,8 +1480,8 @@ void TMapMgr::ShowMap() {
 }
 
 // FUNCTION: IMPERIALISM 0x00511f10
-short TMapMgr::ComputeRepresentativeTileIndexForNation(int nationSlot) {
-  return GetNationCenterTile(static_cast<short>(nationSlot), true);
+short TMapMgr::ComputeRepresentativeTileIndexForNation(short nationSlot) {
+  return GetNationCenterTile(nationSlot, true);
 }
 
 inline void TMapMgr::MarkOwnedRegionClasses(TLongintList* regionList, bool* regionClassSeen) {
@@ -3450,13 +3450,13 @@ short TMapMgr::GetNationCenterTile(short nationSlot, bool wrapBias) {
   if (nationSlot < kNationSlotCount && g_apTerrainTypeDescriptorTable[nationSlot] != 0) {
     TLongintList* ownedRegions = g_apTerrainTypeDescriptorTable[nationSlot]->ownedRegionList;
     if (ownedRegions != 0 && ownedRegions->GetSize() > 0) {
-      int lastMatch = -1;
+      short lastMatch = -1;
       for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
         if (tileTable[tileIndex].ownerNationTag == nationSlot) {
           lastMatch = tileIndex;
         }
       }
-      fallbackTile = static_cast<short>(lastMatch);
+      fallbackTile = lastMatch;
     }
   }
   return fallbackTile;
@@ -4082,9 +4082,9 @@ void TMapMgr::DumpAndResetMapScriptState() {
     TGreatPower* nation = g_apNationStates[nationIndex];
     for (slot = 0; slot < 6; ++slot) {
       TCity* city = (nation != NULL) ? nation->city : NULL;
-      int value = city->GetBuildingType(static_cast<short>(slot));
-      if (static_cast<short>(value) > 0) {
-        fprintf(logFile, g_szFmtCapa, nationIndex, slot, static_cast<short>(value));
+      short value = city->GetBuildingType(static_cast<short>(slot));
+      if (value > 0) {
+        fprintf(logFile, g_szFmtCapa, nationIndex, slot, value);
       }
     }
     TCity* laborCity1 = (nation != NULL) ? nation->city : NULL;

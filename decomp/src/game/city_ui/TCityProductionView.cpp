@@ -130,9 +130,9 @@ void TCityProductionView::DoPostCreate(int arg) {
       }
       OffsetRect(&bounds, 0x32, 0x23);
       short resourceId = g_awCityBuildingActionResourceIds[row * 3 + action];
-      int animationId = (actionCount - 1) * 3 + action + (buildingSlot + 0x5dc) * 10;
+      short animationId = (actionCount - 1) * 3 + action + (buildingSlot + 0x5dc) * 10;
       TTransFocusAnimation* animation = new TTransFocusAnimation;
-      animation->ITransFocusAnimation(this, &bounds, resourceId, static_cast<short>(animationId),
+      animation->ITransFocusAnimation(this, &bounds, resourceId, animationId,
                                       (buildingSlot != 7 ? 2 : 0) + 5, 0);
       g_pUiAnimator->AddAnimation(animation);
       buildingActionAnimations[buildingSlot][action] = animation;

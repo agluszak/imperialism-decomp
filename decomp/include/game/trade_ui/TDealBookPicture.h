@@ -17,7 +17,7 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void ShowPage(int pageIndex, short nationId);
   virtual void CalculatePages();
-  short selectedNationSlot; // +0x90 initialized to 8; indexes g_apNationStates in CalculatePages
+  short selectedNationSlot; // initialized to 8; indexes g_apNationStates in CalculatePages
   // +0x92 -- last page needed by either page list: max(page counts) - 1.
   short lastPageIndex;
   short currentPageIndex; // selected zero-based page, written by ShowPage

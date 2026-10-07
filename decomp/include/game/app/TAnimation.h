@@ -16,14 +16,14 @@ public:
   virtual void DrawNextFrame(POINT* offset);
   virtual void LoadFrameIntoBuffer();
   // Object slice verified in 0x49f0c0 (init) and 0x49f140 (per-tick frame flip).
-  class TView* ownerView;    // +0x04 view whose rect is invalidated on each frame flip
-  short frameIndex;          // +0x08 current frame index; wraps at frameCount
-  short frameCount;          // +0x0a frame count (2 for the selection-marker blink)
-  short frameResourceBaseId; // +0x0c base resource ID for animation frames
-  int ticksSinceFrameChange; // +0x10 ticks since the last frame flip
-  int ticksPerFrame;         // +0x14 tick interval between frame flips (0xa = marker)
-  int registryTag;           // +0x18 animator-registry tag (0x2711 = selection marker)
-  RECT screenRect;           // +0x1c on-screen rect invalidated per flip
+  class TView* ownerView;    // view whose rect is invalidated on each frame flip
+  short frameIndex;          // current frame index; wraps at frameCount
+  short frameCount;          // frame count (2 for the selection-marker blink)
+  short frameResourceBaseId; // base resource ID for animation frames
+  int ticksSinceFrameChange; // ticks since the last frame flip
+  int ticksPerFrame;         // tick interval between frame flips (0xa = marker)
+  int registryTag;           // animator-registry tag (0x2711 = selection marker)
+  RECT screenRect;           // on-screen rect invalidated per flip
 
   // NOOP: verified empty in original 0x0049f022
   TAnimation() {}

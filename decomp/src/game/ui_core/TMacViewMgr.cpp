@@ -235,7 +235,7 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
   unsigned char* pixelBuffer;
   unsigned int pixelCount;
   int commodityIndex;
-  int stridePixels;
+  short stridePixels;
   unsigned char* dstCursor;
   atlasBounds.left = 0;
   atlasBounds.top = 0;
@@ -260,7 +260,7 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
       loader->LoadBitmapBounds();
       loader->flags |= 1;
       dstCursor += 0x20;
-      FastDrawPicture(loaderHandle, dstCursor, static_cast<short>(stridePixels));
+      FastDrawPicture(loaderHandle, dstCursor, stridePixels);
       loader->ReleaseBitmapResource();
       loader->flags &= static_cast<unsigned char>(~1);
     }
@@ -801,13 +801,13 @@ void TMacViewMgr::RegenerateCountryRegions() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050bbc0
-void TMacViewMgr::GetTradeCluster(TTradeCluster* orderSource, int orderSlot, short nationSlot) {
+void TMacViewMgr::GetTradeCluster(TTradeCluster* orderSource, short orderSlot, short nationSlot) {
   if (orderSource->IsSelectionAllowed()) {
-    g_apNationStates[nationSlot]->SetItemPotentials(static_cast<short>(orderSlot), -1);
+    g_apNationStates[nationSlot]->SetItemPotentials(orderSlot, -1);
     return;
   }
   g_apNationStates[nationSlot]->SetItemPotentials(
-      static_cast<short>(orderSlot), static_cast<short>(orderSource->GetTradeSellControlValue()));
+      orderSlot, static_cast<short>(orderSource->GetTradeSellControlValue()));
 }
 
 // FUNCTION: IMPERIALISM 0x0050bc50
@@ -887,8 +887,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     SetControlHoverHelpText(scratch38, textEntry);
 
     short needCap = nation != 0 ? nation->transportCapacity : 0;
-    panel->splitValue94 = nation != 0 ? nation->reservedTransportCapacity : 0;
-    panel->splitValue96 = needCap;
+    panel->targetAmount = nation != 0 ? nation->reservedTransportCapacity : 0;
+    panel->capacity = needCap;
     panel->splitLimit = -1;
     return;
   }
@@ -1207,8 +1207,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
   }
 
   panel->resourceMetricSlot = resourceSlot;
-  panel->splitValue94 = needTarget;
-  panel->splitValue96 = needCurrent;
+  panel->targetAmount = needTarget;
+  panel->capacity = needCurrent;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d310

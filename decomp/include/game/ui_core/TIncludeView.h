@@ -18,7 +18,7 @@ public:
 
   // Turn-event factory packet builder (thiscall on the freshly-constructed entry).
   void IIncludeView(TView* resourceContext, TView* mainView, short eventCode,
-                    const CPoint& anchorPoint, CString* labelText, int flag);
+                    const CPoint& anchorPoint, CString* labelText, short flag);
 
   TIncludeView();
 };

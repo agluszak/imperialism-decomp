@@ -8,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x00646a68
 class CDibPal : public CPalette {
 public:
-  LOGPALETTE* m_pLogPalette; // 0x08 transient LOGPALETTE buffer (malloc/free)
+  LOGPALETTE* m_pLogPalette; // transient LOGPALETTE buffer (malloc/free)
 
   CDibPal();
   virtual ~CDibPal() override;

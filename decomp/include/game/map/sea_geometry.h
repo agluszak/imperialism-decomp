@@ -8,9 +8,9 @@
 // with a single-slot vtable whose slot is Add.
 
 struct Seapoint {
-  int coord00; // +0x00 linear overlay index / raw value
-  int lo04;    // +0x04 sorted-low attribute
-  int hi08;    // +0x08 sorted-high attribute
+  int coord00; // linear overlay index / raw value
+  int lo04;    // sorted-low attribute
+  int hi08;    // sorted-high attribute
   int f0c;
 
   // Store the four dwords, ordering lo04<=hi08.
@@ -19,16 +19,16 @@ struct Seapoint {
 };
 
 struct SeaSegment {
-  short x0;   // +0x00 overlay col of endpoint 0 (coord0 % 0xd8)
-  short y0;   // +0x02 overlay row of endpoint 0 (coord0 / 0xd8)
-  short x1;   // +0x04 overlay col of endpoint 1
-  short y1;   // +0x06 overlay row of endpoint 1
-  int coord0; // +0x08 linear overlay index of endpoint 0 (x0 + y0*0xd8)
-  int coord1; // +0x0c linear overlay index of endpoint 1
+  short x0;   // overlay col of endpoint 0 (coord0 % 0xd8)
+  short y0;   // overlay row of endpoint 0 (coord0 / 0xd8)
+  short x1;   // overlay col of endpoint 1
+  short y1;   // overlay row of endpoint 1
+  int coord0; // linear overlay index of endpoint 0 (x0 + y0*0xd8)
+  int coord1; // linear overlay index of endpoint 1
   // +0x10: carried attributes from endpoint 0's lo04/hi08; border links store the two regions.
   short attrBySide[2];
-  short angle;        // +0x14 heading angle (atan2 of the endpoint delta)
-  unsigned char wrap; // +0x16 set when the segment spans the horizontal wrap (|dx| > 0x6c)
+  short angle;        // heading angle (atan2 of the endpoint delta)
+  unsigned char wrap; // set when the segment spans the horizontal wrap (|dx| > 0x6c)
 
   short& BorderX0() {
     return x0;

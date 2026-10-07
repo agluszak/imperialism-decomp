@@ -73,8 +73,8 @@ void TCity::ICity(TGreatPower* ownerNation) {
         static_cast<short>(productionAccum[productionSlot] - productionOrderTable[productionSlot]);
     productionOrderTable[productionSlot] = 0;
     productionFlags[productionSlot] = 0;
-    production22c[productionSlot] = 0;
-    production24c[productionSlot] = 0;
+    buildingWindowX[productionSlot] = 0;
+    buildingWindowY[productionSlot] = 0;
   }
 
   int regionCount = ownerNation->ownedRegionList->GetSize();
@@ -246,10 +246,10 @@ void TCity::ReadFrom(TStream* stream) {
   SwapShortArrayBytes(unmetResourceRetryCount, 23);
   stream->ReadBytes(reservedByType, sizeof(reservedByType));
   SwapShortArrayBytes(reservedByType, 23);
-  stream->ReadBytes(production22c, productionSlotCount * 2);
-  SwapShortArrayBytes(production22c, productionSlotCount);
-  stream->ReadBytes(production24c, productionSlotCount * 2);
-  SwapShortArrayBytes(production24c, productionSlotCount);
+  stream->ReadBytes(buildingWindowX, productionSlotCount * 2);
+  SwapShortArrayBytes(buildingWindowX, productionSlotCount);
+  stream->ReadBytes(buildingWindowY, productionSlotCount * 2);
+  SwapShortArrayBytes(buildingWindowY, productionSlotCount);
   stream->ReadBytes(consumedProductionInputByType, sizeof(consumedProductionInputByType));
   SwapShortArrayBytes(consumedProductionInputByType, 23);
 
@@ -321,13 +321,13 @@ void TCity::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, reservedByType, 23);
 
   for (int productionSlot = 0; productionSlot < 16; ++productionSlot) {
-    short value = production22c[productionSlot];
+    short value = buildingWindowX[productionSlot];
     SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
   }
   for (int accumulatedProductionSlot = 0; accumulatedProductionSlot < 16;
        ++accumulatedProductionSlot) {
-    short value = production24c[accumulatedProductionSlot];
+    short value = buildingWindowY[accumulatedProductionSlot];
     SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
   }
@@ -873,14 +873,14 @@ short TCity::GetNextBuildingType(short buildingSlot) {
 // FUNCTION: IMPERIALISM 0x004b4c80
 void TCity::SetBuildingWindowState(short productionSlot, bool flag, short current, short accum) {
   productionFlags[productionSlot] = flag;
-  production22c[productionSlot] = current;
-  production24c[productionSlot] = accum;
+  buildingWindowX[productionSlot] = current;
+  buildingWindowY[productionSlot] = accum;
 }
 
 // FUNCTION: IMPERIALISM 0x004b4cc0
 char TCity::GetBuildingWindowState(short productionSlot, short* outCurrent, short* outAccum) {
-  *outCurrent = production22c[productionSlot];
-  *outAccum = production24c[productionSlot];
+  *outCurrent = buildingWindowX[productionSlot];
+  *outAccum = buildingWindowY[productionSlot];
   return productionFlags[productionSlot];
 }
 

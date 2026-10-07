@@ -132,7 +132,7 @@ public:
 
   int RepairOrphanedTileValuesFromNeighbors(short* tileValues);
 
-  char* mapTileGrid; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
+  char* mapTileGrid; // base of the 6480-tile (108x60) grid, stride 0x24
 
   int CountSeaTilesInColumn(int column);
   bool IsSeaTile(int tileIndex);
@@ -151,9 +151,9 @@ public:
   int lastMinorSeedCandidate;
   char pad_2a0[0x2a1 - 0x2a0];
   // +0x2a1 mode byte copied in by the GenerateMap caller.
-  unsigned char modeByte2a1;
+  unsigned char wrapHorizontally;
   char pad_2a2[2];
-  int cityRegionCount; // +0x2a4 number of active city regions
+  int cityRegionCount; // number of active city regions
 };
 
 ASSERT_SIZE(TMapMaker, 0x2a8);

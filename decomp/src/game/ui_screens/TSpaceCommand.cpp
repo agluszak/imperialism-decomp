@@ -3,7 +3,7 @@
 
 // FUNCTION: IMPERIALISM 0x005751f0
 void TSpaceCommand::DoIt() {
-  setupPicture->MajorTomToGroundControl(mode1c);
+  setupPicture->MajorTomToGroundControl(mode);
 }
 
 // FUNCTION: IMPERIALISM 0x00575240

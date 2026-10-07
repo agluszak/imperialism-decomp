@@ -123,7 +123,7 @@ public:
   CListBox listbox;
 
 protected:
-  void DoDataExchange(CDataExchange* pDX) override; // 0x0047df90 (empty body)
+  void DoDataExchange(CDataExchange* pDX) override; // (empty body)
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047dfb0 (vtable index 12)
 };
 
@@ -396,18 +396,18 @@ public:
   TDibPreviewDialog(void* initParam);
   ~TDibPreviewDialog() override; // frees the outline buffer
 
-  CDib* picture;         // 0x74 source picture/DIB (not owned here; set by the caller)
-  int drawOutline;       // 0x78 != 0 -> draw red silhouette polyline in OnPaint
-  int fillPolygon;       // 0x7c != 0 -> fill silhouette region red in OnPaint
-  int renderMode;        // 0x80 OnPaint blit-mode selector (0 = simple/blit, != 0 = masked stretch)
-  unsigned int flag84;   // 0x84 = flags88 & 1 (computed in OnInitDialog)
-  unsigned int flags88;  // 0x88 flags source (set by the caller)
-  POINT* outlinePolygon; // 0x8c heap silhouette buffer: [0].x=count, vertices from [1]
-  const char* windowTitle; // 0x90 LPCSTR passed to SetWindowText (set by the caller)
+  CDib* picture;           // source picture/DIB (not owned here; set by the caller)
+  int drawOutline;         // != 0 -> draw red silhouette polyline in OnPaint
+  int fillPolygon;         // != 0 -> fill silhouette region red in OnPaint
+  int renderMode;          // OnPaint blit-mode selector (0 = simple/blit, != 0 = masked stretch)
+  unsigned int flag84;     // = flags88 & 1 (computed in OnInitDialog)
+  unsigned int flags88;    // flags source (set by the caller)
+  POINT* outlinePolygon;   // heap silhouette buffer: [0].x=count, vertices from [1]
+  const char* windowTitle; // LPCSTR passed to SetWindowText (set by the caller)
 
 protected:
   BOOL OnInitDialog() override;
-  void DoDataExchange(CDataExchange* pDX) override; // 0x0047d5b0 (empty body)
+  void DoDataExchange(CDataExchange* pDX) override; // (empty body)
   afx_msg void OnPaint();
   afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
   DECLARE_MESSAGE_MAP() // GetMessageMap 0x0047d5d0 (vtable index 12)
@@ -426,7 +426,7 @@ public:
 
 protected:
   BOOL OnInitDialog() override;
-  void DoDataExchange(CDataExchange* pDX) override; // 0x004136c0 (empty body)
+  void DoDataExchange(CDataExchange* pDX) override; // (empty body)
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x004136e0 (vtable index 12)
 };
 
@@ -446,8 +446,8 @@ public:
   void AppendTraceTextAndFlushCompleteLines(const char* text);
 
 protected:
-  void OnOK() override;     // 0x0049bfb0 (empty)
-  void OnCancel() override; // 0x0049bfd0 (SW_MINIMIZE)
+  void OnOK() override;     // (empty)
+  void OnCancel() override; // (SW_MINIMIZE)
   void DoDataExchange(CDataExchange* pDX) override;
   DECLARE_MESSAGE_MAP() // GetMessageMap 0x0049bf90 (vtable index 12)
 };
@@ -465,7 +465,7 @@ public:
 protected:
   BOOL PreCreateWindow(CREATESTRUCT& cs) override;
   BOOL OnInitDialog() override;
-  void DoDataExchange(CDataExchange* pDX) override; // 0x005dee80 (empty body)
+  void DoDataExchange(CDataExchange* pDX) override; // (empty body)
 
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
@@ -501,7 +501,7 @@ protected:
   BOOL OnInitDialog() override;
   void OnOK() override;
   void DoDataExchange(CDataExchange* pDX) override;
-  afx_msg void OnDoubleClickedOk(); // 0x004822e0 (BN_DOUBLECLICKED, IDOK)
+  afx_msg void OnDoubleClickedOk(); // (BN_DOUBLECLICKED, IDOK)
   DECLARE_MESSAGE_MAP()             // GetMessageMap 0x004815d0 (vtable index 12)
 };
 

@@ -48,7 +48,7 @@ public:
 
   void LinkTo(TTaskForce* prev_node, TTaskForce* next_node);
 
-  void RegainVirginity(int nationArg, TZone* contextZone);
+  void RegainVirginity(short nationArg, TZone* contextZone);
   void ITaskForce();
   short CountSelectedShips() const;
   void DemocraticallyDetermineAggressionLevel();

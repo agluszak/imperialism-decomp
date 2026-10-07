@@ -22,7 +22,7 @@ void TNavyTacUnit::InitializeFromSourceShip(TShip* sourceShip) {
   tileIndex = -2;
   unitType = g_anTacticalNavyUnitTypeByShipType[sourceShip->type];
   selectedFlag = false;
-  state1c = 0;
+  status = 0;
   actionPoints = GetBaseActionPoints();
   aiStateCode = 0;
   attackTarget = 0;
@@ -93,6 +93,6 @@ void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting)
   if (strength <= 0 || secondaryCombatStrength <= 0) {
     strength = 0;
     secondaryCombatStrength = 0;
-    state1c = 3;
+    status = 3;
   }
 }

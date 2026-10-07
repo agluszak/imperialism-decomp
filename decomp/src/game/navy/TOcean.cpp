@@ -330,15 +330,15 @@ int PickSeedTile(MapTileCostField* costField, short nationTag) {
 }
 
 // FUNCTION: IMPERIALISM 0x00562d90
-void TOcean::CreateZones(int nationCountArg) {
+void TOcean::CreateZones(short nationCountArg) {
   TZone* contextBase;
   MapTileCostField* costField;
   int relaxPassCount;
   int nationIndex;
 
-  nationCount = static_cast<short>(nationCountArg);
+  nationCount = nationCountArg;
   delete[] contextArray;
-  contextBase = new TZone[static_cast<short>(nationCountArg)];
+  contextBase = new TZone[nationCountArg];
   contextArray = contextBase;
   if (contextBase == 0) {
     GAME_FAIL_NIL_POINTER();
@@ -350,12 +350,12 @@ void TOcean::CreateZones(int nationCountArg) {
     relaxPassCount = RelaxMapTileCostFieldByNeighborTerrain(costField);
   }
   nationIndex = 0;
-  if (static_cast<short>(nationCountArg) > 0) {
+  if (nationCountArg > 0) {
     do {
       int seedTile = PickSeedTile(costField, static_cast<short>(nationIndex + kNationSlotCount));
       contextArray[nationIndex].SetIngotTile(nationIndex + kNationSlotCount, seedTile);
       ++nationIndex;
-    } while (nationIndex < static_cast<short>(nationCountArg));
+    } while (nationIndex < nationCountArg);
   }
   delete costField;
 }

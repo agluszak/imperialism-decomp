@@ -29,26 +29,26 @@ CSubViewIterator::CSubViewIterator(const TView* owner) {
 TView* CSubViewIterator::FirstSubView() {
   TViewChildList* list = ownerView->childList;
   if (list == NULL) {
-    position00 = NULL;
+    position = NULL;
   } else {
-    position00 = (direction != 0) ? list->GetHeadPosition() : list->GetTailPosition();
+    position = (direction != 0) ? list->GetHeadPosition() : list->GetTailPosition();
   }
-  if (position00 == NULL) {
+  if (position == NULL) {
     currentChild = NULL;
     return currentChild;
   }
-  currentChild = (direction != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+  currentChild = (direction != 0) ? list->GetNext(position) : list->GetPrev(position);
   return currentChild;
 }
 
 // FUNCTION: IMPERIALISM 0x00491a70
 TView* CSubViewIterator::NextSubView() {
-  if (position00 == NULL) {
+  if (position == NULL) {
     currentChild = NULL;
     return currentChild;
   }
   TViewChildList* list = ownerView->childList;
-  currentChild = (direction != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+  currentChild = (direction != 0) ? list->GetNext(position) : list->GetPrev(position);
   return currentChild;
 }
 

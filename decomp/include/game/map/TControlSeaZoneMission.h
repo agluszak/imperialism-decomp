@@ -21,7 +21,7 @@ public:
   TControlSeaZoneMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
   virtual void Initialize() override;          // port-zone-context score recompute (shared)
-  virtual void SetStateByte8To2() override;    // state update from target navy similarity
+  virtual void ResetPriority() override;       // state update from target navy similarity
   virtual void CalculateImportance() override; // port-zone-context average score (shared)
   virtual void CalculateNeeds() override;      // resource weights from allied navy pressure
 

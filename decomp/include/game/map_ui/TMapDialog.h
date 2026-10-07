@@ -33,9 +33,9 @@ public:
   TMapDialogTileMarker tileMarkers[90];
   bool suppressMarkerOverlay;
   TQuickDrawSurfaceContext* quickDrawSurface;
-  short unresolvedWord354; // +0x354 zeroed by the ctor; no confirmed reader yet
-  short selectedTileIndex; // +0x356 ctor-init 0xffff (tile-index "none" sentinel)
-  bool unresolvedFlag;     // +0x358 zeroed by the ctor; no confirmed reader yet
+  short unresolvedWord354; // zeroed by the ctor; no confirmed reader yet
+  short selectedTileIndex; // ctor-init 0xffff (tile-index "none" sentinel)
+  bool unresolvedFlag;     // zeroed by the ctor; no confirmed reader yet
   TObject* overlayObject;  // Free() dispatches TObject::Free virtually, then clears it.
   bool tileDebugOverlayEnabled;
 

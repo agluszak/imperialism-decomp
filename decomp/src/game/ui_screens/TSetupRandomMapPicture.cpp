@@ -373,7 +373,7 @@ void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
   TSpaceCommand* command = new TSpaceCommand();
   command->ICommand(kControlTagNASA, g_pAmbitApplication, 0, 0, 0);
   command->setupPicture = this;
-  command->mode1c = mode;
+  command->mode = mode;
   g_pAmbitApplication->DispatchUiSelectionToHandler(command);
 }
 

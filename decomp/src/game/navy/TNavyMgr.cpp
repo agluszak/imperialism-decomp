@@ -131,9 +131,9 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
 }
 
 // FUNCTION: IMPERIALISM 0x00550c20
-void FormatCommodityCount(CString* out, unsigned int commodityCode, short count) {
+void FormatCommodityCount(CString* out, short commodityCode, short count) {
   short codeGroup = (count < 2) ? 0x2716 : 0x271a;
-  g_pSimMgr->GetString(codeGroup, static_cast<short>(commodityCode), out);
+  g_pSimMgr->GetString(codeGroup, commodityCode, out);
   if (count >= 0) {
     CString numberText;
     numberText.Format(g_szDecimalFormat, static_cast<int>(count));
@@ -879,9 +879,9 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
       }
     }
     int entryChildren = CountMapOrderChildren(entry->shipList);
-    int threshold = entryChildren + activeNationChildren + thresholdBase +
-                    (activeChildRating - cityWeight1) + offerPerCityWeight - 10;
-    if (rand() % 100 >= static_cast<short>(threshold)) {
+    short threshold = entryChildren + activeNationChildren + thresholdBase +
+                      (activeChildRating - cityWeight1) + offerPerCityWeight - 10;
+    if (rand() % 100 >= threshold) {
       continue;
     }
 

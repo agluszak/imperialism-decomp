@@ -13,7 +13,7 @@ public:
   virtual ~TTacArmyView() override;
   virtual void Draw(RECT* rectBuffer) override;
   virtual void DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) override;
-  short battlefieldColumnCount; // +0xd8 copy of battle battlefieldColumnCount
+  short battlefieldColumnCount; // copy of battle battlefieldColumnCount
   unsigned char padDA[2];
 
   // NOOP: verified empty in original 0x005a9d26

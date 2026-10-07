@@ -43,10 +43,10 @@ void TTechHistoryView::StuffValues(short techId) {
   descText->textColor = mainStyle;
   descText->LoadTextResource(static_cast<short>(techId + 0x8fc));
 
-  int measuredHeight = descText->MeasureCurrentTextHeightInLayoutRect();
+  short measuredHeight = descText->MeasureCurrentTextHeightInLayoutRect();
   CRect descBounds;
   descText->GetFrame(&descBounds);
-  descBounds.bottom = descBounds.top + static_cast<short>(measuredHeight);
+  descBounds.bottom = descBounds.top + measuredHeight;
   descText->SetFrame(&descBounds, true);
 
   scrollView->contentView = descText;

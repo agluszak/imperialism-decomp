@@ -1612,16 +1612,16 @@ JSON_Value* CapturePendingShip(TGreatPower* nation) {
 }
 
 JSON_Value* CapturePendingDevelopmentActions(TCityInteriorMinister* minister) {
-  if (minister->list190 == 0) {
+  if (minister->productionRequests == 0) {
     FailSemanticCapture("interior-minister pending development action list is unavailable");
   }
   JsonArray actions;
-  const int count = minister->list190->GetSize();
+  const int count = minister->productionRequests->GetSize();
   if (count < 0) {
     FailSemanticCapture("interior-minister pending development action count is negative");
   }
   for (int ordinal = 1; ordinal <= count; ++ordinal) {
-    const long value = minister->list190->At(ordinal);
+    const long value = minister->productionRequests->At(ordinal);
     JsonObject action;
     if (value >= 30) {
       action.Set("kind", "industry");
@@ -1778,8 +1778,8 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("special_resource_trade_balance", nation->specialResourceTradeBalance);
   object.Set("scenario_initialized", nation->scenarioInitFlag != 0 ? true : false);
   object.Set("turn_finished", nation->turnFinished != 0 ? true : false);
-  object.Set("pending_actions",
-             CapturePendingActions(nation->pendingActionStatus.byAction, nation->field8d6));
+  object.Set("pending_actions", CapturePendingActions(nation->pendingActionStatus.byAction,
+                                                      nation->pendingActionPayload));
   object.Set("diplomacy_budget_base", nation->diplomacyBudgetBase);
   object.Set("escalation_counter", static_cast<int>(nation->escalationCounter));
   object.Set("pending_commitment_cost", nation->pendingCommitmentCost);
@@ -1998,8 +1998,8 @@ JSON_Value* CapturePopulation(const TPopulationMgr* population) {
   object.Set("count", static_cast<int>(population->populationCount));
   object.Set("accumulator", static_cast<double>(population->populationCountFloat));
   object.Set("strength", static_cast<int>(population->strength));
-  object.Set("extra", static_cast<int>(population->extraAt1e));
-  object.Set("strike_phase", StrikePhaseName(population->fieldAt20));
+  object.Set("extra", static_cast<int>(population->powerPlantOutput));
+  object.Set("strike_phase", StrikePhaseName(population->consumptionRotation));
   object.Set("baseline_labor", CaptureLaborPool(population->baselineSlots));
   object.Set("production_labor", CaptureLaborPool(population->productionSlots));
   object.Set("pending_labor_delta", CaptureLaborPool(population->pendingDeltaSlots));
@@ -2310,8 +2310,8 @@ JSON_Value* CaptureCityBuildingWindows(TCity* city) {
       windows.AddNull();
     } else {
       JsonObject position;
-      position.Set("left", static_cast<int>(city->production22c[slot]));
-      position.Set("top", static_cast<int>(city->production24c[slot]));
+      position.Set("left", static_cast<int>(city->buildingWindowX[slot]));
+      position.Set("top", static_cast<int>(city->buildingWindowY[slot]));
       windows.Add(position.Release());
     }
   }
@@ -2756,12 +2756,12 @@ JSON_Value* CaptureMissions(bool freshRandomStart) {
       }
       ASSERT(mission->pathMarker >= -1 && mission->pathMarker < kNationSlotCount);
       object.SetOptional("path_nation", static_cast<int>(mission->pathMarker));
-      object.Set("state", static_cast<unsigned int>(mission->state08));
+      object.Set("state", static_cast<unsigned int>(mission->priority));
       object.Set("importance_bits", FloatBits(mission->importanceScore));
-      // TMission construction leaves flag10 untouched. Hold and ReadFrom make it semantic;
+      // TMission construction leaves onHold untouched. Hold and ReadFrom make it semantic;
       // before either operation, the byte is allocator residue rather than gameplay state.
-      object.Set("held", !freshRandomStart && mission->flag10 != 0);
-      object.Set("marker", static_cast<unsigned int>(mission->marker11));
+      object.Set("held", !freshRandomStart && mission->onHold != 0);
+      object.Set("marker", static_cast<unsigned int>(mission->requiredForces));
       missions.Add(object.Release());
     }
   }
@@ -3270,7 +3270,7 @@ JSON_Value* CaptureCityTransportEphemeral() {
       pending.Add(static_cast<int>(nation->pendingActionStatus.byAction[index]));
     }
     entry.Set("pending_actions", pending.Release());
-    entry.Set("pending_payloads", CaptureShortArray(nation->field8d6, 0x0d));
+    entry.Set("pending_payloads", CaptureShortArray(nation->pendingActionPayload, 0x0d));
     entry.Set("reserved_transport", static_cast<int>(nation->reservedTransportCapacity));
     entry.Set("item_potentials", CaptureShortArray(nation->itemPotentials, kResourceKindCount));
     entry.Set("transported_items",
@@ -3503,10 +3503,10 @@ JSON_Value* CaptureMissionsEphemeral() {
       object.Set("kind", runtimeClass != 0 ? runtimeClass->m_lpszClassName : "unknown");
       object.Set("nation_id", static_cast<int>(mission->nationId));
       object.Set("path_marker", static_cast<int>(mission->pathMarker));
-      object.Set("state", static_cast<unsigned int>(mission->state08));
+      object.Set("state", static_cast<unsigned int>(mission->priority));
       object.Set("importance_bits", FloatBits(mission->importanceScore));
-      object.Set("flag10", static_cast<unsigned int>(mission->flag10));
-      object.Set("marker", static_cast<unsigned int>(mission->marker11));
+      object.Set("flag10", static_cast<unsigned int>(mission->onHold));
+      object.Set("marker", static_cast<unsigned int>(mission->requiredForces));
       if (mission->IsNavyMission()) {
         TNavyMission* navy = static_cast<TNavyMission*>(mission);
         object.Set("target_zone", RuntimeZoneIndex(navy->missionTargetZone));
@@ -3602,10 +3602,10 @@ JSON_Value* CaptureDevelopmentEphemeral() {
     object.Set("order_ba", orderBA.Release());
     object.Set("order_dc", orderDC.Release());
     JsonArray queued;
-    if (minister->list190 != 0) {
-      POSITION position = minister->list190->GetHeadPosition();
+    if (minister->productionRequests != 0) {
+      POSITION position = minister->productionRequests->GetHeadPosition();
       while (position != 0) {
-        queued.Add(static_cast<int>(minister->list190->GetNext(position)));
+        queued.Add(static_cast<int>(minister->productionRequests->GetNext(position)));
       }
     }
     object.Set("queued_orders", queued.Release());

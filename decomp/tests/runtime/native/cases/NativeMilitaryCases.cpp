@@ -259,7 +259,7 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
     record.Set("action_points", unit->actionPoints);
     record.Set("strength", unit->strength);
     record.Set("morale", unit->morale);
-    record.Set("state", unit->state1c);
+    record.Set("state", unit->status);
     unitArray.Add(record.Release());
   }
   snapshot.SetOptional(
@@ -1869,7 +1869,7 @@ static TAutoGreatPower* ConfigureAiNavalDevelopmentPressure(short* nationSlotOut
   CIterator iter(autoNation->missionQueue);
   for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
        mission = static_cast<TMission*>(iter.Advance())) {
-    mission->flag10 = 1;
+    mission->onHold = 1;
   }
   TControlSeaZoneMission* navyMission = new TControlSeaZoneMission(g_pMapActionContextListHead);
   navyMission->IMission(nationSlot);
@@ -1878,7 +1878,7 @@ static TAutoGreatPower* ConfigureAiNavalDevelopmentPressure(short* nationSlotOut
   navyMission->requiredShipEquipageByCategory[1] = 0.0f;
   navyMission->requiredShipEquipageByCategory[2] = 0.0f;
   navyMission->requiredShipEquipageByCategory[3] = 1000.0f;
-  navyMission->flag10 = 0;
+  navyMission->onHold = 0;
   autoNation->missionQueue->AddTail(navyMission);
   if (g_pMapActionContextListHead->primaryNeighbors.GetSize() != 0) {
     TShip* ship = new TShip();

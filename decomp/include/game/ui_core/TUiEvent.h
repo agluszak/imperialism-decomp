@@ -12,15 +12,15 @@ public:
 ASSERT_SIZE(TUiEvent, 0x14);
 
 struct TToolboxEvent {
-  TUiEvent event;      // 0x00 TEvent-derived header
-  int mouseX;          // 0x14 mouse-event client X
-  int mouseY;          // 0x18 mouse-event client Y
-  short commandCode;   // 0x1c virtual key code (0x68 for VK_F1)
-  short keyFlags;      // 0x1e nFlags & 0xf
-  short handledMarker; // 0x20 repeat count / "already handled" marker
+  TUiEvent event;      // TEvent-derived header
+  int mouseX;          // mouse-event client X
+  int mouseY;          // mouse-event client Y
+  short commandCode;   // virtual key code (0x68 for VK_F1)
+  short keyFlags;      // nFlags & 0xf
+  short handledMarker; // repeat count / "already handled" marker
   unsigned short reserved22;
-  int mouseButton;            // 0x24 mouse button selector read by TWorldView
-  unsigned int modifierFlags; // 0x28 bit0 Ctrl, bit1 Shift, bit2 Alt, bit3 RWin
+  int mouseButton;            // mouse button selector read by TWorldView
+  unsigned int modifierFlags; // bit0 Ctrl, bit1 Shift, bit2 Alt, bit3 RWin
 };
 
 ASSERT_SIZE(TToolboxEvent, 0x2c);

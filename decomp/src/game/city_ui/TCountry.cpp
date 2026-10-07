@@ -207,8 +207,8 @@ void TCountry::MultiWriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7150
-void TCountry::SetCenterTile(int value) {
-  overlayAnchorTileCache = static_cast<short>(value);
+void TCountry::SetCenterTile(short value) {
+  overlayAnchorTileCache = value;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7170
@@ -299,7 +299,7 @@ void TCountry::InitialMilitia(void) {
 
 // FUNCTION: IMPERIALISM 0x004d7770
 void TCountry::AddMilitia(int nodeContext) {
-  int capabilityBonus = 0;
+  short capabilityBonus = 0;
   if (static_cast<unsigned short>(nationSlot) < kMajorNationCount) {
     const TTechMgr::MilitaryCapRow& capabilityRow = g_pTechMgr->abilityActiveRows[nationSlot];
     if (capabilityRow.abilityActiveById[0x10] != 0) {
@@ -310,7 +310,7 @@ void TCountry::AddMilitia(int nodeContext) {
     }
   }
   TMilitaryUnit* militaryOrder = new TMilitaryUnit();
-  militaryOrder->IMilitaryUnit(static_cast<short>(capabilityBonus), nodeContext, nationSlot);
+  militaryOrder->IMilitaryUnit(capabilityBonus, nodeContext, nationSlot);
   militaryOrder->SetOrders(static_cast<UnitOrder>(2), -1);
 }
 
@@ -594,7 +594,7 @@ void TCountry::GrowMilitia(void) {
     return;
   }
 
-  int garrisonThreshold = 3;
+  short garrisonThreshold = 3;
   if (static_cast<unsigned short>(nationSlot) < kMajorNationCount) {
     garrisonThreshold = 4;
   }
@@ -618,7 +618,7 @@ void TCountry::GrowMilitia(void) {
         ++garrisonCount;
       }
     }
-    if (garrisonCount < static_cast<short>(garrisonThreshold)) {
+    if (garrisonCount < garrisonThreshold) {
       AddMilitia(static_cast<int>(regionId));
     }
     ++ordinal;

@@ -165,7 +165,7 @@ struct TurnEvent12Packet : TimelyMessageHeader {
 struct TurnEventCKickMessagePacket : TimelyMessageHeader {
   char messageText[256];
   unsigned char targetNationBitmask; // 1 << slot per addressed nation
-  signed char kickerNationId;        // +0x119 + 1 = no specific kicker
+  signed char kickerNationId;        // + 1 = no specific kicker
   unsigned char pad11a[2];
 };
 
@@ -180,7 +180,7 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
 };
 
 struct TurnEvent20TreatyNewsPacket : TimelyMessageHeader {
-  short eventKind; // +0x18 InterNationEventKind
+  short eventKind; // InterNationEventKind
   signed char nationA;
   signed char nationB;
 };
@@ -236,7 +236,7 @@ struct TurnEvent1EDiplomacyActionPacket : TimelyNetMessagePrefix {
   signed char nation;
   signed char nationA1D;
   signed char nationB1E;
-  char actionCode;      // +0x1f - 'a' or 'i'
+  char actionCode;      // 'a' or 'i'
   unsigned char flag20; // role-swap selector
   unsigned char flag21; // gate for the slot-0x284 paths
   unsigned char pad22[2];
@@ -260,11 +260,11 @@ struct TurnEvent27JoinEmpirePacket : TimelyMessageHeader {
 
 // Events 0x29/0x2A tactical battle commands by fourcc tag.
 struct TacticalCommandPacket : TimelyMessageHeader {
-  int commandTag; // +0x18 'sele'/'move'/'mine'/'digg'/'depl'/'raly' (0x29), 'fire' (0x2a)
+  int commandTag; // 'sele'/'move'/'mine'/'digg'/'depl'/'raly' (0x29), 'fire' (0x2a)
   int unitId;     // resolved via SeekLinkedListCursorByNestedId
   int arg20;
   int arg24;
-  int arg28; // +0x28 ('fire' only)
+  int arg28; // ('fire' only)
   int arg2C; // total 0x30
 };
 
@@ -450,11 +450,11 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     }
 
     for (int capitalSlot = 0; capitalSlot < 7; ++capitalSlot) {
-      int homeTile = g_apTerrainTypeDescriptorTable[capitalSlot]->homeTileIndex;
+      short homeTile = g_apTerrainTypeDescriptorTable[capitalSlot]->homeTileIndex;
       short neighborTiles[7];
-      TMapMgr::GetNeighborTileIDArray(static_cast<short>(homeTile), neighborTiles,
+      TMapMgr::GetNeighborTileIDArray(homeTile, neighborTiles,
                                       g_pGlobalMapState->hexNeighborWrapHorizontally);
-      neighborTiles[6] = static_cast<short>(homeTile);
+      neighborTiles[6] = homeTile;
       for (int k = 0; k < 7; ++k) {
         short tileIndex = neighborTiles[k];
         if (tileIndex != -1) {
@@ -907,8 +907,8 @@ bool TMultiplayerMgr::ReadMessage(NetMessage* packet) {
           }
           okayButton->ViewEnable(canStart, 0);
           okayButton->Show(canStart, 1);
-          okayButton->themeCode9A = 0x2b6c;
-          okayButton->themeCode9C = 0x2b6b;
+          okayButton->textThemeCode = 0x2b6c;
+          okayButton->shadowThemeCode = 0x2b6b;
           okayButton->pointSize = 0xc;
           TView* messControl = lounge->FindSubView(kSessionTagMess);
           messControl->AssertValid();
@@ -1056,7 +1056,7 @@ bool TMultiplayerMgr::ReadMessage(NetMessage* packet) {
       gameNameString = hostGameName;
     }
     scenarioSelectionTag = sessionInit->scenarioTag;
-    queueSyncDword = sessionInit->saveSlotDword5C;
+    queueSyncDword = sessionInit->queueSync;
     sessionPhaseTag = kSessionTagInit; // 'init'
     if (scenarioSelectionTag == kControlTagLoad) {
       bool probed = BuildSaveSlotPathAndProbeMetadata(queueSyncDword, g_pszClientSavePrefix);
@@ -1075,7 +1075,7 @@ bool TMultiplayerMgr::ReadMessage(NetMessage* packet) {
       return true;
     } else if (scenarioSelectionTag == kControlTagRand) {
       g_pSimMgr->CreateSimObjects(true);
-      g_pSimMgr->CreatePlanet(1, sessionInit->mapSeedText, sessionInit->mapParamByte39);
+      g_pSimMgr->CreatePlanet(1, sessionInit->mapSeedText, sessionInit->wrapHorizontally);
     } else if (scenarioSelectionTag >= kControlTagScn0 && scenarioSelectionTag <= kSessionTagScz9) {
       g_pSimMgr->CreateSimObjects(true);
       unsigned char rebuilt = g_pSimMgr->LoadScenario(scenarioSelectionTag - kControlTagScn0);
@@ -1457,8 +1457,8 @@ bool TMultiplayerMgr::ReadMessage(NetMessage* packet) {
     summary2C->populationCount = composite->popFieldAt8;
     summary2C->populationCountFloat = composite->popFieldAtC;
     summary2C->strength = composite->popStockLevel;
-    summary2C->extraAt1e = composite->popExtraAt1e;
-    summary2C->fieldAt20 = composite->popFieldAt20;
+    summary2C->powerPlantOutput = composite->popExtraAt1e;
+    summary2C->consumptionRotation = composite->popFieldAt20;
     summary2C->baselineSlots->lowSkillCount = composite->popBucketWords[0];
     summary2C->baselineSlots->mediumSkillCount = composite->popBucketWords[1];
     summary2C->baselineSlots->highSkillCount = composite->popBucketWords[2];
@@ -2135,11 +2135,11 @@ void TMultiplayerMgr::SendDealResults(bool broadcast, short sourceNation, short 
 
 // FUNCTION: IMPERIALISM 0x00549a90
 void TMultiplayerMgr::SendStreamObject(unsigned long payloadTag, TObject* payloadObject,
-                                       int destinationSlot) {
+                                       short destinationSlot) {
   TaggedSerializablePayload payload;
   payload.tag = payloadTag;
   payload.object = payloadObject;
-  SendStreamMessage(0x31, static_cast<short>(destinationSlot), reinterpret_cast<long>(&payload));
+  SendStreamMessage(0x31, destinationSlot, reinterpret_cast<long>(&payload));
 }
 
 // FUNCTION: IMPERIALISM 0x00549ad0
@@ -2739,12 +2739,11 @@ void TMultiplayerMgr::DehumanizePlayer(int nationSlot) {
     }
     TGreatPower* oldNation = g_apNationStates[nationSlot];
     if (oldNation != 0 && oldNation->diplomacyEligibility != 0 && !isLocalNation) {
-      int policyDice5 = rand() % 5;
-      int policyDice6 = rand() % 6;
-      int policyDice4 = rand() % 4;
+      short policyDice5 = rand() % 5;
+      short policyDice6 = rand() % 6;
+      short policyDice4 = rand() % 4;
       TAutoGreatPower* newNation = new TAutoGreatPower();
-      newNation->IAutoGreatPower(nationSlot, 2, static_cast<short>(policyDice4),
-                                 static_cast<short>(policyDice6), static_cast<short>(policyDice5));
+      newNation->IAutoGreatPower(nationSlot, 2, policyDice4, policyDice6, policyDice5);
 
       newNation->identitySharedString0 = oldNation->identitySharedString0;
       newNation->identitySharedString1 = oldNation->identitySharedString1;
@@ -2822,7 +2821,8 @@ void TMultiplayerMgr::DehumanizePlayer(int nationSlot) {
       memcpy(newNation->enemyFlags, oldNation->enemyFlags, sizeof(newNation->enemyFlags));
       memcpy(&newNation->pendingActionStatus, &oldNation->pendingActionStatus,
              sizeof(newNation->pendingActionStatus));
-      memcpy(newNation->field8d6, oldNation->field8d6, sizeof(newNation->field8d6));
+      memcpy(newNation->pendingActionPayload, oldNation->pendingActionPayload,
+             sizeof(newNation->pendingActionPayload));
       newNation->armyTransportRemaining = oldNation->armyTransportRemaining;
       newNation->turnFinished = oldNation->turnFinished;
 
@@ -3014,8 +3014,8 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
     }
     strcpy(sessionInit.hostGameName, gameNameString);
     strcpy(sessionInit.mapSeedText, g_pGlobalMapState->scenarioTagText);
-    sessionInit.mapParamByte39 = g_pGlobalMapState->hexNeighborWrapHorizontally;
-    sessionInit.saveSlotDword5C = queueSyncDword;
+    sessionInit.wrapHorizontally = g_pGlobalMapState->hexNeighborWrapHorizontally;
+    sessionInit.queueSync = queueSyncDword;
     sessionInit.difficultyLevel = static_cast<signed char>(g_pSimMgr->difficultyLevel);
     sessionInit.nameTableFlag = g_pSimMgr->useLocalizedNameTables;
     g_pNetMgr->Send(&sessionInit, false);
@@ -3167,8 +3167,8 @@ void TMultiplayerMgr::SendCityStateMessage(int nationSlot, int destinationSlot) 
     packet.popFieldAt8 = summary->populationCount;
     packet.popFieldAtC = summary->populationCountFloat;
     packet.popStockLevel = summary->strength;
-    packet.popExtraAt1e = summary->extraAt1e;
-    packet.popFieldAt20 = summary->fieldAt20;
+    packet.popExtraAt1e = summary->powerPlantOutput;
+    packet.popFieldAt20 = summary->consumptionRotation;
     packet.popBucketWords[0] = summary->baselineSlots->lowSkillCount;
     packet.popBucketWords[1] = summary->baselineSlots->mediumSkillCount;
     packet.popBucketWords[2] = summary->baselineSlots->highSkillCount;

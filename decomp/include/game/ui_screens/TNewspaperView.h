@@ -24,6 +24,6 @@ public:
   void CountryParmList(CString* out, int bitmask);
   void ProvinceParmList(CString& out, int cityRecordIndex);
   int AddTextView(int column, int y, int recordOffset, int recordLength, TextStyle* style,
-                  int styleWord, CString* tokens);
+                  short styleWord, CString* tokens);
 };
 ASSERT_SIZE(TNewspaperView, 0x98);

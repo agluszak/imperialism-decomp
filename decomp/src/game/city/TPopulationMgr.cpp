@@ -21,7 +21,7 @@ void TPopulationMgr::IPopulationMgr(TCity* city) {
   pendingDeltaSlots = new TLaborPool();
   populationCount = 0;
   populationCountFloat = 0.0f;
-  extraAt1e = 0;
+  powerPlantOutput = 0;
   memset(predictedNeedByResource, 0, sizeof(predictedNeedByResource));
 }
 
@@ -42,7 +42,7 @@ void TPopulationMgr::SetPopulation(short lowSkillCount) {
   pendingDeltaSlots->highSkillCount = 0;
   pendingDeltaSlots->mediumSkillCount = 0;
   pendingDeltaSlots->lowSkillCount = 0;
-  fieldAt20 = 0;
+  consumptionRotation = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5dc0
@@ -65,7 +65,7 @@ void TPopulationMgr::SetPopulation(short lowSkillCount, short mediumSkillCount,
   pendingDeltaSlots->highSkillCount = 0;
   pendingDeltaSlots->mediumSkillCount = 0;
   pendingDeltaSlots->lowSkillCount = 0;
-  fieldAt20 = 0;
+  consumptionRotation = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5e80
@@ -75,13 +75,13 @@ void TPopulationMgr::StartProductionPhase() {
   strength = static_cast<short>(
       productionSlots->lowSkillCount +
       (productionSlots->mediumSkillCount + productionSlots->highSkillCount * 2) * 2);
-  extraAt1e = 0;
+  powerPlantOutput = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5ed0
 void TPopulationMgr::Eat() {
   int substitutedFoodCount = 0;
-  int starvationLoss = 0;
+  short starvationLoss = 0;
 
   productionSlots->lowSkillCount =
       static_cast<short>(productionSlots->lowSkillCount + pendingDeltaSlots->lowSkillCount);
@@ -213,7 +213,7 @@ void TPopulationMgr::Eat() {
     productionSlots->TransferWorst(pendingDeltaSlots, static_cast<short>(substitutedFoodCount));
   }
   city->foodSubstitutionCount = static_cast<short>(substitutedFoodCount);
-  city->starvationPopulationLoss = static_cast<short>(starvationLoss);
+  city->starvationPopulationLoss = starvationLoss;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6260
@@ -328,7 +328,7 @@ short* TPopulationMgr::PredictedNeeds() {
   rotationCounts[2] = 0;
 
   short cycles = skilledPopulation / 10;
-  short rotation = fieldAt20;
+  short rotation = consumptionRotation;
   while (cycles != 0) {
     ++rotationCounts[rotation];
     rotation = rotation == 3 ? 0 : static_cast<short>(rotation + 1);
@@ -358,8 +358,9 @@ bool TPopulationMgr::Strike() {
 
   short cycles = skilledPopulation / 10;
   while (cycles != 0) {
-    ++consumptionByResource[fieldAt20];
-    fieldAt20 = fieldAt20 == 3 ? 0 : static_cast<short>(fieldAt20 + 1);
+    ++consumptionByResource[consumptionRotation];
+    consumptionRotation =
+        consumptionRotation == 3 ? 0 : static_cast<short>(consumptionRotation + 1);
     --cycles;
   }
 
@@ -463,8 +464,8 @@ void TPopulationMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytes(&populationCount, 2);
   stream->WriteBytes(&strength, 2);
-  stream->WriteBytes(&extraAt1e, 2);
-  stream->WriteBytes(&fieldAt20, 2);
+  stream->WriteBytes(&powerPlantOutput, 2);
+  stream->WriteBytes(&consumptionRotation, 2);
   stream->WriteBytes(predictedNeedByResource, sizeof(predictedNeedByResource));
   stream->WriteBytes(&populationCountFloat, 4);
   baselineSlots->WriteTo(stream);
@@ -477,8 +478,8 @@ void TPopulationMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&populationCount, 2);
   stream->ReadBytes(&strength, 2);
-  stream->ReadBytes(&extraAt1e, 2);
-  stream->ReadBytes(&fieldAt20, 2);
+  stream->ReadBytes(&powerPlantOutput, 2);
+  stream->ReadBytes(&consumptionRotation, 2);
   stream->ReadBytes(predictedNeedByResource, sizeof(predictedNeedByResource));
   stream->ReadBytes(&populationCountFloat, 4);
   baselineSlots->ReadFrom(stream);

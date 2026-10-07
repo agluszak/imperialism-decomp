@@ -1111,7 +1111,7 @@ void TDiplomacyMapView::ShowTreaties(int activeNationSlot, const RECT* presentRe
     LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
 
     for (short nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
-      int eventCode;
+      short eventCode;
       if (nationIndex == static_cast<short>(activeNationSlot)) {
         eventCode = 0x40;
       } else {
@@ -1122,7 +1122,7 @@ void TDiplomacyMapView::ShowTreaties(int activeNationSlot, const RECT* presentRe
 
       maskOrigin.x = 0;
       maskOrigin.y = 0;
-      QuickDrawPaletteIndex paletteIndex = g_pViewMgr->GetColor(static_cast<short>(eventCode));
+      QuickDrawPaletteIndex paletteIndex = g_pViewMgr->GetColor(eventCode);
       maskRuns[nationIndex].BlitMonochromeMaskBytePatternToSurface(
           &g_pActiveQuickDrawSurfaceContext->blitSurface, static_cast<short>(paletteIndex),
           &maskOrigin, true);
@@ -1274,11 +1274,11 @@ void TDiplomacyMapView::ShowRelations(int activeNationSlot, const RECT* presentR
 }
 
 // FUNCTION: IMPERIALISM 0x004f6b10
-void TDiplomacyMapView::PaintRegion(int maskIndex, int eventCode) {
+void TDiplomacyMapView::PaintRegion(int maskIndex, short eventCode) {
   CPoint maskOrigin;
   maskOrigin.x = 0;
   maskOrigin.y = 0;
-  QuickDrawPaletteIndex paletteIndex = g_pViewMgr->GetColor(static_cast<short>(eventCode));
+  QuickDrawPaletteIndex paletteIndex = g_pViewMgr->GetColor(eventCode);
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
   maskRun->BlitMonochromeMaskBytePatternToSurface(&g_pActiveQuickDrawSurfaceContext->blitSurface,
                                                   static_cast<short>(paletteIndex), &maskOrigin,
@@ -1291,10 +1291,10 @@ void TDiplomacyMapView::PaintRegion(int maskIndex, int eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f6bd0
-void TDiplomacyMapView::FillRegionWithPict(short maskIndex, int bmpId) {
+void TDiplomacyMapView::FillRegionWithPict(short maskIndex, unsigned short bmpId) {
   TQuickDrawSurfaceContext* surface = g_pActiveQuickDrawSurfaceContext;
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
-  CDib* bmpHandle = g_pResourceMgr->LoadBmpResourceByIdCached(static_cast<unsigned short>(bmpId));
+  CDib* bmpHandle = g_pResourceMgr->LoadBmpResourceByIdCached(bmpId);
 
   unsigned char* maskCursor = maskRun->maskBytes;
   if (maskCursor != 0) {

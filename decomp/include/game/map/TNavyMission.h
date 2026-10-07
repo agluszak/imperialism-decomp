@@ -14,14 +14,14 @@ class TNavyMission : public TMission {
 public:
   TZone* missionTargetZone;
   TZone* resolvedPortZone;
-  TShip* selectedOrder;              // +0x1c selected primary navy-order node
-  TTaskForce* taskForce;             // +0x20 combined task-force/map-order entry
+  TShip* selectedOrder;              // selected primary navy-order node
+  TTaskForce* taskForce;             // combined task-force/map-order entry
   TMapOrderChildLinkNode* orderList; // head of child order-node chain
 
   TShip* PickBestShipForMissionType(int missionType) const;
 
   float ComputeSeaZoneImportance(TZone* zone);
-  int navyState; // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
+  int navyState; // target-selection state (0 -> zone18 active, 1..2 -> zone14)
   float requiredShipEquipageByCategory[4];
 
   TNavyMission() : TMission() {
@@ -79,8 +79,8 @@ public:
 
   void AccumulateShipEquipage(TShip* ship, float* vector, char positive);
 
-  static float ScoreNationMatch(int sourceNation, TZone* nodeContext);
-  static float ScoreEnemyMatch(int sourceNation, TZone* nodeContext);
+  static float ScoreNationMatch(short sourceNation, TZone* nodeContext);
+  static float ScoreEnemyMatch(short sourceNation, TZone* nodeContext);
   float ScoreZoneMatch(TZone* nodeContext);
   float ScoreZoneBaseMatch(TZone* nodeContext);
   float GetWeightedSatifactionWith(TShip* candidateOrder);

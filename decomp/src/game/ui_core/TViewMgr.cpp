@@ -449,7 +449,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   TextStyle styleDescriptor;
   CRect bounds;            // function-scope like the original (0x38): not overlapped with the
   short overlaySfxIds[13]; // sfx table (0x48), so the frame keeps both live regions
-  int payloadResource;
+  short payloadResource;
   styleDescriptor.textColor = 0;
   payloadResource = 0;
   if (messagePosition.x == -1000) {
@@ -458,7 +458,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
 
   TWindow* dialog;
-  if (static_cast<short>(payloadResource) == 0) {
+  if (payloadResource == 0) {
     dialog = g_pAssetMgr->GetDialog(kTurnEventMinisterMessage);
   } else {
     g_pAssetMgr->OpenFilesFor(0xb);
@@ -483,11 +483,11 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x2fa);
   }
   int contextTagSx = contextTag;
-  int goldResource = contextTagSx * 2 + 0x24cd;
+  short goldResource = contextTagSx * 2 + 0x24cd;
   if (contextTag == 2 && g_nationInfoGoldResourceOverride != 0) {
     goldResource = g_nationInfoGoldResourceOverride;
   }
-  gold->SetPictureRsrcID(static_cast<short>(goldResource), 0);
+  gold->SetPictureRsrcID(goldResource, 0);
 
   TPicture* coat = static_cast<TPicture*>(dialog->FindSubView(kControlTagCoat)); // 'coat'
   coat->AssertValid();
@@ -500,13 +500,13 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     coat->Show(0, 0);
   }
 
-  if (static_cast<short>(payloadResource) != 0) {
+  if (payloadResource != 0) {
     TPicture* goldValue = static_cast<TPicture*>(dialog->FindSubView(kControlTagDialog)); // 'DLOG'
     goldValue->AssertValid();
     goldValue->SetPictureRsrcID(static_cast<short>(contextTag + 0x252a), 0);
     TPicture* award = static_cast<TPicture*>(dialog->FindSubView(kControlTagRewa)); // 'awer'
     award->AssertValid();
-    award->SetPictureRsrcID(static_cast<short>(payloadResource), 0);
+    award->SetPictureRsrcID(payloadResource, 0);
   } else {
     TStaticText* title = static_cast<TStaticText*>(dialog->FindSubView(kControlTagTitl)); // 'titl'
     title->AssertValid();
@@ -565,7 +565,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     savedProcessFlag = showCancel;
   }
 
-  if (static_cast<short>(payloadResource) != 0) {
+  if (payloadResource != 0) {
     overlaySfxIds[0] = 0xbcc;
     overlaySfxIds[1] = 0xbcd;
     overlaySfxIds[2] = 0xbce;
@@ -761,9 +761,8 @@ void TViewMgr::RefreshNationIndicator() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6bf0
-void TViewMgr::AddPendingTurnOverlayCode(int modeValue) {
-  pendingTurnOverlayCode =
-      static_cast<short>(pendingTurnOverlayCode + static_cast<short>(modeValue));
+void TViewMgr::AddPendingTurnOverlayCode(short modeValue) {
+  pendingTurnOverlayCode = static_cast<short>(pendingTurnOverlayCode + modeValue);
 }
 
 // FUNCTION: IMPERIALISM 0x005d6c10

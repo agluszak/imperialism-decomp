@@ -1205,7 +1205,7 @@ void TTacticalBattleView::AdjustCursor(CPoint* point, RgnHandle hitArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a9090
-void TTacticalBattleView::PlayAni(TacticalTileIndex tileIndex, int effectId, int frameCount) {
+void TTacticalBattleView::PlayAni(TacticalTileIndex tileIndex, short effectId, short frameCount) {
   RECT effectRect;
   TTacticalUnit* occupant = tacticalBattle->tileGrid[tileIndex].occupant;
   if (occupant != 0) {
@@ -1230,7 +1230,7 @@ void TTacticalBattleView::PlayAni(TacticalTileIndex tileIndex, int effectId, int
 // Plays a one-shot animation over `rect` and pumps UI messages until it completes.
 
 // FUNCTION: IMPERIALISM 0x005a9170
-void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
+void TTacticalBattleView::PlayAni(RECT* rect, short effectId, short frameCount,
                                   TacticalTileIndex tileIndex, int mode) {
   TOneTimeAnimation* animation = new TOneTimeAnimation;
   // The original calls the init body unconditionally on the new-result (no null guard).

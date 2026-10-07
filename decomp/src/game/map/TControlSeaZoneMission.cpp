@@ -36,7 +36,7 @@ void TControlSeaZoneMission::Initialize() {
     }
   }
 
-  marker11 = 0;
+  requiredForces = 0;
   importanceScore = score / g_fMissionScoreNormalizationDivisor;
 }
 
@@ -76,7 +76,7 @@ TMission* TControlSeaZoneMission::GetReplacement() {
 
 // Inherited unchanged by TBeachheadMission (real base class relationship).
 // FUNCTION: IMPERIALISM 0x00538fe0
-void TControlSeaZoneMission::SetStateByte8To2() {
+void TControlSeaZoneMission::ResetPriority() {
   TZone* homePort = g_pActiveMapOrderContext->GetPortZone(nationId);
   TZone** ownerSlot = &homePort->primaryNeighbors[0];
   if (*ownerSlot == missionTargetZone) {
@@ -110,11 +110,11 @@ void TControlSeaZoneMission::SetStateByte8To2() {
       similarity = total * (1.0 - divergence * 0.5);
     }
     if (similarity > 0.0f) {
-      state08 = 1;
+      priority = 1;
       return;
     }
   }
-  state08 = 2;
+  priority = 2;
 }
 
 // Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).

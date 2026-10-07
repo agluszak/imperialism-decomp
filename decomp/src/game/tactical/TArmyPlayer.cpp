@@ -95,7 +95,7 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
   lastAppliedCursorMode = -1;
   unsigned char coinFlip = rand() & 1;
   cachedFortBombardmentTargetTile = -1;
-  randomParityByte50 = coinFlip;
+  attacksFromTop = coinFlip;
   hasArtilleryOrSappers = false;
 }
 
@@ -156,7 +156,7 @@ void TArmyPlayer::CalculateAttributes() {
   CIterator unitIter(unitList);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitIter.Reset()); unitIter.More();
        record = static_cast<TArmyTacUnit*>(unitIter.Advance())) {
-    if (record->state1c == 0) {
+    if (record->status == 0) {
       record->ComputeTacticalProjectionScoreVector();
 
       for (int component = 0; component < 5; ++component) {
@@ -201,7 +201,7 @@ void TArmyPlayer::StartBattle() {
     } else {
       opponent = battle->players[0];
     }
-    int opposingNationIndex = opponent->nationIndex;
+    short opposingNationIndex = opponent->nationIndex;
 
     // Battle-intro ("hola") dialog, id 0xf19.
     TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventTacticalDeployChoice);
@@ -212,11 +212,10 @@ void TArmyPlayer::StartBattle() {
         static_cast<TTacticalHolaPicture*>(dialog->FindSubView(kControlTagDialog));
     holaPicture->AssertValid();
     if (isOurSideFlag != 0) {
-      holaPicture->StuffValues(nationIndex, static_cast<short>(opposingNationIndex), isOurSideFlag,
+      holaPicture->StuffValues(nationIndex, opposingNationIndex, isOurSideFlag,
                                battle->battleSiteIndex);
     } else {
-      holaPicture->StuffValues(static_cast<short>(opposingNationIndex), nationIndex, 0,
-                               battle->battleSiteIndex);
+      holaPicture->StuffValues(opposingNationIndex, nationIndex, 0, battle->battleSiteIndex);
     }
     int resultTag = dialog->PoseModally();
     dialog->Close();
@@ -549,7 +548,7 @@ void TArmyPlayer::SelectStrategy(int cursorProfileMode) {
   CIterator scanIter(opponent->unitList);
   for (TTacticalUnit* enemyRecord = static_cast<TTacticalUnit*>(scanIter.Reset()); scanIter.More();
        enemyRecord = static_cast<TTacticalUnit*>(scanIter.Advance())) {
-    if (enemyRecord->state1c == 0) {
+    if (enemyRecord->status == 0) {
       enemyHasActiveUnit = true;
     }
   }
@@ -590,10 +589,10 @@ void TArmyPlayer::SelectStrategy(int cursorProfileMode) {
     CIterator unitIter(unitList);
     for (TTacticalUnit* record = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
          record = static_cast<TTacticalUnit*>(unitIter.Advance())) {
-      if (g_awTacticalUnitCategoryCodeBySlot[record->unitType] == 8 && record->state1c == 0) {
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitType] == 8 && record->status == 0) {
         haveActiveSapper = true;
       }
-      if (g_awTacticalUnitAiClassByUnitType[record->unitType] == 2 && record->state1c == 0) {
+      if (g_awTacticalUnitAiClassByUnitType[record->unitType] == 2 && record->status == 0) {
         haveActiveArtillery = true;
       }
     }
@@ -745,7 +744,7 @@ void TArmyPlayer::AssignDefendJobs() {
   CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
-    if (record->state1c != 0) {
+    if (record->status != 0) {
       continue;
     }
     switch (g_awTacticalUnitAiClassByUnitType[record->unitType]) {
@@ -803,7 +802,7 @@ void TArmyPlayer::AssignBombardJobs() {
   CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
-    if (record->state1c != 0) {
+    if (record->status != 0) {
       continue;
     }
     switch (g_awTacticalUnitAiClassByUnitType[record->unitType]) {
@@ -1026,7 +1025,7 @@ bool TArmyPlayer::EnemyArtillery() {
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
        record = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
     if (record->tileIndex >= 0 && g_awTacticalUnitAiClassByUnitType[record->unitType] == 2 &&
-        record->state1c == 0) {
+        record->status == 0) {
       return true;
     }
   }
@@ -1086,7 +1085,7 @@ int TArmyPlayer::FactorTargetEnemy(TTacticalUnit* unit, TacticalTileIndex tileIn
        ++scanTileIndex) {
     TTacticalUnit* occupant = battle->tileGrid[scanTileIndex].occupant;
     if (occupant != 0 && occupant->side != unit->side &&
-        (occupant->state1c == 0 || targetingMode == 1)) {
+        (occupant->status == 0 || targetingMode == 1)) {
       short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitType];
       if (battle->IsTacticalTargetTileReachableForAction(
               tileIndex, scanTileIndex,
@@ -1133,7 +1132,7 @@ int TArmyPlayer::FactorMeleeEnemy(TTacticalUnit* unit, TacticalTileIndex tileInd
     if (neighborTileIndex != -1) {
       TTacticalUnit* occupant = battle->tileGrid[neighborTileIndex].occupant;
       if (occupant != 0 && occupant->side != unit->side &&
-          (occupant->state1c == 0 || targetingMode == 1)) {
+          (occupant->status == 0 || targetingMode == 1)) {
         return 0x64;
       }
     }
@@ -1171,7 +1170,7 @@ int TArmyPlayer::FactorEnemyFire(TTacticalUnit* unit, TacticalTileIndex tileInde
 // FUNCTION: IMPERIALISM 0x0059da20
 int TArmyPlayer::FactorRetreat(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   int row = tileIndex / 29;
-  if (randomParityByte50 != 0) {
+  if (attacksFromTop != 0) {
     if (row <= 1) {
       return 0x64;
     }
@@ -1296,7 +1295,7 @@ int TArmyPlayer::FactorTargetMaxRange(TTacticalUnit* unit, TacticalTileIndex til
   for (TacticalTileIndex scanTileIndex = 0; scanTileIndex < battle->tacticalTileCount;
        ++scanTileIndex) {
     TTacticalUnit* occupant = battle->tileGrid[scanTileIndex].occupant;
-    if (occupant != 0 && occupant->side != unit->side && occupant->state1c == 0) {
+    if (occupant != 0 && occupant->side != unit->side && occupant->status == 0) {
       short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitType];
       if (battle->IsTacticalTargetTileReachableForAction(
               tileIndex, scanTileIndex,
@@ -1335,7 +1334,7 @@ int TArmyPlayer::FactorHitEnemyArtillery(TTacticalUnit* unit, TacticalTileIndex 
   for (TacticalTileIndex scanTileIndex = 0; scanTileIndex < battle->tacticalTileCount;
        ++scanTileIndex) {
     TTacticalUnit* occupant = battle->tileGrid[scanTileIndex].occupant;
-    if (occupant != 0 && occupant->side != unit->side && occupant->state1c == 0 &&
+    if (occupant != 0 && occupant->side != unit->side && occupant->status == 0 &&
         g_awTacticalUnitAiClassByUnitType[occupant->unitType] == 2) {
       short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitType];
       if (battle->IsTacticalTargetTileReachableForAction(
@@ -1372,7 +1371,7 @@ int TArmyPlayer::SelectTarget(TTacticalUnit* unit, int flag) {
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(enemyIter.Reset()); enemyIter.More();
        record = static_cast<TArmyTacUnit*>(enemyIter.Advance())) {
     // Valid targets: active units, plus morale-broken ones in field48==1 mode.
-    if ((targetingMode != 1 || record->state1c != 1) && record->state1c != 0) {
+    if ((targetingMode != 1 || record->status != 1) && record->status != 0) {
       continue;
     }
     if (flag != 0) { // read as a byte (char) in the original
@@ -1436,7 +1435,7 @@ void TArmyPlayer::NextMove() {
     CIterator unitIter(unitList);
     TTacticalUnit* record = static_cast<TTacticalUnit*>(unitIter.Reset());
     while (unitIter.More() != 0) {
-      if (g_awTacticalUnitCategoryCodeBySlot[record->unitType] == 8 && record->state1c == 0) {
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitType] == 8 && record->status == 0) {
         if (g_awTacticalUnitCategoryCodeBySlot[battle->selectedUnit->unitType] != 8) {
           battle->FinishedMove();
           return;
@@ -1499,7 +1498,7 @@ void TArmyPlayer::AutoMove() {
   // Phase 2: march toward it, one echoed step at a time (guarded at 200 steps).
   if (targetTileIndex != unit->tileIndex) {
     int moveGuard = 200;
-    while (battle->pendingEndOfActionFlag && unit->state1c == 0 &&
+    while (battle->pendingEndOfActionFlag && unit->status == 0 &&
            unit->tileIndex != targetTileIndex) {
       if (moveGuard-- == 0) {
         break;
@@ -1509,7 +1508,7 @@ void TArmyPlayer::AutoMove() {
   }
 
   // Phase 3: act from the reached tile.
-  if (battle->pendingEndOfActionFlag && unit->state1c == 0) {
+  if (battle->pendingEndOfActionFlag && unit->status == 0) {
     if (unit->unitType >= 0x1b) {
       TacticalTileIndex neighborTiles[6];
       battle->GetNeighborList(unit->tileIndex, neighborTiles);
@@ -1558,7 +1557,7 @@ void TArmyPlayer::AutoMove() {
                 FindBestMove(unit, g_anTacticalTileHeuristicWeightsByAiState[aiState + 1]);
             if (advanceTileIndex != unit->tileIndex) {
               int advanceGuard = 200;
-              while (battle->selectedUnit == unit && unit->state1c == 0 &&
+              while (battle->selectedUnit == unit && unit->status == 0 &&
                      unit->tileIndex != advanceTileIndex) {
                 if (advanceGuard-- == 0) {
                   break;
@@ -1624,7 +1623,7 @@ int TArmyPlayer::GetMinimumActiveUnitRangeForStates2Or4() {
   CIterator iter(unitList);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TTacticalUnit*>(iter.Advance())) {
-    if (unit->state1c == 0 && (unit->aiStateCode == 4 || unit->aiStateCode == 2) &&
+    if (unit->status == 0 && (unit->aiStateCode == 4 || unit->aiStateCode == 2) &&
         unit->GetBaseActionPoints() < minimumActionPoints) {
       minimumActionPoints = unit->GetBaseActionPoints();
     }

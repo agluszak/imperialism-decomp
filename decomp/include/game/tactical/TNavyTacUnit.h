@@ -23,7 +23,7 @@ public:
 
   void ApplyNavalDamage(float damageAmount, NavyTargeting targeting);
 
-  TShip* sourceShip; // +0x34 source strategic ship
+  TShip* sourceShip; // source strategic ship
   int secondaryCombatStrength;
   int baseActionPoints;
 

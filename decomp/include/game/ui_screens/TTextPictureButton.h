@@ -11,8 +11,8 @@ public:
   virtual void Draw(RECT* rectBuffer) override;
   CString buttonText;
   short pointSize;
-  short themeCode9A;
-  short themeCode9C;
+  short textThemeCode;
+  short shadowThemeCode;
 
   void ITextPictureButton(TView* panel, int* offsetLayout, int* sizeLayout, short pictureId,
                           CString* text, short pointSize, short themeCodeA, short themeCodeC);

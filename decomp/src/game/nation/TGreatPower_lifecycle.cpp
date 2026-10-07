@@ -166,7 +166,7 @@ TGreatPower::TGreatPower()
 
   for (int pendingIndex = 0; pendingIndex < 13; ++pendingIndex) {
     this->pendingActionStatus.byAction[pendingIndex] = 0;
-    this->field8d6[pendingIndex] = -1;
+    this->pendingActionPayload[pendingIndex] = -1;
   }
 
   int trackedIndex = 0;
@@ -368,8 +368,8 @@ void TGreatPower::ReadFrom(TStream* stream) {
   ReverseDwordArrayBytes(aidAllocationMatrix, 0x170);
 
   stream->ReadBytes(&pendingActionStatus, sizeof(pendingActionStatus));
-  stream->ReadBytes(field8d6, 26);
-  SwapShortArrayBytes(field8d6, 13);
+  stream->ReadBytes(pendingActionPayload, 26);
+  SwapShortArrayBytes(pendingActionPayload, 13);
 
   turnEventQueue->ReadFrom(stream);
   proposalQueue->ReadFrom(stream);
@@ -553,7 +553,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   WriteIntArrayElems(stream, aidAllocationMatrix, 0x170);
 
   stream->WriteBytes(&pendingActionStatus, sizeof(pendingActionStatus));
-  WriteShortArrayElemsRev(stream, field8d6, 0xd);
+  WriteShortArrayElemsRev(stream, pendingActionPayload, 0xd);
 
   turnEventQueue->WriteTo(stream);
   proposalQueue->WriteTo(stream);
@@ -668,18 +668,18 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
   signed char* flags = pendingActionStatus.byAction;
   bool flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled && g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(5, field8d6[5]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(5, pendingActionPayload[5]);
   }
   if (flags[6] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(6, field8d6[6]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(6, pendingActionPayload[6]);
   }
   if (flags[7] == 0x32) {
-    if (field8d6[7] == 2) {
+    if (pendingActionPayload[7] == 2) {
       TCity* cityPtr = city;
       cityPtr->stockByType[kResourcePaper] += 10;
       cityPtr->VerifyStocks();
-      g_pViewMgr->BuildAndShowTurnOverlayByMode(7, field8d6[7]);
-    } else if (field8d6[7] == 3) {
+      g_pViewMgr->BuildAndShowTurnOverlayByMode(7, pendingActionPayload[7]);
+    } else if (pendingActionPayload[7] == 3) {
       TCity* cityPtr = city;
       cityPtr->stockByType[kResourcePaper] += 10;
       cityPtr->VerifyStocks();
@@ -687,34 +687,34 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
     }
   }
   if (flags[8] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(8, field8d6[8]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(8, pendingActionPayload[8]);
   }
   if (flags[9] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(9, field8d6[9]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(9, pendingActionPayload[9]);
   }
   if (flags[10] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(10, field8d6[10]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(10, pendingActionPayload[10]);
   }
   if (flags[11] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(11, field8d6[11]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(11, pendingActionPayload[11]);
   }
   if (flags[12] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(12, field8d6[12]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(12, pendingActionPayload[12]);
   }
   if (flags[0] == 0x32) {
     g_pViewMgr->BuildAndShowTurnOverlayByMode(0, g_pTechMgr->activeZoneIndex);
   }
   if (flags[1] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(1, field8d6[1]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(1, pendingActionPayload[1]);
   }
   if (flags[2] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(2, field8d6[2]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(2, pendingActionPayload[2]);
   }
   if (flags[3] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(3, field8d6[3]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(3, pendingActionPayload[3]);
   }
   if (flags[4] == 0x32) {
-    g_pViewMgr->BuildAndShowTurnOverlayByMode(4, field8d6[4]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(4, pendingActionPayload[4]);
   }
 }
 
@@ -736,11 +736,11 @@ void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
     flags[6] = 0x33;
   }
   if (flags[7] == 0x32) {
-    if (field8d6[7] == 2) {
+    if (pendingActionPayload[7] == 2) {
       flags[7] = 0x33;
-    } else if (field8d6[7] == 3) {
+    } else if (pendingActionPayload[7] == 3) {
       flags[7] = 0x34;
-      field8d6[7] = -1;
+      pendingActionPayload[7] = -1;
     }
   }
   if (flags[8] == 0x32) {
@@ -759,10 +759,10 @@ void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
     flags[12] = 0x33;
   }
   if (flags[0] == 0x32) {
-    flags[0] = static_cast<unsigned char>(static_cast<char>(field8d6[0]) + 0x33);
+    flags[0] = static_cast<unsigned char>(static_cast<char>(pendingActionPayload[0]) + 0x33);
   }
   if (flags[1] == 0x32) {
-    flags[1] = static_cast<unsigned char>(static_cast<char>(field8d6[1]) + 0x33);
+    flags[1] = static_cast<unsigned char>(static_cast<char>(pendingActionPayload[1]) + 0x33);
   }
   if (flags[2] == 0x32) {
     flags[2] = 0x33;
@@ -779,7 +779,7 @@ void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
 void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload) {
   if (g_nSaveFormatVersion != -3) {
     pendingActionStatus.byAction[index] = 0x32;
-    field8d6[index] = payload;
+    pendingActionPayload[index] = payload;
   }
 }
 

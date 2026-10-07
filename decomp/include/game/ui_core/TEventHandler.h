@@ -40,7 +40,7 @@ public:
   // FUNCTION: IMPERIALISM 0x0048a160
   virtual ~TEventHandler() override {}
   void Free() override;
-  TObject* ShallowClone() override; // 0x08 0x48a7c0 base; TView override
+  TObject* ShallowClone() override; // 0x48a7c0 base; TView override
   virtual char IsEnabled();
   virtual void SetEnable(char enabled);
   virtual TEventHandler* GetNextHandler();
@@ -48,10 +48,10 @@ public:
   virtual void DispatchUiSelectionToHandler(void* payload);
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
-                           TEvent* event); // 0x10 0x48a2e0 DoEvent
+                           TEvent* event); // 0x48a2e0 DoEvent
   virtual void DoMenuCommand(int commandId);
   virtual void DoKeyEvent(TToolboxEvent* event);
-  virtual bool DoIdle(int action); // 0x13 0x48a480 (MacApp DoIdle)
+  virtual bool DoIdle(int action); // 0x48a480 (MacApp DoIdle)
 
   void HandleMenuCommand(int command);
   void HandleKeyEvent(TToolboxEvent* event);

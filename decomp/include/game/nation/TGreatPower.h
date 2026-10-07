@@ -104,7 +104,7 @@ public:
   virtual void AddPurchasedItems(void);
 
   virtual void AddCreatedItems(void);
-  virtual void SetNationResourceNeedCurrentByType(int needType, int currentValue);
+  virtual void SetNationResourceNeedCurrentByType(int needType, short currentValue);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value);
   virtual bool IsNeedTargetEqualCurrent(short needIndex);
   virtual short GetNeedTargetByType(short needIndex);
@@ -138,7 +138,7 @@ public:
   virtual void SetStockpile(short targetSlot, short value);
   virtual void AddToStockpile(short targetSlot, short value);
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
-  virtual void ConsumeMerchantCapacityForPurchase(int delta);
+  virtual void ConsumeMerchantCapacityForPurchase(short delta);
   virtual void SetTradeOffersFor(short resourceKind, short offerContext);
   virtual bool WereAllOfferedGoodsSold(void);
   virtual void SetItemPotentials(short resourceKind, short value);
@@ -265,7 +265,7 @@ public:
   unsigned char pad_8b8[0x8c8 - 0x8b8];
   PendingActionStatusBlock pendingActionStatus;
   unsigned char field8d5;
-  short field8d6[13];
+  short pendingActionPayload[13];
   int diplomacyBudgetBase;
   signed char escalationCounter;
   unsigned char pad_8f5[3];

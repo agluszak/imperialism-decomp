@@ -27,36 +27,36 @@ public:
   virtual void UnitRect(TTacticalUnit* unit, RECT* rectOut);
   virtual void Scroll(MapScrollEdgeMaskStorage scrollDirection);
   virtual void DrawTile(TacticalTileIndex tileIndex, RECT* clipRect);
-  virtual void PlayAni(TacticalTileIndex tileIndex, int effectId, int frameCount);
-  virtual void PlayAni(RECT* rect, int effectId, int frameCount, TacticalTileIndex tileIndex,
+  virtual void PlayAni(TacticalTileIndex tileIndex, short effectId, short frameCount);
+  virtual void PlayAni(RECT* rect, short effectId, short frameCount, TacticalTileIndex tileIndex,
                        int mode);
   virtual void GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
                          TacticalTileIndex toTileIndex);
   virtual void DoGlideAni();
-  TTacticalBattle* tacticalBattle;                         // +0x60 the battle this view renders
-  struct TQuickDrawSurfaceContext* battlefieldSurface;     // +0x64 0x5dc x 0x1c2 backdrop
-  struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface; // +0x68 bitmap 0xee2 atlas
-  struct TQuickDrawSurfaceContext* fortLevelAtlasSurface;  // +0x6c fort bitmap 0xee6+lvl/0xee7
-  struct TQuickDrawSurfaceContext* tileScratchSurface;     // +0x70 one-tile scratch
-  struct TQuickDrawSurfaceContext* effectAtlasSurface;     // +0x74 bitmap 0xeeb effects
-  short viewOriginX;            // +0x78 horizontal scroll origin (pixels)
-  short scrollableContentWidth; // +0x7a total content width (scroll clamp max)
+  TTacticalBattle* tacticalBattle;                         // the battle this view renders
+  struct TQuickDrawSurfaceContext* battlefieldSurface;     // 0x5dc x 0x1c2 backdrop
+  struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface; // bitmap 0xee2 atlas
+  struct TQuickDrawSurfaceContext* fortLevelAtlasSurface;  // fort bitmap 0xee6+lvl/0xee7
+  struct TQuickDrawSurfaceContext* tileScratchSurface;     // one-tile scratch
+  struct TQuickDrawSurfaceContext* effectAtlasSurface;     // bitmap 0xeeb effects
+  short viewOriginX;                                       // horizontal scroll origin (pixels)
+  short scrollableContentWidth;                            // total content width (scroll clamp max)
   unsigned char pad7c[4];
-  int tileColumnsPerRow;      // +0x80 = 0x1d (grid stride)
-  int hoveredTileIndex;       // +0x84 currently highlighted tile, -1 when none
-  int tileWidthPx;            // +0x88 tile width in pixels
-  int tileRowHeightPx;        // +0x8c tile row height in pixels
-  int unitSpriteCellWidth;    // +0x90 sprite-sheet cell width
-  int unitSpriteCellHeight;   // +0x94 sprite-sheet cell height / facing-row offset
-  bool modalAnimWaitDoneFlag; // +0x98 0 during the 0x5a9170 modal wait, then 1
+  int tileColumnsPerRow;      // = 0x1d (grid stride)
+  int hoveredTileIndex;       // currently highlighted tile, -1 when none
+  int tileWidthPx;            // tile width in pixels
+  int tileRowHeightPx;        // tile row height in pixels
+  int unitSpriteCellWidth;    // sprite-sheet cell width
+  int unitSpriteCellHeight;   // sprite-sheet cell height / facing-row offset
+  bool modalAnimWaitDoneFlag; // 0 during the 0x5a9170 modal wait, then 1
   unsigned char pad99[3];
-  int moveAnimStepX;          // +0x9c (toX-fromX)/3 animation step
-  int moveAnimStepY;          // +0xa0 (toY-fromY)/3 animation step
-  int moveAnimUnitOffsetX;    // +0xa4 unit x offset in the anim rect; -1 = idle
-  int moveAnimUnitOffsetY;    // +0xa8 unit y offset in the anim rect
-  RECT moveAnimSpriteSrcRect; // +0xac sprite-sheet source rect
-  struct TQuickDrawSurfaceContext* unitSpriteScratchSurface; // +0xbc 2x3-cell scratch
-  RECT moveAnimScreenRect;                                   // +0xc0 on-screen animation rect
+  int moveAnimStepX;          // (toX-fromX)/3 animation step
+  int moveAnimStepY;          // (toY-fromY)/3 animation step
+  int moveAnimUnitOffsetX;    // unit x offset in the anim rect; -1 = idle
+  int moveAnimUnitOffsetY;    // unit y offset in the anim rect
+  RECT moveAnimSpriteSrcRect; // sprite-sheet source rect
+  struct TQuickDrawSurfaceContext* unitSpriteScratchSurface; // 2x3-cell scratch
+  RECT moveAnimScreenRect;                                   // on-screen animation rect
   TTacticalToolbar* toolbar;
 
   TTacticalBattleView();

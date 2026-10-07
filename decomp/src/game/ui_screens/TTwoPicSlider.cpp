@@ -161,16 +161,16 @@ void TTwoPicSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pre
       slider->Draw(&sliderRect);
 
       if (slider->mode == 1) {
-        int volumeScalar = SliderScaledValue(slider, 0xff);
-        g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(static_cast<short>(volumeScalar));
-        g_pSimMgr->preferenceValues[3] = static_cast<short>(volumeScalar);
+        short volumeScalar = SliderScaledValue(slider, 0xff);
+        g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(volumeScalar);
+        g_pSimMgr->preferenceValues[3] = volumeScalar;
       }
     }
   }
 
   if ((phase == kTrackPhaseEnd) && (slider->mode == 2)) {
-    int percent = SliderScaledValue(slider, 100);
-    g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(static_cast<short>(percent));
+    short percent = SliderScaledValue(slider, 100);
+    g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(percent);
     g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
   }
 }

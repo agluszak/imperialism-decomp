@@ -236,7 +236,7 @@ void __stdcall LookupZoneDisplayNameByNodeId(CString* out, short nodeId) {
 
 // FUNCTION: IMPERIALISM 0x0055df50
 int TNewspaperView::AddTextView(int column, int y, int recordOffset, int recordLength,
-                                TextStyle* style, int styleWord, CString* tokens) {
+                                TextStyle* style, short styleWord, CString* tokens) {
   TDeluxeText* text;
   int offsetPair[2];
   int sizePair[2];
@@ -257,7 +257,7 @@ int TNewspaperView::AddTextView(int column, int y, int recordOffset, int recordL
     inset.bottom = 4;
     sizePair[0] = 0xbc;
     sizePair[1] = 0x18c;
-    text->IDeluxeText(this, offsetPair, sizePair, &inset, style, static_cast<short>(styleWord));
+    text->IDeluxeText(this, offsetPair, sizePair, &inset, style, styleWord);
   }
 
   char* recordBuffer = new char[recordLength];

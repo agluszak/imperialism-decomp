@@ -98,16 +98,16 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
 
   int x0;
   int y0;
-  int x1;
+  short x1;
   int x2;
-  int x3;
-  int x4;
-  int y1;
-  int y2;
-  int y3;
+  short x3;
+  short x4;
+  short y1;
+  short y2;
+  short y3;
   int y4;
   int y5;
-  int yUp;
+  short yUp;
   if (tileScale == 0x10) {
     x0 = static_cast<short>(screenXY[0]);
     y0 = static_cast<short>(screenXY[1]);
@@ -147,31 +147,31 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
   if (neighborTiles[5] != -1 && neighborTiles[0] != -1 &&
       terrain[neighborTiles[5]].cityRecordIndex == compareValue &&
       terrain[neighborTiles[0]].cityRecordIndex != compareValue) {
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), static_cast<short>(yUp));
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), yUp);
   }
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x3), static_cast<short>(y0));
+  DrawCenteredGuideLineOnMapDc(x3, static_cast<short>(y0));
 
   if (neighborTiles[0] == -1 || neighborTiles[1] == -1 ||
       terrain[neighborTiles[0]].cityRecordIndex == compareValue ||
       terrain[neighborTiles[1]].cityRecordIndex == compareValue ||
       terrain[neighborTiles[0]].cityRecordIndex != terrain[neighborTiles[1]].cityRecordIndex) {
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y0));
+    DrawCenteredGuideLineOnMapDc(x4, static_cast<short>(y0));
   }
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y1));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y2));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y3));
+  DrawCenteredGuideLineOnMapDc(x4, y1);
+  DrawCenteredGuideLineOnMapDc(x4, y2);
+  DrawCenteredGuideLineOnMapDc(x4, y3);
 
   if (neighborTiles[1] == -1 || neighborTiles[2] == -1 ||
       terrain[neighborTiles[1]].cityRecordIndex == compareValue ||
       terrain[neighborTiles[2]].cityRecordIndex == compareValue ||
       terrain[neighborTiles[1]].cityRecordIndex != terrain[neighborTiles[2]].cityRecordIndex) {
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y4));
+    DrawCenteredGuideLineOnMapDc(x4, static_cast<short>(y4));
   }
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x3), static_cast<short>(y4));
+  DrawCenteredGuideLineOnMapDc(x3, static_cast<short>(y4));
 
   // The bottom-centre pair is emitted in whichever order puts the in-region side first.
-  int pendingX = x2;
-  int pendingY = y4;
+  short pendingX = x2;
+  short pendingY = y4;
   if (neighborTiles[2] != -1 && neighborTiles[3] != -1) {
     if (terrain[neighborTiles[2]].cityRecordIndex == compareValue) {
       if (terrain[neighborTiles[3]].cityRecordIndex != compareValue) {
@@ -185,8 +185,8 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
       pendingY = y4;
     }
   }
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(pendingX), static_cast<short>(pendingY));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x1), static_cast<short>(y4));
+  DrawCenteredGuideLineOnMapDc(pendingX, pendingY);
+  DrawCenteredGuideLineOnMapDc(x1, static_cast<short>(y4));
 
   if (neighborTiles[3] == -1 || neighborTiles[4] == -1 ||
       terrain[neighborTiles[3]].cityRecordIndex == compareValue ||
@@ -194,9 +194,9 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
       terrain[neighborTiles[3]].cityRecordIndex != terrain[neighborTiles[4]].cityRecordIndex) {
     DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y4));
   }
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y3));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y2));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y1));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), y3);
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), y2);
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), y1);
 
   if (neighborTiles[4] == -1 || neighborTiles[5] == -1 ||
       terrain[neighborTiles[4]].cityRecordIndex == compareValue ||
@@ -204,12 +204,12 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
       terrain[neighborTiles[4]].cityRecordIndex != terrain[neighborTiles[5]].cityRecordIndex) {
     DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y0));
   }
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(x1), static_cast<short>(y0));
+  DrawCenteredGuideLineOnMapDc(x1, static_cast<short>(y0));
 
   if (neighborTiles[5] != -1 && neighborTiles[0] != -1 &&
       terrain[neighborTiles[5]].cityRecordIndex != compareValue &&
       terrain[neighborTiles[0]].cityRecordIndex == compareValue) {
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), static_cast<short>(yUp));
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), yUp);
   }
   DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), static_cast<short>(y0));
 }

@@ -79,7 +79,7 @@ TMission* TBeachheadMission::GetArmyMission() {
 
 // FUNCTION: IMPERIALISM 0x0053a940
 bool TBeachheadMission::SmokeEmIfYouGotEm() {
-  if (flag10 == 0 && navyState != 0) {
+  if (onHold == 0 && navyState != 0) {
     return false;
   }
   while (orderList != 0) {

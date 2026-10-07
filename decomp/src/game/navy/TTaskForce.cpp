@@ -104,11 +104,11 @@ void TTaskForce::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00552a70
-void TTaskForce::RegainVirginity(int nationArg, TZone* contextZone) {
+void TTaskForce::RegainVirginity(short nationArg, TZone* contextZone) {
   while (shipList != 0) {
     Remove(shipList->payload);
   }
-  nation = static_cast<short>(nationArg);
+  nation = nationArg;
   location = contextZone;
 }
 
@@ -718,7 +718,7 @@ void TTaskForce::Victory(int experienceGain) {
       ++shipCount;
     }
   }
-  int perShipGain = experienceGain * 3 / shipCount;
+  short perShipGain = experienceGain * 3 / shipCount;
 
   TAdmiral* admiral = NULL;
   if (this != NULL && flagship != NULL) {
@@ -729,7 +729,7 @@ void TTaskForce::Victory(int experienceGain) {
   }
 
   for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
-    node->payload->Victory(static_cast<short>(perShipGain));
+    node->payload->Victory(perShipGain);
   }
 }
 
@@ -1375,15 +1375,15 @@ bool TTaskForce::Encounter(TTaskForce* other) {
     return false;
   }
 
-  int thisScore = GetBattleStrengthRating();
-  int otherScore = other->GetBattleStrengthRating();
+  short thisScore = GetBattleStrengthRating();
+  short otherScore = other->GetBattleStrengthRating();
   bool resolved;
-  if (static_cast<int>(static_cast<short>(thisScore)) * 100 <
-      priorityWeight[aggression] * static_cast<int>(static_cast<short>(otherScore))) {
-    int otherScore2 = other->GetBattleStrengthRating();
-    int thisScore2 = GetBattleStrengthRating();
-    if (static_cast<int>(static_cast<short>(otherScore2)) * 100 <
-            priorityWeight[other->aggression] * static_cast<int>(static_cast<short>(thisScore2)) ||
+  if (static_cast<int>(thisScore) * 100 <
+      priorityWeight[aggression] * static_cast<int>(otherScore)) {
+    short otherScore2 = other->GetBattleStrengthRating();
+    short thisScore2 = GetBattleStrengthRating();
+    if (static_cast<int>(otherScore2) * 100 <
+            priorityWeight[other->aggression] * static_cast<int>(thisScore2) ||
         other->defeated != 0) {
       resolved = false;
     } else {
@@ -1494,10 +1494,9 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
          refreshedOtherNodeA = refreshedOtherNodeA->next) {
       refreshedOtherTotal += refreshedOtherNodeA->payload->GetBattleStrengthRating();
     }
-    int thisAggregateScore = GetBattleStrengthRating();
+    short thisAggregateScore = GetBattleStrengthRating();
     if (static_cast<int>(static_cast<short>(refreshedOtherTotal)) * 100 <
-            priorityWeight[other->aggression] *
-                static_cast<int>(static_cast<short>(thisAggregateScore)) ||
+            priorityWeight[other->aggression] * static_cast<int>(thisAggregateScore) ||
         other->defeated != 0) {
       return false;
     }
@@ -1683,8 +1682,8 @@ void TTaskForce::CarryOutOrders() {
     Province* cityRecord = static_cast<Province*>(target);
     cityRecord->exploredByNationMask |= static_cast<unsigned char>(1 << nation);
     if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
-      int cityIndex = cityRecord->GetIndex();
-      g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(cityIndex));
+      short cityIndex = cityRecord->GetIndex();
+      g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIndex);
     }
     break;
   }

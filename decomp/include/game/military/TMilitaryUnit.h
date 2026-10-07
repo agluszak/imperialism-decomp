@@ -12,17 +12,17 @@ class TMilitaryUnit : public TUnit {
 public:
   DECLARE_DYNCREATE(TMilitaryUnit)
 
-  CString name; // 0x24 display name (naming pass in TCountry.cpp)
+  CString name; // display name (naming pass in TCountry.cpp)
 
   short orderTargetTiles[3];
   short orderTargetTilesMirror[3];
 
-  short strength;          // 0x34 init 0x1f4; scaled by 0.002 in
-  short eraIndex;          // 0x36 derived from unit kind / 8
-  short experiencePercent; // 0x38 init 0; divided by 100 in
-  short battleStateFlags;  // 0x3a init 0
-  short strengthSnapshot;  // 0x3c init 0
-  TMission* ownerMission;  // 0x40 owning mission back-pointer
+  short strength;          // init 0x1f4; scaled by 0.002 in
+  short eraIndex;          // derived from unit kind / 8
+  short experiencePercent; // init 0; divided by 100 in
+  short battleStateFlags;  // init 0
+  short strengthSnapshot;  // init 0
+  TMission* ownerMission;  // owning mission back-pointer
 
   TMilitaryUnit();
   virtual ~TMilitaryUnit() override;
