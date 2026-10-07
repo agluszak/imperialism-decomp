@@ -51,6 +51,6 @@ extern "C" bool g_bTurnFlowBootstrapComplete;
 // "Conan" — developer-cheat probe filename statted by TSimMgr::ISimMgr.
 extern char g_szConanCheatFileName[];
 
-extern const char s_Chunk[];
+extern char s_Chunk[];
 
 } // extern "C"

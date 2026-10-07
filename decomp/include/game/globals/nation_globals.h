@@ -25,7 +25,7 @@ extern int g_anTechItemResearchCostByTechId[29];
 extern TCountry* g_apTerrainTypeDescriptorTable[23];
 extern char* g_pszDescriptorDefaultName;
 
-extern "C" const short g_aDiplomacyPlanningQuarterPhaseByNation[kMajorNationCount];
+extern "C" short g_aDiplomacyPlanningQuarterPhaseByNation[kMajorNationCount];
 
 extern "C" {
 extern TMinor* g_apSecondaryNationStateSlots[36];

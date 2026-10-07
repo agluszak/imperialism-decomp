@@ -14,6 +14,6 @@ extern const char* g_cstrTradeTotalsBalanceSubstitution;
 extern "C" CPoint g_offerDeskSheetPosition;
 extern "C" CPoint g_offerDeskOffscreenPosition;
 
-extern "C" const int g_pTradeSummarySelectionMap[23];
+extern "C" int g_pTradeSummarySelectionMap[23];
 
-extern "C" const char s_SourcePathUTradeViews[];
+extern "C" char s_SourcePathUTradeViews[];

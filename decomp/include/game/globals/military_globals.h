@@ -46,18 +46,18 @@ extern float g_afRandomizedMeterDecayByOrderType[kMilitaryUnitKindCount];
 
 extern int g_anCountWeightByOrderType[kMilitaryUnitKindCount];
 
-extern const signed char g_MapContextStaticTable_00695448[32];
+extern signed char g_MapContextStaticTable_00695448[32];
 
-extern const unsigned char g_MapContextStaticTable_00695428[32];
+extern unsigned char g_MapContextStaticTable_00695428[32];
 
 extern char* g_pMiniCivSharedText;
 
 // Assert source-path string for the UArmyMgr TU.
-extern "C" const char s_SourcePathUArmyMgr[];
+extern "C" char s_SourcePathUArmyMgr[];
 
 extern "C" const char s_SourcePathUArmyViews[];
 
-extern const float g_MissionOrderDistanceDecayWeightTable[6];
+extern float g_MissionOrderDistanceDecayWeightTable[6];
 
 extern float g_ArmyMissionDotProductWeights[5];
 

@@ -246,9 +246,9 @@ extern double g_gfxCoordinateScale_6A5EC8;
 extern short g_scaledShortConst_6A5F3C;
 extern double g_gfxCoordinateScale_6A6070;
 extern short g_scaledShortConst_6A60B8;
-extern const char g_szPaletteResourceType[];
-extern const char g_szResourceMgrSourcePath[];
-extern const char g_szPaletteResourceIdFormat[];
+extern char g_szPaletteResourceType[];
+extern char g_szResourceMgrSourcePath[];
+extern char g_szPaletteResourceIdFormat[];
 }
 
 extern int g_nUiInvalidationAssertFlagLine471;
@@ -276,7 +276,7 @@ extern const int g_nAmbitSaveFileMagic;
 
 extern const int g_nCurrentAmbitSaveFormatVersion;
 
-extern const char g_szUAmbitSourcePath[];
+extern char g_szUAmbitSourcePath[];
 
 extern int g_colorFillAssertGuard;
 
@@ -293,17 +293,17 @@ extern RgnHandle g_pTemporaryRegionCache;
 // Selects the CDib blit path in TDibPreviewDialog::OnPaint.
 extern int g_useCompatibleBitmapBlit;
 
-extern "C" const char g_szDiplomacyDialogsSourcePath[];
+extern "C" char g_szDiplomacyDialogsSourcePath[];
 
 extern char g_szUGameWindowSourcePath[];
 
 extern char g_szTraceLineBreakChars[];
 
 // UDisplayMgr font literals and runtime CString slots (markers in global_data_tables.cpp).
-extern "C" const char g_szUiFontLiteralBelweBdBt[];
+extern "C" char g_szUiFontLiteralBelweBdBt[];
 
-extern "C" const char g_szUiFontLiteralPalatino[];
+extern "C" char g_szUiFontLiteralPalatino[];
 
-extern "C" const char g_szUiFontLiteralBelweLight[];
+extern "C" char g_szUiFontLiteralBelweLight[];
 
 } // extern "C"

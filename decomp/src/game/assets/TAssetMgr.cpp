@@ -135,8 +135,8 @@ void __stdcall AssignScoresDatPathToSharedString(CString* out) {
   *out = CString(s_Data_scores_dat);
 }
 
-extern "C" const char s_MissingFilePrefix[];
-extern "C" const char s_MissingFileSuffix[];
+extern "C" char s_MissingFilePrefix[];
+extern "C" char s_MissingFileSuffix[];
 
 // FUNCTION: IMPERIALISM 0x005dff20
 void TAssetMgr::EnsurePictWvDataGobLoadedBySlot(int languageTag) {

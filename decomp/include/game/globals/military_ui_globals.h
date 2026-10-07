@@ -14,7 +14,7 @@ extern short g_anUnitStrengthWeightPercentBySlot[32];
 extern char* g_pBattleReportSharedText;
 
 // Assert source-path string for the UDefenseMinister TU.
-extern "C" const char s_SourcePathUDefenseMinister[];
+extern "C" char s_SourcePathUDefenseMinister[];
 
 extern const float g_DefenseMinisterWeightZero;
 

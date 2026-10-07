@@ -21,10 +21,10 @@ extern short g_shipyardQueueIconLeftBySlot[8];
 
 extern float g_AiDevelopmentResourceBudgetScale;
 
-extern "C" const char s_SourcePathUCityDialogs[];
+extern "C" char s_SourcePathUCityDialogs[];
 
 // Assert source-path string for the UCityMinister TU.
-extern "C" const char s_SourcePathUCityMinister[];
+extern "C" char s_SourcePathUCityMinister[];
 
 // TCivMgr.cpp — engineer construction cost tables.
 extern short g_awEngineerFortBuildCostByLevel[5];
@@ -40,10 +40,10 @@ extern float g_afArmoryUnitFirepowerByType[30];
 extern int g_anArmoryUnitRangeByType[30];
 extern float g_fArmoryFirepowerDisplayScale;
 
-extern "C" const char g_szCityProductionUniversityPrefix[];
+extern "C" char g_szCityProductionUniversityPrefix[];
 
-extern "C" const char g_szCityProductionArmoryPrefix[];
+extern "C" char g_szCityProductionArmoryPrefix[];
 
-extern "C" const char g_szCityProductionShipyardPrefix[];
+extern "C" char g_szCityProductionShipyardPrefix[];
 
 } // extern "C"

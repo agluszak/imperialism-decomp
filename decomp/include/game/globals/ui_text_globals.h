@@ -82,8 +82,8 @@ extern char g_szUiAvailableLabel[];
 extern char g_szUiPriceLabel[];
 extern char g_szUiCommodityLabel[];
 extern char g_szUiBoardOfTradeLabel[];
-extern const char g_szUiNilPointerMessage[];
-extern const char g_szDecimalFormat[];
+extern char g_szUiNilPointerMessage[];
+extern char g_szDecimalFormat[];
 extern char g_szClientSavePrefix[];
-extern const char g_szUiFailureMessage[];
+extern char g_szUiFailureMessage[];
 } // extern "C"

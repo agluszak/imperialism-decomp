@@ -8,8 +8,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-extern "C" const char s_BmpResourceNameFormat[];
-extern "C" const char s_MissingRequiredFileFormat[];
+extern "C" char s_BmpResourceNameFormat[];
+extern "C" char s_MissingRequiredFileFormat[];
 
 struct LockedPaletteResourceHeader {
   WORD version;

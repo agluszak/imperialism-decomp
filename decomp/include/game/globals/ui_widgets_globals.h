@@ -42,10 +42,10 @@ extern CRect g_aCityBuildingLayoutRects[72];
 
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 
-extern "C" const char s_SourcePathUTestDialogs[];
+extern "C" char s_SourcePathUTestDialogs[];
 
 // Assert source-path string for the USmallViews TU (TTransportPicture and friends).
-extern "C" const char s_SourcePathUSmallViews[];
+extern "C" char s_SourcePathUSmallViews[];
 
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp / turn_flow_cooldown.cpp — turn-cooldown state.
 extern short g_nTurnCooldownDeferCounter;

@@ -11,7 +11,7 @@ extern short g_civilianTileOrderCursorTokenTable[];
 extern int g_anUnitTypeTacticalRangeByType[30];
 extern ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[];
 extern short g_awUnitCombatClassBySlot[32];
-extern "C" const char s_SourcePathUTacPlayer[];
+extern "C" char s_SourcePathUTacPlayer[];
 
 extern double g_dTacticalCursorStrongRatioThreshold;
 
@@ -62,6 +62,6 @@ extern float g_afTacticalDamageScaleByUnitType[30];
 extern float g_afTacticalAttackTerrainModifierByCategory[50];
 extern float g_afTacticalDefenseTerrainModifierByCategory[50];
 extern float g_afTacticalCoverDamageModifierByCategory[50];
-extern const char g_szBattleSetupTabPathFormat[];
+extern char g_szBattleSetupTabPathFormat[];
 
 } // extern "C"

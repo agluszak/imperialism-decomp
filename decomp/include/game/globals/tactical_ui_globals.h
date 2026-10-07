@@ -24,7 +24,7 @@ extern bool g_nForceTacticalBattleViewFlag;
 
 extern short g_anCapabilityPriorityRangeData[54];
 
-extern "C" const char s_SourcePathUTacViews[];
+extern "C" char s_SourcePathUTacViews[];
 
 } // extern "C"
 

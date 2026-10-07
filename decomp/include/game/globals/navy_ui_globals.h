@@ -6,7 +6,7 @@ extern "C" char* g_pShipFractionSharedText;
 extern const int g_ShipOrderStatusStringIndexByResourceType[14];
 
 // Horizontal source offsets for each naval resource type in the 0xdba roster atlas.
-extern const short g_ShipRosterAtlasHorizontalOffsetByResourceType[14];
+extern short g_ShipRosterAtlasHorizontalOffsetByResourceType[14];
 
 extern "C" {
 extern "C" const char s_SourcePathUOceanViews[];

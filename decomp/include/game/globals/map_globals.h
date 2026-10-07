@@ -8,11 +8,11 @@ extern SeapointStretch g_seapointQuadTable;
 
 extern SeaSegmentStretch g_regionBorderLinkTable;
 
-extern const unsigned short g_hexDirectionBitMasks[6];
+extern unsigned short g_hexDirectionBitMasks[6];
 
-extern const unsigned short g_hexDirectionBitMasksAlt[7];
-extern const short g_railDirectionAddMasks[6];
-extern const short g_railDirectionSubtractMasks[6];
+extern unsigned short g_hexDirectionBitMasksAlt[7];
+extern short g_railDirectionAddMasks[6];
+extern short g_railDirectionSubtractMasks[6];
 
 extern int g_bOverlayScanlineFillAssertSuppressed;
 
@@ -45,12 +45,12 @@ extern "C" {
 
 extern short g_anMapImprovementSpriteClassByOrderType[kCivilianUnitKindCount];
 
-extern "C" const char s_szDoubleNewline[];
+extern "C" char s_szDoubleNewline[];
 
 // Assert source-path string for the USuperMap TU (TMapUberPicture family).
-extern "C" const char g_szDoubleQuote[];
+extern "C" char g_szDoubleQuote[];
 extern "C" const int kLoungeStatusGlyphIds[5];
-extern "C" const char s_SourcePathUSuperMap[];
+extern "C" char s_SourcePathUSuperMap[];
 
 extern "C" short g_defaultMarkerBoxWidth;
 

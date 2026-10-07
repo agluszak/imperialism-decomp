@@ -977,16 +977,16 @@
 // __callnewh
 
 // LIBRARY: IMPERIALISM 0x005e7ae0
-// ownership-only
+// _findfirst
 
 // LIBRARY: IMPERIALISM 0x005e7c10
-// ownership-only
+// _findnext
 
 // LIBRARY: IMPERIALISM 0x005e7d30
 // _findclose
 
 // LIBRARY: IMPERIALISM 0x005e7d60
-// ConvertFileTimeToLocalEpochSeconds
+// __timet_from_ft
 
 // LIBRARY: IMPERIALISM 0x005e7df0 SYMBOL
 // __aullshr
@@ -1001,7 +1001,7 @@
 // ?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
 
 // LIBRARY: IMPERIALISM 0x005e7f50
-// ownership-only
+// free
 
 // LIBRARY: IMPERIALISM 0x005e7fc0 SYMBOL
 // _realloc
@@ -1018,7 +1018,7 @@
 // prototype: public: virtual void * __thiscall type_info::`scalar deleting dtor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005e8310
-// AllocateWithGlobalNewMode
+// malloc
 
 // LIBRARY: IMPERIALISM 0x005e8330 SYMBOL
 // __nh_malloc
@@ -1042,19 +1042,19 @@
 // prototype: void * __cdecl memmove(void *,void const *,unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005e8760
-// ownership-only
+// atol
 
 // LIBRARY: IMPERIALISM 0x005e8800
-// ownership-only
+// atoi
 
 // LIBRARY: IMPERIALISM 0x005e8970
-// _isdigit
+// isdigit
 
 // LIBRARY: IMPERIALISM 0x005e89d0
-// _isspace
+// isspace
 
 // LIBRARY: IMPERIALISM 0x005e8bb0
-// _vsprintf
+// vsprintf
 
 // LIBRARY: IMPERIALISM 0x005e8c20 SYMBOL
 // __alloca_probe
@@ -1076,52 +1076,52 @@
 // prototype: long __cdecl _time(long *)
 
 // LIBRARY: IMPERIALISM 0x005e9010
-// ownership-only
+// fclose
 
 // LIBRARY: IMPERIALISM 0x005e9050
-// ownership-only
+// _fclose_lk
 
 // LIBRARY: IMPERIALISM 0x005e90c0
-// ownership-only
+// _fsopen
 
 // LIBRARY: IMPERIALISM 0x005e9100
-// ownership-only
+// fopen
 
 // LIBRARY: IMPERIALISM 0x005e9120
-// _fprintf
+// fprintf
 
 // LIBRARY: IMPERIALISM 0x005e9170
-// _fwrite
+// fwrite
 
 // LIBRARY: IMPERIALISM 0x005e91b0 SYMBOL
 // __fwrite_lk
 
 // LIBRARY: IMPERIALISM 0x005e9300
-// _fscanf
+// fscanf
 
 // LIBRARY: IMPERIALISM 0x005e9340
-// _strncpy
+// strncpy
 
 // LIBRARY: IMPERIALISM 0x005e9440
-// ownership-only
+// fread
 
 // LIBRARY: IMPERIALISM 0x005e9480
-// ownership-only
+// _fread_lk
 
 // LIBRARY: IMPERIALISM 0x005e95c0
-// ownership-only
+// fgetc
 
 // LIBRARY: IMPERIALISM 0x005e9620 SYMBOL
 // __itoa
 
 // LIBRARY: IMPERIALISM 0x005e9660
-// _xtoa
+// xtoa
 
 // LIBRARY: IMPERIALISM 0x005e9840
-// _sprintf
+// sprintf
 
 // LIBRARY: IMPERIALISM 0x005e98b0
-// _WinMainCRTStartup
+// WinMainCRTStartup
 
 // LIBRARY: IMPERIALISM 0x005e9a60 SYMBOL
 // __amsg_exit
@@ -1144,7 +1144,7 @@
 // __cinit
 
 // LIBRARY: IMPERIALISM 0x005e9b90
-// _exit
+// exit
 
 // LIBRARY: IMPERIALISM 0x005e9bb0 SYMBOL
 // __exit
@@ -1166,10 +1166,10 @@
 // __initterm
 
 // LIBRARY: IMPERIALISM 0x005e9cf0
-// _memcpy
+// memcpy
 
 // LIBRARY: IMPERIALISM 0x005ea030
-// _wcslen
+// wcslen
 
 // LIBRARY: IMPERIALISM 0x005ea050 SYMBOL
 // __mbschr
@@ -1198,7 +1198,7 @@
 // prototype: void __cdecl _endthreadex(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005ea520
-// _memcmp
+// memcmp
 
 // LIBRARY: IMPERIALISM 0x005ea5d0 SYMBOL
 // __CxxThrowException@8
@@ -1234,13 +1234,13 @@
 // prototype: int __cdecl abs(int)
 
 // LIBRARY: IMPERIALISM 0x005eaa40
-// _strtol
+// strtol
 
 // LIBRARY: IMPERIALISM 0x005eaa60
-// _strtoxl
+// strtoxl
 
 // LIBRARY: IMPERIALISM 0x005eacf0
-// _strtoul
+// strtoul
 
 // LIBRARY: IMPERIALISM 0x005ead10 SYMBOL
 // __purecall
@@ -1272,28 +1272,28 @@
 // __setmbcp
 
 // LIBRARY: IMPERIALISM 0x005eb100
-// _getSystemCP
+// getSystemCP
 
 // LIBRARY: IMPERIALISM 0x005eb150
-// _CPtoLCID
+// CPtoLCID
 
 // LIBRARY: IMPERIALISM 0x005eb1b0
-// _setSBCS
+// setSBCS
 
 // LIBRARY: IMPERIALISM 0x005eb1f0 SYMBOL
 // ___initmbctable
 
 // LIBRARY: IMPERIALISM 0x005eb200
-// _mktime
+// mktime
 
 // LIBRARY: IMPERIALISM 0x005eb220 SYMBOL
 // __make_time_t
 
 // LIBRARY: IMPERIALISM 0x005eb460
-// _gmtime
+// gmtime
 
 // LIBRARY: IMPERIALISM 0x005ebb20
-// _strftime
+// strftime
 
 // LIBRARY: IMPERIALISM 0x005ebb40 SYMBOL
 // __Strftime
@@ -1429,19 +1429,19 @@
 // name: _unlock
 
 // LIBRARY: IMPERIALISM 0x005edbc0
-// ownership-only
+// _lock_file
 
 // LIBRARY: IMPERIALISM 0x005edc00 SYMBOL
 // __lock_file2
 
 // LIBRARY: IMPERIALISM 0x005edc30
-// ownership-only
+// _unlock_file
 
 // LIBRARY: IMPERIALISM 0x005edc70 SYMBOL
 // __unlock_file2
 
 // LIBRARY: IMPERIALISM 0x005edcc0
-// ConvertBrokenDownLocalTimeToEpochSeconds
+// __loctotime_t
 
 // LIBRARY: IMPERIALISM 0x005eddb8 SYMBOL
 // __except_handler3
@@ -1490,64 +1490,64 @@
 // __output
 
 // LIBRARY: IMPERIALISM 0x005ef4a0
-// _write_char
+// write_char
 
 // LIBRARY: IMPERIALISM 0x005ef4f0
-// _write_multi_char
+// write_multi_char
 
 // LIBRARY: IMPERIALISM 0x005ef530
-// _write_string
+// write_string
 
 // LIBRARY: IMPERIALISM 0x005ef570
-// _get_int_arg
+// get_int_arg
 
 // LIBRARY: IMPERIALISM 0x005ef590
-// _get_int64_arg
+// get_int64_arg
 
 // LIBRARY: IMPERIALISM 0x005ef5b0
-// _get_short_arg
+// get_short_arg
 
 // LIBRARY: IMPERIALISM 0x005ef5d0
-// EnsureRuntimeLocaleTablesInitializedOnce
+// __tzset
 
 // LIBRARY: IMPERIALISM 0x005ef630 SYMBOL
 // __tzset_lk
 
 // LIBRARY: IMPERIALISM 0x005ef910
-// isindst
+// _isindst
 
 // LIBRARY: IMPERIALISM 0x005ef940 SYMBOL
 // __isindst_lk
 
 // LIBRARY: IMPERIALISM 0x005efbb0
-// _cvtdate
+// cvtdate
 
 // LIBRARY: IMPERIALISM 0x005efd50
-// ownership-only
+// _close
 
 // LIBRARY: IMPERIALISM 0x005efdc0 SYMBOL
 // __close_lk
 
 // LIBRARY: IMPERIALISM 0x005efe50
-// ownership-only
+// _freebuf
 
 // LIBRARY: IMPERIALISM 0x005efe90
-// _fflush
+// fflush
 
 // LIBRARY: IMPERIALISM 0x005efed0 SYMBOL
 // __fflush_lk
 
 // LIBRARY: IMPERIALISM 0x005eff10
-// ownership-only
+// _flush
 
 // LIBRARY: IMPERIALISM 0x005eff90
-// _flsall
+// flsall
 
 // LIBRARY: IMPERIALISM 0x005f0050
-// ownership-only
+// _openfile
 
 // LIBRARY: IMPERIALISM 0x005f0220
-// ownership-only
+// _getstream
 
 // LIBRARY: IMPERIALISM 0x005f0300 SYMBOL
 // __stbuf
@@ -1577,10 +1577,10 @@
 // __whiteout
 
 // LIBRARY: IMPERIALISM 0x005f1490
-// ownership-only
+// _filbuf
 
 // LIBRARY: IMPERIALISM 0x005f1580
-// ownership-only
+// _read
 
 // LIBRARY: IMPERIALISM 0x005f1600 SYMBOL
 // __read_lk
@@ -1595,7 +1595,7 @@
 // __ismbblead
 
 // LIBRARY: IMPERIALISM 0x005f1ce0
-// _x_ismbbtype
+// x_ismbbtype
 
 // LIBRARY: IMPERIALISM 0x005f1d20 SYMBOL
 // __setenvp
@@ -1604,7 +1604,7 @@
 // __setargv
 
 // LIBRARY: IMPERIALISM 0x005f1eb0
-// _parse_cmdline
+// parse_cmdline
 
 // LIBRARY: IMPERIALISM 0x005f22c0 SYMBOL
 // ___crtGetEnvironmentStringsA
@@ -1619,28 +1619,28 @@
 // __NMSG_WRITE
 
 // LIBRARY: IMPERIALISM 0x005f28f0
-// _strchr
+// strchr
 
 // LIBRARY: IMPERIALISM 0x005f29b0
-// _strpbrk
+// strpbrk
 
 // LIBRARY: IMPERIALISM 0x005f29f0 SYMBOL
 // ___crtLCMapStringW
 
 // LIBRARY: IMPERIALISM 0x005f2c00
-// _wcsncnt
+// wcsncnt
 
 // LIBRARY: IMPERIALISM 0x005f2c40 SYMBOL
 // ___crtLCMapStringA
 
 // LIBRARY: IMPERIALISM 0x005f2e60
-// _strncnt
+// strncnt
 
 // LIBRARY: IMPERIALISM 0x005f2e90 SYMBOL
 // __strrev
 
 // LIBRARY: IMPERIALISM 0x005f2ec0
-// _calloc
+// calloc
 
 // LIBRARY: IMPERIALISM 0x005f2f70 SYMBOL
 // ?__CxxUnhandledExceptionFilter@@YGJPAU_EXCEPTION_POINTERS@@@Z
@@ -1648,16 +1648,16 @@
 // prototype: long __stdcall __CxxUnhandledExceptionFilter(struct _EXCEPTION_POINTERS *)
 
 // LIBRARY: IMPERIALISM 0x005f3000
-// _strspn
+// strspn
 
 // LIBRARY: IMPERIALISM 0x005f3040
-// _strcspn
+// strcspn
 
 // LIBRARY: IMPERIALISM 0x005f3080
-// _strrchr
+// strrchr
 
 // LIBRARY: IMPERIALISM 0x005f30b0
-// _strstr
+// strstr
 
 // LIBRARY: IMPERIALISM 0x005f3130 SYMBOL
 // ___crtGetStringTypeW
@@ -1666,7 +1666,7 @@
 // ___crtGetStringTypeA
 
 // LIBRARY: IMPERIALISM 0x005f3400
-// _toupper
+// toupper
 
 // LIBRARY: IMPERIALISM 0x005f3490 SYMBOL
 // __toupper_lk
@@ -1702,7 +1702,7 @@
 // prototype: unsigned int __cdecl _abstract_sw(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005f41e0
-// _tolower
+// tolower
 
 // LIBRARY: IMPERIALISM 0x005f4270 SYMBOL
 // __tolower_lk
@@ -1791,7 +1791,7 @@
 // prototype: int __cdecl _ValidateExecute(int (__stdcall *)(void))
 
 // LIBRARY: IMPERIALISM 0x005f4bb0
-// ownership-only
+// abort
 
 // LIBRARY: IMPERIALISM 0x005f4cb0 SYMBOL
 // __lseek
@@ -1806,19 +1806,19 @@
 // __isatty
 
 // LIBRARY: IMPERIALISM 0x005f4e40
-// _wctomb
+// wctomb
 
 // LIBRARY: IMPERIALISM 0x005f4eb0 SYMBOL
 // __wctomb_lk
 
 // LIBRARY: IMPERIALISM 0x005f4f30
-// _wcstombs
+// wcstombs
 
 // LIBRARY: IMPERIALISM 0x005f4fb0 SYMBOL
 // __wcstombs_lk
 
 // LIBRARY: IMPERIALISM 0x005f51a0
-// _wcsncnt
+// wcsncnt
 
 // LIBRARY: IMPERIALISM 0x005f5210 SYMBOL
 // __getenv_lk
@@ -1848,7 +1848,7 @@
 // __sopen
 
 // LIBRARY: IMPERIALISM 0x005f5b60
-// _mbtowc
+// mbtowc
 
 // LIBRARY: IMPERIALISM 0x005f5be0 SYMBOL
 // __mbtowc_lk
@@ -1879,7 +1879,7 @@
 // __free_lc_time
 
 // LIBRARY: IMPERIALISM 0x005f64c0
-// _storeTimeFmt
+// storeTimeFmt
 
 // LIBRARY: IMPERIALISM 0x005f65c0 SYMBOL
 // ___init_numeric
@@ -1887,7 +1887,7 @@
 // prototype: int __cdecl ___init_numeric(void)
 
 // LIBRARY: IMPERIALISM 0x005f67c0
-// _fix_grouping
+// fix_grouping
 
 // LIBRARY: IMPERIALISM 0x005f6800 SYMBOL
 // ___lconv_init
@@ -1898,7 +1898,7 @@
 // __get_lc_lconv
 
 // LIBRARY: IMPERIALISM 0x005f6a40
-// _fix_grouping
+// fix_grouping
 
 // LIBRARY: IMPERIALISM 0x005f6a80 SYMBOL
 // __free_lc_lconv
@@ -1909,10 +1909,10 @@
 // prototype: void __cdecl ___init_ctype(void)
 
 // LIBRARY: IMPERIALISM 0x005f6dc0
-// _strncmp
+// strncmp
 
 // LIBRARY: IMPERIALISM 0x005f7300
-// _signal
+// signal
 
 // LIBRARY: IMPERIALISM 0x005f7530 SYMBOL
 // _ctrlevent_capture@4
@@ -1925,7 +1925,7 @@
 // prototype: int __cdecl _raise(int signal)
 
 // LIBRARY: IMPERIALISM 0x005f77d0
-// _siglookup
+// siglookup
 
 // LIBRARY: IMPERIALISM 0x005f7830 SYMBOL
 // ___addl
@@ -1976,7 +1976,7 @@
 // ___crtGetLocaleInfoA
 
 // LIBRARY: IMPERIALISM 0x005f8d10
-// _wcstoxl
+// wcstoxl
 
 // LIBRARY: IMPERIALISM 0x005f8f10 SYMBOL
 // ___ld12mul
@@ -1990,28 +1990,28 @@
 // ___crtCompareStringA
 
 // LIBRARY: IMPERIALISM 0x005f9780
-// _strncnt
+// strncnt
 
 // LIBRARY: IMPERIALISM 0x005f97b0 SYMBOL
 // ___crtsetenv
 
 // LIBRARY: IMPERIALISM 0x005f99c0
-// _findenv
+// findenv
 
 // LIBRARY: IMPERIALISM 0x005f9a40
-// _copy_environ
+// copy_environ
 
 // LIBRARY: IMPERIALISM 0x005f9b20 SYMBOL
 // __setmode_lk
 
 // LIBRARY: IMPERIALISM 0x005f9b90
-// _towupper
+// towupper
 
 // LIBRARY: IMPERIALISM 0x005f9c20 SYMBOL
 // __towupper_lk
 
 // LIBRARY: IMPERIALISM 0x005f9ca0
-// _iswctype
+// iswctype
 
 // LIBRARY: IMPERIALISM 0x005fa7c2
 // ownership-only

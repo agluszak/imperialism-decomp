@@ -8,11 +8,11 @@ extern int g_lastClickedMapTileIndex;
 
 extern int g_cityRegionIdRemapTable[256];
 
-extern const int g_coarseHexColOffsetEvenRow[6];
+extern int g_coarseHexColOffsetEvenRow[6];
 
-extern const int g_coarseHexRowOffset[6];
+extern int g_coarseHexRowOffset[6];
 
-extern const int g_coarseHexColOffsetOddRow[6];
+extern int g_coarseHexColOffsetOddRow[6];
 
 extern int g_mapGenDesertQuota;
 
@@ -26,7 +26,7 @@ extern int g_mapGenSwampQuota;
 
 extern int g_mapGenRiverCount;
 
-extern const int g_riverConnectionTypeByDirectionPair[6][6];
+extern int g_riverConnectionTypeByDirectionPair[6][6];
 
 extern "C" {
 extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
@@ -43,7 +43,7 @@ extern int g_MapInteractionPreviewRowParity;
 
 extern int g_MapInteractionPreviewColumnParity;
 
-extern "C" const char s_SourcePathUMapDlog[];
+extern "C" char s_SourcePathUMapDlog[];
 
 extern double g_MapPreviewScaleX6A3410;
 

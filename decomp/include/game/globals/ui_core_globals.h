@@ -177,19 +177,19 @@ extern char g_szMcAppUiHeaderPath[];
 
 extern int g_McAppUiFlag_006A143C;
 
-extern "C" const char s_SourcePathUViewMgr[];
+extern "C" char s_SourcePathUViewMgr[];
 
-extern "C" const char s_SourcePathUViewMgrMore[];
+extern "C" char s_SourcePathUViewMgrMore[];
 
-extern "C" const char s_SourcePathUHelpMgr[];
+extern "C" char s_SourcePathUHelpMgr[];
 
-extern "C" const char s_SourcePathUMacViewMgr[];
+extern "C" char s_SourcePathUMacViewMgr[];
 
 extern const char* const g_pszEmptyTextPointer; // = g_szEmptyString @
 
 extern TextStyle g_UiResourceEntryDefaultTextStyle;
 
-extern "C" const char s_TurnEventCursorNameFormat[];
+extern "C" char s_TurnEventCursorNameFormat[];
 
 extern "C" short g_anStrategicMapOverlaySourceRowByIconId[28];
 

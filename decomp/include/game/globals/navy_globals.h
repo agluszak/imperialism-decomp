@@ -79,10 +79,10 @@ extern "C" {
 extern TNavyMgr* g_pNavyOrderManager;
 extern unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
 extern unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
-extern const bool g_bDrawOceanRouteOverlay;
-extern const bool g_bTransferOceanViewportToActiveSurface;
-extern const bool g_bDrawOceanZoneLabels;
-extern const bool g_bDrawOceanNationLabels;
+extern bool g_bDrawOceanRouteOverlay;
+extern bool g_bTransferOceanViewportToActiveSurface;
+extern bool g_bDrawOceanZoneLabels;
+extern bool g_bDrawOceanNationLabels;
 extern TShip* g_pNavyPrimaryOrderListHead;
 
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14];
@@ -97,11 +97,11 @@ extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 
 extern int g_UnknownMapOrderExecutionGuard;
 
-extern "C" const char s_SourcePathUNewspaper[];
+extern "C" char s_SourcePathUNewspaper[];
 
-extern "C" const char s_SourcePathUNavy[];
+extern "C" char s_SourcePathUNavy[];
 
-extern "C" const char s_SourcePathUOcean[];
+extern "C" char s_SourcePathUOcean[];
 
 extern short g_Populate_Beachhead_Mission_LookupTable[];
 extern const int g_NavyMissionIndustrialCostTrailingLookup[14];
@@ -114,7 +114,7 @@ extern short g_NavyMissionOrderRanking[14];
 
 extern short g_NavyPriorityOrderRanking[14];
 
-extern "C" const char s_szLineBreak[8];
+extern "C" char s_szLineBreak[8];
 
 extern float g_fMissionScoreNormalizationDivisor;
 extern float g_fScatteredShipsMissionDefaultScore;

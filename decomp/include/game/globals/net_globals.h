@@ -38,10 +38,10 @@ extern int DAT_006a601c;
 
 extern int g_suppressUnexpectedDirectPlaySystemMessageAssert;
 
-extern "C" const char s_SourcePathUMultiplayerMgr[];
+extern "C" char s_SourcePathUMultiplayerMgr[];
 
-extern "C" const char s_GameName[];
+extern "C" char s_GameName[];
 
-extern "C" const char s_PlayerName[];
+extern "C" char s_PlayerName[];
 
 } // extern "C"

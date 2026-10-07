@@ -41,21 +41,21 @@ extern char g_szLowercaseX[];
 
 extern "C" {
 // Secret garrison-close names used by the retail easter-egg path.
-extern const char g_szGarrisonSecretNationNameFrog[];
+extern char g_szGarrisonSecretNationNameFrog[];
 
-extern const char g_szGarrisonSecretUnitNameSnidely[];
+extern char g_szGarrisonSecretUnitNameSnidely[];
 
 extern const char* g_pszEmptyTextRef;
 
-extern const char s_DataDirectoryPath[];
+extern char s_DataDirectoryPath[];
 
-extern const char s_IrgGlobPattern[];
+extern char s_IrgGlobPattern[];
 
-extern const char s_NoLanguageFilesMessage[];
+extern char s_NoLanguageFilesMessage[];
 
-extern const char s_OutOfMemoryText[];
+extern char s_OutOfMemoryText[];
 
-extern const char s_ErrorCaption[];
+extern char s_ErrorCaption[];
 
 extern int g_lastEdgeAutoScrollTick16;
 
@@ -79,7 +79,7 @@ extern char g_szCountryNameProfileKey[];
 
 extern "C" const double g_TradePowerIdentity;
 
-extern "C" const short g_aTradeItemBasePriceByCategory[17];
+extern "C" short g_aTradeItemBasePriceByCategory[17];
 
 extern "C" short g_infoPanelLabelXByRow[4];
 
@@ -96,7 +96,7 @@ extern const float g_UnreferencedConstant;
 
 extern "C" bool g_bMultiplayerScenarioSetupActive;
 
-extern "C" const char s_PictWvGobPathFormat[];
+extern "C" char s_PictWvGobPathFormat[];
 
 extern bool g_bRandomMapDeveloperCheatFlag;
 

@@ -18,6 +18,6 @@ extern "C" int g_diplomacyActionButtonTagTable[6];
 
 extern "C" short g_aDiplomacyRelationPaletteColorCodes[7];
 
-extern "C" const char s_SourcePathUDiplomacyViews[];
+extern "C" char s_SourcePathUDiplomacyViews[];
 
 } // extern "C"
