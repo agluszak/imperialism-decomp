@@ -18,7 +18,7 @@ public:
   short pad06;
   TZone* location;
 
-  // Plain setter for `location`. 0x0054fc60, __thiscall.
+  // Plain setter for `location`.
   void MoveTo(TZone* zone);
 
   void IShip(short shipType, TZone* zone, short nationArg, const char* nameOverride);
@@ -49,14 +49,14 @@ public:
   static void FreeAll();
   static TShip* GetFirst();
   static TShip* GetLast();
-  static short GetTypeFirepower(short shipType);    // 0x550d80
-  static short GetTypeBattleRange(short shipType);  // 0x550db0
-  static short GetTypeArmor(short shipType);        // 0x550de0
-  static short GetTypeHullPoints(short shipType);   // 0x550e10
-  static short GetTypeBattleSpeed(short shipType);  // 0x550e40
-  static short GetTypeCargoHold(short shipType);    // 0x550e70
-  static short GetTypeToolbarSlot(short shipType);  // 0x550ea0
-  static short GetTypeSailingSpeed(short shipType); // 0x550ed0
+  static short GetTypeFirepower(short shipType);              // 0x550d80
+  static short GetTypeBattleRange(short shipType);            // 0x550db0
+  static short GetTypeArmor(short shipType);                  // 0x550de0
+  static short GetTypeHullPoints(short shipType);             // 0x550e10
+  static short GetTypeBattleSpeed(short shipType);            // 0x550e40
+  static short GetTypeCargoHold(short shipType);              // 0x550e70
+  static short GetTypeToolbarSlot(short shipType);            // 0x550ea0
+  static short GetTypeSailingSpeed(short shipType);           // 0x550ed0
   static short GetTypeStat(short shipType, short statColumn); // 0x550f30, Mac oracle
   static TShip* GetNth(short index);
   static short GetTypeSlot(short shipType);

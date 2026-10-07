@@ -52,9 +52,6 @@ TEventHandler* TApplication::GetTarget() {
   return this->currentTarget;
 }
 
-// vtable slot 0x25 is inherited from TCommandHandler: process a queued command through
-// its slot 0x0b and then release it through slot 0x07.
-
 // vtable slot 0x28 (0x00486990 via ILT 0x00405551): `RET 0xc` no-op. MacApp's
 // FUNCTION: IMPERIALISM 0x00486960
 BOOL TApplication::InModalState() {
@@ -85,10 +82,7 @@ void TApplication::Idle(int idlePhase) {
   }
 }
 
-// MacApp TApplication::InModalState(): TRUE while the main view host's +0x90
-// interactive flag is clear. Callers (always through g_pApplication or
-// this) bail out of cursor auto-scroll / nav-command handling while it holds. Reads
-// nothing from `this`; the original dereferences the view host unguarded.
+// ORACLE: MacApp TApplication::InModalState(); `this` is unused.
 
 // FUNCTION: IMPERIALISM 0x00486b50
 void TApplication::DispatchQueuedUiCommandAndRelease(void* payload) {
@@ -158,9 +152,6 @@ void TApplication::DoMenuCommand(int command) {
     return;
   }
 }
-
-// TApplication::cohandlers' compiler-emitted CList<void*,void*>::Serialize body.
-// The real source is the embedded cohandlers template list, not a TApplication vtable slot.
 
 // FUNCTION: IMPERIALISM 0x0049e500
 void TApplication::CreateAndQueueTurnEventPacketTagGWEN() {

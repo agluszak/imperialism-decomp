@@ -29,8 +29,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_screens/TSimMgr.h"
 
-// Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
-
 // FUNCTION: IMPERIALISM 0x004ec0a0
 double TDefenseMinister::GetStategicEscalationMultiplier(bool) {
   return g_DefenseMinisterWeightZero;
@@ -56,8 +54,6 @@ void TDefenseMinister::IDefenseMinister(TGreatPower* owner) {
   }
 }
 
-// Slot 5 override (0x4ec1d0): serialize defense-minister order-array metrics.
-
 // FUNCTION: IMPERIALISM 0x004ec1d0
 void TDefenseMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
@@ -70,8 +66,6 @@ void TDefenseMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&thresholdC, 2);
   stream->WriteBytes(&thresholdD, 2);
 }
-
-// Slot 6 override (0x4ec2f0): deserialize defense-minister order-array metrics.
 
 // FUNCTION: IMPERIALISM 0x004ec2f0
 void TDefenseMinister::ReadFrom(TStream* stream) {
@@ -87,8 +81,6 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&thresholdC, 2);
   stream->ReadBytes(&thresholdD, 2);
 }
-
-// Slot 10 override (0x4ec3d0).
 
 // FUNCTION: IMPERIALISM 0x004ec3d0
 short TDefenseMinister::GetRankingCriterionForGP(short nationSlot) {
@@ -123,8 +115,6 @@ void TDefenseMinister::DoArmyMovement() {
     mission = static_cast<TMission*>(missionCursor.Advance());
   }
 }
-
-// Slot 20 override (0x4ec540).
 
 // FUNCTION: IMPERIALISM 0x004ec540
 void TDefenseMinister::DoPeacetimeDeployment() {
@@ -240,8 +230,6 @@ void TDefenseMinister::DoPeacetimeDeployment() {
   delete[] priorityMap;
   ownedRegionsList->Free();
 }
-
-// Slot 21 override (0x4ecbb0).
 
 // FUNCTION: IMPERIALISM 0x004ecbb0
 unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegions) {
@@ -452,12 +440,8 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
   return weightSum;
 }
 
-// Five personality-specific order-array initializers (0x4ed560/0x4ed890/0x4edb80/
-// 0x4ede60/0x4ee150) called from TNapoleonMinister/TBismarckMinister/TPirateMinister/
-// TDefenderMinister/TBullyMinister's own construction. Each duplicates
-// IDefenseMinister's zeroing prefix inline (the original has no shared
-// call between them -- every one of the six addresses inlines its own copy), then
-// seeds its own thresholdA-D quad and orderWeightTableB[2]/[4]/[7] prefix.
+// Personality initialisers: each inlines IDefenseMinister's zeroing prefix, then seeds its own
+// thresholds and order weights.
 
 // FUNCTION: IMPERIALISM 0x004ed560
 void TNapoleonMinister::INapoleonMinister(TGreatPower* owner) {

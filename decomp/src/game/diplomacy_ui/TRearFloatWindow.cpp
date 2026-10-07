@@ -8,11 +8,6 @@ TRearFloatWindow::TRearFloatWindow() : TFloatWindow() {
   // Base constructor TFloatWindow() handles registration and setup.
 }
 
-// Destructors are compiler-generated (implicit) from real inheritance.
-// No own destructor: the original's 0x004f3940 is an ILT thunk to the base's
-// ~TWindow (0x0048d670), so this class inherits it. The scalar deleting destructor above is what
-// the vtable slot holds.
-
 // FUNCTION: IMPERIALISM 0x004f3960
 bool TRearFloatWindow::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   short partCode = ContainsMouse(point);

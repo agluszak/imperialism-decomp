@@ -50,10 +50,7 @@ struct WarTransitionPair {
   short targetNationSlot;
 };
 
-// MATCH: retail sign-extends the minor slot for the tradePolicyByNation index
-// (movsx eax, bx) while using the full register for the *23 matrix row — hence the
-// short cast at the index only. The tie-break is the codebase LCG idiom
-// ((seed >> 12) & 0x7fff) % 2 (signed mod: cdq/xor/sub/and 1/xor/sub).
+// MATCH: retail sign-extends only the minor-slot index into tradePolicyByNation.
 // FUNCTION: IMPERIALISM 0x00413250
 int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
   int bestScore = 0;
@@ -1742,10 +1739,6 @@ bool TDiplomacyMgr::BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int
   g_pNewsMgr->AddTreatyEvent(eventKind, sourceNation, targetNation, false);
   return true;
 }
-
-// ByteSwapShortInPlace (0x004f2970) and ReadByteSwappedShortArrayFromStream (0x004f2a60)
-// are shared stream byte-order helpers, not diplomacy code: they live in
-// src/game/core/stream_byteswap.cpp.
 
 // FUNCTION: IMPERIALISM 0x00544840
 TurnEvent2SyncPacket* __cdecl

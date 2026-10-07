@@ -13,7 +13,6 @@ public:
 
   TEscortMission(TZone* targetZone);
 
-  // Slots 0x0c, 0x0e, 0x0f: TMission's own virtuals, overridden here.
   virtual void
   Initialize() override; // slot 0x0c 0x539a70 -- reset dispatch flag, copy target context id
   virtual void CalculateImportance()

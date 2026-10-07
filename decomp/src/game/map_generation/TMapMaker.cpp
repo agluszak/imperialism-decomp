@@ -1248,9 +1248,7 @@ int TMapMaker::SeedMountainRange(int tileIndex, int retryBudget, int direction) 
   int nextTile = GetNeighborTileIndexOnMap108x60(tileIndex, nextDirection);
   int placed = 1;
   if (retryBudget != 1 && nextTile != -1) {
-    // MATCH: the original recurses with the unadjusted direction, not nextDirection;
-    // the random perturbation above only picks which neighbor
-    // to step into this call, not the direction future steps inherit.
+    // MATCH: recurse with the original direction; the perturbation only picks this step.
     placed += SeedMountainRange(nextTile, retryBudget - 1, direction);
   }
   return placed;
@@ -2021,7 +2019,6 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
   }
 }
 
-// Mac oracle: IsSeaTile.
 // FUNCTION: IMPERIALISM 0x0052a0a0
 void TMapMaker::CompactCityRegionIds() {
   cityRegionCount = 0;
@@ -2197,7 +2194,6 @@ int TMapMaker::GetCityRegionIdAtTileIndex(int tileIndex) {
   return -1;
 }
 
-// Mac oracle: SetSeaZoneIndex.
 // FUNCTION: IMPERIALISM 0x0052a6b0
 void TMapMaker::SetSeaZoneIndex(int tileIndex, char zoneIndex) {
   mapTileGrid[tileIndex * kTileStride + 4] = static_cast<char>(zoneIndex + kRegionIdBias);

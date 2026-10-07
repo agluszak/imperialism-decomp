@@ -1,5 +1,3 @@
-// TFocusAnimation scoped QuickDraw render/tick slice.
-
 #include "game/app/TFocusAnimation.h"
 
 #include "game/ui_core/TView.h"

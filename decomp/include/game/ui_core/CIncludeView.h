@@ -59,7 +59,7 @@ protected:
 #ifdef IMPERIALISM_RUNTIME_TESTS
   afx_msg LRESULT OnRuntimeAction(WPARAM wParam, LPARAM lParam);
 #endif
-  // WM_LBUTTONDOWN: forward the click into the dialog tree (skips a playing movie). 0x004839e0
+  // WM_LBUTTONDOWN: forward the click into the dialog tree (skips a playing movie)
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point); // 0x004839e0
   afx_msg void OnLButtonUp(UINT nFlags, CPoint point);   // 0x00483b00
   // WM_LBUTTONDBLCLK: let MFC default-route the message only while UI input is enabled.

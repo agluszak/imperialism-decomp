@@ -2,12 +2,7 @@
 
 #include "game/ui_fourcc.h"
 
-// Four-character tags generic widget and view plumbing.
-//
-// Declared through IMPERIALISM_FOURCC so the characters ARE the value; see
-// include/game/ui_fourcc.h for the encoding policy. A tag lives here when the
-// manual source that uses it belongs to this subsystem only; tags crossing
-// subsystems live in ui_tags_common.h.
+// Four-character tags for generic widget and view plumbing.
 
 const int kControlTag1or2 = IMPERIALISM_FOURCC('1', 'o', 'r', '2'); // TViewMgr.cpp; 1 Mac screen(s)
 const int kControlTagAMBI =

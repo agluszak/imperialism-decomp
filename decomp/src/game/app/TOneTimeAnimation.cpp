@@ -1,5 +1,4 @@
-// TOneTimeAnimation: a TAnimation subclass driving a one-shot tile effect through a scoped
-// QuickDraw render/tick slice.
+// TOneTimeAnimation: a one-shot tile effect animation.
 
 #include "game/app/TOneTimeAnimation.h"
 

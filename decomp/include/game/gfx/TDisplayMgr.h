@@ -50,8 +50,6 @@ public:
 };
 ASSERT_SIZE(TDisplayMgr, 0x24);
 
-// g_pDisplayMgr and UDisplayMgr font globals — see game/global_data_tables.h.
-
 struct GlobalViewportRectDefaultsRecord;
 
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized();

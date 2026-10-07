@@ -2,12 +2,7 @@
 
 #include "game/ui_fourcc.h"
 
-// Four-character tags strategic map screens.
-//
-// Declared through IMPERIALISM_FOURCC so the characters ARE the value; see
-// include/game/ui_fourcc.h for the encoding policy. A tag lives here when the
-// manual source that uses it belongs to this subsystem only; tags crossing
-// subsystems live in ui_tags_common.h.
+// Four-character tags for the strategic map screens.
 
 const int kControlTagZmIn = IMPERIALISM_FOURCC('Z', 'm', 'I', 'n'); // map zoom-in hotspot
 const int kControlTagZmOt = IMPERIALISM_FOURCC('Z', 'm', 'O', 't'); // map zoom-out hotspot

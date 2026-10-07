@@ -53,8 +53,7 @@
 #include "decomp_types.h"
 #include <string.h>
 
-// Genuine __cdecl(void*, int) heap-block reallocator; cast at call sites (same pattern
-// as TAutoGreatPower.cpp/TCountry.cpp). Returns the new block, or 0 on failure.
+// ABI: __cdecl(void*, int) heap reallocator; returns the new block or 0.
 
 namespace {
 

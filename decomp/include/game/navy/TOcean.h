@@ -27,10 +27,10 @@ public:
   CRect* routeSegments;          // +0x10 heap buffer of routeNodeCount map-route line segments
   TTaskForce* selectedTaskForce; // +0x14
 
-  // Reallocate routeSegments to hold `count` 0x10-byte route records. 0x0052e7b0.
+  // Reallocate routeSegments to hold `count` 0x10-byte route records.
   void SetNumSeaZones(short count);
 
-  // Map-action context (TZone, stride 0x48) at the given index in contextArray. 0x00563330.
+  // Map-action context (TZone, stride 0x48) at the given index in contextArray.
   TZone* Seath(short index);
 
   void BuildPort(short nTileIndex);
@@ -49,7 +49,7 @@ public:
 
   TZone* Sea(short nationCode);
 
-  // Resolves port-zone or per-nation map-action context for a sea/coastal tile. 0x5633b0.
+  // Resolves port-zone or per-nation map-action context for a sea/coastal tile.
   TZone* GetZoneAt(short seaTileIndex);
 
   TZone* FindPortZoneBySelectedTile(TCity* city);

@@ -1,5 +1,4 @@
-// TGreatPower — nation-state object for the seven playable great powers
-// Mac source: UCountry.cpp / UCountryAuto.cpp.
+// TGreatPower: the nation object for the seven great powers (Mac UCountry.cpp).
 
 #include "game/nation_domain_types.h"
 #include "game/map_domain_types.h"
@@ -320,8 +319,6 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
     }
   }
 }
-
-// Advances per-region development counters and emits diplomacy/map events when stage changes.
 
 // FUNCTION: IMPERIALISM 0x004dbf00
 void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
@@ -2167,7 +2164,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   }
 }
 
-// Listing 0x004dfd30 begins with TEST ESI,ESI and preserves this retail null-this path.
+// Retail begins with TEST ESI,ESI and preserves this retail null-this path.
 IMPERIALISM_BEGIN_RETAIL_NULL_THIS_CHECK
 // FUNCTION: IMPERIALISM 0x004dfd30
 void TGreatPower::PlaceCity(short homeTileIndex, char* cityName) {

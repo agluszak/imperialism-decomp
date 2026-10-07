@@ -9,12 +9,7 @@ class TStaticText;
 class TView;
 struct TextStyle;
 
-// --- Text-style / control-theme helpers (implemented in ui_text_label_helpers.cpp) ---
-// Relocated here from quickdraw_rendering.h: these operate on the packed
-// TextStyle text-style record and the 0x5c40xx control-theme path, not on
-// the QuickDraw surface/font engine. (The font-engine consumers
-// CreateFontFromPresetAndAttachRegionHandle / UpdateGlobalFontPresetAndRebuildCachedFontIfDirty
-// stay in quickdraw_rendering.h with their own forward-decl.)
+// Text-style and control-theme helpers (ui_text_label_helpers.cpp).
 
 void ResolveUiThemeColor(short themeCode, COLORREF* outColor);
 void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int fontSize,

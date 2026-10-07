@@ -2,12 +2,7 @@
 
 #include "game/ui_fourcc.h"
 
-// Four-character tags diplomacy and nation screens.
-//
-// Declared through IMPERIALISM_FOURCC so the characters ARE the value; see
-// include/game/ui_fourcc.h for the encoding policy. A tag lives here when the
-// manual source that uses it belongs to this subsystem only; tags crossing
-// subsystems live in ui_tags_common.h.
+// Four-character tags for the diplomacy and nation screens.
 
 const int kControlTagCan0 = IMPERIALISM_FOURCC(
     'c', 'a', 'n', '0'); // TCouncilView.cpp, TNominationView.cpp; 2 Mac screen(s)

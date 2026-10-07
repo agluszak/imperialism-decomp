@@ -44,7 +44,7 @@ public:
   // Hoare partition core over ordinals [lo, hi]; pivot = payload at ordinal lo.
   virtual int QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare,
                               void* context); // slot 0x74 0x487bd0
-  // Mac QSPartition: swaps a random ordinal into the pivot position, then runs the core.
+  // ORACLE: Mac QSPartition: swaps a random ordinal into the pivot position, then runs the core.
   virtual int QSPartition(int lo, int hi, TSortedListCompareFunc compare,
                           void* context); // slot 0x78 0x487cc0
 

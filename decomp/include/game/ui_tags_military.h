@@ -2,12 +2,7 @@
 
 #include "game/ui_fourcc.h"
 
-// Four-character tags military, navy, and tactical screens.
-//
-// Declared through IMPERIALISM_FOURCC so the characters ARE the value; see
-// include/game/ui_fourcc.h for the encoding policy. A tag lives here when the
-// manual source that uses it belongs to this subsystem only; tags crossing
-// subsystems live in ui_tags_common.h.
+// Four-character tags for the military, navy, and tactical screens.
 
 const int kControlTagNeXT =
     IMPERIALISM_FOURCC('N', 'e', 'X', 'T'); // TDiplomacyMgr.cpp, TNextDiplomationCommand.cpp

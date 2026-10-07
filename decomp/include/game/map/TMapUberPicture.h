@@ -62,7 +62,7 @@ public:
   void FocusOnZone(TZone* pMapOrderContextZone);
   void InvalidateMapRegionForEntryIfUiPassive(TZone* zone);
   bool TrySelectNextValidMapOrderEntry(bool includeCurrent);
-  // Mode-guarded void sibling used by click/navigation paths. 0x00599770.
+  // Mode-guarded void sibling used by click/navigation paths.
   void NextSeaZonePlease(char includeCurrent);
   void EnterMapInteractionOverlayMode(TView* controlOverride);
   void SwitchToCivilianMode();

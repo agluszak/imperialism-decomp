@@ -1,5 +1,3 @@
-// TAttackProvinceMission implementations.
-
 #include <math.h>
 
 #include "game/military/TAttackProvinceMission.h"

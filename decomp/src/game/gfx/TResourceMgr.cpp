@@ -54,7 +54,6 @@ TResourceMgr::~TResourceMgr() {
     m_primaryModule = NULL;
   }
 }
-// ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
 
 // FUNCTION: IMPERIALISM 0x00499280
 void TResourceMgr::NoOpRetailCacheHook() {}
@@ -444,25 +443,3 @@ COLORREF TResourceMgr::ResolvePaletteIndexColor(unsigned int packedColor) {
   }
   return packedColor;
 }
-
-// Compiler-emitted destructors for the two embedded CMap<> members above (m_recordsByResourceId,
-// m_recordsByObject); MSVC500 instantiates and calls these automatically as part of
-// ~TResourceMgr(), so there is no source body to write.
-
-// VC5 emits afxtempl.h's archive loop for the short-key cache specialization. The body
-// serializes each two-byte key and four-byte CacheRecord pointer, and rebuilds the map
-// through CMap::SetAt while loading.
-
-// VC5 afxtempl.h body for the pointer-key m_recordsByObject member.
-
-// The pointer-key cache uses the same VC5 afxtempl.h archive loop, with four-byte key
-// and value elements.
-
-// VC5 afxtempl.h CPlex teardown for the short-key m_recordsByResourceId member.
-
-// VC5 emits afxtempl.h's InitHashTable body for each embedded CMap specialization.
-// These are MFC template code, not game-owned resize helpers.
-
-// The remaining bodies are likewise emitted from the two real CMap<> members. Their
-// protected node-management methods are MFC template implementation details, not source
-// APIs to recreate in game code.

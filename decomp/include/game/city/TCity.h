@@ -25,8 +25,7 @@ struct TCityTransportRequest {
 
 ASSERT_SIZE(TCityTransportRequest, 0x04);
 
-// The per-nation city/production model at TGreatPower+0x894 (field `city`).
-// RTTI: g_pClassDescTCity @ 0x0064f338; CreateObject body at 0x004b2410.
+// The per-nation city and production model (TGreatPower::city).
 // LAYOUT: RECOVERED
 // VTABLE: IMPERIALISM 0x0064f580
 class TCity : public TObject {
@@ -34,7 +33,6 @@ public:
   DECLARE_DYNCREATE(TCity)
   ~TCity() override;
 
-  // slots 0x05–0x07 — TObject stream lifecycle (bodies 0x004b35d0 / 0x004b30a0 / 0x004b3a60).
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   void Free() override;
@@ -43,33 +41,23 @@ public:
   virtual void PredictedNeeds();
   virtual void ProduceUnits();
   virtual void AddPurchasedItems(short* needVector);
-  // slot 0x0f — body 0x004b4040: city stock counter += amounts[i]; clears E0/E2.
   virtual void AddTransportedItems(short* amounts);
   virtual void AddTransportedItems();
   virtual void MakeTown(short selectedResourceType);
   virtual void SetSelectedTownMarker(TTown* townMarker);
   virtual void AddTransportRequest(short low, short high);
   virtual short DirectTransport(short needIndex, short amount);
-  // slot 0x14 — body 0x004b46c0: forward to queue274 slot 0x20.
   virtual void TransferTransportRequests();
-  // slot 0x15 — body 0x004b46e0 (vtable stores direct body, not ILT 0x00407464).
   virtual short GetMaxBuildingCapacity(int buildingSlot);
   virtual char GetNextBuildingLevel(int buildingSlot);
-  // slot 0x17 — body 0x004b4940. Mac oracle: GetNextBuildingType(short).
   virtual short GetNextBuildingType(short buildingSlot);
-  // slot 0x18 — body 0x004b4d50 (vtable stores direct body, not ILT 0x0040494e).
   virtual void BuildPowerPlant(bool enableUpgrade);
-  // slot 0x19 — body 0x004b4c80: write the production flag/current/accum for a slot.
   virtual void SetBuildingWindowState(short productionSlot, bool flag, short current, short accum);
   virtual char GetBuildingWindowState(short productionSlot, short* outCurrent, short* outAccum);
-  // slot 0x1b — body 0x004b4230: owner transportCapacity (0 when unowned).
   virtual int GetRollingStock();
-  // slot 0x1c — body 0x004b4260: set owner transportCapacity.
   virtual void SetRollingStock(short value);
   virtual short* GetUnmetNeeds();
-  // slot 0x1e — body 0x004b4d00: true for the basic resource slots 0..6 and 0xb.
   virtual short IsCapacityCenter(short resourceSlot);
-  // slot 0x1f — body 0x004b4210.
   virtual void MouseTrap();
   virtual void VerifyStocks();
 

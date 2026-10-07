@@ -1220,8 +1220,6 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   tileRect.right = screenX + 0x40;
   tileRect.bottom = screenY + 0x40;
 
-  // LAYOUT: transport connectivity is stored at +0x06/+0x17; +0x0a/+0x0b above
-  // belong to the terrain-transition and coast families.
   if (terrain.adjacencyBits != 0 || terrain.railFlags != 0) {
     for (int direction = 0; direction < 6; ++direction) {
       unsigned char directionBit = static_cast<unsigned char>(1 << direction);

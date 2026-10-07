@@ -1,5 +1,4 @@
-// TGreatPower construction, serialization and pending-action dispatch. Mac source:
-// UCountry.cpp / UCountryAuto.cpp.
+// TGreatPower construction, serialization and pending-action dispatch (Mac UCountry.cpp).
 
 #include "game/nation_domain_types.h"
 #include "game/resource_domain_types.h"

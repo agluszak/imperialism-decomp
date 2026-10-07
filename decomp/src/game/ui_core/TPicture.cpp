@@ -82,10 +82,6 @@ void TPicture::IPicture(TView* panel, int* offsetLayout, int* sizeLayout, int la
   SetPictureRsrcID(pictureId, 0);
 }
 
-// Slot 0x44 override: draw the cached bitmap. 8bpp uncompressed pictures software-blit
-// straight into the active QuickDraw surface; anything else realizes the default DIB
-// palette and StretchDIBits-es to the active DC at the control's cached position.
-
 // FUNCTION: IMPERIALISM 0x0048f3c0
 void TPicture::Draw(RECT* rectBuffer) {
   if (GetAsyncKeyState(VK_CONTROL) & 0x8000) {
@@ -121,8 +117,6 @@ void TPicture::Draw(RECT* rectBuffer) {
         this->cachedBitmap->m_pInfoHeader->bmiHeader.biWidth, srcHeight);
   }
 }
-
-// Slot 0x08 override: allocate via slot 0x09 then copy city-dialog and picture-resource tail.
 
 // FUNCTION: IMPERIALISM 0x0048f520
 void TPicture::ReleasePicture() {

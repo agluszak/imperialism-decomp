@@ -181,7 +181,6 @@ bool TAdmiral::IsSeniorTo(const TAdmiral* other) const {
   return experiencePoints > other->experiencePoints;
 }
 
-// Mac oracle: TAdmiral::EstimateEnemyForces(short*, const TZone*, short) const.
 // FUNCTION: IMPERIALISM 0x00551a00
 short TAdmiral::EstimateEnemyForces(short* estimatedCounts, const TZone* zone,
                                     NationSlot nation) const {
@@ -235,7 +234,6 @@ short TAdmiral::EstimateEnemyForces(short* estimatedCounts, const TZone* zone,
   return static_cast<short>(total);
 }
 
-// Mac oracle: TAdmiral::GetFleetReport(CStr255&, TZone*, short) const.
 // FUNCTION: IMPERIALISM 0x00551be0
 void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) const {
   short estimates[5];
@@ -298,7 +296,6 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) cons
                          static_cast<LPCSTR>(observedComposition));
 }
 
-// Mac oracle: EstimateStrengthRating.
 // FUNCTION: IMPERIALISM 0x00552160
 int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) const {
   int total = 0;

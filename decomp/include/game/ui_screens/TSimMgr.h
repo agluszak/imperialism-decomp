@@ -87,11 +87,10 @@ public:
   void DoPerTurnMissionAIStuff(int replanMode); // 0x57d7a0
 
   NationSlot GetPlayerCountry(); // Mac oracle; 0x581260
-  // Mac oracle: the country exists and has not been absorbed. ABI: thiscall; the body
-  // ignores `this`. 0x581280.
+  // ORACLE: the country exists and has not been absorbed. ABI: thiscall; `this` is unused.
   bool ReallyInTheGame(NationSlot nationSlot);
   void EliminateGP(NationSlot nationSlot); // Mac oracle; 0x581300
-  // Forwards to the player's TGreatPower::SorryYouLose. 0x5813d0.
+  // Forwards to the player's TGreatPower::SorryYouLose.
   void NotifyActiveNationLost();
   void SetDifficultyLevel(eDifficulty difficulty);
   void ISimMgr();
@@ -102,10 +101,9 @@ public:
   void CreatePlanet(int rebuild, const char* mapName, int wrapHorizontally); // Mac oracle; 0x57c7c0
   unsigned char LoadScenario(int scenarioIndex);                             // Mac oracle; 0x57c9a0
   void CreateCountries(int flag);                                            // Mac oracle; 0x57cad0
-  // Mac retail identities for the two state-2 setup branches.
-  void NameCapitals();          // 0x581c00
-  void ProcessScenarioScript(); // 0x581e60
-  // Sets mapArtSet and reloads that picture language pack. 0x581ae0.
+  void NameCapitals();                                                       // 0x581c00
+  void ProcessScenarioScript();                                              // 0x581e60
+  // Sets mapArtSet and reloads that picture language pack.
   void SelectMapArtSet(short index);
   void SetPlayerCountry(NationSlot nationSlot); // Mac oracle; 0x5837c0
 

@@ -1,7 +1,6 @@
 #pragma once
 
-// Common ABI types and forward declarations for global declaration headers. This header
-// deliberately owns no globals, subsystem APIs, or concrete game-class dependencies.
+// Common ABI types and forward declarations for the global declaration headers.
 
 #include "decomp_types.h"
 

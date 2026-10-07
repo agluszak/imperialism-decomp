@@ -16,7 +16,6 @@ public:
   virtual bool
   IsANoBrainer() const override; // slot 0x0a 0x535680 -- returns true (capability flag)
 
-  // Slots 0x0c-0x0f: TMission's own virtuals, overridden here.
   virtual void Initialize() override;          // slot 0x0c 0x53bb90 -- reset state/score to default
   virtual void SetStateByte8To2() override;    // slot 0x0d 0x53bc00 -- state08 = 3
   virtual void CalculateImportance() override; // slot 0x0e 0x53bc20

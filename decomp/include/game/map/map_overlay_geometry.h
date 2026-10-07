@@ -2,15 +2,14 @@
 
 #include "game/tactical/hex_tile_distance.h"
 
-// Free geometry helpers for the UMapper overlay grid (0xd8=216-wide doubled-column grid over the
-// 0x6c=108-wide hex tile map).
+// Geometry helpers for the 216-column doubled overlay grid over the 108-column hex map.
 
 // A route/overlay edge endpoint (overlay x,y). Used by the scanline region-fill pass.
 struct MapEdgePoint {
   int x; // +0x00
   int y; // +0x04
 
-  // 1 if both coordinates match `other`, else 0. 0x0052e990.
+  // 1 if both coordinates match `other`, else 0.
   unsigned int Equals(const MapEdgePoint* other) const;
 };
 

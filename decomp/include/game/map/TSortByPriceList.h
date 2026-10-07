@@ -3,7 +3,6 @@
 #include "compat.h"
 #include "game/ui_core/TSortedPtrList.h"
 
-// Base recovered from CRuntimeClass descriptor: TSortByPriceList -> TSortedPtrList -> CPtrArray.
 // VTABLE: IMPERIALISM 0x00659ef0
 class TSortByPriceList : public TSortedPtrList {
 public:

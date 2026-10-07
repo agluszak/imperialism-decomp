@@ -55,8 +55,7 @@ public:
   virtual void ShiftClick(int stridedRecord, int dispatchContext);
   virtual void CommandOptionClick(int stridedRecord, int dispatchContext);
   virtual void NormalClick(short nTileIndex, int nInputFlags);
-  // ORACLE: Mac names this TWorldView::CenterOn(short). The Windows virtual
-  // consumes the promoted stack dword and concrete bodies reuse its upper word.
+  // ABI: overrides reuse the upper word of the promoted stack dword.
   virtual void CenterOn(int tileIndex);
   virtual short GetCentertile();
   virtual void SetMapViewTileIndex(int tileIndex);

@@ -712,7 +712,6 @@ void TOcean::CommitForce(TTaskForce* entry) {
   }
 }
 
-// Mac oracle: TOcean::ForgetForce(TTaskForce*).
 // FUNCTION: IMPERIALISM 0x00564400
 void TOcean::ForgetForce(TTaskForce* entry) {
   if (this == 0) {

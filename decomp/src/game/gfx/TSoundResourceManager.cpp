@@ -10,7 +10,6 @@
 
 #include <string.h>
 
-// DSOUND.DLL::DirectSoundCreate — imported from the DX5 SDK dsound.lib (linked in CMake).
 extern "C" int __stdcall DirectSoundCreate(void* pcGuidDevice, IDirectSound** ppDS,
                                            void* pUnkOuter);
 

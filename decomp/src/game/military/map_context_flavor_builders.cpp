@@ -1,7 +1,5 @@
-// Procedural map-context flavor-text builders (BuildMapContextStatusStringVariant*). Each is a
-// weighted-grammar expander: pick a token-letter template with a weighted PRNG draw, then walk
-// the template and, for each token letter (K/V/k/v/w/l), draw a weighted syllable and append it.
-// The syllable/template strings live in the map-context flavor string pool (global_data_tables).
+// Map-context flavor-text builders: weighted-grammar expanders that pick a template and
+// append a weighted syllable for each token letter.
 
 #include "game/military/mapped_flavor_text.h"
 

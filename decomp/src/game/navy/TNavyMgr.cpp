@@ -351,7 +351,6 @@ void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
   }
 }
 
-// Mac oracle: TNavyMgr::FreeShipsOf(short).
 // FUNCTION: IMPERIALISM 0x00556f60
 void TNavyMgr::FreeShipsOf(short nation) {
   while (orderQueueHead != 0) {
@@ -430,7 +429,6 @@ bool TNavyMgr::CommitForce(TTaskForce* entry) {
   return true;
 }
 
-// Mac oracle: ForgetForce.
 // FUNCTION: IMPERIALISM 0x00557120
 void TNavyMgr::ForgetForce(TTaskForce* entry) {
   if (this != NULL && orderQueueHead == entry) {
@@ -1491,7 +1489,6 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   return 1;
 }
 
-// Mac oracle: WhoseIngotIsAt.
 // FUNCTION: IMPERIALISM 0x0055a4d0
 TTaskForce* TNavyMgr::WhoseIngotIsAt(short tileIndex) {
   TTaskForce* entry = orderQueueHead;

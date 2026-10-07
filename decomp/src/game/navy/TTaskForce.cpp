@@ -27,8 +27,7 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// Navy order priority uses four category weights over the current entry's
-// aggression, nation, and map marker state.
+// Navy order priority from four category weights over aggression, nation and map marker.
 
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 // FUNCTION: IMPERIALISM 0x00552800
@@ -103,7 +102,6 @@ void TTaskForce::Free() {
   delete this;
 }
 
-// Mac oracle: TTaskForce::RegainVirginity(int, TZone*).
 // FUNCTION: IMPERIALISM 0x00552a70
 void TTaskForce::RegainVirginity(int nationArg, TZone* contextZone) {
   while (shipList != 0) {
@@ -1037,7 +1035,6 @@ void TTaskForce::CommitToOrders() {
   g_pActiveMapOrderContext->CommitForce(this);
 }
 
-// Mac oracle: TTaskForce::CancelOrders(unsigned char).
 // FUNCTION: IMPERIALISM 0x005547d0
 void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   bool cancelsBeachhead = shipOrders == 5;
@@ -1176,7 +1173,6 @@ int TTaskForce::GetDeciSpeed() const {
   return 0;
 }
 
-// Mac oracle: TTaskForce::GetCompositionDescription(CStr255&) const.
 // FUNCTION: IMPERIALISM 0x00554b20
 void TTaskForce::GetCompositionDescription(CString* out) const {
   *out = g_szEmptyString;
@@ -1234,7 +1230,6 @@ void TTaskForce::GetSnooperDescription(CString* out) const {
                          static_cast<LPCSTR>(childCountText), static_cast<LPCSTR>(orderKindLabel));
 }
 
-// Mac oracle: TTaskForce::GetGeneralDescription(CStr255&) const.
 // FUNCTION: IMPERIALISM 0x00554e70
 void TTaskForce::GetGeneralDescription(CString* out) const {
   *out = g_szEmptyString;
@@ -1331,7 +1326,6 @@ TAdmiral* TTaskForce::GetSeniorOfficer() const {
   return 0;
 }
 
-// Mac oracle: TTaskForce::GetAuthority(CStr255&) const.
 // FUNCTION: IMPERIALISM 0x005551d0
 void TTaskForce::GetAuthority(CString* out) const {
   if (this == 0 || flagship == 0) {

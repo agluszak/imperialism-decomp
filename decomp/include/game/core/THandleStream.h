@@ -13,9 +13,6 @@ public:
   virtual void Free() override; // slot 0x07 0x4896a0
   virtual int GrowthSize(int requestedSize); // slot 0x31 0x489720
   // clang-format on
-  // Field semantics evidenced by IHandleStream (0x489660):
-  // +0x04 receives the HGLOBAL, +0x08 is zeroed (position), +0x0c receives
-  // GlobalSize(handle), +0x10 receives the caller's mode word (ctor default 1).
   HGLOBAL attachedGlobalHandle; // +0x04
   int streamPosition;           // +0x08
   int attachedSizeBytes;        // +0x0c

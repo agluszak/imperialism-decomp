@@ -28,9 +28,6 @@ TTerrainHelpPicture::~TTerrainHelpPicture() {}
 
 IMPLEMENT_DYNCREATE(TTerrainHelpPicture, TPicture)
 
-// Base ctor call + vptr store only; the original body is 18 bytes ending in
-// `mov eax,esi` return-this.
-
 // FUNCTION: IMPERIALISM 0x00504e90
 void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   TextStyle itemStyle;

@@ -15,13 +15,13 @@ public:
 
   // Build the HPALETTE from a CDib's RGBQUAD color table and Attach it. 0x0047e440
   int BuildPaletteFromBitmapColorTable(CDib* dib);
-  // Select this palette into the DC (MFC CDC::SelectPalette) and realize it. 0x0047e930
+  // Select this palette into the DC (MFC CDC::SelectPalette) and realize it
   UINT SelectIntoDcAndRealize(CDC* dc, BOOL background);
 
   void DrawPalettePreviewGridRectangles(CDC* dc, RECT* bounds, BOOL bForceBackground);
   BOOL CreateIdentityPalette();
 
-  // Load a RIFF PAL palette, prompting for a file when fileName is null or empty. 0x0047e960
+  // Load a RIFF PAL palette, prompting for a file when fileName is null or empty
   int LoadPaletteFile(LPCSTR fileName);
   int LoadPalette(CFile* file);      // 0x0047ec70
   int LoadPalette(UINT fileHandle);  // 0x0047ecf0

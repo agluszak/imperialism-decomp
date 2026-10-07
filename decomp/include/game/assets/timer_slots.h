@@ -2,15 +2,9 @@
 
 #include "game/mfc.h"
 
-// A tiny 10-slot Win32 timer registry used by the audio subsystem. Each slot holds a
-// callback and a live timer id; the shared TIMERPROC (0x5e0460) dispatches WM_TIMER by
-// mapping the timer id back to its slot (id = slot + 0xa000) and kills the timer when the
-// callback returns 0 ("done").
+// Ten-slot Win32 timer registry used by audio; a callback returning 0 kills its timer.
 
 typedef bool(__cdecl* TimerSlotCallback)();
-
-// The registry globals (g_timerSlotCallbacks @0x006a5cf8, g_timerSlotIds @0x006a5c98,
-// g_timerDispatchSuppressAssert @0x006a5d24) are declared in game/global_data_tables.h.
 
 void CALLBACK DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(HWND hwnd, UINT msg,
                                                                         UINT idEvent, DWORD dwTime);

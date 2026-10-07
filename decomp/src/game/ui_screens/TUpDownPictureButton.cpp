@@ -7,9 +7,6 @@
 
 IMPLEMENT_DYNCREATE(TUpDownPictureButton, TPicture)
 
-// TUpDownPictureButton's ctor is defined inline in the header (marker there): the
-// original inlines it into every derived ctor.
-
 // FUNCTION: IMPERIALISM 0x00571600
 TUpDownPictureButton::~TUpDownPictureButton() {}
 

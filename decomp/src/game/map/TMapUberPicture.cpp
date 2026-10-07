@@ -476,7 +476,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   InitializeUiTextStyleDescriptor(&detailStyle, 0, 10, 0x2b67, 3);
   InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
 
-  // Mac resource oracle: MapView.rsrc:9474, event 0x2502, "Friendly Fleet Report".
+  // ORACLE: Mac MapView.rsrc:9474, event 0x2502, "Friendly Fleet Report".
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyFleetReport));
   if (dialog == 0) {
@@ -791,7 +791,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   InitializeUiTextStyleDescriptor(&detailStyle, 0, 10, 0x2b67, 3);
   InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
 
-  // Mac resource oracle: MapView.rsrc:9475, event 0x2503, "Enemy Fleet Report".
+  // ORACLE: Mac MapView.rsrc:9475, event 0x2503, "Enemy Fleet Report".
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
   if (dialog == 0) {

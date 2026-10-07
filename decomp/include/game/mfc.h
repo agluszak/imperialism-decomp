@@ -20,6 +20,4 @@
 #undef MoveMemory
 #endif
 
-// Retail MFC operator new/delete (0x606f73/0x606faf) are LIBRARY markers in src/game/mfc_heap_library.cpp.
-
 // CString helper functions

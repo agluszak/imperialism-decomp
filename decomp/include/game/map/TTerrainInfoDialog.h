@@ -9,9 +9,6 @@ class TTerrainInfoDialog : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(TTerrainInfoDialog)
   virtual ~TTerrainInfoDialog() override; // slot 0x01 (scalar deleting destructor)
-  // RTTI oracle: sizeof(TTerrainInfoDialog) == 0x94, identical to TNoHilitePicture -- this
-  // class adds no data members of its own; its ctor (0x51b140) just installs its own vtable
-  // over the real TNoHilitePicture base construction.
 
   TTerrainInfoDialog();
 };

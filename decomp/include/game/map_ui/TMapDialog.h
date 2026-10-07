@@ -92,14 +92,12 @@ public:
   virtual void DrawMapDialogGuidePatternSetH(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetI(int originX, int originY, short variant);
   virtual void DrawSeaZoneBorders(int screenX, int screenY, short tileIndex);
-  // Mac CodeWarrior identity: the argument-taking TMapDialog::DrawSeaZoneBorders overload.
   virtual void DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int screenY,
                                   short tileIndex);
   virtual void DrawRatLine(short col1, int row1, short col2, int row2);
   virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
                                              short tileIndex);
   virtual void DrawGeneratedMapRouteSegmentsAndResetFillColor();
-  // Mac CodeWarrior identity: TMapDialog::DrawTile(short, short, short).
   virtual void DrawTile(short tileIndex, short screenX, short screenY);
   // Exact 64x64 pixel wedges used to blend a neighboring terrain sprite into the base tile.
   virtual void QuickWedgeSE(unsigned char* src, unsigned char* dest, short srcStride,
@@ -127,10 +125,8 @@ public:
                             short destStride);
   virtual void CoastWedgeSW(unsigned char* src, unsigned char* dest, short srcStride,
                             short destStride);
-  // Mac CodeWarrior identity: TMapDialog::NewCopy64(unsigned char*, unsigned char*, short, short).
   virtual void NewCopy64(unsigned char* src, unsigned char* dest, short srcStride,
                          short destStride);
-  // Mac CodeWarrior identity: TMapDialog::GetCenterTile() const.
   virtual int GetCenterTile() const;
   virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode);
   virtual void UpdateMapInteractionPreviewParityAndRenderTransientSprites(int edgeMask);

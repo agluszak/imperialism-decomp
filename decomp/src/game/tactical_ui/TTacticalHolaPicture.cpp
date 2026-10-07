@@ -19,9 +19,6 @@ TTacticalHolaPicture::~TTacticalHolaPicture() {}
 
 IMPLEMENT_DYNCREATE(TTacticalHolaPicture, TPicture)
 
-// Base ctor call + vptr store only; the original body is 18 bytes ending in
-// `mov eax,esi` return-this.
-
 // FUNCTION: IMPERIALISM 0x005ad760
 void TTacticalHolaPicture::StuffValues(int nationA, int nationB, int nationAIsLocalSide,
                                        int battleSiteIndex) {

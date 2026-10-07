@@ -63,8 +63,6 @@ TSoundPlayer::TSoundPlayer()
     : TEventHandler(), audioCuePool(0), remainingRandomAudioCues(0), cdAudioPlaybackActive(0),
       unused79(0), unused7A(0), fadeStartTick(0) {}
 
-// Slot 0x13 override — pump the audio playback state machine / schedule random cues.
-
 // FUNCTION: IMPERIALISM 0x00593400
 bool TSoundPlayer::DoIdle(int action) {
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0) {
@@ -392,8 +390,6 @@ void TSoundPlayer::StartDeferredAudioFadeTimerIfIdle() {
   }
 }
 
-// Slot 0x25 — allocate the two sound-channel peer objects and bring up DirectSound.
-
 // FUNCTION: IMPERIALISM 0x005e4e70
 void TSoundPlayer::ISoundPlayer(int idleFrequency) {
   this->IEventHandler(NULL);
@@ -420,8 +416,6 @@ bool TSoundPlayer::DefaultSoundCapabilityPredicate() {
   return true;
 }
 
-// Slot 0x28 — kick off DirectSound init if the device is available.
-
 // FUNCTION: IMPERIALISM 0x005e4f80
 void TSoundPlayer::RequestDirectSoundInitIfAllowed() {
   if (this->directSoundInitOk != 0) {
@@ -435,15 +429,11 @@ bool TSoundPlayer::DefaultSoundCompatibilityPredicate(int unusedArg1, int unused
   return false;
 }
 
-// Slot 0x29 — clear the pending flag and tear down the partial init.
-
 // FUNCTION: IMPERIALISM 0x005e4fd0
 void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
   this->directSoundInitPending = false;
   g_soundResourceManager.ReleaseDirectSoundDeviceAndChannels();
 }
-
-// Slot 0x2a — stop playback on all six global DirectSound channels.
 
 // FUNCTION: IMPERIALISM 0x005e4ff0
 void TSoundPlayer::StopAllSounds() {
@@ -469,8 +459,6 @@ void TSoundPlayer::SetMasterVolumeFromPercent(short percent) {
 
 // FUNCTION: IMPERIALISM 0x005e50a0
 void TSoundPlayer::PriorityOverride(short currentPriority, short requestedPriority) {}
-
-// Slot 0x07 override — release the two channel peers, then run the base teardown.
 
 // FUNCTION: IMPERIALISM 0x005e50c0
 int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfxToken,

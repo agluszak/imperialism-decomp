@@ -21,10 +21,6 @@ IMPLEMENT_DYNCREATE(TBuildingConstructionView, TPicture)
 // FUNCTION: IMPERIALISM 0x004c9e30
 TBuildingConstructionView::TBuildingConstructionView() : TPicture(), city(0), productionView(0) {}
 
-// No own destructor: the original's 0x004c9e90 is an ILT thunk to the base's
-// ~TPicture (0x0048f250), so this class inherits it. The scalar deleting destructor above is what
-// the vtable slot holds.
-
 // FUNCTION: IMPERIALISM 0x004c9eb0
 void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
                                             TCityProductionView* productionView) {

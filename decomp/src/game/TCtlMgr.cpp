@@ -4,8 +4,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 
 IMPLEMENT_DYNCREATE(TCtlMgr, TControl)
-// The destructor below is a real 104-byte compiler-emitted body (member/EH
-// teardown); the NOOP annotation above applies only to the default ctor.
 
 // FUNCTION: IMPERIALISM 0x00492db0
 void TCtlMgr::AssertMcAppUiInvalidationFlagSet(int arg1, int arg2) {

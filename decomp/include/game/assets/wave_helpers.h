@@ -6,14 +6,7 @@
 
 #include <mmsystem.h>
 
-// The Microsoft DirectX SDK sample wave.c module, compiled directly into this game (not a
-// linked prebuilt library -- there is no separate wave.lib to pair against, so these bodies
-// are ported like game code even though the source itself is Microsoft's, not Imperialism's).
-// Statically linked at 0x5e0780..0x5e11c6. Free __cdecl functions (every callsite is
-// caller-cleaned). Function names below are the sample's real, published identifiers
-// (WaveOpenFile/WaveReadFile/WaveCreateFile/WaveLoadFile), not invented descriptive ones --
-// confirmed both by structural comparison against the well-known sample source and by this
-// header's own prior comments, which already named them correctly in prose.
+// Microsoft DirectX SDK sample wave.c, compiled into the game (0x5e0780..0x5e11c6).
 
 // wave.c ER_* error codes.
 #define ER_MEM 0xe000

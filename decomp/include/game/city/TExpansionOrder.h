@@ -23,7 +23,3 @@ public:
   TExpansionOrder() {}
 };
 ASSERT_SIZE(TExpansionOrder, 0x54);
-
-// SwapFirstTwoBytesInBuffer (0x4b9340) and WriteByteSwappedShortArrayToStream (0x4b94a0)
-// are shared stream byte-order helpers, not expansion-order code: they live in
-// game/core/stream_byteswap.h.

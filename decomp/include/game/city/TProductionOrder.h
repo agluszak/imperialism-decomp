@@ -31,8 +31,7 @@ public:
   virtual void Restock();                                              // slot 0x0e 0x4b5140
   virtual void ResetOrderSheet(OrderSheet* orderSheet);                // slot 0x0f 0x4b5180
   virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity); // slot 0x10 0x4b51b0
-  // LAYOUT: the order-slot family shares this complete 0x4c-byte prefix; several
-  // direct children add no storage, while TUnitOrder appends its own fields.
+  // LAYOUT: shared 0x4c-byte order prefix; TUnitOrder appends its own fields.
   short quantity;                          // 0x04 — pending order quantity
   TCity* ownerCity;                        // 0x08 — owning city
   TPopulationMgr* productionSummary;       // 0x0c — city population/production summary

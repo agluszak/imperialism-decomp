@@ -7,10 +7,8 @@
 #include "game/military/TMilitaryUnit.h"
 #include "game/mfc.h"
 
-// Each MakeNewCity override seeds the personality's opening population, production stock,
-// and military recruitment mix for a newly created city.
+// Each MakeNewCity override seeds the personality's opening population, stock and recruits.
 
-// Slot 24 (0x60) override — factory hook on this minister variant.
 // FUNCTION: IMPERIALISM 0x004ed490
 double TNapoleonMinister::GetStategicEscalationMultiplier(bool flag) {
   return flag ? g_MinisterWeightHalf : g_MinisterWeightOne;

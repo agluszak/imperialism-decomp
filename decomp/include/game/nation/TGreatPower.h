@@ -45,7 +45,6 @@ public:
   DECLARE_DYNCREATE(TGreatPower)
   // FUNCTION: IMPERIALISM 0x004d8c50
   ~TGreatPower() override {}
-  // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
   void WriteTo(TStream* stream) override;  // body 0x004d9c70
   void ReadFrom(TStream* stream) override; // body 0x004d92e0
   void Free() override;                    // body 0x004d9160
@@ -60,21 +59,16 @@ public:
   void AddProvince(int regionId) override;
   void NewStatusFor(int targetNationSlot, int policyCode) override;
   void DeliverItem(short amount) override;
-  // ORACLE: Mac TGreatPower::GetAmtUnsold(short).
-  short GetAmtUnsold(short resourceKind) override; // slot 0x1c
-  short GetMerchantCapacity(void) override;        // slot 0x1d
-  // ORACLE: Mac TGreatPower::GetStockpile(short).
-  short GetStockpile(short resourceKind) override; // slot 0x1e
-  // ORACLE: Mac TGreatPower::GetTradeOffersFor(short).
+  short GetAmtUnsold(short resourceKind) override;      // slot 0x1c
+  short GetMerchantCapacity(void) override;             // slot 0x1d
+  short GetStockpile(short resourceKind) override;      // slot 0x1e
   short GetTradeOffersFor(short resourceKind) override; // slot 0x1f
   void PurchaseItem(short resourceKind, short amount, short price) override;
   bool StillBuyingItem(ResourceKindStorage resourceKind) override; // slot 0x21
   bool ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override;
-  // ORACLE: Mac names TGreatPower::AddOfferFrom(short, short).
   void AddOfferFrom(NationSlot sourceNationSlot,
                     DiplomacyProposalCodeStorage proposalCode) override;
-  // ORACLE: Mac names TGreatPower::AddNoticeFrom(short, short).
   void AddNoticeFrom(short sourceNation, short actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
 
@@ -82,10 +76,7 @@ public:
   virtual void MarkAllPendingStatusFlagsHandled(void);
   virtual void DispatchPendingStatusPrompts(void);
   virtual void SetNationPendingActionStateAndPayload(int index, short payload); // slot 0x2e
-  // slot 0x2f — Mac oracle: AddTurnStartEvent(TTurnStartEvent*); the base queues it.
   virtual void AddTurnStartEvent(TTurnStartEvent* event);
-  // slot 0x30 — executes every queued event in order, then frees them.
-  // ORACLE: Mac TGreatPower::DisplayTurnStartEvents().
   virtual void DisplayTurnStartEvents();
   virtual void NoOpNationQueuedOrderHook(void);
   virtual void ExecuteNationPendingActionStateMachine(void);
@@ -106,18 +97,12 @@ public:
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message);
-  // slot 0x3f / vtable offset 0xfc — TCity::PredictedNeeds passes its 23-entry
-  // city-stock vector here. The base implementation is a bare `ret 4`.
-  // ORACLE: Mac names TGreatPower::UpdateCountryStockpile(short*).
+  // ORACLE: Mac TGreatPower::UpdateCountryStockpile(short*); the base body is empty.
   virtual void UpdateCountryStockpile(short* needVector);
   virtual unsigned int GetUnreservedMerchantCapacity(int proposalCode);
-  // ORACLE: Mac names TGreatPower::AddTransportedItems().
   virtual void AddTransportedItems(void); // slot 0x41
-  // ORACLE: Mac names TGreatPower::AddPurchasedItems().
-  virtual void AddPurchasedItems(void); // slot 0x42
+  virtual void AddPurchasedItems(void);   // slot 0x42
 
-  // ---- resource needs / aid allocation ----
-  // ORACLE: Mac names TGreatPower::AddCreatedItems().
   virtual void AddCreatedItems(void);
   virtual void SetNationResourceNeedCurrentByType(int needType, int currentValue);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
@@ -127,7 +112,6 @@ public:
   virtual bool IsTransportCapacityExceeded(void);
   virtual bool IncreaseRollingStock(void);   // slot 0x4a
   virtual bool IncreaseMerchantMarine(void); // slot 0x4b
-  // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.
   virtual void ContinueCivilianOrders(void); // slot 0x4c
   virtual void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   virtual void AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void);
@@ -138,14 +122,11 @@ public:
   virtual bool BuildGreatPowerMapContextTriggeredNationEventMessages(CString* outMessageText);
   virtual bool BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString* outMessageText);
   virtual void SortTrackedOrdersByTypePriority(void);
-  // slot 0x56 — body 0x004e03a0: runs slot 0x4c then the slot 0x55 sort.
   virtual void MoveCivilians(void); // Mac oracle
-  // slot 0x57 — body 0x004e03d0: armyTransportRemaining = transportCapacity / 5.
-  virtual void MoveArmy(void); // Mac oracle
+  virtual void MoveArmy(void);      // Mac oracle
   virtual void TellColoniesToBoycott(int targetNationSlot, int isBoycottEnabled);
   virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);
   virtual void InitializeTradeStatus(void);
-  // ORACLE: Mac names TGreatPower::RecallTradeBids().
   virtual void RecallTradeBids(void);
   virtual void InitializeDealBook(void); // slot 0x5c
   virtual void AddOverseasProfitFrom(int amount, short columnIndex, short rowIndex);
@@ -160,43 +141,32 @@ public:
   virtual void ConsumeMerchantCapacityForPurchase(int delta);             // slot 0x66
   virtual void SetTradeOffersFor(short resourceKind, short offerContext); // slot 0x19c
   virtual bool WereAllOfferedGoodsSold(void);                             // slot 0x68
-  // ORACLE: Mac TGreatPower::SetItemPotentials(short, short).
-  virtual void SetItemPotentials(short resourceKind, short value); // slot 0x69
-  // ORACLE: Mac names TGreatPower::RememberTradeBids().
-  virtual void RememberTradeBids(void); // slot 0x6a
-  // slot 0x6b / 0x1ac — body 0x004ddd20: clears itemPotentials[targetSlot].
+  virtual void SetItemPotentials(short resourceKind, short value);        // slot 0x69
+  virtual void RememberTradeBids(void);                                   // slot 0x6a
   virtual void ClearTradeOfferForResource(short targetSlot);
-  // slot 0x6c — body 0x004ddd90: packs {kind, targetNation, value, eligibility,
-  // payload} and appends it to diplomacyTrackedSlots[slotIndex] via [vt+0x38];
-  // Offer entries are always eligible; accept entries are eligible for minor nations.
-  // ORACLE: Mac names this TGreatPower::AddToDealBook(short, short, short, short, long).
   virtual void AddToDealBook(short kind, NationSlot targetNation, short value, short slotIndex,
                              int payload);
   virtual short GetNumDealsIn(short targetSlot);  // slot 0x6d
   virtual bool WasItemDeclined(short targetSlot); // slot 0x6e
-  // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
   virtual void GetDealInfo(short slotIndex, short ordinal, short* outKind, short* outValue,
                            short* outTargetNation, int* outPayload);
   virtual void DealInterupted(int targetSlot, int matchKey,
                               int payload); // slot 0x70
   virtual void ClearTradeOffers(void);      // index 113
-  // ORACLE: Mac names TGreatPower::SetDiplomacyPolicies().
-  virtual void SetDiplomacyPolicies(); // index 114
-  virtual void ResetPolicies(void);    // index 115
+  virtual void SetDiplomacyPolicies();      // index 114
+  virtual void ResetPolicies(void);         // index 115
   virtual bool SetDiplomacyPolicyTo(short targetClass,
                                     short policyCode); // index 116
   virtual bool SetGrantPolicyTo(int targetNation,
-                                int grantValue); // index 117
-  // ORACLE: Mac names TGreatPower::GiveGrantTo(short).
+                                int grantValue);  // index 117
   virtual void GiveGrantTo(int targetNationSlot); // index 118
   virtual bool CanAffordGrantTo(NationSlot targetNationSlot,
                                 unsigned short proposedGrantEntry); // index 119
-  // ORACLE: Mac names TGreatPower::FinishDiplomacyPhase().
-  virtual void FinishDiplomacyPhase();                      // index 120 — body 0x004de7e0
-  virtual void ImproveTradePolicyTo(NationSlot nationSlot); // index 121
-  virtual bool CanAfford(short additionalCost);             // index 122
-  virtual void AcceptOffer(short proposalIndex);            // index 123
-  virtual void RejectOffer(short proposalQueueIndex);       // index 124
+  virtual void FinishDiplomacyPhase();                              // index 120 — body 0x004de7e0
+  virtual void ImproveTradePolicyTo(NationSlot nationSlot);         // index 121
+  virtual bool CanAfford(short additionalCost);                     // index 122
+  virtual void AcceptOffer(short proposalIndex);                    // index 123
+  virtual void RejectOffer(short proposalQueueIndex);               // index 124
   virtual bool IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
                                                          int targetNation);
   virtual void InitializeDiplomacyOffers(void);
@@ -206,30 +176,19 @@ public:
   virtual int ClassifyNationProductionTierVsPeers(void);
 
   virtual bool HasEnemy(void);
-  // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
-  // with one target-nation argument; return value ignored.
-  // ORACLE: Mac names TGreatPower::SetEnemy(long) and StopBeingEnemiesWith(long).
   virtual void SetEnemy(int targetNation);             // body 0x004e0420
   virtual void StopBeingEnemiesWith(int targetNation); // index 133 — body 0x004e0440
-  // ORACLE: Mac TGreatPower::GetArmsInNavy().
   virtual int GetArmsInNavy(void);
   virtual int CountMapActionContextNodesWithNationBit(void); // slot 0x87
-  // ORACLE: Mac names the five war/alliance/peace threshold queries below.
-  virtual double GetWarNumber(void);            // slot 0x88
-  virtual double GetSeekAllianceNumber(void);   // slot 0x89
-  virtual double GetAcceptAllianceNumber(void); // slot 0x8a
-  virtual double GetSeekPeaceNumber(void);      // slot 0x8b
-  virtual double GetAcceptPeaceNumber(void);    // slot 0x8c
-  // ORACLE: Mac TGreatPower::GetBuildingCapacity(short).
-  virtual int GetBuildingCapacity(short buildingSlot); // slot 0x8d
+  virtual double GetWarNumber(void);                         // slot 0x88
+  virtual double GetSeekAllianceNumber(void);                // slot 0x89
+  virtual double GetAcceptAllianceNumber(void);              // slot 0x8a
+  virtual double GetSeekPeaceNumber(void);                   // slot 0x8b
+  virtual double GetAcceptPeaceNumber(void);                 // slot 0x8c
+  virtual int GetBuildingCapacity(short buildingSlot);       // slot 0x8d
 
-  // ---- relative military/naval power scoring ----
-  // Relative military/naval power score family (bodies 0x004e07b0..0x004e1c20).
-  // ORACLE: Mac TGreatPower::GetReinforcementPotential().
   virtual int GetReinforcementPotential(void);
-  // ORACLE: Mac TGreatPower::GetMilitaryPower().
   virtual float GetMilitaryPower(void);
-  // ORACLE: Mac TGreatPower::GetTotalNavalForce().
   virtual float GetTotalNavalForce(void);
   virtual float ComputeArmyScoreRatioVsNation(int targetNation);         // slot 0x91
   virtual float ComputeArmyScoreStandingRatioVsNation(int targetNation); // slot 0x92
@@ -260,10 +219,7 @@ public:
   virtual void SelectAndQueueAdvisoryMapMissions(void); // body 0x004e1f20
   virtual float GetPeaceThreat(int targetNation);
   virtual void ReplaceObsoleteMissions(); // slot 0xa4 — body 0x004e2190
-  // ORACLE: Mac names TGreatPower::ClearCivilianOrders().
   virtual void ClearCivilianOrders(void);
-  // slot 0x298 — fired by RemoveRegionIdAndRunTrackedObjectCleanup (0x004e2270).
-  // ORACLE: Mac names TGreatPower::KillUnitsIn(long).
   virtual void KillUnitsIn(int regionId);
   virtual void AddColony(int targetNation);
   virtual void TellColoniesAboutNewEnemy(int targetNation);
@@ -274,11 +230,8 @@ public:
   virtual void RecomputeAiExpansionAndMissionPressureScores(void);
   virtual void ReassessMissions(int unused);
   virtual bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
-  // ORACLE: Mac names TGreatPower::AnnounceLater(short, short, short).
   virtual void AnnounceLater(short orderKind, short payload, short flags);
   virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
-
-  // GetName moved to TCountry (its field's owner).
 
   int ComputeNationNavyOrderWeightedMovementScore();
   int GetDiplomacyScore();

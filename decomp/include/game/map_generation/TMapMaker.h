@@ -20,8 +20,7 @@ public:
   TMapMaker();
   virtual ~TMapMaker() override;
 
-  // Picks a random cell of regionClassGrid[15][27] using two LCG values.
-  // ABI: two pointer arguments, void return. slot 10 / 0x28
+  // Picks a random cell of regionClassGrid. slot 10 / 0x28
   virtual void RandomZone(unsigned int* outColumn, unsigned int* outRow);
   virtual void RunMapGenerationAttempt();
   virtual int SelectGPZone(int cellIndex, int mode, int classIndex, int retryBudget);
@@ -35,10 +34,7 @@ public:
   virtual bool TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
   // Smooths interior city-region tile ownership from neighboring records. slot 17 / 0x44
   virtual void SmoothCityRegionOwnershipByNeighborSampling();
-  // Grows a linear mountain-range terrain feature. slot 18 / 0x48
-  // ORACLE: Mac TMapMaker::SeedMountainRange(long, long, long).
   virtual int SeedMountainRange(int tileIndex, int retryBudget, int direction);
-  // slot 19 / 0x4c
   virtual void CreateDeserts();
   virtual int TundraBand(int row, int percentChance);
   virtual int DesertBand(int row, int percentChance);
@@ -84,16 +80,12 @@ public:
   virtual MapGeneratorTileRecord*
   GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
 
-  // LAYOUT: the vtable ends at slot 0x21, followed by null slots 0x22..0x28. The
-  // SeaSegmentStretch and SeapointStretch vtables are adjacent data, not TMapMaker methods.
+  // LAYOUT: the vtable ends at slot 0x21; slots 0x22..0x28 are null.
 
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
   void TranslateZones(); // 0x005272c0
 
-  // ORACLE: Mac TMapMaker::CheckProvs(). Composite map-generation rejection predicate:
-  // virtual ErrorCheck, empty-column scan, then full terrain-class frontier coverage.
-  // 0x00526620.
   bool CheckProvs();
 
   bool ValidateAllColumnsHaveAssignedRegionClass();
@@ -112,7 +104,7 @@ public:
 
   void GenerateWaterRegionIdsBySeedAndNeighborPropagation();
 
-  // Rotates the map columns so the peak city-tile-density band is recentred. 0x00529960.
+  // Rotates the map columns so the peak city-tile-density band is recentred.
   void RepositionDateline();
 
   unsigned int RandomizeRegionTemplateBanksForMismatchedNeighborClasses(int coarseIndex,
@@ -137,9 +129,6 @@ public:
 
   int AssignSequentialValuesToRegionPlaceholders(short* tileValues, int* nextValue);
 
-  // ORACLE: Mac TMapMaker::ZoneCorner(long). Selects the row containing the longest
-  // contiguous run of nationCode, then returns the wrap-aware average owned column in
-  // that row. Returns -1 when the selected row contains no matching tile. 0x00529c80.
   int ZoneCorner(long nationCode);
 
   int ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOffset);
@@ -149,13 +138,10 @@ public:
   char* mapTileGrid; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
 
   int CountSeaTilesInColumn(int column); // 0x00529910
-  // ORACLE: IsSeaTile. The tile's terrain kind byte is water. 0x0052a600.
   bool IsSeaTile(int tileIndex);
   // Coordinate overload: the first argument is column and the second is row.
   bool IsSeaTile(int column, int row); // 0x0052a630
-  // ORACLE: SetSeaZoneIndex. Stores the sea-zone ordinal into the tile's owner
-  // tag byte (+0x04), biased by 0x17 -- the same bias the map-order context applies
-  // when it turns an owner tag back into a context-array index. 0x0052a6b0.
+  // Stores the sea-zone ordinal in the tile's owner tag, biased by kNationSlotCount.
   void SetSeaZoneIndex(int tileIndex, char zoneIndex);
   Province* cityScoreTable;
   // +0x10 region-class grid: 15 rows x 27 columns of region-class bytes (-1 = unassigned).

@@ -29,13 +29,6 @@ CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TextStyle* preset);
 
 CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* style);
 
-// The TextStyle text-style / control-theme helpers (BuildUiTextStyleDescriptor,
-// InitializeUiTextStyleDescriptor, ApplyControlThemeStyleAndOptionalCaption,
-// ConfigureUiControlStyleValueAndCaptionFromStringResource,
-// ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor, InitializeUiTextStyleDescriptorAndApplyQuickDraw,
-// ResolveUiThemeColor) live in game/ui_text_label_helpers_decls.h -- they belong to the
-// ui_text_label_helpers.cpp unit, not the QuickDraw surface/font engine.
-
 void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex);
 
 short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text);

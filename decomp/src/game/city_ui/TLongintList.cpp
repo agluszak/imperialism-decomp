@@ -10,12 +10,6 @@ void TLongintList::NoOpWriteTo(TStream* stream) {}
 // FUNCTION: IMPERIALISM 0x00487f90
 void TLongintList::NoOpReadFrom(TStream* stream) {}
 
-// Compiler-emitted copies of the CList<long,long> base destructor. The 0x650a50
-// table is this template base, not a standalone linked-block state class.
-
-// The CList<long,long> base's compiler-emitted Serialize instantiation (this class
-// does not override Serialize; the vtable slot points at the template body).
-
 // FUNCTION: IMPERIALISM 0x004c6740
 void TLongintList::InsertLast(long value) {
   AddTail(value);

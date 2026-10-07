@@ -114,7 +114,7 @@ extern float g_cachedAiCityActionContextBias[3];
 
 extern char g_szUCountrySourcePath[];
 
-// Great-power pressure tuning tables (see global_data_tables.cpp for values).
+// Great-power pressure tuning tables.
 extern "C" const int g_anNationBasePressureByLocale[6];
 
 extern "C" const int g_anGreatPowerPressureMinFloorByLocale[6];
@@ -132,8 +132,6 @@ extern "C" const int g_anGreatPowerCompileThresholdByLocale[6];
 extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6];
 
 extern "C" const int g_anNationStartingTreasuryByLocale[6];
-
-// TAutoGreatPower.cpp — SetTradeOffersFor scaling constants.
 
 extern double g_Evaluate_Advisory_Case11_Value; // 0.5
 

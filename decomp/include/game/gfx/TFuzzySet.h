@@ -12,10 +12,10 @@ public:
 
   TFuzzySet();
 
-  // Resets the set to empty: zeroes the member count and nulls all 10 member slots. 0x4ff750
+  // Resets the set to empty: zeroes the member count and nulls all 10 member slots
   void IFuzzySet();
 
-  // Allocates a 4-value TFuzzyVar leaf, fills its values, and appends it to m_members. 0x4ff7d0
+  // Allocates a 4-value TFuzzyVar leaf, fills its values, and appends it to m_members
   void AddFuzzyVar(float value0, float value1, float value2, float value3);
 
   int GetCrispOutput(float input); // 0x004ff840

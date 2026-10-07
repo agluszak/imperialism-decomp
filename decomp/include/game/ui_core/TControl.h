@@ -24,7 +24,6 @@ struct TextStyle {
 class TControl : public TView {
 public:
   virtual ~TControl() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x0f DoEvent override declared below (0x48e710)
   virtual char PointInBoundsAndActionable(CPoint* point) override; // slot 0x5b 0x48e940
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,

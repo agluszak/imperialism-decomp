@@ -8,7 +8,6 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-// Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
 // FUNCTION: IMPERIALISM 0x004be150
 short TInteriorMinister::GetExteriorNeedFor(int arg) {
   return static_cast<short>(arg);

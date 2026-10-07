@@ -66,7 +66,6 @@ void TOceanDialog::DoPostCreate(int arg) {
   previewSquareRadius = 0x10;
 }
 
-// Mac oracle: TOceanDialog::InvalidateZone(TZone*).
 // FUNCTION: IMPERIALISM 0x00565f80
 void TOceanDialog::InvalidateZone(TZone* zone) {
   if (zone != 0) {
@@ -165,10 +164,6 @@ void TOceanDialog::ConvertPoint(const CPoint& point, short& outColumn, short& ou
     }
   }
 }
-
-// Draws the guide-line border around a hex map cell: for each edge where the cell's own
-// value differs from the corresponding neighbor value, it moves the pen origin and strokes a
-// centered guide line via the two quickdraw helpers. `neighborValues` holds the adjacent
 
 // FUNCTION: IMPERIALISM 0x005662e0
 void DrawTileClassCornerTick(short colorCode, int x, int y, unsigned int cornerFlags) {

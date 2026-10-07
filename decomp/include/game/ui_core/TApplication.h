@@ -37,7 +37,6 @@ public:
 
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
   DECLARE_DYNCREATE(TApplication)
-  // vtable index 0x27 (0x004868a0): load the current target pointer.
 
   TEventHandler* currentTarget; // 0x20
   int screenMode;               // 0x24

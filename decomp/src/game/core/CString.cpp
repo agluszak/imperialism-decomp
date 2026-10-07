@@ -13,9 +13,7 @@
 // CString::CString(const unsigned short*)
 
 // LIBRARY: IMPERIALISM 0x00605791
-// GetSharedEmptyStringRef -- a trivial `mov eax,const; ret` trampoline (returns the shared
-// empty CStringData). Ambiguous in the object-matcher oracle (239 byte-identical strcore.obj
-// candidates at this size); kept as a hedged description, not a reviewed exact symbol.
+// GetSharedEmptyStringRef: returns the shared empty CStringData.
 
 // LIBRARY: IMPERIALISM 0x00605797 SYMBOL
 // ??0CString@@QAE@XZ

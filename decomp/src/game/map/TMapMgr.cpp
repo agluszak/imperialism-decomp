@@ -61,9 +61,8 @@ TMilitaryUnit* TMapMgr::GetMilitaryMaster(short provinceIndex) {
   return cityScoreTable[provinceIndex].stationedUnitChain;
 }
 
-// Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map, via each tile's
-// doubled-hex-coordinate ("diagonal") position: diag = (row % 2) + col*2. Keep the signed
-// remainder: the retail arithmetic preserves a negative parity for negative/sentinel tile values.
+// Hex direction (0-6) from sourceTile to destTile via doubled-hex columns (row % 2 + col * 2).
+// The signed remainder is kept: retail preserves a negative parity for sentinel tiles.
 
 IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
@@ -360,7 +359,6 @@ bool TMapMgr::GenerateMap(const char* mapStreamName, char* tuningOverride) {
   return true;
 }
 
-// Mac oracle: ReadInRGBMap.
 // FUNCTION: IMPERIALISM 0x0050f0e0
 void TMapMgr::ReadInRGBMap(const MapPixelSourceView* source) {
   const short* packed = source->packedTiles;
@@ -2335,8 +2333,6 @@ TCivUnit* TMapMgr::GetMyFirstUnit(StrategicTileIndex tileIndex, short nationId) 
   return entry;
 }
 
-// Whether `tileIndex` (a candidate home tile for a secondary/minor nation) has a nearby
-
 // FUNCTION: IMPERIALISM 0x00514290
 short TMapMgr::FindCountry(int tileIndex) {
   short ownerCode = cityScoreTable[tileIndex].ownerNationCode;
@@ -3886,8 +3882,6 @@ void TMapMgr::ResetTileToBaseTransportFlag(StrategicTileIndex tileIndex) {
   InitializeTileNeighborConnectionMaskIfNeeded(tile);
 }
 
-// ORACLE: Mac TMapMgr::HasPortInProvince(int). The Windows listing returns true as soon as
-// one linked tile has activeFlags bit 2 (the port flag) set.
 // FUNCTION: IMPERIALISM 0x00518a20
 bool TMapMgr::HasPortInProvince(int provinceIndex) {
   const Province& record = cityScoreTable[provinceIndex];

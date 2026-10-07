@@ -19,11 +19,6 @@
 
 #include <mmsystem.h>
 
-//
-// No own destructor: the original's slot is an ILT thunk to ~TApplication (0x004867e0), i.e.
-// the base's. The implicit destructor the compiler gives this class is what the scalar
-// deleting destructor calls, which is the same shape.
-
 // FUNCTION: IMPERIALISM 0x00414770
 void TAmbitApplication::DoSetupMenus() {}
 

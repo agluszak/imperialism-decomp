@@ -2,10 +2,8 @@
 
 #include "game/mfc.h"
 
-// The McAppUI live-view registry: every TWindow links itself in on construction (inline
-// AddHead) and unlinks on teardown. A CList<TWindow*, TWindow*>, base 0x006a1a40 (vtable
-// 0x0064b580), shared with the modal stack. Iterated through CWMgrIterator below.
-// g_LiveViewRegistry — see game/globals/view_registries.h.
+// The McAppUI live-view registry: every TWindow links itself in on construction and unlinks
+// on teardown. CWMgrIterator walks it.
 
 class CWMgrIterator {
 public:

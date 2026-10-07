@@ -3,9 +3,6 @@
 #include "game/city_ui/TLongintList.h"
 #include "game/mfc.h"
 
-// Each derived city minister overrides only GetRuntimeClass, the scalar deleting
-// destructor, and the slot-0x80 priority-preset hook (FillLists).
-
 IMPLEMENT_DYNCREATE(TSteelCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c59e0

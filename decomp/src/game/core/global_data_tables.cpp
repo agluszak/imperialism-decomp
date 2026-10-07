@@ -42,7 +42,6 @@ static inline double DefaultGfxCoordinateScale() {
   return 0.015625;
 }
 
-// Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // GLOBAL: IMPERIALISM 0x006a4310
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
 // GLOBAL: IMPERIALISM 0x006a2158
@@ -196,7 +195,7 @@ int g_colorFillAssertGuard = 0;
 char g_szLiteralL[] = "L";
 // GLOBAL: IMPERIALISM 0x00694254
 char g_szCmdSwitchLangQuit[] = "L!";
-// The MFC application singleton (&theApp), cached by InitInstance (0x412dc0).
+// The MFC application singleton (&theApp), cached by InitInstance.
 // GLOBAL: IMPERIALISM 0x006a1348
 class ImperialismApp* g_pImperialismApp = 0;
 // GLOBAL: IMPERIALISM 0x006a1350
@@ -1398,11 +1397,6 @@ float g_Compute_City_Order_Value = 0.5f;
 float g_Compute_Advisory_Peer_LookupTable = -0.5f;
 float g_ApplyIndexedResourceDeltaScale = -1.0f / 255.0f;
 
-// Per-unit-type military stat records (0xe-byte records, 7 shorts each), rebased
-// from the earlier 0x695CD4 model: TMilitaryUnit::GetArmsCarried (0x5c3400)
-// reads the category flag at record offset +0 (0x695cd2; 0x10 = counted) and the
-// power/cost points at +2 (0x695cd4, the short the slot 0x8e-0x9c score family sums).
-
 // GLOBAL: IMPERIALISM 0x0066eb88
 short g_UnitTypeStatTable[30][7] = {
     {0x0026, 0x0014, 0x0001, 0x0001, 0x000a, 0x0000, 0x003c},
@@ -2089,12 +2083,9 @@ CList<void*, void*> g_WNetPendingPacketList(10);
 // GLOBAL: IMPERIALISM 0x006a6020
 int g_suppressUnexpectedDirectPlaySystemMessageAssert;
 
-// Compiler-emitted out-of-line copy of the MFC inline CPoint constructor used by
-// resource-driven UI builders.
+// Out-of-line copy of the MFC inline CPoint constructor.
 // LIBRARY: IMPERIALISM 0x00427100
 // CPoint::CPoint
-
-// CList<TView*, TView*> emissions for g_UiWidgetBuildStack.
 
 // DirectPlay session manager object embedded at a fixed address (not a pointer).
 // GLOBAL: IMPERIALISM 0x006a5f60
@@ -2107,9 +2098,6 @@ const GUID g_ImperialismDirectPlayApplicationGuid = {
 
 // GLOBAL: IMPERIALISM 0x006a15e0
 CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords;
-
-// Compiler-emitted methods for this TU's RuntimeSelectionRecord pointer-array
-// specialization. The source implementation is the retail MFC CArray template.
 
 // GLOBAL: IMPERIALISM 0x006a6014
 TNetMgr* g_pNetMgr = 0;
@@ -2176,10 +2164,6 @@ CList<TWindow*, TWindow*> g_ModalViewStack;
 
 // GLOBAL: IMPERIALISM 0x006a1a40
 CList<TWindow*, TWindow*> g_LiveViewRegistry;
-
-// Compiler-emitted members of the CList<TWindow*, TWindow*> specialization shared by the
-// two registries above (vtable 0x0064b580). The source implementation is the retail MFC
-// CList template.
 
 // GLOBAL: IMPERIALISM 0x006a1b24
 TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = NULL;
@@ -2254,7 +2238,7 @@ POINT g_ptMapModeModalMessage = {0, 0};
 POINT g_ptTacticalAutoPlayModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a57c8
 POINT g_ptTechCapabilityModalMessage = {0, 0};
-// Modal-message placement point used by the TViewMgr prompt helpers (0x5de990/0x5deb40).
+// Modal-message placement point used by the TViewMgr prompt helpers.
 // GLOBAL: IMPERIALISM 0x006a5be0
 POINT g_ptUiPromptModalMessage = {0, 0};
 // City-site selection warning placement and TViewMgr's initial dialog-placement seed.
@@ -2596,7 +2580,7 @@ int g_mapGenSwampQuota = 0;
 // GLOBAL: IMPERIALISM 0x006a38e4
 int g_mapGenRiverCount = 0;
 
-// One-shot assert-suppression flags for the UMapper overlay passes (0x006a3910/0x006a3914).
+// One-shot assert-suppression flags for the UMapper overlay passes.
 int g_bOverlayScanlineFillAssertSuppressed = 0;
 int g_bOverlayRouteRebuildAssertSuppressed = 0;
 
@@ -2618,7 +2602,7 @@ int g_mapActionContextDisplayNameCacheStep = 7;
 char s_szSpaceSeparator[] = " ";
 // GLOBAL: IMPERIALISM 0x0069936c
 char s_szGaugeCountSeparator[] = "  /  ";
-// Six-space indent prefixed to each great-power turn-summary line (0x4e2b70).
+// Six-space indent prefixed to each great-power turn-summary line.
 // GLOBAL: IMPERIALISM 0x00696790
 char s_szTurnSummaryIndent[] = "      ";
 // GLOBAL: IMPERIALISM 0x00695844
@@ -2645,7 +2629,7 @@ char s_mcflavor_00696674[] = "X";
 char s_mcflavor_00696d10[] = "r";
 // GLOBAL: IMPERIALISM 0x00697238
 char s_mcflavor_00697238[] = "w";
-// Script-dump format strings for TMapMgr::DumpAndResetMapScriptState (0x519140).
+// Script-dump format strings for TMapMgr::DumpAndResetMapScriptState.
 // GLOBAL: IMPERIALISM 0x006972f8
 char g_szScriptFileName[] = "script";
 // GLOBAL: IMPERIALISM 0x006972e8

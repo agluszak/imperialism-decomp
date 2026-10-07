@@ -122,6 +122,3 @@ TZone* GetLastMapActionContext();                  // 0x55f0d0
 TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
 
 void ResetMapActionContextActivityAndNationFlags(); // 0x560e20
-
-// 0x564570 moved to TOcean::GetSeaZoneAdjacentTo — every original
-// callsite loads ecx = g_pActiveMapOrderContext before the call (thiscall, this unused).

@@ -3,15 +3,7 @@
 #include "compat.h"
 #include "game/mfc.h"
 
-// CDib: the well-known reusable DIB helper class (Prosise / MSDN DIBLOOK lineage), compiled
-// into the game from source (NOT part of nafxcw.lib, so it is reverse-engineered/ported here,
-// not LIBRARY-annotated). Real class name + 0x38 object size confirmed from its IMPLEMENT_DYNAMIC
-// CRuntimeClass at 0x00694b48 ("CDib"). Owns a packed BITMAPINFOHEADER + palette + pixel buffer
-// (used for .bmp file I/O) and, on demand, a separate CreateDIBSection HBITMAP/bits. Distinct
-// from the non-polymorphic TQuickDrawBlitSurface blit subobject (TQuickDrawSurfaceContext.h).
-// Built by the asset cache's BuildIndexedBmpResourceById path; construct via `new CDib(w, h,
-// depth)`.
-//
+// CDib: the MSDN DIBLOOK-lineage DIB helper compiled into the game (not an MFC library class).
 
 enum eDibInfoOwnershipMode {
   kDibInfoNotOwned = 0,
@@ -46,7 +38,7 @@ public:
   virtual ~CDib() override;                   // slot 0x01 (real dtor 0x0047a370)
   void Serialize(CArchive& archive) override; // slot 0x02 0x0047bb10
 
-  // Free every owned GDI/heap/mapping resource and zero the state. 0x0047bca0
+  // Free every owned GDI/heap/mapping resource and zero the state
   void Release();
   void ReleaseMappedFileView(); // 0x0047bd90
   BOOL AttachPackedInfoHeader(BITMAPINFO* info, BOOL ownsInfo, HGLOBAL hGlobalInfo);
@@ -58,24 +50,24 @@ public:
   LOGPALETTE* CreateLogPaletteFromColorTable();
   BOOL SetSystemPalette(CDC* dc);
 
-  // Load a .bmp via a read-only file mapping and point the DIB buffers into it. 0x0047a420
+  // Load a .bmp via a read-only file mapping and point the DIB buffers into it
   int LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite);
-  // Serialize the DIB into a memory-mapped .bmp file and re-point the buffers into it. 0x0047a630
+  // Serialize the DIB into a memory-mapped .bmp file and re-point the buffers into it
   int RemapSurfaceToMemoryMappedBmpFile(LPCSTR fileName);
   // Convert a LOGPALETTE's entries into the surface's RGBQUAD color table. 0x0047b0c0
   void CopyRgbQuadTableFrom(const LOGPALETTE* source);
 
   void AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette);
-  // Copy bitmap width/height into a point, or zero it if no header is attached. 0x0047a3e0
+  // Copy bitmap width/height into a point, or zero it if no header is attached
   CPoint* CopyBitmapDimensionsToPoint(CPoint* out);
-  // Realize the DIB palette into a DC before blitting. 0x0047aa00
+  // Realize the DIB palette into a DC before blitting
   UINT SelectAndRealizeDibPalette(CDC* dc, BOOL background);
-  // Stretch-blit stored DIB bits to a DC. 0x0047aa70
+  // Stretch-blit stored DIB bits to a DC
   BOOL StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int width, int height);
-  // Copy a source rectangle to the same-sized destination rectangle. 0x0047aae0
+  // Copy a source rectangle to the same-sized destination rectangle
   BOOL StretchDibitsRectAtNaturalSize(int srcX, int srcY, CDC* dc, int destX, int destY, int width,
                                       int height);
-  // Blit the whole stored DIB to a DC at the given top-left point (natural size). 0x0047ab60
+  // Blit the whole stored DIB to a DC at the given top-left point (natural size)
   BOOL StretchDibitsFromStoredBitmapToHdc(CDC* dc, POINT* topLeft);
   int StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, int destHeight, int xSrc,
                             int ySrc, int srcWidth, int srcHeight);
@@ -86,17 +78,17 @@ public:
   BOOL StretchDibitsWithCopiedPaletteTable(CDC* dc, int paletteIndex, int xDest, int yDest,
                                            int destWidth, int destHeight, int xSrc, int ySrc,
                                            int srcWidth, int srcHeight);
-  // Load an RT_BITMAP resource from a module into the DIB state. 0x0047c080
+  // Load an RT_BITMAP resource from a module into the DIB state
   int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module);
   int BuildMonochromeOutlineMaskInPlace();
-  // Reverse the DIB's scanline order in place. 0x0047c980
+  // Reverse the DIB's scanline order in place
   void FlipScanlineOrder();
   void BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int srcY,
                                                unsigned int width, unsigned int height, int destX,
                                                int destY, int transparentColor);
 
   void* GetPixelAddress(int x, int y);
-  // Variant that preserves top-down (negative-height) row orientation. 0x0047c000
+  // Variant that preserves top-down (negative-height) row orientation
   void* GetPixelAddressRespectingTopDownOrientation(int x, int y);
   BOOL MapColorTableAndPixelsToPalette(CPalette* palette);
 
@@ -110,7 +102,7 @@ public:
   void Write(CFile* file); // 0x0047b9f0
   int Read(CFile* file);   // 0x0047b6d0
 
-  // abs(biHeight) -- rows are stored bottom-up when biHeight > 0. 0x00575080
+  // abs(biHeight) -- rows are stored bottom-up when biHeight > 0
   int GetAbsoluteHeight();
 };
 

@@ -1,5 +1,3 @@
-// TCityProductionView temporary QuickDraw render-context slice.
-
 #include "game/city_ui/TCityProductionView.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"

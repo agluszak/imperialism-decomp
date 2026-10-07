@@ -14,8 +14,6 @@ public:
   DECLARE_DYNCREATE(TNetMgr)
   virtual ~TNetMgr() override;  // slot 0x01 (scalar deleting destructor)
   virtual void Free() override; // slot 0x07 0x5e3470
-  // slot 0x0a null (0x00000000)
-  // slot 0x0b null (0x00000000)
 
   TNetMgr();
 

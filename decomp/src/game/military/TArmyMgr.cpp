@@ -130,8 +130,6 @@ IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 
 static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode);
 
-// Reads one action-record from `stream`: the fixed header fields (nationIds[0] and
-
 // FUNCTION: IMPERIALISM 0x004a1870
 TArmyMgr::TArmyMgr() {
   pendingMapActionIndex = -1;

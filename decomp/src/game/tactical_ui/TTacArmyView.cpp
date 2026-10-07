@@ -410,7 +410,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     SetQuickDrawStrokeColor(0xffffff);
   }
 
-  // Adjacency for the trench-link pass below (0x005aaf53).
+  // Adjacency for the trench-link pass below.
   TacticalTileIndex tileNeighbors[6];
   tacticalBattle->GetNeighborList(tileIndex, tileNeighbors);
 

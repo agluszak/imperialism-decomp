@@ -70,10 +70,7 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   DrawCenteredGuideLineOnMapDc(0xdd, 0xc);
   DrawCenteredGuideLineOnMapDc(0xdd, 6);
 
-  // A second, per-nation icon strip lives at TMacViewMgr::nationFleetWorld (distinct from the
-  // per-level strip at tileOverlayStripWorlds used above).
-  // Re-derived in each branch below rather than cached, matching the original (which
-  // re-reads it separately at each blit site instead of hoisting it).
+  // The per-nation icon strip is re-read at each blit site, as in the original.
 
   if (shipNode->admiral != 0) {
     TQuickDrawBlitSurface* badgeStripSurface = g_pMacViewMgr->nationFleetWorld->GetBlitSurface();

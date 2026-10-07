@@ -168,11 +168,7 @@ void TStream::WriteCharacter(short value) {
   WriteBytes(characterBytes + 1, 1);
 }
 
-// ---------------------------------------------------------------------------
-// Typed read/write accessors: each delegates to a primitive vtable slot
-// (ReadBytes @0x3c / WriteBytes @0x78). Default implementations on the
-// base, inherited by every concrete stream.
-// ---------------------------------------------------------------------------
+// Typed accessors built on ReadBytes/WriteBytes.
 
 // FUNCTION: IMPERIALISM 0x00488ef0
 void TStream::WriteInteger(short count) {

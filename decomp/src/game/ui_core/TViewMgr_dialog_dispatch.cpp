@@ -85,12 +85,6 @@
 
 #include <new>
 
-// TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pSimMgr / turn-state
-// manager). Included via global_data_tables.h.
-
-// The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
-// holds the active main TView used as the dispatch root for turn-event UI refreshes.
-
 #include "game/ui_core/CIncludeView.h"
 #include "game/GameAssert.h"
 

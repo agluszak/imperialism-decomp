@@ -38,7 +38,6 @@ public:
 
   void IPopulationMgr(TCity* city);
   void AddUntrained(short count);
-  // Mac CodeWarrior oracle: AddExpert(short) -- 0x004b6a30.
   void AddExpert(short count);
 
   TCity* city;

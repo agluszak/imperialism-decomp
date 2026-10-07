@@ -70,8 +70,6 @@
 #include <cstdlib>
 #include <cstring>
 
-// Cross/UMissionSubs.cpp session and lobby lifecycle extent (0x5421a0-0x545930).
-
 // FUNCTION: IMPERIALISM 0x00542170
 int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId) {
   int slot = 0;
@@ -514,11 +512,7 @@ bool TMultiplayerMgr::DoIdle(int action) {
   return false;
 }
 
-// ---------------------------------------------------------------------------
-// Turn-event emitters. Each builds a 'time'-tagged NetMessage-derived packet on
-// the stack and hands it to TNetMgr::Send (queueOnly per callsite). `this` is
-// unused, exactly as in the original __thiscall bodies.
-// ---------------------------------------------------------------------------
+// Turn-event emitters: each builds a 'time' packet on the stack and sends it; `this` is unused.
 
 // FUNCTION: IMPERIALISM 0x00544e70
 bool TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView* provider) {
@@ -773,7 +767,4 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
   }
 }
 
-// Receive-side state machine for every diplomacy/lobby turn event ('time' packets).
-// Dispatches on eventCode 1..0x32 (codes 4..7 return 0); each case applies the payload
-// to the local session/world state and often re-broadcasts or acknowledges. Case bodies
-// are laid out in the original binary order.
+// Receive-side state machine for the diplomacy and lobby turn events (codes 1..0x32).

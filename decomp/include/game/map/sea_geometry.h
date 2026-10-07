@@ -4,17 +4,8 @@
 
 #include "game/stretch.h"
 
-// The TMapMaker coastline/region builder (UMapper.cpp) keeps two project-local growable
-// arrays from the stretch<T> family (see stretch.h): a stretch<SeaSegment> of 0x18-byte
-// segments and a stretch<Seapoint> of 0x10-byte points. Mac CodeWarrior evidence names
-// them exactly that (stretch<SeaSegment>/stretch<Seapoint> with Add/operator[]/OverStretch
-// members and a SeaSegment(const Seapoint&, const Seapoint&) constructor) — i.e. NOT MFC
-// CArray (CArray copy-constructs on grow; these realloc-double-or-fallback like the rest of
-// the stretch family).
-//
-// Each has its own single-slot vtable placed in memory immediately after TMapMaker's vtable
-// (0x006598f8): the SeaSegment stretch at 0x0065999c, the Seapoint stretch at 0x006599a0.
-// 0x0052a760/0x0052c0a0 are the by-value append virtual (the single vtable slot, Add).
+// stretch<SeaSegment> and stretch<Seapoint>: the coastline builder's growable arrays, each
+// with a single-slot vtable whose slot is Add.
 
 struct Seapoint {
   int coord00; // +0x00 linear overlay index / raw value
@@ -22,7 +13,7 @@ struct Seapoint {
   int hi08;    // +0x08 sorted-high attribute
   int f0c;     // +0x0c
 
-  // Store the four dwords, ordering lo04<=hi08. 0x0052b1e0.
+  // Store the four dwords, ordering lo04<=hi08.
   void InitSorted(int value, int a, int b, int extra);
   double WrappedDeltaMetric(const Seapoint* other) const;
 };
@@ -88,9 +79,9 @@ struct SeaSegment {
   }
 
   void InitFromPoints(const Seapoint* p0, const Seapoint* p1);
-  // Re-normalize endpoint order (topmost/leftmost first) and recompute the angle. 0x0052ab00.
+  // Re-normalize endpoint order (topmost/leftmost first) and recompute the angle.
   void RecomputeEndpointsAndAngle();
-  // Pick attrBySide[1] or attrBySide[0] depending on the heading angle. 0x0052c000.
+  // Pick attrBySide[1] or attrBySide[0] depending on the heading angle.
   unsigned short SelectAttrByAngle() const;
   void ExtractWrappedEndpoint(int* out, char side) const;
 };

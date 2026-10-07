@@ -6,12 +6,7 @@
 void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root);
 #endif
 
-// Global-state UI resource/widget builder (was misnamed "ui_resource_pool"): the
-// push-widget / attach-to-stack-tail / configure-layout+tags+state / clear-context
-// vocabulary used by the turn-event dialog factory (turn_event_dialog_factory.cpp) and the
-// per-screen builder functions. Operates on the global widget build stack
-// (g_UiWidgetBuildStack) and the g_pUiResourceHead/g_pUiResourceContext pair — see
-// include/game/global_data_tables.h. It is a builder, not a pool.
+// Builds UI widgets on the global build stack for the turn-event dialog factory and screens.
 
 class TUiStyleRef {
 public:

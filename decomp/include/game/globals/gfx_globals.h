@@ -290,7 +290,7 @@ extern int g_diplomacyDialogAssertGuard;
 // One-slot CTemporaryRegion reuse cache (see CTemporaryRegion.h).
 extern RgnHandle g_pTemporaryRegionCache;
 
-// Selects the CDib blit path in TDibPreviewDialog::OnPaint (0x00694c50).
+// Selects the CDib blit path in TDibPreviewDialog::OnPaint.
 extern int g_useCompatibleBitmapBlit;
 
 extern "C" const char g_szDiplomacyDialogsSourcePath[];

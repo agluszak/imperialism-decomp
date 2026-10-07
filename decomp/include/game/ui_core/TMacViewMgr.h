@@ -114,5 +114,3 @@ public:
   void ReloadMapArtAtlases();
 };
 ASSERT_SIZE(TMacViewMgr, 0xd84);
-
-// g_pMacViewMgr — see game/global_data_tables.h.

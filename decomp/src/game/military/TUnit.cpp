@@ -11,10 +11,6 @@
 #include "game/core/TStream.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// 0x00402eeb is an ILT jmp thunk to TUnit::IUnit (0x5c2530);
-// per the ILT hard rule it is never hand-written -- it is tracked in config/thunk_map.csv
-// like every other ILT slot and paired automatically. No source calls it.
-
 // FUNCTION: IMPERIALISM 0x005c2470
 void TUnit::Vaporize() {}
 

@@ -29,7 +29,6 @@ public:
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry)
       override; // slot 0x27 0x53a800 -- try-queue province order from context message
 
-  // slot 0x0f 0x53a500 -- resource weights from navy context (own override; not shared)
   virtual void CalculateNeeds() override;
 };
 

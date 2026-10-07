@@ -58,20 +58,10 @@ static CWnd* GetLiveRegistryHeadHostView();
 
 IMPLEMENT_DYNCREATE(CIncludeView, CView)
 
-// Original AFX_MSGMAP_ENTRY order (entries @ 0x6489e8).
-//
-// clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
-// ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
-
 // FUNCTION: IMPERIALISM 0x00482950
 CIncludeView::CIncludeView()
     : CView(), m_activeDialogContext(0), m_pMainPaneDib(0), m_pOffscreenDib(0), m_tickTimerId(0),
       m_unused70(0), m_capturedControl(0), m_uiInteractiveFlag(1) {}
-
-// Compiler-emitted bodies of the m_overlayRectQueue CList<IncludeViewOverlayRectRecord,
-// IncludeViewOverlayRectRecord&> instantiation. The original emitted the set twice (one
-// copy per TU): vtable 0x648560 + these two in the ctor's TU, vtable 0x648578 + the
-// 0x4847xx copies and the single Serialize body in the other.
 
 // FUNCTION: IMPERIALISM 0x00482ab0
 CIncludeView::~CIncludeView() {

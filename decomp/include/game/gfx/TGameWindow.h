@@ -27,8 +27,6 @@ public:
   int fieldAtA4;
   int fieldAtA8;
   int fieldAtAc;
-  // RTTI proves TGameWindow is exactly TWindow (0xa0) + these 16 bytes (0xb0 total) --
-  // no further tail block exists.
 
   TGameWindow();
 };

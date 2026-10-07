@@ -457,8 +457,7 @@ void TAutoGreatPower::ReplyToDiplomacyOffers(void) {
 
 // FUNCTION: IMPERIALISM 0x004e7c50
 void TAutoGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
-  // MATCH: the original guards the whole body with a null-this test (TEST ESI,ESI at
-  // 0x4e7c53) before touching either parameter.
+  // MATCH: the original guards the whole body with a null-this test.
   if (this == 0) {
     return;
   }
@@ -572,8 +571,6 @@ int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, c
   }
   return 1;
 }
-
-// Port-zone refit fields live on TZone (+0x28..+0x30).
 
 // FUNCTION: IMPERIALISM 0x004e8040
 bool TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
@@ -1647,7 +1644,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
       }
     }
   }
-  // Listing 0x004eb190 stores and decrements this float but never consumes its value.
+  // Retail stores and decrements this float but never consumes its value.
   (void)developmentBudget;
 }
 

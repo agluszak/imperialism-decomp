@@ -31,16 +31,13 @@ bool TControl::LogUnhandledDialogMethodAndReturnFalse() {
   return false;
 }
 
-// Slot 0x08 override (0x00435760): TControl cannot be cloned. The original asserts via
-// the McAppUI invalidation thunk (file header path, line 0x594) and returns null.
+// TControl cannot be cloned: asserts and returns null.
 
 // FUNCTION: IMPERIALISM 0x00435760
 TObject* TControl::ShallowClone() {
   ReportAssertionFailure(g_szMcAppUiHeaderPath, 0x594);
   return 0;
 }
-// IMPLEMENT_DYNCREATE also emits `TControl::CreateObject`; the original copy at
-// 0x48e430 has the TControl ctor inlined into it.
 
 IMPLEMENT_DYNCREATE(TControl, TView)
 
@@ -164,14 +161,6 @@ void TControl::NoOpUiViewSlotHandler(int arg1, int arg2) {}
 // FUNCTION: IMPERIALISM 0x0048e9e0
 void TControl::NoOpControlAction(int) {}
 
-// The template-dialog modal helpers (PrepareAndCreateModalFromTemplate 0x0049d360 and
-// FinalizeModalDialogAndRestoreOwnerFocus 0x0049d450) and the CDialog constructor
-// (0x006050d0) are really MFC-dialog machinery on the CDialog-derived dialog classes, not
-// on the TControl widget hierarchy. They live on TModalDialogBase
-// (src/game/TModalDialogBase.cpp); 0x006050d0 is the LIBRARY CDialog::CDialog constructor.
-
-// KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
-
 // FUNCTION: IMPERIALISM 0x00492e10
 TControl::~TControl() {}
 
@@ -191,7 +180,6 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
     child->Show(enabled, 0);
   }
 }
-// Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
 
 // FUNCTION: IMPERIALISM 0x0058e440
 void TControl::SetEventNumber(int value) {

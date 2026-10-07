@@ -15,19 +15,16 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/mfc.h"
 
-// slot 0x0d — TZone::IsSeaZone override.
 // FUNCTION: IMPERIALISM 0x00561660
 bool TPortZone::IsSeaZone() {
   return true;
 }
 
-// slot 0x0e — TZone::IsPortZone override.
 // FUNCTION: IMPERIALISM 0x00561680
 bool TPortZone::IsPortZone() {
   return true;
 }
 
-// slot 0x0f — TZone::IsProvincial override.
 // FUNCTION: IMPERIALISM 0x005616a0
 bool TPortZone::IsProvincial() {
   return false;
@@ -36,18 +33,14 @@ bool TPortZone::IsProvincial() {
 // FUNCTION: IMPERIALISM 0x005616f0
 TPortZone::~TPortZone() {}
 
-// slot 0x00 — GetRuntimeClass override.
-
 IMPLEMENT_DYNCREATE(TPortZone, TZone)
 
-// slot 0x06 — TZone::ReadFrom override.
 // FUNCTION: IMPERIALISM 0x005617f0
 void TPortZone::ReadFrom(TStream* stream) {
   TZone::ReadFrom(stream);
   stream->ReadBytes(&portTileIndex, 2);
 }
 
-// slot 0x05 — TZone::WriteTo override.
 // FUNCTION: IMPERIALISM 0x00561820
 void TPortZone::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
@@ -60,7 +53,6 @@ void TPortZone::WriteTo(TStream* stream) {
   stream->WriteBytes(&portTileIndex, 2);
 }
 
-// slot 0x0a — TZone::NameThyself override.
 // FUNCTION: IMPERIALISM 0x005618b0
 void TPortZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) {
   short cityIndex = g_pGlobalMapState->terrainStateTable[portTileIndex].cityRecordIndex;
@@ -73,7 +65,6 @@ void TPortZone::NameThyself(unsigned char* usedCityFlags, const char* overrideNa
   displayName = expandedHeadline;
 }
 
-// slot 0x07 — TZone::Free override.
 // FUNCTION: IMPERIALISM 0x00561a70
 void TPortZone::Free() {
   if (g_pGlobalMapState != 0) {
@@ -152,7 +143,6 @@ bool TPortZone::CanBeTargetOf(TTaskForce* force) {
   return false;
 }
 
-// slot 0x13 — TZone::PickPennantIngotTile override.
 // FUNCTION: IMPERIALISM 0x00561e40
 short TPortZone::PickPennantIngotTile() {
   short originTile = static_cast<short>(tileOrTerrainId);

@@ -21,9 +21,6 @@
 #include "RuntimeTestDriver.h"
 #endif
 
-// Shared thunks/hooks whose callers interpret the arguments differently are kept in
-// generic repo form (rule 9) with a typed cast at the callsite.
-
 extern "C" CRuntimeClass PTR_s_TView_006495a0;
 
 // FUNCTION: IMPERIALISM 0x00427200
@@ -78,13 +75,8 @@ int TView::GetEventNumber() {
 // FUNCTION: IMPERIALISM 0x00430bf0
 void TView::Draw(RECT* rectBuffer) {}
 
-// Base TView slot 0x47: orphan RET 0x10 stub (real capture on TControl 0x48e640).
-
 // FUNCTION: IMPERIALISM 0x00430c10
 void TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {}
-
-// TViewChildList's compiler-emitted CList<TView*,TView*>::Serialize body. The real source is
-// the childList template type in TView, not a TView method or TEventHandler record pool.
 
 // FUNCTION: IMPERIALISM 0x00489f60
 TView* TViewChildList::FindByTag(unsigned int tag) {

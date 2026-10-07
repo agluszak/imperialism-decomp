@@ -7,9 +7,6 @@ IMPLEMENT_DYNCREATE(TIndexAndRankList, TSortedPtrList)
 // FUNCTION: IMPERIALISM 0x00534870
 TIndexAndRankList::TIndexAndRankList() {}
 
-// The list-operation virtuals (slots 0x14-0x40) are inherited unchanged from
-// TSortedPtrList; TIndexAndRankList does not override them.
-
 // FUNCTION: IMPERIALISM 0x005348f0
 void TIndexAndRankList::IIndexAndRankList() {
   recordSize = 6;

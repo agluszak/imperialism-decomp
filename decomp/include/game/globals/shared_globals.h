@@ -22,7 +22,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_tags_common.h"
 
-// Map-context flavor-text string pool (see global_data_tables.cpp).
+// Map-context flavor-text string pool.
 extern char s_szSpaceSeparator[];
 extern char s_szGaugeCountSeparator[];
 extern "C" char s_szRankDotSeparator

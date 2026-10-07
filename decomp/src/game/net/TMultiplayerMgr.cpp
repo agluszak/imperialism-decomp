@@ -232,9 +232,6 @@ struct TurnEvent1CDealResultPacket : TimelyNetMessagePrefix {
 };
 ASSERT_SIZE(TurnEvent1CDealResultPacket, 0x28);
 
-// TurnEvent1DWarTransitionPacket now lives in game/military/NetMessage.h: the proxy
-// great-power emitters (0x540cf0 / 0x540dc0) build the same packet this case decodes.
-
 // Event-0x1E diplomacy relation action.
 struct TurnEvent1EDiplomacyActionPacket : TimelyNetMessagePrefix {
   signed char nation;     // +0x1c
@@ -2233,7 +2230,6 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
   }
 }
 
-// Mac oracle: ReceiveStreamMessage.
 // FUNCTION: IMPERIALISM 0x00549f10
 void TMultiplayerMgr::ReceiveStreamMessage(NetMessage* packet) {
   g_nSaveFormatVersion = kSessionTagNetX;
@@ -3298,10 +3294,5 @@ bool ReturnTrueRuntimeCredentialInitStub() {
   return true;
 }
 
-// Turn-resume telemetry pass. Hosting: drop pending bits for absent/ineligible nations
-// and the local nation, broadcast the remaining mask (event 1), and flush the latched
-// event code once the mask drains. Client: acknowledge the pending event code (2 =
-// announce home city, event 0xA; 5 = rebuild diplomacy pressure and re-emit state
-// arrays; 8 = re-emit the composite; 0x14/0x15 = plain event-0xF ack). All paths then
-// mark the local nation 'redy' and broadcast the event-0x25 status board ('unkn'
-// defaults).
+// Turn-resume pass: the host drops absent nations from the pending mask and broadcasts it,
+// clients acknowledge the pending event, then both mark the local nation ready.

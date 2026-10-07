@@ -65,9 +65,7 @@ public:
   TTacticalBattleView* battleView; // +0x08 live view; null when the battle runs headless
   int currentSide;                 // +0x0c side (0/1) of the current selection; serialized
   int battleLive;                  // +0x10 serialized battle-header dword
-  // Owned side players, indexed by currentSide and TTacticalUnit::side.
-  // ABI: SetTargeting (0x5a5b90) indexes pointers at +0x14 with a four-byte stride;
-  // Free (0x59fb50) releases side 0 before side 1.
+  // Side players, indexed by currentSide and TTacticalUnit::side.
   TTacticalPlayer* players[2]; // +0x14 side 0, +0x18 side 1
   TTacticalUnit* selectedUnit; // +0x1c
   TList* recordList;           // +0x20
@@ -121,7 +119,6 @@ public:
   void CycleTarget();
   // Helpers the command family dispatches into (all __thiscall on the battle).
   void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit); // 0x59fe40
-  // Mac identities: GetNeighborList(long, long*) and AreNeighbors(long, long).
   void GetNeighborList(TacticalTileIndex tileIndex,
                        TacticalTileIndex* outNeighborTiles6); // 0x5a0420
   bool ValidMove();                                           // 0x5a1b50
@@ -133,14 +130,14 @@ public:
   void CheckForVictory();             // 0x5a2750
   void FinishedMove();
   void Cycle();
-  // Paths the unit toward the target tile. 0x5a1520, __thiscall.
+  // Paths the unit toward the target tile.
   void MoveTacticalUnitTowardTile(TTacticalUnit* unit, TacticalTileIndex targetTileIndex);
   bool ValidTargets();
   TacticalTileIndex FindFortWallTileCrossedByFiringLine(TacticalTileIndex targetTileIndex,
                                                         TacticalTileIndex attackerTileIndex);
   int SeekPath(TacticalTileIndex walkTileIndex, int pathDepth, TacticalTileIndex goalTileIndex,
                TacticalTileIndex* outPathTiles);
-  // Reaction checks fired when a unit enters a tile; nonzero stops the walk. 0x5a1a20.
+  // Reaction checks fired when a unit enters a tile; nonzero stops the walk.
   bool CheckOpportunityFire(TacticalTileIndex tileIndex);
   unsigned char IsTacticalTargetTileReachableForAction(TacticalTileIndex attackerTileIndex,
                                                        TacticalTileIndex targetTileIndex,
@@ -151,7 +148,7 @@ public:
   short ResolveTacticalHoverCursorResourceId(TacticalTileIndex tileIndex); // 0x005a0a90
   void MakeRetreatMap(char ourSideFlag);
   bool IsTacticalTileAtFortWallSectionSlot(TacticalTileIndex tileIndex);
-  // Deployment-zone queries. 0x5a4240 / 0x5a41c0 / 0x5a4330.
+  // Deployment-zone queries.
   int CountDeploymentTiles();
   bool ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex);
   // True when there is no fort or a wall section is breached.

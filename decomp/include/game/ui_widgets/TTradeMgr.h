@@ -22,12 +22,11 @@ public:
   void Free() override;                    // slot 0x07 0x5b7bc0
 
   virtual void ResetNationMetricRowsAndClearCategoryRankLists(); // 0x0a 0x5b7fc0
-  // ORACLE: Mac TTradeMgr names for the recovered Windows trade-price/deal operations.
-  virtual void CalculateDealOrder();              // 0x0b 0x5b8080
-  virtual void CalculateNewWorldPrices();         // 0x0c 0x5b8aa0
-  virtual void CalculateNewItemPrice(short item); // 0x0d 0x5b8ad0
-  virtual double GetAdjNumOffers(short item);     // 0x0e 0x5b8d40
-  virtual short GetAmtOffered(short item);        // 0x0f 0x5b8d70
+  virtual void CalculateDealOrder();                             // 0x0b 0x5b8080
+  virtual void CalculateNewWorldPrices();                        // 0x0c 0x5b8aa0
+  virtual void CalculateNewItemPrice(short item);                // 0x0d 0x5b8ad0
+  virtual double GetAdjNumOffers(short item);                    // 0x0e 0x5b8d40
+  virtual short GetAmtOffered(short item);                       // 0x0f 0x5b8d70
   virtual int GetDealPrice(short sourceSlot, short targetSlot, short scoreA,
                            short scoreB);   // 0x10 0x5b8da0
   virtual short GetNumOffers(short item);   // 0x11 0x5b8f80
@@ -37,7 +36,7 @@ public:
   virtual void OfferItemDeals(short item);  // 0x15 0x5b9060
   virtual void StartDeals();                // 0x16 0x5b9190
   virtual void OfferTradeDeals();           // 0x17 0x5b9410
-  // ORACLE: Mac names this SetDealResults and declares five shorts plus two unsigned chars.
+  // ORACLE: Mac SetDealResults takes five shorts and two unsigned chars.
   virtual void SetDealResults(NationSlot sourceNation, NationSlot targetNation, short amount,
                               short maximumAmount, ResourceKindStorage commodityType,
                               unsigned char shortfallFlag,
@@ -54,21 +53,11 @@ public:
   virtual double Power(double base, short exponent);                // 0x22 0x5b9f30
 
   TTradeMgr();
-  // ORACLE: Mac TTradeMgr::ITradeMgr().
   void ITradeMgr();
-  // Non-virtual impl invoked by the slot-0x16 wrapper.
-  // ORACLE: Mac TTradeMgr::NextTradeDeal().
   void NextTradeDeal(); // 0x5b91e0
-  // Clears every live TGreatPower's trade offers, clamps each category row's
-  // tradeOfferCells turn-history cells to the running max seen 23 cells earlier (the scan
-  // deliberately runs past the logical sub-row into the next contiguous row), then advances
-  // the host turn event or local simulation phase.
-  // ORACLE: Mac TTradeMgr::EndTradeOffers().
+  // Clamps each category row's turn history to the running max; the scan deliberately runs
+  // past the logical row into the next one.
   void EndTradeOffers(); // 0x5b9370
-  // Average, across all 17 category rows, of (price - previousPrice).
-  // Called from TNewspaperView::StuffValues
-  // (0x55d200) while building the advisor-dialog inter-nation event summary rows.
-  // ORACLE: Mac TTradeMgr::GetMarketChange().
   int GetMarketChange(); // 0x5ba0e0
 
 #pragma pack(push, 4)

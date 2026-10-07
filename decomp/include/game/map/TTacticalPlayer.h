@@ -46,7 +46,7 @@ public:
 
   void RemoveReserves();
 
-  // Whether this side belongs to the local active nation. 0x0059b010, __thiscall.
+  // Whether this side belongs to the local active nation.
   bool IsPlayer();
 
   // NOOP: verified empty in original 0x0059ad42

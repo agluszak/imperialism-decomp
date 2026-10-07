@@ -22,9 +22,6 @@ static short SignedDiv10(int value) {
   return static_cast<short>(value / 10);
 }
 
-// 0x004e0460 / 0x004e04b0 (SumNavyOrderPriorityForNation[AndNodeType]) are real
-// TGreatPower __thiscall methods; bodies live in TGreatPower.cpp.
-
 // FUNCTION: IMPERIALISM 0x0053b800
 float ComputeNavyOrderDistributionScoreForNation(short nation) {
   float categoryVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
@@ -139,7 +136,6 @@ void TShip::Free() {
   delete this;
 }
 
-// Mac oracle: IShip.
 // FUNCTION: IMPERIALISM 0x0054f780
 void TShip::FreeAll() {
   while (g_pNavyPrimaryOrderListHead != 0) {
@@ -300,9 +296,7 @@ int GetNavyOrderCategoryBaseline(int category) {
   return g_aCategoryMetricBaselineAverage[category];
 }
 
-// Receiver-agnostic: also called directly on a TTaskForce's own
-// aggression/nation/ingotTileIndex fields (TNavyMission::AccumulateLack),
-// which happen to share these same 3 offsets with TShip -- see the header comment.
+// Also called on a TTaskForce, which shares these three field offsets.
 
 // FUNCTION: IMPERIALISM 0x0054ff00
 short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category) {
@@ -333,10 +327,7 @@ short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category)
   }
 }
 
-// Per-category normalized cost percent for a resource type, used by the AI
-// city/industry development selectors (0x4eb45a, 0x535d8e/0x535e26). Same
-// category-0..3 divisor table (g_aCategoryMetricBaselineAverage) and resource-descriptor
-// table as ComputeNavyOrderPriorityContributionPercentByCategory, with a distinct blend.
+// Per-category normalized cost percent for a resource type, used by the AI development choices.
 
 // FUNCTION: IMPERIALISM 0x00550090
 int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType) {

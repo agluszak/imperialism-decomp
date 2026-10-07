@@ -17,9 +17,6 @@ const double kSeaAngleScale = 11733.857334728455;
 
 } // namespace
 
-// Functions are emitted in ascending original-address order (decomplint requirement), so
-// the Seapoint/SeaSegment record methods interleave with the two stretch arrays' methods.
-
 // FUNCTION: IMPERIALISM 0x0052a850
 void LoadRegionBorderLinkTableFromCoordsFile() {
   unsigned int index = 0;
@@ -447,8 +444,6 @@ unsigned short SeaSegment::SelectAttrByAngle() const {
   }
   return static_cast<unsigned short>(attrBySide[0]);
 }
-
-// --- SeapointStretch (0x10-byte elements) ----------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x0052ca20
 void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra) {

@@ -4,11 +4,8 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
-// Windows reimplementation of the Mac QuickDraw region API (original TU:
-// D:\Ambit\QuickDraw.cpp — the debug path baked into this cluster). The Mac
-// `Region` record is emulated with an embedded MFC CRgn; `RgnHandle` keeps the
-// Mac Region** handle shape (call sites re-dereference the handle on every
-// access, exactly like the original Toolbox contract).
+// Windows reimplementation of the Mac QuickDraw region API: Region wraps an MFC CRgn and
+// RgnHandle keeps the Mac Region** shape.
 
 struct TBitmapSurfaceNode;
 
@@ -37,13 +34,13 @@ void ClipRect(RECT* rect);                                                  // 0
 void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);               // 0x004977a0
 void SetEmptyRgn(RgnHandle rgn);                                            // 0x00497810
 void QDFrameRgn(RgnHandle rgn);                                             // 0x00497860
-// Combine two clip regions into dst (empty/copy/RGN_DIFF cases) and refresh its box. 0x00497540
+// Combine two clip regions into dst (empty/copy/RGN_DIFF cases) and refresh its box
 void CombineClipRegionsWithEmptyHandling(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);
-// Fill the region with a solid foreground-color brush (CBrush(COLORREF) form). 0x00497940
+// Fill the region with a solid foreground-color brush (CBrush(COLORREF) form)
 void FillClipRegionWithForegroundBrush(RgnHandle rgn);
-// Fill the region's interior with the current QuickDraw foreground color. 0x00497a10
+// Fill the region's interior with the current QuickDraw foreground color
 void QDPaintRgn(RgnHandle rgn);
-// Intersect the clip region with `rect` (RGN_AND) and refresh its bounding box. 0x00498070
+// Intersect the clip region with `rect` (RGN_AND) and refresh its bounding box
 void IntersectClipRegionWithRectAndUpdateBounds(RgnHandle clipRgn, RECT* rect);
 void SetRectRgn(RgnHandle rgn, short left, short top, short right,
                 short bottom);                               // 0x00498be0

@@ -17,8 +17,7 @@ void ByteSwapCityScoreTableShortFields(Province* table);
 
 void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short* outColX2,
                                              unsigned short* outRow);
-// 0x5125a0: tileIndex -> (row = tileIndex/kStrategicMapColumns, col = tileIndex%kStrategicMapColumns).
-// ABI: genuine __cdecl free function.
+// ABI: __cdecl free function.
 void SplitTileIndexToRowAndColumn(StrategicTileIndex tileIndex, short* outRow, short* outCol);
 int ComputeStrategicHexTileDistance(StrategicTileIndex tileA, StrategicTileIndex tileB);
 
@@ -170,11 +169,8 @@ public:
 
   void VerifyMapDataAndWriteReport();
 
-  // Global map session state (g_pGlobalMapState @ 0x006A43D4). LAYOUT: TObject occupies
-  // the head; four stream-read scalars fill +0x04..+0x09, terrainStateTable is +0x0c,
-  // cityScoreTable is +0x10, and the complete object is 0x28 bytes.
-  // Set after the strategic-map palette preview surface has been rendered; cleared by
-  // construction/stream load so the map-data readiness path rebuilds it once.
+  // LAYOUT: 0x28 bytes; terrainStateTable at +0x0c, cityScoreTable at +0x10.
+  // Set once the palette preview is rendered; cleared on construction and load.
   bool strategicMapPalettePreviewReady;   // +0x04
   unsigned char pad5;                     // +0x05
   short mapViewOriginTile;                // +0x06
@@ -225,8 +221,6 @@ public:
   int CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityRecordIndex, int nationTag,
                                                       int* nodeBuffer, bool allowFallback);
   bool IsProvinceAdjacentTo(int sourceProvinceIndex, int candidateProvinceIndex);
-  // ORACLE: Mac TMapMgr::HasPortInProvince(int). Returns true on the first linked tile
-  // whose terrainStateTable activeFlags has the port bit (0x04) set.
   bool HasPortInProvince(int provinceIndex);
   void SetTownSize(short regionId, unsigned char stage);
   void SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
@@ -285,13 +279,9 @@ public:
 
   void ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot);
 
-  // ORACLE: Mac TMapMgr::GetMilitaryMaster(long). Returns the province's stationed-unit
-  // chain when provinceIndex is in [0, 0x180), otherwise NULL. Windows takes a short.
-  // 0x004a4190, __thiscall, one stack argument.
+  // ORACLE: Mac TMapMgr::GetMilitaryMaster(long); Windows takes a short.
   TMilitaryUnit* GetMilitaryMaster(short provinceIndex);
 
-  // ORACLE: Mac TMapMgr::DimmingOff(). Clears perTileVisitedFlag for all kStrategicTileCount
-  // strategic-map tiles. 0x00515db0, __thiscall, no args.
   void DimmingOff();
 
   void IMapMgr();

@@ -1,6 +1,3 @@
-// Free geometry helpers for the UMapper overlay grid (a 0xd8=216-wide doubled-column grid laid
-// over the 0x6c=108-wide hex tile map).
-
 #include "game/map_domain_types.h"
 #include "game/map/map_overlay_geometry.h"
 

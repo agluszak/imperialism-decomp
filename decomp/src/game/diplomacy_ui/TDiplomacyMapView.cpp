@@ -1,5 +1,3 @@
-// TDiplomacyMapView QuickDraw legend rendering slice.
-
 #include "game/nation_domain_types.h"
 #include "game/map_domain_types.h"
 #include "decomp_types.h"
@@ -75,8 +73,6 @@ void ShowDiplomacyActionRejectedNotice();
 DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
   delete[] maskBytes;
 }
-
-// Clamps `rect` inside `bounds`, preserving the rect's width/height.
 
 // FUNCTION: IMPERIALISM 0x004d5a90
 bool IsMaskPixelSetAndOnRegionEdge(int x, int y, DiplomacyMaskBufferRun* run, char edgeOnly) {

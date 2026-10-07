@@ -1,5 +1,3 @@
-// TTransFocusAnimation vertical-slice implementations.
-
 #include "game/app/TTransFocusAnimation.h"
 
 #include "game/globals/global_types.h"

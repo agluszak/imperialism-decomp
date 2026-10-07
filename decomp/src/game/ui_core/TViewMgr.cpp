@@ -105,19 +105,7 @@
 
 #include <new>
 
-// TSimMgr global instance @ 0x6a20f8 (a.k.a. g_pSimMgr / turn-state
-// manager). Included via global_data_tables.h.
-
-// The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
-// holds the active main TView used as the dispatch root for turn-event UI refreshes.
-
 #include "game/ui_core/CIncludeView.h"
-
-// The former RunNationInfoModalAndReturnNonCancel / NoOpUiRuntimeCallback_005db2f0 /
-// NoOpRuntimeCallback_005d5d10 extern bridges are gone: the modal is a real TViewMgr
-// method now, and the two "NoOp" callbacks were mis-named out-of-line COMDAT copies of
-// CString::GetLength / CString::GetPchData that the tail call sites use via the real
-// CString API.
 
 namespace {
 const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
@@ -2443,7 +2431,7 @@ void TViewMgr::MakeGameSetupDialog() {
   }
 }
 
-// Mac oracle: MakeCheaterDialog. Reads nothing from `this`.
+// ORACLE: Mac MakeCheaterDialog. Reads nothing from `this`.
 // FUNCTION: IMPERIALISM 0x005de6c0
 void TViewMgr::MakeCheaterDialog(int which) {
   TWindow* panel =

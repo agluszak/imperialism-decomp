@@ -1,5 +1,3 @@
-// TScatteredShipsMission implementations.
-
 #include "game/map/TScatteredShipsMission.h"
 #include "game/nation/TAutoGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"

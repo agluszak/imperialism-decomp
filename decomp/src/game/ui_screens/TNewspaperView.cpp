@@ -26,9 +26,6 @@ TNewspaperView::~TNewspaperView() {}
 
 IMPLEMENT_DYNCREATE(TNewspaperView, TPicture)
 
-// Base ctor call + vptr store only; the original body is 18 bytes ending in
-// `mov eax,esi` return-this.
-
 // FUNCTION: IMPERIALISM 0x0055d200
 void TNewspaperView::StuffValues(int pageNation) {
   CString tokens[4];

@@ -12,12 +12,7 @@
 class CMcWindow;
 struct TToolboxEvent;
 
-//
-// TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c
-// from TEventHandler. It overrides only the few base slots whose vtable bodies differ
-// (0x07 ReleaseRuntimeSelectionOwnerAndDestroyObject, 0x08 CloneEngineerDialogStateToNewInstance,
-// 0x16 GetWindow) and introduces its own virtuals at slot 0x25+ (declared below in exact vtable
-// slot order). See game/ui_core/TEventHandler.h.
+// TView inherits TEventHandler's 37 shared slots and declares its own from slot 0x25.
 
 class TUiStyleBytes {
 public:

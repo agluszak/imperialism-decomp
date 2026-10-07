@@ -23,9 +23,6 @@ TFlagOptionsPicture::~TFlagOptionsPicture() {}
 
 IMPLEMENT_DYNCREATE(TFlagOptionsPicture, TPicture)
 
-// Base ctor call + vptr store only; the original body is 18 bytes ending in
-// `mov eax,esi` return-this.
-
 // FUNCTION: IMPERIALISM 0x0056b2b0
 void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {

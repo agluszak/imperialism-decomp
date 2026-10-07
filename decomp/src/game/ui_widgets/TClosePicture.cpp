@@ -2,13 +2,12 @@
 #include "game/ui_core/TWindow.h"
 #include "game/ui_widgets/TClosePicture.h"
 
-// MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x662f38).
+// MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor.
 
 IMPLEMENT_DYNCREATE(TClosePicture, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00586b70
 TClosePicture::TClosePicture() : TPictureButton() {}
-
 
 // FUNCTION: IMPERIALISM 0x00586bd0
 TClosePicture::~TClosePicture() {}

@@ -22,12 +22,11 @@ struct TCdAudioDevice {
   void StopPlayback();
   int ApplyAuxOutputVolumeFromScalar(int scalar);
   BOOL IsPlaybackActive();
-  int GetAuxOutputVolume();                  // 0x0047cda0
+  int GetAuxOutputVolume();             // 0x0047cda0
   unsigned int GetMediaPresent() const; // 0x0047ce10
   unsigned int GetCurrentTrack() const; // 0x0047ce30
-  unsigned int GetTrackCount() const; // 0x0047ce50
+  unsigned int GetTrackCount() const;   // 0x0047ce50
 };
-// g_cdAudioDevice (0x006a60bc) is declared in game/global_data_tables.h.
 
 int __stdcall SetAuxOutputVolumeFromScalar(int scalar);
 int __stdcall SetAuxOutputVolumeByChannel(int leftVolume, int rightVolume);

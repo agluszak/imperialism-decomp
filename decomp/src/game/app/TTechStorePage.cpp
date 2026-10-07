@@ -10,8 +10,6 @@
 // FUNCTION: IMPERIALISM 0x004600c0
 TTechStorePage::TTechStorePage() {}
 
-// TTechStorePage only overrides GetRuntimeClass and the destructor of TPageView.
-
 // FUNCTION: IMPERIALISM 0x00460120
 TTechStorePage::~TTechStorePage() {}
 

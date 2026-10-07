@@ -1227,10 +1227,7 @@ void TTacticalBattleView::PlayAni(TacticalTileIndex tileIndex, int effectId, int
   PlayAni(&effectRect, effectId, frameCount, tileIndex, 2);
 }
 
-// Spawns a TOneTimeAnimation over `rect` (effect sprite `effectId`, `frameCount`
-// frames, `mode` ticks per frame, registry tag = tileIndex), registers it with the
-// UI animator, then pumps UI messages modally until the animation completes; finally
-// invalidates the rect and drops the registry entry.
+// Plays a one-shot animation over `rect` and pumps UI messages until it completes.
 
 // FUNCTION: IMPERIALISM 0x005a9170
 void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
@@ -1455,8 +1452,6 @@ void __stdcall DrawHexSelectionOutlineSegments(RECT* rect) {
   DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left),
                                static_cast<short>(rect->bottom - 6));
 }
-
-// Promoted tactical-UI helpers (called from the TTacticalBattle command handlers).
 
 // FUNCTION: IMPERIALISM 0x005a9b40
 void TTacticalBattleView::SetCurrentPlayer(unsigned char side) {

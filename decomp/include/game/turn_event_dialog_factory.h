@@ -4,12 +4,8 @@
 #include "game/mfc.h"
 #include "game/turn_event_codes.h"
 
-// Turn-event dialog factory callbacks registered by RegisterStartupDialogFactoryCallbacks
-// (see TTurnEventDialogFactoryRegistry). Each is invoked as factory(0, nEventCode) from
-// RunRegisteredDialogFactoriesByEventCode; a factory checks the event code, builds its
-// screen's control tree on the global widget build stack, and returns the tree root
-// (g_pUiResourceHead) or null when the code is not its own. pHostWindow is propagated
-// into the built tree via TView::PropagateUiResourceContextRecursive.
+// Turn-event dialog factories: each builds its screen's control tree when the event code is
+// its own and returns the tree root, otherwise null.
 
 TView* __cdecl BuildTradeSchoolDialogControls(CWnd* pHostWindow, int nEventCode);
 TView* __cdecl InitializeIndustryOverviewPlacardsAndTradeStatusTags(CWnd* pHostWindow,

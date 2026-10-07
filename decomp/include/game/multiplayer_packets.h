@@ -1,13 +1,8 @@
 #pragma once
 
 #include "game/map_domain_types.h"
-// Shared multiplayer turn-event wire layouts.
-//
-// Layouts shared by more than one translation unit; single-TU packets stay local.
-//
-// Wire framing: every packet derives from the 0x10-byte NetMessage header (see
-// NetMessage.h); 'timely' packets prefix the 'time' four-cc tag, the active-nation
-// byte, and the pending-nation slot via TimelyMessageHeader/TimelyNetMessagePrefix.
+// Multiplayer wire layouts shared by more than one translation unit. Every packet derives
+// from NetMessage; 'timely' packets add the TimelyMessageHeader prefix.
 
 #include "compat.h"
 #include "game/game_phase.h"

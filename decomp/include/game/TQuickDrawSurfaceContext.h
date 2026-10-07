@@ -72,8 +72,6 @@ struct TBitmapSurfaceContextDescriptor : public TQuickDrawSurfaceContext {
 };
 ASSERT_SIZE(TBitmapSurfaceContextDescriptor, 0x34);
 
-// Address markers: src/game/global_data_tables.cpp.
-
 void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
                                               TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
                                               RECT* dstRect, unsigned char blitFlags,

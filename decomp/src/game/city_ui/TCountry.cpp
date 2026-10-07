@@ -54,7 +54,6 @@ bool TCountry::IsHost(void) const {
   return false;
 }
 
-// slot 0x28 — IsRemote (real body).
 // FUNCTION: IMPERIALISM 0x004d6770
 bool TCountry::IsRemote(void) const {
   return false;
@@ -168,9 +167,7 @@ void TCountry::ReadFrom(TStream* stream) {
   }
 }
 
-// Serializes the TCountry base sub-object: the identity strings (stream slot 0xac), the
-// nation-slot metrics, the per-unit-type name ordinals, the military unit list and the
-// owned-region list. The leading TObject::WriteTo is the no-op base-of-base (0x00485f70).
+// Serializes the TCountry base: identity strings, metrics, unit name ordinals, units, regions.
 
 // FUNCTION: IMPERIALISM 0x004d6e60
 void TCountry::WriteTo(TStream* stream) {
@@ -473,7 +470,6 @@ void TCountry::NewStatusFor(int targetNationSlot, int policyCode) {
 // FUNCTION: IMPERIALISM 0x004d7e90
 void TCountry::DeliverItem(short amount) {}
 
-// Mac oracle: TCountry::GenerateEthnicName(CStr32&) const.
 // FUNCTION: IMPERIALISM 0x004d7eb0
 void TCountry::GenerateEthnicName(CString* out) const {
   GenerateMappedFlavorTextByTableSlot(out, nationSlot);
@@ -484,7 +480,6 @@ short TCountry::GetAmtUnsold(short resourceKind) {
   return 0;
 }
 
-// slot 0x1d — GetMerchantCapacity (real body).
 // FUNCTION: IMPERIALISM 0x004d7f00
 short TCountry::GetMerchantCapacity(void) {
   return 0;

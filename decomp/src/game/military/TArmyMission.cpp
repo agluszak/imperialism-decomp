@@ -1,5 +1,3 @@
-// TArmyMission implementations.
-
 #include <math.h>
 
 #include "game/military/TArmyMission.h"
@@ -208,7 +206,6 @@ int TArmyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack)
   return total;
 }
 
-// Mac oracle: ComputeProvinceImportance.
 // FUNCTION: IMPERIALISM 0x0053c7a0
 float TArmyMission::ComputeProvinceImportance(short provinceIndex) {
   short missionNation = nationId;

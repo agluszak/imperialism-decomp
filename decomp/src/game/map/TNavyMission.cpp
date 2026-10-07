@@ -1,5 +1,3 @@
-// TNavyMission implementations.
-
 #include <math.h>
 
 #include "game/map/TNavyMission.h"
@@ -193,7 +191,6 @@ int TNavyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack)
   return total;
 }
 
-// Mac oracle: ComputeSeaZoneImportance.
 // FUNCTION: IMPERIALISM 0x00536a40
 float TNavyMission::ComputeSeaZoneImportance(TZone* zone) {
   float importance = static_cast<float>(zone->GetStrategicValue());
@@ -432,8 +429,6 @@ void TNavyMission::GiveTravelOrders(TZone* location) {
     }
   }
 }
-
-// Adds one order node's 4-category priority contribution into `vector`, categories
 
 // FUNCTION: IMPERIALISM 0x00537270
 float TNavyMission::ValueOf(TShip* candidate) {

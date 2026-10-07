@@ -15,9 +15,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 
-// MFC-style GetRuntimeClass (slot 0): returns the class descriptor that precedes
-// the vtable at 0x0066d7c8.
-
 IMPLEMENT_DYNCREATE(TTown, TObject)
 
 enum { kTownHarvestTileCount = kStrategicHexDirectionCount + 1 };

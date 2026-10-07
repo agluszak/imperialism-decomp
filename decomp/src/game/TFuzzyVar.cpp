@@ -4,7 +4,6 @@ IMPLEMENT_DYNCREATE(TFuzzyVar, TObject)
 
 TFuzzyVar::~TFuzzyVar() {}
 
-// Mac oracle: IFuzzyVar.
 // FUNCTION: IMPERIALISM 0x004ff520
 void TFuzzyVar::IFuzzyVar(float v0, float v1, float v2, float v3) {
   values[0] = v0;
@@ -13,7 +12,6 @@ void TFuzzyVar::IFuzzyVar(float v0, float v1, float v2, float v3) {
   values[3] = v3;
 }
 
-// Mac oracle: Membership.
 // FUNCTION: IMPERIALISM 0x004ff550
 float TFuzzyVar::Membership(int input) {
   float x = static_cast<float>(input);

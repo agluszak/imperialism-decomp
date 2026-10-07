@@ -121,17 +121,6 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
   g_UiWidgetBuildStack.RemoveTail();
 }
 
-// 0x479a80 / 0x479b00 ("Pop/PushUiResourcePoolNode") are the out-of-line template COMDATs
-// of CList<TView*,TView*>::RemoveTail / ::AddTail operating on g_UiWidgetBuildStack
-// - see global_data_tables.h. The builders call them directly
-// (g_UiWidgetBuildStack.RemoveTail()/.AddTail(node)); claimed here as templates.
-
-// The early builders also call the const GetTail specialization to recover the current
-// TView* from the stack's tail node.
-
-// The builder TU emits two identical AddTail COMDATs. 0x426ec0 is reached by the
-// early giant dialog builders; 0x479b00 is the later copy used by the shared stack helpers.
-
 // FUNCTION: IMPERIALISM 0x00426f80
 void __cdecl UiResourceBuildCallback() {}
 

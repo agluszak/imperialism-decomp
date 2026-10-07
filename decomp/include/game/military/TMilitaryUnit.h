@@ -50,7 +50,7 @@ public:
   static ArmyUnitCategoryStorage GetTypeCategory(MilitaryUnitKindStorage unitTypeSlot); // 0x5c34b0
   static short GetTypeAttribute(MilitaryUnitKindStorage unitTypeSlot,
                                 short statIndex); // 0x5c3580
-  // Sets or clears `mask` in battleStateFlags. 0x004a3b30, __thiscall, 2 args.
+  // Sets or clears `mask` in battleStateFlags.
   void SetOrClearBattleStateFlags(short mask, bool setFlag);
   MilitaryUnitKindStorage UpgradeType();
   bool CanUpgrade();

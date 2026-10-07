@@ -14,8 +14,7 @@
 #include "game/globals/ui_widgets_globals.h"
 #include <new>
 
-// TTradeCluster (VTABLE 0x665a70): the trade-screen sell/bid/offer cluster.
-// Owns the Sell/Bar/Bid/Offer child-control state machine for one trade row.
+// TTradeCluster: one trade row's sell/bid/offer cluster.
 
 #include "decomp_types.h"
 

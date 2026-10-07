@@ -129,7 +129,7 @@ extern int g_McAppUiFlag_006A1B14;
 extern int g_McAppUiFlag_006A1B18;
 
 extern int g_McAppUiFlag_006A1B1C;
-// One-shot assert gate read only by TCtlMgr's slot-0x71 default (0x492db0).
+// One-shot assert gate read only by TCtlMgr's slot-0x71 default.
 extern int g_McAppUiFlag_006A1B5C;
 
 extern int g_McAppUiFlag_006A1B0C;

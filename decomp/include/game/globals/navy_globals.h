@@ -1,10 +1,8 @@
 #pragma once
 #include "game/globals/global_types.h"
 
-// LAYOUT: fourteen per-resource navy-order descriptors at 0x00698108 with stride 0x24.
-// The shipyard indexes all nine dword columns dynamically. Gameplay readers give the low
-// signed word of each column its domain meaning; the ranking code reads columns 0, 1, and 4
-// as full dwords. Keep one physical array model rather than overlapping named and indexed views.
+// LAYOUT: fourteen per-resource navy-order descriptors, stride 0x24. Columns are read both as
+// signed words and as dwords, so they stay one indexed array.
 struct TNavyOrderResourceDescriptor {
   enum Column {
     kFirepower = 0,

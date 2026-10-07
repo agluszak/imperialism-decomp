@@ -69,7 +69,7 @@ public:
   void ConcatenateTreaty(InterNationEventKind eventKind, int nationA, int nationB);
 
   void StartNewsPhase();
-  // Loads and byteswaps Data/news.tab into storyTemplateTable. 0x55ba30.
+  // Loads and byteswaps Data/news.tab into storyTemplateTable.
   void LoadNewsTable();
   void CreateNewspaper(int nation);
   void CreateEventStories(int nation, int* majorCursor, int* minorCursor);

@@ -7,9 +7,7 @@
 #include <mmsystem.h>
 #include <windowsx.h>
 
-// Global sound/wave resource manager living at 0x006a60c0. It owns an array of six
-// DirectSound secondary-buffer channels (+0x04..+0x18), the channel buffer byte size
-// (+0x24), the wave-pack module handle (+0x30) and a scratch result slot (+0x34).
+// Global sound resource manager: six DirectSound channels and the wave-pack module.
 
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class IDirectSoundBuffer {

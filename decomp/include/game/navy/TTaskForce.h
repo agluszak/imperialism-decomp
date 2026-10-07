@@ -22,16 +22,10 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x552d10
   virtual void Free() override;                    // slot 0x07 0x552930
 
-  // LAYOUT: TObject occupies +0x00..+0x03; TTaskForce fields begin at +0x04 and the
-  // complete object is 0x34 bytes.
-  // ORACLE: eAgro. SetAggression writes the complete dword, ships cache the
-  // complete dword, and the battle resolver uses it to index its three-entry
-  // aggression threshold table.
+  // LAYOUT: 0x34 bytes, own fields from +0x04.
+  // ORACLE: eAgro; indexes the battle resolver's three aggression thresholds.
   int aggression;
-  // ORACLE: eShipOrders. This is the submitted ship-order kind. TNavyMgr's
-  // RemoveMatchingTaskForceOrders (0x557170 cluster) checks this == 5 for
-  // "task force" queue entries; OrderEvade (0x552f80) sets it to
-  // 9 for the map-order-9 kind.
+  // ORACLE: eShipOrders, the submitted ship-order kind.
   int shipOrders;
   void* target;
   TMapOrderChildLinkNode* shipList; // +0x10
@@ -56,8 +50,6 @@ public:
 
   void LinkTo(TTaskForce* prev_node, TTaskForce* next_node);
 
-  // ORACLE: RegainVirginity(int, TZone*). Removes every child ship and resets
-  // the task force's nation/context identity for a new map selection.
   void RegainVirginity(int nationArg, TZone* contextZone); // 0x552a70
   void ITaskForce();
   short CountSelectedShips() const;
@@ -75,9 +67,6 @@ public:
   bool AllShipsSelected() const;
   char MouseCodeForTarget(Province* province) const;
   unsigned int IsValidTarget(Province* province);
-  // ORACLE: Mac TTaskForce::IsValidTarget(TZone*). A selected force can target a zone
-  // when its cached graph distance does not exceed the slowest selected ship's movement
-  // weight. 0x005544a0.
   bool IsValidTarget(TZone* candidate);
   int IsPassingThroughPort(TZone* port) const;
   int MouseCodeForTarget(TZone* candidate) const;
@@ -138,21 +127,15 @@ public:
 
   void FreeAvailables(); // 0x553f10
 
-  // ORACLE: Remove(TShip*). Removes the ship's child link, updates its class count and
-  // preferred-child cache, then clears the ship's owner backlink.
   void Remove(TShip* ship); // 0x553d40
 
-  // ORACLE: SubmitOrders(eShipOrders, void*). orderContext is interpreted as a
-  // TZone* or Province* according to orderType.
+  // ORACLE: SubmitOrders(eShipOrders, void*); orderContext is a TZone* or Province*.
   void SubmitOrders(int orderType, void* orderContext); // 0x5540b0
 
   void OrderEvade(); // 0x552f80
 
   void OrderSailTowards(TZone* pContextAnchor); // 0x5533f0
 
-  // OrderSail uses map-order kind 1. OrderBlockade stores the port-zone context in
-  // target, sets shipOrders=6, then follows the OrderEvade cleanup/queue tail.
-  // ORACLE: OrderSail.
   void OrderSail(TZone* orderTarget);     // 0x553270
   void OrderBlockade(TZone* orderTarget); // 0x5536c0
 

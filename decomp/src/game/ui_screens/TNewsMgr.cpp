@@ -758,7 +758,6 @@ bool TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsStory* sto
   return true;
 }
 
-// Mac oracle: ClearStoryParms.
 // FUNCTION: IMPERIALISM 0x0055d090
 void TNewsMgr::ClearStoryParms(newsStory* story) {
   story->parmKind[0] = 0;

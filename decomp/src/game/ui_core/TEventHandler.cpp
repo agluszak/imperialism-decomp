@@ -33,9 +33,6 @@ IMPLEMENT_DYNCREATE(TEventHandler, TObject)
 TEventHandler::TEventHandler()
     : nextHandler(0), idleFrequencyTicks(0x7fffffff), lastIdleTick(0), firstBehavior(0) {}
 
-// Destructor is compiler-generated (implicit virtual dtor); the scalar deleting
-// destructor at 0x0048a130 is emitted by the compiler from real inheritance.
-
 // FUNCTION: IMPERIALISM 0x0048a180
 void TEventHandler::IEventHandler(TEventHandler* nextHandler) {
   enabled = 1;
@@ -43,7 +40,6 @@ void TEventHandler::IEventHandler(TEventHandler* nextHandler) {
   this->nextHandler = nextHandler;
   controlTag = kControlTagSpSpSpSp;
 }
-// Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).
 // FUNCTION: IMPERIALISM 0x0048a1b0
 void TEventHandler::Free() {
   if (g_pApplication != 0 && g_pApplication != this) {
@@ -252,7 +248,6 @@ void TEventHandler::BecameTarget() {
 // FUNCTION: IMPERIALISM 0x0048a710
 void TEventHandler::SelectOwner(unsigned char) {}
 
-// Slot 0x16: base implementation (TView overrides with the owner-chain walk).
 // FUNCTION: IMPERIALISM 0x0048a730
 TWindow* TEventHandler::GetWindow() {
   return 0;

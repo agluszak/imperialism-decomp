@@ -1,5 +1,3 @@
-// TBeachheadMission and TBlockadePortMission inherit several of these bodies unchanged.
-
 #include "game/map/TControlSeaZoneMission.h"
 #include "game/nation/TAutoGreatPower.h"
 #include "game/military_ui/TDiplomacyMgr.h"

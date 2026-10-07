@@ -30,7 +30,7 @@ void THelpPicture::DoPostCreate(int arg) {
   TextStyle textStyle;
   InitializeUiTextStyleDescriptor(&textStyle, 0, 12, 0x2b67, 3);
 
-  // Mac Linger.rsrc:3000 identifies 'swin' as the help dialog's TScrollView.
+  // ORACLE: Mac Linger.rsrc:3000 identifies 'swin' as the help dialog's TScrollView.
   TScrollView* scrollView = static_cast<TScrollView*>(FindSubView(kControlTagSwin)); // 'swin'
   scrollView->AssertValid();
 

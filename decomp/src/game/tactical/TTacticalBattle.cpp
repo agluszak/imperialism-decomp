@@ -39,8 +39,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// Non-virtual action helpers dispatched above.
-
 // Turn-order comparator (see the header note on the AX/short return).
 // FUNCTION: IMPERIALISM 0x0059f610
 short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b, void* context) {
@@ -247,8 +245,6 @@ void TTacticalBattle::FinishedDeploying() {
   FinishedMove();
 }
 
-// Selection/UI helpers dispatched by the tactical command family.
-
 // FUNCTION: IMPERIALISM 0x0059fe40
 void TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit) {
   selectedUnit = unit;
@@ -409,9 +405,7 @@ void TTacticalBattle::CalculateDangerMap(TTacticalUnit* unit) {
   }
 }
 
-// Whether either of the two neighbor tiles flanking hex direction `hexDirection`
-// around `tileIndex` (direction+1 and direction-1, wrapping 0..5) is occupied by a
-// unit of the other side. `side` is the friendly side code (0/1).
+// Whether a unit of the other side occupies either tile flanking hexDirection.
 
 // FUNCTION: IMPERIALISM 0x005a0420
 void TTacticalBattle::GetNeighborList(TacticalTileIndex tileIndex,
@@ -737,9 +731,8 @@ void TTacticalBattle::Cycle() {
   players[currentSide]->NextMove();
 }
 
-// Tactical command family: each handler echoes the command to multiplayer when it
-// originates locally (remoteFlag == 0), then applies it to the battle state. The
-// 0x545940 turn-event dispatcher re-enters these with remoteFlag = 1.
+// La* commands echo locally originated actions to multiplayer (remoteFlag == 0) before
+// applying them; the turn-event dispatcher replays them with remoteFlag = 1.
 
 // FUNCTION: IMPERIALISM 0x005a1010
 void TTacticalBattle::LaSelect(TTacticalUnit* unit, bool remoteFlag) {

@@ -11,8 +11,6 @@ public:
   // FUNCTION: IMPERIALISM 0x005c2510
   ~TUnit() override {} // slot 0x04
 
-  // slot 0x08 Serialize is inherited from TObject unchanged (0x485e90)
-
   void WriteTo(TStream* stream) override;  // slot 0x14
   void ReadFrom(TStream* stream) override; // slot 0x18
   void Free() override;                    // slot 0x1c

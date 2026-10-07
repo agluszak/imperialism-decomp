@@ -2,16 +2,8 @@
 
 #include "game/core/TStream.h"
 
-// Shared byte-order helpers for the big-endian TStream serialization format. These are
-// the shapes the original emits out of line; the inlined shapes live in the header.
-// See include/game/core/stream_byteswap.h for which shape to use at a given call site.
-//
-// Bodies are ordered by address (decomplint requires ascending markers), which
-// interleaves the read-side and write-side pairs:
-//   0x004b9340 SwapFirstTwoBytesInBuffer            (write-side swap)
-//   0x004b94a0 WriteByteSwappedShortArrayToStream   (write-side array)
-//   0x004f2970 ByteSwapShortInPlace                 (read-side swap; twin of 0x4b9340)
-//   0x004f2a60 ReadByteSwappedShortArrayFromStream  (read-side array)
+// Out-of-line byte-order helpers for the big-endian TStream format; the inline shapes live
+// in stream_byteswap.h.
 
 // FUNCTION: IMPERIALISM 0x004b9340
 void SwapFirstTwoBytesInBuffer(short* value) {

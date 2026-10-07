@@ -41,9 +41,6 @@ TCivMgr::TCivMgr() {}
 // FUNCTION: IMPERIALISM 0x004d20a0
 TCivMgr::~TCivMgr() {}
 
-// Applies the world-state mutation for a completed civilian work order (order->unitOrder, an
-// inherited UnitOrder distinct from TUnit's own `orderType` short, holds this
-
 // FUNCTION: IMPERIALISM 0x004d20c0
 void TCivMgr::ICivMgr() {}
 
@@ -188,7 +185,6 @@ unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTi
   return (actionCode != kCivilianTileActionShowOrderReport) - 1 & 0x3f3;
 }
 
-// Mac oracle: GetTileAction.
 // FUNCTION: IMPERIALISM 0x004d2610
 CivilianTileActionCodeStorage TCivMgr::GetTileAction(short tileIndex, short mode) {
   CivilianTileActionCodeStorage actionCode = kCivilianTileActionNone;
@@ -360,9 +356,6 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
   }
   return kCivilianTileActionBlocked;
 }
-
-// Selection helpers. The global g_pSelectedCivilianOrderState @0x6a43dc is this
-// TCivMgr instance.
 
 // FUNCTION: IMPERIALISM 0x004d2c60
 void TCivMgr::SelectUnit(TCivUnit* entryContext, bool refreshCommandPanel) {
@@ -635,7 +628,7 @@ bool TCivMgr::PurchaseClick(short nTileIndex) {
   g_pSimMgr->NumToCurrency(purchaseCost, &costText);
 
   if (availableCash >= purchaseCost) {
-    // Mac Strings.rsrc: "the governor of [1] will sell us this land for [2]".
+    // ORACLE: Mac Strings.rsrc: "the governor of [1] will sell us this land for [2]".
     g_pSimMgr->GetString(0x274d, 1, &templateText);
     scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(cityName), static_cast<LPCSTR>(costText));
@@ -658,7 +651,7 @@ bool TCivMgr::PurchaseClick(short nTileIndex) {
       return true;
     }
   } else {
-    // Mac Strings.rsrc: "the governor of [1] has set the price ... we cannot afford".
+    // ORACLE: Mac Strings.rsrc: "the governor of [1] has set the price ... we cannot afford".
     g_pSimMgr->GetString(0x274d, 2, &templateText);
     scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(cityName), static_cast<LPCSTR>(costText));

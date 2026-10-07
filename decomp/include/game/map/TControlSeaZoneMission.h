@@ -20,7 +20,6 @@ public:
 
   TControlSeaZoneMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
-  // Slots 0x0c-0x0f: TMission's own virtuals, overridden here.
   virtual void
   Initialize() override; // slot 0x0c 0x5387f0 -- port-zone-context score recompute (shared)
   virtual void

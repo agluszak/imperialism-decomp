@@ -18,9 +18,6 @@ TMultiMessagePicture::~TMultiMessagePicture() {}
 
 IMPLEMENT_DYNCREATE(TMultiMessagePicture, TPicture)
 
-// Base ctor call + vptr store only; the original body is 18 bytes ending in
-// `mov eax,esi` return-this.
-
 // FUNCTION: IMPERIALISM 0x0054ecc0
 void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId != 0x14 && commandId != 0xa && commandId != 0x22) {

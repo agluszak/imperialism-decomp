@@ -14,13 +14,12 @@ public:
   // Detaches the owning TWindow (slot 0x74 CloseAndFree) before the CWnd base is torn down.
   virtual ~CMcWindow() override; // 0x00493760 (scalar deleting destructor 0x00493730)
 
-  BOOL PreCreateWindow(CREATESTRUCT& cs) override; // 0x00493d80
+  BOOL PreCreateWindow(CREATESTRUCT& cs) override;       // 0x00493d80
   BOOL OnCommand(WPARAM wParam, LPARAM lParam) override; // 0x00493c30
 
   TWindow* m_pOwnerWindow;
 
-  // Message handlers (original message map: 13 entries, AFX_MSGMAP_ENTRY table at
-  // 0x0064b5f0, AFX_MSGMAP at 0x0064b5e8 chaining to CWnd's at 0x670868).
+  // Message handlers (13-entry message map).
 
   afx_msg LRESULT OnWindowStateMsg468(WPARAM wParam, LPARAM lParam);
   afx_msg void OnPaint();

@@ -22,10 +22,8 @@ public:
   void ReadFrom(TStream* stream) override; // 6 (0x18) 0x004ef080
   void Free() override;                    // 7 (0x1c) 0x004ef040
 
-  // ORACLE: Mac names TDiplomacyMgr::SetRelationship(short, short, short).
   virtual void SetRelationship(NationSlot sourceNation, NationSlot targetNation,
                                short score); // 10 (0x28)
-  // ORACLE: Mac names TDiplomacyMgr::SetRelationshipsToMatch(short, short).
   virtual void SetRelationshipsToMatch(NationSlot destinationNation,
                                        NationSlot sourceNation);    // 11 (0x2c)
   virtual void ApplyDiplomacyInterNationStatesForTurn();            // 12 (0x30)
@@ -64,29 +62,19 @@ public:
   // (0x78)
   virtual void TerminateAlliance(NationSlot sourceNation, NationSlot targetNation,
                                  unsigned char updateMode); // 31 (0x7c)
-  // ORACLE: Mac names TDiplomacyMgr::InflictWarPenalty(short, short, unsigned char).
   virtual void InflictWarPenalty(NationSlot sourceNation, NationSlot targetNation,
                                  unsigned char updateMode); // 32 (0x80)
-  // ORACLE: Mac names TDiplomacyMgr::IsGreatPower(short).
-  virtual bool IsGreatPower(NationSlot nationSlot); // 33 (0x84)
-  // Both scalar params are genuinely short: the body reads primaryOnlyFlag as a word
-  // and callers push the raw partial register (mov dx, [this+0xc]; push edx).
-  // ORACLE: Mac names TDiplomacyMgr::BuildRelationshipList(short, short,
-  // TSortedByRelationshipList*).
+  virtual bool IsGreatPower(NationSlot nationSlot);         // 33 (0x84)
+  // ABI: primaryOnlyFlag is a genuine short; callers push a partial register.
   virtual void BuildRelationshipList(NationSlot sourceNation, short primaryOnlyFlag,
                                      void* list); // 34 (0x88)
   // ORACLE: Mac TDiplomacyMgr::GetNumAllies(long); Windows uses int.
-  virtual int GetNumAllies(int sourceNation); // 35 (0x8c)
-  // ORACLE: Mac names TDiplomacyMgr::GetAllyNumber(long, long).
+  virtual int GetNumAllies(int sourceNation);                        // 35 (0x8c)
   virtual int GetAllyNumber(int nthAllianceIndex, int sourceNation); // 36 (0x90)
-  // MATCH: VC5 emits this overload group in reverse declaration order. Keep the two-arg
-  // declaration first so the three-arg method occupies slot 0x94 in the emitted vtable.
-  // ORACLE: Mac names TDiplomacyMgr::GetFavorite(long, unsigned char).
+  // MATCH: VC5 emits this overload group in reverse order; keep the two-arg form first.
   virtual int GetFavorite(int sourceNation, int primaryOnlyFlag); // 38 (0x98)
-  // ORACLE: Mac names TDiplomacyMgr::GetFavorite(long, unsigned char, short).
   virtual int GetFavorite(int sourceNation, int primaryOnlyFlag,
-                          int sideEffectCode); // 37 (0x94)
-  // ORACLE: Mac names TDiplomacyMgr::GetFavoriteTradePartner(long).
+                          int sideEffectCode);              // 37 (0x94)
   virtual int GetFavoriteTradePartner(int minorNationSlot); // 39 (0x9c)
 
   bool BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation, int targetNation);
@@ -125,7 +113,7 @@ public:
   void IssueDeclarationsOfWar();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot);
   void RemoveNationSlotAndNotifyPeers(NationSlot nationSlot);
-  // ORACLE: Mac names TDiplomacyMgr::SetLastDiploEffort(). Mirrors the current turn.
+  // Records the current turn.
   void SetLastDiploEffort(); // 0x4f0590
 
   void UpdateTables(int nationCode); // 0x4f2430, Mac oracle

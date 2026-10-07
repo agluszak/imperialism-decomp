@@ -16,11 +16,8 @@ public:
   void AcceptOffer(short proposalIndex) override;
   void RejectOffer(short proposalQueueIndex) override;
   void ReplyToDiplomacyOffers(void) override;
-  // slot 0x9f — 0x005416b0: client command 0x69 wrapper around slot 0x27c logic.
   int ConsiderWarOfIntervention(int targetNation, int sourceNation) override;
-  // slot 0xa0 — 0x005415c0: client command 0x61 wrapper around slot 0x280 logic.
-  int ConsiderWarOfAlliance(int targetNation, int sourceNation,
-                                             char swapRoles) override;
+  int ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) override;
   void SorryYouLose(void) override;
 
   TClientGreatPower() : TGreatPower() {}

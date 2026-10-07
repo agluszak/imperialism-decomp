@@ -21,9 +21,6 @@ public:
   virtual void StartGame();                               // slot 0x74 0x57a350
   virtual void ExitScreen();                              // slot 0x75 0x57a2d0
 
-  // ORACLE: Mac names TScenarioChooser::ShowInfo(int). The Windows body loads the
-  // argument as a full dword, stores its low word as the selected scenario, and RET 4.
-  // IMPERIALISM 0x0057a6e0.
   void ShowInfo(int scenarioIndex);
 
   TScenarioChooser();
@@ -35,7 +32,7 @@ public:
   // +0x116..+0x117: natural alignment before the pointer table.
   char* nationDescriptionTextByNation[kMajorNationCount];   // 0x118
   short nationDescriptionLengthByNation[kMajorNationCount]; // 0x134
-  short selectedScenarioIndex;                    // 0x142
-  int difficultyLevelByNation[kMajorNationCount]; // 0x144
+  short selectedScenarioIndex;                              // 0x142
+  int difficultyLevelByNation[kMajorNationCount];           // 0x144
 };
 ASSERT_SIZE(TScenarioChooser, 0x160);

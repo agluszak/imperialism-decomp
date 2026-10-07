@@ -20,8 +20,6 @@ void TStaticText::CopyTextTo(CString* out) {
   *out = *text;
 }
 
-// MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x649678).
-
 IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
 // FUNCTION: IMPERIALISM 0x00486290

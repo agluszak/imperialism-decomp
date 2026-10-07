@@ -8,7 +8,6 @@ struct CRuntimeClass;
 class TBoycottButton : public TToggleButton {
 public:
   virtual ~TBoycottButton() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x74 Select — declared in hand section (0x584800)
   TBoycottButton();
   DECLARE_DYNCREATE(TBoycottButton)
 

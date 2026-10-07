@@ -8,10 +8,6 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// IMPLEMENT_DYNCREATE also emits `TIncludeView::CreateObject`; the original copy at
-// 0x48cc40 has the TIncludeView ctor fully inlined into it (same TU, inline-eligible),
-// so the pairing is structural, not byte-exact.
-
 IMPLEMENT_DYNCREATE(TIncludeView, TView)
 
 // FUNCTION: IMPERIALISM 0x0048cd70

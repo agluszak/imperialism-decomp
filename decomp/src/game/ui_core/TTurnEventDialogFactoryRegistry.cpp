@@ -87,10 +87,6 @@ void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* regi
 // FUNCTION: IMPERIALISM 0x00491ad0
 TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), factories(10) {}
 
-// The `factories` CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc> member's own
-// compiler-emitted serializer/destructor, called through the member's CList vtable and from
-// the complete-object destructor above.
-
 // FUNCTION: IMPERIALISM 0x00491b40
 TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry() {}
 

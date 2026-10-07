@@ -6,19 +6,8 @@
 
 class CIncludeView;
 
-// The Imperialism MFC application object (the global `theApp`, CWinApp singleton at
-// DAT_006a1210, cached in g_pImperialismApp by InitInstance). Constructed by the CRT
-// static-init bootstrap (0x00412d40); its vtable at 0x0063e2d0 drives
-// DispatchMfcAppLifecycle (InitInstance slot +0x58, ExitInstance slot +0x70). Derives
-// from the retail MFC CWinApp; adds startup/localization state at +0xC0.
-//
-// Startup layering: ImperialismApp is the MFC shell (window, registry, resources,
-// command line via ImperialismCommandLineInfo); it creates the game-side UI root
-// TAmbitApplication (a TApplication) in InitInstance, which in turn builds the
-// manager singletons (TSimMgr/TViewMgr/TDisplayMgr/...).
-//
-// LAYOUT: retail retains CCmdTarget's OLE/automation slots, including
-// IsInvokeAllowed at slot 7.
+// The MFC application object (theApp); InitInstance creates the TAmbitApplication UI root.
+// LAYOUT: retail retains CCmdTarget's OLE/automation slots, including IsInvokeAllowed at slot 7.
 // VTABLE: IMPERIALISM 0x0063e2d0
 class ImperialismApp : public CWinApp {
 public:

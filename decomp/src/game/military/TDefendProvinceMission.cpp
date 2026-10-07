@@ -1,5 +1,3 @@
-// TDefendProvinceMission implementations.
-
 #include "game/military/TDefendProvinceMission.h"
 #include "game/nation/TAutoGreatPower.h"
 #include "game/military_ui/TDiplomacyMgr.h"
@@ -199,9 +197,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
                                               g_awTacticalCompositionReferenceProfiles);
 }
 
-// Node-key constructor: delegates to TArmyMission(nodeKey) and stamps this class's
-// vtable. Inlined into the mission factory (TMission::CreateMission,
-// case 3 without a zone); has no standalone address of its own.
+// Inlined into TMission::CreateMission; no standalone address.
 
 // FUNCTION: IMPERIALISM 0x0053ebe0
 void TDefendProvinceMission::Free() {

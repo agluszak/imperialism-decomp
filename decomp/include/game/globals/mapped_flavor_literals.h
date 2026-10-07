@@ -1,10 +1,5 @@
 #pragma once
-// String literals for the mapped flavor-text domain: bracket-expression templates,
-// banned-word sets, digraph/phoneme fragments, and shared one-character literals
-// consumed by mapped_flavor_text.cpp, map_context_flavor_builders.cpp, and the
-// city/map views that substitute mapped value text. Names stay address-derived:
-// each literal's contract is its value, not a semantic identifier. Definitions and
-// address markers live in src/game/core/global_data_tables.cpp.
+// Mapped flavor-text literals; names stay address-derived because each contract is its value.
 
 extern "C" {
 extern char s_mcflavor_00696674[];

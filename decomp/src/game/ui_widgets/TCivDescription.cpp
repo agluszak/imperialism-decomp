@@ -49,12 +49,6 @@ TCivDescription::TCivDescription() : TView() {
   targetTileCountsBySlot[4] = 0;
 }
 
-// The ordinary destructor and the scalar deleting destructor below are both
-// compiler-generated (implicit) from real inheritance — never hand-written. The real
-// 30-byte body is at 0x0044a7a0; 0x00407f4a is its 5-byte ILT jmp thunk (the vtable slot
-// target), handled markerless via config/function_ownership.csv (name_paired_no_marker)
-// like the other ILT compiler symbols — no explicit hand-marker on the ILT slot.
-
 // FUNCTION: IMPERIALISM 0x0044a7d0
 TCivDescription::~TCivDescription() {}
 

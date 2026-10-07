@@ -83,7 +83,6 @@ public:
 
   eDipAction GetAction(CPoint* clickPoint);
   void PaintRegion(int maskIndex, int eventCode);
-  // Mac CodeWarrior: TDiplomacyMapView::PoseWarOffer(short, long, long, long).
   char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
                     int promptCode);
   void DrawVoteNuggets();

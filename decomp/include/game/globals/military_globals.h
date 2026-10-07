@@ -18,9 +18,8 @@ extern short g_MapOrderResourceRollWeightTable[6][6];
 
 extern "C" {
 
-// Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
-// column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
-// points. See TMilitaryUnit::GetArmsCarried (0x5c3400).
+// Per-unit-type military stats (7 shorts per type): column 0 flags power/cost units,
+// column 1 holds their power/cost points.
 
 extern "C" short g_UnitTypeStatTable[30][7];
 
@@ -35,7 +34,7 @@ extern unsigned char g_abStackCompositionClassTable[4][4];
 
 extern int g_anFortLevelAttackerPenaltyPercentByLevel[4];
 
-// Per-military-unit-kind blink/boost eligibility flag (0x64c808).
+// Per-military-unit-kind blink/boost eligibility flag.
 extern unsigned char g_abUnitTypeBlinkEligibilityFlag[kMilitaryUnitKindCount];
 
 extern int g_anWeightClassByOrderType[kMilitaryUnitKindCount]; // 0x64c790

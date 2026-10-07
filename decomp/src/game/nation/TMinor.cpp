@@ -887,8 +887,7 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
 
 // FUNCTION: IMPERIALISM 0x004e5840
 void TMinor::BecomeColonyOf(int targetNationSlot) {
-  // MATCH: the original inlines the whole TCountry::BecomeColonyOf (0x4d7c90) body here
-  // rather than calling it, so the base work is transcribed instead of delegated.
+  // MATCH: the original inlines TCountry::BecomeColonyOf here instead of calling it.
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
   this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
 

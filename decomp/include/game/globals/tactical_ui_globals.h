@@ -14,7 +14,7 @@ extern TTechMgr* g_pTechMgr;
 // Tactical unit sprite facing offsets: [unit type][orientation][side].
 extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 
-// Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
+// Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id.
 extern TechPrerequisitePair g_aTechItemPrerequisitePairs[34];
 
 extern const int g_anTechItemPurchaseCostBySlot[34];

@@ -466,9 +466,6 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
       activeTileIndex, -kMapTileActionStateZoneNorthEastMarkerFrame);
 }
 
-// 0x00564570 (GetSeaZoneAdjacentTo) is a real TOcean __thiscall
-// method; body lives in TOcean.cpp.
-
 // FUNCTION: IMPERIALISM 0x0055fc40
 void TZone::HandleKeyDown(int key_id) {
   short sVarSlotId;
@@ -1033,7 +1030,6 @@ int TZone::CountDiplomaticallyRelatedNationsInKeyMask(int nation) {
   }
   return count;
 }
-// stretch::OverStretch
 
 // FUNCTION: IMPERIALISM 0x00561400
 unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation) {
@@ -1146,13 +1142,7 @@ TZone* TZone::GetNextPort() {
   return cursor;
 }
 
-// Unlinks this zone from g_pMapActionContextListHead (via prev18/next1c); member
-// teardown (secondaryNeighbors, primaryNeighbors, displayName) happens automatically in
-// reverse declaration order. Ground truth for this function is reached via the vector
-// deleting destructor's thunk at 0x407775; TPortZone::~TPortZone (0x5616f0) is
-// instruction-for-instruction identical since TPortZone has no unique members of its own
-// -- the original inlined this same body there too instead of calling it out-of-line.
-// Exact-capacity fallback emitted for the primary-neighbor pointer stretch.
+// Unlinks this zone from the map-action context list; members tear down automatically.
 
 // FUNCTION: IMPERIALISM 0x005627a0
 TZone::~TZone() {
@@ -1168,8 +1158,6 @@ TZone::~TZone() {
   next1c = 0;
   prev18 = 0;
 }
-
-// PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.
 
 // FUNCTION: IMPERIALISM 0x00563220
 void RegenerateAllMapActionContextStatusCodes(void) {

@@ -1,5 +1,4 @@
-// Windows reimplementation of the Mac QuickDraw region API (original TU:
-// D:\Ambit\QuickDraw.cpp). See quickdraw_regions.h for the Region/RgnHandle model.
+// Windows reimplementation of the Mac QuickDraw region API (see quickdraw_regions.h).
 
 #include "game/gfx/quickdraw_regions.h"
 

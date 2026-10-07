@@ -82,8 +82,7 @@ public:
   virtual bool HandleMapClickByCivilianCursorState(short tileIndex,
                                                    short mode); // slot 0x18 0x4a4ad0
 
-  // Weighted strength of the units stationed in the province. ABI: thiscall on the
-  // singleton; the body ignores `this`. 0x004a5aa0.
+  // ABI: thiscall on the singleton; the body ignores `this`.
   int GetLandForceIn(int nodeIndex);
 
   // Battle records (MapContextActionRecord) for this turn's reports.
@@ -126,12 +125,12 @@ public:
   short SelectUnitType(short categoryId, short tileIndex);
   short DeSelectUnitType(short categoryId, short tileIndex);
 
-  // Whether the province holds an idle military unit. 0x004a4550.
+  // Whether the province holds an idle military unit.
   bool AnySelectableUnits(short regionId);
 
   int GetSelectedForceSize();
 
-  // Selects a province (-1 clears), resetting its units' order modes. 0x004a45e0.
+  // Selects a province (-1 clears), resetting its units' order modes.
   void SetSelectedProvince(short cityRecordIndex);
   void ResetCycle(short nationId);
   short Cycle(short nationId);
@@ -141,7 +140,7 @@ public:
   unsigned short LookupCivilianMapCursorTokenByStateIndex(short tileIndex,
                                                           short mode); // 0x4a4aa0
 
-  // Civilian counterpart of ComputeMapCursorStateIndex. 0x004a4c80.
+  // Civilian counterpart of ComputeMapCursorStateIndex.
   int GetTileSelection(short tileIndex, short mode);
   bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
   void MarchSelectedArmies(short tileIndex);

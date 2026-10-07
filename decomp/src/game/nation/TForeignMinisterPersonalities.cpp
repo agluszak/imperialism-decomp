@@ -79,7 +79,7 @@ static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, sh
 
 } // namespace
 
-// ===================== TTedForeignMinister (0x659d70) =====================
+// TTedForeignMinister
 
 IMPLEMENT_DYNCREATE(TTedForeignMinister, TMinister)
 
@@ -260,7 +260,7 @@ void TTedForeignMinister::MakeNewCity(TCity* city) {
   city->orderCountByType[2] = 3;
 }
 
-// ===================== TBillForeignMinister (0x659e30) =====================
+// TBillForeignMinister
 
 IMPLEMENT_DYNCREATE(TBillForeignMinister, TMinister)
 
@@ -471,7 +471,7 @@ void TBillForeignMinister::MakeNewCity(TCity* city) {
   city->SetRollingStock(static_cast<short>(city->GetRollingStock() + 2));
 }
 
-// ===================== TDiplomatForeignMinister (0x659f48) =====================
+// TDiplomatForeignMinister
 
 IMPLEMENT_DYNCREATE(TDiplomatForeignMinister, TMinister)
 
@@ -641,7 +641,7 @@ void TDiplomatForeignMinister::MakeNewCity(TCity* city) {
   city->orderCountByType[1] += 5;
 }
 
-// ===================== TTextileForeignMinister (0x65a008) =====================
+// TTextileForeignMinister
 
 IMPLEMENT_DYNCREATE(TTextileForeignMinister, TMinister)
 
@@ -747,7 +747,7 @@ void TTextileForeignMinister::MakeNewCity(TCity* city) {
   city->productionOrderTable[1] = nextLevel;
 }
 
-// ===================== TTraderForeignMinister (0x65a0c8) =====================
+// TTraderForeignMinister
 
 IMPLEMENT_DYNCREATE(TTraderForeignMinister, TMinister)
 
@@ -862,7 +862,7 @@ void TTraderForeignMinister::MakeNewCity(TCity* city) {
   city->orderCountByType[2] += 3;
 }
 
-// ===================== TArmsForeignMinister (0x65a188) =====================
+// TArmsForeignMinister
 
 IMPLEMENT_DYNCREATE(TArmsForeignMinister, TMinister)
 

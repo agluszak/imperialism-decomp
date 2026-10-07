@@ -2,12 +2,7 @@
 
 #include "game/ui_fourcc.h"
 
-// Four-character tags application, setup, and standalone screens.
-//
-// Declared through IMPERIALISM_FOURCC so the characters ARE the value; see
-// include/game/ui_fourcc.h for the encoding policy. A tag lives here when the
-// manual source that uses it belongs to this subsystem only; tags crossing
-// subsystems live in ui_tags_common.h.
+// Four-character tags for the application, setup, and standalone screens.
 
 const int kControlTagNASA = IMPERIALISM_FOURCC('N', 'A', 'S', 'A'); // TSetupRandomMapPicture.cpp
 const int kControlTagTERM = IMPERIALISM_FOURCC('T', 'E', 'R', 'M'); // TSimMgr.cpp

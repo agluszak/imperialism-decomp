@@ -109,6 +109,3 @@ void TExpansionOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
     orderSheet->ForResourceCode(this->secondaryInputResourceId) = 0;
   }
 }
-
-// WriteByteSwappedShortArrayToStream (0x004b94a0) moved to
-// src/game/core/stream_byteswap.cpp alongside its read-side counterpart.

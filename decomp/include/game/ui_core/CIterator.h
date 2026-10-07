@@ -2,8 +2,7 @@
 
 #include "game/ui_core/TSortedList.h"
 
-// Mac CodeWarrior evidence names this class CIterator (Reset/More/Advance).
-// 12-byte stack cursor over a TSortedList-backed game list.
+// CIterator (Mac name): a 12-byte cursor over a TSortedList (Reset/More/Advance).
 
 class CIterator {
 public:

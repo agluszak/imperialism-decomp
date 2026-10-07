@@ -67,8 +67,7 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x542be0
   virtual void Free() override;                    // slot 0x07 0x542b10
   virtual bool DoIdle(int action) override;        // slot 0x13 0x544e30
-  // ORACLE: Mac TMultiplayerMgr::IMultiplayerMgr(long). Windows stores the argument in
-  // TEventHandler::idleFrequencyTicks; every observed caller passes zero.
+  // ORACLE: Mac TMultiplayerMgr::IMultiplayerMgr(long); the argument is the idle frequency.
   virtual void IMultiplayerMgr(int idleFrequency); // slot 0x25 0x542900
 
   TMultiplayerMgr();
@@ -186,7 +185,7 @@ public:
 
 int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId);
 int FindActiveNationSlotIndexInGameFlowList();
-// Always-true networking credential-init stub. 0x5e34b0.
+// Always-true networking credential-init stub.
 bool ReturnTrueRuntimeCredentialInitStub();
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

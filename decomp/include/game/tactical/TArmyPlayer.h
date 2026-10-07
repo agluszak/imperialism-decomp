@@ -56,7 +56,7 @@ public:
 
   void BuildTacticalActionPriorityBucketsWithGridGuard();      // 0x59bcf0
   void DispatchTacticalActionClassSelectionAcrossCursorList(); // 0x59bf20
-  // Prunes unitList down to the free-tile capacity. 0x59b990.
+  // Prunes unitList down to the free-tile capacity.
   void SelectBestUnits(int maxUnitCount);
   // Per-class deployment tile selectors.
   int SelectTacticalTileByActionClassAdjacencyPriority(); // 0x59c140

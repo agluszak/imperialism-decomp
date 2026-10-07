@@ -33,7 +33,6 @@ public:
 
   void SetItem(short categorySlot); // 0x5be150
 
-  // Mac name oracle: TTradeBookView::ShowPage(long).
   void ShowPage(int page); // 0x5be3e0
 };
 ASSERT_SIZE(TTradeBookView, 0x78);

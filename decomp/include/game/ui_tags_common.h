@@ -3,11 +3,6 @@
 #include "game/ui_fourcc.h"
 
 // Four-character tags shared across subsystems.
-//
-// Declared through IMPERIALISM_FOURCC so the characters ARE the value; see
-// include/game/ui_fourcc.h for the encoding policy. A tag lives here when the
-// manual source that uses it belongs to this subsystem only; tags crossing
-// subsystems live in ui_tags_common.h.
 
 const int kControlTagSpSpSpSp = IMPERIALISM_FOURCC(
     ' ', ' ', ' ', ' '); // TBehavior.cpp, TBoycottButton.cpp, TCluster.cpp...; 19 Mac screen(s)

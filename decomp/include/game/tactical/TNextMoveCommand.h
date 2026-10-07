@@ -13,8 +13,7 @@ public:
   virtual void DoIt() override;         // slot 0x0b 0x5a6620
   TTacticalBattle* battle;              // +0x18
 
-  // MATCH: VC5 expands this constructor at every live retail allocation site; the
-  // unreferenced standalone COMDAT copy is intentionally left unclaimed.
+  // MATCH: inlined at every allocation site; the standalone COMDAT copy stays unclaimed.
   TNextMoveCommand() : TCommand() {}
   void INextMoveCommand(TTacticalBattle* battle); // 0x5a65e0
 };
