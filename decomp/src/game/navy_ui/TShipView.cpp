@@ -76,7 +76,8 @@ void TShipView::Draw(RECT* rectBuffer) {
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
   short rowBucket = (levelBucket < 5) ? 0x1a : ((levelBucket > 0xe) ? 10 : 18);
 
-  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface =
+      g_pMacViewMgr->tileOverlayStripWorlds[0]->GetBlitSurface();
   RECT srcRect = {0, rowBucket, levelBucket * 4 - 1, rowBucket + 7};
   RECT dstRect = {0x52, 0x1e, levelBucket * 4 + 0x51, 0x25};
   UpdatePaletteIndexWithDefaultFallback(0x10);

@@ -59,7 +59,7 @@ public:
   int pendingNationBitmask; // +0xe8 — one bit per nation slot; the turn-state machine
   eGamePhaseNewStyle resumePhase;
   eGamePhaseNewStyle syncPhase;
-  unsigned char fieldF4; // +0xf4
+  unsigned char networkSavePending; // +0xf4
   unsigned char padF5[3];
 
   virtual ~TMultiplayerMgr() override;             // slot 0x01 0x5427e0

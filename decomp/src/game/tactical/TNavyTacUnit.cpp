@@ -21,7 +21,7 @@ IMPLEMENT_DYNCREATE(TNavyTacUnit, TTacticalUnit)
 void TNavyTacUnit::InitializeFromSourceShip(TShip* sourceShip) {
   tileIndex = -2;
   unitType = g_anTacticalNavyUnitTypeByShipType[sourceShip->type];
-  selectedFlag = 0;
+  selectedFlag = false;
   state1c = 0;
   actionPoints = GetBaseActionPoints();
   aiStateCode = 0;

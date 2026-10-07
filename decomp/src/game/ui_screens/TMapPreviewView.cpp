@@ -93,7 +93,7 @@ void TMapPreviewView::Draw(RECT* rectBuffer) {
     markerDest.top = (static_cast<int>(row) - 3) * 3;
     markerDest.right = markerDest.left + 0x12;
     markerDest.bottom = markerDest.top + 0x12;
-    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[3]->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                      &markerSource, &markerDest, 0x24);
   }

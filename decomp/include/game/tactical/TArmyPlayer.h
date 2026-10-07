@@ -30,7 +30,7 @@ public:
   short maxNonArtilleryUnitRange; // +0x42 same, skipping aiClass-2 units
   int lastAppliedCursorMode;      // +0x44 init -1; SelectAndApply... early-outs on equality
   // Target-selection mode: == 1 also engages morale-broken (state1c == 1) units.
-  int field48;                         // +0x48
+  int targetingMode;                   // +0x48
   int cachedFortBombardmentTargetTile; // +0x4c init -1; cached fort-bombardment target tile for indirect fire
   char randomParityByte50;             // +0x50 coin flip at side init (move-first side?)
   bool hasArtilleryOrSappers; // +0x51 active units only

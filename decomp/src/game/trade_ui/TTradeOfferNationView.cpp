@@ -18,8 +18,8 @@ TTradeOfferNationView::~TTradeOfferNationView() {}
 IMPLEMENT_DYNCREATE(TTradeOfferNationView, TView)
 
 // FUNCTION: IMPERIALISM 0x005bd280
-void TTradeOfferNationView::ITradeOfferNationView(TView* panel, int* offsetLayout,
-                                                  int* sizeLayout, short nation, short category) {
+void TTradeOfferNationView::ITradeOfferNationView(TView* panel, int* offsetLayout, int* sizeLayout,
+                                                  short nation, short category) {
   InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout, sizeLayout,
                                           5, 5, 0);
   nationSlot = nation;
@@ -60,7 +60,7 @@ void TTradeOfferNationView::Draw(RECT* rectBuffer) {
     RECT srcRect = {srcLeft, 0, srcLeft + 0x20, 0x18};
     short dstLeft = static_cast<short>(i * 0x20 - 0x20);
     RECT dstRect = {dstLeft, 0, dstLeft + 0x20, 0x18};
-    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas680->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->flagWorld->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &dstRect, 0x24, 0);
   }

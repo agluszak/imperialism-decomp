@@ -177,7 +177,7 @@ int TSoundResourceManager::InitializeDirectSoundDeviceAndChannels() {
     return 1;
   }
   if (m_module == 0) {
-    m_module = LoadLibraryExA(g_pImperialismApp->field_DC, 0, LOAD_LIBRARY_AS_DATAFILE);
+    m_module = LoadLibraryExA(g_pImperialismApp->soundLibraryName, 0, LOAD_LIBRARY_AS_DATAFILE);
   }
   m_field34 = DirectSoundCreate(0, &m_device, 0);
   if (m_field34 != 0) {

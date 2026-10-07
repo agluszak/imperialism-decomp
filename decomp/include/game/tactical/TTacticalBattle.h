@@ -86,7 +86,7 @@ public:
   int tacticalTileCount;      // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
   int tacticalTileStride;     // +0x40 = 0x1d (29)
   TacticalBattleOutcomeStorage battleOutcome; // +0x44
-  char pendingEndOfActionFlag;                // +0x48
+  bool pendingEndOfActionFlag;                // +0x48
   char fortLevel;                // +0x49 serialized; nonzero suppresses depl trench-marking
   unsigned char pad4a[2];        // +0x4a
   int currentTacticalActionCode; // +0x4c serialized

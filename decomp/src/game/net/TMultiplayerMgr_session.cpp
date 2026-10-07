@@ -194,7 +194,7 @@ TMultiplayerMgr::TMultiplayerMgr()
   primaryTurnEventQueueHead = 0;
   secondaryTurnEventQueueHead = 0;
   sessionPhaseTag = kControlTagNada;
-  fieldF4 = 0;
+  networkSavePending = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00542810

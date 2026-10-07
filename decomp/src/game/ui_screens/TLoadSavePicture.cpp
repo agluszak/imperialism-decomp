@@ -466,7 +466,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
 
   if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(savePath)) {
     if (IsMultiplayerFlowHosting()) {
-      g_pGameFlowState->fieldF4 = markSaved;
+      g_pGameFlowState->networkSavePending = markSaved;
       g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagSave, markSaved, -2);
     }
     if (IsMultiplayerFlowHosting() && mode != 0xa1) {
@@ -503,7 +503,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
     }
   } else {
     if (IsMultiplayerFlowHosting()) {
-      g_pGameFlowState->fieldF4 = 0;
+      g_pGameFlowState->networkSavePending = 0;
     }
   }
 }

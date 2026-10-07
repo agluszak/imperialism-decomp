@@ -140,9 +140,9 @@ public:
 
   TurnEventCodeStorage currentTurnEventCode; // +0x04 (turn-event dispatch code)
   short currentTurnEventNationSlot;          // +0x06
-  POINT dialogPlacement;  // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
-  bool field10;           // +0x10
-  unsigned char pad11[3]; // +0x11
+  POINT dialogPlacement;   // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
+  bool waitOverlayPending; // +0x10
+  unsigned char pad11[3];  // +0x11
   HCURSOR turnEventCursors[0x36];
   short pendingTurnOverlayCode;          // +0xec
   short padEe;                           // +0xee

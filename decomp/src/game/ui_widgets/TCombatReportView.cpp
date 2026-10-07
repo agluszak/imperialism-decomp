@@ -242,7 +242,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       UpdatePaletteIndexWithDefaultFallback(0x13);
       RECT dividerSrcRect = {0, 0, 0xd9, 6};
       RECT dividerDstRect = {6, y + 2, 0xdf, y + 7};
-      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas684->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->markerWorld->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &dividerSrcRect, &dividerDstRect, 0, 0);
 
@@ -260,7 +260,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       UpdatePaletteIndexWithDefaultFallback(0x10);
       RECT iconSrcRect = {0, 6, 0xac, 0x10};
       RECT iconDstRect = {6, y + 8, 0xb2, y + 0x12};
-      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas684->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->markerWorld->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &iconSrcRect, &iconDstRect, 0x24, 0);
 
@@ -269,7 +269,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
         int overlayRight = overlayWidth + 0x1f;
         RECT overlaySrcRect = {0, 0x12, overlayWidth, 0x17};
         RECT overlayDstRect = {0x1f, y + 0xb, overlayRight, y + 0x13};
-        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas684->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->markerWorld->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &overlaySrcRect, &overlayDstRect, 0x24, 0);
       }
@@ -277,7 +277,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       if (record->flagAt15 != 0) {
         RECT markerSrcRect = {0, 0x12, 5, 0x17};
         RECT markerDstRect = {0x7c, y + 0xb, 0x81, y + 0x13};
-        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas684->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->markerWorld->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &markerSrcRect, &markerDstRect, 0x24, 0);
       }

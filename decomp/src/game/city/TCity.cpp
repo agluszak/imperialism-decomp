@@ -62,7 +62,7 @@ TCity::~TCity() {}
 // FUNCTION: IMPERIALISM 0x004b2570
 void TCity::ICity(TGreatPower* ownerNation) {
   this->ownerNation = ownerNation;
-  powerPlantUpgradeQueuedFlag = 0;
+  powerPlantUpgradeQueuedFlag = false;
   memset(reservedByType, 0, sizeof(reservedByType));
   memset(&cityStockCotton, 0, sizeof(short) * 0x17);
   memset(unmetResourceRetryCount, 0,
@@ -93,8 +93,8 @@ void TCity::ICity(TGreatPower* ownerNation) {
     }
   }
 
-  lowProductionFlag = 0;
-  lowStockFlag = 0;
+  lowProductionFlag = false;
+  lowStockFlag = false;
   serializedState = 0;
   powerAvailable = 0;
 
@@ -441,8 +441,8 @@ void TCity::EndCityPhase() {
     --remaining;
   } while (remaining != 0);
 
-  if (powerPlantUpgradeQueuedFlag != 0) {
-    powerPlantUpgradeQueuedFlag = 0;
+  if (powerPlantUpgradeQueuedFlag) {
+    powerPlantUpgradeQueuedFlag = false;
     productionAccum[0x0b] =
         static_cast<short>(productionAccum[0x0b] + (999 - productionOrderTable[0x0b]));
     productionOrderTable[0x0b] = 999;
@@ -494,9 +494,9 @@ void TCity::EndCityPhase() {
 // FUNCTION: IMPERIALISM 0x004b3de0
 void TCity::PredictedNeeds() {
   if (this->productionSummary->strength < 2) {
-    this->lowStockFlag = 0;
+    this->lowStockFlag = false;
   } else {
-    this->lowStockFlag = 1;
+    this->lowStockFlag = true;
   }
   short shortageCount = 3;
   if (this->productionAccum[4] > 0) {
@@ -509,9 +509,9 @@ void TCity::PredictedNeeds() {
     shortageCount = static_cast<short>(shortageCount - 1);
   }
   if (shortageCount < 2) {
-    this->lowProductionFlag = 1;
+    this->lowProductionFlag = true;
   } else {
-    this->lowProductionFlag = 0;
+    this->lowProductionFlag = false;
   }
   this->ownerNation->UpdateCountryStockpile(&this->cityStockCotton);
 }
@@ -971,15 +971,15 @@ short TCity::IsCapacityCenter(short resourceSlot) {
 
 // FUNCTION: IMPERIALISM 0x004b4d50
 void TCity::BuildPowerPlant(bool enableUpgrade) {
-  if (enableUpgrade && this->powerPlantUpgradeQueuedFlag == 0) {
+  if (enableUpgrade && !this->powerPlantUpgradeQueuedFlag) {
     this->ownerNation->AddToTreasury(-5000);
-    this->powerPlantUpgradeQueuedFlag = 1;
+    this->powerPlantUpgradeQueuedFlag = true;
     return;
   }
 
-  if (this->powerPlantUpgradeQueuedFlag != 0 && !enableUpgrade) {
+  if (this->powerPlantUpgradeQueuedFlag && !enableUpgrade) {
     this->ownerNation->AddToTreasury(5000);
-    this->powerPlantUpgradeQueuedFlag = 0;
+    this->powerPlantUpgradeQueuedFlag = false;
   }
 }
 

@@ -23,7 +23,7 @@ public:
 
   THostGreatPower() : nationLostEventDispatched(0) {}
 
-  unsigned char nationLostEventDispatched;
+  bool nationLostEventDispatched;
   unsigned char pad965[3];
 };
 ASSERT_SIZE(THostGreatPower, 0x968);

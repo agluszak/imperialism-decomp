@@ -29,7 +29,7 @@ IMPLEMENT_DYNCREATE(TTacticalUnit, TObject)
 // FUNCTION: IMPERIALISM 0x005a5e30
 void TTacticalUnit::ITacticalUnit() {
   tileIndex = -2;
-  selectedFlag = 0;
+  selectedFlag = false;
   state1c = 0;
   actionPoints = GetBaseActionPoints();
   aiStateCode = 0;

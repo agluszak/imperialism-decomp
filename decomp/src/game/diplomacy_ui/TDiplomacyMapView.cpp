@@ -521,7 +521,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       RECT compatSrcRect = {compatIconX, 0, static_cast<int>(compatIconX + 0x10), 0x10};
       UpdatePaletteIndexWithDefaultFallback(0x10);
       SetQuickDrawFillColor(0);
-      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[2]->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[2]->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &compatSrcRect, &nationAnchorRects[terrainIndex], 0x24, 0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -590,7 +590,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       RECT iconSrcRect = {iconOffset, 0, static_cast<int>(iconOffset + 0x10), 0x10};
       UpdatePaletteIndexWithDefaultFallback(0x10);
       SetQuickDrawFillColor(0);
-      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[2]->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[2]->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &iconSrcRect, hitRect, 0x24, 0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -604,7 +604,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       }
       UpdatePaletteIndexWithDefaultFallback(0x10);
       SetQuickDrawFillColor(0);
-      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[2]->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[2]->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &boycottSrcRect, &boycottDstRect, 0x24, 0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -1554,7 +1554,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
         OffsetRect(&destRect, 0, (surfaceHeight - destRect.top) - destRect.bottom);
       }
 
-      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas6b8->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->mapArtWorld->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                        &destRect, 0x24);
 

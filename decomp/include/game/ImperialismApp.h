@@ -62,9 +62,9 @@ public:
   int appliedAutoResMode;       // 0xC8 — auto-resolution mode currently applied to the display
   CString languageLabel;        // 0xCC — string 0x1e36, the language display label
   CString localizedPictGobName; // 0xD0 — string 0x2c6, localized Pict .gob path (lib slot 0)
-  CString field_D4;             // 0xD4 — string 0x840
+  CString assetLibraryName;     // 0xD4 — string 0x840
   CString primaryDataLibName;   // 0xD8 — string 0x297, primary data library path
-  CString field_DC;             // 0xDC — string 0x80
+  CString soundLibraryName;     // 0xDC — string 0x80
   CString languageCodeString;   // 0xE0 — string 0x323, three-letter language code
   int languagePackId;           // 0xE4 — languageCodeString packed little-endian
 

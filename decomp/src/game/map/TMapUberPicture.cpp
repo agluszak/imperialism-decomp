@@ -221,7 +221,7 @@ void TMapUberPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       return;
     } else if (tag == kControlTagSend) {
       if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
-        if (g_pGameFlowState->fieldF4 != 0) {
+        if (g_pGameFlowState->networkSavePending != 0) {
           g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalNetworkGameOptions);
         }
         // else: falls through with no further action in the original.

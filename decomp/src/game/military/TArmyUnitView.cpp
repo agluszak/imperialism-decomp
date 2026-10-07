@@ -73,7 +73,8 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
   short barSpriteRow = (barLength < 5) ? 0x1a : ((barLength > 0xe) ? 10 : 18);
 
-  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface =
+      g_pMacViewMgr->tileOverlayStripWorlds[0]->GetBlitSurface();
 
   {
     RECT srcRect = {0, barSpriteRow, barLength * 4 - 1, barSpriteRow + 7};

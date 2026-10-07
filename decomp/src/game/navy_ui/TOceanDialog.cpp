@@ -725,15 +725,15 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       TQuickDrawSurfaceContext* spriteAtlas;
       short spriteX;
       if (g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState >= 2) {
-        spriteAtlas = g_pMacViewMgr->atlas68c;
+        spriteAtlas = g_pMacViewMgr->nationFleetWorld;
         spriteX = static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState
                                      << 4);
       } else if (g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag > 0) {
-        spriteAtlas = g_pMacViewMgr->atlas694[7];
+        spriteAtlas = g_pMacViewMgr->tileOverlayStripWorlds[7];
         spriteX = static_cast<short>(
             (g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag - 1) << 4);
       } else {
-        spriteAtlas = g_pMacViewMgr->atlas688;
+        spriteAtlas = g_pMacViewMgr->gaugeWorld;
         spriteX =
             g_pGlobalMapState->GetMapImprovementTileSpriteOffset(static_cast<short>(tileIndex));
       }
@@ -908,7 +908,7 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int proj
 
   CRect sourceRect(spriteStripOffset, 0, spriteStripOffset + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas688->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->gaugeWorld->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    &destinationRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -944,7 +944,7 @@ void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex
 
   CRect sourceRect(spriteStripOffset, 0, spriteStripOffset + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas688->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->gaugeWorld->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    dstRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -971,7 +971,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
 
   CRect sourceRect(spriteX, 0, spriteX + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas68c->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->nationFleetWorld->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    dstRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -990,7 +990,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   spriteX = static_cast<short>(spriteX + 0x20);
   sourceRect.SetRect(spriteX, 0, spriteX + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas68c->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->nationFleetWorld->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    &leftSatelliteRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -1006,7 +1006,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   spriteX = static_cast<short>(spriteX + 0x20);
   sourceRect.SetRect(spriteX, 0, spriteX + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas68c->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->nationFleetWorld->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    &rightSatelliteRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);

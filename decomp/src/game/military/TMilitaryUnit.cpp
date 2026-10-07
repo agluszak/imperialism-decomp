@@ -28,7 +28,7 @@ IMPLEMENT_DYNCREATE(TMilitaryUnit, TObject)
 TMilitaryUnit::TMilitaryUnit()
     : name(), experiencePercent(0), battleStateFlags(0), strengthSnapshot(0),
       ownerMission(nullptr) {
-  militaryRegistrationFlag = 1;
+  militaryRegistrationFlag = true;
   strength = 0x1f4;
   eraIndex = 0;
   CString empty(g_szEmptyString);
@@ -41,7 +41,7 @@ TMilitaryUnit::~TMilitaryUnit() {}
 // FUNCTION: IMPERIALISM 0x005c2f50
 void TMilitaryUnit::IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeContext,
                                   short nationSlot, short registerArg3) {
-  militaryRegistrationFlag = 1;
+  militaryRegistrationFlag = true;
   tileIndex = static_cast<short>(-1);
   RegisterUnitOrderWithOwnerManager(unitKind, nodeContext, nationSlot, registerArg3);
   eraIndex = static_cast<short>(

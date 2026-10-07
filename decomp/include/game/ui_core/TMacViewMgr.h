@@ -24,26 +24,25 @@ struct TBitmapSurfaceNode;
 class TMacViewMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TMacViewMgr)
-  virtual ~TMacViewMgr() override;                 // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x50a180
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x50a140
-  virtual void Free() override;                    // slot 0x07 0x509f70
-  virtual void CreateCommodityIconsGWorld(); // slot 0x0a 0x50a1a0
-  virtual void LoadStrategicMapUnitIconAtlas750();                // slot 0x0b 0x50a3b0
-  virtual void LoadStrategicMapUnitOverlayAtlas751();             // slot 0x0c 0x50a3e0
-  virtual void LoadStrategicMapOverlayAtlas8699();                // slot 0x0d 0x50a410
-  virtual void LoadStrategicMapMarkerAtlas1372();                 // slot 0x0e 0x50a440
+  virtual ~TMacViewMgr() override;                    // slot 0x01 (scalar deleting destructor)
+  virtual void WriteTo(TStream* stream) override;     // slot 0x05 0x50a180
+  virtual void ReadFrom(TStream* stream) override;    // slot 0x06 0x50a140
+  virtual void Free() override;                       // slot 0x07 0x509f70
+  virtual void CreateCommodityIconsGWorld();          // slot 0x0a 0x50a1a0
+  virtual void LoadStrategicMapUnitIconAtlas750();    // slot 0x0b 0x50a3b0
+  virtual void LoadStrategicMapUnitOverlayAtlas751(); // slot 0x0c 0x50a3e0
+  virtual void LoadStrategicMapOverlayAtlas8699();    // slot 0x0d 0x50a410
+  virtual void LoadStrategicMapMarkerAtlas1372();     // slot 0x0e 0x50a440
   virtual void ApplySellOrderRowToNationState(TTradeCluster* orderSource, int orderSlot,
                                               short nationSlot); // slot 0x0f 0x50bbc0
   virtual void SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
                                                          short nationIndex); // slot 0x10 0x50bc50
-  virtual void
-  ShowTransportEntry(short resourceSlot, short nationIndex,
-                                                  TView* hostView); // slot 0x11 0x50bea0
-  virtual TView* MakeBookDialog(int dialogId);                      // slot 0x12 0x50be30
+  virtual void ShowTransportEntry(short resourceSlot, short nationIndex,
+                                  TView* hostView); // slot 0x11 0x50bea0
+  virtual TView* MakeBookDialog(int dialogId);      // slot 0x12 0x50be30
   // RET 0x8 = 2 dwords; body waits on this->activeCityProductionView, args vestigial.
   virtual void ShowCitySiteSelectorAndWaitForFlag(int unusedArg1,
-                                                            int unusedArg2); // slot 0x13 0x50d310
+                                                  int unusedArg2); // slot 0x13 0x50d310
   virtual TBuildingView* RestoreBuildingWindowAtSavedPosition(short buildingSlot, TCity* city,
                                                               bool closeAfterOpen,
                                                               bool isEmbeddedPage,
@@ -56,51 +55,48 @@ public:
   virtual void OpenConstructionWindow(short buildingSlot, TCity* city,
                                       TCityProductionView* productionView); // slot 0x16 0x50d5b0
   virtual void RefreshActiveCityBuildingActionAvailabilityIndicators();     // slot 0x17 0x50d8d0
-  virtual void CloseBuilding(short buildingSlot);         // slot 0x18 0x50d8f0
+  virtual void CloseBuilding(short buildingSlot);                           // slot 0x18 0x50d8f0
   virtual void ClearActiveCityProductionViewAndDiscardRegion();             // slot 0x19 0x50d920
   virtual void BuildStrategicMapRenderAtlasesAndTileMaskCaches();           // slot 0x1a 0x50a9f0
   virtual void RefreshActiveGoldControlAndUiRuntimeState();                 // slot 0x1b 0x50d950
   virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();           // slot 0x1c 0x50b640
   virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();        // slot 0x1d 0x50b9e0
-  virtual void RegenerateCountryRegions();               // slot 0x1e 0x50bad0
+  virtual void RegenerateCountryRegions();                                  // slot 0x1e 0x50bad0
   virtual void CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, short x,
                            short y); // slot 0x1f 0x50da80
   virtual void DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, short nIconVariant,
                                         short nDstX,
                                         short nYShift); // slot 0x20 0x50dd40
-  virtual void CopyDevelopmentIcon(TBitmapSurfaceNode** pDstSurface,
-                                               ushort wOverlayIconId, short nVariantRow,
-                                               short nDstX,
-                                               short nYShift); // slot 0x21 0x50df40
-  virtual void FastDrawPicture(TBitmapResourceLoader** loaderHandle,
-                                               unsigned char* destinationBits,
-                                               short destinationStride);    // slot 0x22 0x50d9e0
-  virtual void MakeCountryRegion(int country); // slot 0x23 0x50d700
+  virtual void CopyDevelopmentIcon(TBitmapSurfaceNode** pDstSurface, ushort wOverlayIconId,
+                                   short nVariantRow, short nDstX,
+                                   short nYShift); // slot 0x21 0x50df40
+  virtual void FastDrawPicture(TBitmapResourceLoader** loaderHandle, unsigned char* destinationBits,
+                               short destinationStride); // slot 0x22 0x50d9e0
+  virtual void MakeCountryRegion(int country);           // slot 0x23 0x50d700
   virtual unsigned char PtInCountry(CPoint* point,
-                                                    short regionIndex); // slot 0x24 0x50d6c0
-  virtual void
-  SetCountryRgn(RgnHandle sourceRegion,
-                                                    short slotIndex); // slot 0x25 0x50d680
-  virtual RgnHandle GetCountryRegion(short index);            // slot 0x26 0x509e10
+                                    short regionIndex); // slot 0x24 0x50d6c0
+  virtual void SetCountryRgn(RgnHandle sourceRegion,
+                             short slotIndex);     // slot 0x25 0x50d680
+  virtual RgnHandle GetCountryRegion(short index); // slot 0x26 0x509e10
 
   TCityProductionView* activeCityProductionView;
   RgnHandle countryRegions[0x17];
   RgnHandle tileStateSlots[0x180];
   int padding664;
-  TQuickDrawSurfaceContext* atlas668;
-  TQuickDrawSurfaceContext* atlas66c;
-  TQuickDrawSurfaceContext* atlas670;
-  TQuickDrawSurfaceContext* atlas674;
+  TQuickDrawSurfaceContext* terrainTileWorld;
+  TQuickDrawSurfaceContext* improvementTileWorld;
+  TQuickDrawSurfaceContext* miniMapWorld;
+  TQuickDrawSurfaceContext* commodityIconWorld;
   TQuickDrawSurfaceContext* unitIconAtlas;
   TQuickDrawSurfaceContext* unitOverlayAtlas;
-  TQuickDrawSurfaceContext* atlas680;
-  TQuickDrawSurfaceContext* atlas684;
-  TQuickDrawSurfaceContext* atlas688;
-  TQuickDrawSurfaceContext* atlas68c;
-  TQuickDrawSurfaceContext* atlas690;
-  TQuickDrawSurfaceContext* atlas694[8];
-  TQuickDrawSurfaceContext* atlas6b4;
-  TQuickDrawSurfaceContext* atlas6b8;
+  TQuickDrawSurfaceContext* flagWorld;
+  TQuickDrawSurfaceContext* markerWorld;
+  TQuickDrawSurfaceContext* gaugeWorld;
+  TQuickDrawSurfaceContext* nationFleetWorld;
+  TQuickDrawSurfaceContext* nationUnitWorld;
+  TQuickDrawSurfaceContext* tileOverlayStripWorlds[8];
+  TQuickDrawSurfaceContext* stackBadgeWorld;
+  TQuickDrawSurfaceContext* mapArtWorld;
   StrategicMapCallbackRecord strategicTileMasks[0x24];
   int fieldD7c;
   int fieldD80;

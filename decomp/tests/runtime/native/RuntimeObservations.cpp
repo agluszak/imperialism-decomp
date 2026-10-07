@@ -223,7 +223,7 @@ bool AppendCityProduction(JSON_Array* entries, TCity* city, bool flags) {
 
 bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   if (mapDialog == 0 || mapDialog->quickDrawSurface == 0 || g_pMacViewMgr == 0 ||
-      g_pMacViewMgr->atlas668 == 0) {
+      g_pMacViewMgr->terrainTileWorld == 0) {
     return false;
   }
   short coastTile = -1;
@@ -250,7 +250,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   }
 
   TBitmapSurfaceNode** destinationHandle = GetGWorldPixMap(mapDialog->quickDrawSurface);
-  TBitmapSurfaceNode** sourceHandle = GetGWorldPixMap(g_pMacViewMgr->atlas668);
+  TBitmapSurfaceNode** sourceHandle = GetGWorldPixMap(g_pMacViewMgr->terrainTileWorld);
   if (destinationHandle == 0 || *destinationHandle == 0 || sourceHandle == 0 ||
       *sourceHandle == 0 || !LockPixels(destinationHandle)) {
     return false;

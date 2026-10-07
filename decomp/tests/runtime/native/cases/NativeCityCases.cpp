@@ -38,8 +38,7 @@ RuntimeActionResult RunCityItemOrderIncrease(NativeTransition& transition) {
   result.Set("applied", applied ? 1 : 0);
   result.Set("quantity", static_cast<int>(order->quantity));
   result.Set("requested", static_cast<int>(order->requestedQuantity));
-  result.Set("fabric_tracking",
-             static_cast<int>(order->trackingSlots[kResourceFabric]));
+  result.Set("fabric_tracking", static_cast<int>(order->trackingSlots[kResourceFabric]));
   return transition.Finish(result.Release());
 }
 
@@ -62,15 +61,14 @@ RuntimeActionResult RunCityItemOrderDecrease(NativeTransition& transition) {
   result.Set("applied", applied ? 1 : 0);
   result.Set("quantity", static_cast<int>(order->quantity));
   result.Set("requested", static_cast<int>(order->requestedQuantity));
-  result.Set("fabric_tracking",
-             static_cast<int>(order->trackingSlots[kResourceFabric]));
+  result.Set("fabric_tracking", static_cast<int>(order->trackingSlots[kResourceFabric]));
   return transition.Finish(result.Release());
 }
 
 RuntimeActionResult RunPowerPlantUpgrade(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
-  city->powerPlantUpgradeQueuedFlag = 0;
+  city->powerPlantUpgradeQueuedFlag = false;
   nation->treasuryValue = 10000;
 
   JsonObject args;

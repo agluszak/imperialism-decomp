@@ -60,7 +60,7 @@ IMPLEMENT_DYNCREATE(TDisplayMgr, TObject)
 // FUNCTION: IMPERIALISM 0x004fe7a0
 TDisplayMgr::TDisplayMgr()
     : TObject(), activeDialog(0), viewportMetric(8), dialogActiveFlag(0), field0c(0), eventCode(0),
-      field18(0), clipSnapshotEvent(0), field1e(0), turnOrderList(0) {
+      gworldFlags(0), clipSnapshotEvent(0), field1e(0), turnOrderList(0) {
   hiliteColor.rgbBlue = 0;
   hiliteColor.rgbGreen = 0;
   hiliteColor.rgbRed = 0;
@@ -114,7 +114,7 @@ void TDisplayMgr::IDisplayMgr() {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0xb0);
   }
   activeDialog = dialogRoot;
-  field18 = InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
+  gworldFlags = InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
   ExamineGWorld();
 }
 
@@ -129,10 +129,10 @@ void TDisplayMgr::Free() {
 // FUNCTION: IMPERIALISM 0x004feab0
 void TDisplayMgr::MakeNewGWorld(TQuickDrawSurfaceContext*& outContext, short bitDepth,
                                 const RECT& bounds) {
-  short result = NewGWorld(&outContext, bitDepth, &bounds, field18, 0, 0);
+  short result = NewGWorld(&outContext, bitDepth, &bounds, gworldFlags, 0, 0);
   if (result != 0) {
-    NewGWorld(&outContext, bitDepth, &bounds, field18, 0, 0);
-    NewGWorld(&outContext, bitDepth, &bounds, field18, 0, 0);
+    NewGWorld(&outContext, bitDepth, &bounds, gworldFlags, 0, 0);
+    NewGWorld(&outContext, bitDepth, &bounds, gworldFlags, 0, 0);
   }
 }
 

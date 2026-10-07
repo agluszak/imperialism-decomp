@@ -98,12 +98,12 @@ public:
   ~TPeekAtDibDialog() override {}
   TPeekAtDibDialog(void* initParam); // 0x0047dce0
 
-  int editValue;   // 0x5c — DDX_Text control 0x421
-  int checkFlag60; // 0x60 — DDX_Check control 0x3f5
-  int checkFlag64; // 0x64 — DDX_Check control 0x422
-  int checkFlag68; // 0x68 — DDX_Check control 0x423
-  int checkFlag6c; // 0x6c — DDX_Check control 0x424
-  int checkFlag70; // 0x70 — DDX_Check control 0x427
+  int editValue;        // 0x5c — DDX_Text control 0x421
+  int buildOutlineMask; // 0x60 — DDX_Check control 0x3f5
+  int drawOutline;      // 0x64 — DDX_Check control 0x422
+  int fillPolygon;      // 0x68 — DDX_Check control 0x423
+  int renderMode;       // 0x6c — DDX_Check control 0x424
+  int unreadCheck;      // 0x70 — DDX_Check control 0x427
 
 protected:
   BOOL OnInitDialog() override;                     // 0x0047de10 (slot 0xc4)

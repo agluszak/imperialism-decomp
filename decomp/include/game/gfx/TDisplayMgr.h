@@ -41,7 +41,7 @@ public:
   short eventCode;          // +0x0e (0x7d1 / 0x7d2)
   RGBQUAD hiliteColor;      // +0x10
   RGBQUAD savedHiliteColor; // +0x14
-  int field18;              // +0x18
+  int gworldFlags;          // +0x18
   short clipSnapshotEvent;  // +0x1c
   unsigned short field1e;   // +0x1e
   TPtrList* turnOrderList;  // +0x20

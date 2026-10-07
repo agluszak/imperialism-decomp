@@ -24,22 +24,22 @@ public:
 
   short orderType; // 0x04
   short tileIndex;
-  UnitOrder unitOrder;                    // 0x08
-  short orderTargetIndex;                 // 0x0c
-  short pad0E;                            // 0x0e
-  TUnit* previousAtLocation;              // 0x10
-  TUnit* nextAtLocation;                  // 0x14
-  short ownerNationSlot;                  // 0x18
-  short unitRosterId;                     // 0x1a
-  unsigned char militaryRegistrationFlag; // 0x1c
-  unsigned char pad1d[3];                 // 0x1d
-  int persistentUnitId;                   // 0x20
+  UnitOrder unitOrder;           // 0x08
+  short orderTargetIndex;        // 0x0c
+  short pad0E;                   // 0x0e
+  TUnit* previousAtLocation;     // 0x10
+  TUnit* nextAtLocation;         // 0x14
+  short ownerNationSlot;         // 0x18
+  short unitRosterId;            // 0x1a
+  bool militaryRegistrationFlag; // 0x1c
+  unsigned char pad1d[3];        // 0x1d
+  int persistentUnitId;          // 0x20
 
   TUnit() {
     previousAtLocation = 0;
     nextAtLocation = 0;
     tileIndex = static_cast<short>(0xffff);
-    militaryRegistrationFlag = 0;
+    militaryRegistrationFlag = false;
   }
 
   void RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,

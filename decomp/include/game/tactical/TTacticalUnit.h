@@ -22,7 +22,7 @@ public:
   int unitType;                // +0x0c unit-type id; indexes the 0x669858/0x669898 per-type tables
   int qualityLevel;            // +0x10 = source unit experiencePercent / 100 at army init
   int ownerNationIndex;        // +0x14 owning nation index (matched vs the stack's side)
-  char selectedFlag;           // +0x18
+  bool selectedFlag;           // +0x18
   unsigned char pad19[3];      // +0x19
   int state1c;                 // +0x1c 0 = ok, 1 = morale broken, 3 = destroyed
   int side;                    // +0x20 battle side (serialized)

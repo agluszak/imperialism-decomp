@@ -34,7 +34,7 @@ public:
   class TTacticalBattle* battle; // +0x14 back-pointer, set by battle setup (0x59f890)
   int cursorIndex;               // +0x18 round-robin cursor over unitList
   int nationIndex;               // +0x1c owner nation index (+ 0xea6 = 'coat' bitmap id)
-  bool field20;                  // +0x20
+  bool skipRequested;            // +0x20
   unsigned char pad21[3];        // +0x21
   int field24;                   // +0x24
 

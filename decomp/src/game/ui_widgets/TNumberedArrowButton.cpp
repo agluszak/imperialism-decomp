@@ -48,7 +48,7 @@ void TNumberedArrowButton::Draw(RECT* rectBuffer) {
   srcRect.right = srcRect.left + 0xb;
   srcRect.bottom = 0x10;
   RECT dstRect = {0, 0, 0xb, 0x10};
-  TQuickDrawSurfaceContext* hintSource = g_pMacViewMgr->atlas694[4];
+  TQuickDrawSurfaceContext* hintSource = g_pMacViewMgr->tileOverlayStripWorlds[4];
   BlitRectWithOptionalTransparency(hintSource->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &dstRect, 0x24);

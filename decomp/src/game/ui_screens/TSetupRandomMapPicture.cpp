@@ -153,7 +153,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
   flagView->AssertValid();
-  flagView->sourceSurface = g_pMacViewMgr->atlas680;
+  flagView->sourceSurface = g_pMacViewMgr->flagWorld;
   flagView->sourceRect.left = selectedNationSlot * flagView->frameWidth;
   flagView->sourceRect.top = 0;
   flagView->sourceRect.right = (selectedNationSlot + 1) * flagView->frameWidth;

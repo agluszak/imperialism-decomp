@@ -33,7 +33,7 @@ void TDeluxeText::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005b60a0
 void TDeluxeText::EnableEditing(char enable) {
-  field94 = enable;
+  editingEnabled = enable;
   ViewEnable(enable, 0);
 }
 

@@ -75,7 +75,7 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
   this->nationIndex = nationIndex;
   cursorIndex = 0;
   retreatOrdered = false;
-  field20 = false;
+  skipRequested = false;
   field24 = 0;
 
   unitList = new TList();
@@ -88,7 +88,7 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
     record->IArmyTacUnit(unit);
     unitList->AddTail(record);
     if (static_cast<char>(isOurSide) == 0) {
-      record->selectedFlag = 1; // set only for the enemy side (isOurSide == 0)
+      record->selectedFlag = true; // set only for the enemy side (isOurSide == 0)
     }
   }
 
@@ -561,9 +561,9 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
     }
   }
   if (!enemyHasActiveUnit) {
-    field48 = 1;
+    targetingMode = 1;
   } else {
-    field48 = 0;
+    targetingMode = 0;
   }
 
   int cursorMode;
@@ -641,7 +641,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
     cursorMode = 1;
   }
   if (cursorMode == 1) {
-    field48 = cursorMode;
+    targetingMode = cursorMode;
   }
   if (cursorMode == lastAppliedCursorMode) {
     return; // mode unchanged since the last application
@@ -1095,7 +1095,8 @@ int TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit
   for (TacticalTileIndex scanTileIndex = 0; score == 0 && scanTileIndex < battle->tacticalTileCount;
        ++scanTileIndex) {
     TTacticalUnit* occupant = battle->tileGrid[scanTileIndex].occupant;
-    if (occupant != 0 && occupant->side != unit->side && (occupant->state1c == 0 || field48 == 1)) {
+    if (occupant != 0 && occupant->side != unit->side &&
+        (occupant->state1c == 0 || targetingMode == 1)) {
       short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitType];
       if (battle->IsTacticalTargetTileReachableForAction(
               tileIndex, scanTileIndex,
@@ -1144,7 +1145,7 @@ int TArmyPlayer::ScoreTacticalTileAdjacentEnemyContact(TTacticalUnit* unit,
     if (neighborTileIndex != -1) {
       TTacticalUnit* occupant = battle->tileGrid[neighborTileIndex].occupant;
       if (occupant != 0 && occupant->side != unit->side &&
-          (occupant->state1c == 0 || field48 == 1)) {
+          (occupant->state1c == 0 || targetingMode == 1)) {
         return 0x64;
       }
     }
@@ -1401,7 +1402,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(enemyIter.Reset()); enemyIter.More();
        record = static_cast<TArmyTacUnit*>(enemyIter.Advance())) {
     // Valid targets: active units, plus morale-broken ones in field48==1 mode.
-    if (!(field48 == 1 && record->state1c == 1) && record->state1c != 0) {
+    if (!(targetingMode == 1 && record->state1c == 1) && record->state1c != 0) {
       continue;
     }
     if (flag != 0) { // read as a byte (char) in the original
@@ -1417,7 +1418,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
     int targetValueByCategoryCode[10] = {0x1f4, 0x1f4, 0x1f4, 0x1f4, 0x258,
                                          0x2bc, 0x320, 0x384, 0x64,  0x190};
     int score = targetValueByCategoryCode[g_awTacticalUnitCategoryCodeBySlot[record->unitType]];
-    if (field48 == 1) {
+    if (targetingMode == 1) {
       score += 0x1f4 - record->morale;
     } else {
       score += record->strength;
@@ -1462,7 +1463,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
 
 // FUNCTION: IMPERIALISM 0x0059e3e0
 void TArmyPlayer::NextMove() {
-  if (field20) {
+  if (skipRequested) {
     CIterator unitIter(unitList);
     TTacticalUnit* record = static_cast<TTacticalUnit*>(unitIter.Reset());
     while (unitIter.More() != 0) {
@@ -1471,12 +1472,12 @@ void TArmyPlayer::NextMove() {
           battle->FinishTacticalActionAndPostNextMoveCommand();
           return;
         }
-        field20 = false;
+        skipRequested = false;
         return;
       }
       record = static_cast<TTacticalUnit*>(unitIter.Advance());
     }
-    field20 = false;
+    skipRequested = false;
     return;
   }
   if (notWatchedFlag) {
@@ -1529,7 +1530,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   // Phase 2: march toward it, one echoed step at a time (guarded at 200 steps).
   if (targetTileIndex != unit->tileIndex) {
     int moveGuard = 200;
-    while (battle->pendingEndOfActionFlag != 0 && unit->state1c == 0 &&
+    while (battle->pendingEndOfActionFlag && unit->state1c == 0 &&
            unit->tileIndex != targetTileIndex) {
       if (moveGuard-- == 0) {
         break;
@@ -1539,7 +1540,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   }
 
   // Phase 3: act from the reached tile.
-  if (battle->pendingEndOfActionFlag != 0 && unit->state1c == 0) {
+  if (battle->pendingEndOfActionFlag && unit->state1c == 0) {
     if (unit->unitType >= 0x1b) {
       TacticalTileIndex neighborTiles[6];
       battle->GetNeighborList(unit->tileIndex, neighborTiles);
@@ -1572,7 +1573,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
           }
         }
       }
-    } else if (unit->selectedFlag != 0) {
+    } else if (unit->selectedFlag) {
       TacticalTileIndex fireTileIndex = SelectBestTacticalTargetTileByActionHeuristics(unit, 1);
       TTacticalUnit* fireTarget = 0;
       if (fireTileIndex != -1) {
@@ -1581,7 +1582,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
       if (fireTarget != 0) {
         battle->ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(unit,
                                                                           fireTarget->tileIndex);
-        if (battle->pendingEndOfActionFlag != 0 &&
+        if (battle->pendingEndOfActionFlag &&
             g_awTacticalUnitAiClassByUnitType[unit->unitType] == 1 && unit->actionPoints != 0) {
           int aiState = unit->aiStateCode;
           if (aiState == 2 || aiState == 5 || aiState == 0xe) {
@@ -1605,7 +1606,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   }
 
   // Hand the turn back.
-  if (battle->pendingEndOfActionFlag != 0) {
+  if (battle->pendingEndOfActionFlag) {
     battle->FinishTacticalActionAndPostNextMoveCommand();
   }
 }

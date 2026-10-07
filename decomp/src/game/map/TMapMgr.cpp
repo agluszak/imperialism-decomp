@@ -82,7 +82,7 @@ TMapMgr::~TMapMgr() {}
 // FUNCTION: IMPERIALISM 0x0050e4e0
 void TMapMgr::IMapMgr() {
   mapViewOriginTile = 1;
-  if (g_pMacViewMgr->atlas668 == 0) {
+  if (g_pMacViewMgr->terrainTileWorld == 0) {
     g_pMacViewMgr->BuildStrategicMapRenderAtlasesAndTileMaskCaches();
   }
 }
@@ -2697,7 +2697,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
       pCivilianOrderEntry->orderType != EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
     return;
   }
-  if (pCivilianOrderEntry->militaryRegistrationFlag != 0) {
+  if (pCivilianOrderEntry->militaryRegistrationFlag) {
     return;
   }
 
@@ -3365,7 +3365,7 @@ short TMapMgr::GetFortFlagOffset(short nation) {
 
 // FUNCTION: IMPERIALISM 0x00517710
 short TMapMgr::GetUnitOffset(TCivUnit* unit) {
-  if (unit->militaryRegistrationFlag != 0) {
+  if (unit->militaryRegistrationFlag) {
     return GetUnitOffset(unit->orderType, true, 0);
   }
   char idle = unit->IsInIdleSelectionState();

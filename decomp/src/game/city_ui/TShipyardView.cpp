@@ -331,12 +331,12 @@ void TShipyardView::Draw(RECT* rectBuffer) {
         drawRect.top = 0x98;
         drawRect.right = x;
         drawRect.bottom = 0xb0;
-        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas674->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->commodityIconWorld->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &sourceRect, &drawRect, 0x24, 0);
         drawRect.top = 0xcc;
         drawRect.bottom = 0xe4;
-        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas674->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->commodityIconWorld->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &sourceRect, &drawRect, 0x24, 0);
 

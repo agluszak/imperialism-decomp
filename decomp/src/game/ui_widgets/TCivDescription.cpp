@@ -375,7 +375,7 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&labelText);
 
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  TQuickDrawBlitSurface* iconAtlas = g_pMacViewMgr->atlas694[1]->GetBlitSurface();
+  TQuickDrawBlitSurface* iconAtlas = g_pMacViewMgr->tileOverlayStripWorlds[1]->GetBlitSurface();
   TQuickDrawBlitSurface* destination = g_pActiveQuickDrawSurfaceContext->GetBlitSurface();
 
   RECT sourceRect = {347, 0, 374, 20};
@@ -461,7 +461,7 @@ void TCivDescription::DrawProspector(RECT* bounds) {
       destinationRect.bottom += 0xc;
     }
     SetQuickDrawFillColor(0);
-    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[1]->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[1]->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                      &sourceRect, &destinationRect, 0, 0);
 
@@ -633,7 +633,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
         ResetQuickDrawStrokeState();
         SetQuickDrawStrokeColor(0xffffff);
         SetQuickDrawFillColor(0);
-        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[1]->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[1]->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &sourceRect, &destinationRect, 0, 0);
         if (targetTileCountsBySlot[4] == 0) {

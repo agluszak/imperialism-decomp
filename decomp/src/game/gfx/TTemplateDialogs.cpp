@@ -221,17 +221,17 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x0047dce0
 TPeekAtDibDialog::TPeekAtDibDialog(void* initParam)
-    : CDialog(0xdf, static_cast<CWnd*>(initParam)), editValue(0), checkFlag60(0), checkFlag64(0),
-      checkFlag68(0), checkFlag6c(0), checkFlag70(0) {}
+    : CDialog(0xdf, static_cast<CWnd*>(initParam)), editValue(0), buildOutlineMask(0),
+      drawOutline(0), fillPolygon(0), renderMode(0), unreadCheck(0) {}
 
 // FUNCTION: IMPERIALISM 0x0047dd60
 void TPeekAtDibDialog::DoDataExchange(CDataExchange* pDX) {
   DDX_Text(pDX, 0x421, editValue);
-  DDX_Check(pDX, 0x3f5, checkFlag60);
-  DDX_Check(pDX, 0x422, checkFlag64);
-  DDX_Check(pDX, 0x423, checkFlag68);
-  DDX_Check(pDX, 0x424, checkFlag6c);
-  DDX_Check(pDX, 0x427, checkFlag70);
+  DDX_Check(pDX, 0x3f5, buildOutlineMask);
+  DDX_Check(pDX, 0x422, drawOutline);
+  DDX_Check(pDX, 0x423, fillPolygon);
+  DDX_Check(pDX, 0x424, renderMode);
+  DDX_Check(pDX, 0x427, unreadCheck);
 }
 
 #ifndef IMPERIALISM_LINT

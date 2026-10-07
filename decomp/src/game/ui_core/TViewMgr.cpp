@@ -132,7 +132,7 @@ TViewMgr::TViewMgr() : TObject() {
   this->pendingTurnOverlayCode = 0;
   this->currentTurnEventCode = 0;
   this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
-  this->field10 = false;
+  this->waitOverlayPending = false;
   this->mapUberPicture = 0;
   this->activeMovieView = 0;
   this->pendingFollowupState = 0;
@@ -166,7 +166,7 @@ void TViewMgr::ReadFrom(TStream* stream) {
   this->pendingTurnOverlayCode = 0;
   this->currentTurnEventCode = 0;
   this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
-  this->field10 = false;
+  this->waitOverlayPending = false;
   this->mapUberPicture = 0;
 }
 
@@ -1170,9 +1170,9 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   // Cross-code path: tear down the previous dialog, build the new turn-event UI packet.
   g_pAssetMgr->OpenFilesForView(newCode);
   mainView->Open();
-  if (this->field10) {
+  if (this->waitOverlayPending) {
     ShowBlockingWaitOverlayDialog();
-    this->field10 = false;
+    this->waitOverlayPending = false;
   }
   TControl* inclControl =
       static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagIncl)); // 'Incl'
@@ -1192,9 +1192,9 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   packet->controlTag = kControlTagIncl; // 'Incl'
   packet->RefreshControl();
   g_pDisplayMgr->UpdateTheGWorld(newCode);
-  if (this->field10) {
+  if (this->waitOverlayPending) {
     ShowBlockingWaitOverlayDialog();
-    this->field10 = false;
+    this->waitOverlayPending = false;
   }
   this->currentTurnEventCode = newCode;
 

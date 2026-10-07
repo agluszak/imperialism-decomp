@@ -138,7 +138,7 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&unitText);
 
   short iconColumn = g_pGlobalMapState->GetUnitOffset(civUnit);
-  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas66c->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->improvementTileWorld->GetBlitSurface();
   RECT srcRect = {iconColumn, 0, iconColumn + 0x40, 0x40};
   RECT dstRect = {0, 0, 0x40, 0x40};
   UpdatePaletteIndexWithDefaultFallback(0x10);

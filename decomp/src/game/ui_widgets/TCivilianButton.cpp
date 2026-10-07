@@ -53,7 +53,7 @@ void TCivilianButton::Draw(RECT* rectBuffer) {
   srcRect.bottom = 0x40;
 
   RECT dstRect = {0, 2, 0x40, 0x42};
-  TQuickDrawSurfaceContext* hintSource = g_pMacViewMgr->atlas66c;
+  TQuickDrawSurfaceContext* hintSource = g_pMacViewMgr->improvementTileWorld;
   BlitRectWithOptionalTransparency(hintSource->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &dstRect, 0x24);

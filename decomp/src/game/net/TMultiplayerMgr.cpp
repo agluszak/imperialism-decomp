@@ -744,7 +744,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       if (nationSessionIds[announceSlot] == fromId) {
         LobbyChatEvent9Packet echo;
         echo.InitializeEmitEventHeaderWithActiveNation();
-        echo.field1C = fromId;
+        echo.sessionId = fromId;
         echo.eventCode = 0;
         echo.fromNetworkId = 0;
         echo.toNetworkId = 0;
@@ -792,7 +792,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
         vacate.toNetworkId = 0;
         vacate.toNetworkId = 0;
         vacate.messageLength = 0;
-        vacate.field1C = 0;
+        vacate.sessionId = 0;
         vacate.messageLength = 0x64;
         vacate.eventCode = 9;
         strcpy(vacate.senderName, emptyName);
@@ -804,7 +804,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       LobbyChatEvent9Packet claim;
       claim.InitializeEmitEventHeaderWithActiveNation();
       claim.eventCode = 0;
-      claim.field1C = announce8->fromNetworkId;
+      claim.sessionId = announce8->fromNetworkId;
       claim.fromNetworkId = 0;
       claim.eventCode = 9;
       claim.toNetworkId = 0;
@@ -823,7 +823,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     LobbyChatEvent9Packet* chat = static_cast<LobbyChatEvent9Packet*>(packet);
     if (chat->nationSlot != 0xf3) {
       int slot9 = static_cast<char>(chat->nationSlot);
-      int sessionId = chat->field1C;
+      int sessionId = chat->sessionId;
       {
         CString senderName(chat->senderName);
         defaultNationTextSlots[slot9] = senderName;
@@ -942,7 +942,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       LobbyChatEvent9Packet claim2;
       claim2.InitializeEmitEventHeaderWithActiveNation();
       claim2.nationSlot = (unsigned char)mySlot2;
-      claim2.field1C = sessionId2;
+      claim2.sessionId = sessionId2;
       claim2.eventCode = 0;
       claim2.eventCode = 9;
       claim2.fromNetworkId = 0;
@@ -1692,7 +1692,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
         seatAnnounce.messageTag = kControlTagTime; // 'time'
         seatAnnounce.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
         seatAnnounce.eventCode = 0;
-        seatAnnounce.field1C = packet->fromNetworkId;
+        seatAnnounce.sessionId = packet->fromNetworkId;
         seatAnnounce.fromNetworkId = 0;
         seatAnnounce.eventCode = 9;
         seatAnnounce.toNetworkId = 0;
@@ -1745,7 +1745,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       return true;
     }
     case kControlTagSave: // 'save' - latch the save flag and save with the network label
-      fieldF4 = static_cast<unsigned char>(gameState->value1C);
+      networkSavePending = static_cast<unsigned char>(gameState->value1C);
       SaveGameWithModeAndOptionalLabel(queueSyncDword, (char*)g_pszClientSavePrefix);
       return true;
     case kControlTagTrad: { // 'trad' - reset diplomacy level: packed (nationSlot << 16 | level)
@@ -1834,7 +1834,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
                          // out-of-bounds behavior, kept as-is
         }
       }
-      if (nationStatusTags[busySlot] == kSessionTagBusy && fieldF4 != 0) {
+      if (nationStatusTags[busySlot] == kSessionTagBusy && networkSavePending != 0) {
         g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2, 0, 1);
       }
     }
@@ -2589,7 +2589,7 @@ void TMultiplayerMgr::DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, in
   packet.messageLength = sizeof(packet);
   packet.InitializeEmitEventHeaderWithActiveNation();
   packet.nationSlot = static_cast<unsigned char>(reasonCode);
-  packet.field1C = field1CValue;
+  packet.sessionId = field1CValue;
   strcpy(packet.senderName, senderText);
   strcpy(packet.messageText, messageText);
   g_pNetMgr->Send(&packet, false);
@@ -2712,7 +2712,7 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
         LobbyChatEvent9Packet chat;
         chat.InitializeEmitEventHeaderWithActiveNation();
         chat.eventCode = 0;
-        chat.field1C = 0;
+        chat.sessionId = 0;
         chat.fromNetworkId = 0;
         chat.eventCode = 9;
         chat.toNetworkId = 0;
@@ -2731,7 +2731,7 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
         scanBracketExpressions(g_pSimMgr, &formatted, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(nationName));
         g_pViewMgr->ModalMessage(formatted, g_ptNationAwolModalMessage, 0, 0);
-        if (g_pGameFlowState != this || fieldF4 == 0) {
+        if (g_pGameFlowState != this || networkSavePending == 0) {
           TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
           cancelCommand->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0,
                                   0); // 'pogc'
@@ -3096,7 +3096,7 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
       seatClaim.toNetworkId = 0;
     }
     for (int emitSlot = 0; emitSlot < 7; ++emitSlot) {
-      seatClaim.field1C = nationSessionIds[emitSlot];
+      seatClaim.sessionId = nationSessionIds[emitSlot];
       seatClaim.nationSlot = static_cast<unsigned char>(emitSlot);
       strcpy(seatClaim.senderName, defaultNationTextSlots[emitSlot]);
       strcpy(seatClaim.messageText, nationDisplayNameSlots[emitSlot]);

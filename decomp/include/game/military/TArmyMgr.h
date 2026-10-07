@@ -28,7 +28,7 @@ struct MapContextActionRecord {
   MapOrderBattleSideChildRecord* sideChildRecords[2]; // +0x250/+0x254
   int markerPixelX;                                   // +0x258
   int markerPixelY;                                   // +0x25c
-  unsigned char placedFlag;                           // +0x260
+  bool placedFlag;                                    // +0x260
   unsigned char pad261;                               // +0x261
   short markerSpriteCode;                             // +0x262
   short listOrdinal;                                  // +0x264

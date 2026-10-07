@@ -63,7 +63,7 @@ void THostGreatPower::ReplyToDiplomacyOffers(void) {
 void THostGreatPower::SorryYouLose(void) {
   if (nationLostEventDispatched == 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLost, nationSlot | 0xff00, -3);
-    nationLostEventDispatched = 1;
+    nationLostEventDispatched = true;
   }
 
   short eligibleOtherNationCount = 0;

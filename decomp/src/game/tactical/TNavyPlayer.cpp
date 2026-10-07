@@ -16,7 +16,7 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
   this->nationIndex = nationIndex;
   cursorIndex = 0;
   retreatOrdered = false;
-  field20 = false;
+  skipRequested = false;
   targetingMode = kNavyTargetingHull;
 
   unitList = new TList();
@@ -29,7 +29,7 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
     unitList->AddTail(unit);
     // The enemy side starts with every unit flagged; our own side does not.
     if (isOurSide == 0) {
-      unit->selectedFlag = 1;
+      unit->selectedFlag = true;
     }
   }
 

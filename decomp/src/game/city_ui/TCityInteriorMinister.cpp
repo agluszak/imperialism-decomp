@@ -495,9 +495,9 @@ void TCityInteriorMinister::DetermineTradeBid(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004bfa50
 void TCityInteriorMinister::IssueBasicOrders(TCity* city, TTaskList* commandQueue) {
-  if (city->lowProductionFlag != 0 && city->lowStockFlag == 0) {
+  if (city->lowProductionFlag && !city->lowStockFlag) {
     TrainingMode(city, commandQueue);
-  } else if (city->lowProductionFlag == 0 && city->lowStockFlag != 0) {
+  } else if (!city->lowProductionFlag && city->lowStockFlag) {
     IncreaseCapacityMode(city, commandQueue);
   }
 

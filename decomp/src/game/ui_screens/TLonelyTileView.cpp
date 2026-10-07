@@ -48,7 +48,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
     srcRect.right = variant + 0x40;
     srcRect.bottom = 0x40;
     SetQuickDrawFillColor(0);
-    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas668->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->terrainTileWorld->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &destRect, 0, 0);
   } else {
@@ -58,7 +58,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
     srcRect.right = variant + 0x40;
     srcRect.bottom = 0x40;
     SetQuickDrawFillColor(0);
-    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas668->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->terrainTileWorld->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &destRect, 0, 0);
   }

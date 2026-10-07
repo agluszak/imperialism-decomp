@@ -46,7 +46,7 @@ struct TurnEvent8NameAnnouncePacket : TimelyMessageHeader {
 struct LobbyChatEvent9Packet : TimelyMessageHeader {
   unsigned char nationSlot; // +0x18
   unsigned char pad19[3];
-  int field1C;            // +0x1c - zeroed by seat-state messages
+  int sessionId;          // +0x1c - zeroed by seat-state messages
   char senderName[0x21];  // +0x20
   char messageText[0x23]; // +0x41, total 0x64
 };

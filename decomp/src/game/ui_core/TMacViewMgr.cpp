@@ -138,22 +138,22 @@ TMacViewMgr::TMacViewMgr() : TObject() {
   }
   fieldD7c = 0;
   fieldD80 = 0;
-  atlas668 = 0;
-  atlas674 = 0;
+  terrainTileWorld = 0;
+  commodityIconWorld = 0;
   unitIconAtlas = 0;
   unitOverlayAtlas = 0;
-  atlas670 = 0;
-  atlas66c = 0;
-  atlas680 = 0;
-  atlas684 = 0;
-  atlas6b4 = 0;
-  atlas6b8 = 0;
-  atlas688 = 0;
-  atlas68c = 0;
-  atlas690 = 0;
+  miniMapWorld = 0;
+  improvementTileWorld = 0;
+  flagWorld = 0;
+  markerWorld = 0;
+  stackBadgeWorld = 0;
+  mapArtWorld = 0;
+  gaugeWorld = 0;
+  nationFleetWorld = 0;
+  nationUnitWorld = 0;
   index = 0;
   while (index < 8) {
-    atlas694[index] = 0;
+    tileOverlayStripWorlds[index] = 0;
     ++index;
   }
 }
@@ -198,20 +198,20 @@ void TMacViewMgr::Free() {
   }
   g_pDisplayMgr->RemoveGWorld(unitIconAtlas);
   g_pDisplayMgr->RemoveGWorld(unitOverlayAtlas);
-  g_pDisplayMgr->RemoveGWorld(atlas674);
-  g_pDisplayMgr->RemoveGWorld(atlas668);
-  g_pDisplayMgr->RemoveGWorld(atlas66c);
-  g_pDisplayMgr->RemoveGWorld(atlas670);
-  g_pDisplayMgr->RemoveGWorld(atlas680);
-  g_pDisplayMgr->RemoveGWorld(atlas688);
-  g_pDisplayMgr->RemoveGWorld(atlas68c);
-  g_pDisplayMgr->RemoveGWorld(atlas690);
-  g_pDisplayMgr->RemoveGWorld(atlas684);
-  g_pDisplayMgr->RemoveGWorld(atlas6b4);
-  g_pDisplayMgr->RemoveGWorld(atlas6b8);
+  g_pDisplayMgr->RemoveGWorld(commodityIconWorld);
+  g_pDisplayMgr->RemoveGWorld(terrainTileWorld);
+  g_pDisplayMgr->RemoveGWorld(improvementTileWorld);
+  g_pDisplayMgr->RemoveGWorld(miniMapWorld);
+  g_pDisplayMgr->RemoveGWorld(flagWorld);
+  g_pDisplayMgr->RemoveGWorld(gaugeWorld);
+  g_pDisplayMgr->RemoveGWorld(nationFleetWorld);
+  g_pDisplayMgr->RemoveGWorld(nationUnitWorld);
+  g_pDisplayMgr->RemoveGWorld(markerWorld);
+  g_pDisplayMgr->RemoveGWorld(stackBadgeWorld);
+  g_pDisplayMgr->RemoveGWorld(mapArtWorld);
   index = 0;
   while (index < 8) {
-    g_pDisplayMgr->RemoveGWorld(atlas694[index]);
+    g_pDisplayMgr->RemoveGWorld(tileOverlayStripWorlds[index]);
     ++index;
   }
   g_pMacViewMgr = 0;
@@ -247,10 +247,10 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
   atlasBounds.top = 0;
   atlasBounds.right = 0x2e0;
   atlasBounds.bottom = 0x18;
-  g_pDisplayMgr->MakeNewGWorld(atlas674, 8, atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(commodityIconWorld, 8, atlasBounds);
   GetGWorld(&savedContext, &savedFlags);
-  SetGWorld(atlas674, savedFlags);
-  atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(atlas674));
+  SetGWorld(commodityIconWorld, savedFlags);
+  atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(commodityIconWorld));
   LockPixels(atlasSurface);
   ResetQuickDrawStrokeState();
   pixelBuffer = GetPixBaseAddr(atlasSurface);
@@ -273,7 +273,7 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
     ReleaseBitmapLoaderHandle(loaderHandle);
     ++commodityIndex;
   }
-  UnlockPixels(GetGWorldPixMap(atlas674));
+  UnlockPixels(GetGWorldPixMap(commodityIconWorld));
   SetGWorld(savedContext, savedFlags);
 }
 
@@ -289,12 +289,12 @@ void TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751() {
 
 // FUNCTION: IMPERIALISM 0x0050a410
 void TMacViewMgr::LoadStrategicMapOverlayAtlas8699() {
-  atlas680 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x21fb);
+  flagWorld = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x21fb);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a440
 void TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
-  atlas684 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
+  markerWorld = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
 }
 
 // Listing 0x0050a470 inlines the loaders' exact-type non-virtual destructors.
@@ -309,10 +309,10 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   atlasBounds.top = 0;
   atlasBounds.right = 0x500;
   atlasBounds.bottom = 0x10;
-  g_pDisplayMgr->MakeNewGWorld(atlas688, 8, atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(gaugeWorld, 8, atlasBounds);
   GetGWorld(&savedContext, &savedFlags);
-  SetGWorld(atlas688, savedFlags);
-  LockPixels(GetGWorldPixMap(atlas688));
+  SetGWorld(gaugeWorld, savedFlags);
+  LockPixels(GetGWorldPixMap(gaugeWorld));
   ResetQuickDrawStrokeState();
 
   TBitmapResourceLoader** firstLoaderHandle = CreateBitmapResourceLoaderHandle(0x58e);
@@ -342,7 +342,7 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   delete *secondLoaderHandle;
   delete secondLoaderHandle;
 
-  UnlockPixels(GetGWorldPixMap(atlas688));
+  UnlockPixels(GetGWorldPixMap(gaugeWorld));
   SetGWorld(savedContext, savedFlags);
 }
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
@@ -357,11 +357,11 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   if (this == 0 || g_pTechMgr == 0) {
     return;
   }
-  if (atlas68c != 0) {
-    g_pDisplayMgr->RemoveGWorld(atlas68c);
+  if (nationFleetWorld != 0) {
+    g_pDisplayMgr->RemoveGWorld(nationFleetWorld);
   }
-  if (atlas690 != 0) {
-    g_pDisplayMgr->RemoveGWorld(atlas690);
+  if (nationUnitWorld != 0) {
+    g_pDisplayMgr->RemoveGWorld(nationUnitWorld);
   }
   nationId = g_pSimMgr->GetPlayerCountry();
   if (nationId < 0) {
@@ -375,9 +375,11 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
     variant = 2;
   }
   nationId = g_pSimMgr->GetPlayerCountry();
-  atlas68c = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
+  nationFleetWorld =
+      LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
   nationId = g_pSimMgr->GetPlayerCountry();
-  atlas690 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
+  nationUnitWorld =
+      LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
 }
 
 // Listing 0x0050a820 inlines the loader's exact-type non-virtual destructor.
@@ -397,9 +399,9 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
     TBitmapResourceLoader* loader = *loaderHandle;
     RECT resourceBounds;
     CopyRect(&resourceBounds, &loader->bitmapRect);
-    g_pDisplayMgr->MakeNewGWorld(atlas694[stripIndex], 8, resourceBounds);
-    SetGWorld(atlas694[stripIndex], savedFlags);
-    LockPixels(GetGWorldPixMap(atlas694[stripIndex]));
+    g_pDisplayMgr->MakeNewGWorld(tileOverlayStripWorlds[stripIndex], 8, resourceBounds);
+    SetGWorld(tileOverlayStripWorlds[stripIndex], savedFlags);
+    LockPixels(GetGWorldPixMap(tileOverlayStripWorlds[stripIndex]));
     QDLoadResource(loaderHandle);
     if (*loaderHandle != 0) {
       loader = *loaderHandle;
@@ -408,7 +410,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
       ResetQuickDrawStrokeState();
       BlitBitmapResourceLoaderToActiveDc(loaderHandle, &resourceBounds);
       if (stripIndex == 0) {
-        (*GetGWorldPixMap(atlas694[stripIndex]))->dib->FlipScanlineOrder();
+        (*GetGWorldPixMap(tileOverlayStripWorlds[stripIndex]))->dib->FlipScanlineOrder();
       }
       loader = *loaderHandle;
       loader->ReleaseBitmapResource();
@@ -416,7 +418,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
       delete loader;
       delete loaderHandle;
     }
-    UnlockPixels(GetGWorldPixMap(atlas694[stripIndex]));
+    UnlockPixels(GetGWorldPixMap(tileOverlayStripWorlds[stripIndex]));
     ++stripIndex;
   }
   SetGWorld(savedContext, savedFlags);
@@ -435,10 +437,10 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
   atlasBounds.top = 0;
   atlasBounds.right = 0xcc0;
   atlasBounds.bottom = 0x40;
-  g_pDisplayMgr->MakeNewGWorld(atlas668, 8, atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(terrainTileWorld, 8, atlasBounds);
   GetGWorld(&savedContext, &savedFlags);
-  SetGWorld(atlas668, savedFlags);
-  LockPixels(GetGWorldPixMap(atlas668));
+  SetGWorld(terrainTileWorld, savedFlags);
+  LockPixels(GetGWorldPixMap(terrainTileWorld));
   ResetQuickDrawStrokeState();
   dstX = 0;
   index = 0;
@@ -482,14 +484,14 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x277e, &blitRect);
   }
-  UnlockPixels(GetGWorldPixMap(atlas668));
+  UnlockPixels(GetGWorldPixMap(terrainTileWorld));
   SetGWorld(savedContext, savedFlags);
 
   atlasBounds.right = 0xa80;
-  g_pDisplayMgr->MakeNewGWorld(atlas66c, 8, atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(improvementTileWorld, 8, atlasBounds);
   GetGWorld(&savedContext, &savedFlags);
-  SetGWorld(atlas66c, savedFlags);
-  LockPixels(GetGWorldPixMap(atlas66c));
+  SetGWorld(improvementTileWorld, savedFlags);
+  LockPixels(GetGWorldPixMap(improvementTileWorld));
   ResetQuickDrawStrokeState();
   dstX = 0;
   resourceId = 0x190;
@@ -549,18 +551,18 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     dstX += 0x40;
     ++index;
   }
-  UnlockPixels(GetGWorldPixMap(atlas66c));
+  UnlockPixels(GetGWorldPixMap(improvementTileWorld));
   SetGWorld(savedContext, savedFlags);
 
   atlasBounds.right = 0xd7;
   atlasBounds.bottom = 0x78;
-  g_pDisplayMgr->MakeNewGWorld(atlas670, 8, atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(miniMapWorld, 8, atlasBounds);
   atlasBounds.right = 0x90;
   atlasBounds.bottom = 0x26;
-  g_pDisplayMgr->MakeNewGWorld(atlas6b4, 8, atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(stackBadgeWorld, 8, atlasBounds);
   GetGWorld(&savedContext, &savedFlags);
-  SetGWorld(atlas6b4, savedFlags);
-  LockPixels(GetGWorldPixMap(atlas6b4));
+  SetGWorld(stackBadgeWorld, savedFlags);
+  LockPixels(GetGWorldPixMap(stackBadgeWorld));
   ResetQuickDrawStrokeState();
   dstX = 0;
   resourceId = 0x23a;
@@ -574,23 +576,23 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     dstX += 0x12;
     ++resourceId;
   }
-  UnlockPixels(GetGWorldPixMap(atlas6b4));
+  UnlockPixels(GetGWorldPixMap(stackBadgeWorld));
   SetGWorld(savedContext, savedFlags);
 
-  if (atlas6b8 != 0) {
-    g_pDisplayMgr->RemoveGWorld(atlas6b8);
+  if (mapArtWorld != 0) {
+    g_pDisplayMgr->RemoveGWorld(mapArtWorld);
   }
   atlasBounds.left = 0;
   atlasBounds.top = 0;
   atlasBounds.right = 0x48;
   atlasBounds.bottom = 6;
-  g_pDisplayMgr->MakeNewGWorld(atlas6b8, 8, atlasBounds);
+  g_pDisplayMgr->MakeNewGWorld(mapArtWorld, 8, atlasBounds);
   GetGWorld(&savedContext, &savedFlags);
-  SetGWorld(atlas6b8, savedFlags);
-  LockPixels(GetGWorldPixMap(atlas6b8));
+  SetGWorld(mapArtWorld, savedFlags);
+  LockPixels(GetGWorldPixMap(mapArtWorld));
   ResetQuickDrawStrokeState();
   ResolveAndBlitBitmapResourceToActiveAtlas(0x244, &atlasBounds);
-  UnlockPixels(GetGWorldPixMap(atlas6b8));
+  UnlockPixels(GetGWorldPixMap(mapArtWorld));
   SetGWorld(savedContext, savedFlags);
 
   index = 0;
@@ -618,12 +620,12 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
 // FUNCTION: IMPERIALISM 0x0050b5b0
 void TMacViewMgr::ReloadMapArtAtlases() {
   g_pAssetMgr->OpenFilesFor(3);
-  if (atlas6b8 != 0) {
-    g_pDisplayMgr->RemoveGWorld(atlas6b8);
+  if (mapArtWorld != 0) {
+    g_pDisplayMgr->RemoveGWorld(mapArtWorld);
   }
-  atlas6b8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
-  if (atlas688 != 0) {
-    g_pDisplayMgr->RemoveGWorld(atlas688);
+  mapArtWorld = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
+  if (gaugeWorld != 0) {
+    g_pDisplayMgr->RemoveGWorld(gaugeWorld);
   }
   LoadStrategicMapOverlayAtlas8699();
 }
@@ -646,8 +648,8 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   fillRect.right = 0xd7;
   fillRect.bottom = 0x78;
   GetGWorld(&savedContext, &savedFlags);
-  SetGWorld(atlas670, savedFlags);
-  surfaceObject = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(atlas670));
+  SetGWorld(miniMapWorld, savedFlags);
+  surfaceObject = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(miniMapWorld));
   LockPixels(surfaceObject);
   ResetQuickDrawStrokeState();
   pixelBase = GetPixBaseAddr(surfaceObject);
@@ -742,12 +744,12 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   }
   delete[] scratchBuffer;
   SetQuickDrawFillColor(0);
-  UnlockPixels(GetGWorldPixMap(atlas670));
+  UnlockPixels(GetGWorldPixMap(miniMapWorld));
   SetGWorld(savedContext, savedFlags);
   if (g_pActiveRandomMapSetupPicture != 0) {
     g_pActiveRandomMapSetupPicture->SpinYourGlobe();
   }
-  (*GetGWorldPixMap(atlas670))->dib->FlipScanlineOrder();
+  (*GetGWorldPixMap(miniMapWorld))->dib->FlipScanlineOrder();
   g_pGlobalMapState->strategicMapPalettePreviewReady = true;
 }
 
@@ -1409,10 +1411,10 @@ void TMacViewMgr::CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, 
   TBitmapSurfaceNode** atlasSurface;
   short srcRowOffset;
   if (iconIndex < 100) {
-    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(atlas674));
+    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(commodityIconWorld));
     srcRowOffset = static_cast<short>(iconIndex << 5);
   } else {
-    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(atlas680));
+    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(flagWorld));
     srcRowOffset = static_cast<short>((iconIndex - 100) * 0x20);
   }
   ushort dstStrideRaw = static_cast<ushort>((*dstSurface)->stride);

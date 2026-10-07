@@ -191,8 +191,8 @@ END_MESSAGE_MAP()
 // FUNCTION: IMPERIALISM 0x00412ac0
 ImperialismApp::ImperialismApp()
     : CWinApp(), waitCursorAnchor(0), installDrivePrefix(), appliedAutoResMode(0), languageLabel(),
-      localizedPictGobName(), field_D4(), primaryDataLibName(), field_DC(), languageCodeString(),
-      languagePackId(0) {}
+      localizedPictGobName(), assetLibraryName(), primaryDataLibName(), soundLibraryName(),
+      languageCodeString(), languagePackId(0) {}
 
 // FUNCTION: IMPERIALISM 0x00412c60
 ImperialismApp::~ImperialismApp() {}
@@ -460,13 +460,13 @@ void ImperialismApp::OnPeekAtDib() {
   if (dib != 0 && AfxIsValidAddress(dib, sizeof(CDib), FALSE) &&
       dib->IsKindOf(RUNTIME_CLASS(CDib))) {
     TDibPreviewDialog previewDialog(0);
-    if (inputDialog.checkFlag60 != 0) {
+    if (inputDialog.buildOutlineMask != 0) {
       dib->BuildMonochromeOutlineMaskInPlace();
     }
     previewDialog.picture = dib;
-    previewDialog.drawOutline = inputDialog.checkFlag64;
-    previewDialog.fillPolygon = inputDialog.checkFlag68;
-    previewDialog.renderMode = inputDialog.checkFlag6c;
+    previewDialog.drawOutline = inputDialog.drawOutline;
+    previewDialog.fillPolygon = inputDialog.fillPolygon;
+    previewDialog.renderMode = inputDialog.renderMode;
     previewDialog.windowTitle = "The DIB you requested";
     previewDialog.DoModal();
   } else {
@@ -614,12 +614,12 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
       this->languageLabel.ReleaseBuffer(-1);
       LoadStringA(irgModule, 0x2c6, localizedPictGobName.GetBufferSetLength(0x21), 0x20);
       localizedPictGobName.ReleaseBuffer(-1);
-      LoadStringA(irgModule, 0x840, field_D4.GetBufferSetLength(0x21), 0x20);
-      field_D4.ReleaseBuffer(-1);
+      LoadStringA(irgModule, 0x840, assetLibraryName.GetBufferSetLength(0x21), 0x20);
+      assetLibraryName.ReleaseBuffer(-1);
       LoadStringA(irgModule, 0x297, primaryDataLibName.GetBufferSetLength(0x21), 0x20);
       primaryDataLibName.ReleaseBuffer(-1);
-      LoadStringA(irgModule, 0x80, field_DC.GetBufferSetLength(0x21), 0x20);
-      field_DC.ReleaseBuffer(-1);
+      LoadStringA(irgModule, 0x80, soundLibraryName.GetBufferSetLength(0x21), 0x20);
+      soundLibraryName.ReleaseBuffer(-1);
       LoadStringA(irgModule, 0x323, languageCodeString.GetBufferSetLength(0x21), 0x20);
       languageCodeString.ReleaseBuffer(-1);
 

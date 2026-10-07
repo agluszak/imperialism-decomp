@@ -32,7 +32,7 @@ void TNextMoveCommand::DoIt() {
     battle->players[1]->ApplyChanges(static_cast<unsigned char>(!sideWonFlag));
     battle->EndBattle(static_cast<unsigned char>(sideWonFlag));
   } else {
-    battle->pendingEndOfActionFlag = 1;
+    battle->pendingEndOfActionFlag = true;
     battle->AdvanceToNextTacticalUnitTurnStep();
   }
 }

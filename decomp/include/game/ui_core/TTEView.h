@@ -23,7 +23,7 @@ public:
                int layoutParam5, int layoutParam6, RECT* insetRect, TextStyle* style,
                short styleWord90, unsigned char unusedB, bool unusedC);
 
-  bool field94;               // +0x94
+  bool editingEnabled;        // +0x94
   unsigned char field95;      // +0x95
   unsigned char padding96[2]; // +0x96
 };

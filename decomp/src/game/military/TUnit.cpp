@@ -28,7 +28,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
   this->MoveTo(anchorIndex);
 
   TSortedList* ownerManager;
-  if (this->militaryRegistrationFlag != 0) {
+  if (this->militaryRegistrationFlag) {
     ownerManager = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId]->militaryUnitList;
   } else {
     ownerManager = g_apNationStates[nOrderOwnerNationId]->trackedObjectList;
@@ -70,7 +70,7 @@ void TUnit::ContinueOrders() {
 // FUNCTION: IMPERIALISM 0x005c2680
 void TUnit::Free() {
   TSortedList* manager = nullptr;
-  if (this->militaryRegistrationFlag == 0) {
+  if (!this->militaryRegistrationFlag) {
     manager = g_apNationStates[this->ownerNationSlot]->trackedObjectList;
   } else {
     TCountry* terrain = g_apTerrainTypeDescriptorTable[this->ownerNationSlot];

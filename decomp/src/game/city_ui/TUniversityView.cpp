@@ -329,7 +329,7 @@ void TUniversityView::Draw(RECT* rectBuffer) {
   RECT scratchClip;
   if (SectRect(&panelRect, rectBuffer, &scratchClip)) {
     RECT srcRect = {baseOffset, 0, baseOffset + 0x40, 0x40};
-    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas66c->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->improvementTileWorld->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &panelRect, 0x24, 0);
   }

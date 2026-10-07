@@ -48,7 +48,8 @@ void TTacticalToolbar::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x005ac950
 void TTacticalToolbar::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface =
+      g_pMacViewMgr->tileOverlayStripWorlds[0]->GetBlitSurface();
 
   TArmyTacUnit* sideAUnit = static_cast<TArmyTacUnit*>(currentUnit);
   if (sideAUnit != nullptr) {

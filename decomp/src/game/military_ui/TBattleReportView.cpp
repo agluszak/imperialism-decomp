@@ -92,7 +92,7 @@ void TBattleReportView::DoPostCreate(int arg) {
         g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
             remaining));
     record->listOrdinal = static_cast<short>(remaining);
-    record->placedFlag = 1;
+    record->placedFlag = true;
     selectedOrdinal = remaining;
 
     short cell;
@@ -290,7 +290,7 @@ bool TBattleReportView::DoIdle(int action) {
       spriteRect.bottom = 0x12;
 
       UpdatePaletteIndexWithDefaultFallback(0x10);
-      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[3]->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &spriteRect, &markerRect, 0x24, 0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -425,7 +425,7 @@ void TBattleReportView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
         g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
             remaining));
-    if (record->placedFlag != 0 && point.x >= record->markerPixelX &&
+    if (record->placedFlag && point.x >= record->markerPixelX &&
         point.x < record->markerPixelX + 0x12 && point.y >= record->markerPixelY &&
         point.y < record->markerPixelY + 0x12) {
       selectedRecord = record;
@@ -449,7 +449,7 @@ MapContextActionRecord* TBattleReportView::GetBattleAt(const CPoint& point) cons
     MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
         g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
             remaining));
-    if (record->placedFlag != 0 && point.x >= record->markerPixelX &&
+    if (record->placedFlag && point.x >= record->markerPixelX &&
         point.x < record->markerPixelX + 0x12 && point.y >= record->markerPixelY &&
         point.y < record->markerPixelY + 0x12) {
       selectedRecord = record;
@@ -478,7 +478,7 @@ void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
           g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
               index));
 
-      if (selectedReportIndex != ordinal && record->placedFlag != 0) {
+      if (selectedReportIndex != ordinal && record->placedFlag) {
         RECT destRect;
         destRect.left = record->markerPixelX;
         destRect.top = record->markerPixelY;
@@ -502,7 +502,7 @@ void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
         srcRect.bottom = 0x12;
 
         UpdatePaletteIndexWithDefaultFallback(0x10);
-        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[3]->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &srcRect, &destRect, 0x24, 0);
         UpdatePaletteIndexWithDefaultFallback(0x13);

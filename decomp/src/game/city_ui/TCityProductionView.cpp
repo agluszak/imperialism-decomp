@@ -198,7 +198,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     bool shouldDraw = level >= 1;
     if (!shouldDraw) {
       if (slot < 0 || slot > 6) {
-        if (slot == 0xb && city->powerPlantUpgradeQueuedFlag != 0) {
+        if (slot == 0xb && city->powerPlantUpgradeQueuedFlag) {
           shouldDraw = true;
         }
       } else if (city->trailingOrderSlots[slot + 2]->quantity > 0) {
@@ -211,7 +211,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
 
     short pictureId;
     if (slot == 0xb) {
-      pictureId = static_cast<short>((city->powerPlantUpgradeQueuedFlag != 0 ? 0x1b63 : 0x1b73));
+      pictureId = static_cast<short>((city->powerPlantUpgradeQueuedFlag ? 0x1b63 : 0x1b73));
     } else if (level == 0 || slot < 0 || slot > 5 ||
                city->trailingOrderSlots[slot + 2]->quantity < 1 ||
                city->IsCapacityCenter(slot) == 0) {
@@ -393,7 +393,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
       if (available) {
         if (slot == 0xb) {
           if (nextBuildingType == 0) {
-            g_pSimMgr->GetString(0x2734, city->powerPlantUpgradeQueuedFlag != 0 ? 0x19 : 0x1a,
+            g_pSimMgr->GetString(0x2734, city->powerPlantUpgradeQueuedFlag ? 0x19 : 0x1a,
                                  &templateText);
             scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                                    static_cast<LPCSTR>(hoverText));
@@ -648,7 +648,7 @@ void TCityProductionView::UpdateToolbar() {
     short buildingSlot = static_cast<short>(group < 7 ? group : 11);
     bool enabled;
     if (buildingSlot == 11) {
-      enabled = city->powerPlantUpgradeQueuedFlag == 0 && city->trailingOrderSlots[1]->quantity > 0;
+      enabled = !city->powerPlantUpgradeQueuedFlag && city->trailingOrderSlots[1]->quantity > 0;
     } else if (city->trailingOrderSlots[buildingSlot + 2]->quantity > 0) {
       enabled = false;
     } else {

@@ -243,8 +243,7 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
   }
   for (index = 0; index < count; ++index) {
     for (scan = index + 1; scan < count; ++scan) {
-      if (units[scan]->sourceUnit->persistentUnitId <
-          units[index]->sourceUnit->persistentUnitId) {
+      if (units[scan]->sourceUnit->persistentUnitId < units[index]->sourceUnit->persistentUnitId) {
         TArmyTacUnit* swap = units[index];
         units[index] = units[scan];
         units[scan] = swap;
@@ -291,8 +290,8 @@ bool PumpArmyBattleToActiveNationInput(TArmyBattle* battle) {
   int guard = 20000;
   while (battle->battleOutcome == kTacticalBattleInProgress) {
     TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0]
-                                                                              : battle->players[1]);
-    if (battle->pendingEndOfActionFlag != 0 && player->nationIndex == ActiveNationSlot() &&
+                                                                             : battle->players[1]);
+    if (battle->pendingEndOfActionFlag && player->nationIndex == ActiveNationSlot() &&
         player->notWatchedFlag == 0) {
       return true;
     }
@@ -310,7 +309,7 @@ bool AutoArmyBattleToCommit(TArmyBattle* battle) {
   int guard = 20000;
   ourPlayer->notWatchedFlag = 1;
   enemyPlayer->notWatchedFlag = 1;
-  if (battle->pendingEndOfActionFlag != 0) {
+  if (battle->pendingEndOfActionFlag) {
     TArmyPlayer* current = battle->currentSide == 0 ? ourPlayer : enemyPlayer;
     current->NextMove();
   }
@@ -414,8 +413,7 @@ bool IssueUncontestedRedeploys(TMilitaryUnit* skip, int* issued) {
         for (adj = 0; adj < record->adjacentRegionCount; ++adj) {
           const short dest = record->adjacentRegionIds[adj];
           if (dest >= 0 && dest < 0x180 &&
-              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode ==
-                  record->ownerNationCode) {
+              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode == record->ownerNationCode) {
             unit->SetOrders(kUnitOrderRedeploy, dest);
             *issued += 1;
             break;
@@ -447,8 +445,7 @@ bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest, TMilitaryU
         for (adj = 0; adj < record->adjacentRegionCount; ++adj) {
           const short dest = record->adjacentRegionIds[adj];
           if (dest >= 0 && dest < 0x180 &&
-              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode ==
-                  record->ownerNationCode) {
+              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode == record->ownerNationCode) {
             *outUnit = unit;
             *outDest = dest;
             return true;
@@ -484,8 +481,7 @@ bool FindHostileRedeployExcluding(TMilitaryUnit* skipUnit, short skipDest, TMili
           if (dest < 0 || dest >= 0x180 || dest == skipDest) {
             continue;
           }
-          if (g_pGlobalMapState->cityScoreTable[dest].ownerNationCode ==
-                  record->ownerNationCode ||
+          if (g_pGlobalMapState->cityScoreTable[dest].ownerNationCode == record->ownerNationCode ||
               g_pGlobalMapState->cityScoreTable[dest].stationedUnitChain == 0) {
             continue;
           }
@@ -1162,8 +1158,8 @@ RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
   if (!PumpArmyBattleToActiveNationInput(battle)) {
     return RuntimeActionResult::Failure("battle did not reach active-nation input");
   }
-  TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0]
-                                                                            : battle->players[1]);
+  TArmyPlayer* player =
+      static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0] : battle->players[1]);
   player->retreatOrdered = 1;
   player->notWatchedFlag = 1;
   player->SelectAndApplyTacticalCursorModeProfile(0);
@@ -1686,8 +1682,8 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
     return RuntimeActionResult::Failure("battle did not reach active-nation input");
   }
   JSON_Value* initial = CaptureArmyBattleSnapshot(battle);
-  TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0]
-                                                                            : battle->players[1]);
+  TArmyPlayer* player =
+      static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0] : battle->players[1]);
   player->retreatOrdered = 1;
   player->notWatchedFlag = 1;
   player->SelectAndApplyTacticalCursorModeProfile(0);

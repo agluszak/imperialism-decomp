@@ -148,15 +148,15 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
   dstRect.top = 0;
   dstRect.right = srcRect.right;
   dstRect.bottom = srcRect.bottom;
-  if (g_pMacViewMgr->atlas694[5]->blitSurface.surfaceDib != nullptr) {
-    int h = g_pMacViewMgr->atlas694[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
+  if (g_pMacViewMgr->tileOverlayStripWorlds[5]->blitSurface.surfaceDib != nullptr) {
+    int h = g_pMacViewMgr->tileOverlayStripWorlds[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&srcRect, 0, (h - srcRect.top) - srcRect.bottom);
   }
   if (surfaceContext->blitSurface.surfaceDib != nullptr) {
     int h = surfaceContext->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
   }
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[5]->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[5]->GetBlitSurface(),
                                    surfaceContext->GetBlitSurface(), &srcRect, &dstRect, 0,
                                    nullptr);
 
@@ -168,15 +168,15 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
   dstRect.left = 0;
   dstRect.bottom = dstRect.top + 0x12;
   dstRect.right = srcRect.right;
-  if (g_pMacViewMgr->atlas694[5]->blitSurface.surfaceDib != nullptr) {
-    int h = g_pMacViewMgr->atlas694[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
+  if (g_pMacViewMgr->tileOverlayStripWorlds[5]->blitSurface.surfaceDib != nullptr) {
+    int h = g_pMacViewMgr->tileOverlayStripWorlds[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&srcRect, 0, h - 0x26a);
   }
   if (surfaceContext->blitSurface.surfaceDib != nullptr) {
     int h = surfaceContext->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
   }
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[5]->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[5]->GetBlitSurface(),
                                    surfaceContext->GetBlitSurface(), &srcRect, &dstRect, 0,
                                    nullptr);
 
@@ -188,15 +188,15 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
   srcRect.left = 0;
   dstRect.left = 0;
   dstRect.right = srcRect.right;
-  if (g_pMacViewMgr->atlas694[5]->blitSurface.surfaceDib != nullptr) {
-    int h = g_pMacViewMgr->atlas694[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
+  if (g_pMacViewMgr->tileOverlayStripWorlds[5]->blitSurface.surfaceDib != nullptr) {
+    int h = g_pMacViewMgr->tileOverlayStripWorlds[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&srcRect, 0, (h - srcRect.top) - 300);
   }
   if (surfaceContext->blitSurface.surfaceDib != nullptr) {
     int h = surfaceContext->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
   }
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[5]->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[5]->GetBlitSurface(),
                                    surfaceContext->GetBlitSurface(), &srcRect, &dstRect, 0,
                                    nullptr);
 

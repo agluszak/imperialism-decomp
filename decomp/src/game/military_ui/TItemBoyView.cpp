@@ -56,7 +56,7 @@ void TItemBoyView::ActuallyDraw(CString* header) {
       RECT srcRect = {kindIdx * 0x20, 0, (kindIdx + 1) * 0x20, 0x17};
       RECT dstRect = {y - 0x20, 0x19, y, 0x30};
       UpdatePaletteIndexWithDefaultFallback(0x10);
-      TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas674->GetBlitSurface();
+      TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->commodityIconWorld->GetBlitSurface();
       BlitRectWithOptionalTransparency(iconStripSurface,
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                        &dstRect, 0x24, 0);

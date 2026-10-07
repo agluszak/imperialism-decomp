@@ -50,7 +50,7 @@ int g_resourceStreamOpenSuppressAssert; // 0x6a5d20
 
 // FUNCTION: IMPERIALISM 0x005df430
 CFile* TAssetMgr::LoadTableResourceStreamByName(CString name) {
-  HMODULE hModule = LoadLibraryA(g_pImperialismApp->field_D4);
+  HMODULE hModule = LoadLibraryA(g_pImperialismApp->assetLibraryName);
   HRSRC hResInfo = FindResourceA(hModule, name, "TABLE");
   if (hResInfo != 0) {
     HGLOBAL hResData = LoadResource(hModule, hResInfo);

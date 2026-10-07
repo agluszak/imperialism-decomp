@@ -11,7 +11,7 @@ IMPLEMENT_DYNCREATE(TArmyTacUnit, TTacticalUnit)
 void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   unitType = source->orderType;
   tileIndex = -2;
-  selectedFlag = 0;
+  selectedFlag = false;
   state1c = 0;
   actionPoints = GetBaseActionPoints();
   aiStateCode = 0;

@@ -189,7 +189,7 @@ bool TLoungeDialog::DoIdle(int action) {
   short messageStringIndex;
   if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
     if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy &&
-        g_pGameFlowState->fieldF4 != 0) {
+        g_pGameFlowState->networkSavePending != 0) {
       messageStringIndex = 0x24;
       if (glyphBase != 0x11f8) {
         SetPictureRsrcID(0x11f8, 1);

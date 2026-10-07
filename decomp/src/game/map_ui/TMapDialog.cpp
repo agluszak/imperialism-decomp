@@ -929,7 +929,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
 
     GetPixBaseAddr(GetGWorldPixMap(quickDrawSurface));
     GetPixBaseAddr(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
-    GetPixBaseAddr(GetGWorldPixMap(g_pMacViewMgr->atlas668));
+    GetPixBaseAddr(GetGWorldPixMap(g_pMacViewMgr->terrainTileWorld));
 
     short cacheSearchIndex = 0;
     for (short row = firstRow; row < lastRow && row < 60; ++row) {
@@ -1047,7 +1047,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   short destinationStride = static_cast<short>((*destinationSurfaceObject)->stride & 0x3fff);
   destinationPixels += static_cast<int>(screenY) * destinationStride + screenX;
 
-  TBitmapSurfaceNode** sourceSurfaceObject = GetGWorldPixMap(g_pMacViewMgr->atlas668);
+  TBitmapSurfaceNode** sourceSurfaceObject = GetGWorldPixMap(g_pMacViewMgr->terrainTileWorld);
   unsigned char* sourcePixels = GetPixBaseAddr(sourceSurfaceObject);
   short sourceStride = static_cast<short>((*sourceSurfaceObject)->stride & 0x3fff);
 
@@ -1260,15 +1260,15 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   if ((activeFlags & 3) != 0 && terrain.gateFlag != 0 && cityOverlayVisible) {
     int improvementOffset = g_pGlobalMapState->GetMapImprovementOffsetByActiveFlagsAndCityStage(
         tileIndex, terrain.formerOwnerNationTag);
-    Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas66c, quickDrawSurface, improvementOffset,
-                                   tileRect);
+    Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->improvementTileWorld, quickDrawSurface,
+                                   improvementOffset, tileRect);
   }
 
   if ((activeFlags & 0x14) != 0 && (activeFlags & 1) == 0) {
     int transportOffset = g_pGlobalMapState->GetTownOffset(tileIndex, terrain.ownerNationTag);
     if (transportOffset != 0) {
-      Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas66c, quickDrawSurface, transportOffset,
-                                     tileRect);
+      Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->improvementTileWorld, quickDrawSurface,
+                                     transportOffset, tileRect);
     }
   }
 
@@ -1278,8 +1278,8 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       int fortLevel = g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].fortLevel;
       if (fortLevel != 0) {
         int fortOffset = g_pGlobalMapState->GetMapImprovementBitmapRowOffsetForIndex(fortLevel - 1);
-        Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas66c, quickDrawSurface, fortOffset,
-                                       tileRect);
+        Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->improvementTileWorld, quickDrawSurface,
+                                       fortOffset, tileRect);
       }
     }
   }
@@ -1341,7 +1341,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         CRect sourceRect(0x190, 0, 0x1a4, 0x14);
         CRect destinationRect(screenX + 5, screenY + 0xc, screenX + 0x19, screenY + 0x20);
         IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_SURVEY_MISS(tileIndex);
-        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[1]->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[1]->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &sourceRect, &destinationRect, 0x24, 0);
         SetQuickDrawStrokeColor(0xffffff);
@@ -1456,8 +1456,8 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
   if (terrain.perTileVisitedFlag > 0) {
     int markerOffset = (terrain.perTileVisitedFlag - 1) << 6;
-    Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas694[6], quickDrawSurface, markerOffset,
-                                   tileRect);
+    Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->tileOverlayStripWorlds[6], quickDrawSurface,
+                                   markerOffset, tileRect);
   } else if (tileIndex == g_pGlobalMapState->pendingRiverMouthTile && isOcean) {
     g_pViewMgr->SetForeColor(3);
     CRect selectionRect(screenX + 0x20, screenY + 0x20, screenX + 0x21, screenY + 0x21);
@@ -1468,7 +1468,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     if (terrain.tileActionState >= 0 &&
         terrain.tileActionState < kMapTileActionStateStrategicAtlasFrameCount) {
       int actionOffset = terrain.tileActionState << 6;
-      Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas690, quickDrawSurface, actionOffset,
+      Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->nationUnitWorld, quickDrawSurface, actionOffset,
                                      tileRect);
     }
     return;
@@ -2443,7 +2443,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
   }
   CRect spriteSourceRect(spriteOffset, 0, spriteOffset + 0x40, 0x40);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas66c->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->improvementTileWorld->GetBlitSurface(),
                                    destinationSurface->GetBlitSurface(), &spriteSourceRect,
                                    &destinationRect, 0x24, 0);
 
@@ -2457,7 +2457,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
       OffsetRect(&ownerDestinationRect, 0,
                  (surfaceHeight - ownerDestinationRect.top) - ownerDestinationRect.bottom);
     }
-    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas6b8->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->mapArtWorld->GetBlitSurface(),
                                      destinationSurface->GetBlitSurface(), &ownerSourceRect,
                                      &ownerDestinationRect, 0x24, 0);
     destinationRect.InflateRect(1, 1);
@@ -2528,7 +2528,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
   }
 
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas6b4->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->stackBadgeWorld->GetBlitSurface(),
                                    destinationSurface->GetBlitSurface(), &countSourceRect,
                                    &countDestinationRect, 0x24, 0);
 
@@ -2542,7 +2542,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
     ownerDestinationRect.SetRect(dstRect->left + 7, dstRect->top + 2, dstRect->left + 0x10,
                                  dstRect->top + 8);
   }
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas6b8->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->mapArtWorld->GetBlitSurface(),
                                    destinationSurface->GetBlitSurface(), &ownerSourceRect,
                                    &ownerDestinationRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -2560,7 +2560,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   if (!altOverlay) {
     CRect sourceRect(tileActionClass << 6, 0, (tileActionClass + 1) << 6, 0x40);
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas690->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->nationUnitWorld->GetBlitSurface(),
                                      quickDrawSurface->GetBlitSurface(), &sourceRect, dstRect, 0x24,
                                      0);
     UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -2582,7 +2582,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   int sourceX = (tileActionClass + 1) << 6;
   CRect sourceRect(sourceX, 0, sourceX + 0x40, 0x40);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas690->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->nationUnitWorld->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    dstRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);

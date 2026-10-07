@@ -19,8 +19,8 @@ TNumberedItem::TNumberedItem() : TMegaPicture() {
 TNumberedItem::~TNumberedItem() {}
 
 // FUNCTION: IMPERIALISM 0x00507850
-void TNumberedItem::INumberedItem(TView* panel, int* position, int* size,
-                                                   short resourceIconIndex, short count) {
+void TNumberedItem::INumberedItem(TView* panel, int* position, int* size, short resourceIconIndex,
+                                  short count) {
   InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, position, size, 5, 5, 0);
   iconRowIndex = resourceIconIndex;
   badgeCount = count;
@@ -33,7 +33,7 @@ void TNumberedItem::Draw(RECT* rectBuffer) {
   RECT dstRect = {0, 0, 0x1f, 0x17};
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas674->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->commodityIconWorld->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &dstRect, 0x24, 0);
 

@@ -632,16 +632,16 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &flagDst);
     SetQuickDrawFillColor(0);
     SetQuickDrawStrokeColor(0xffffff);
-    BlitRectWithOptionalTransparency(&g_pMacViewMgr->atlas6b8->blitSurface,
+    BlitRectWithOptionalTransparency(&g_pMacViewMgr->mapArtWorld->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &flagSrc,
                                      &flagDst, 0, 0);
-    SetQuickDrawFillColor(occupant->selectedFlag != 0 ? 0xffffff : 0);
+    SetQuickDrawFillColor(occupant->selectedFlag ? 0xffffff : 0);
     flagDst.left -= 1;
     flagDst.top -= 1;
     flagDst.right += 1;
     flagDst.bottom += 1;
     QDFrameRect(&flagDst);
-    if (occupant->selectedFlag != 0) {
+    if (occupant->selectedFlag) {
       SetQuickDrawFillColor(0);
       flagDst.left -= 1;
       flagDst.top -= 1;

@@ -552,7 +552,7 @@ int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tile
       if (g_afTacticalDirectFireFlagByCategory[unitCategoryCode] ==
           g_fTacticalRetreatQualityWeightDefault) {
         char reachable =
-            selectedUnit->selectedFlag == 0
+            !selectedUnit->selectedFlag
                 ? 0
                 : IsTacticalTargetTileReachableForAction(
                       selectedUnit->tileIndex, tileIndex,
@@ -572,7 +572,7 @@ int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tile
       TTacticalUnit* occupant = tile->occupant;
       if (occupant != 0 && occupant->side != currentSide && unitCategoryCode0 != 8) {
         char reachable =
-            selectedUnit->selectedFlag == 0
+            !selectedUnit->selectedFlag
                 ? 0
                 : IsTacticalTargetTileReachableForAction(
                       selectedUnit->tileIndex, tileIndex,
@@ -668,7 +668,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
 
 // FUNCTION: IMPERIALISM 0x005a0d60
 void TTacticalBattle::FinishTacticalActionAndPostNextMoveCommand() {
-  pendingEndOfActionFlag = 0;
+  pendingEndOfActionFlag = false;
   TNextMoveCommand* command = new TNextMoveCommand();
   command->ICommand(0x232a, g_pAmbitApplication, 0, 0, 0);
   command->battle = this;
@@ -684,7 +684,7 @@ void TTacticalBattle::NextMove() {
     EndBattle(sideWonFlag);
     return;
   }
-  pendingEndOfActionFlag = 1;
+  pendingEndOfActionFlag = true;
   AdvanceToNextTacticalUnitTurnStep();
 }
 
@@ -767,7 +767,7 @@ void TTacticalBattle::LaSelect(TTacticalUnit* unit, bool remoteFlag) {
     battleView->InvalidateUnit(unit);
   }
   unit->actionPoints = unit->GetBaseActionPoints();
-  unit->selectedFlag = 1;
+  unit->selectedFlag = true;
   ApplyTacticalDoneSelectionAndRefreshUi(unit);
 }
 
@@ -1064,7 +1064,7 @@ bool TTacticalBattle::ResolveTacticalReactionChecksForTile(TacticalTileIndex til
   reactor->AssertValid();
   do {
     reactor->AssertValid();
-    if (reactor->state1c == 0 && reactor->selectedFlag != 0) {
+    if (reactor->state1c == 0 && reactor->selectedFlag) {
       TacticalTileIndex reactorTileIndex = reactor->tileIndex;
       short categoryCode = g_awTacticalUnitCategoryCodeBySlot[reactor->unitType];
       if (IsTacticalTargetTileReachableForAction(
@@ -1108,10 +1108,10 @@ void TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarg
     TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
   MoveTacticalUnitTowardTile(unit, targetTileIndex);
   if (g_awTacticalUnitCategoryCodeBySlot[unit->unitType] == 7) {
-    unit->selectedFlag = 0;
+    unit->selectedFlag = false;
   }
   if (unit->state1c == 0 && battleOutcome == kTacticalBattleInProgress) {
-    if (unit->selectedFlag != 0) {
+    if (unit->selectedFlag) {
       if (HasValidTacticalFollowupTargetForCurrentAction()) {
         return;
       }
@@ -1191,7 +1191,7 @@ bool TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction() {
     TacticalTileIndex enemyTile = enemyUnit->tileIndex;
     if (enemyTile >= 0) {
       unsigned char targetReachable;
-      if (this->selectedUnit->selectedFlag != 0) {
+      if (this->selectedUnit->selectedFlag) {
         short attackerCategory = g_awTacticalUnitCategoryCodeBySlot[this->selectedUnit->unitType];
         targetReachable = IsTacticalTargetTileReachableForAction(
             this->selectedUnit->tileIndex, enemyTile,
@@ -1345,7 +1345,7 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   LaFireOn(attackerUnit, defenderUnit, targetTileIndex, (int)damage, (int)moraleDamage,
            captureEffectCode, false);
   TTacticalPlayer* postActionPlayer = (defenderUnit->side == 0) ? players[0] : players[1];
-  postActionPlayer->field20 = false;
+  postActionPlayer->skipRequested = false;
 }
 
 // FUNCTION: IMPERIALISM 0x005a24a0
@@ -1389,7 +1389,7 @@ void TTacticalBattle::LaFireOn(TTacticalUnit* attackerUnit, TTacticalUnit* targe
     tileGrid[targetUnit->tileIndex].occupant = 0;
     targetUnit->tileIndex = -1;
   }
-  attackerUnit->selectedFlag = 0;
+  attackerUnit->selectedFlag = false;
   EvaluateTacticalSideStateAndShowBattleSummaryDialog();
 }
 
@@ -1895,7 +1895,7 @@ void TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted(TacticalT
 // FUNCTION: IMPERIALISM 0x005a3cc0
 unsigned char TTacticalBattle::CanFireOn(TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
   TacticalTileIndex attackerTileIndex = unit->tileIndex;
-  if (unit->selectedFlag == 0) {
+  if (!unit->selectedFlag) {
     return 0;
   }
   int category = g_awTacticalUnitCategoryCodeBySlot[unit->unitType];
@@ -2000,7 +2000,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
   // If the current target is still valid and reachable, recenter the view on it.
   if (marker != NULL && marker->state1c == 0) {
     char reachable;
-    if (selectedUnit->selectedFlag == 0) {
+    if (!selectedUnit->selectedFlag) {
       reachable = 0;
     } else {
       reachable = IsTacticalTargetTileReachableForAction(
@@ -2028,7 +2028,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
     candidate->AssertValid();
     if (candidate->state1c == 0) {
       char reachable;
-      if (selectedUnit->selectedFlag == 0) {
+      if (!selectedUnit->selectedFlag) {
         reachable = 0;
       } else {
         reachable = IsTacticalTargetTileReachableForAction(

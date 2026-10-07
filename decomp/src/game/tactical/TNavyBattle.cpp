@@ -144,7 +144,7 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     }
   }
 
-  attackerUnit->selectedFlag = 0;
+  attackerUnit->selectedFlag = false;
   EvaluateTacticalSideStateAndShowBattleSummaryDialog();
 }
 
@@ -232,7 +232,7 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
 void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
     TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
   MoveTacticalUnitTowardTile(unit, targetTileIndex);
-  if (unit->selectedFlag == 0) {
+  if (!unit->selectedFlag) {
     TacticalTileIndex neighborTiles[6];
     GetNeighborList(selectedUnit->tileIndex, neighborTiles);
     int direction;
