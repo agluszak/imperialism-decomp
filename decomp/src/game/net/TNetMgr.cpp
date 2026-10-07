@@ -181,7 +181,7 @@ void TNetMgr::HandleError(int errorCode) {
 
   g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage);
   if (DAT_006a601c == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\WNetMgr.cpp", 0x1c3);
+    ReportAssertionFailure("D:\\Ambit\\WNetMgr.cpp", 0x1c3);
   }
 }
 
@@ -353,7 +353,7 @@ TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecord
       break;
     default:
       if (g_suppressUnexpectedDirectPlaySystemMessageAssert == 0) {
-        TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\WNetMgr.cpp", 0x2f6);
+        ReportAssertionFailure("D:\\Ambit\\WNetMgr.cpp", 0x2f6);
       }
       break;
     }

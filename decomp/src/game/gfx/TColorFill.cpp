@@ -13,6 +13,6 @@ IMPLEMENT_DYNCREATE(TColorFill, TAdorner)
 // FUNCTION: IMPERIALISM 0x004ff1c0
 void TColorFill::Draw(TView*, const RECT&) {
   if (g_colorFillAssertGuard == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x2da);
+    ReportAssertionFailure("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x2da);
   }
 }

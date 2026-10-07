@@ -160,7 +160,7 @@ void TInteriorMinister::FillOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be650
-char TInteriorMinister::DoIncreasedTransport() {
+bool TInteriorMinister::DoIncreasedTransport() {
   char result = 0;
   if (greatPower->GetMerchantCapacity() == 0) {
     result = greatPower->IncreaseMerchantMarine();

@@ -15,8 +15,8 @@ TCloseButton::TCloseButton() {}
 TCloseButton::~TCloseButton() {}
 
 // FUNCTION: IMPERIALISM 0x00584b70
-char TCloseButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+bool TCloseButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   TView::HandleMouseDown(point, event, origin);
   g_pViewMgr->DispatchTurnEvent(kTurnEventRebuildRegisteredWindows, 0);
-  return 1;
+  return true;
 }

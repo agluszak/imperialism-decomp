@@ -30,7 +30,7 @@ public:
   void Close() override;
   void Show(int enabledState, int refreshFlag) override;
   void Draw(RECT* rectBuffer) override;
-  char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
+  bool HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   void UpdateCoordinates() override;
   void SetJustification(short alignmentCode, bool refreshFlag) override;
   virtual void SetSelection(short selStart, short selEnd, int unusedFlag);

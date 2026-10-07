@@ -496,7 +496,7 @@ BOOL ImperialismApp::OnIdle(LONG lCount) {
 // FUNCTION: IMPERIALISM 0x00414640
 void ImperialismApp::OnHuman() {
   if (g_pAmbitDeveloperAssertProbe == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Ambit.cpp", 0x3b6);
+    ReportAssertionFailure("D:\\Ambit\\Ambit.cpp", 0x3b6);
   }
 }
 

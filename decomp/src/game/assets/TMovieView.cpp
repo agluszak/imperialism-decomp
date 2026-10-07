@@ -86,7 +86,7 @@ void TMovieView::StopMovie() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e2520
-char TMovieView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+bool TMovieView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (movieWindowState != 0) {
     movieWindowState->Stop();
   }

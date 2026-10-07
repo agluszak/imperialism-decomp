@@ -1654,13 +1654,13 @@ int TArmyPlayer::GetMinimumActiveUnitRangeForStates2Or4() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059ea60
-unsigned char TArmyPlayer::SwitchToAutoPlay() {
+bool TArmyPlayer::SwitchToAutoPlay() {
   if (notWatchedFlag) {
     CString message;
     g_pSimMgr->GetString(0x273d, 0, &message);
     return g_pViewMgr->ModalMessage(message, g_ptTacticalAutoPlayModalMessage, 1, 1);
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0059eb40

@@ -556,8 +556,7 @@ bool TMultiplayerMgr::ResetGameFlowStateAndShowMainMenu() {
 }
 
 // FUNCTION: IMPERIALISM 0x00544fc0
-unsigned char TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int protocolValue,
-                                                                       int flag) {
+bool TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int protocolValue, int flag) {
   return g_pNetMgr->OpenRuntimeSelectionSourceByIndexAndCopyPath(
       protocolValue, flag, static_cast<LPCSTR>(gameNameString));
 }

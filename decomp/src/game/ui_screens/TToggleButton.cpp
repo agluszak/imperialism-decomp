@@ -69,13 +69,13 @@ void TToggleButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 }
 
 // FUNCTION: IMPERIALISM 0x005712a0
-char TToggleButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+bool TToggleButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (!this->IsEnabled()) {
-    return 0;
+    return false;
   }
   bool isFieldWithinLimit = this->IsSelected();
   if (!isFieldWithinLimit && !static_cast<TToggleButton*>(this->ownerContext)->IsSelected()) {
-    return 1;
+    return true;
   }
   this->Select(!isFieldWithinLimit, true);
   if (isFieldWithinLimit) {
@@ -83,7 +83,7 @@ char TToggleButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, C
   } else {
     this->ownerContext->HandleEvent(0x68, this, NULL);
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00571330

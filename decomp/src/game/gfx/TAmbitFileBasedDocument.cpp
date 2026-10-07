@@ -183,6 +183,6 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
 // FUNCTION: IMPERIALISM 0x0049ee70
 void TAmbitFileBasedDocument::SaveDocument(long saveMode) {
   if (g_saveDocumentAssertGuard == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szUAmbitSourcePath, 0x537);
+    ReportAssertionFailure(g_szUAmbitSourcePath, 0x537);
   }
 }

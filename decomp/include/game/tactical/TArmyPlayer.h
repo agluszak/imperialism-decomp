@@ -22,7 +22,7 @@ public:
   virtual void AutoDeploySideUnitsAndMarkReady();                            // slot 0x12 0x59bc80
   virtual void DeploymentClick(TacticalTileIndex tileIndex);                 // slot 0x13 0x59c3c0
   virtual void RunTacticalAutoTurnControllerForActiveUnit();                 // slot 0x14 0x59e4f0
-  virtual unsigned char SwitchToAutoPlay();                                  // slot 0x15 0x59ea60
+  virtual bool SwitchToAutoPlay();                                           // slot 0x15 0x59ea60
 
   TArmyStack* armyStack;          // +0x28
   float projectionMetrics[5];     // +0x2c

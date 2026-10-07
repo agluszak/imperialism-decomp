@@ -625,7 +625,7 @@ void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
 }
 
 // FUNCTION: IMPERIALISM 0x005de990
-char TViewMgr::ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex,
+bool TViewMgr::ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex,
                                                     int overlayMode, int arg4) {
   CString message;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, uiStringGroup, uiStringIndex);

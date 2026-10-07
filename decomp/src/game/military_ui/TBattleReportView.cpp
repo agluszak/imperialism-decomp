@@ -322,8 +322,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
           g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventDetailedBattleReport);
       if (dialog == 0) {
         GAME_FAIL_NIL_POINTER();
-        TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UBattleReportViews.cpp",
-                                                     0x1ef);
+        ReportAssertionFailure("D:\\Ambit\\Cross\\UBattleReportViews.cpp", 0x1ef);
       }
       dialog->SetModality(true);
 

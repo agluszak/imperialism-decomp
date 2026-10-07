@@ -161,12 +161,12 @@ void TEditText::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490bc0
-char TEditText::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  if (TView::HandleMouseDown(point, event, origin) == 0) {
-    return 0;
+bool TEditText::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+  if (!TView::HandleMouseDown(point, event, origin)) {
+    return false;
   }
   HandleEvent(eventNumber, this, 0);
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00490c10

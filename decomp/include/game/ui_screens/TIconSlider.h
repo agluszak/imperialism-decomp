@@ -13,7 +13,7 @@ public:
 
   virtual void DoPostCreate(int arg) override;
   virtual void Draw(RECT* rectBuffer) override;
-  virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
+  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint, bool commandFlag) override;
   virtual void SetNumIcons(short numIcons) override;

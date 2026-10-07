@@ -67,14 +67,14 @@ BOOL TDirectPlaySessionManagerBase::OnEnumerateServiceProvider(LPGUID providerGu
 // FUNCTION: IMPERIALISM 0x0047fb20
 BOOL TDirectPlaySessionManagerBase::OnDirectPlayAssertion111(void* arg1, void* arg2, void* arg3,
                                                              void* arg4) {
-  TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\DirectPlay.cpp", 0x6f);
+  ReportAssertionFailure("D:\\Ambit\\DirectPlay.cpp", 0x6f);
   return FALSE;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fb50
 BOOL TDirectPlaySessionManagerBase::OnEnumerateJoinableSession(
     const DPSESSIONDESC2* sessionDescription, DWORD* timeout, DWORD flags) {
-  TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\DirectPlay.cpp", 0x76);
+  ReportAssertionFailure("D:\\Ambit\\DirectPlay.cpp", 0x76);
   return FALSE;
 }
 
@@ -320,7 +320,7 @@ BOOL TDirectPlaySessionManagerBase::SelectRuntimeProvider(GUID* providerGuid) {
 // FUNCTION: IMPERIALISM 0x00480820
 BOOL TDirectPlaySessionManagerBase::ShowJoinGameSelectionDialogAndCaptureChoice(
     GUID* selectedSessionGuid) {
-  TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\DirectPlay.cpp", 0x1b3);
+  ReportAssertionFailure("D:\\Ambit\\DirectPlay.cpp", 0x1b3);
   return FALSE;
 }
 

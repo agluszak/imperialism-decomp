@@ -110,7 +110,7 @@ void TViewChildList::RemoveByTag(unsigned int tag) {
     }
   }
   if (g_McAppUiFlag_006A1AE0 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x152);
+    ReportAssertionFailure(g_szMcAppUiSourcePath, 0x152);
   }
 }
 
@@ -223,7 +223,7 @@ void TView::DetachChildFromOwnerList(class TView* child) {
   }
 
   if (found == 0 && g_McAppUiFlag_006A1AE0 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x152);
+    ReportAssertionFailure(g_szMcAppUiSourcePath, 0x152);
   }
 
   if (list->IsEmpty()) {
@@ -783,7 +783,7 @@ void TView::ApplyBounds(CRect* newBounds, bool modeFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c450
-char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+bool TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (childList != 0) {
     POSITION pos = childList->GetTailPosition();
     while (pos != NULL) {
@@ -792,8 +792,8 @@ char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint or
       CPoint childPoint = point;
       child->SuperToLocal(&childPoint);
       if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-          child->HandleMouseDown(childPoint, event, origin) != 0) {
-        return 1;
+          child->HandleMouseDown(childPoint, event, origin)) {
+        return true;
       }
     }
   }
@@ -801,9 +801,9 @@ char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint or
   if (PrepareForDrawing() && IsEnabled() != 0) {
     CPoint localPoint = point;
     DoMouseCommand(localPoint, event, origin);
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0048c590
@@ -849,7 +849,7 @@ char TView::PointInBoundsAndActionable(CPoint* point) {
 // FUNCTION: IMPERIALISM 0x0048c750
 void TView::DrawRectangleInCurrentUiContext(const RECT* rect) {
   if (g_McAppUiDrawGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x772);
+    ReportAssertionFailure(g_szMcAppUiSourcePath, 0x772);
   }
   CDC* context = GetActiveQuickDrawDc();
   Rectangle(context->m_hDC, rect->left, rect->top, rect->right, rect->bottom);
@@ -857,14 +857,14 @@ void TView::DrawRectangleInCurrentUiContext(const RECT* rect) {
 // FUNCTION: IMPERIALISM 0x0048c7a0
 void TView::AssertMcAppUiLine1914(int unusedArg) {
   if (g_McAppUiFlag_006A1AFC == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x77a);
+    ReportAssertionFailure(g_szMcAppUiSourcePath, 0x77a);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048c7d0
 void TView::AssertMcAppUiLine1922() {
   if (g_McAppUiFlag_006A1B00 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x782);
+    ReportAssertionFailure(g_szMcAppUiSourcePath, 0x782);
   }
   CRect rectStorage;
   GetDrawableQDRect(&rectStorage);

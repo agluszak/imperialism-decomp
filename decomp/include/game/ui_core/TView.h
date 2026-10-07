@@ -111,7 +111,7 @@ public:
                                                         CDC* paintDc); // 0x43 0x48b8d0
   virtual void Draw(RECT* clipRect);                                   // 0x44
   virtual void PaintOrInvalidateControl(CDC* paintDc = 0);             // 0x45
-  virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event,
+  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                CPoint origin); // 0x46 0x48c450
   virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
                               CPoint origin); // 0x47

@@ -55,10 +55,10 @@ char TIconSlider::KnobContainsMouse(const CPoint& point) {
 }
 
 // FUNCTION: IMPERIALISM 0x005065f0
-char TIconSlider::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+bool TIconSlider::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (KnobContainsMouse(point) != 0) {
     TIconBar::HandleMouseDown(point, event, origin);
-    return 1;
+    return true;
   }
 
   int nextValue = point.x;
@@ -68,7 +68,7 @@ char TIconSlider::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPo
   value = static_cast<short>(nextValue) / iconSpacing;
   RefreshControl();
   ownerContext->HandleEvent(0x6c, this, 0);
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00506690

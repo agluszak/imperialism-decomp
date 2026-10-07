@@ -23,13 +23,13 @@ int TControl::GetEventNumber() {
 // FUNCTION: IMPERIALISM 0x00429470
 void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
   if (g_McAppUiFlag_006A143C == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x56f);
+    ReportAssertionFailure(g_szMcAppUiHeaderPath, 0x56f);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004294a0
 bool TControl::LogUnhandledDialogMethodAndReturnFalse() {
-  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x58f);
+  ReportAssertionFailure(g_szMcAppUiHeaderPath, 0x58f);
   return false;
 }
 
@@ -38,7 +38,7 @@ bool TControl::LogUnhandledDialogMethodAndReturnFalse() {
 
 // FUNCTION: IMPERIALISM 0x00435760
 TObject* TControl::ShallowClone() {
-  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x594);
+  ReportAssertionFailure(g_szMcAppUiHeaderPath, 0x594);
   return 0;
 }
 // IMPLEMENT_DYNCREATE also emits `TControl::CreateObject`; the original copy at

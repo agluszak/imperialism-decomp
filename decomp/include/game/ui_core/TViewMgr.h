@@ -113,15 +113,15 @@ public:
 
   void PostModalMessage(CString* message, int payload);
   void ModalMessage(CString message, const POINT& messagePosition);
-  char ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
+  bool ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
                     unsigned char showCancel);
   bool ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4, int arg5,
                                   int arg6);
-  char ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,
+  bool ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,
                                             int arg4);
   void DispatchUiRuntimeMessage101AAndRefreshActiveView();
   char DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag);
-  char ModalMessage(long templateKind, CString titleSuffix, CString message,
+  bool ModalMessage(long templateKind, CString titleSuffix, CString message,
                     const POINT& messagePosition, short overlayMode, unsigned char showCancel);
 
   bool ShowCivilianReportDialogAndReturnConfirm(class TCivUnit* pCivilianOrderEntry);

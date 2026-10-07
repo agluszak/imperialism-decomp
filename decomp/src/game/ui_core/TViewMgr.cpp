@@ -429,7 +429,7 @@ void TViewMgr::ModalMessage(CString message, const POINT& messagePosition) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d5b00
-char TViewMgr::ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
+bool TViewMgr::ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
                             unsigned char showCancel) {
   return this->ModalMessage(3, CString(g_szEmptyString), message, messagePosition, overlayMode,
                             showCancel);
@@ -439,13 +439,13 @@ char TViewMgr::ModalMessage(CString message, const POINT& messagePosition, short
 bool TViewMgr::ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4, int arg5,
                                           int arg6) {
   if (g_nViewMgrModalAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr, 0x2ac);
+    ReportAssertionFailure(s_SourcePathUViewMgr, 0x2ac);
   }
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005d5c40
-char TViewMgr::ModalMessage(long templateKind, CString titleSuffix, CString message,
+bool TViewMgr::ModalMessage(long templateKind, CString titleSuffix, CString message,
                             const POINT& messagePosition, short overlayMode,
                             unsigned char showCancel) {
   return RunNationInfoModalAndReturnNonCancel(templateKind, titleSuffix,

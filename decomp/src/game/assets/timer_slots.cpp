@@ -16,7 +16,7 @@ void CALLBACK DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(HWND hwn
   int slot = static_cast<int>(idEvent) - 0xa000;
   if (slot < 0 || slot >= 10 || g_timerSlotCallbacks[slot] == NULL) {
     if (g_timerDispatchSuppressAssert == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\WAssetMgr.cpp", 0x263);
+      ReportAssertionFailure("D:\\Ambit\\WAssetMgr.cpp", 0x263);
     }
     return;
   }

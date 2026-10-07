@@ -269,7 +269,7 @@ void TEventHandler::CopyHandlerFieldsFrom(const TEventHandler* source) {
 // FUNCTION: IMPERIALISM 0x0048a7c0
 TObject* TEventHandler::ShallowClone() {
   if (g_McAppUiFlag_006A1AE4 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x2ef);
+    ReportAssertionFailure(g_szMcAppUiSourcePath, 0x2ef);
   }
   TEventHandler* header = new TEventHandler();
   if (header == 0) {

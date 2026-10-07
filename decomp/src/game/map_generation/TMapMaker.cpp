@@ -2322,7 +2322,7 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
               MapEdgePoint bestEnd = {endpoint[0], endpoint[1]};
               if (curEnd.Equals(&bestEnd) == 0) {
                 if (g_bOverlayScanlineFillAssertSuppressed == 0) {
-                  TemporarilyClearAndRestoreUiInvalidationFlag(kUMapperPath, 0xda1);
+                  ReportAssertionFailure(kUMapperPath, 0xda1);
                 }
               } else if (static_cast<unsigned short>(best->angle) <
                          static_cast<unsigned short>(cur->angle)) {
@@ -2967,7 +2967,7 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
     if (!LinkIsEmpty(links.At(i))) {
       if (links.At(i)->attrBySide[0] == -1 || links.At(i)->attrBySide[1] == -1) {
         if (g_bOverlayRouteRebuildAssertSuppressed == 0) {
-          TemporarilyClearAndRestoreUiInvalidationFlag(kUMapperPath, 0x128f);
+          ReportAssertionFailure(kUMapperPath, 0x128f);
         }
       }
     }

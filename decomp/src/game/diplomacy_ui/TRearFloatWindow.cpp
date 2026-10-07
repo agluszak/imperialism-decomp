@@ -14,24 +14,24 @@ TRearFloatWindow::TRearFloatWindow() : TFloatWindow() {
 // the vtable slot holds.
 
 // FUNCTION: IMPERIALISM 0x004f3960
-char TRearFloatWindow::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+bool TRearFloatWindow::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   short partCode = ContainsMouse(point);
   switch (partCode) {
   case 3:
     return TFloatWindow::HandleMouseDown(point, event, origin);
   case 4:
     MoveByUser(point);
-    return 1;
+    return true;
   case 5:
     ResizeByUser(point);
-    return 1;
+    return true;
   case 6:
     GoAwayByUser(point);
-    return 1;
+    return true;
   case 7:
   case 8:
     ZoomByUser(point, partCode);
-    return 1;
+    return true;
   }
-  return 1;
+  return true;
 }

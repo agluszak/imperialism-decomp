@@ -121,9 +121,9 @@ public:
   bool ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
   bool ResetLocalUiStateAndShowMultiplayerSetup();                     // 0x545660
   bool ResetGameFlowStateAndShowMainMenu();                            // 0x544f30
-  unsigned char ValidateGameFlowNameAndSelectionContext(int protocolValue,
-                                                        int flag); // 0x544fc0
-  bool ValidateAndPrepareGameFlowNameForDispatch();                // 0x544ff0
+  bool ValidateGameFlowNameAndSelectionContext(int protocolValue,
+                                               int flag); // 0x544fc0
+  bool ValidateAndPrepareGameFlowNameForDispatch();       // 0x544ff0
   unsigned char
   InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider); // 0x545110
   bool ResetSessionAndShowMainMenu();                                           // 0x545290

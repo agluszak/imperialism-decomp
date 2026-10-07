@@ -1578,7 +1578,7 @@ void ShowDiplomacyActionRejectedNotice() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f74f0
-char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction action) {
+bool TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction action) {
   if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNationSlot,
                                                                   selectedTerrainIndex)) {
     CString formattedIntro;
@@ -1611,7 +1611,7 @@ char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction acti
     g_pSimMgr->GetString(0x275d, 5, &title);
     return g_pViewMgr->ModalMessage(3, title, templateText, g_ptDiplomacyNoticeModalMessage, 0, 0);
   }
-  return 1;
+  return true;
 }
 
 #ifdef IMPERIALISM_RUNTIME_TESTS

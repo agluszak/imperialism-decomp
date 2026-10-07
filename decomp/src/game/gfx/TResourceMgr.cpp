@@ -377,7 +377,7 @@ CString* renderTemplateOrExpandTokens(TResourceMgr* cache, CString* out, unsigne
 // FUNCTION: IMPERIALISM 0x0049aac0
 BOOL TResourceMgr::LoadPaletteResourceByName(CPalette* palette, LPCSTR resourceName) {
   if (g_paletteResourceNameAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szResourceMgrSourcePath, 0x22f);
+    ReportAssertionFailure(g_szResourceMgrSourcePath, 0x22f);
   }
 
   LockedPaletteResourceHeader* descriptor = new LockedPaletteResourceHeader;
@@ -418,7 +418,7 @@ BOOL TResourceMgr::LoadPaletteResourceByName(CPalette* palette, LPCSTR resourceN
 // FUNCTION: IMPERIALISM 0x0049abd0
 BOOL TResourceMgr::LoadPaletteResource(CPalette* palette, unsigned long resourceId) {
   if (g_paletteResourceIdAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szResourceMgrSourcePath, 0x252);
+    ReportAssertionFailure(g_szResourceMgrSourcePath, 0x252);
   }
 
   if (resourceId == (resourceId & 0xffff)) {

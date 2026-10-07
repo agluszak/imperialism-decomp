@@ -274,7 +274,7 @@ TA4TemplateDialog::TA4TemplateDialog(void* initParam)
 // FUNCTION: IMPERIALISM 0x0047f3e0
 void TA4TemplateDialog::VerifyDialogContext(int unusedA, int unusedB) {
   if (g_diplomacyDialogAssertGuard == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szDiplomacyDialogsSourcePath, 0x3d);
+    ReportAssertionFailure(g_szDiplomacyDialogsSourcePath, 0x3d);
   }
 }
 

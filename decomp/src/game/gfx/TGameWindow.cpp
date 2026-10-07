@@ -47,7 +47,7 @@ CWnd* TGameWindow::Open() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd10
-char TGameWindow::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+bool TGameWindow::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   return TView::HandleMouseDown(point, event, origin);
 }
 

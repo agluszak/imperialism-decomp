@@ -28,7 +28,7 @@ public:
   virtual bool DoesAdorn(TView* view); // slot 0x10 0x49da80
 
   TAdorner() {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x69);
+    ReportAssertionFailure("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x69);
   }
 
   unsigned long adornerId;

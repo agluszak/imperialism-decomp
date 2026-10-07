@@ -65,7 +65,7 @@ void TIncludeView::DoPostCreate(int arg) {
         0, this, eventCode, g_turnEventDialogAnchorPoint);
     if (dialog == NULL) {
       MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, MB_ICONEXCLAMATION);
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x846);
+      ReportAssertionFailure(g_szMcAppUiSourcePath, 0x846);
     }
   }
   if (nativeWindow != NULL && nativeWindow->m_hWnd != NULL) {

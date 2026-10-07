@@ -260,9 +260,9 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 }
 
 // FUNCTION: IMPERIALISM 0x00587900
-char TTradeCluster::IsTradeControlAtMinimum() {
+bool TTradeCluster::IsTradeControlAtMinimum() {
   if (g_pViewMgr->GetPendingTurnOverlayCode() > 3) {
-    return 0;
+    return false;
   }
   TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
   return sellControl->UpdateControlCachedIntFromWindowText() <= 0 ? 1 : 0;

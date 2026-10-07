@@ -32,7 +32,7 @@ int TStream::GetLength() {
 // FUNCTION: IMPERIALISM 0x00488b10
 int TStream::AssertMcAppStreamLine304(int) {
   if (g_streamLine304AssertGuard == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\McAppStream.cpp", 0x130);
+    ReportAssertionFailure("D:\\Ambit\\McAppStream.cpp", 0x130);
   }
   return 0;
 }
@@ -138,7 +138,7 @@ void TStream::ReadWordAlign() {
 // FUNCTION: IMPERIALISM 0x00488e00
 void TStream::AssertMcAppStreamLine596(int, int) {
   if (g_streamLine596AssertGuard == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\McAppStream.cpp", 0x254);
+    ReportAssertionFailure("D:\\Ambit\\McAppStream.cpp", 0x254);
   }
 }
 

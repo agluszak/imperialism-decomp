@@ -55,17 +55,17 @@ void TPictureRadioButton::Select(bool isPressed, bool notifyParent) {
 }
 
 // FUNCTION: IMPERIALISM 0x00570fb0
-char TPictureRadioButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event,
+bool TPictureRadioButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                           CPoint origin) {
   if (IsSelected()) {
-    return 0;
+    return false;
   }
   if (IsEnabled() == 0) {
-    return 0;
+    return false;
   }
   bool wasSelected = IsSelected();
   if (!wasSelected && static_cast<TUberCluster*>(ownerContext)->IsTradeControlAtMinimum() == 0) {
-    return 1;
+    return true;
   }
   Select(!wasSelected, true);
   if (wasSelected) {
@@ -73,5 +73,5 @@ char TPictureRadioButton::HandleMouseDown(const CPoint& point, TToolboxEvent* ev
   } else {
     ownerContext->HandleEvent(0x68, this, 0);
   }
-  return 1;
+  return true;
 }

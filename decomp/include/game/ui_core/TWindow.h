@@ -43,9 +43,9 @@ public:
   virtual void SetModality(bool modal);                                   // slot 0x68 0x48da40
   virtual void SetDialogItems(unsigned long defaultCommandCode,
                               unsigned long cancelCommandCode); // slot 0x69 0x48d8a0
-  virtual unsigned char IsModal();                              // slot 0x6a 0x48da10
+  virtual bool IsModal();                                       // slot 0x6a 0x48da10
   virtual int PoseModally();                                    // slot 0x6b 0x48da60
-  virtual unsigned char IsDismissed();                          // slot 0x6c 0x48dc60
+  virtual bool IsDismissed();                                   // slot 0x6c 0x48dc60
   virtual void Dismiss(unsigned long commandCode,
                        bool accepted);          // slot 0x6d 0x48dc90
   virtual TDialogBehavior* GetDialogBehavior(); // slot 0x6e 0x48dcc0

@@ -21,7 +21,7 @@ public:
   void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
   void DoPostCreate(int styleSeed) override; // 0xdc 0x587130
-  virtual char IsTradeControlAtMinimum() override;
+  virtual bool IsTradeControlAtMinimum() override;
   void SetMoveAmount(short amount) override;
   virtual int GetTradeSellControlValue();
   virtual bool IsSelectionAllowed();

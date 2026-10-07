@@ -16,7 +16,7 @@ TDipDlgCluster::TDipDlgCluster() {}
 TDipDlgCluster::~TDipDlgCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00584160
-char TDipDlgCluster::IsTradeControlAtMinimum() {
+bool TDipDlgCluster::IsTradeControlAtMinimum() {
   TToggleButton* subsidyToggle =
       static_cast<TToggleButton*>(ownerContext->ResolveControlByTag(kManifestTagSubs));
   if (subsidyToggle == 0) {
@@ -25,10 +25,10 @@ char TDipDlgCluster::IsTradeControlAtMinimum() {
   TToggleButton* sanctionToggle =
       static_cast<TToggleButton*>(ownerContext->ResolveControlByTag(kControlTagSanc));
   if (subsidyToggle->IsSelected()) {
-    return 1;
+    return true;
   }
   if (sanctionToggle != 0) {
     return sanctionToggle->IsSelected();
   }
-  return 0;
+  return false;
 }

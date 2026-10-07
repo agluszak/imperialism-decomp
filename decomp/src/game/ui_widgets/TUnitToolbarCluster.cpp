@@ -48,8 +48,8 @@ void TUnitToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
 }
 
 // FUNCTION: IMPERIALISM 0x00586150
-char TUnitToolbarCluster::IsTradeControlAtMinimum() {
-  return 1;
+bool TUnitToolbarCluster::IsTradeControlAtMinimum() {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00586170

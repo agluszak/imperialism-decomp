@@ -1720,7 +1720,7 @@ void TTaskForce::CarryOutOrders() {
   }
   default:
     if (g_UnknownMapOrderExecutionGuard == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNavy, 0xb78);
+      ReportAssertionFailure(s_SourcePathUNavy, 0xb78);
     }
     break;
   }

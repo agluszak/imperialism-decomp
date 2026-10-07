@@ -363,7 +363,7 @@ BOOL CDib::AttachPackedInfoHeader(BITMAPINFO* info, BOOL ownsInfo, HGLOBAL hGlob
 // FUNCTION: IMPERIALISM 0x0047aa00
 UINT CDib::SelectAndRealizeDibPalette(CDC* dc, BOOL background) {
   if (m_hPalette == NULL) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("CDib.cpp", 0xe9);
+    ReportAssertionFailure("CDib.cpp", 0xe9);
     return 0;
   }
 
@@ -599,7 +599,7 @@ HBITMAP CDib::CreateDibBitmapFromStoredInfo(CDC* dc) {
 // FUNCTION: IMPERIALISM 0x0047b2d0
 BOOL CDib::Compress(CDC* dc, BOOL compress) {
   if (g_dibCompressAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\CDib.cpp", 0x31b);
+    ReportAssertionFailure("D:\\Ambit\\CDib.cpp", 0x31b);
   }
 
   if (m_pInfoHeader->bmiHeader.biBitCount != 4 && m_pInfoHeader->bmiHeader.biBitCount != 8) {

@@ -26,7 +26,7 @@ public:
   virtual void FillOrders();
   virtual short GetNumShipsToBuild();                 // 0x16 0x4be480
   virtual short GetNumCarsToBuild();                  // 0x17 0x4be4c0
-  virtual char DoIncreasedTransport();                // 0x18 0x4be650
+  virtual bool DoIncreasedTransport();                // 0x18 0x4be650
   virtual void AdvanceNeedTargetRoundRobin();         // 0x19 0x4be690
   virtual void PleaseBuildShip(short orderKind);      // 0x1a 0x4be3f0
   virtual void IndustryOrder(short industrySlot);     // 0x1b 0x4be410

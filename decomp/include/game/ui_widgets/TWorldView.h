@@ -34,7 +34,7 @@ public:
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                    RgnHandle hitArg) override;
   virtual void DoPostCreate(int arg) override;
-  virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
+  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
   virtual void SetMapOverlayModeAndRenderPreview(unsigned char overlayMode);
   virtual void RenderMapContextOverlayWithScopedClipAndSurface();

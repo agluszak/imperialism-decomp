@@ -641,7 +641,7 @@ void TCity::VerifyStocks() {
       bool dispatchGate = this->ownerNation->IsRemote();
       if ((!dispatchGate || g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) &&
           !g_Sanitize_City_Counter_Value) {
-        TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCity.cpp", 0x47f);
+        ReportAssertionFailure("D:\\Ambit\\Cross\\UCity.cpp", 0x47f);
       }
       *needCursor = 0;
     }

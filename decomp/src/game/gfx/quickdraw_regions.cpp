@@ -274,7 +274,7 @@ void OffsetRgn(RgnHandle region, int horizontalOffset, int verticalOffset) {
 // FUNCTION: IMPERIALISM 0x00497b70
 void RefreshRgnBoundingBox(RgnHandle region) {
   if (g_QuickDrawRegionBoundsAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath, 0x86b);
+    ReportAssertionFailure(g_szQuickDrawSourcePath, 0x86b);
   }
   ::GetRgnBox(static_cast<HRGN>((*region)->rgn.m_hObject), &(*region)->rgnBBox);
 }
@@ -475,7 +475,7 @@ void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom)
 // FUNCTION: IMPERIALISM 0x00498c30
 bool EqualRgn(RgnHandle first, RgnHandle second) {
   if (g_QuickDrawEqualRgnAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath, 0x999);
+    ReportAssertionFailure(g_szQuickDrawSourcePath, 0x999);
   }
   return false;
 }

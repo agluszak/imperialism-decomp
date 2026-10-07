@@ -10,7 +10,7 @@ class TCloseButton : public TPictureButton {
 public:
   DECLARE_DYNCREATE(TCloseButton)
   virtual ~TCloseButton() override; // slot 0x01 (scalar deleting destructor)
-  virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event,
+  virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                CPoint origin) override; // slot 0x46 0x584b70
 
   TCloseButton();

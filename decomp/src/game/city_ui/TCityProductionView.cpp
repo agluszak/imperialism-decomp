@@ -623,7 +623,7 @@ void TCityProductionView::UpdateUnits() {
     placard = static_cast<TPlacard*>(ResolveControlByTag(tags[i]));
     if (placard == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs, assertionLines[i]);
+      ReportAssertionFailure(s_SourcePathUCityDialogs, assertionLines[i]);
     }
     placard->SetValue(predictedNeeds[resourceIds[i]], true);
   }

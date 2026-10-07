@@ -161,14 +161,14 @@ void TDisplayMgr::AboutToLoseControl(unsigned char) {
 // FUNCTION: IMPERIALISM 0x004fec20
 void TDisplayMgr::CloseBooks() {
   if (g_nUiInvalidationAssertFlagLine471 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x1d7);
+    ReportAssertionFailure("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x1d7);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004fec50
 void TDisplayMgr::DismissTouchyFloaters(TToolboxEvent*) {
   if (g_nUiInvalidationAssertFlagLine495 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x1ef);
+    ReportAssertionFailure("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x1ef);
   }
 }
 
@@ -194,9 +194,9 @@ void TDisplayMgr::SetMenuHeight(unsigned char) {}
 void TDisplayMgr::SetBitDepth(unsigned char bitDepth) {
   if (dialogActiveFlag != 0) {
     if (bitDepth != 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x266);
+      ReportAssertionFailure("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x266);
     } else {
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x268);
+      ReportAssertionFailure("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x268);
     }
   }
 }
@@ -258,7 +258,7 @@ void TDisplayMgr::CloseFloaters() {
   while (cursor.More() != 0) {
     if (window != 0) {
       if (window->IsActionable() && window->controlValue == kClass99WindowId) {
-        if (window->IsModal() != 0) {
+        if (window->IsModal()) {
           window->Dismiss(kControlTagOkok, true);
         } else {
           window->CloseAndFree();

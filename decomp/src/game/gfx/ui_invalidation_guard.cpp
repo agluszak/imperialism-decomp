@@ -6,7 +6,7 @@
 #include "game/globals/ui_core_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0049d620
-int TemporarilyClearAndRestoreUiInvalidationFlag(...) {
+int ReportAssertionFailure(...) {
   int previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(previous);
   return 0;

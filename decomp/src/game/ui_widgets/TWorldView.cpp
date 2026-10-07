@@ -419,7 +419,7 @@ void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileInd
                                                                      int projectionScale) {}
 
 // FUNCTION: IMPERIALISM 0x00596100
-char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
+bool TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
 
   CTemporaryRegion surface;
 
@@ -432,26 +432,26 @@ char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
   int stridedRecord = TileIndexFromColumnRow((int)tileRow, (int)tileCol);
   if (event->mouseButton == 1) {
     ShiftClick(stridedRecord, regionBand);
-    return 1;
+    return true;
   }
 
   if (((unsigned short)GetAsyncKeyState(0x11) & 0x8000) != 0) {
     ControlClick(stridedRecord, regionBand);
-    return 1;
+    return true;
   }
 
   if (((unsigned short)GetAsyncKeyState(0x10) & 0x8000) != 0) {
     ShiftClick(stridedRecord, regionBand);
-    return 1;
+    return true;
   }
 
   if (g_pAmbitApplication->screenMode < 2) {
     NormalClick(static_cast<short>(stridedRecord), regionBand);
-    return 1;
+    return true;
   }
 
   CommandOptionClick(stridedRecord, regionBand);
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00596270
@@ -527,8 +527,8 @@ void TWorldView::NormalClick(short nTileIndex, int nInputFlags) {
         g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags)) {
       refresh = true;
     } else {
-      handled = g_pSelectedCivilianOrderState->HandleCivilianTileOrderAction(nTileIndex,
-                                                                             nInputFlags) != 0;
+      handled =
+          g_pSelectedCivilianOrderState->HandleCivilianTileOrderAction(nTileIndex, nInputFlags);
     }
     break;
   case 1:
@@ -538,8 +538,8 @@ void TWorldView::NormalClick(short nTileIndex, int nInputFlags) {
         g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags)) {
       refresh = true;
     } else {
-      handled = g_pMapContextActionManager->HandleMapClickByCivilianCursorState(nTileIndex,
-                                                                                nInputFlags) != 0;
+      handled =
+          g_pMapContextActionManager->HandleMapClickByCivilianCursorState(nTileIndex, nInputFlags);
     }
     break;
   case 2:

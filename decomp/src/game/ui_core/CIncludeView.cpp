@@ -134,7 +134,7 @@ LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
   switch (wParam & 0xff) {
   case 0:
     if (g_nIncludeViewAssertGate == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x77);
+      ReportAssertionFailure(g_szIncludeViewSourcePath, 0x77);
     }
     m_activeDialogContext = 0;
     m_pMainPaneDib = 0;
@@ -144,7 +144,7 @@ LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
     m_activeDialogContext->ResolveControlByTag(kControlTagMain); // 'main'
     break;
   default:
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x84);
+    ReportAssertionFailure(g_szIncludeViewSourcePath, 0x84);
     break;
   }
   return 0;
@@ -299,14 +299,14 @@ CPoint IncludeViewOverlayRectRecord::ComputeSpan() const {
 // FUNCTION: IMPERIALISM 0x00483250
 void CIncludeView::AssertOverlayQueueGate() {
   if (g_nIncludeViewQueueAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x166);
+    ReportAssertionFailure(g_szIncludeViewSourcePath, 0x166);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00483280
 void CIncludeView::BeginTracking(CPoint* startPoint, TControl* tracker) {
   if (g_nIncludeViewCaptureAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x16e);
+    ReportAssertionFailure(g_szIncludeViewSourcePath, 0x16e);
   }
   m_capturedControl = tracker;
   CWnd::FromHandle(::SetCapture(m_hWnd));
@@ -346,7 +346,7 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
     SetGlobalUiInvalidationFlagAndReturnPrevious(previousFlag);
   }
   if (g_nIncludeViewReinitAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x1d2);
+    ReportAssertionFailure(g_szIncludeViewSourcePath, 0x1d2);
   }
 
   TPicture* mainPane =
@@ -465,7 +465,7 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
   g_McAppMouseCaptureState.NotifyCaptureOwnerState1AndMaybeUpdateCoords(nFlags, point.x, point.y);
   if (m_capturedControl != 0) {
     if (g_nIncludeViewPointerAssertGate == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x2b7);
+      ReportAssertionFailure(g_szIncludeViewSourcePath, 0x2b7);
     }
     CPoint controlRelativePoint(point);
     m_capturedControl->WindowToLocal(&controlRelativePoint);

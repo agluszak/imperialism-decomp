@@ -60,7 +60,7 @@ CFile* TAssetMgr::LoadTableResourceStreamByName(CString name) {
   CFileException exception;
   if (file->Open(name, CFile::modeReadWrite, &exception) == 0 &&
       g_resourceStreamOpenSuppressAssert == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\WAssetMgr.cpp", 0xce);
+    ReportAssertionFailure("D:\\Ambit\\WAssetMgr.cpp", 0xce);
   }
   return file;
 }

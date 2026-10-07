@@ -97,7 +97,7 @@ public:
 
   void InitializeDiplomacyMinisterActionControlsAndLabels();
 
-  char CheckEntanglements(int targetNationSlot, eDipAction action);
+  bool CheckEntanglements(int targetNationSlot, eDipAction action);
 
   void ChangeSelectedActionTopic(int topicIndex);
 
