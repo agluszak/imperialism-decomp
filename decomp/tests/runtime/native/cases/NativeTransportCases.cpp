@@ -20,7 +20,7 @@ RuntimeActionResult RunDirectTransport(NativeTransition& transition) {
   nation->needTargetByType[kResourceSteel] = 4;
   nation->transportCapacity = 15;
   nation->reservedTransportCapacity = 11;
-  city->CityStockByType(kResourceSteel) = 2;
+  city->stockByType[kResourceSteel] = 2;
 
   JsonObject args;
   args.Set("nation", static_cast<int>(ActiveNationSlot()));
@@ -56,9 +56,9 @@ RuntimeActionResult RunTransportedItemsPhase(NativeTransition& transition) {
   for (resource = 0; resource < kResourceKindCount; ++resource) {
     nation->transportedItemsByResource[resource] = 0;
   }
-  city->CityStockByType(kResourceCotton) = 3;
-  city->CityStockByType(kResourceWool) = 2;
-  city->CityStockByType(kResourceGold) = 11;
+  city->stockByType[kResourceCotton] = 3;
+  city->stockByType[kResourceWool] = 2;
+  city->stockByType[kResourceGold] = 11;
   nation->transportedItemsByResource[kResourceCotton] = 5;
   nation->transportedItemsByResource[kResourceWool] = -7;
   nation->transportedItemsByResource[kResourceGold] = 4;
@@ -77,8 +77,8 @@ RuntimeActionResult RunTransportedItemsPhase(NativeTransition& transition) {
 RuntimeActionResult RunRollingStockSuccess(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
-  city->CityStockByType(kResourceLumber) = 1;
-  city->CityStockByType(kResourceSteel) = 1;
+  city->stockByType[kResourceLumber] = 1;
+  city->stockByType[kResourceSteel] = 1;
   nation->transportCapacity = 15;
 
   JsonObject args;
@@ -95,8 +95,8 @@ RuntimeActionResult RunRollingStockSuccess(NativeTransition& transition) {
 RuntimeActionResult RunRollingStockInsufficient(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
-  city->CityStockByType(kResourceLumber) = 0;
-  city->CityStockByType(kResourceSteel) = 1;
+  city->stockByType[kResourceLumber] = 0;
+  city->stockByType[kResourceSteel] = 1;
   nation->transportCapacity = 15;
 
   JsonObject args;
@@ -113,8 +113,8 @@ RuntimeActionResult RunRollingStockInsufficient(NativeTransition& transition) {
 RuntimeActionResult RunMerchantMarine(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
-  city->CityStockByType(kResourceLumber) = 3;
-  city->CityStockByType(kResourceFabric) = 1;
+  city->stockByType[kResourceLumber] = 3;
+  city->stockByType[kResourceFabric] = 1;
   nation->merchantCapacity = 15;
 
   JsonObject args;

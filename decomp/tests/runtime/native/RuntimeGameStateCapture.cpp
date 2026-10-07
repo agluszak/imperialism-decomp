@@ -2339,7 +2339,7 @@ JSON_Value* CaptureCity(TCity* city) {
   object.Set("low_stock", city->lowStockFlag ? true : false);
   object.Set("reserved_by_type", CaptureResourceTable(city->reservedByType));
   object.Set("power_available", static_cast<int>(city->powerAvailable));
-  object.Set("stockpile", CaptureResourceTable(&city->cityStockCotton));
+  object.Set("stockpile", CaptureResourceTable(city->stockByType));
   object.Set("production_orders", CaptureShortArray(city->productionOrderTable, 0x10));
   object.Set("production_accum", CaptureShortArray(city->productionAccum, 0x10));
   object.Set("building_windows", CaptureCityBuildingWindows(city));
@@ -3238,8 +3238,7 @@ JSON_Value* CaptureTradeEphemeral() {
       entry.Set("aid_nonzero", aidNonzero.Release());
     }
     if (nation->city != 0) {
-      entry.Set("city_stocks",
-                CaptureShortArray(&nation->city->cityStockCotton, kResourceKindCount));
+      entry.Set("city_stocks", CaptureShortArray(nation->city->stockByType, kResourceKindCount));
       entry.Set("city_power_flag", static_cast<int>(nation->city->powerPlantUpgradeQueuedFlag));
     } else {
       entry.SetNull("city_stocks");
@@ -3286,8 +3285,7 @@ JSON_Value* CaptureCityTransportEphemeral() {
         flags.Add(static_cast<int>(nation->city->productionFlags[index]));
       }
       entry.Set("production_flags", flags.Release());
-      entry.Set("city_stocks",
-                CaptureShortArray(&nation->city->cityStockCotton, kResourceKindCount));
+      entry.Set("city_stocks", CaptureShortArray(nation->city->stockByType, kResourceKindCount));
     } else {
       entry.SetNull("production_orders");
       entry.SetNull("production_accum");
@@ -3385,8 +3383,7 @@ JSON_Value* CaptureCiviliansEphemeral() {
     entry.Set("towns", towns.Release());
     entry.Set("home_tile", static_cast<int>(nation->homeTileIndex));
     if (nation->city != 0) {
-      entry.Set("city_stocks",
-                CaptureShortArray(&nation->city->cityStockCotton, kResourceKindCount));
+      entry.Set("city_stocks", CaptureShortArray(nation->city->stockByType, kResourceKindCount));
       entry.Set("order_counts",
                 CaptureShortArray(nation->city->orderCountByType, kIndustryActionSlotCount));
     } else {

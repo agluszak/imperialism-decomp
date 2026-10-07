@@ -430,8 +430,8 @@ void ImperialismApp::OnBequeathGoodies() {
     int nationSlot = dialog.slider.GetPos();
     TCity* city = g_apNationStates[nationSlot] != 0 ? g_apNationStates[nationSlot]->city : 0;
     for (short commodity = 0; commodity < kResourceKindCount; ++commodity) {
-      city->CityStockByType(commodity) = static_cast<short>(
-          city->CityStockByType(commodity) + static_cast<short>(dialog.commodityAdjustment));
+      city->stockByType[commodity] = static_cast<short>(
+          city->stockByType[commodity] + static_cast<short>(dialog.commodityAdjustment));
       city->VerifyStocks();
     }
 

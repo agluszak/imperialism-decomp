@@ -469,10 +469,10 @@ void TCityInteriorMinister::DetermineTradeBid(TCity* city) {
   if (localB != 0 || localA != 0) {
     resultCode = 7;
     magnitude = static_cast<short>(localA + localB);
-  } else if (city->cityStockSteel == 0) {
+  } else if (city->stockByType[kResourceSteel] == 0) {
     resultCode = 11;
     magnitude = 4;
-  } else if (city->cityStockLumber == 0) {
+  } else if (city->stockByType[kResourceLumber] == 0) {
     resultCode = 9;
     magnitude = 4;
   } else {
@@ -480,9 +480,9 @@ void TCityInteriorMinister::DetermineTradeBid(TCity* city) {
     magnitude = 0;
 
     short popHalfNeed = city->productionSummary->populationCount / 2;
-    if (city->cityStockCannedFood < popHalfNeed) {
+    if (city->stockByType[kResourceFood] < popHalfNeed) {
       resultCode = 7;
-      magnitude = city->productionSummary->populationCount - city->cityStockCannedFood;
+      magnitude = city->productionSummary->populationCount - city->stockByType[kResourceFood];
       if (magnitude > 6) {
         magnitude = 6;
       }
@@ -523,7 +523,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
   short amount;
   TCityTask* task;
 
-  if (city->cityStockCotton > 14 || city->cityStockWool > 14) {
+  if (city->stockByType[kResourceCotton] > 14 || city->stockByType[kResourceWool] > 14) {
     amount = static_cast<short>(
         (greatPower->needCurrentByType[1] + greatPower->needCurrentByType[0]) / 2 -
         city->GetBuildingType(0));
@@ -534,7 +534,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
     }
   }
 
-  if (city->cityStockCoal > 14 && city->cityStockIron > 14) {
+  if (city->stockByType[kResourceCoal] > 14 && city->stockByType[kResourceIron] > 14) {
     amount = static_cast<short>(greatPower->needCurrentByType[3] - city->GetBuildingType(2));
     if (amount > 0 && !commandQueue->ContainsTask(0x37)) {
       task = new TCityTask();
@@ -543,7 +543,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
     }
   }
 
-  if (city->cityStockTimber > 14) {
+  if (city->stockByType[kResourceTimber] > 14) {
     amount = static_cast<short>(greatPower->needCurrentByType[2] / 2 - city->GetBuildingType(4));
     if (amount > 0 && !commandQueue->ContainsTask(0x39)) {
       task = new TCityTask();
@@ -552,7 +552,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
     }
   }
 
-  if (city->cityStockFabric > 14) {
+  if (city->stockByType[kResourceFabric] > 14) {
     amount = static_cast<short>(city->GetBuildingType(0) / 2 - city->GetBuildingType(1));
     if (amount > 0 && !commandQueue->ContainsTask(0x36)) {
       task = new TCityTask();
@@ -561,7 +561,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
     }
   }
 
-  if (city->cityStockSteel > 14) {
+  if (city->stockByType[kResourceSteel] > 14) {
     amount = static_cast<short>(city->GetBuildingType(2) / 2 - city->GetBuildingType(3));
     if (amount > 0 && !commandQueue->ContainsTask(0x38)) {
       task = new TCityTask();
@@ -570,7 +570,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
     }
   }
 
-  if (city->cityStockLumber > 14) {
+  if (city->stockByType[kResourceLumber] > 14) {
     amount = static_cast<short>(city->GetBuildingType(4) / 2 - city->GetBuildingType(5));
     if (amount > 0 && !commandQueue->ContainsTask(0x3a)) {
       task = new TCityTask();
@@ -851,7 +851,7 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
 
   short needHeadroom =
       static_cast<short>(greatPower->transportCapacity - greatPower->reservedTransportCapacity);
-  if (city->cityStockHorses < 5) {
+  if (city->stockByType[kResourceHorses] < 5) {
     needHeadroom = static_cast<short>(needHeadroom -
                                       city->DirectTransport(5, greatPower->needCurrentByType[5]));
   }
@@ -968,19 +968,19 @@ short TCityInteriorMinister::DoTransport(TCity* city, TTaskList* commandQueue) {
 
   for (short inputResourceType = kResourceClothing; inputResourceType < kResourceManufacturedEnd;
        ++inputResourceType) {
-    short amount = city->CityStockByType(inputResourceType);
+    short amount = city->stockByType[inputResourceType];
     if (amount > citySummary[inputResourceType]) {
       amount = citySummary[inputResourceType];
     }
-    if (city->CityStockByType(inputResourceType) < citySummary[inputResourceType]) {
+    if (city->stockByType[inputResourceType] < citySummary[inputResourceType]) {
       TCityTask* task = new TCityTask();
       task->ICityTask(inputResourceType, city,
                       static_cast<short>(citySummary[inputResourceType] -
-                                         city->CityStockByType(inputResourceType)));
+                                         city->stockByType[inputResourceType]));
       commandQueue->AddTask(task);
     }
-    city->CityStockByType(inputResourceType) =
-        static_cast<short>(city->CityStockByType(inputResourceType) - amount);
+    city->stockByType[inputResourceType] =
+        static_cast<short>(city->stockByType[inputResourceType] - amount);
     city->VerifyStocks();
     city->consumedProductionInputByType[inputResourceType] = amount;
   }
@@ -2007,7 +2007,8 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
     }
   }
 
-  city->cityStockArms = static_cast<short>(city->cityStockArms + temporarilyReservedShipArms);
+  city->stockByType[kResourceArms] =
+      static_cast<short>(city->stockByType[kResourceArms] + temporarilyReservedShipArms);
   city->VerifyStocks();
   temporarilyReservedShipArms = 0;
 
@@ -2121,22 +2122,24 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations() {
   orderMetricTable[23] = 0;
   orderMetricTable[24] = 0;
 
-  short clothingConsumed = city->cityStockClothing;
+  short clothingConsumed = city->stockByType[kResourceClothing];
   if (clothingConsumed > 2) {
     clothingConsumed = 2;
   }
-  short furnitureConsumed = city->cityStockFurniture;
+  short furnitureConsumed = city->stockByType[kResourceFurniture];
   if (furnitureConsumed > 2) {
     furnitureConsumed = 2;
   }
-  city->cityStockClothing = static_cast<short>(city->cityStockClothing - clothingConsumed);
+  city->stockByType[kResourceClothing] =
+      static_cast<short>(city->stockByType[kResourceClothing] - clothingConsumed);
   city->VerifyStocks();
   city->consumedProductionInputByType[13] = clothingConsumed;
-  city->cityStockFurniture = static_cast<short>(city->cityStockFurniture - furnitureConsumed);
+  city->stockByType[kResourceFurniture] =
+      static_cast<short>(city->stockByType[kResourceFurniture] - furnitureConsumed);
   city->VerifyStocks();
   city->consumedProductionInputByType[14] = furnitureConsumed;
-  if (furnitureConsumed == 0 && city->cityStockLumber > 1) {
-    city->cityStockLumber = static_cast<short>(city->cityStockLumber - 2);
+  if (furnitureConsumed == 0 && city->stockByType[kResourceLumber] > 1) {
+    city->stockByType[kResourceLumber] = static_cast<short>(city->stockByType[kResourceLumber] - 2);
     city->VerifyStocks();
     temporaryFurnitureSubstituteLumber = 2;
   }
@@ -2230,7 +2233,7 @@ void TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutput
   orderMetricTable[9] = static_cast<short>(city->GetBuildingType(4) + 1);
   orderMetricTable[8] = static_cast<short>(city->GetBuildingType(0) + 1);
   orderMetricTable[11] = static_cast<short>(city->GetBuildingType(2) + 1);
-  if (city->cityStockPaper < 3 && orderMetricTable[10] == 0) {
+  if (city->stockByType[kResourcePaper] < 3 && orderMetricTable[10] == 0) {
     orderMetricTable[10] = 1;
   }
 
@@ -2238,7 +2241,7 @@ void TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutput
     int policyBand =
         cityPolicyFuzzySet->GetCrispOutput(static_cast<float>(greatPower->treasuryValue));
     short reserve = g_cityProductionReserveByPolicyBand[policyBand];
-    short quantity = static_cast<short>((city->cityStockLumber - reserve) / 2);
+    short quantity = static_cast<short>((city->stockByType[kResourceLumber] - reserve) / 2);
     if (quantity > 0) {
       short capacity = static_cast<short>(city->GetBuildingType(5) + 1);
       if (quantity > capacity) {
@@ -2246,7 +2249,7 @@ void TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutput
       }
       orderMetricTable[14] = quantity;
     }
-    quantity = static_cast<short>((city->cityStockFabric - reserve) / 2);
+    quantity = static_cast<short>((city->stockByType[kResourceFabric] - reserve) / 2);
     if (quantity > 0) {
       short capacity = static_cast<short>(city->GetBuildingType(1) + 1);
       if (quantity > capacity) {
@@ -2254,7 +2257,7 @@ void TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutput
       }
       orderMetricTable[13] = quantity;
     }
-    quantity = static_cast<short>((city->cityStockSteel - reserve) / 2);
+    quantity = static_cast<short>((city->stockByType[kResourceSteel] - reserve) / 2);
     if (quantity > 0) {
       short capacity = static_cast<short>(city->GetBuildingType(3) + 1);
       if (quantity > capacity) {
@@ -2278,8 +2281,8 @@ void TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutput
 // FUNCTION: IMPERIALISM 0x004c4840
 void TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle() {
   TCity* city = greatPower->city;
-  city->cityStockLumber =
-      static_cast<short>(city->cityStockLumber + temporaryFurnitureSubstituteLumber);
+  city->stockByType[kResourceLumber] =
+      static_cast<short>(city->stockByType[kResourceLumber] + temporaryFurnitureSubstituteLumber);
   city->VerifyStocks();
 
   switch (g_pSimMgr->GetEconomicTurn() % 3) {
@@ -2313,7 +2316,7 @@ void TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle(
     UpdateMinisterProductionMetricsForResourceIndex(8);
   }
   UpdateMinisterProductionMetricsForResourceIndex(10);
-  if (city->cityStockLumber < city->cityStockSteel) {
+  if (city->stockByType[kResourceLumber] < city->stockByType[kResourceSteel]) {
     UpdateMinisterProductionMetricsForResourceIndex(9);
     UpdateMinisterProductionMetricsForResourceIndex(11);
   } else {
@@ -2366,7 +2369,8 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
   } else {
     short basicMaterialNeed = static_cast<short>(orderSheet.ForResourceCode(0) * 2);
     RequestResource(0, basicMaterialNeed, 7);
-    short basicMaterialStock = static_cast<short>(city->cityStockCotton + city->cityStockWool);
+    short basicMaterialStock =
+        static_cast<short>(city->stockByType[kResourceCotton] + city->stockByType[kResourceWool]);
     if (basicMaterialStock < basicMaterialNeed) {
       RequestResource(1, static_cast<short>(basicMaterialNeed - basicMaterialStock), 7);
     }
@@ -2398,10 +2402,11 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
       }
     } else if (orderSlot >= 0x2b && orderSlot <= 0x32) {
       short armsRecovered = g_industryActionCostWeightResCode10[order->resourceTypeIndex];
-      if (armsRecovered > city->cityStockArms) {
-        armsRecovered = city->cityStockArms;
+      if (armsRecovered > city->stockByType[kResourceArms]) {
+        armsRecovered = city->stockByType[kResourceArms];
       }
-      city->cityStockArms = static_cast<short>(city->cityStockArms - armsRecovered);
+      city->stockByType[kResourceArms] =
+          static_cast<short>(city->stockByType[kResourceArms] - armsRecovered);
       city->VerifyStocks();
       temporarilyReservedShipArms = static_cast<short>(temporarilyReservedShipArms + armsRecovered);
     }
@@ -2448,8 +2453,8 @@ short TCityInteriorMinister::RequestLabor(short targetLabor) {
 // FUNCTION: IMPERIALISM 0x004c4e60
 void TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder() {
   TCity* city = greatPower->city;
-  if (city->cityStockHorses < 5) {
-    RequestResource(5, static_cast<short>(5 - city->cityStockHorses), 8);
+  if (city->stockByType[kResourceHorses] < 5) {
+    RequestResource(5, static_cast<short>(5 - city->stockByType[kResourceHorses]), 8);
   }
 
   short remainingNeedCapacity =
@@ -2489,7 +2494,7 @@ short TCityInteriorMinister::RequestResource(short resourceType, short requested
   TGreatPower* owner = greatPower;
   TCity* city = owner == 0 ? 0 : owner->city;
   short remaining = requestedAmount;
-  short* cityStock = &city->cityStockCotton;
+  short* cityStock = city->stockByType;
   if ((flags & 8) == 0) {
     if (cityStock[resourceType] >= requestedAmount) {
       return requestedAmount;

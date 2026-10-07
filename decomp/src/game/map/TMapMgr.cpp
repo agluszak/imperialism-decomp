@@ -445,8 +445,7 @@ void TMapMgr::VerifyMapDataAndWriteReport() {
   }
 
   fprintf(report, "Map verfication check\n\n");
-  int tileIndex = 0;
-  do {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
     signed char terrain = tile->terrainKindStorage;
     if (terrain < 0 || terrain > 7) {
@@ -470,8 +469,7 @@ void TMapMgr::VerifyMapDataAndWriteReport() {
       }
       provinceTileCounts[tile->cityRecordIndex]++;
     }
-    ++tileIndex;
-  } while (tileIndex < kStrategicTileCount);
+  }
 
   for (int p = 0; p < kProvinceCount; ++p) {
     if (provinceTileCounts[p] > 0x20) {
@@ -893,7 +891,7 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
       }
     }
     RiverSpriteCodeStorage finalVariant = terrainStateTable[tileIndex].riverSpriteCode;
-    if (0x1a < finalVariant && finalVariant < 0x2b) {
+    if (finalVariant > 0x1a && finalVariant < 0x2b) {
       terrainStateTable[tileIndex].riverSpriteCode = finalVariant - 0x10;
       return;
     }
@@ -960,7 +958,7 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
       if (v != 0) {
         terrainStateTable[tileIndex].spriteVariantIndex = v + 1;
         v = terrainStateTable[tileIndex].spriteVariantIndex;
-        if ((v == 0) || (4 < v)) {
+        if ((v == 0) || (v) > 4) {
           terrainStateTable[tileIndex].spriteVariantIndex = 1;
         }
         return;
@@ -970,7 +968,7 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
       terrainStateTable[tileIndex].spriteVariantIndex =
           terrainStateTable[neighbors[0]].spriteVariantIndex + 1;
       v = terrainStateTable[tileIndex].spriteVariantIndex;
-      if ((v == 0) || (4 < v)) {
+      if ((v == 0) || (v) > 4) {
         terrainStateTable[tileIndex].spriteVariantIndex = 1;
         return;
       }
@@ -1762,7 +1760,7 @@ void TMapMgr::GetNeighborTileIDArray(StrategicTileIndex tileIndex,
     neighborTiles[kStrategicHexDirectionNorthEast] = -1;
     neighborTiles[kStrategicHexDirectionSouthEast] = -1;
   }
-  if (0x3a < static_cast<int>(row)) {
+  if (static_cast<int>(row) > 0x3a) {
     neighborTiles[kStrategicHexDirectionSouthEast] = -1;
     neighborTiles[kStrategicHexDirectionSouthWest] = -1;
     return;
@@ -2229,8 +2227,7 @@ byte TMapMgr::AreMineralsPresent(StrategicTileIndex nTileIndex) {
 
   fHasDiscoveryCandidate = 0;
   if (terrainStateTable[nTileIndex].resourceTypeByEdge[0] != '\0') {
-    nResourceSlotIndex = 0;
-    do {
+    for (nResourceSlotIndex = 0; nResourceSlotIndex < 2; ++nResourceSlotIndex) {
       if (fHasDiscoveryCandidate != 0) {
         return fHasDiscoveryCandidate;
       }
@@ -2243,8 +2240,7 @@ byte TMapMgr::AreMineralsPresent(StrategicTileIndex nTileIndex) {
             (g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] != '\0')))) {
         fHasDiscoveryCandidate = 1;
       }
-      ++nResourceSlotIndex;
-    } while (nResourceSlotIndex < 2);
+    }
   }
   return fHasDiscoveryCandidate;
 }
@@ -3734,8 +3730,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
 // FUNCTION: IMPERIALISM 0x00518470
 void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
   signed char* tagCursor = &terrainStateTable->ownerNationTag;
-  int tileIndex = 0;
-  do {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     if (*tagCursor >= 7 && *tagCursor <= 0x16) {
       signed char* ownerByte =
           &terrainStateTable[static_cast<short>(tileIndex)].secondaryOwnerNationTag;
@@ -3744,8 +3739,7 @@ void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
       }
     }
     tagCursor += 0x24;
-    ++tileIndex;
-  } while (tileIndex < kStrategicTileCount);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005184e0
@@ -3854,13 +3848,11 @@ void ByteSwapCityScoreTableShortFields(Province* table) {
       ++linkedSlot;
       --k;
     } while (k != 0);
-    k = 0xa;
     short* devSlot = record->resourceDevelopmentCounts;
-    do {
+    for (int i = 0; i < 0xa; ++i) {
       SwapShortBytes(devSlot);
       ++devSlot;
-      --k;
-    } while (k != 0);
+    }
     ++record;
   }
 }
@@ -3911,8 +3903,7 @@ bool TMapMgr::HasActiveLinkedTileWithReachableSea(int regionIndex) {
 // FUNCTION: IMPERIALISM 0x00518b40
 int TMapMgr::LandPrice(StrategicTileIndex nTileIndex) {
   int total = 0;
-  int edge = 0;
-  do {
+  for (int edge = 0; edge < 2; ++edge) {
     short resourceType = terrainStateTable[nTileIndex].resourceTypeByEdge[edge];
     if (resourceType != -1) {
       if (resourceType < kResourceManufacturedEnd) {
@@ -3923,8 +3914,7 @@ int TMapMgr::LandPrice(StrategicTileIndex nTileIndex) {
         total += 4000;
       }
     }
-    ++edge;
-  } while (edge < 2);
+  }
   return total;
 }
 
@@ -4095,8 +4085,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
     recordIndex++;
   } while (recordIndex < kProvinceCount);
 
-  int tileIndex = 0;
-  do {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     TTerrainStateRecord& tile = terrainStateTable[tileIndex];
     TCivUnit* civilianOrder = tile.firstCivilianOrder;
     if (civilianOrder != 0) {
@@ -4119,8 +4108,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
     }
     tile.regionSubtypeTag = -1;
     tile.tileActionState = -1;
-    tileIndex++;
-  } while (tileIndex < kStrategicTileCount);
+  }
 
   int slot;
   for (int nationIndex = 0; nationIndex < kMajorNationCount; ++nationIndex) {

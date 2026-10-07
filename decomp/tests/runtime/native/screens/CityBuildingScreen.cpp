@@ -446,8 +446,7 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
                   "max=%d primary_stock=%d treasury=%d",
                   firstRaise != 0, firstRaise == 0 ? -1 : firstRaise->IsEnabled(),
                   firstRaise == 0 ? -1 : firstRaise->IsActionable(), firstOrder->quantity,
-                  firstOrder->MaxOrder(),
-                  City()->CityStockByType(firstOrder->primaryInputResourceId),
+                  firstOrder->MaxOrder(), City()->stockByType[firstOrder->primaryInputResourceId],
                   City()->ownerNation->treasuryValue);
     return PageFailure("verify the armory's state", detail);
   }

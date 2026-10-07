@@ -94,9 +94,9 @@ RuntimeActionResult RunRecallTradeBids(NativeTransition& transition) {
     nation->rememberedTradeOffersByResource[resource] = 0;
     nation->itemPotentials[resource] = 9;
   }
-  city->CityStockByType(kResourceCotton) = 3;
-  city->CityStockByType(kResourceWool) = 4;
-  city->CityStockByType(kResourceTimber) = 5;
+  city->stockByType[kResourceCotton] = 3;
+  city->stockByType[kResourceWool] = 4;
+  city->stockByType[kResourceTimber] = 5;
   nation->rememberedTradeOffersByResource[kResourceCotton] = 7;
   nation->rememberedTradeOffersByResource[kResourceWool] = -1;
   nation->rememberedTradeOffersByResource[kResourceTimber] = 2;
@@ -165,9 +165,9 @@ RuntimeActionResult RunPlayerTradePhaseReset(NativeTransition& transition) {
     nation->rememberedTradeOffersByResource[resource] = 0;
     nation->itemPotentials[resource] = 9;
   }
-  city->CityStockByType(kResourceCotton) = 3;
-  city->CityStockByType(kResourceWool) = 4;
-  city->CityStockByType(kResourceTimber) = 5;
+  city->stockByType[kResourceCotton] = 3;
+  city->stockByType[kResourceWool] = 4;
+  city->stockByType[kResourceTimber] = 5;
   nation->rememberedTradeOffersByResource[kResourceCotton] = 7;
   nation->rememberedTradeOffersByResource[kResourceWool] = -1;
   nation->rememberedTradeOffersByResource[kResourceTimber] = 2;
@@ -361,18 +361,18 @@ void SeedMerchantCapacity(TCity* city) {
 
 void SeedTradeableStocks(TGreatPower* nation) {
   TCity* city = nation->city;
-  city->CityStockByType(kResourceCotton) = 8;
-  city->CityStockByType(kResourceWool) = 8;
-  city->CityStockByType(kResourceTimber) = 12;
-  city->CityStockByType(kResourceCoal) = 10;
-  city->CityStockByType(kResourceIron) = 10;
-  city->CityStockByType(kResourceHorses) = 4;
-  city->CityStockByType(kResourceOil) = 6;
-  city->CityStockByType(kResourceFood) = 16;
-  city->CityStockByType(kResourceClothing) = 10;
-  city->CityStockByType(kResourceFurniture) = 8;
-  city->CityStockByType(kResourceHardware) = 8;
-  city->CityStockByType(kResourceArms) = 6;
+  city->stockByType[kResourceCotton] = 8;
+  city->stockByType[kResourceWool] = 8;
+  city->stockByType[kResourceTimber] = 12;
+  city->stockByType[kResourceCoal] = 10;
+  city->stockByType[kResourceIron] = 10;
+  city->stockByType[kResourceHorses] = 4;
+  city->stockByType[kResourceOil] = 6;
+  city->stockByType[kResourceFood] = 16;
+  city->stockByType[kResourceClothing] = 10;
+  city->stockByType[kResourceFurniture] = 8;
+  city->stockByType[kResourceHardware] = 8;
+  city->stockByType[kResourceArms] = 6;
   nation->treasuryValue = 20000;
 }
 

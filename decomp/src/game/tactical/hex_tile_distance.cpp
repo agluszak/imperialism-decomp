@@ -16,7 +16,7 @@ int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB) {
 
   int rowDelta = static_cast<int>(rowB - rowA);
   colA = (colB - rowDelta) - colA;
-  if (0 < colA) {
+  if (colA > 0) {
     return colA / 2 + rowDelta;
   }
   return rowDelta;

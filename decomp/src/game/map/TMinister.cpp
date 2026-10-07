@@ -67,7 +67,7 @@ void TMinister::FigureOutRanking() {
 
   int entryIndex = 1;
   short rank = 1;
-  if (1 < this->ranking->GetSize()) {
+  if (this->ranking->GetSize() > 1) {
     do {
       IndexAndRankRecord* current = static_cast<IndexAndRankRecord*>(
           this->ranking->GetPtrListEntryByOneBasedIndex(entryIndex));

@@ -23,7 +23,7 @@ public:
                           short secondaryInputResourceId,
                           short productionSlot); // slot 0x11 0x4b5290
   short requestedQuantity;        // desired quantity retained across availability clamps
-  short primaryInputResourceId;   // first cityStockByType / trackingSlots resource index
+  short primaryInputResourceId;   // first stockByType / trackingSlots resource index
   short secondaryInputResourceId; // second resource index, or -1 for two units of primary
   short productionSlot;           // city productionAccum index
 

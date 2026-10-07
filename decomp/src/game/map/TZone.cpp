@@ -500,8 +500,7 @@ void TZone::HandleKeyDown(int key_id) {
       if (sVarSlotId == static_cast<short>(key_id)) {
         ShowFocusIngot(1);
         key_id = sVarSlotId + 1;
-        nSlotsRemaining = 6;
-        do {
+        for (int i = 0; i < 6; ++i) {
           if ((nationKeyMask & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
             sVarSlotId = PickIngotTile();
             g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
@@ -509,8 +508,7 @@ void TZone::HandleKeyDown(int key_id) {
             g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal = -1;
           }
           ++key_id;
-          --nSlotsRemaining;
-        } while (nSlotsRemaining != 0);
+        }
       } else {
         sVarSlotId = PickIngotTile();
         g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
@@ -603,8 +601,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
   }
 
   int score = 0x1388;
-  int neighborDir = 0;
-  do {
+  for (int neighborDir = 0; neighborDir < 6; ++neighborDir) {
     short neighborTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
         static_cast<short>(tileIndex), static_cast<short>(neighborDir));
     if (neighborTile != -1) {
@@ -631,8 +628,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
         }
       }
     }
-    ++neighborDir;
-  } while (neighborDir < 6);
+  }
 
   return score;
 }
@@ -660,8 +656,8 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
         }
       }
       if (zoneForTile == this) {
-        int neighborDir = 0;
-        do {
+        int neighborDir;
+        for (neighborDir = 0; neighborDir < 6; ++neighborDir) {
           short neighborTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
               tileCandidate, static_cast<short>(neighborDir));
           if (neighborTile != -1) {
@@ -679,8 +675,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
               }
             }
           }
-          ++neighborDir;
-        } while (neighborDir < 6);
+        }
         if (neighborDir < 6) {
           break;
         }
@@ -713,7 +708,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
     short spiralTile = TileIndexFromRowCol(spiral.row, spiral.col);
 
     bool tileInBounds;
-    if ((spiralTile < 0) || (0x194f < spiralTile)) {
+    if ((spiralTile < 0) || (spiralTile) > 0x194f) {
       tileInBounds = false;
     } else {
       tileInBounds = true;
@@ -734,7 +729,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
     if (spiral.ring <= spiral.stepInRing) {
       spiral.stepInRing = 0;
       ++spiral.direction;
-      if (5 < spiral.direction) {
+      if (spiral.direction > 5) {
         ++spiral.ring;
         spiral.direction = 0;
         TMapMgr::StepHexRowColByDirectionWithWrapRules(&spiral.row, &spiral.col,
@@ -1213,8 +1208,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
     }
 
     if (context != 0) {
-      int direction = 0;
-      do {
+      for (int direction = 0; direction < 6; ++direction) {
         short neighborTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
             static_cast<short>(tileIndex), static_cast<short>(direction));
         if (neighborTile != -1) {
@@ -1246,8 +1240,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
             }
           }
         }
-        ++direction;
-      } while (direction < 6);
+      }
     }
 
     ++tileIndex;

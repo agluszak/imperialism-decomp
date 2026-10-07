@@ -22,9 +22,9 @@ short TOrItemOrder::MaxOrder() {
   availableResources =
       static_cast<short>(availableResources + trackingSlots[primaryInputResourceId]);
   availableResources =
-      static_cast<short>(availableResources + ownerCity->CityStockByType(secondaryInputResourceId));
+      static_cast<short>(availableResources + ownerCity->stockByType[secondaryInputResourceId]);
   availableResources =
-      static_cast<short>(availableResources + ownerCity->CityStockByType(primaryInputResourceId));
+      static_cast<short>(availableResources + ownerCity->stockByType[primaryInputResourceId]);
   short resourceLimit = static_cast<short>(availableResources / 2);
   short productionLimit = ownerCity->productionAccum[productionSlot];
   productionLimit = static_cast<short>(productionLimit + currentQuantity);
@@ -55,8 +55,8 @@ bool TOrItemOrder::SetQuantity(short quantity) {
   short primaryChange;
   short secondaryChange;
   if (delta > 0) {
-    primaryAvailable = ownerCity->CityStockByType(primaryInputResourceId);
-    secondaryAvailable = ownerCity->CityStockByType(secondaryInputResourceId);
+    primaryAvailable = ownerCity->stockByType[primaryInputResourceId];
+    secondaryAvailable = ownerCity->stockByType[secondaryInputResourceId];
     primaryChange = delta;
     secondaryChange = delta;
   } else {
@@ -80,13 +80,13 @@ bool TOrItemOrder::SetQuantity(short quantity) {
     secondaryChange = static_cast<short>(-secondaryChange);
   }
 
-  ownerCity->CityStockByType(primaryInputResourceId) =
-      static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) - primaryChange);
+  ownerCity->stockByType[primaryInputResourceId] =
+      static_cast<short>(ownerCity->stockByType[primaryInputResourceId] - primaryChange);
   ownerCity->VerifyStocks();
   trackingSlots[primaryInputResourceId] =
       static_cast<short>(trackingSlots[primaryInputResourceId] + primaryChange);
-  ownerCity->CityStockByType(secondaryInputResourceId) =
-      static_cast<short>(ownerCity->CityStockByType(secondaryInputResourceId) - secondaryChange);
+  ownerCity->stockByType[secondaryInputResourceId] =
+      static_cast<short>(ownerCity->stockByType[secondaryInputResourceId] - secondaryChange);
   ownerCity->VerifyStocks();
   trackingSlots[secondaryInputResourceId] =
       static_cast<short>(trackingSlots[secondaryInputResourceId] + secondaryChange);

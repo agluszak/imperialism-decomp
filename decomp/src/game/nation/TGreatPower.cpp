@@ -622,7 +622,7 @@ void TGreatPower::FinishCityPhase(void) {
   this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
   this->AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
   this->AddCreatedItems();
-  this->CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage();
+  this->SellStockToCoverDebt();
   this->city->EndCityPhase();
   this->NoOpNationPendingActionHook();
 }
@@ -717,12 +717,12 @@ void TGreatPower::AddCreatedItems(void) {
   this->AddToTreasury(static_cast<int>(this->needTargetByType[0x15]) * 500);
 
   TCity* cityPtr = this->city;
-  cityPtr->cityStockGems = 0;
+  cityPtr->stockByType[kResourceGems] = 0;
   cityPtr->VerifyStocks();
 
   this->AddToTreasury(static_cast<int>(this->needTargetByType[0x16]) * 200);
 
-  cityPtr->cityStockGold = 0;
+  cityPtr->stockByType[kResourceGold] = 0;
   cityPtr->VerifyStocks();
 
   for (int needIndex = 0; static_cast<short>(needIndex) < kNationSlotCount; ++needIndex) {
@@ -1036,21 +1036,20 @@ short TGreatPower::GetStockpile(short resourceKind) {
   if (cityPtr == 0) {
     return 0;
   }
-  return (&cityPtr->cityStockCotton)[resourceKind];
+  return cityPtr->stockByType[resourceKind];
 }
 
 // FUNCTION: IMPERIALISM 0x004dd770
 void TGreatPower::SetStockpile(short targetSlot, short value) {
   TCity* cityPtr = this->city;
-  (&cityPtr->cityStockCotton)[targetSlot] = value;
+  cityPtr->stockByType[targetSlot] = value;
   cityPtr->VerifyStocks();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd7b0
 void TGreatPower::AddToStockpile(short targetSlot, short value) {
   TCity* cityPtr = this->city;
-  (&cityPtr->cityStockCotton)[targetSlot] =
-      static_cast<short>((&cityPtr->cityStockCotton)[targetSlot] + value);
+  cityPtr->stockByType[targetSlot] = static_cast<short>(cityPtr->stockByType[targetSlot] + value);
   cityPtr->VerifyStocks();
 }
 
@@ -1094,10 +1093,10 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
     short* summary = this->city->GetUnmetNeeds();
     TCity* city = this->city;
     short available = static_cast<short>(
-        ((((summary[0x14] + summary[0x12] + summary[0x11]) - city->cityStockCannedFood) -
-          city->cityStockLivestock) -
-         city->cityStockGrain) -
-        city->cityStockFruit);
+        ((((summary[0x14] + summary[0x12] + summary[0x11]) - city->stockByType[kResourceFood]) -
+          city->stockByType[kResourceLivestock]) -
+         city->stockByType[kResourceGrain]) -
+        city->stockByType[kResourceFruit]);
     if (available >= 0) {
       return static_cast<unsigned short>(available);
     }
@@ -2051,15 +2050,13 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
         if (shouldApplyProposal == 0) {
           this->RejectOffer(proposalIndex);
         } else if (proposalCode == kDiplomacyProposalJoinEmpireWithWarEntanglements) {
-          int checkNation = 0;
-          do {
+          for (int checkNation = 0; checkNation < kMajorNationCount; ++checkNation) {
             if (g_pDiplomacyTurnStateManager->AreAtWar(targetNation, checkNation) &&
                 !g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, checkNation)) {
               this->DeclareWarOn(checkNation, kDiplomacyProposalJoinEmpireWithWarEntanglements,
                                  targetNation);
             }
-            ++checkNation;
-          } while (checkNation < kMajorNationCount);
+          }
         } else {
           this->AcceptOffer(proposalIndex);
         }
@@ -2086,7 +2083,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   }
   const short* presetRow = g_Rebuild_Primary_Nation_Value[presetLevel];
   for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
-    (&mgr->cityStockCotton)[static_cast<short>(needIndex)] = presetRow[needIndex];
+    mgr->stockByType[static_cast<short>(needIndex)] = presetRow[needIndex];
     mgr->VerifyStocks();
   }
   mgr->productionAccum[8] += 999 - mgr->productionOrderTable[8];

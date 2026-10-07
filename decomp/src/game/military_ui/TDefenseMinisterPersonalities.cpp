@@ -58,7 +58,7 @@ void TBismarckMinister::MakeNewCity(TCity* city) {
     ++recruitOrderCountByType[2];
   }
 
-  city->cityStockArms = static_cast<short>(city->cityStockArms + 5);
+  city->stockByType[kResourceArms] = static_cast<short>(city->stockByType[kResourceArms] + 5);
   city->VerifyStocks();
 }
 
@@ -83,7 +83,7 @@ void TPirateMinister::MakeNewCity(TCity* city) {
     ++recruitOrderCountByType[2];
   }
 
-  city->cityStockArms = static_cast<short>(city->cityStockArms + 2);
+  city->stockByType[kResourceArms] = static_cast<short>(city->stockByType[kResourceArms] + 2);
   city->VerifyStocks();
 }
 
@@ -108,7 +108,7 @@ void TDefenderMinister::MakeNewCity(TCity* city) {
     ++recruitOrderCountByType[2];
   }
 
-  city->cityStockArms = static_cast<short>(city->cityStockArms + 2);
+  city->stockByType[kResourceArms] = static_cast<short>(city->stockByType[kResourceArms] + 2);
   city->VerifyStocks();
 }
 
@@ -139,6 +139,6 @@ void TBullyMinister::MakeNewCity(TCity* city) {
     ++recruitOrderCountByType[4];
   }
 
-  city->cityStockArms = 2;
+  city->stockByType[kResourceArms] = 2;
   city->VerifyStocks();
 }

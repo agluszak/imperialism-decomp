@@ -50,7 +50,7 @@ short TTrainingOrder::MaxOrder() {
     }
   }
 
-  short paperLimit = static_cast<short>(ownerCity->cityStockPaper / paperPerUnit);
+  short paperLimit = static_cast<short>(ownerCity->stockByType[kResourcePaper] / paperPerUnit);
   limitingConstraint = kProductionOrderLimitWorkforce;
   short limit = workforceLimit;
   if (cashLimit < limit) {
@@ -77,11 +77,13 @@ bool TTrainingOrder::SetQuantity(short quantity) {
 
   TGreatPower* owner = ownerCity->ownerNation;
   if (resourceTypeIndex == 1) {
-    ownerCity->cityStockPaper = static_cast<short>(ownerCity->cityStockPaper - delta);
+    ownerCity->stockByType[kResourcePaper] =
+        static_cast<short>(ownerCity->stockByType[kResourcePaper] - delta);
     ownerCity->VerifyStocks();
     owner->treasuryValue -= static_cast<int>(delta) * 100;
   } else {
-    ownerCity->cityStockPaper = static_cast<short>(ownerCity->cityStockPaper - delta * 2);
+    ownerCity->stockByType[kResourcePaper] =
+        static_cast<short>(ownerCity->stockByType[kResourcePaper] - delta * 2);
     ownerCity->VerifyStocks();
     owner->treasuryValue -= static_cast<int>(delta) * 1000;
   }

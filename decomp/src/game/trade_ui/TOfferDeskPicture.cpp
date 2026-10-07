@@ -431,13 +431,14 @@ void TOfferDeskPicture::ShowAdvice() {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType));
       relDelta = gp->purchasedItemsByResource[commodityType];
       // TCity models the 23 per-commodity stock shorts as named fields; index off the first.
-      stock = (&city->cityStockCotton)[commodityType];
+      stock = city->stockByType[commodityType];
       needTgt = gp->needTargetByType[commodityType];
     } else {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(0));
       relDelta =
           static_cast<short>(gp->purchasedItemsByResource[1] + gp->purchasedItemsByResource[0]);
-      stock = static_cast<short>(city->cityStockCotton + city->cityStockWool);
+      stock =
+          static_cast<short>(city->stockByType[kResourceCotton] + city->stockByType[kResourceWool]);
       needTgt = static_cast<short>(gp->needTargetByType[1] + gp->needTargetByType[0]);
     }
     if (avail > stock + relDelta + needTgt) {
@@ -472,13 +473,14 @@ void TOfferDeskPicture::ShowAdvice() {
     if (commodityType != kResourceCotton && commodityType != kResourceWool) {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType));
       relDelta = gp->purchasedItemsByResource[commodityType];
-      stock = (&city->cityStockCotton)[commodityType];
+      stock = city->stockByType[commodityType];
       needTgt = gp->needTargetByType[commodityType];
     } else {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(0));
       relDelta =
           static_cast<short>(gp->purchasedItemsByResource[1] + gp->purchasedItemsByResource[0]);
-      stock = static_cast<short>(city->cityStockCotton + city->cityStockWool);
+      stock =
+          static_cast<short>(city->stockByType[kResourceCotton] + city->stockByType[kResourceWool]);
       needTgt = static_cast<short>(gp->needTargetByType[1] + gp->needTargetByType[0]);
     }
     strCityStock.Format(g_szDecimalFormat, static_cast<int>(stock));

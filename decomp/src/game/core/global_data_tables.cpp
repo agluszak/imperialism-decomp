@@ -2203,7 +2203,7 @@ extern "C" const int g_anGreatPowerPressureDecayStepByLocale[6] = {2, 2, 1, 1, 1
 // GLOBAL: IMPERIALISM 0x00653510
 extern "C" const int g_anGreatPowerPressureRiseStepByLocale[6] = {1, 1, 1, 2, 3, 0};
 // GLOBAL: IMPERIALISM 0x00653528
-extern "C" const int g_anGreatPowerCompileThresholdByLocale[6] = {5, 5, 5, 5, 5, 0};
+extern "C" const int g_anDebtLiquidationThresholdByDifficulty[6] = {5, 5, 5, 5, 5, 0};
 // GLOBAL: IMPERIALISM 0x00653540
 extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6] = {6, 6, 6, 6, 6, 0};
 // GLOBAL: IMPERIALISM 0x00653558

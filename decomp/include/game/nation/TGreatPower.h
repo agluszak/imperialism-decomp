@@ -320,7 +320,7 @@ public:
 
   TGreatPower();
 
-  void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
+  void SellStockToCoverDebt(void);
   int SumDiplomacyGrantEntriesMaskedToValueBits();
   float ComputeMapActionContextCompositeScoreForNation(TZone* zone);
   float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex, TZone* zone,

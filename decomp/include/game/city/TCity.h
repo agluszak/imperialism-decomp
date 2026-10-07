@@ -82,29 +82,7 @@ public:
   class TGreatPower* ownerNation; // 0xAC — owning nation state (0x004b4dc0)
   TTown* homeTownMarker;          // +0xb0
   short powerAvailable;
-  short cityStockCotton;
-  short cityStockWool;
-  short cityStockTimber;
-  short cityStockCoal;
-  short cityStockIron;
-  short cityStockHorses;
-  short cityStockOil;
-  short cityStockCannedFood;
-  short cityStockFabric;
-  short cityStockLumber;
-  short cityStockPaper;
-  short cityStockSteel;
-  short cityStockFuel;
-  short cityStockClothing;
-  short cityStockFurniture;
-  short cityStockHardware;
-  short cityStockArms;
-  short cityStockGrain;
-  short cityStockFruit;
-  short cityStockFish;
-  short cityStockLivestock;
-  short cityStockGems;
-  short cityStockGold;
+  short stockByType[kResourceKindCount];
   TProductionOrder* orderSlots[0x19];         // +0xe4..+0x147
   TUnitOrder* buildOrderSlots[0x12];          // +0x148..+0x18f
   TShipOrder* shipOrderSlots[8];              // +0x190..+0x1af
@@ -125,9 +103,6 @@ public:
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 
-  short& CityStockByType(int index) {
-    return (&cityStockCotton)[index];
-  }
   short HomeTownTileId() const {
     if (homeTownMarker != 0) {
       short tileId;

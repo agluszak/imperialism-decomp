@@ -16,11 +16,11 @@ UnitOrderSnapshot::UnitOrderSnapshot()
 
 void UnitOrderSnapshot::CaptureFrom(TUnitOrder* order) {
   quantity = order->quantity;
-  primaryStock = order->ownerCity->CityStockByType(order->primaryInputResourceId);
+  primaryStock = order->ownerCity->stockByType[order->primaryInputResourceId];
   // A secondary input is optional; -1 means the order has none, and 0 is the honest reading.
   secondaryStock = order->secondaryInputResourceId < 0
                        ? 0
-                       : order->ownerCity->CityStockByType(order->secondaryInputResourceId);
+                       : order->ownerCity->stockByType[order->secondaryInputResourceId];
   treasury = order->ownerCity->ownerNation->treasuryValue;
   TPopulationMgr* population = order->productionSummary;
   strength = population->strength;
@@ -51,7 +51,7 @@ TrainingOrderSnapshot::TrainingOrderSnapshot()
 
 void TrainingOrderSnapshot::CaptureFrom(TTrainingOrder* order) {
   quantity = order->quantity;
-  paperStock = order->ownerCity->cityStockPaper;
+  paperStock = order->ownerCity->stockByType[kResourcePaper];
   treasury = order->ownerCity->ownerNation->treasuryValue;
   baselineLow = order->productionSummary->baselineSlots->lowSkillCount;
   baselineMedium = order->productionSummary->baselineSlots->mediumSkillCount;
@@ -64,11 +64,11 @@ ItemOrderSnapshot::ItemOrderSnapshot()
 void ItemOrderSnapshot::CaptureFrom(TItemOrder* order) {
   quantity = order->quantity;
   requestedQuantity = order->requestedQuantity;
-  primaryStock = order->ownerCity->CityStockByType(order->primaryInputResourceId);
+  primaryStock = order->ownerCity->stockByType[order->primaryInputResourceId];
   primaryTracking = order->trackingSlots[order->primaryInputResourceId];
   secondaryStock = order->secondaryInputResourceId < 0
                        ? 0
-                       : order->ownerCity->CityStockByType(order->secondaryInputResourceId);
+                       : order->ownerCity->stockByType[order->secondaryInputResourceId];
   secondaryTracking = order->secondaryInputResourceId < 0
                           ? 0
                           : order->trackingSlots[order->secondaryInputResourceId];

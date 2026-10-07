@@ -215,12 +215,12 @@ private:
     // retail costs, then use the ordinary SetQuantity/Produce path so the save fixture contains
     // state created by the game rather than a hand-built TShip or TTaskForce.
     const short type = order->resourceTypeIndex;
-    city->cityStockLumber = g_industryActionCostWeightResCode09[type];
-    city->cityStockFabric = g_industryActionCostWeightResCode08[type];
-    city->cityStockArms = g_industryActionCostWeightResCode10[type];
-    city->cityStockSteel = g_industryActionCostWeightResCode0B[type];
-    city->cityStockCoal = g_industryActionCostWeightResCode03[type];
-    city->cityStockFuel = g_industryActionCostWeightResCode0C[type];
+    city->stockByType[kResourceLumber] = g_industryActionCostWeightResCode09[type];
+    city->stockByType[kResourceFabric] = g_industryActionCostWeightResCode08[type];
+    city->stockByType[kResourceArms] = g_industryActionCostWeightResCode10[type];
+    city->stockByType[kResourceSteel] = g_industryActionCostWeightResCode0B[type];
+    city->stockByType[kResourceCoal] = g_industryActionCostWeightResCode03[type];
+    city->stockByType[kResourceFuel] = g_industryActionCostWeightResCode0C[type];
     if (!order->SetQuantity(1)) {
       return false;
     }

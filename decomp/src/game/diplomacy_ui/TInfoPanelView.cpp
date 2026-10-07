@@ -266,18 +266,15 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
   TMinor* secondary = g_apSecondaryNationStateSlots[countryId];
   short values[7];
   short indices[7];
-  short valueIndex = 0;
-  do {
+  for (short valueIndex = 0; valueIndex < 7; ++valueIndex) {
     values[valueIndex] = secondary->independentResourceCountByType[valueIndex];
     if (valueIndex == 6 && g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] == 0) {
       values[6] = 0;
     }
     indices[valueIndex] = valueIndex;
-    ++valueIndex;
-  } while (valueIndex < 7);
+  }
 
-  short outer = 0;
-  do {
+  for (short outer = 0; outer < 6; ++outer) {
     short inner = outer;
     do {
       if (values[inner] > values[outer]) {
@@ -290,14 +287,11 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
       }
       ++inner;
     } while (inner < 7);
-    ++outer;
-  } while (outer < 6);
+  }
 
-  short copyIndex = 0;
-  do {
+  for (short copyIndex = 0; copyIndex < 4; ++copyIndex) {
     if (values[copyIndex] > 0) {
       countryInfoCategoryIndices[copyIndex] = indices[copyIndex];
     }
-    ++copyIndex;
-  } while (copyIndex < 4);
+  }
 }

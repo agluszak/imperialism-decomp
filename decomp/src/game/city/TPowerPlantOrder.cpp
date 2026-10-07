@@ -16,7 +16,7 @@ void TPowerPlantOrder::IPowerPlantOrder(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b7b00
 short TPowerPlantOrder::MaxOrder() {
-  return static_cast<short>(quantity + ownerCity->cityStockFuel * 6);
+  return static_cast<short>(quantity + ownerCity->stockByType[kResourceFuel] * 6);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b30
@@ -33,7 +33,8 @@ bool TPowerPlantOrder::SetQuantity(short quantity) {
   }
 
   desiredQuantity = quantity;
-  ownerCity->cityStockFuel = static_cast<short>(ownerCity->cityStockFuel - delta / 6);
+  ownerCity->stockByType[kResourceFuel] =
+      static_cast<short>(ownerCity->stockByType[kResourceFuel] - delta / 6);
   ownerCity->VerifyStocks();
 
   short previousPower = ownerCity->productionSummary->extraAt1e;

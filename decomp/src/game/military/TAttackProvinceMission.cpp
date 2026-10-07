@@ -192,16 +192,10 @@ void TAttackProvinceMission::GiveOrders() {
     float weighted = 0.0f;
     ProjectEquipage(vector, GetPresentLocation(), 0);
 
-    float* projectedCursor = vector;
-    float* weightCursor = requiredEquipageByClass;
-    int remainingWeights = 5;
-    do {
-      weighted += sqrtf(*weightCursor * *projectedCursor);
-      projectedCursor++;
-      weightCursor++;
-      total += weightCursor[-1];
-      remainingWeights--;
-    } while (remainingWeights != 0);
+    for (int i = 0; i < 5; ++i) {
+      weighted += sqrtf(requiredEquipageByClass[i] * vector[i]);
+      total += requiredEquipageByClass[i];
+    }
 
     if (weighted / total > g_AttackProvinceMissionReadinessThreshold) {
       if (g_pDiplomacyTurnStateManager->AreInEstablishedWar(

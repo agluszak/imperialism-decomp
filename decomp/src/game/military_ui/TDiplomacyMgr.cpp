@@ -589,14 +589,12 @@ bool TDiplomacyMgr::HasAllianceGuardForNationPair(NationSlot nationSlot,
     return false;
   }
 
-  int primaryNationSlot = 0;
-  do {
+  for (int primaryNationSlot = 0; primaryNationSlot < kMajorNationCount; ++primaryNationSlot) {
     if (AreAtWar(primaryNationSlot, nationSlot) &&
         !AreAtWar(guardedNationSlot, primaryNationSlot)) {
       return true;
     }
-    primaryNationSlot++;
-  } while (primaryNationSlot < kMajorNationCount);
+  }
   return false;
 }
 
@@ -1561,22 +1559,20 @@ int TDiplomacyMgr::GetNumAllies(int sourceNationSlot) {
   int allianceCount = 0;
   DiplomacyRelationshipStorage* relationCursor =
       &relationPropagationMatrix[sourceNationSlot * kNationSlotCount];
-  int remainingMajorNationSlots = 7;
-  do {
+  for (int i = 0; i < 7; ++i) {
     if (*relationCursor == kDiplomacyRelationshipAlliance) {
       allianceCount++;
     }
     relationCursor++;
-    remainingMajorNationSlots--;
-  } while (remainingMajorNationSlots != 0);
+  }
   return allianceCount;
 }
 
 // FUNCTION: IMPERIALISM 0x004f2090
 int TDiplomacyMgr::GetAllyNumber(int nthAllianceIndex, int sourceNationSlot) {
   int allianceOrdinal = 0;
-  int candidateNationSlot = 0;
-  do {
+  int candidateNationSlot;
+  for (candidateNationSlot = 0; candidateNationSlot < kMajorNationCount; ++candidateNationSlot) {
     if (allianceOrdinal == nthAllianceIndex + 1) {
       return candidateNationSlot - 1;
     }
@@ -1584,8 +1580,7 @@ int TDiplomacyMgr::GetAllyNumber(int nthAllianceIndex, int sourceNationSlot) {
         kDiplomacyRelationshipAlliance) {
       allianceOrdinal++;
     }
-    candidateNationSlot++;
-  } while (candidateNationSlot < kMajorNationCount);
+  }
   return candidateNationSlot - 1;
 }
 
@@ -1747,7 +1742,7 @@ BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned c
   bool sendFull = true;
   int differing = 0;
   if (baseline != 0) {
-    if (0 < static_cast<int>(byteCount)) {
+    if (static_cast<int>(byteCount) > 0) {
       unsigned char* cur = current;
       unsigned int remaining = byteCount;
       do {
@@ -1814,7 +1809,7 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
   bool sendFull = true;
   int differing = 0;
   if (baseline != 0) {
-    if (0 < static_cast<int>(shortCount)) {
+    if (static_cast<int>(shortCount) > 0) {
       short* cur = current;
       unsigned int remaining = shortCount;
       do {
@@ -1880,7 +1875,7 @@ BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* ba
   bool sendFull = true;
   int differing = 0;
   if (baseline != 0) {
-    if (0 < intCount) {
+    if (intCount > 0) {
       int* cur = baseline;
       int remaining = intCount;
       do {

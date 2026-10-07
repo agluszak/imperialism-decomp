@@ -61,12 +61,12 @@ void TExpansionOrder::Produce() {
 // FUNCTION: IMPERIALISM 0x004b91f0
 short TExpansionOrder::MaxOrder() {
   short limit = static_cast<short>(trackingSlots[primaryInputResourceId] +
-                                   ownerCity->CityStockByType(primaryInputResourceId));
+                                   ownerCity->stockByType[primaryInputResourceId]);
   if (secondaryInputResourceId < 0) {
     limit = static_cast<short>(limit / 2);
   } else {
     short secondaryLimit = static_cast<short>(trackingSlots[secondaryInputResourceId] +
-                                              ownerCity->CityStockByType(secondaryInputResourceId));
+                                              ownerCity->stockByType[secondaryInputResourceId]);
     if (secondaryLimit < limit) {
       limit = secondaryLimit;
     }
@@ -83,13 +83,13 @@ bool TExpansionOrder::SetQuantity(short quantity) {
   this->quantity = quantity;
   requestedQuantity = quantity;
 
-  ownerCity->CityStockByType(primaryInputResourceId) =
-      static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) - delta);
+  ownerCity->stockByType[primaryInputResourceId] =
+      static_cast<short>(ownerCity->stockByType[primaryInputResourceId] - delta);
   ownerCity->VerifyStocks();
   trackingSlots[primaryInputResourceId] =
       static_cast<short>(trackingSlots[primaryInputResourceId] + delta);
-  ownerCity->CityStockByType(secondaryInputResourceId) =
-      static_cast<short>(ownerCity->CityStockByType(secondaryInputResourceId) - delta);
+  ownerCity->stockByType[secondaryInputResourceId] =
+      static_cast<short>(ownerCity->stockByType[secondaryInputResourceId] - delta);
   ownerCity->VerifyStocks();
   trackingSlots[secondaryInputResourceId] =
       static_cast<short>(trackingSlots[secondaryInputResourceId] + delta);

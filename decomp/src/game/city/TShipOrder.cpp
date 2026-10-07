@@ -33,17 +33,17 @@ bool TShipOrder::AutoCanMakeProduct() {
   TCity* city = this->ownerCity;
 
   if (ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex) <=
-          city->cityStockLumber &&
+          city->stockByType[kResourceLumber] &&
       ReadWeight(g_industryActionCostWeightResCode08, this->resourceTypeIndex) <=
-          city->cityStockFabric &&
+          city->stockByType[kResourceFabric] &&
       ReadWeight(g_industryActionCostWeightResCode10, this->resourceTypeIndex) <=
-          city->cityStockArms &&
+          city->stockByType[kResourceArms] &&
       ReadWeight(g_industryActionCostWeightResCode0B, this->resourceTypeIndex) <=
-          city->cityStockSteel &&
+          city->stockByType[kResourceSteel] &&
       ReadWeight(g_industryActionCostWeightResCode03, this->resourceTypeIndex) <=
-          city->cityStockCoal &&
+          city->stockByType[kResourceCoal] &&
       ReadWeight(g_industryActionCostWeightResCode0C, this->resourceTypeIndex) <=
-          city->cityStockFuel) {
+          city->stockByType[kResourceFuel]) {
     return true;
   }
   return false;
@@ -84,42 +84,42 @@ short TShipOrder::MaxOrder() {
   int candidate;
 
   if (ReadWeight(g_industryActionCostWeightResCode09, weightIndex) != 0) {
-    candidate = static_cast<int>(city->cityStockLumber) /
+    candidate = static_cast<int>(city->stockByType[kResourceLumber]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode09, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode08, weightIndex) != 0) {
-    candidate = static_cast<int>(city->cityStockFabric) /
+    candidate = static_cast<int>(city->stockByType[kResourceFabric]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode08, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode10, weightIndex) != 0) {
-    candidate = static_cast<int>(city->cityStockArms) /
+    candidate = static_cast<int>(city->stockByType[kResourceArms]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode10, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode03, weightIndex) != 0) {
-    candidate = static_cast<int>(city->cityStockCoal) /
+    candidate = static_cast<int>(city->stockByType[kResourceCoal]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode03, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode0B, weightIndex) != 0) {
-    candidate = static_cast<int>(city->cityStockSteel) /
+    candidate = static_cast<int>(city->stockByType[kResourceSteel]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode0B, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) != 0) {
-    candidate = static_cast<int>(city->cityStockFuel) /
+    candidate = static_cast<int>(city->stockByType[kResourceFuel]) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode0C, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
@@ -136,28 +136,28 @@ bool TShipOrder::SetQuantity(short quantity) {
     return false;
   }
 
-  ownerCity->cityStockLumber = static_cast<short>(
-      ownerCity->cityStockLumber -
+  ownerCity->stockByType[kResourceLumber] = static_cast<short>(
+      ownerCity->stockByType[kResourceLumber] -
       ReadWeight(g_industryActionCostWeightResCode09, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
-  ownerCity->cityStockFabric = static_cast<short>(
-      ownerCity->cityStockFabric -
+  ownerCity->stockByType[kResourceFabric] = static_cast<short>(
+      ownerCity->stockByType[kResourceFabric] -
       ReadWeight(g_industryActionCostWeightResCode08, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
-  ownerCity->cityStockArms = static_cast<short>(
-      ownerCity->cityStockArms -
+  ownerCity->stockByType[kResourceArms] = static_cast<short>(
+      ownerCity->stockByType[kResourceArms] -
       ReadWeight(g_industryActionCostWeightResCode10, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
-  ownerCity->cityStockSteel = static_cast<short>(
-      ownerCity->cityStockSteel -
+  ownerCity->stockByType[kResourceSteel] = static_cast<short>(
+      ownerCity->stockByType[kResourceSteel] -
       ReadWeight(g_industryActionCostWeightResCode0B, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
-  ownerCity->cityStockCoal = static_cast<short>(
-      ownerCity->cityStockCoal -
+  ownerCity->stockByType[kResourceCoal] = static_cast<short>(
+      ownerCity->stockByType[kResourceCoal] -
       ReadWeight(g_industryActionCostWeightResCode03, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
-  ownerCity->cityStockFuel = static_cast<short>(
-      ownerCity->cityStockFuel -
+  ownerCity->stockByType[kResourceFuel] = static_cast<short>(
+      ownerCity->stockByType[kResourceFuel] -
       ReadWeight(g_industryActionCostWeightResCode0C, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
   g_pViewMgr->UpdateCityScreen();

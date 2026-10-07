@@ -99,8 +99,7 @@ CRect TOceanDialog::BoundingRect(TZone* zone) {
   int minRowMirror = 1000;
   bounds.left = 1000;
   bounds.top = 1000;
-  int i = 0;
-  do {
+  for (int i = 0; i < kStrategicTileCount; ++i) {
     if (static_cast<short>(
             g_pGlobalMapState->terrainStateTable[static_cast<short>(i)].ownerNationTag) ==
         zone->seedNationId) {
@@ -121,8 +120,7 @@ CRect TOceanDialog::BoundingRect(TZone* zone) {
         bounds.bottom = row;
       }
     }
-    ++i;
-  } while (i < kStrategicTileCount);
+  }
   CRect result;
   if (minRowMirror == 1000) {
     result.left = 0;

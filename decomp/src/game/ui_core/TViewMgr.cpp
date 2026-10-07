@@ -165,7 +165,7 @@ void TViewMgr::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005d5270
 QuickDrawPaletteIndex TViewMgr::GetColor(short eventCode) {
-  if (200 < eventCode) {
+  if (eventCode > 200) {
     if (eventCode < 0x2b68) {
       if (eventCode == 0x2b67) {
         return 0;
@@ -1651,12 +1651,13 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   if (food == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xa60);
   }
-  const short foodOnHand = static_cast<short>(
-      city->cityStockCannedFood + city->cityStockLivestock + city->cityStockGrain +
-      city->cityStockFruit + g_apNationStates[nationSlot]->needTargetByType[kResourceLivestock] +
-      g_apNationStates[nationSlot]->needTargetByType[kResourceFruit] +
-      g_apNationStates[nationSlot]->needTargetByType[kResourceFish] +
-      g_apNationStates[nationSlot]->needTargetByType[kResourceGrain]);
+  const short foodOnHand =
+      static_cast<short>(city->stockByType[kResourceFood] + city->stockByType[kResourceLivestock] +
+                         city->stockByType[kResourceGrain] + city->stockByType[kResourceFruit] +
+                         g_apNationStates[nationSlot]->needTargetByType[kResourceLivestock] +
+                         g_apNationStates[nationSlot]->needTargetByType[kResourceFruit] +
+                         g_apNationStates[nationSlot]->needTargetByType[kResourceFish] +
+                         g_apNationStates[nationSlot]->needTargetByType[kResourceGrain]);
   const short foodRequired = static_cast<short>(
       citySummary[kResourceLivestock] + citySummary[kResourceFruit] + citySummary[kResourceGrain]);
   if (foodOnHand < foodRequired) {
@@ -1673,7 +1674,8 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   short textileNeeds =
       static_cast<short>(g_apNationStates[nationSlot]->needTargetByType[kResourceCotton] +
                          g_apNationStates[nationSlot]->needTargetByType[kResourceWool]);
-  short textileStock = static_cast<short>(city->cityStockWool + city->cityStockCotton);
+  short textileStock =
+      static_cast<short>(city->stockByType[kResourceWool] + city->stockByType[kResourceCotton]);
   if (static_cast<int>(textileStock) + static_cast<int>(textileNeeds) <
       static_cast<short>(city->GetBuildingType(0) << 1)) {
     cotton->Show(1, 0);
@@ -1689,7 +1691,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, wool);
 
   TView* timber = mainView->FindSubView(kTagTimber);
-  if (static_cast<int>(city->cityStockTimber) +
+  if (static_cast<int>(city->stockByType[kResourceTimber]) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceTimber]) <
       static_cast<short>(city->GetBuildingType(4) * 2)) {
     timber->Show(1, 0);
@@ -1701,7 +1703,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, timber);
 
   TView* coal = mainView->FindSubView(kTagCoal);
-  if (static_cast<int>(city->cityStockCoal) +
+  if (static_cast<int>(city->stockByType[kResourceCoal]) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceCoal]) <
       static_cast<int>(city->GetBuildingType(2))) {
     coal->Show(1, 0);
@@ -1713,7 +1715,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, coal);
 
   TView* iron = mainView->FindSubView(kTagIron);
-  if (static_cast<int>(city->cityStockIron) +
+  if (static_cast<int>(city->stockByType[kResourceIron]) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceIron]) <
       static_cast<int>(city->GetBuildingType(2))) {
     iron->Show(1, 0);
@@ -1725,7 +1727,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, iron);
 
   TView* oil = mainView->FindSubView(kTagOil);
-  if (static_cast<int>(city->cityStockOil) +
+  if (static_cast<int>(city->stockByType[kResourceOil]) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceOil]) <
       static_cast<short>(city->GetBuildingType(6) * 2)) {
     oil->Show(1, 0);
@@ -1737,7 +1739,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, oil);
 
   TView* fabric = mainView->FindSubView(kTagFabric);
-  if (static_cast<int>(city->cityStockFabric) +
+  if (static_cast<int>(city->stockByType[kResourceFabric]) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceFabric]) <
       static_cast<short>(city->GetBuildingType(1) * 2)) {
     fabric->Show(1, 0);
@@ -1749,7 +1751,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, fabric);
 
   TView* lumber = mainView->FindSubView(kTagLumber);
-  if (static_cast<int>(city->cityStockLumber) +
+  if (static_cast<int>(city->stockByType[kResourceLumber]) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceLumber]) <
       static_cast<short>(city->GetBuildingType(5) * 2)) {
     lumber->Show(1, 0);
@@ -1761,7 +1763,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, lumber);
 
   TView* steel = mainView->FindSubView(kTagSteel);
-  if (static_cast<int>(city->cityStockSteel) +
+  if (static_cast<int>(city->stockByType[kResourceSteel]) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceSteel]) <
       static_cast<short>(city->GetBuildingType(3) * 2)) {
     steel->Show(1, 0);

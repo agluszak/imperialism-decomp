@@ -549,7 +549,7 @@ void CDib::AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette) {
       (palette != NULL) ? static_cast<HPALETTE>(palette->m_hObject) : static_cast<HPALETTE>(0);
   RGBQUAD* dest = static_cast<RGBQUAD*>(m_colorTablePixels);
   int index = 0;
-  if (0 < m_paletteCount) {
+  if (m_paletteCount > 0) {
     PALETTEENTRY* entry = palette->m_pLogPalette->palPalEntry;
     do {
       dest->rgbRed = entry->peRed;

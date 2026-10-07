@@ -14,12 +14,12 @@ void TFoodProcessingOrder::IFoodProcessingOrder(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b7ed0
 short TFoodProcessingOrder::MaxOrder() {
-  short limit = static_cast<short>(ownerCity->cityStockGrain / 2);
-  short fishAndLivestock =
-      static_cast<short>(ownerCity->cityStockFish + ownerCity->cityStockLivestock);
+  short limit = static_cast<short>(ownerCity->stockByType[kResourceGrain] / 2);
+  short fishAndLivestock = static_cast<short>(ownerCity->stockByType[kResourceFish] +
+                                              ownerCity->stockByType[kResourceLivestock]);
   short workforceLimit = static_cast<short>(productionSummary->strength / 2);
-  if (ownerCity->cityStockFruit < limit) {
-    limit = ownerCity->cityStockFruit;
+  if (ownerCity->stockByType[kResourceFruit] < limit) {
+    limit = ownerCity->stockByType[kResourceFruit];
   }
   if (fishAndLivestock < limit) {
     limit = fishAndLivestock;
@@ -42,20 +42,23 @@ bool TFoodProcessingOrder::SetQuantity(short quantity) {
   this->quantity = quantity;
 
   short halfDelta = static_cast<short>((quantity - previousQuantity) / 2);
-  ownerCity->cityStockGrain = static_cast<short>(ownerCity->cityStockGrain - halfDelta * 2);
+  ownerCity->stockByType[kResourceGrain] =
+      static_cast<short>(ownerCity->stockByType[kResourceGrain] - halfDelta * 2);
   ownerCity->VerifyStocks();
-  ownerCity->cityStockFruit = static_cast<short>(ownerCity->cityStockFruit - halfDelta);
+  ownerCity->stockByType[kResourceFruit] =
+      static_cast<short>(ownerCity->stockByType[kResourceFruit] - halfDelta);
   ownerCity->VerifyStocks();
   productionSummary->strength = static_cast<short>(productionSummary->strength - halfDelta * 2);
 
-  short livestock = ownerCity->cityStockLivestock;
+  short livestock = ownerCity->stockByType[kResourceLivestock];
   if (livestock < halfDelta) {
-    ownerCity->cityStockLivestock = 0;
+    ownerCity->stockByType[kResourceLivestock] = 0;
     ownerCity->VerifyStocks();
-    ownerCity->cityStockFish =
-        static_cast<short>(ownerCity->cityStockFish - (halfDelta - livestock));
+    ownerCity->stockByType[kResourceFish] =
+        static_cast<short>(ownerCity->stockByType[kResourceFish] - (halfDelta - livestock));
   } else {
-    ownerCity->cityStockLivestock = static_cast<short>(ownerCity->cityStockLivestock - halfDelta);
+    ownerCity->stockByType[kResourceLivestock] =
+        static_cast<short>(ownerCity->stockByType[kResourceLivestock] - halfDelta);
   }
   ownerCity->VerifyStocks();
   g_pViewMgr->UpdateCityScreen();
@@ -65,7 +68,7 @@ bool TFoodProcessingOrder::SetQuantity(short quantity) {
 // FUNCTION: IMPERIALISM 0x004b8060
 void TFoodProcessingOrder::Produce() {
   TCity* city = ownerCity;
-  city->cityStockCannedFood += quantity;
+  city->stockByType[kResourceFood] += quantity;
   city->VerifyStocks();
   quantity = 0;
   reservedWorkforce = 0;

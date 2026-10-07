@@ -111,8 +111,8 @@ void TTradeSchoolView::UpdateFields() {
   }
 
   TView* control;
-  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap1, 0x9df, city->cityStockPaper >= 1);
-  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap2, 0x9ef, city->cityStockPaper >= 2);
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap1, 0x9df, city->stockByType[kResourcePaper] >= 1);
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap2, 0x9ef, city->stockByType[kResourcePaper] >= 2);
   UPDATE_TRADE_SCHOOL_CONTROL(kControlTagMon1, 0xa00,
                               city->ownerNation->ComputeAvailableDiplomacyBudget() >= 100);
   UPDATE_TRADE_SCHOOL_CONTROL(kControlTagMon2, 0xa11,

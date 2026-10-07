@@ -38,9 +38,11 @@ private:
     }
 
     order->SetQuantity(0);
-    city->cityStockFurniture = static_cast<short>(city->cityStockFurniture + 1);
-    city->cityStockClothing = static_cast<short>(city->cityStockClothing + 1);
-    city->cityStockCannedFood = static_cast<short>(city->cityStockCannedFood + 1);
+    city->stockByType[kResourceFurniture] =
+        static_cast<short>(city->stockByType[kResourceFurniture] + 1);
+    city->stockByType[kResourceClothing] =
+        static_cast<short>(city->stockByType[kResourceClothing] + 1);
+    city->stockByType[kResourceFood] = static_cast<short>(city->stockByType[kResourceFood] + 1);
     city->productionAccum[0x0f] = static_cast<short>(city->productionAccum[0x0f] + 1);
     if (!order->SetQuantity(1)) {
       return false;

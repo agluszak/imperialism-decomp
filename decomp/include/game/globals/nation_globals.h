@@ -127,7 +127,7 @@ extern "C" const int g_anGreatPowerPressureDecayStepByLocale[6];
 
 extern "C" const int g_anGreatPowerPressureRiseStepByLocale[6];
 
-extern "C" const int g_anGreatPowerCompileThresholdByLocale[6];
+extern "C" const int g_anDebtLiquidationThresholdByDifficulty[6];
 
 extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6];
 

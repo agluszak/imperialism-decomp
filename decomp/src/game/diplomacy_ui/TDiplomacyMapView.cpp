@@ -908,16 +908,15 @@ eDipAction TDiplomacyMapView::GetAction(CPoint* clickPoint) {
 
   CPoint localPoint = this->ViewToQDPt(clickPoint);
 
-  int terrainIndex = 0;
-  do {
+  int terrainIndex;
+  for (terrainIndex = 0; terrainIndex < kNationSlotCount; ++terrainIndex) {
     if (g_apTerrainTypeDescriptorTable[terrainIndex] != 0) {
       char hit = g_pMacViewMgr->PtInCountry(&localPoint, static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
     }
-    terrainIndex += 1;
-  } while (terrainIndex < kNationSlotCount);
+  }
 
   eDipAction action = kDipActionNone;
   if (terrainIndex < kNationSlotCount) {
@@ -1028,14 +1027,13 @@ void TDiplomacyMapView::DrawCountries(RECT* presentRect) {
     TPicture::Draw(presentRect);
 
     TCountry** terrainDescriptors = g_apTerrainTypeDescriptorTable;
-    short terrainIndex = 0;
-    do {
+    short terrainIndex;
+    for (terrainIndex = 0; terrainIndex < 7; ++terrainIndex) {
       if (*terrainDescriptors != 0) {
         this->FillRegionWithPict(terrainIndex, terrainIndex + 0x258);
       }
-      terrainIndex = static_cast<short>(terrainIndex + 1);
       ++terrainDescriptors;
-    } while (terrainIndex < 7);
+    }
 
     g_pViewMgr->SetForeColor(0x3f);
 
@@ -1112,8 +1110,7 @@ void TDiplomacyMapView::ShowTreaties(int activeNationSlot, const RECT* presentRe
     SetGWorld(g_pPrimaryRenderSurfaceContext, contextFlags);
     LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
 
-    short nationIndex = 0;
-    do {
+    for (short nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
       int eventCode;
       if (nationIndex == static_cast<short>(activeNationSlot)) {
         eventCode = 0x40;
@@ -1133,9 +1130,7 @@ void TDiplomacyMapView::ShowTreaties(int activeNationSlot, const RECT* presentRe
       int packedColor = g_pViewMgr->GetColor(0x3f);
       packedColorRuns[nationIndex].AppendPackedColorDword(
           g_pActiveQuickDrawSurfaceContext->blitSurface.pixelBits, packedColor);
-
-      nationIndex = static_cast<short>(nationIndex + 1);
-    } while (nationIndex < kNationSlotCount);
+    }
 
     DrawNames(presentRect);
     legendSurfaceMode = 4;
@@ -1216,10 +1211,8 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(TQuickDrawBl
 
 // FUNCTION: IMPERIALISM 0x004f6820
 void TDiplomacyMapView::VisitNationSlotsForOverlay(int unusedMode) {
-  short nationSlot = 0;
-  do {
-    ++nationSlot;
-  } while (nationSlot < 23);
+  for (short nationSlot = 0; nationSlot < 23; ++nationSlot) {
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004f6840
@@ -1329,14 +1322,12 @@ void TDiplomacyMapView::FillRegionWithPict(short maskIndex, int bmpId) {
               destCursor += 8;
               srcCursor += 8;
             } else if (*maskCursor == 0xff) {
-              int remaining = 8;
               x += 8;
-              do {
+              for (int i = 0; i < 8; ++i) {
                 *destCursor = *srcCursor;
                 destCursor += 1;
                 srcCursor += 1;
-                remaining -= 1;
-              } while (remaining != 0);
+              }
             } else {
               int bit = 1;
               do {
@@ -1500,8 +1491,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
   UpdatePaletteIndexWithDefaultFallback(0x10);
 
   short selectedTier = visibleVoteTier;
-  int policyIndex = 0;
-  do {
+  for (int policyIndex = 0; policyIndex < kProvinceCount; ++policyIndex) {
     short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix[policyIndex];
     int iconCode = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[policyIndex];
     if (tileHasOwnerFlags[policyIndex] && iconCode != -1 && tierValue <= selectedTier) {
@@ -1551,8 +1541,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
       DrawCenteredGuideLineOnMapDc(static_cast<short>(destRect.left),
                                    static_cast<short>(destRect.bottom));
     }
-    policyIndex += 1;
-  } while (policyIndex < kProvinceCount);
+  }
 
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }

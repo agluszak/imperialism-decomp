@@ -264,11 +264,12 @@ void TUniversityView::UpdateFields() {
 
   TNumberText* paperAvailable = static_cast<TNumberText*>(FindSubView(kControlTagApap)); // 'apap'
   paperAvailable->AssertValid();
-  paperAvailable->SetControlValue(city->cityStockPaper, 0);
-  paperAvailable->SetTextColorAndMaybeRefresh(
-      city->cityStockPaper < selectedRecruitmentOrder->primaryInputPerUnit ? &warningTextColor
-                                                                           : &normalTextColor,
-      true);
+  paperAvailable->SetControlValue(city->stockByType[kResourcePaper], 0);
+  paperAvailable->SetTextColorAndMaybeRefresh(city->stockByType[kResourcePaper] <
+                                                      selectedRecruitmentOrder->primaryInputPerUnit
+                                                  ? &warningTextColor
+                                                  : &normalTextColor,
+                                              true);
   CRect invalidRect;
   paperAvailable->GetFrame(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);

@@ -181,17 +181,17 @@ void TIndustryView::UpdateFields() {
       primaryResource = order->primaryInputResourceId;
       secondaryResource = order->secondaryInputResourceId;
       if (secondaryResource < 0) {
-        primaryMissing = city->CityStockByType(primaryResource) < 2;
+        primaryMissing = city->stockByType[primaryResource] < 2;
       } else {
-        primaryMissing = city->CityStockByType(primaryResource) < 1;
-        secondaryMissing = city->CityStockByType(secondaryResource) < 1;
+        primaryMissing = city->stockByType[primaryResource] < 1;
+        secondaryMissing = city->stockByType[secondaryResource] < 1;
       }
     }
   } else if (embeddedPageIndex == 0xe) {
     primaryResource = 9;    // lumber
     secondaryResource = 11; // steel
-    primaryMissing = city->cityStockLumber < 1;
-    secondaryMissing = city->cityStockSteel < 1;
+    primaryMissing = city->stockByType[kResourceLumber] < 1;
+    secondaryMissing = city->stockByType[kResourceSteel] < 1;
   }
 
   CSubViewIterator iterator(this);
@@ -225,16 +225,18 @@ void TIndustryView::UpdateFields() {
   if (embeddedPageIndex == 0xc) {
     TView* grainControl = FindSubView(kControlTagGrai); // 'grai'
     grainControl->AssertValid();
-    SetIndustryControlEnabledIfChanged(grainControl, city->cityStockGrain >= 2);
+    SetIndustryControlEnabledIfChanged(grainControl, city->stockByType[kResourceGrain] >= 2);
 
     TView* fruitControl = FindSubView(kControlTagProd); // 'prod'
     fruitControl->AssertValid();
-    SetIndustryControlEnabledIfChanged(fruitControl, city->cityStockFruit >= 1);
+    SetIndustryControlEnabledIfChanged(fruitControl, city->stockByType[kResourceFruit] >= 1);
 
     TView* fishControl = FindSubView(kControlTagFish); // 'fish'
     fishControl->AssertValid();
-    SetIndustryControlEnabledIfChanged(
-        fishControl, static_cast<int>(city->cityStockFish) + city->cityStockLivestock >= 1);
+    SetIndustryControlEnabledIfChanged(fishControl,
+                                       static_cast<int>(city->stockByType[kResourceFish]) +
+                                               city->stockByType[kResourceLivestock] >=
+                                           1);
   } else if (embeddedPageIndex == 0xf) {
     const unsigned int controlTags[3] = {kSummaryTagFood, kControlTagFurn,
                                          kControlTagClot}; // 'food', 'furn', 'clot'
@@ -242,7 +244,7 @@ void TIndustryView::UpdateFields() {
     for (int index = 0; index < 3; ++index) {
       TView* control = FindSubView(controlTags[index]);
       control->AssertValid();
-      SetIndustryControlEnabledIfChanged(control, city->CityStockByType(resourceSlots[index]) >= 1);
+      SetIndustryControlEnabledIfChanged(control, city->stockByType[resourceSlots[index]] >= 1);
     }
   }
 

@@ -215,10 +215,10 @@ private:
     TPopulationMgr* population = order->productionSummary;
     // One more ordered, its inputs and its cash taken, and one person moved out of the pool.
     return order->quantity == unitBefore.quantity + 1 &&
-           order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
+           order->ownerCity->stockByType[order->primaryInputResourceId] ==
                unitBefore.primaryStock - order->primaryInputPerUnit &&
            (order->secondaryInputResourceId < 0 ||
-            order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
+            order->ownerCity->stockByType[order->secondaryInputResourceId] ==
                 unitBefore.secondaryStock - order->secondaryInputPerUnit) &&
            order->ownerCity->ownerNation->treasuryValue ==
                unitBefore.treasury - order->cashCostPerUnit &&
@@ -231,10 +231,10 @@ private:
     TUnitOrder* order = unitOrder;
     TPopulationMgr* population = order->productionSummary;
     return order->quantity == unitBefore.quantity &&
-           order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
+           order->ownerCity->stockByType[order->primaryInputResourceId] ==
                unitBefore.primaryStock &&
            (order->secondaryInputResourceId < 0 ||
-            order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
+            order->ownerCity->stockByType[order->secondaryInputResourceId] ==
                 unitBefore.secondaryStock) &&
            order->ownerCity->ownerNation->treasuryValue == unitBefore.treasury &&
            population->strength == unitBefore.strength &&
@@ -280,7 +280,7 @@ private:
 
   bool TrainingOrderWasReserved() const {
     return trainingOrder->quantity == trainingBefore.quantity + 1 &&
-           trainingOrder->ownerCity->cityStockPaper == trainingBefore.paperStock - 1 &&
+           trainingOrder->ownerCity->stockByType[kResourcePaper] == trainingBefore.paperStock - 1 &&
            trainingOrder->ownerCity->ownerNation->treasuryValue ==
                trainingBefore.treasury - kTrainingCashCost;
   }
@@ -321,12 +321,12 @@ private:
     const short primaryAmount = order->secondaryInputResourceId < 0 ? 2 : 1;
     return order->quantity == itemBefore.quantity + 1 &&
            order->requestedQuantity == order->quantity &&
-           order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
+           order->ownerCity->stockByType[order->primaryInputResourceId] ==
                itemBefore.primaryStock - primaryAmount &&
            order->trackingSlots[order->primaryInputResourceId] ==
                itemBefore.primaryTracking + primaryAmount &&
            (order->secondaryInputResourceId < 0 ||
-            (order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
+            (order->ownerCity->stockByType[order->secondaryInputResourceId] ==
                  itemBefore.secondaryStock - 1 &&
              order->trackingSlots[order->secondaryInputResourceId] ==
                  itemBefore.secondaryTracking + 1)) &&
@@ -340,11 +340,11 @@ private:
     TItemOrder* order = itemOrder;
     return order->quantity == itemBefore.quantity &&
            order->requestedQuantity == itemBefore.requestedQuantity &&
-           order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
+           order->ownerCity->stockByType[order->primaryInputResourceId] ==
                itemBefore.primaryStock &&
            order->trackingSlots[order->primaryInputResourceId] == itemBefore.primaryTracking &&
            (order->secondaryInputResourceId < 0 ||
-            (order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
+            (order->ownerCity->stockByType[order->secondaryInputResourceId] ==
                  itemBefore.secondaryStock &&
              order->trackingSlots[order->secondaryInputResourceId] ==
                  itemBefore.secondaryTracking)) &&
@@ -362,7 +362,7 @@ private:
     TCity* city = PlayerCity();
     TUnitOrder* firstOrder = city != 0 ? city->buildOrderSlots[0] : 0;
     if (firstOrder != 0) {
-      city->CityStockByType(firstOrder->primaryInputResourceId) =
+      city->stockByType[firstOrder->primaryInputResourceId] =
           static_cast<short>(firstOrder->primaryInputPerUnit * 2);
     }
   }
@@ -372,8 +372,8 @@ private:
     if (city == 0) {
       return;
     }
-    if (city->cityStockPaper < 1) {
-      city->cityStockPaper = 1;
+    if (city->stockByType[kResourcePaper] < 1) {
+      city->stockByType[kResourcePaper] = 1;
     }
     if (city->ownerNation->ComputeAvailableDiplomacyBudget() < kTrainingCashCost) {
       city->ownerNation->treasuryValue += kTrainingCashCost;

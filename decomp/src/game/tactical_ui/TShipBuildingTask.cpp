@@ -65,13 +65,13 @@ bool TShipBuildingTask::Execute(TTaskList* taskList) {
     for (short resource = 0; resource < kResourceKindCount; ++resource) {
       short deficit = deficits[resource];
       if (deficit > 0) {
-        short available = ownerCity->CityStockByType(resource);
+        short available = ownerCity->stockByType[resource];
         if (available > 0) {
           short consumed = deficit;
           if (available < deficit) {
             consumed = available;
           }
-          ownerCity->CityStockByType(resource) = static_cast<short>(available - consumed);
+          ownerCity->stockByType[resource] = static_cast<short>(available - consumed);
           ownerCity->VerifyStocks();
           shipOrder->trackingSlots[resource] =
               static_cast<short>(shipOrder->trackingSlots[resource] + consumed);

@@ -25,13 +25,13 @@ short TItemOrder::MaxOrder() {
   short productionLimit =
       static_cast<short>(ownerCity->productionAccum[productionSlot] + currentQuantity);
   short resourceLimit = static_cast<short>(trackingSlots[primaryInputResourceId] +
-                                           ownerCity->CityStockByType(primaryInputResourceId));
+                                           ownerCity->stockByType[primaryInputResourceId]);
 
   if (secondaryInputResourceId < 0) {
     resourceLimit = static_cast<short>(resourceLimit / 2);
   } else {
     short secondaryLimit = static_cast<short>(trackingSlots[secondaryInputResourceId] +
-                                              ownerCity->CityStockByType(secondaryInputResourceId));
+                                              ownerCity->stockByType[secondaryInputResourceId]);
     if (secondaryLimit < resourceLimit) {
       resourceLimit = secondaryLimit;
     }
@@ -62,20 +62,20 @@ bool TItemOrder::SetQuantity(short quantity) {
   short primaryChange;
   if (secondaryInputResourceId < 0) {
     primaryChange = static_cast<short>(delta * 2);
-    ownerCity->CityStockByType(primaryInputResourceId) =
-        static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) - primaryChange);
+    ownerCity->stockByType[primaryInputResourceId] =
+        static_cast<short>(ownerCity->stockByType[primaryInputResourceId] - primaryChange);
     ownerCity->VerifyStocks();
     trackingSlots[primaryInputResourceId] =
         static_cast<short>(trackingSlots[primaryInputResourceId] + primaryChange);
   } else {
-    ownerCity->CityStockByType(primaryInputResourceId) =
-        static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) - delta);
+    ownerCity->stockByType[primaryInputResourceId] =
+        static_cast<short>(ownerCity->stockByType[primaryInputResourceId] - delta);
     ownerCity->VerifyStocks();
     trackingSlots[primaryInputResourceId] =
         static_cast<short>(trackingSlots[primaryInputResourceId] + delta);
 
-    ownerCity->CityStockByType(secondaryInputResourceId) =
-        static_cast<short>(ownerCity->CityStockByType(secondaryInputResourceId) - delta);
+    ownerCity->stockByType[secondaryInputResourceId] =
+        static_cast<short>(ownerCity->stockByType[secondaryInputResourceId] - delta);
     ownerCity->VerifyStocks();
     trackingSlots[secondaryInputResourceId] =
         static_cast<short>(trackingSlots[secondaryInputResourceId] + delta);
@@ -107,8 +107,8 @@ void TItemOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 void TItemOrder::Produce() {
   ownerCity->productionAccum[productionSlot] =
       static_cast<short>(ownerCity->productionAccum[productionSlot] + quantity);
-  ownerCity->CityStockByType(resourceTypeIndex) =
-      static_cast<short>(ownerCity->CityStockByType(resourceTypeIndex) + quantity);
+  ownerCity->stockByType[resourceTypeIndex] =
+      static_cast<short>(ownerCity->stockByType[resourceTypeIndex] + quantity);
   ownerCity->VerifyStocks();
   ownerCity->rollingItemProductionScore += quantity;
   trackingSlots[primaryInputResourceId] = 0;

@@ -117,7 +117,7 @@ bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level) {
   MMRESULT result = 0;
   UINT numDevs = auxGetNumDevs();
   UINT deviceId = 0;
-  if (0 < static_cast<int>(numDevs)) {
+  if (static_cast<int>(numDevs) > 0) {
     tagAUXCAPSA caps;
     do {
       result = auxGetDevCapsA(deviceId, &caps, sizeof(tagAUXCAPSA));

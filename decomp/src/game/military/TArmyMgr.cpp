@@ -1318,7 +1318,7 @@ void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
   short index = 0;
   Province* province = &g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
   short adjacentCount = province->adjacentRegionCount;
-  if (0 < adjacentCount) {
+  if (adjacentCount > 0) {
     do {
       if (isAdjacent) {
         break;

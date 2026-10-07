@@ -39,7 +39,7 @@ void ByteSwapShortInPlace(short* value) {
 // FUNCTION: IMPERIALISM 0x004f2a60
 void ReadByteSwappedShortArrayFromStream(TStream* stream, short* values, int shortCount) {
   stream->ReadBytes(values, shortCount * 2);
-  if (0 < shortCount) {
+  if (shortCount > 0) {
     unsigned char* cursor = static_cast<unsigned char*>(static_cast<void*>(values));
     do {
       unsigned char firstByte = cursor[0];

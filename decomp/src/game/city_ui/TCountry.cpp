@@ -411,15 +411,14 @@ void TCountry::BecomeColonyOf(int targetNationSlot) {
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
   this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
 
-  int nationSlot = 0;
-  do {
+  int nationSlot;
+  for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pSimMgr->ReallyInTheGame(nationSlot) && nationSlot != this->nationSlot &&
         nationSlot != targetNationSlot) {
       TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
       terrainDescriptor->NewStatusFor(this->nationSlot, 200);
     }
-    ++nationSlot;
-  } while (nationSlot < kNationSlotCount);
+  }
 
   g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 }
@@ -615,7 +614,7 @@ void TCountry::GrowMilitia(void) {
     short regionId = static_cast<short>(this->ownedRegionList->At(ordinal));
     short garrisonCount = 0;
     TMilitaryUnit* unitChain;
-    if ((regionId < 0) || (0x17f < regionId)) {
+    if ((regionId < 0) || (regionId) > 0x17f) {
       unitChain = 0;
     } else {
       unitChain = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain;

@@ -119,8 +119,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
     remainingBudgetByNation[nationIndex] = static_cast<int>(navyBudget);
   }
 
-  int regionIndex = 0;
-  do {
+  for (int regionIndex = 0; regionIndex < kProvinceCount; ++regionIndex) {
     short candidateNation =
         static_cast<short>(g_pGlobalMapState->cityScoreTable[regionIndex].ownerNationCode);
     if (candidateNation < kMajorNationCount) {
@@ -158,8 +157,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
         }
       }
     }
-    ++regionIndex;
-  } while (regionIndex < kProvinceCount);
+  }
 
   float sum = 0.0f;
   for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {

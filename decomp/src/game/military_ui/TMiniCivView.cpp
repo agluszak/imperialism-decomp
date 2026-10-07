@@ -73,7 +73,7 @@ void TMiniCivView::InitializeForCivilianUnit(TView* panel, int* offsetLayout, in
           ++matchCount;
         }
       }
-      if (1 < static_cast<short>(matchCount)) {
+      if (static_cast<short>(matchCount) > 1) {
         g_pSimMgr->GetString(0x2724, 6, &templateText);
         scanBracketExpressions(g_pSimMgr, &formatted, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(textA), static_cast<LPCSTR>(textB));

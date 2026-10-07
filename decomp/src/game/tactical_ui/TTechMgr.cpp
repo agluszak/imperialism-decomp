@@ -425,7 +425,8 @@ void TTechMgr::GeneralActivation(int techId, int nationSlot) {
     ActivateLandUnit(0xf, nationSlot);
     if (eraOffset != 0) {
       TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-      city->cityStockArms = static_cast<short>(city->cityStockArms + eraOffset * 10);
+      city->stockByType[kResourceArms] =
+          static_cast<short>(city->stockByType[kResourceArms] + eraOffset * 10);
       city->VerifyStocks();
     }
     break;
@@ -448,7 +449,8 @@ void TTechMgr::GeneralActivation(int techId, int nationSlot) {
     ActivateLandUnit(0xb, nationSlot);
     if (eraOffset != 0) {
       TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-      city->cityStockArms = static_cast<short>(city->cityStockArms + eraOffset * 10);
+      city->stockByType[kResourceArms] =
+          static_cast<short>(city->stockByType[kResourceArms] + eraOffset * 10);
       city->VerifyStocks();
     }
     break;
@@ -473,7 +475,8 @@ void TTechMgr::GeneralActivation(int techId, int nationSlot) {
     activePrerequisitePair = g_aTechItemPrerequisitePairs[32];
     if (eraOffset != 0) {
       TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-      city->cityStockArms = static_cast<short>(city->cityStockArms + eraOffset * 20);
+      city->stockByType[kResourceArms] =
+          static_cast<short>(city->stockByType[kResourceArms] + eraOffset * 20);
       city->VerifyStocks();
     }
     break;
@@ -490,7 +493,8 @@ void TTechMgr::GeneralActivation(int techId, int nationSlot) {
     ActivateLandUnit(0x1d, nationSlot);
     if (eraOffset != 0) {
       TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-      city->cityStockArms = static_cast<short>(city->cityStockArms + eraOffset * 20);
+      city->stockByType[kResourceArms] =
+          static_cast<short>(city->stockByType[kResourceArms] + eraOffset * 20);
       city->VerifyStocks();
     }
     break;

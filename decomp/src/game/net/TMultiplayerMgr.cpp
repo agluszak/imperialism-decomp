@@ -1441,7 +1441,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     city2C->rollingItemProductionScore = composite->cityRollingItemProductionScore;
     city2C->powerAvailable = composite->cityFieldB4;
-    short* stock2C = &city2C->cityStockCotton;
+    short* stock2C = city2C->stockByType;
     for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       stock2C[stockType] = composite->cityStock[stockType];
     }
@@ -1800,19 +1800,17 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
         ++ownTagCursor;
       }
     }
-    if (0 < readyCount && busyCount == 1) {
+    if (readyCount > 0 && busyCount == 1) {
       int busySlot = g_pSimMgr->GetPlayerCountry();
       if (busySlot == -1) {
         int sessionId25 = g_pNetMgr->GetPlayerID();
         int* sessionCursor25 = g_pGameFlowState->nationSessionIds;
-        busySlot = 0;
-        do {
+        for (busySlot = 0; busySlot < 7; ++busySlot) {
           if (*sessionCursor25 == sessionId25) {
             break;
           }
-          ++busySlot;
           ++sessionCursor25;
-        } while (busySlot < 7);
+        }
         if (busySlot == 7) {
           busySlot = -1; // a -1 here indexes nationStatusTags[-1] below - original
                          // out-of-bounds behavior, kept as-is
@@ -3167,7 +3165,7 @@ void TMultiplayerMgr::SendCityStateMessage(int nationSlot, int destinationSlot) 
     }
     packet.cityRollingItemProductionScore = city->rollingItemProductionScore;
     packet.cityFieldB4 = city->powerAvailable;
-    short* stock = &city->cityStockCotton;
+    short* stock = city->stockByType;
     for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       packet.cityStock[stockType] = stock[stockType];
     }

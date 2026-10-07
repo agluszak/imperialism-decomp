@@ -91,9 +91,10 @@ void TPopulationMgr::Eat() {
       static_cast<short>(productionSlots->highSkillCount + pendingDeltaSlots->highSkillCount);
 
   int population = populationCount;
-  short grainRemaining = city->cityStockGrain;
-  short fruitRemaining = city->cityStockFruit;
-  short animalFoodRemaining = static_cast<short>(city->cityStockFish + city->cityStockLivestock);
+  short grainRemaining = city->stockByType[kResourceGrain];
+  short fruitRemaining = city->stockByType[kResourceFruit];
+  short animalFoodRemaining =
+      static_cast<short>(city->stockByType[kResourceFish] + city->stockByType[kResourceLivestock]);
   short unmetFoodNeed = 0;
 
   short grainNeed = static_cast<short>((population + 1) / 2);
@@ -121,13 +122,14 @@ void TPopulationMgr::Eat() {
   }
 
   if (unmetFoodNeed != 0) {
-    if (unmetFoodNeed < city->cityStockCannedFood) {
-      city->cityStockCannedFood = static_cast<short>(city->cityStockCannedFood - unmetFoodNeed);
+    if (unmetFoodNeed < city->stockByType[kResourceFood]) {
+      city->stockByType[kResourceFood] =
+          static_cast<short>(city->stockByType[kResourceFood] - unmetFoodNeed);
       city->VerifyStocks();
       unmetFoodNeed = 0;
     } else {
-      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city->cityStockCannedFood);
-      city->cityStockCannedFood = 0;
+      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city->stockByType[kResourceFood]);
+      city->stockByType[kResourceFood] = 0;
       city->VerifyStocks();
     }
 
@@ -158,9 +160,9 @@ void TPopulationMgr::Eat() {
     }
   }
 
-  city->cityStockGrain = grainRemaining;
+  city->stockByType[kResourceGrain] = grainRemaining;
   city->VerifyStocks();
-  city->cityStockFruit = fruitRemaining;
+  city->stockByType[kResourceFruit] = fruitRemaining;
   city->VerifyStocks();
 
   if (animalFoodRemaining != 0) {
@@ -174,23 +176,23 @@ void TPopulationMgr::Eat() {
       fishRemaining = livestockRemaining;
     }
 
-    if (city->cityStockLivestock < livestockRemaining) {
-      short shift = static_cast<short>(livestockRemaining - city->cityStockLivestock);
+    if (city->stockByType[kResourceLivestock] < livestockRemaining) {
+      short shift = static_cast<short>(livestockRemaining - city->stockByType[kResourceLivestock]);
       livestockRemaining = static_cast<short>(livestockRemaining - shift);
       fishRemaining = static_cast<short>(fishRemaining + shift);
-    } else if (city->cityStockFish < fishRemaining) {
-      short shift = static_cast<short>(fishRemaining - city->cityStockFish);
+    } else if (city->stockByType[kResourceFish] < fishRemaining) {
+      short shift = static_cast<short>(fishRemaining - city->stockByType[kResourceFish]);
       fishRemaining = static_cast<short>(fishRemaining - shift);
       livestockRemaining = static_cast<short>(livestockRemaining + shift);
     }
-    city->cityStockLivestock = livestockRemaining;
+    city->stockByType[kResourceLivestock] = livestockRemaining;
     city->VerifyStocks();
-    city->cityStockFish = fishRemaining;
+    city->stockByType[kResourceFish] = fishRemaining;
     city->VerifyStocks();
   } else {
-    city->cityStockLivestock = 0;
+    city->stockByType[kResourceLivestock] = 0;
     city->VerifyStocks();
-    city->cityStockFish = 0;
+    city->stockByType[kResourceFish] = 0;
     city->VerifyStocks();
   }
 
@@ -252,10 +254,10 @@ void TPopulationMgr::PretendToEat(short& substitutionCount, short& starvationCou
   }
 
   if (unmetFoodNeed != 0) {
-    if (unmetFoodNeed < city->cityStockCannedFood) {
+    if (unmetFoodNeed < city->stockByType[kResourceFood]) {
       unmetFoodNeed = 0;
     } else {
-      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city->cityStockCannedFood);
+      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city->stockByType[kResourceFood]);
     }
 
     if (unmetFoodNeed != 0) {
@@ -365,13 +367,13 @@ bool TPopulationMgr::Strike() {
   for (resourceIndex = 0; resourceIndex < 3; ++resourceIndex) {
     short resourceType = g_cityPredictedNeedResetResourceIds[resourceIndex];
     short amount = consumptionByResource[resourceIndex];
-    if (city->CityStockByType(resourceType) < amount) {
-      city->CityStockByType(resourceType) = 0;
+    if (city->stockByType[resourceType] < amount) {
+      city->stockByType[resourceType] = 0;
       city->VerifyStocks();
       shortage = true;
     } else {
-      city->CityStockByType(resourceType) =
-          static_cast<short>(city->CityStockByType(resourceType) - amount);
+      city->stockByType[resourceType] =
+          static_cast<short>(city->stockByType[resourceType] - amount);
       city->VerifyStocks();
     }
   }

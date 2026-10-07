@@ -409,7 +409,7 @@ void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
     int cx = x0;
     short cy = y0;
     if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
-      if (0xd7 < cx) {
+      if (cx > 0xd7) {
         out[0] = cx - 0xd8;
         out[1] = cy;
         return;
@@ -481,7 +481,7 @@ double Seapoint::WrappedDeltaMetric(const Seapoint* other) const {
     rowDelta = -rowDelta;
   }
   int colDelta = ((thisCoordinate % 0xd8 - otherCoordinate % 0xd8) + 0xd8) % 0xd8;
-  if (0x6c < colDelta) {
+  if (colDelta > 0x6c) {
     colDelta = 0xd7 - colDelta;
   }
   return sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta));

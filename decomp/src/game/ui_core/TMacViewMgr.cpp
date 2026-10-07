@@ -930,10 +930,11 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     g_pSimMgr->GetString(0x2735, 2, &itemName);
     {
       int production = city->GetBuildingType(0);
-      deficitCount =
-          static_cast<short>(production * 2 - city->cityStockCotton - city->cityStockWool);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockCotton) +
-                                                  static_cast<int>(city->cityStockWool));
+      deficitCount = static_cast<short>(production * 2 - city->stockByType[kResourceCotton] -
+                                        city->stockByType[kResourceWool]);
+      formatCurrent.Format(g_szDecimalFormat,
+                           static_cast<int>(city->stockByType[kResourceCotton]) +
+                               static_cast<int>(city->stockByType[kResourceWool]));
       formatProduction.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 0, &displayText);
     }
@@ -944,11 +945,11 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(4);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockTimber);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockTimber));
+      deficitCount = static_cast<short>(production * 2 - city->stockByType[kResourceTimber]);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->stockByType[kResourceTimber]));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 4, &displayText);
-      formatFieldValue = city->cityStockTimber;
+      formatFieldValue = city->stockByType[kResourceTimber];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -960,12 +961,11 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(2);
-      deficitCount = static_cast<short>(production - (&city->cityStockCotton)[resourceSlot]);
-      formatCurrent.Format(g_szDecimalFormat,
-                           static_cast<int>((&city->cityStockCotton)[resourceSlot]));
+      deficitCount = static_cast<short>(production - city->stockByType[resourceSlot]);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->stockByType[resourceSlot]));
       formatTarget.Format(g_szDecimalFormat, production);
       g_pSimMgr->GetString(0x2719, 2, &displayText);
-      formatFieldValue = (&city->cityStockCotton)[resourceSlot];
+      formatFieldValue = city->stockByType[resourceSlot];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -985,11 +985,11 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(6);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockOil);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockOil));
+      deficitCount = static_cast<short>(production * 2 - city->stockByType[kResourceOil]);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->stockByType[kResourceOil]));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 6, &displayText);
-      formatFieldValue = city->cityStockOil;
+      formatFieldValue = city->stockByType[kResourceOil];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1000,11 +1000,11 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(1);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockFabric);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockFabric));
+      deficitCount = static_cast<short>(production * 2 - city->stockByType[kResourceFabric]);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->stockByType[kResourceFabric]));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 1, &displayText);
-      formatFieldValue = city->cityStockFabric;
+      formatFieldValue = city->stockByType[kResourceFabric];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1015,11 +1015,11 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(5);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockLumber);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockLumber));
+      deficitCount = static_cast<short>(production * 2 - city->stockByType[kResourceLumber]);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->stockByType[kResourceLumber]));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 5, &displayText);
-      formatFieldValue = city->cityStockLumber;
+      formatFieldValue = city->stockByType[kResourceLumber];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1030,11 +1030,11 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(3);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockSteel);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockSteel));
+      deficitCount = static_cast<short>(production * 2 - city->stockByType[kResourceSteel]);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->stockByType[kResourceSteel]));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 3, &displayText);
-      formatFieldValue = city->cityStockSteel;
+      formatFieldValue = city->stockByType[kResourceSteel];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1045,11 +1045,11 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(0xb);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockFuel);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockFuel));
+      deficitCount = static_cast<short>(production * 2 - city->stockByType[kResourceFuel]);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->stockByType[kResourceFuel]));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 0xb, &displayText);
-      formatFieldValue = city->cityStockFuel;
+      formatFieldValue = city->stockByType[kResourceFuel];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1074,9 +1074,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
       short* summary = city->GetUnmetNeeds();
       short summaryValue = summary[resourceSlot];
       formatTarget.Format(g_szDecimalFormat, static_cast<int>(summaryValue));
-      deficitCount = static_cast<short>(summaryValue - (&city->cityStockCotton)[resourceSlot]);
-      formatCurrent.Format(g_szDecimalFormat,
-                           static_cast<int>((&city->cityStockCotton)[resourceSlot]));
+      deficitCount = static_cast<short>(summaryValue - city->stockByType[resourceSlot]);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->stockByType[resourceSlot]));
       g_pSimMgr->GetString(0x2735, 7, &displayText);
       showArrowWidgets = 1;
     }
@@ -1091,9 +1090,10 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
       short* summary = city->GetUnmetNeeds();
       short summaryValue = summary[0x14];
       formatTarget.Format(g_szDecimalFormat, static_cast<int>(summaryValue));
-      deficitCount =
-          static_cast<short>(summaryValue - city->cityStockFish - city->cityStockLivestock);
-      formatFieldValue = static_cast<short>(city->cityStockFish + city->cityStockLivestock);
+      deficitCount = static_cast<short>(summaryValue - city->stockByType[kResourceFish] -
+                                        city->stockByType[kResourceLivestock]);
+      formatFieldValue = static_cast<short>(city->stockByType[kResourceFish] +
+                                            city->stockByType[kResourceLivestock]);
       formatCurrent.Format(g_szDecimalFormat, static_cast<int>(formatFieldValue));
       showArrowWidgets = 1;
       useProductionTailPath = true;
@@ -1568,17 +1568,15 @@ void TMacViewMgr::CopyDevelopmentIcon(TBitmapSurfaceNode** pDstSurface, ushort w
   unsigned char* dstRow = dstPixels + (0x26 - nYShift) * dstStrideBytes + static_cast<int>(nDstX);
   int rowsRemaining = 0x1a;
   do {
-    int colsRemaining = 0x26;
     unsigned char* dstPixel = dstRow;
     unsigned char* srcPixel = srcRow;
-    do {
+    for (int i = 0; i < 0x26; ++i) {
       if (*srcPixel != '\x10') {
         *dstPixel = *srcPixel;
       }
       ++srcPixel;
       ++dstPixel;
-      --colsRemaining;
-    } while (colsRemaining != 0);
+    }
     --rowsRemaining;
     dstRow += dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);

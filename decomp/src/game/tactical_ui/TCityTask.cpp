@@ -117,7 +117,8 @@ void TCityTask::IncompleteCapacity(TTaskList* taskList) {
   order->MaxOrder();
   bool queuedAny = false;
   if (order->limitingConstraint == kProductionOrderLimitResources && alreadyQueuedFlag == 0) {
-    short lumberDeficit = static_cast<short>(ownerCity->cityStockLumber - requestedAmount);
+    short lumberDeficit =
+        static_cast<short>(ownerCity->stockByType[kResourceLumber] - requestedAmount);
     if (lumberDeficit < 0) {
       TCityTask* newTask = new TCityTask();
       newTask->ownerCity = ownerCity;
@@ -130,7 +131,8 @@ void TCityTask::IncompleteCapacity(TTaskList* taskList) {
       queuedAny = true;
     }
 
-    short steelDeficit = static_cast<short>(ownerCity->cityStockSteel - requestedAmount);
+    short steelDeficit =
+        static_cast<short>(ownerCity->stockByType[kResourceSteel] - requestedAmount);
     if (steelDeficit < 0) {
       TCityTask* newTask = new TCityTask();
       newTask->ownerCity = ownerCity;
@@ -158,10 +160,10 @@ void TCityTask::IncompleteLandUnit(TTaskList* taskList) {
     return;
   }
 
-  short primaryStock = ownerCity->CityStockByType(order->primaryInputResourceId);
+  short primaryStock = ownerCity->stockByType[order->primaryInputResourceId];
   short secondaryStock = 0;
   if (order->secondaryInputResourceId != -1) {
-    secondaryStock = ownerCity->CityStockByType(order->secondaryInputResourceId);
+    secondaryStock = ownerCity->stockByType[order->secondaryInputResourceId];
   }
 
   bool queuedAny = false;

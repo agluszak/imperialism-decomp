@@ -39,7 +39,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   if (supplyPrimary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x21c);
   }
-  supplyPrimary->SetNumIcons(city->CityStockByType(order->primaryInputResourceId));
+  supplyPrimary->SetNumIcons(city->stockByType[order->primaryInputResourceId]);
   supplyPrimary->SetPictureRsrcID(static_cast<short>(order->primaryInputResourceId + 700), true);
 
   TIconBar* supplySecondary = static_cast<TIconBar*>(FindSubView(kControlTagSup2));
@@ -47,7 +47,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x221);
   }
   if (order->secondaryInputResourceId != -1) {
-    supplySecondary->SetNumIcons(city->CityStockByType(order->secondaryInputResourceId));
+    supplySecondary->SetNumIcons(city->stockByType[order->secondaryInputResourceId]);
     supplySecondary->SetPictureRsrcID(static_cast<short>(order->secondaryInputResourceId + 700),
                                       true);
   }
@@ -96,7 +96,7 @@ void TOrderView::UpdateFields() {
   if (supplyPrimary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x255);
   }
-  supplyPrimary->SetNumIcons(city->CityStockByType(order->primaryInputResourceId));
+  supplyPrimary->SetNumIcons(city->stockByType[order->primaryInputResourceId]);
   supplyPrimary->RefreshControl();
 
   TIconBar* supplySecondary = static_cast<TIconBar*>(FindSubView(kControlTagSup2));
@@ -104,7 +104,7 @@ void TOrderView::UpdateFields() {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x25a);
   }
   if (order->secondaryInputResourceId != -1) {
-    supplySecondary->SetNumIcons(city->CityStockByType(order->secondaryInputResourceId));
+    supplySecondary->SetNumIcons(city->stockByType[order->secondaryInputResourceId]);
     supplySecondary->RefreshControl();
   }
 

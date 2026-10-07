@@ -227,18 +227,18 @@ int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
   if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
     if (col < 0) {
       col += kStrategicMapColumns;
-    } else if (0x6b < col) {
+    } else if (col > 0x6b) {
       col -= kStrategicMapColumns;
     }
   } else {
     if (col < 0) {
       return -1;
     }
-    if (0x6b < col) {
+    if (col > 0x6b) {
       return -1;
     }
   }
-  if (-1 < row && row < kStrategicMapRows) {
+  if (row > -1 && row < kStrategicMapRows) {
     return col + row * kStrategicMapColumns;
   }
   return -1;

@@ -1323,8 +1323,7 @@ void TTacticalBattleView::DoGlideAni() {
     return;
   }
   SetQuickDrawFillColor(0);
-  int slotIndex = 0;
-  do {
+  for (int slotIndex = 0; slotIndex < 4; ++slotIndex) {
     unsigned int frameStartTick = GetTickCountDiv16();
     int rowOffsetPx = slotIndex * moveAnimStepY;
     int colOffsetPx = slotIndex * moveAnimStepX;
@@ -1421,9 +1420,7 @@ void TTacticalBattleView::DoGlideAni() {
         break;
       }
     } while (frameStartTick <= nowTick);
-
-    ++slotIndex;
-  } while (slotIndex < 4);
+  }
 
   InvalidateCityDialogRectRegion(&moveAnimScreenRect, 1);
   moveAnimUnitOffsetX = -1;

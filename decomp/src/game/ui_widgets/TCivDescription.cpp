@@ -127,13 +127,13 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
         TLongintList* ownerNationProvinceCollection =
             g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
         provinceCount = ownerNationProvinceCollection->GetSize();
-        if (0 < provinceCount) {
+        if (provinceCount > 0) {
           provinceOrdinal = 1;
           do {
             provinceId = ownerNationProvinceCollection->At(provinceOrdinal);
             Province* province = &g_pGlobalMapState->cityScoreTable[provinceId];
             provinceTileCount = province->linkedRegionCount;
-            if (0 < provinceTileCount) {
+            if (provinceTileCount > 0) {
               short* provinceTileIndices = province->linkedTileIndices;
               provinceTileOrdinal = 0;
               while (provinceTileOrdinal < provinceTileCount) {
@@ -230,7 +230,7 @@ void TCivDescription::CountWorkableSpaces(TCivUnit* orderState) {
     int provinceRecordId = ownerNationProvinceCollection->At(provinceOrdinal);
     provinceTileOrdinal = 0;
     provinceRecord = &g_pGlobalMapState->cityScoreTable[provinceRecordId];
-    if (0 < provinceRecord->linkedRegionCount) {
+    if (provinceRecord->linkedRegionCount > 0) {
       provinceTileIndices = provinceRecord->linkedTileIndices;
       do {
         provinceTileIndex = (short)*provinceTileIndices;
@@ -238,9 +238,8 @@ void TCivDescription::CountWorkableSpaces(TCivUnit* orderState) {
         if (tileRecord->recruitSearchVisited == 0) {
           tileProfileId = static_cast<short>(tileRecord->gateFlag);
           classSlotOrdinal = 0;
-          remainingSlots = 5;
           targetCountSlot = &context->targetTileCountsBySlot[0];
-          do {
+          for (int i = 0; i < 5; ++i) {
             if (tileProfileId ==
                 g_anTargetTileProfileByCivilianClassAndSlot[classSlotOrdinal +
                                                             context->selectedCivilianClass * 5]) {
@@ -248,8 +247,7 @@ void TCivDescription::CountWorkableSpaces(TCivUnit* orderState) {
             }
             ++classSlotOrdinal;
             ++targetCountSlot;
-            --remainingSlots;
-          } while (remainingSlots != 0);
+          }
         }
         ++provinceTileOrdinal;
         ++provinceTileIndices;
@@ -392,8 +390,7 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   short terrainIconIndex[4] = {10, 7, 8, 9};
   short iconX = 10;
   short iconY = 216;
-  int slot = 0;
-  do {
+  for (int slot = 0; slot < 4; ++slot) {
     if (cannotBuildTerrain[slot] != 0) {
       sourceRect.left = terrainIconIndex[slot] * 20;
       sourceRect.top = 0;
@@ -414,8 +411,7 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
         iconY = static_cast<short>(iconY + 22);
       }
     }
-    slot++;
-  } while (slot < 4);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0058fec0

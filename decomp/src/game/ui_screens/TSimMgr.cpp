@@ -2205,7 +2205,7 @@ void TSimMgr::ScSetWarehouse(STurnInstructionCursor* instruction) {
   } else {
     city = g_apNationStates[static_cast<int>(nationToken)]->city;
   }
-  (&city->cityStockCotton)[static_cast<short>(indexToken)] = static_cast<short>(valueToken);
+  city->stockByType[static_cast<short>(indexToken)] = static_cast<short>(valueToken);
   city->VerifyStocks();
 }
 
@@ -2708,12 +2708,10 @@ void TSimMgr::ScClearTransport(STurnInstructionCursor* instruction) {
   int nation = static_cast<int>(nationToken);
 
   g_apNationStates[nation]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-  int needIndex = 0;
-  do {
+  for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
     g_apNationStates[nation]->UpdateNeedTargetAndAccumulateOverCap(static_cast<short>(needIndex),
                                                                    0);
-    ++needIndex;
-  } while (needIndex < 0x17);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00583700

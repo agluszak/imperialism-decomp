@@ -343,7 +343,7 @@ void TShipyardView::Draw(RECT* rectBuffer) {
         text.Format(g_szDecimalFormat, static_cast<int>(commodityRequiredAmounts[slot]));
         DrawTextWithCachedQuickDrawStyleState(&text);
 
-        short haveAmount = city->CityStockByType(spriteId);
+        short haveAmount = city->stockByType[spriteId];
         text.Format(g_szDecimalFormat, static_cast<int>(haveAmount));
         if (haveAmount < commodityRequiredAmounts[slot]) {
           ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b69);

@@ -24,7 +24,7 @@ short TDealList::Compare(void* a, void* b) {
   TradeDealEntry* recB = static_cast<TradeDealEntry*>(b);
   short kind = recA->category;
   bool invertScore;
-  if (kind < 0xd || 0x10 < kind) {
+  if (kind < 0xd || kind > 0x10) {
     invertScore = false;
   } else {
     invertScore = true;

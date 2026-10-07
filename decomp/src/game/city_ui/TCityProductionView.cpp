@@ -314,13 +314,13 @@ void TCityProductionView::DrawTopLevel() {
     short minuteMark = static_cast<short>(now->tm_min / 5);
     clockMinuteMark = minuteMark;
     clockHour = static_cast<short>(now->tm_hour);
-    if (6 < minuteMark) {
+    if (minuteMark > 6) {
       clockHour = static_cast<short>(now->tm_hour + 1);
     }
-    if (11 < clockHour) {
+    if (clockHour > 11) {
       clockHour -= 12;
     }
-    if (11 < clockHour) {
+    if (clockHour > 11) {
       clockHour -= 12;
     }
   }

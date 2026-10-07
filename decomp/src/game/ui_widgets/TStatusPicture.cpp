@@ -217,8 +217,7 @@ void TStatusPicture::CalcCouncilGraph() {
 void TStatusPicture::SortByBarLength() {
   int* valOuter = values;
   short* idOuter = pictureIds;
-  int outer = 1;
-  do {
+  for (int outer = 1; outer < 7; ++outer) {
     if (outer < 7) {
       int* valInner = valOuter + 1;
       short* idInner = idOuter + 1;
@@ -241,19 +240,16 @@ void TStatusPicture::SortByBarLength() {
     }
     ++idOuter;
     ++valOuter;
-    ++outer;
-  } while (outer < 7);
+  }
 
   // Push each sorted entry's picture id into its child picture widget.
   short* idPtr = pictureIds;
-  int index = 0;
-  do {
+  for (int index = 0; index < 7; ++index) {
     if (*idPtr != -1) {
       TPicture* widget = static_cast<TPicture*>(FindSubView(index + kControlTagArmyPlacardFirst));
       widget->AssertValid();
       widget->SetPictureRsrcID(static_cast<short>(*idPtr + 0x10d7), true);
     }
-    ++index;
     ++idPtr;
-  } while (index < 7);
+  }
 }

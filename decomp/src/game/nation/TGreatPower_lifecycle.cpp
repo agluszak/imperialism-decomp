@@ -146,8 +146,7 @@ TGreatPower::TGreatPower()
   this->escalationCounter =
       static_cast<unsigned char>(g_anGreatPowerEscalationSeedByLocale[localeIndex]);
 
-  int nationIndex = 0;
-  do {
+  for (int nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
     this->tradePolicyByNation[nationIndex] = 0;
     this->diplomacyPolicyByNation[nationIndex] = 0;
     this->diplomacyGrantByNation[nationIndex] = 0;
@@ -160,20 +159,15 @@ TGreatPower::TGreatPower()
     this->transportedItemsByResource[nationIndex] = 0;
     this->rememberedTradeOffersByResource[nationIndex] = 0;
     this->colonyBoycottFlags[nationIndex] = 0;
-    int matrixRow = 0;
-    do {
+    for (int matrixRow = 0; matrixRow < 0x10; ++matrixRow) {
       this->aidAllocationMatrix[nationIndex + matrixRow * kNationSlotCount] = 0;
-      ++matrixRow;
-    } while (matrixRow < 0x10);
-    ++nationIndex;
-  } while (nationIndex < kNationSlotCount);
+    }
+  }
 
-  int pendingIndex = 0;
-  do {
+  for (int pendingIndex = 0; pendingIndex < 0x0D; ++pendingIndex) {
     this->pendingActionStatus.byAction[pendingIndex] = 0;
     this->field8d6[pendingIndex] = -1;
-    ++pendingIndex;
-  } while (pendingIndex < 0x0D);
+  }
 
   int trackedIndex = 0;
   while (trackedIndex < kDiplomacyTrackedSlotCount) {
@@ -686,12 +680,12 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
   if (flags[7] == 0x32) {
     if (this->field8d6[7] == 2) {
       TCity* cityPtr = this->city;
-      cityPtr->cityStockPaper += 10;
+      cityPtr->stockByType[kResourcePaper] += 10;
       cityPtr->VerifyStocks();
       g_pViewMgr->BuildAndShowTurnOverlayByMode(7, this->field8d6[7]);
     } else if (this->field8d6[7] == 3) {
       TCity* cityPtr = this->city;
-      cityPtr->cityStockPaper += 10;
+      cityPtr->stockByType[kResourcePaper] += 10;
       cityPtr->VerifyStocks();
       g_pViewMgr->BuildAndShowTurnOverlayByMode(7, -1);
     }
@@ -908,71 +902,71 @@ void TGreatPower::SorryYouLose(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004daf30
-void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void) {
-  int nationPriorityOrder[] = {0x0F, 0x0E, 0x0D, 0x10, 0x0C, 0x08, 0x0A, 0x09, 0x0B,
-                               0x06, 0x03, 0x04, 0x05, 0x00, 0x01, 0x02, 0x07, -1};
+void TGreatPower::SellStockToCoverDebt(void) {
+  int liquidationOrder[] = {0x0F, 0x0E, 0x0D, 0x10, 0x0C, 0x08, 0x0A, 0x09, 0x0B,
+                            0x06, 0x03, 0x04, 0x05, 0x00, 0x01, 0x02, 0x07, -1};
 
   if (this->IsRemote()) {
     return;
   }
 
-  int compileThreshold = g_anGreatPowerCompileThresholdByLocale[g_pSimMgr->difficultyLevel];
-  if (compileThreshold > static_cast<int>(this->pressureCounter)) {
+  int pressureThreshold = g_anDebtLiquidationThresholdByDifficulty[g_pSimMgr->difficultyLevel];
+  if (pressureThreshold > static_cast<int>(this->pressureCounter)) {
     return;
   }
 
-  int relationDeltaByNation[kNationSlotCount];
+  int soldAmountByResource[kResourceKindCount];
   for (int idx = 0; idx < 0x17; ++idx) {
-    relationDeltaByNation[idx] = 0;
+    soldAmountByResource[idx] = 0;
   }
 
   CString summaryMessageRef;
 
-  int interactionScore = 0;
+  int proceeds = 0;
 
-  int* nationCursor = nationPriorityOrder;
-  while (*nationCursor != -1) {
-    if (interactionScore + this->treasuryValue >= 0) {
+  int* resourceCursor = liquidationOrder;
+  while (*resourceCursor != -1) {
+    if (proceeds + this->treasuryValue >= 0) {
       break;
     }
 
-    short nationSlot = static_cast<short>(*nationCursor);
-    TCity* cityPtr = this->city;
-    short* relationDeltaPtr = (&cityPtr->cityStockCotton) + nationSlot;
-    short relationDelta = *relationDeltaPtr;
-    if (relationDelta > 0) {
-      *relationDeltaPtr = 0;
-      relationDeltaByNation[nationSlot] = static_cast<int>(relationDelta);
+    short resourceKind = static_cast<short>(*resourceCursor);
+    TCity* city = this->city;
+    short* stock = city->stockByType + resourceKind;
+    short soldAmount = *stock;
+    if (soldAmount > 0) {
+      *stock = 0;
+      soldAmountByResource[resourceKind] = static_cast<int>(soldAmount);
 
-      cityPtr->VerifyStocks();
+      city->VerifyStocks();
 
-      int price = g_pTradeMgr->GetPrice(nationSlot);
-      interactionScore = static_cast<int>(static_cast<float>(interactionScore) -
-                                          static_cast<float>(price * relationDelta) * (-0.25f));
+      int price = g_pTradeMgr->GetPrice(resourceKind);
+      proceeds = static_cast<int>(static_cast<float>(proceeds) -
+                                  static_cast<float>(price * soldAmount) * (-0.25f));
 
       if (summaryMessageRef != "") {
         summaryMessageRef += g_szListSeparator;
       }
 
       CString amountText;
-      amountText.Format(g_szDecimalFormat, static_cast<int>(relationDelta));
+      amountText.Format(g_szDecimalFormat, static_cast<int>(soldAmount));
       summaryMessageRef += amountText + s_szSpaceSeparator;
 
       CString commodityName;
-      g_pSimMgr->GetCommodityName(nationSlot, &commodityName);
+      g_pSimMgr->GetCommodityName(resourceKind, &commodityName);
       summaryMessageRef += commodityName;
     }
 
-    ++nationCursor;
+    ++resourceCursor;
   }
 
-  this->AddToTreasury(interactionScore);
+  this->AddToTreasury(proceeds);
 
-  if (interactionScore > 0) {
+  if (proceeds > 0) {
     CString headerText;
     CString currencyText;
     g_pSimMgr->GetString(0x274b, 0, &headerText);
-    g_pSimMgr->NumToCurrency(interactionScore, &currencyText);
+    g_pSimMgr->NumToCurrency(proceeds, &currencyText);
     headerText += currencyText + ": \n";
     summaryMessageRef += headerText;
     g_pViewMgr->ModalMessage(summaryMessageRef, g_ptGreatPowerModalMessage, 2, 0);
@@ -1041,11 +1035,11 @@ bool TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
         return true;
       }
 
-      int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
+      int compileThreshold = g_anDebtLiquidationThresholdByDifficulty[localeIndex];
       if (pressureTier >= compileThreshold) {
         g_pSimMgr->GetString(0x274b, 1, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
-        this->CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage();
+        this->SellStockToCoverDebt();
       } else if (pressureTier == (compileThreshold - 1)) {
         g_pSimMgr->GetString(0x274b, 3, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);

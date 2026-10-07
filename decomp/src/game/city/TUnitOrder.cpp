@@ -56,10 +56,10 @@ short TUnitOrder::MaxOrder() {
   }
 
   short primaryLimit =
-      static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) / primaryInputPerUnit);
+      static_cast<short>(ownerCity->stockByType[primaryInputResourceId] / primaryInputPerUnit);
   short secondaryLimit = primaryLimit;
   if (secondaryInputResourceId >= 0) {
-    secondaryLimit = static_cast<short>(ownerCity->CityStockByType(secondaryInputResourceId) /
+    secondaryLimit = static_cast<short>(ownerCity->stockByType[secondaryInputResourceId] /
                                         secondaryInputPerUnit);
   }
 
@@ -101,12 +101,12 @@ bool TUnitOrder::SetQuantity(short quantity) {
   }
   this->quantity = quantity;
 
-  ownerCity->CityStockByType(primaryInputResourceId) = static_cast<short>(
-      ownerCity->CityStockByType(primaryInputResourceId) - primaryInputPerUnit * delta);
+  ownerCity->stockByType[primaryInputResourceId] = static_cast<short>(
+      ownerCity->stockByType[primaryInputResourceId] - primaryInputPerUnit * delta);
   ownerCity->VerifyStocks();
   if (secondaryInputResourceId >= 0) {
-    ownerCity->CityStockByType(secondaryInputResourceId) = static_cast<short>(
-        ownerCity->CityStockByType(secondaryInputResourceId) - secondaryInputPerUnit * delta);
+    ownerCity->stockByType[secondaryInputResourceId] = static_cast<short>(
+        ownerCity->stockByType[secondaryInputResourceId] - secondaryInputPerUnit * delta);
     ownerCity->VerifyStocks();
   }
   if (workforceMode) {

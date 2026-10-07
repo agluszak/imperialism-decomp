@@ -350,7 +350,7 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
     relaxPassCount = RelaxMapTileCostFieldByNeighborTerrain(costField);
   }
   nationIndex = 0;
-  if (0 < static_cast<short>(nationCountArg)) {
+  if (static_cast<short>(nationCountArg) > 0) {
     do {
       int seedTile = SelectBestSeedTileForNationFromCostField(
           costField, static_cast<short>(nationIndex + kNationSlotCount));

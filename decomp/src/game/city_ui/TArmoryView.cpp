@@ -213,7 +213,7 @@ void TArmoryView::UpdateFields() {
   primaryAvailable->AssertValid();
   short primaryResource = selectedUnitOrder->primaryInputResourceId;
   if (primaryResource != -1) {
-    short available = city->CityStockByType(primaryResource);
+    short available = city->stockByType[primaryResource];
     primaryAvailable->SetControlValue(available, 0);
     primaryAvailable->SetTextColorAndMaybeRefresh(
         available < selectedUnitOrder->primaryInputPerUnit ? &warningTextColor : &normalTextColor,
@@ -228,7 +228,7 @@ void TArmoryView::UpdateFields() {
   secondaryAvailable->AssertValid();
   short secondaryResource = selectedUnitOrder->secondaryInputResourceId;
   if (secondaryResource != -1) {
-    short available = city->CityStockByType(secondaryResource);
+    short available = city->stockByType[secondaryResource];
     secondaryAvailable->SetControlValue(available, 0);
     secondaryAvailable->SetTextColorAndMaybeRefresh(
         available < selectedUnitOrder->primaryInputPerUnit ? &warningTextColor : &normalTextColor,

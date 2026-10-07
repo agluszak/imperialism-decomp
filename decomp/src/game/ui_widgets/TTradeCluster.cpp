@@ -173,7 +173,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       FailNilPointerInUSmallViews(kAssertLineTradeSellDecSell);
     }
     int sellValue = sellControl->UpdateControlCachedIntFromWindowText();
-    if (1 < sellValue) {
+    if (sellValue > 1) {
       this->SetMoveAmount(static_cast<short>(sellValue - 1));
       return;
     }

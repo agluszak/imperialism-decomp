@@ -539,7 +539,7 @@ void TMinor::SetTradeBids(void) {
     } else if (randomBucket < 0x32) {
       resourceType = 1;
     } else {
-      resourceType = ((0x4a < randomBucket) - 1 & 0xfffffffb) + 7;
+      resourceType = ((randomBucket > 0x4a) - 1 & 0xfffffffb) + 7;
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(resourceType);
@@ -595,7 +595,7 @@ void TMinor::SetTradeBids(void) {
       } else if (roll < 0x3c) {
         rolledPredicate = 0xe;
       } else {
-        rolledPredicate = static_cast<short>((0x59 < roll) + 0xf);
+        rolledPredicate = static_cast<short>((roll > 0x59) + 0xf);
       }
     } while (rolledPredicate == this->primaryManufacturedRequest);
     proposalWeight = g_pTradeMgr->GetPrice(rolledPredicate);
@@ -930,11 +930,9 @@ void TMinor::RegainIndependence(void) {
   }
   this->encodedNationSlot = -1;
   this->AssimilateTroopsOf(decodedSlot);
-  int nationSlot = 0;
-  do {
+  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyNormal);
-    ++nationSlot;
-  } while (nationSlot < kNationSlotCount);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004e5a40

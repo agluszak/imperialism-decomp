@@ -48,11 +48,11 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   if (buildingSlotId == 0xb) {
     city->BuildPowerPlant(false);
   } else {
-    city->cityStockLumber =
-        static_cast<short>(city->cityStockLumber + city->GetBuildingType(buildingSlotId));
+    city->stockByType[kResourceLumber] = static_cast<short>(city->stockByType[kResourceLumber] +
+                                                            city->GetBuildingType(buildingSlotId));
     city->VerifyStocks();
-    city->cityStockSteel =
-        static_cast<short>(city->cityStockSteel + city->GetBuildingType(buildingSlotId));
+    city->stockByType[kResourceSteel] = static_cast<short>(city->stockByType[kResourceSteel] +
+                                                           city->GetBuildingType(buildingSlotId));
     city->VerifyStocks();
   }
 

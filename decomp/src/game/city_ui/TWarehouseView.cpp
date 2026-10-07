@@ -202,10 +202,11 @@ void TWarehouseView::UpdateFields() {
   for (short commodity = 0; commodity < 23; ++commodity) {
     TPictureNumberText* valueControl = commodityValueControls[commodity];
     if (valueControl != 0) {
-      short amount = city->CityStockByType(commodity);
+      short amount = city->stockByType[commodity];
       if (valueControl->UpdateControlCachedIntFromWindowText() != amount) {
         if (commodity == 20) {
-          amount = static_cast<short>(city->cityStockFish + city->cityStockLivestock);
+          amount = static_cast<short>(city->stockByType[kResourceFish] +
+                                      city->stockByType[kResourceLivestock]);
           valueControl = commodityValueControls[commodity];
         }
         valueControl->SetControlValue(amount, 1);
