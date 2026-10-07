@@ -75,10 +75,3 @@ sound slider's track-end (`TTwoPicSlider` mode 2). Missing WAVE resources contin
 `CMainFrame::OnEraseBkgnd` tiles `Imperialism.exe` BITMAP `0x119` in 128×128 chunks when the
 background color is the tiled sentinel. Confirmed on the GOG exe: 128×128, 8 bpp, 17448-byte
 DIB. Movie construction replaces that with black.
-
-## Follow-up order
-
-Remaining host-frame work is captionless maximize (done: `decorations: false`) vs. focus-loss
-minimize and the initial splash bitmap `0x3b6`. DirectSound's six-voice steal, the millibel
-SFX curve, and wiring additional `PlaySoundEffect` call sites for already-ported actions stay
-evidence-driven. Untouched GOG AVI playback still needs `IMPERIALISM_RETAIL_DIR`.

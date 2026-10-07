@@ -1,6 +1,5 @@
 # ---------------------------------------------------------------------------
 # sync — regenerate derived artifacts (original_entities.csv).
-# Daily workflow notes live in docs/workflows.md.
 # ---------------------------------------------------------------------------
 
 # MUTATES: Ghidra DB (--apply). The ONE sanctioned source->Ghidra operation:
