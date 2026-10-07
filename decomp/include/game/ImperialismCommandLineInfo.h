@@ -9,8 +9,8 @@ class ImperialismCommandLineInfo : public CCommandLineInfo {
 public:
   explicit ImperialismCommandLineInfo(CString* languageName)
       : m_pLanguageName(languageName), field_28(0x20), m_bQuitAfterLanguageScan(0),
-        m_bShowSetupDialog(0), m_bClearRegistrySettings(0), m_strMainWindowTitle(),
-        m_bForceAutoResOn(0), m_bForceAutoResOff(0) {}
+        m_bShowSetupDialog(0), m_bClearRegistrySettings(0), m_bForceAutoResOn(0),
+        m_bForceAutoResOff(0) {}
   // FUNCTION: IMPERIALISM 0x00413580
   virtual ~ImperialismCommandLineInfo() override {}
 

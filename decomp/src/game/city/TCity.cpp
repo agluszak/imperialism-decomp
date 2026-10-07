@@ -466,11 +466,7 @@ void TCity::EndCityPhase() {
 
 // FUNCTION: IMPERIALISM 0x004b3de0
 void TCity::PredictedNeeds() {
-  if (productionSummary->strength < 2) {
-    lowStockFlag = false;
-  } else {
-    lowStockFlag = true;
-  }
+  lowStockFlag = productionSummary->strength >= 2;
   short shortageCount = 3;
   if (productionAccum[4] > 0) {
     shortageCount = 2;
@@ -481,11 +477,7 @@ void TCity::PredictedNeeds() {
   if (productionAccum[0] > 0) {
     --shortageCount;
   }
-  if (shortageCount < 2) {
-    lowProductionFlag = true;
-  } else {
-    lowProductionFlag = false;
-  }
+  lowProductionFlag = shortageCount < 2;
   ownerNation->UpdateCountryStockpile(stockByType);
 }
 

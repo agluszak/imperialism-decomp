@@ -10,7 +10,7 @@ class TInteriorMinister : public TMinister {
 public:
   // FUNCTION: IMPERIALISM 0x004be230
   ~TInteriorMinister() override {}
-  TInteriorMinister() : TMinister(), capabilityFlag14(1), capabilityFlag16(1) {}
+  TInteriorMinister() : capabilityFlag14(1), capabilityFlag16(1) {}
 
   DECLARE_DYNCREATE(TInteriorMinister)
   void IInteriorMinister(TGreatPower* owner);
@@ -30,8 +30,8 @@ public:
   virtual void PleaseBuildShip(short orderKind);
   virtual void IndustryOrder(short industrySlot);
   virtual void PleaseBuildLandUnit(short unitType);
-  virtual short GetExteriorNeedFor(int orderType);
-  virtual short GetHistoricalNeedFor(int orderType);
+  virtual short GetExteriorNeedFor(int resourceKind);
+  virtual short GetHistoricalNeedFor(int resourceKind);
   virtual void ResetHistoricalNeedFor(int orderType);
 
   short needTargetCursor; // set from SetParameters' second argument

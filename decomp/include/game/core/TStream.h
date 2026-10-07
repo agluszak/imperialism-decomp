@@ -47,7 +47,7 @@ public:
   virtual void WriteByte(unsigned char value);
   virtual void WriteBoolean(unsigned char value);
   virtual void WriteCharacter(short value); // 33 (0x84) 1 byte (the high one)
-  virtual void WriteInteger(short value);   // 34 (0x88) 2 bytes (MacApp Integer)
+  virtual void WriteInteger(short count);   // 34 (0x88) 2 bytes (MacApp Integer)
   virtual void WriteLong(int value);
   virtual void WriteVPoint(double value);
   virtual void WriteRect(void* data);

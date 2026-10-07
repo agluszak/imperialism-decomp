@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TProxyGreatPower)
   virtual ~TProxyGreatPower() override;
   virtual void AddToTreasury(int amount) override;
-  void SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) override;
+  void SetTradePolicyTo(NationSlot targetNation, short tradePolicy) override;
   bool ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override;
   void AddOfferFrom(NationSlot sourceNationSlot,
@@ -27,6 +27,6 @@ public:
   virtual void SorryYouLose() override;
   virtual bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage() override;
 
-  TProxyGreatPower() : TGreatPower() {}
+  TProxyGreatPower() {}
 };
 ASSERT_SIZE(TProxyGreatPower, 0x964);

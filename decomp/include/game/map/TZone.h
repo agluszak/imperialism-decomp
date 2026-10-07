@@ -50,7 +50,7 @@ public:
   virtual short PickPennantIngotTile();
   virtual short PickIngotTile();
   virtual short PickInvasionIngotTile(Province* contextProvince);
-  virtual void ShowFocusIngot(unsigned char show);
+  virtual void ShowFocusIngot(unsigned char flag);
 
   short GetContextOrdinalOrInvalid();
   void GenerateZoneStatusCodeIfUnset();

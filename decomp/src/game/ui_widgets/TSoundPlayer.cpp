@@ -39,7 +39,7 @@ bool UpdateDeferredCdAudioFade() {
       unsigned int now = GetTickCountDiv16();
       int remaining = static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) -
                       static_cast<int>(now) + static_cast<int>(soundPlayer->fadeStartTick);
-      if (!(remaining > 0 && soundPlayer->fadeStartTick <= now)) {
+      if (remaining <= 0 || soundPlayer->fadeStartTick > now) {
         remaining = 0;
         keepTimer = false;
         soundPlayer->fadeStartTick = 0;
@@ -116,7 +116,7 @@ bool TSoundPlayer::FadeCD() {
     unsigned int now = GetTickCountDiv16();
     int remaining = static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) -
                     static_cast<int>(now) + static_cast<int>(fadeStartTick);
-    if (!(remaining > 0 && fadeStartTick <= now)) {
+    if (remaining <= 0 || fadeStartTick > now) {
       remaining = 0;
       keepTimer = false;
       fadeStartTick = 0;

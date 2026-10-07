@@ -13,7 +13,7 @@ public:
 
   short selectedTileIndex;
 
-  TSuperCivRoster() : TPageView() {
+  TSuperCivRoster() {
     selectedTileIndex = -1;
   }
 };

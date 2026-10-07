@@ -36,9 +36,9 @@ void CAmbitDocument::SetModifiedFlag(BOOL bModified) {
 
 // FUNCTION: IMPERIALISM 0x00479710
 CAmbitDocument::~CAmbitDocument() {
-  if (g_pTurnEventDialogFactoryRegistry != 0) {
-    delete g_pTurnEventDialogFactoryRegistry;
-  }
+
+  delete g_pTurnEventDialogFactoryRegistry;
+
   g_pTurnEventDialogFactoryRegistry = 0;
   fileBasedDocument->Free();
 }

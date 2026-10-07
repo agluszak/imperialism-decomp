@@ -92,10 +92,10 @@ void TEventHandler::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x0048a310
-void TEventHandler::DoMenuCommand(int param) {
+void TEventHandler::DoMenuCommand(int commandId) {
   TEventHandler* child = GetNextHandler();
   if (child != 0) {
-    child->DoMenuCommand(param);
+    child->DoMenuCommand(commandId);
   }
 }
 

@@ -26,7 +26,7 @@ public:
   TCivDescription();
 
   void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivUnit* orderState);
-  void CountWorkableSpaces(class TCivUnit* selectedOrder);
+  void CountWorkableSpaces(class TCivUnit* orderState);
 #ifdef IMPERIALISM_RUNTIME_TESTS
   bool ActivateLegendSlot(short slotIndex);
 #endif

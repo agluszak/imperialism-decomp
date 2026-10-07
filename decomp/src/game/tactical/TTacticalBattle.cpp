@@ -147,9 +147,8 @@ void TTacticalBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPl
     tileIntArray[workIdxB] = 0;
   }
 
-  if (tileGrid != 0) {
-    delete[] tileGrid;
-  }
+  delete[] tileGrid;
+
   tileGrid = new TacticalTileRecord[tacticalTileCount];
   TacticalTileRecord* record = tileGrid;
   for (int tile = 0; tile < tacticalTileCount; ++tile, ++record) {
@@ -165,9 +164,9 @@ void TTacticalBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPl
 
 // FUNCTION: IMPERIALISM 0x0059fb50
 void TTacticalBattle::Free() {
-  if (tileMoveCostArray != 0) {
-    delete[] tileMoveCostArray;
-  }
+
+  delete[] tileMoveCostArray;
+
   recordList->RemoveAll();
   if (recordList != 0) {
     recordList->Free();
@@ -178,18 +177,15 @@ void TTacticalBattle::Free() {
   if (players[1] != 0) {
     players[1]->Free();
   }
-  if (tileGrid != 0) {
-    delete[] tileGrid;
-  }
-  if (tileThreatLevelArray != 0) {
-    delete[] tileThreatLevelArray;
-  }
-  if (tileCandidateScorePlane != 0) {
-    delete[] tileCandidateScorePlane;
-  }
-  if (tileIntArray != 0) {
-    delete[] tileIntArray;
-  }
+
+  delete[] tileGrid;
+
+  delete[] tileThreatLevelArray;
+
+  delete[] tileCandidateScorePlane;
+
+  delete[] tileIntArray;
+
   g_pActiveTacticalBattle = 0;
   delete this;
 }
@@ -1199,12 +1195,8 @@ void TTacticalBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targ
   }
 
   bool fortWallTargeted;
-  if (tileGrid[targetTileIndex].deployMark > 1 &&
-      fortStrengthPoints[targetTileIndex / 29 / 2] > 0 && defenderUnit == 0) {
-    fortWallTargeted = true;
-  } else {
-    fortWallTargeted = false;
-  }
+  fortWallTargeted = tileGrid[targetTileIndex].deployMark > 1 &&
+                     fortStrengthPoints[targetTileIndex / 29 / 2] > 0 && defenderUnit == 0;
 
   int fortWallTileOnLine =
       FindFortWallTileCrossedByFiringLine(targetTileIndex, attackerUnit->tileIndex);
@@ -1313,13 +1305,10 @@ void TTacticalBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targ
 
   bool captureEffectCode;
   short overrunDefenderCategory = g_awTacticalUnitCategoryCodeBySlot[defenderUnit->unitType];
-  if (meleeAdjacent && (overrunDefenderCategory == 6 || overrunDefenderCategory == 7) &&
-      g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitType] < 4 &&
-      static_cast<TArmyTacUnit*>(defenderUnit)->morale < moraleDamage) {
-    captureEffectCode = true;
-  } else {
-    captureEffectCode = false;
-  }
+  captureEffectCode = meleeAdjacent &&
+                      (overrunDefenderCategory == 6 || overrunDefenderCategory == 7) &&
+                      g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitType] < 4 &&
+                      static_cast<TArmyTacUnit*>(defenderUnit)->morale < moraleDamage;
 
   attackerUnit->AssertValid();
   LaFireOn(attackerUnit, defenderUnit, targetTileIndex, static_cast<int>(damage),
@@ -1434,12 +1423,8 @@ void TTacticalBattle::CheckForVictory() {
 
   bool localIsSide0Player = players[0]->IsPlayer();
   bool localSideWon;
-  if ((battleOutcome == kTacticalBattleSide0Victory && players[0]->IsPlayer()) ||
-      (battleOutcome == kTacticalBattleSide1Victory && players[1]->IsPlayer())) {
-    localSideWon = true;
-  } else {
-    localSideWon = false;
-  }
+  localSideWon = (battleOutcome == kTacticalBattleSide0Victory && players[0]->IsPlayer()) ||
+                 (battleOutcome == kTacticalBattleSide1Victory && players[1]->IsPlayer());
 
   g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(localSideWon ? 9 : 10, false);
 

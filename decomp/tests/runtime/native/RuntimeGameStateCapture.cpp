@@ -1713,8 +1713,8 @@ JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
   state.Set("temporarily_reserved_ship_arms",
             static_cast<int>(minister->temporarilyReservedShipArms));
   state.Set("railhead_priority_by_resource", CaptureResourceTable(minister->orderTypeTableFC));
-  state.Set("exterior_need_by_resource", CaptureResourceTable(minister->orderTypeTable12A));
-  state.Set("historical_need_by_resource", CaptureResourceTable(minister->orderTypeTable158));
+  state.Set("exterior_need_by_resource", CaptureResourceTable(minister->exteriorNeedByType));
+  state.Set("historical_need_by_resource", CaptureResourceTable(minister->historicalNeedByType));
   state.Set("civilian_order_demand_by_resource",
             CaptureResourceTable(minister->civilianOrderDemandByResourceType));
   return state.Release();

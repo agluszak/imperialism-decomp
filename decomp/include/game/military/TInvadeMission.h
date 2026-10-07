@@ -10,7 +10,7 @@ class TInvadeMission : public TAttackProvinceMission {
 public:
   TBeachheadMission* beachhead; // +0x34 owned amphibious-landing child mission
 
-  TInvadeMission() : TAttackProvinceMission(), beachhead(NULL) {}
+  TInvadeMission() : beachhead(NULL) {}
 
   TInvadeMission(TZone* beachheadZone, short targetProvince);
   virtual ~TInvadeMission() override;

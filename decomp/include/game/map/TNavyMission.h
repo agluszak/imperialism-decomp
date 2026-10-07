@@ -24,7 +24,7 @@ public:
   int navyState; // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
   float requiredShipEquipageByCategory[4];
 
-  TNavyMission() : TMission() {
+  TNavyMission() {
     missionTargetZone = NULL;
     resolvedPortZone = NULL;
     selectedOrder = NULL;
@@ -60,9 +60,9 @@ public:
   virtual float ValueOf(TShip* candidate) override; // match delta vs candidate navy order
   virtual float FitnessOf(TShip* candidate,
                           float* targetProfile) override; // order penalty vs target profile
-  virtual void AcceptReenforcement(TShip* ship,
+  virtual void AcceptReenforcement(TShip* item,
                                    bool notify) override; // attach order child and notify
-  virtual void RejectConstituent(TShip* ship,
+  virtual void RejectConstituent(TShip* item,
                                  bool notify) override;         // detach and clear primary
   virtual void ForgetTaskForce(TTaskForce* taskForce) override; // clear secondary order if match
   virtual bool

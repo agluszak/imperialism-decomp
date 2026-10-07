@@ -14,7 +14,7 @@ public:
   virtual void ControlClick(int tileIndex, int dispatchContext) override;
   virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndexArg,
                                                                  int inputFlags) override;
-  virtual void ShiftClick(int stridedRecord, int dispatchContext) override;
+  virtual void ShiftClick(int tileIndex, int dispatchContext) override;
   virtual void NormalClick(short nTileIndex, int nInputFlags) override;
 
   TMapEditView() : reservedFlag(0), editorActionMode(0), editorActionValue(0) {}

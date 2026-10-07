@@ -29,8 +29,8 @@ public:
 
   TEventHandler();
   TEventHandler(const TEventHandler& source)
-      : TObject(), enabled(source.enabled), viewEnabled(source.viewEnabled),
-        nextHandler(source.nextHandler), controlTag(source.controlTag) {}
+      : enabled(source.enabled), viewEnabled(source.viewEnabled), nextHandler(source.nextHandler),
+        controlTag(source.controlTag) {}
 
   void HandleIdle(int idlePhase);
 
@@ -49,14 +49,14 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
                            TEvent* event); // 0x10 0x48a2e0 DoEvent
-  virtual void DoMenuCommand(int command);
+  virtual void DoMenuCommand(int commandId);
   virtual void DoKeyEvent(TToolboxEvent* event);
   virtual bool DoIdle(int action); // 0x13 0x48a480 (MacApp DoIdle)
 
   void HandleMenuCommand(int command);
   void HandleKeyEvent(TToolboxEvent* event);
   virtual int GetIdleFreq();
-  virtual void SetIdleFreq(int frequency);
+  virtual void SetIdleFreq(int value);
   virtual TWindow* GetWindow();
   virtual bool WantsToBeTarget();
   virtual bool WillingToResignTarget();

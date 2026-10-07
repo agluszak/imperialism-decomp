@@ -14,7 +14,7 @@ public:
   short auxValueB;
 
   // Source evidence: unreferenced retained COMDAT in retail.
-  TAmtBar() : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
+  TAmtBar() : rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
   DECLARE_DYNCREATE(TAmtBar)
 
   // TView-branch slot overrides (0xdc, 0x110, 0x11c).

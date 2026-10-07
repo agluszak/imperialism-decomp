@@ -116,9 +116,9 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* styl
     g_QuickDrawCachedFontPreset.fontSize = style->fontSize;
   }
   if (g_bQuickDrawCachedFontDirty || g_pQuickDrawCachedUiFont == 0) {
-    if (g_pQuickDrawCachedUiFont != 0) {
-      delete g_pQuickDrawCachedUiFont;
-    }
+
+    delete g_pQuickDrawCachedUiFont;
+
     g_pQuickDrawCachedUiFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawCachedFontPreset);
     g_bQuickDrawCachedFontDirty = false;
@@ -145,9 +145,9 @@ unsigned char* __cdecl WriteDwordBytesReversedToScratchBuffer(unsigned long valu
 // FUNCTION: IMPERIALISM 0x00494950
 void RenderTacticalBattleSelectionAndUnitOverlayPass(char glyph) {
   if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
-    if (g_pQuickDrawCachedMeasureFont != 0) {
-      delete g_pQuickDrawCachedMeasureFont;
-    }
+
+    delete g_pQuickDrawCachedMeasureFont;
+
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;
@@ -193,9 +193,9 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass(char glyph) {
 // FUNCTION: IMPERIALISM 0x00494a90
 void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
-    if (g_pQuickDrawCachedMeasureFont != 0) {
-      delete g_pQuickDrawCachedMeasureFont;
-    }
+
+    delete g_pQuickDrawCachedMeasureFont;
+
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;
@@ -259,9 +259,9 @@ void __cdecl RenderTradeScreenCommoditySummaryRows(CString* text, RECT* rect, sh
   }
 
   if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
-    if (g_pQuickDrawCachedMeasureFont != 0) {
-      delete g_pQuickDrawCachedMeasureFont;
-    }
+
+    delete g_pQuickDrawCachedMeasureFont;
+
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;
@@ -302,9 +302,9 @@ void __cdecl RenderTradeScreenCommoditySummaryRows(CString* text, RECT* rect, sh
 short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short offset,
                                                        short length) {
   if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
-    if (g_pQuickDrawCachedMeasureFont != 0) {
-      delete g_pQuickDrawCachedMeasureFont;
-    }
+
+    delete g_pQuickDrawCachedMeasureFont;
+
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;
@@ -332,9 +332,9 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
   }
   if (activeDc != NULL) {
     if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
-      if (g_pQuickDrawCachedMeasureFont != 0) {
-        delete g_pQuickDrawCachedMeasureFont;
-      }
+
+      delete g_pQuickDrawCachedMeasureFont;
+
       g_pQuickDrawCachedMeasureFont =
           CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
       g_bQuickDrawMeasureFontDirty = false;
@@ -348,9 +348,9 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
   CDC localDc;
   localDc.Attach(CreateCompatibleDC(static_cast<HDC>(0)));
   if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
-    if (g_pQuickDrawCachedMeasureFont != 0) {
-      delete g_pQuickDrawCachedMeasureFont;
-    }
+
+    delete g_pQuickDrawCachedMeasureFont;
+
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;

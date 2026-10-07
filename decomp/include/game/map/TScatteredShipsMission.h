@@ -8,7 +8,7 @@
 class TScatteredShipsMission : public TNavyMission {
   DECLARE_SERIAL(TScatteredShipsMission)
 public:
-  TScatteredShipsMission() : TNavyMission() {}
+  TScatteredShipsMission() {}
 
   TScatteredShipsMission(TZone* targetZone) : TNavyMission(targetZone) {}
   virtual ~TScatteredShipsMission() override;

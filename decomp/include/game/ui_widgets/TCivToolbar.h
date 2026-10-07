@@ -14,7 +14,7 @@ public:
 
   TCivToolbar();
   DECLARE_DYNCREATE(TCivToolbar)
-  void SetSelectedUnit(class TCivUnit* selectedCivilianOrderEntry);
+  void SetSelectedUnit(class TCivUnit* selectedOrder);
   void RefreshCivilianStackButtonsForTile(short tileIndex);
 };
 ASSERT_SIZE(TCivToolbar, 0x8c);

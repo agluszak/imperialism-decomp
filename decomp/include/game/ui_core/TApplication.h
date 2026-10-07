@@ -14,7 +14,7 @@ class TApplication : public TCommandHandler {
 public:
   // Windows override: post the queued command pointer to the main-frame 0xBC0 handler.
   virtual void DispatchQueuedUiCommandAndRelease(void* payload) override;
-  virtual void DoMenuCommand(int param) override;
+  virtual void DoMenuCommand(int command) override;
   virtual void SetTarget(TEventHandler* view);
   virtual TEventHandler* GetTarget();
   // MacApp TApplication::GetDefaultCursorRegion(CPoint, Region**); no-op on Windows.

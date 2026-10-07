@@ -34,9 +34,8 @@ TResourceMgr::~TResourceMgr() {
     CacheRecord* record;
     m_recordsByResourceId.GetNextAssoc(pos, key, record);
 
-    if (record->pObject != NULL) {
-      delete record->pObject;
-    }
+    delete record->pObject;
+
     m_recordsByObject.RemoveKey(record->pObject);
     m_recordsByResourceId.RemoveKey(key);
     delete record;
@@ -274,9 +273,8 @@ void TResourceMgr::ReleaseRecordById(short id) {
 
   record->refCount--;
   if (record->refCount <= 0) {
-    if (record->pObject != NULL) {
-      delete record->pObject;
-    }
+
+    delete record->pObject;
 
     m_recordsByObject.RemoveKey(record->pObject);
     m_recordsByResourceId.RemoveKey(record->id);
@@ -295,9 +293,8 @@ void TResourceMgr::ReleaseRecordByHandle(void* handle) {
 
   record->refCount--;
   if (record->refCount <= 0) {
-    if (record->pObject != NULL) {
-      delete record->pObject;
-    }
+
+    delete record->pObject;
 
     m_recordsByObject.RemoveKey(record->pObject);
     m_recordsByResourceId.RemoveKey(record->id);

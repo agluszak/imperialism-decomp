@@ -84,7 +84,7 @@ public:
   void MarkEnemyProvinceCandidates();
   void SetZoneStatus(int contextOrdinal, eMissionDesirability value);
   void SetConquerLust(int nationSlot, char makeEnemy);
-  void SetProvinceStatus(int provinceIndex, eMissionDesirability status);
+  void SetProvinceStatus(int provinceIndex, eMissionDesirability value);
   void SetProvinceStatus(int provinceIndex, eMissionDesirability status, unsigned char bypassGate);
 
   short actionMetricByQuarter[6];

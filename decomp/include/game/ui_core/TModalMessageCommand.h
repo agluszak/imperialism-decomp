@@ -13,7 +13,7 @@ public:
   CString message;
   int payload;
 
-  TModalMessageCommand() : TCommand() {}
+  TModalMessageCommand() {}
 };
 
 ASSERT_SIZE(TModalMessageCommand, 0x20);

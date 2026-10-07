@@ -1378,7 +1378,7 @@ int TArmyPlayer::SelectTarget(TTacticalUnit* unit, int flag) {
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(enemyIter.Reset()); enemyIter.More();
        record = static_cast<TArmyTacUnit*>(enemyIter.Advance())) {
     // Valid targets: active units, plus morale-broken ones in field48==1 mode.
-    if (!(targetingMode == 1 && record->state1c == 1) && record->state1c != 0) {
+    if ((targetingMode != 1 || record->state1c != 1) && record->state1c != 0) {
       continue;
     }
     if (flag != 0) { // read as a byte (char) in the original

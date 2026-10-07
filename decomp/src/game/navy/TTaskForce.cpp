@@ -554,7 +554,7 @@ void TTaskForce::MaxOut(unsigned char mode) {
 
   for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     // Same node+0x34 overrun documented on Add.
-    node->active = !(mode == 0 && node->payload->selection != 0);
+    node->active = mode != 0 || node->payload->selection == 0;
   }
 }
 

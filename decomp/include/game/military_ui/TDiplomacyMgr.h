@@ -38,7 +38,7 @@ public:
   virtual bool IsSpecialRelationTargetForMinorNationSlot(NationSlot nationSlot,
                                                          NationSlot minorNationSlot);
   virtual bool IsActionAllowed(NationSlot sourceNation, NationSlot targetNation, eDipAction action);
-  virtual bool HasAllianceGuardForNationPair(NationSlot sourceNation, NationSlot targetNation);
+  virtual bool HasAllianceGuardForNationPair(NationSlot nationSlot, NationSlot guardedNationSlot);
   virtual bool IsBoycott(NationSlot sourceNation, NationSlot targetNation);
   virtual DiplomacyRelationshipNotch GetRelationshipNotch(NationSlot sourceNation,
                                                           NationSlot targetNation);

@@ -13,8 +13,8 @@ class TTaskForce;
 class TOcean : public TObject {
 public:
   TOcean()
-      : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeSegments(0),
-        selectedTaskForce(0) {}
+      : nationCount(0), contextArray(0), routeNodeCount(0), routeSegments(0), selectedTaskForce(0) {
+  }
   DECLARE_DYNCREATE(TOcean)
   virtual ~TOcean() override;
   virtual void WriteTo(TStream* stream) override;

@@ -6,7 +6,7 @@
 class TRemoteMinor : public TMinor {
 public:
   DECLARE_DYNCREATE(TRemoteMinor)
-  TRemoteMinor() : TMinor() {}
+  TRemoteMinor() {}
 
   void PurchaseItem(short resourceKind, short amount, short price) override;
   bool IsRemote(void) const override;

@@ -18,7 +18,7 @@ public:
 
   TNewspaperView();
 
-  void StuffValues(int pageIndex);
+  void StuffValues(int pageNation);
   void CreateVariables(newsStory* story, CString* tokens);
   void ItemParmList(CString* out, int bitmask);
   void CountryParmList(CString* out, int bitmask);

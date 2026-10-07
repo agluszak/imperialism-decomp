@@ -1832,9 +1832,7 @@ void TMapMaker::RepositionDateline() {
     ++sourceCol;
   } while (destByte < 0xf30);
 
-  if (scratch != NULL) {
-    delete[] scratch;
-  }
+  delete[] scratch;
 }
 // FUNCTION: IMPERIALISM 0x00529c80
 int TMapMaker::ZoneCorner(long nationCode) {

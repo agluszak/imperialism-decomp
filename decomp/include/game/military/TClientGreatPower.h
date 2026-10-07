@@ -20,6 +20,6 @@ public:
   int ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) override;
   void SorryYouLose(void) override;
 
-  TClientGreatPower() : TGreatPower() {}
+  TClientGreatPower() {}
 };
 ASSERT_SIZE(TClientGreatPower, 0x964);

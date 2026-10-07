@@ -46,9 +46,9 @@ void TEditText::Close() {
   if (editWindow != NULL) {
     delete editWindow;
     editWindow = NULL;
-    if (editFont != NULL) {
-      delete editFont;
-    }
+
+    delete editFont;
+
     editFont = NULL;
   }
 }
@@ -152,9 +152,9 @@ void TEditText::Free() {
   if (editWindow != NULL) {
     delete editWindow;
     editWindow = NULL;
-    if (editFont != NULL) {
-      delete editFont;
-    }
+
+    delete editFont;
+
     editFont = NULL;
   }
   TView::Free();

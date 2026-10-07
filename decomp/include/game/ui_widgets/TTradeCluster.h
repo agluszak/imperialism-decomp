@@ -22,7 +22,7 @@ public:
 
   void DoPostCreate(int styleSeed) override;
   virtual bool IsTradeControlAtMinimum() override;
-  void SetMoveAmount(short amount) override;
+  void SetMoveAmount(short metricClampMax) override;
   virtual int GetTradeSellControlValue();
   virtual bool IsSelectionAllowed();
   virtual int IsSellOffer();

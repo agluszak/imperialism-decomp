@@ -17,7 +17,7 @@ public:
   TZone* selectedZone;
   TTaskForce* selectedTaskForce;
 
-  TSuperNavyRoster() : TPageView(), selectedZone(0), selectedTaskForce(0) {}
+  TSuperNavyRoster() : selectedZone(0), selectedTaskForce(0) {}
 };
 
 ASSERT_SIZE(TSuperNavyRoster, 0x8c);

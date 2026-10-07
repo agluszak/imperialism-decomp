@@ -13,7 +13,7 @@ public:
   virtual ~TIndustryCluster() override;
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   void SetMoveAmount(short amount) override;
-  virtual void SetMoveAmount(short amount, bool updateControls);
+  virtual void SetMoveAmount(short dragValue, bool updateControls);
   virtual void UpdateMax();
   TProductionOrder* selectedMetricOrder;
   short selectedMetricValue;

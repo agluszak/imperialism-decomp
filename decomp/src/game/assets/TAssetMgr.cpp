@@ -67,9 +67,8 @@ CFile* TAssetMgr::LoadTableResourceStreamByName(CString name) {
 
 // FUNCTION: IMPERIALISM 0x005df6d0
 void TAssetMgr::ReleaseResourceStreamIfNotNull(CFile* stream) {
-  if (stream != 0) {
-    delete stream;
-  }
+
+  delete stream;
 }
 
 // FUNCTION: IMPERIALISM 0x005df700

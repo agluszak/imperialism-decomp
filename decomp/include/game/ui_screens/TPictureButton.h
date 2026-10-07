@@ -15,7 +15,7 @@ public:
   short clickSoundId;
 
   // FUNCTION: IMPERIALISM 0x005707f0
-  TPictureButton() : TPicture(), clickSoundId(7000) {}
+  TPictureButton() : clickSoundId(7000) {}
 };
 
 ASSERT_SIZE(TPictureButton, 0x94);

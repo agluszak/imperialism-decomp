@@ -9,7 +9,7 @@ public:
   DECLARE_DYNCREATE(TNextDiplomationCommand)
   void DoIt() override;
 
-  TNextDiplomationCommand() : TCommand() {}
+  TNextDiplomationCommand() {}
 
   void PostThyself();
 

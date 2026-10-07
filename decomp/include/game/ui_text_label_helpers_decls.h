@@ -31,8 +31,8 @@ void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidt
 void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
                                                       short font);
 
-void SetControlHoverHelpText(CString text, TView* control);
-void SetControlHoverHelpTextAltEntry(CString text, TView* control);
+void SetControlHoverHelpText(CString sharedString, TView* control);
+void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
 

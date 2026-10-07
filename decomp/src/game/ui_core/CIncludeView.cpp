@@ -78,9 +78,8 @@ CIncludeView::~CIncludeView() {
     m_activeDialogContext = 0;
     SetGlobalUiInvalidationFlagAndReturnPrevious(previousUiActive);
   }
-  if (m_pOffscreenDib != 0) {
-    delete m_pOffscreenDib;
-  }
+
+  delete m_pOffscreenDib;
 }
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(CIncludeView, CView)
@@ -429,9 +428,9 @@ void CIncludeView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* p
 
 // FUNCTION: IMPERIALISM 0x00483750
 void CIncludeView::OnInitialUpdate() {
-  if (m_pOffscreenDib != 0) {
-    delete m_pOffscreenDib;
-  }
+
+  delete m_pOffscreenDib;
+
   m_pOffscreenDib = new CDib(0x280, 0x1e0, 8);
   HDC hdc = ::GetDC(m_hWnd);
   CDC* dc = CDC::FromHandle(hdc);

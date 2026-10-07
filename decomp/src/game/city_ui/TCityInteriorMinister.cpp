@@ -92,18 +92,18 @@ float TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale(int* resourcePo
 }
 
 // FUNCTION: IMPERIALISM 0x004be7b0
-short TCityInteriorMinister::GetExteriorNeedFor(int arg) {
-  return orderTypeTable12A[arg];
+short TCityInteriorMinister::GetExteriorNeedFor(int resourceKind) {
+  return exteriorNeedByType[resourceKind];
 }
 
 // FUNCTION: IMPERIALISM 0x004be7d0
-short TCityInteriorMinister::GetHistoricalNeedFor(int arg) {
-  return orderTypeTable158[arg];
+short TCityInteriorMinister::GetHistoricalNeedFor(int resourceKind) {
+  return historicalNeedByType[resourceKind];
 }
 
 // FUNCTION: IMPERIALISM 0x004be7f0
 void TCityInteriorMinister::ResetHistoricalNeedFor(int arg) {
-  orderTypeTable158[arg] = 0;
+  historicalNeedByType[arg] = 0;
 }
 
 IMPLEMENT_DYNCREATE(TCityInteriorMinister, TInteriorMinister)
@@ -145,8 +145,8 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
 
   for (short i = 0; i < 23; ++i) {
     orderTypeTableFC[i] = 0;
-    orderTypeTable12A[i] = 0;
-    orderTypeTable158[i] = 0;
+    exteriorNeedByType[i] = 0;
+    historicalNeedByType[i] = 0;
   }
   for (short j = 0; j < 61; ++j) {
     orderMetricTable[j] = 0;
@@ -270,8 +270,8 @@ void TCityInteriorMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&deferredLaborShortfall, 2);
   WriteShortArrayElems(stream, orderShortTableDC, 16);
   WriteShortArrayElems(stream, orderTypeTableFC, 23);
-  WriteShortArrayElems(stream, orderTypeTable12A, 23);
-  WriteShortArrayElems(stream, orderTypeTable158, 23);
+  WriteShortArrayElems(stream, exteriorNeedByType, 23);
+  WriteShortArrayElems(stream, historicalNeedByType, 23);
   stream->WriteBytes(&temporarilyReservedShipArms, 2);
 
   {
@@ -349,10 +349,10 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
   SwapShortArrayBytes(orderShortTableDC, shortTableCount);
   stream->ReadBytes(orderTypeTableFC, sizeof(orderTypeTableFC));
   SwapShortArrayBytes(orderTypeTableFC, 23);
-  stream->ReadBytes(orderTypeTable12A, sizeof(orderTypeTable12A));
-  SwapShortArrayBytes(orderTypeTable12A, 23);
-  stream->ReadBytes(orderTypeTable158, sizeof(orderTypeTable158));
-  SwapShortArrayBytes(orderTypeTable158, 23);
+  stream->ReadBytes(exteriorNeedByType, sizeof(exteriorNeedByType));
+  SwapShortArrayBytes(exteriorNeedByType, 23);
+  stream->ReadBytes(historicalNeedByType, sizeof(historicalNeedByType));
+  SwapShortArrayBytes(historicalNeedByType, 23);
   stream->ReadBytes(&temporarilyReservedShipArms, 2);
   {
     if (list28->GetSize() != 0) {
@@ -1418,14 +1418,14 @@ void TCityInteriorMinister::ProspectAndDevelop() {
 
   int resourceWeights[23];
   memset(resourceWeights, 0, sizeof(resourceWeights));
-  resourceWeights[0] = orderTypeTable12A[0] + 1;
-  resourceWeights[1] = orderTypeTable12A[1] + 1;
-  resourceWeights[2] = orderTypeTable12A[2];
-  resourceWeights[3] = orderTypeTable12A[3] + 5;
-  resourceWeights[4] = orderTypeTable12A[4] + 5;
+  resourceWeights[0] = exteriorNeedByType[0] + 1;
+  resourceWeights[1] = exteriorNeedByType[1] + 1;
+  resourceWeights[2] = exteriorNeedByType[2];
+  resourceWeights[3] = exteriorNeedByType[3] + 5;
+  resourceWeights[4] = exteriorNeedByType[4] + 5;
   bool hasOilProspecting = g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
   if (hasOilProspecting) {
-    resourceWeights[6] = orderTypeTable12A[6] + 10;
+    resourceWeights[6] = exteriorNeedByType[6] + 10;
   }
 
   char prospectableTerrain[kStrategicTerrainCount] = {0, 0, 1, 1, 0, 0, 0, 0};
@@ -1702,9 +1702,9 @@ void TCityInteriorMinister::StartRailheadProject(ResourceKindStorage resourceKin
     short tileIndex = ownedTiles->GetAt(ownedTileOrdinal);
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tile->regionSubtypeTag != -1 ||
-        !((primaryDistanceMap[tileIndex] > 0 && primaryDistanceMap[tileIndex] < 9) ||
-          g_pGlobalMapState->CanBuildPortAtTile(tileIndex) ||
-          (secondaryDistanceMap[tileIndex] > 2 && secondaryDistanceMap[tileIndex] < 6))) {
+        ((primaryDistanceMap[tileIndex] <= 0 || primaryDistanceMap[tileIndex] >= 9) &&
+         !g_pGlobalMapState->CanBuildPortAtTile(tileIndex) &&
+         (secondaryDistanceMap[tileIndex] <= 2 || secondaryDistanceMap[tileIndex] >= 6))) {
       continue;
     }
 
@@ -2574,7 +2574,7 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
   }
   for (resourceType = 0; resourceType < 23; ++resourceType) {
     civilianOrderDemandByResourceType[resourceType] = 0;
-    orderTypeTable12A[resourceType] = 0;
+    exteriorNeedByType[resourceType] = 0;
   }
 
   short tileCount = ownedTiles->GetSize();
@@ -2606,7 +2606,7 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
       if (distance == 0 || distance < 9 || !g_pGlobalMapState->CanBuildPortAtTile(tileIndex)) {
         reachable = false;
         for (short direction = 0; direction < 6 && !reachable; ++direction) {
-          StrategicTileIndex neighbor = g_pGlobalMapState->GetNeighborTileID(
+          StrategicTileIndex neighbor = TMapMgr::GetNeighborTileID(
               tileIndex, static_cast<StrategicHexDirectionStorage>(direction));
           char neighborDistance = (neighbor != -1) ? primaryDistanceMap[neighbor] : 0;
           if ((neighbor != -1 && neighborDistance > 0 && neighborDistance < 9) ||
@@ -2637,8 +2637,8 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
       short need = orderMetricTable[resourceType];
       if (need - demand > 2) {
         if (unclaimedTileMentions[resourceType] == 0) {
-          orderTypeTable12A[resourceType] =
-              static_cast<short>(orderTypeTable12A[resourceType] + need);
+          exteriorNeedByType[resourceType] =
+              static_cast<short>(exteriorNeedByType[resourceType] + need);
         } else {
           orderTypeTableFC[resourceType] =
               static_cast<short>(orderTypeTableFC[resourceType] + (need - demand));
@@ -2646,10 +2646,10 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
       }
       orderMetricTable[resourceType] = 0;
     }
-    if (orderTypeTable12A[resourceType] == 0) {
-      orderTypeTable158[resourceType] = 0;
+    if (exteriorNeedByType[resourceType] == 0) {
+      historicalNeedByType[resourceType] = 0;
     } else {
-      ++orderTypeTable158[resourceType];
+      ++historicalNeedByType[resourceType];
     }
   }
 

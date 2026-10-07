@@ -1247,15 +1247,14 @@ double g_MapPreviewScaleY6A33D0;
 // GLOBAL: IMPERIALISM 0x006a3448
 short g_MapPreviewVerticalOffset6A3448;
 // GLOBAL: IMPERIALISM 0x006a3360
-extern double g_mapCellRowScale;
+
 // GLOBAL: IMPERIALISM 0x006a3388
-extern double g_mapCellColumnScale;
+
 // GLOBAL: IMPERIALISM 0x006a32f8
-extern double g_mapProjectionColumnScale;
+
 // GLOBAL: IMPERIALISM 0x006a3320
-extern double g_mapProjectionRowScale;
+
 // GLOBAL: IMPERIALISM 0x006a3348
-extern short g_mapProjectionSeamColumn;
 
 } // extern "C"
 

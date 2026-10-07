@@ -456,11 +456,11 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
   }
   g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
       activeTileIndex, -kMapTileActionStateZoneCenterMarkerFrame);
-  activeTileIndex = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+  activeTileIndex = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
       activeTileIndex, kStrategicHexDirectionNorthWest);
   g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
       activeTileIndex, -kMapTileActionStateZoneNorthWestMarkerFrame);
-  activeTileIndex = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+  activeTileIndex = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
       activeTileIndex, kStrategicHexDirectionNorthEast);
   g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
       activeTileIndex, -kMapTileActionStateZoneNorthEastMarkerFrame);
@@ -601,7 +601,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
 
   int score = 0x1388;
   for (int neighborDir = 0; neighborDir < 6; ++neighborDir) {
-    short neighborTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+    short neighborTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
         static_cast<short>(tileIndex), static_cast<short>(neighborDir));
     if (neighborTile != -1) {
       TTerrainStateRecord& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
@@ -657,7 +657,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
       if (zoneForTile == this) {
         int neighborDir;
         for (neighborDir = 0; neighborDir < 6; ++neighborDir) {
-          short neighborTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+          short neighborTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
               tileCandidate, static_cast<short>(neighborDir));
           if (neighborTile != -1) {
             TTerrainStateRecord& neighborRecord =
@@ -707,11 +707,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
     short spiralTile = TileIndexFromRowCol(spiral.row, spiral.col);
 
     bool tileInBounds;
-    if ((spiralTile < 0) || (spiralTile) > 0x194f) {
-      tileInBounds = false;
-    } else {
-      tileInBounds = true;
-    }
+    tileInBounds = !((spiralTile < 0) || (spiralTile) > 0x194f);
 
     if (tileInBounds) {
       int spiralTileIndex = TileIndexFromRowCol(spiral.row, spiral.col);
@@ -778,12 +774,12 @@ void TZone::ShowFocusIngot(unsigned char flag) {
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         centerTile, magnitude * kMapTileActionStateZoneCenterMarkerFrame);
     g_pViewMgr->mapUberPicture->InvalidateTile(centerTile);
-    short northWestTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+    short northWestTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
         centerTile, kStrategicHexDirectionNorthWest);
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         northWestTile, magnitude * kMapTileActionStateZoneNorthWestMarkerFrame);
     g_pViewMgr->mapUberPicture->InvalidateTile(northWestTile);
-    short northEastTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+    short northEastTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
         centerTile, kStrategicHexDirectionNorthEast);
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         northEastTile, magnitude * kMapTileActionStateZoneNorthEastMarkerFrame);

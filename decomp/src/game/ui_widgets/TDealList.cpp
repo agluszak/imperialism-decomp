@@ -24,11 +24,7 @@ short TDealList::Compare(void* a, void* b) {
   TradeDealEntry* recB = static_cast<TradeDealEntry*>(b);
   short kind = recA->category;
   bool invertScore;
-  if (kind < 0xd || kind > 0x10) {
-    invertScore = false;
-  } else {
-    invertScore = true;
-  }
+  invertScore = !(kind < 0xd || kind > 0x10);
   int valueA = recA->dispatchScore;
   int priorityA = recA->relationStanding;
   int scoreA;

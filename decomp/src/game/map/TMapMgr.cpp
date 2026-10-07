@@ -244,11 +244,7 @@ bool TMapMgr::GenerateMap(const char* mapStreamName, char* tuningOverride) {
   TMapMaker* mapMaker = new TMapMaker();
 
   bool sessionActive;
-  if (g_pSimMgr->reloadPoliticalMapState || g_pSimMgr->scenarioMapIndexPlusOne != 0) {
-    sessionActive = true;
-  } else {
-    sessionActive = false;
-  }
+  sessionActive = g_pSimMgr->reloadPoliticalMapState || g_pSimMgr->scenarioMapIndexPlusOne != 0;
   mapMaker->modeByte2a1 = hexNeighborWrapHorizontally;
 
   if (sessionActive) {
@@ -1182,41 +1178,29 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
 // FUNCTION: IMPERIALISM 0x005112f0
 bool TMapMgr::CheckTileVariantCodeMembershipSetA(StrategicTileIndex tileIndex) {
   RiverSpriteCodeStorage code = terrainStateTable[tileIndex].riverSpriteCode;
-  if (code == 0xf || code == 0x1f || code == 0x11 || code == 0x21 || code == 0x13 || code == 0x23 ||
-      code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34) {
-    return true;
-  }
-  return false;
+  return code == 0xf || code == 0x1f || code == 0x11 || code == 0x21 || code == 0x13 ||
+         code == 0x23 || code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34;
 }
 
 // FUNCTION: IMPERIALISM 0x00511360
 bool TMapMgr::CheckTileVariantCodeMembershipSetB(StrategicTileIndex tileIndex) {
   RiverSpriteCodeStorage code = terrainStateTable[tileIndex].riverSpriteCode;
-  if (code == 0x10 || code == 0x20 || code == 0x12 || code == 0x22 || code == 0x14 ||
-      code == 0x24 || code == 0x16 || code == 0x26 || code == 0x2d || code == 0x35) {
-    return true;
-  }
-  return false;
+  return code == 0x10 || code == 0x20 || code == 0x12 || code == 0x22 || code == 0x14 ||
+         code == 0x24 || code == 0x16 || code == 0x26 || code == 0x2d || code == 0x35;
 }
 
 // FUNCTION: IMPERIALISM 0x005113d0
 bool TMapMgr::CheckTileVariantCodeMembershipSetC(StrategicTileIndex tileIndex) {
   RiverSpriteCodeStorage code = terrainStateTable[tileIndex].riverSpriteCode;
-  if (code == 0xd || code == 0x1d || code == 0x11 || code == 0x21 || code == 0x12 || code == 0x22 ||
-      code == 0x17 || code == 0x27 || code == 0x30 || code == 0x38) {
-    return true;
-  }
-  return false;
+  return code == 0xd || code == 0x1d || code == 0x11 || code == 0x21 || code == 0x12 ||
+         code == 0x22 || code == 0x17 || code == 0x27 || code == 0x30 || code == 0x38;
 }
 
 // FUNCTION: IMPERIALISM 0x00511440
 bool TMapMgr::CheckTileVariantCodeMembershipSetD(StrategicTileIndex tileIndex) {
   RiverSpriteCodeStorage code = terrainStateTable[tileIndex].riverSpriteCode;
-  if (code == 0xe || code == 0x1e || code == 0x13 || code == 0x23 || code == 0x14 || code == 0x24 ||
-      code == 0x18 || code == 0x28 || code == 0x31 || code == 0x39) {
-    return true;
-  }
-  return false;
+  return code == 0xe || code == 0x1e || code == 0x13 || code == 0x23 || code == 0x14 ||
+         code == 0x24 || code == 0x18 || code == 0x28 || code == 0x31 || code == 0x39;
 }
 
 // FUNCTION: IMPERIALISM 0x005114b0

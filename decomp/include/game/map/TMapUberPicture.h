@@ -22,7 +22,7 @@ public:
   virtual ~TMapUberPicture() override;
   virtual void Free() override;
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  virtual void DoMenuCommand(int param) override;
+  virtual void DoMenuCommand(int command) override;
   virtual void DoKeyEvent(TToolboxEvent* event) override;
   virtual void DoPostCreate(int arg) override;
   virtual void Scroll(MapScrollEdgeMaskStorage edgeMask) override;

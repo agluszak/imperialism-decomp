@@ -100,7 +100,7 @@ public:
   virtual void ConfigureMapEditorGoldValueGrid();
   virtual void ShowUnitHistory(short nationSlot);
 
-  QuickDrawPaletteIndex GetColor(short colorCode);
+  QuickDrawPaletteIndex GetColor(short eventCode);
   void SetColor(short colorCode, bool foreground);
 
   void ShowCivilianLedgerDialogAndSelectUnit();

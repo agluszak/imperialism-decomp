@@ -13,7 +13,7 @@ public:
   virtual void SetCurrentChoice(int childTag) override;
   virtual bool IsTradeControlAtMinimum() override;
   // Source evidence: unreferenced retained COMDAT in retail.
-  TUnitToolbarCluster() : TUberCluster() {}
+  TUnitToolbarCluster() {}
   DECLARE_DYNCREATE(TUnitToolbarCluster)
 };
 ASSERT_SIZE(TUnitToolbarCluster, 0x88);

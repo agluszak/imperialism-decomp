@@ -12,6 +12,6 @@ public:
   virtual ~TArmyStackList() override;
   short Compare(void* a, void* b) override;
 
-  TArmyStackList() : TSortedList() {}
+  TArmyStackList() {}
 };
 ASSERT_SIZE(TArmyStackList, 0x20);

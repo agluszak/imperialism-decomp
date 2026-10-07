@@ -21,7 +21,7 @@ public:
   void ICountingStream();
   void SetPosition(int position) override;
   int GetLength() override;
-  void SetLength(int length) override;
+  void SetLength(int position) override;
   // ReadBytes (slot 0x3c) is inherited unchanged from TStream.
   void WriteBytes(const void* data, int length) override;
 };

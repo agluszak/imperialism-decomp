@@ -14,7 +14,7 @@ public:
   // clang-format off
   virtual ~TFileStream() override;
   virtual void WriteSharedString(CString* sharedString) override;
-  virtual bool ReadObject(void* outByte) override;
+  virtual bool ReadObject(void* outObject) override;
   virtual void WriteObject(void* object, int flag) override;
   // clang-format on
   ArchiveStreamAdapter* backingArchiveOrStream;
@@ -28,8 +28,8 @@ public:
   void SetPosition(int position) override;
   int GetLength() override;
   void SetLength(int length) override;
-  void ReadBytes(void* buffer, int sizeBytes) override;
+  void ReadBytes(void* destination, int requestedCount) override;
   void ReadSharedString(CString* dest, int maxLen) override;
-  void WriteBytes(const void* data, int length) override;
+  void WriteBytes(const void* source, int byteCount) override;
 };
 ASSERT_SIZE(TFileStream, 0x8);

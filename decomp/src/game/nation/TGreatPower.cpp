@@ -177,12 +177,8 @@ void TGreatPower::TraceSupplyRoutes(char** outInfluenceMap) {
   }
   marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
-    if ((influenceMap[marker->tileIndex] == 0 || !marker->activeFlag) &&
-        (marker->IsUnblockedPort() == 0 || homeLinked == 0)) {
-      marker->transportLinked = false;
-    } else {
-      marker->transportLinked = true;
-    }
+    marker->transportLinked = !((influenceMap[marker->tileIndex] == 0 || !marker->activeFlag) &&
+                                (marker->IsUnblockedPort() == 0 || homeLinked == 0));
     marker = static_cast<TTown*>(markerCursor.Advance());
   }
   if (outInfluenceMap != 0) {

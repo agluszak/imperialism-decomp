@@ -9,13 +9,13 @@
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x004be150
-short TInteriorMinister::GetExteriorNeedFor(int arg) {
-  return arg;
+short TInteriorMinister::GetExteriorNeedFor(int resourceKind) {
+  return resourceKind;
 }
 
 // FUNCTION: IMPERIALISM 0x004be170
-short TInteriorMinister::GetHistoricalNeedFor(int arg) {
-  return arg;
+short TInteriorMinister::GetHistoricalNeedFor(int resourceKind) {
+  return resourceKind;
 }
 
 // FUNCTION: IMPERIALISM 0x004be190

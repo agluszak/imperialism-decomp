@@ -153,9 +153,8 @@ TMultiplayerSlotHandle::TMultiplayerSlotHandle() : allocatedData(0), tagOrSize(0
 
 // FUNCTION: IMPERIALISM 0x005427c0
 TMultiplayerSlotHandle::~TMultiplayerSlotHandle() {
-  if (allocatedData != 0) {
-    delete allocatedData;
-  }
+
+  delete allocatedData;
 }
 
 struct TurnEvent12Packet : TimelyMessageHeader {
@@ -901,11 +900,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
             }
           }
           bool canStart;
-          if (liveCount < 2 || !localPresent) {
-            canStart = false;
-          } else {
-            canStart = true;
-          }
+          canStart = !(liveCount < 2 || !localPresent);
           TTextPictureButton* okayButton =
               (TTextPictureButton*)lounge->FindSubView(kControlTagOkay);
           okayButton->AssertValid();
@@ -2379,11 +2374,7 @@ void TMultiplayerMgr::WriteArmyUnitsTo(TStream* stream, int terrainSlot) {
 void TMultiplayerMgr::WriteCiviliansTo(TStream* stream, int nationFilter) {
   for (int slot = 0; slot < 7; ++slot) {
     bool matches;
-    if (nationFilter == -1 || nationFilter == slot) {
-      matches = true;
-    } else {
-      matches = false;
-    }
+    matches = nationFilter == -1 || nationFilter == slot;
     TGreatPower* nation = g_apNationStates[slot];
     if (nation == 0 || !matches) {
       stream->WriteInteger(0);
@@ -3023,11 +3014,7 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
     }
     sessionInit.scenarioTag = scenarioSelectionTag;
     bool resumingSavedGame;
-    if (sessionPhaseTag == kSessionTagGoin && g_pSimMgr->GetPlayerCountry() != -1) {
-      resumingSavedGame = true;
-    } else {
-      resumingSavedGame = false;
-    }
+    resumingSavedGame = sessionPhaseTag == kSessionTagGoin && g_pSimMgr->GetPlayerCountry() != -1;
     if (resumingSavedGame) {
       sessionInit.scenarioTag = kControlTagLoad; // 'load'
     }
@@ -3094,12 +3081,8 @@ void TMultiplayerMgr::RecalcPlayerName(int nationSlot) {
     nationStatusTags[nationSlot] = kSessionTagDead; // 'dead'
   } else {
     bool wrapInParens;
-    if (g_apNationStates[nationSlot]->diplomacyEligibility == 0 ||
-        !g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot))) {
-      wrapInParens = true;
-    } else {
-      wrapInParens = false;
-    }
+    wrapInParens = g_apNationStates[nationSlot]->diplomacyEligibility == 0 ||
+                   !g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot));
     CString nationName;
     g_apNationStates[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
     const char* prefix = g_szUiOpenParen;

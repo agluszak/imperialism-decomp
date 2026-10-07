@@ -47,9 +47,9 @@ void CreateBackdropWindowIfSplashEnabled(CWnd* parent) {
   }
 
   if (window->m_hWnd == NULL) {
-    if (g_pActiveBackdropWindow != NULL) {
-      delete g_pActiveBackdropWindow;
-    }
+
+    delete g_pActiveBackdropWindow;
+
     g_pActiveBackdropWindow = NULL;
     return;
   }

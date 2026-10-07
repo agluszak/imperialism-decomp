@@ -52,12 +52,10 @@ CMainFrame::CMainFrame() : m_pDibPalette(0), m_pBackdropDib(0), field_CC(1) {
 
 // FUNCTION: IMPERIALISM 0x00484c70
 CMainFrame::~CMainFrame() {
-  if (m_pDibPalette != 0) {
-    delete m_pDibPalette;
-  }
-  if (m_pBackdropDib != 0) {
-    delete m_pBackdropDib;
-  }
+
+  delete m_pDibPalette;
+
+  delete m_pBackdropDib;
 }
 
 // FUNCTION: IMPERIALISM 0x00484d00

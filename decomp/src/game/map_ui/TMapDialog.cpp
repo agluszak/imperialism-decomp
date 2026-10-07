@@ -1877,8 +1877,7 @@ void TMapDialog::DrawProvinceBorders(unsigned char borderMask, int screenX, int 
   }
 
   if (g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() != kStrategicTerrainWater) {
-    short neighborTile =
-        g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
+    short neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
     if (neighborTile != -1 &&
         g_pGlobalMapState->terrainStateTable[neighborTile].GetTerrainKind() ==
             kStrategicTerrainWater &&
@@ -1889,7 +1888,7 @@ void TMapDialog::DrawProvinceBorders(unsigned char borderMask, int screenX, int 
       DrawMapDialogGuidePatternSetD(screenX, screenY, 0);
     }
 
-    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
+    neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
     if (neighborTile != -1 &&
         g_pGlobalMapState->terrainStateTable[neighborTile].GetTerrainKind() ==
             kStrategicTerrainWater &&
@@ -1910,7 +1909,7 @@ void TMapDialog::DrawLandBorders(unsigned char borderMask, int screenX, int scre
   short neighborTile;
 
   if (direction1) {
-    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionEast);
+    neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionEast);
     short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
     if ((borderMask & 1) == 0) {
       DrawBorder(2, screenX, screenY,
@@ -1919,8 +1918,7 @@ void TMapDialog::DrawLandBorders(unsigned char borderMask, int screenX, int scre
       DrawBorder(1, screenX, screenY,
                  g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
       if ((borderMask & 0x40) != 0) {
-        neighborTile =
-            g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
+        neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
         neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
         DrawBorder(3, screenX, screenY,
                    g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
@@ -1928,19 +1926,17 @@ void TMapDialog::DrawLandBorders(unsigned char borderMask, int screenX, int scre
     }
 
     if ((borderMask & 4) == 0) {
-      neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionEast);
+      neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionEast);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
       DrawBorder(6, screenX, screenY,
                  g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
     } else {
-      neighborTile =
-          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
+      neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
       DrawBorder(7, screenX, screenY,
                  g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
       if ((borderMask & 0x80) != 0) {
-        neighborTile =
-            g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
+        neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
         neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
         DrawBorder(5, screenX, screenY,
                    g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
@@ -1949,26 +1945,24 @@ void TMapDialog::DrawLandBorders(unsigned char borderMask, int screenX, int scre
   }
 
   if ((borderMask & 1) != 0) {
-    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
+    neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
     short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
     DrawBorder(0, screenX, screenY, g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag,
                neighborNation);
     if (!direction1) {
-      neighborTile =
-          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
+      neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
       DrawBorder(3, screenX, screenY,
                  g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
     }
   }
   if ((borderMask & 4) != 0) {
-    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
+    neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
     short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
     DrawBorder(9, screenX, screenY, g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag,
                neighborNation);
     if (!direction1) {
-      neighborTile =
-          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
+      neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
       DrawBorder(5, screenX, screenY,
                  g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
@@ -1976,35 +1970,31 @@ void TMapDialog::DrawLandBorders(unsigned char borderMask, int screenX, int scre
   }
 
   if (g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() != kStrategicTerrainWater) {
-    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
+    neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
     if (neighborTile != -1 &&
         g_pGlobalMapState->terrainStateTable[neighborTile].GetTerrainKind() ==
             kStrategicTerrainWater &&
         (borderMask & 0x20) != 0 && !direction1) {
-      neighborTile =
-          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthWest);
+      neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthWest);
       short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
       DrawBorder(0, screenX, screenY,
                  g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
-      neighborTile =
-          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthWest);
+      neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthWest);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
       DrawBorder(3, screenX, screenY,
                  g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
     }
 
-    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
+    neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
     if (neighborTile != -1 &&
         g_pGlobalMapState->terrainStateTable[neighborTile].GetTerrainKind() ==
             kStrategicTerrainWater &&
         (borderMask & 8) != 0 && !direction1) {
-      neighborTile =
-          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthWest);
+      neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthWest);
       short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
       DrawBorder(5, screenX, screenY,
                  g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);
-      neighborTile =
-          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthWest);
+      neighborTile = TMapMgr::GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthWest);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
       DrawBorder(9, screenX, screenY,
                  g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag, neighborNation);

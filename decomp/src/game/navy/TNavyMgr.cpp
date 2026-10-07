@@ -619,7 +619,7 @@ void TNavyMgr::CarryOutOrders() {
   // Pass A: 3/4-kind entries vs a matching-context 6-kind entry.
   {
     for (TTaskForce* entry = orderQueueHead; entry != NULL; entry = entry->nextForce) {
-      if (!(entry->shipOrders == 3 || entry->shipOrders == 4))
+      if (entry->shipOrders != 3 && entry->shipOrders != 4)
         continue;
       if (entry->defeated != 0)
         continue;
@@ -684,7 +684,7 @@ void TNavyMgr::CarryOutOrders() {
 
   {
     for (TTaskForce* entry = orderQueueHead; entry != NULL; entry = entry->nextForce) {
-      if (!(entry->shipOrders == 3 || entry->shipOrders == 4))
+      if (entry->shipOrders != 3 && entry->shipOrders != 4)
         continue;
       if (entry->defeated != 0)
         continue;
@@ -794,11 +794,7 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
       bool active;
       bool isUnderStrength =
           child->strength < g_NavyOrderResourceDescriptorTable[child->type].HullPoints();
-      if (isUnderStrength || chancePercent <= rand() % 100) {
-        active = false;
-      } else {
-        active = true;
-      }
+      active = !(isUnderStrength || chancePercent <= rand() % 100);
       node->active = active;
     }
   }
@@ -832,12 +828,8 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
     for (TMapOrderChildLinkNode* node = nationEntry->shipList; node != NULL; node = node->next) {
       TShip* child = node->payload;
       bool active;
-      if (child->strength < g_NavyOrderResourceDescriptorTable[child->type].HullPoints() ||
-          selectionChance <= rand() % 100) {
-        active = false;
-      } else {
-        active = true;
-      }
+      active = !(child->strength < g_NavyOrderResourceDescriptorTable[child->type].HullPoints() ||
+                 selectionChance <= rand() % 100);
       node->active = active;
     }
   }

@@ -10,7 +10,7 @@ class TBlockadePortMission : public TControlSeaZoneMission {
 public:
   TZone* portZoneContext; // +0x3c blockade-target port zone (deserialized by node id)
 
-  TBlockadePortMission() : TControlSeaZoneMission(), portZoneContext(NULL) {}
+  TBlockadePortMission() : portZoneContext(NULL) {}
 
   TBlockadePortMission(TZone* context);
   virtual ~TBlockadePortMission() override;

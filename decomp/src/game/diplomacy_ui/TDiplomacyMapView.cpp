@@ -1450,12 +1450,12 @@ void TDiplomacyMapView::PoseOffer(short sourceNation, short targetNation, short 
 }
 
 // FUNCTION: IMPERIALISM 0x004f70c0
-void TDiplomacyMapView::DoEvent(int commandId, TEventHandler* panelEvent, TEvent* extra) {
+void TDiplomacyMapView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x14) {
     int tabIndex = 0;
     const unsigned int* tagTable = g_aDiplomacyActionTopicTabTags;
     do {
-      if (static_cast<unsigned int>(panelEvent->controlTag) == *tagTable) {
+      if (static_cast<unsigned int>(sourceHandler->controlTag) == *tagTable) {
         break;
       }
       tagTable += 1;
@@ -1466,7 +1466,7 @@ void TDiplomacyMapView::DoEvent(int commandId, TEventHandler* panelEvent, TEvent
       return;
     }
   } else {
-    TControl::DoEvent(commandId, panelEvent, extra);
+    TControl::DoEvent(commandId, sourceHandler, event);
   }
 }
 

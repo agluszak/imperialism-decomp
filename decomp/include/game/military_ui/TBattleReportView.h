@@ -27,7 +27,7 @@ public:
 
   void DrawBattleNuggets(RECT* rectBuffer);
 
-  TBattleReportView() : TDiplomacyMapView(), selectedReportIndex(1), transientRegistryObject(0) {}
+  TBattleReportView() : selectedReportIndex(1), transientRegistryObject(0) {}
 
 private:
   int selectedReportIndex;

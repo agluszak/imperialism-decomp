@@ -112,8 +112,8 @@ void TTown::CalculateRawResources() {
     }
 
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (!((tile->ownerNationTag == ownerNation && tile->regionSubtypeTag == townRegionClass) ||
-          tile->GetTerrainKind() == kStrategicTerrainWater)) {
+    if ((tile->ownerNationTag != ownerNation || tile->regionSubtypeTag != townRegionClass) &&
+        tile->GetTerrainKind() != kStrategicTerrainWater) {
       continue;
     }
 

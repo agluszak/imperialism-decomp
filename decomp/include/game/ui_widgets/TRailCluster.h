@@ -12,7 +12,7 @@ class TRailCluster : public TAmtBarCluster {
 public:
   virtual ~TRailCluster() override;
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  virtual void SetMoveAmount(short amount, bool updateControls);
+  virtual void SetMoveAmount(short dragValue, bool updateFlag);
   void SetMoveAmount(short amount) override;
   virtual void UpdateMax();
   TProductionOrder* selectedMetricOrder;

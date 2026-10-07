@@ -8,7 +8,7 @@ class TScroller : public TView {
 public:
   DECLARE_DYNCREATE(TScroller)
 
-  TScroller() : TView() {}
+  TScroller() {}
 
   virtual ~TScroller() override;
 

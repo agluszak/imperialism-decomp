@@ -29,7 +29,7 @@ public:
   short embeddedPageIndex;
 
   // Source evidence: unreferenced retained COMDAT in retail.
-  TBuildingView() : TNoHilitePicture() {
+  TBuildingView() {
     this->city = 0;
   }
 };

@@ -99,7 +99,7 @@ public:
   void CreateSimObjects(bool flag);
   void CreatePlanet(int rebuild, const char* mapName, int wrapHorizontally);
   unsigned char LoadScenario(int scenarioIndex);
-  void CreateCountries(int flag);
+  void CreateCountries(int activate);
   void NameCapitals();
   void ProcessScenarioScript();
   // Sets mapArtSet and reloads that picture language pack.

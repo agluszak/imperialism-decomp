@@ -20,7 +20,7 @@ public:
   virtual void DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) override;
   virtual void EndBattle(unsigned char sideWonFlag) override;
 
-  TArmyBattle() : TTacticalBattle() {}
+  TArmyBattle() {}
 
   void AllocateRecordList();
 

@@ -56,8 +56,8 @@ public:
   virtual void TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
                                   short* outVerticalOffset, short* outHorizontalOffset,
                                   int projectionScale) override;
-  virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
-                            short& outRegionBand) override;
+  virtual void ConvertPoint(const CPoint& point, short& outRow, short& outCol,
+                            short& outBand) override;
   virtual void CenterOn(int tileIndex) override;
 
   void PopulateMapContextInfoPanelStringsByTileSelection(short tileIndex, int unusedArg);

@@ -31,7 +31,7 @@ public:
   virtual void* Dequeue(); // MacApp TList::Dequeue -- removes the head
   virtual int GetCount();
   virtual void* GetEntryByOrdinal(int ordinal = 0);
-  virtual void RemoveAtOrdinal(int ordinal);
+  virtual void RemoveAtOrdinal(int oneBasedIndex);
   virtual void FreePayloads();
   virtual void FreeList();
   virtual void RemoveAll();

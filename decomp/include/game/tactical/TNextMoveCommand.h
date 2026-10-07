@@ -14,7 +14,7 @@ public:
   TTacticalBattle* battle;
 
   // MATCH: inlined at every allocation site; the standalone COMDAT copy stays unclaimed.
-  TNextMoveCommand() : TCommand() {}
+  TNextMoveCommand() {}
   void INextMoveCommand(TTacticalBattle* battle);
 };
 

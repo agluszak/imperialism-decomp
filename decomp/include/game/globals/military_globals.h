@@ -80,7 +80,7 @@ extern const double g_PortZoneForeignMissionScoreMultiplier;
 extern const double g_ArmyMissionEligibleUnitStrengthScale;
 extern const float g_MissionResourceWeightScale;
 extern const float g_BlockadePortMissionThreatFloor;
-extern const float g_NavyMissionIndustrialCostWeights[4];
+
 extern const float g_BlockadePortMissionThreatScale;
 extern const float g_MissionEmptyResourceWeight;
 extern const double g_BeachheadMissionPriorityNormalization;

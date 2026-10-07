@@ -12,7 +12,7 @@ public:
   virtual ~TCivUnit() override {}
   virtual void WriteTo(TStream* stream) override;
   virtual void ReadFrom(TStream* stream) override;
-  virtual void MoveTo(short nTileIndex) override;
+  virtual void MoveTo(short newTileIndex) override;
   virtual void ContinueOrders() override;
   virtual void Vaporize() override;
   virtual void SetOrders(UnitOrder order, int payload) override;

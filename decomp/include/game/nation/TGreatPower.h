@@ -209,7 +209,7 @@ public:
   virtual float GetPeaceThreat(int targetNation);
   virtual void ReplaceObsoleteMissions();
   virtual void ClearCivilianOrders(void);
-  virtual void KillUnitsIn(int regionId);
+  virtual void KillUnitsIn(int ownerClass);
   virtual void AddColony(int targetNation);
   virtual void TellColoniesAboutNewEnemy(int targetNation);
   virtual void TellColoniesAboutNewPeace(int targetNation);

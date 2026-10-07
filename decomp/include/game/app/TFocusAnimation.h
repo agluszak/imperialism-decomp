@@ -12,7 +12,7 @@ class TFocusAnimation : public TAnimation {
 public:
   // FUNCTION: IMPERIALISM 0x004a0080
   ~TFocusAnimation() override {}
-  TFocusAnimation() : TAnimation(), enabledFlag(1) {}
+  TFocusAnimation() : enabledFlag(1) {}
 
   virtual void Tick() override;
   virtual void DrawNextFrame(POINT* unusedOffset) override;

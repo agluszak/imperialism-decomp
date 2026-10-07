@@ -21,7 +21,7 @@ public:
   virtual void LaunchShip();
 
   // Construction stores only the derived vptr; it does not clear tracking slots.
-  TShipOrder() : TProductionOrder() {}
+  TShipOrder() {}
 };
 
 ASSERT_SIZE(TShipOrder, 0x4c);

@@ -22,12 +22,12 @@ public:
   short GetRankingCriterionForGP(short nationSlot) override;
   virtual void MakeNewCity(TCity* city) override;
   virtual void FillOrders() override;
-  virtual void PleaseBuildShip(short arg) override;
+  virtual void PleaseBuildShip(short orderKind) override;
   virtual void IndustryOrder(short industrySlot) override;
   virtual void PleaseBuildLandUnit(short unitType) override;
-  virtual short GetExteriorNeedFor(int arg) override;
-  virtual short GetHistoricalNeedFor(int arg) override;
-  virtual void ResetHistoricalNeedFor(int arg) override;
+  virtual short GetExteriorNeedFor(int resourceKind) override;
+  virtual short GetHistoricalNeedFor(int resourceKind) override;
+  virtual void ResetHistoricalNeedFor(int resourceKind) override;
   virtual void FillLists();
   virtual void DetermineTradeBid(TCity* city);
   virtual void IssueBasicOrders(TCity* city, TTaskList* commandQueue);
@@ -98,8 +98,8 @@ public:
   short deferredLaborShortfall;
   short orderShortTableDC[16];
   short orderTypeTableFC[23];
-  short orderTypeTable12A[23]; // +0x12a..0x158 (exterior need by order type)
-  short orderTypeTable158[23]; // +0x158..0x186 (historical need by order type)
+  short exteriorNeedByType[23];   // +0x12a..0x158 (exterior need by order type)
+  short historicalNeedByType[23]; // +0x158..0x186 (historical need by order type)
   short temporarilyReservedShipArms;
   TFuzzySet* cityPolicyFuzzySet; // +0x188 (new TFuzzySet, 4 policy curves)
   TList* orderList;              // +0x18c (new TList; ctor 0x4be840 nulls it)
