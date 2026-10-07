@@ -43,7 +43,6 @@ void TGWorldButton::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
 
 // FUNCTION: IMPERIALISM 0x00572270
 void TGWorldButton::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   if (frameSurface != 0) {
     CRect destRect;
     QueryContentBounds(&destRect);

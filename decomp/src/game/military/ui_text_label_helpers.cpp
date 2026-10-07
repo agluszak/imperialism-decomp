@@ -68,7 +68,6 @@ void ResolveUiThemeColor(short themeCode, COLORREF* outColor) {
 // FUNCTION: IMPERIALISM 0x005c3e80
 void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int fontSize,
                                 int themeCode) {
-  (void)unused;
   CString deadLocal;
   styleDescriptor->fontStyleFlags = 0;
   COLORREF textColor = 0;
@@ -94,7 +93,6 @@ void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, sho
 TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int unused2,
                                                       int pointSize, int themeCode, int themeCode2,
                                                       const char* caption) {
-  (void)unused2;
   control->AssertValid();
   TextStyle styleDescriptor;
   styleDescriptor.fontFamily = 0;
@@ -117,7 +115,6 @@ TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticTex
                                                                       int themeCode, int themeCode2,
                                                                       int stringResourceGroup,
                                                                       short stringResourceIndex) {
-  (void)unused2;
   CString caption;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&caption, stringResourceGroup,
                                                       stringResourceIndex);

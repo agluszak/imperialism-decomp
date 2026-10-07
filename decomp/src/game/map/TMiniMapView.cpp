@@ -24,8 +24,6 @@ TMiniMapView::~TMiniMapView() {}
 // FUNCTION: IMPERIALISM 0x0059a440
 void TMiniMapView::IMiniMapView(TView* panel, int* offsetLayout, int* sizeLayout,
                                 int sizeDeterminerX, int sizeDeterminerY) {
-  (void)sizeDeterminerX;
-  (void)sizeDeterminerY;
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
   markerBoxX = frameWidth / 2 - markerBoxWidth;
   markerBoxY = frameHeight / 2 - markerBoxHeight;
@@ -33,7 +31,6 @@ void TMiniMapView::IMiniMapView(TView* panel, int* offsetLayout, int* sizeLayout
 
 // FUNCTION: IMPERIALISM 0x0059a540
 void TMiniMapView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   TQuickDrawSurfaceContext* miniMapAtlas = g_pMacViewMgr->miniMapWorld;
   if (miniMapAtlas == 0) {
     return;
@@ -116,9 +113,6 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x0059a920
 void TMiniMapView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                               CPoint& currentPoint, bool commandFlag) {
-  (void)startPoint;
-  (void)previousPoint;
-  (void)commandFlag;
 
   if (phase >= kTrackPhaseBegin && phase <= kTrackPhaseUpdate) {
     if (PointInBoundsAndActionable(&currentPoint) != 0) {

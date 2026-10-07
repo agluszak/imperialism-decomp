@@ -338,7 +338,6 @@ void TDefendProvinceMission::Initialize() {
 
 // FUNCTION: IMPERIALISM 0x0053f010
 bool TDefendProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
-  (void)zoneContext;
   return missionType == kMissionTypeDefendProvince && key == static_cast<int>(presentLocation);
 }
 

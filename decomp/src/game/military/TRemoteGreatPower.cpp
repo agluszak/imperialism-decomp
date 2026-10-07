@@ -34,9 +34,7 @@ void TRemoteGreatPower::SortTrackedOrdersByTypePriority(void) {}
 void TRemoteGreatPower::ClearTradeOffers(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541940
-void TRemoteGreatPower::ClearTradeOfferForResource(short targetSlot) {
-  (void)targetSlot;
-}
+void TRemoteGreatPower::ClearTradeOfferForResource(short targetSlot) {}
 
 // FUNCTION: IMPERIALISM 0x00541960
 void TRemoteGreatPower::SetDiplomacyPolicies(void) {}
@@ -56,22 +54,16 @@ void TRemoteGreatPower::ReplyToDiplomacyOffers(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541a00
-void TRemoteGreatPower::SetEnemy(int targetNation) {
-  (void)targetNation;
-}
+void TRemoteGreatPower::SetEnemy(int targetNation) {}
 
 // FUNCTION: IMPERIALISM 0x00541a20
-void TRemoteGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNation) {
-  (void)targetNation;
-}
+void TRemoteGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNation) {}
 
 // FUNCTION: IMPERIALISM 0x00541a40
 void TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541a60
-void TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
-  (void)unused;
-}
+void TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {}
 
 // FUNCTION: IMPERIALISM 0x00541ab0
 TRemoteGreatPower::~TRemoteGreatPower() {}

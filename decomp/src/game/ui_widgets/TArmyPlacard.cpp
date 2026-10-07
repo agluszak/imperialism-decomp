@@ -65,8 +65,6 @@ void TArmyPlacard::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0058c140
 void TArmyPlacard::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  (void)commandId;
-  (void)event;
   if (sourceHandler->controlTag == kControlTagPlus) { // "plus"
     short categoryId = this->controlTag - 0x6330;
     short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;

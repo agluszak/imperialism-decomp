@@ -36,7 +36,6 @@ void TScoreGraph::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004fe390
 void TScoreGraph::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b67);
 
   int rowY = 0;

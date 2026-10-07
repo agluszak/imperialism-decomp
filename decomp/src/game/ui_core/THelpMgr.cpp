@@ -859,16 +859,10 @@ void THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx) {
 
 // FUNCTION: IMPERIALISM 0x005033e0
 void THelpMgr::NoOpDiplomacyPolicyStateChangedHook(int policyOrGrant, int targetNation,
-                                                   int acceptedFlag) {
-  (void)policyOrGrant;
-  (void)targetNation;
-  (void)acceptedFlag;
-}
+                                                   int acceptedFlag) {}
 
 // FUNCTION: IMPERIALISM 0x00503400
-void THelpMgr::HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCode) {
-  (void)eventCode;
-}
+void THelpMgr::HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCode) {}
 
 // FUNCTION: IMPERIALISM 0x00503420
 void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {

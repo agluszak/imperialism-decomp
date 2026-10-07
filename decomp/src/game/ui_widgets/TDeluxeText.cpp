@@ -46,7 +46,6 @@ void TDeluxeText::LoadTextResource(short stringId) {
 
 // FUNCTION: IMPERIALISM 0x005b6170
 void TDeluxeText::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   CString textBuffer;
   CopyTextTo(&textBuffer);
   if (dropShadowEnabled) {

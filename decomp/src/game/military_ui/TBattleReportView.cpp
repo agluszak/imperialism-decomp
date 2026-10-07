@@ -417,8 +417,6 @@ void TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
 
 // FUNCTION: IMPERIALISM 0x004adcb0
 void TBattleReportView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)event;
-  (void)origin;
   MapContextActionRecord* selectedRecord = 0;
   int remaining = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
   for (; remaining > 0; --remaining) {

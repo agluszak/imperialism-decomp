@@ -21,9 +21,7 @@ StrategicMapCallbackRecord::StrategicMapCallbackRecord()
       destinationRowStride(0) {}
 
 // FUNCTION: IMPERIALISM 0x004d4bd0
-void StrategicMapCallbackRecord::SetDestinationHeightNoOp(int unusedHeight) {
-  (void)unusedHeight;
-}
+void StrategicMapCallbackRecord::SetDestinationHeightNoOp(int unusedHeight) {}
 
 // Patches the generated packed-color write program and applies it to the destination pixels.
 // FUNCTION: IMPERIALISM 0x004d4bf0

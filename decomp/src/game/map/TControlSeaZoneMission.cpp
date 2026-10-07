@@ -144,7 +144,6 @@ void TControlSeaZoneMission::CalculateImportance() {
 
 // FUNCTION: IMPERIALISM 0x00539600
 bool TControlSeaZoneMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
-  (void)key;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeDefendProvince) &&
          zoneContext == missionTargetZone;
 }

@@ -13,9 +13,6 @@ int g_timerDispatchSuppressAssert;          // 0x006a5d24
 void CALLBACK DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(HWND hwnd, UINT msg,
                                                                         UINT idEvent,
                                                                         DWORD dwTime) {
-  (void)hwnd;
-  (void)msg;
-  (void)dwTime;
   int slot = static_cast<int>(idEvent) - 0xa000;
   if (slot < 0 || slot >= 10 || g_timerSlotCallbacks[slot] == NULL) {
     if (g_timerDispatchSuppressAssert == 0) {

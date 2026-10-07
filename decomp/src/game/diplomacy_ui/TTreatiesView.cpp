@@ -37,7 +37,6 @@ void TTreatiesView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004f7c00
 void TTreatiesView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   CString labelText;
   CString unusedScratch;
 

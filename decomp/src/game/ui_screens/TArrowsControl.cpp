@@ -13,9 +13,6 @@ TArrowsControl::~TArrowsControl() {}
 // FUNCTION: IMPERIALISM 0x005839f0
 void TArrowsControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                                 CPoint& currentPoint, bool commandFlag) {
-  (void)startPoint;
-  (void)previousPoint;
-  (void)commandFlag;
   if (phase == kTrackPhaseEnd) {
     return;
   }

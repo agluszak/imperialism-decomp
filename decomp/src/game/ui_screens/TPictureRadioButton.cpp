@@ -30,7 +30,6 @@ void TPictureRadioButton::ViewEnable(char isEnabled, char refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x00570ea0
 void TPictureRadioButton::DefaultSize(bool refreshNow) {
-  (void)refreshNow;
   CPoint bitmapSize;
   CPoint* dimensions = cachedBitmap->CopyBitmapDimensionsToPoint(&bitmapSize);
   CPoint bottomRight;
@@ -58,9 +57,6 @@ void TPictureRadioButton::Select(bool isPressed, bool notifyParent) {
 // FUNCTION: IMPERIALISM 0x00570fb0
 char TPictureRadioButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                           CPoint origin) {
-  (void)point;
-  (void)event;
-  (void)origin;
   if (IsSelected()) {
     return 0;
   }

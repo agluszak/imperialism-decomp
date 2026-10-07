@@ -13,9 +13,6 @@ IMPLEMENT_DYNCREATE(TTEView, TStaticText)
 void TTEView::ITEView(TDocument* document, TView* panel, int* offsetLayout, int* sizeLayout,
                       int layoutParam5, int layoutParam6, RECT* insetRect, TextStyle* style,
                       short styleWord90, unsigned char unusedB, bool unusedC) {
-  (void)document;
-  (void)unusedB;
-  (void)unusedC;
   IStaticText(panel, offsetLayout, sizeLayout, layoutParam5, layoutParam6, -1, 0);
   contentInsets.left = insetRect->left;
   contentInsets.top = insetRect->top;
@@ -54,13 +51,8 @@ short TTEView::GetNumberOfChars() {
 // FUNCTION: IMPERIALISM 0x004862d0
 void TTEView::SetOneStyle(short start, short end, short styleMask, const TextStyle& style,
                           bool refreshNow) {
-  (void)start;
-  (void)end;
-  (void)styleMask;
   InstallTextStyle(style, refreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x00486300
-void TTEView::StuffTERects(const CRect& textRect) {
-  (void)textRect;
-}
+void TTEView::StuffTERects(const CRect& textRect) {}

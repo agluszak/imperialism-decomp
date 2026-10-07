@@ -47,7 +47,6 @@ float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
 
 // FUNCTION: IMPERIALISM 0x0059b070
 short __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b, void* context) {
-  (void)context;
   short priorityByAiClass[5] = {1, 0, 2, 0, 0};
   TTacticalUnit* unitA = static_cast<TTacticalUnit*>(a);
   TTacticalUnit* unitB = static_cast<TTacticalUnit*>(b);
@@ -103,7 +102,6 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
 
 // FUNCTION: IMPERIALISM 0x0059b3e0
 void TArmyPlayer::ApplyChanges(unsigned char sideWonFlag) {
-  (void)sideWonFlag;
   if (unitList->GetCount() > 0) {
     CIterator unitIter(unitList);
     for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitIter.Reset()); unitIter.More();
@@ -526,7 +524,6 @@ void TArmyPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0059c440
 void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode) {
-  (void)cursorProfileMode;
 
   // Is the battle site this nation's capital city record?
   bool siteIsHomeCapital = battle->battleSiteIndex ==
@@ -1155,7 +1152,6 @@ int TArmyPlayer::ScoreTacticalTileAdjacentEnemyContact(TTacticalUnit* unit,
 // FUNCTION: IMPERIALISM 0x0059d940
 int TArmyPlayer::ScoreTacticalTileEnemyEngagementExposureCount(TTacticalUnit* unit,
                                                                TacticalTileIndex tileIndex) {
-  (void)unit;
   int exposureCount = 0;
   TList* enemyList;
   if (isOurSideFlag != 0) {
@@ -1183,7 +1179,6 @@ int TArmyPlayer::ScoreTacticalTileEnemyEngagementExposureCount(TTacticalUnit* un
 // FUNCTION: IMPERIALISM 0x0059da20
 int TArmyPlayer::ScoreTacticalTileRetreatEdgeRowProximity(TTacticalUnit* unit,
                                                           TacticalTileIndex tileIndex) {
-  (void)unit;
   int row = tileIndex / 29;
   if (randomParityByte50 != 0) {
     if (row <= 1) {
@@ -1201,7 +1196,6 @@ int TArmyPlayer::ScoreTacticalTileRetreatEdgeRowProximity(TTacticalUnit* unit,
 // FUNCTION: IMPERIALISM 0x0059dac0
 int TArmyPlayer::ScoreTacticalTileCoverTerrainBonus(TTacticalUnit* unit,
                                                     TacticalTileIndex tileIndex) {
-  (void)unit;
   int terrainType = battle->tileGrid[tileIndex].terrainType;
   if (terrainType == 1 || terrainType == 2) {
     return 0x64;
@@ -1230,7 +1224,6 @@ int TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit,
 // FUNCTION: IMPERIALISM 0x0059dba0
 int TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit,
                                                        TacticalTileIndex tileIndex) {
-  (void)unit;
   int fieldValue = battle->tileIntArray[tileIndex];
   if (fieldValue != -1) {
     return 0x64 - fieldValue;
@@ -1241,7 +1234,6 @@ int TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit,
 // FUNCTION: IMPERIALISM 0x0059dbe0
 int TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit,
                                                            TacticalTileIndex tileIndex) {
-  (void)unit;
   int bestScore = 0;
   CIterator friendIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(friendIter.Reset()); friendIter.More();
@@ -1263,7 +1255,6 @@ int TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit,
 // FUNCTION: IMPERIALISM 0x0059dcd0
 int TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit,
                                                             TacticalTileIndex tileIndex) {
-  (void)unit;
   int column = tileIndex % 29;
   int wallColumn = battle->battlefieldColumnCount - 6;
   if (column < wallColumn) {
@@ -1287,7 +1278,6 @@ int TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit,
 // FUNCTION: IMPERIALISM 0x0059dd40
 int TArmyPlayer::ScoreTacticalTileEnemyArtilleryExposureCount(TTacticalUnit* unit,
                                                               TacticalTileIndex tileIndex) {
-  (void)unit;
   int exposureCount = 0;
   TList* enemyList;
   if (isOurSideFlag != 0) {
@@ -1379,7 +1369,6 @@ int TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit,
 // FUNCTION: IMPERIALISM 0x0059e0d0
 int TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit,
                                                            TacticalTileIndex tileIndex) {
-  (void)unit;
   return (tileIndex % 29 > battle->battlefieldColumnCount - 5) ? 0x64 : 0;
 }
 

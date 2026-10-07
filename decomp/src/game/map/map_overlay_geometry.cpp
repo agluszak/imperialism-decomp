@@ -286,7 +286,6 @@ unsigned int MapEdgePoint::Equals(const MapEdgePoint* other) const {
 
 // FUNCTION: IMPERIALISM 0x00559a70
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
-  (void)dwInputFlags;
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
   short actionClass = tile.tileActionState;
   if (actionClass == kMapTileActionStateNone) {
@@ -330,7 +329,6 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
 
 // FUNCTION: IMPERIALISM 0x00559bd0
 int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlags) {
-  (void)dwInputFlags;
   TTaskForce* entry = GetActiveMapOrderEntry();
   if (entry == 0) {
     return 0;

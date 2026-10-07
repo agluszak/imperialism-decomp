@@ -777,7 +777,6 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
 
 // FUNCTION: IMPERIALISM 0x00498b50
 void __cdecl SetQuickDrawCursor(const QuickDrawCursor* cursor) {
-  (void)cursor;
   if (g_QuickDrawSetCursorAssertGate == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath, 0x984);
   }
@@ -785,7 +784,6 @@ void __cdecl SetQuickDrawCursor(const QuickDrawCursor* cursor) {
 
 // FUNCTION: IMPERIALISM 0x00498b80
 QuickDrawCursorHandle __cdecl GetQuickDrawCursor(short cursorId) {
-  (void)cursorId;
   if (g_QuickDrawGetCursorAssertGate == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath, 0x988);
   }

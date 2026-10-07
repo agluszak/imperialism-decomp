@@ -56,7 +56,6 @@ void TFocusAnimation::IdleDraw() {
 
 // FUNCTION: IMPERIALISM 0x004a0250
 void TFocusAnimation::DrawNextFrame(POINT* unusedOffset) {
-  (void)unusedOffset;
   LoadFrameIntoBuffer();
   ClipAndPaste();
 }

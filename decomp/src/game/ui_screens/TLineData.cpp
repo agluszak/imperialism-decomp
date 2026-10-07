@@ -14,10 +14,7 @@ void TLineData::ILineData(short rowArg, short colArg, int* bounds) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056f460
-void TLineData::InstallViews(TView* panel, int* offsetLayout) {
-  (void)panel;
-  (void)offsetLayout;
-}
+void TLineData::InstallViews(TView* panel, int* offsetLayout) {}
 
 // FUNCTION: IMPERIALISM 0x0056f480
 void TLineData::RemoveViews() {}

@@ -100,7 +100,6 @@ void TArmyCheckBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
 // FUNCTION: IMPERIALISM 0x004aa2f0
 void TArmyCheckBox::DoPostCreate(int arg) {
-  (void)arg;
   eventNumber = 4;
 }
 

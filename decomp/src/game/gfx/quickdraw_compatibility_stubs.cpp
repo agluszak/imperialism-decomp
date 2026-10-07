@@ -15,7 +15,6 @@ void QuickDrawCompatibilityNoOp() {}
 
 // FUNCTION: IMPERIALISM 0x0049dd00
 int QuickDrawCompatibilityReturnSecondArgument(int unused, int value) {
-  (void)unused;
   return value;
 }
 

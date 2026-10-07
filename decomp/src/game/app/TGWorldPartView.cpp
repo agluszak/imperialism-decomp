@@ -23,7 +23,6 @@ CString AssignSharedStringFromMidSubstring(CString source, int startPos, int cou
 
 // FUNCTION: IMPERIALISM 0x004ac880
 void TGWorldPartView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   if (sourceSurface != 0) {
     CRect destRect;
     QueryContentBounds(&destRect);

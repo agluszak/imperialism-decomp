@@ -5,14 +5,10 @@
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x00487f70
-void TLongintList::NoOpWriteTo(TStream* stream) {
-  (void)stream;
-}
+void TLongintList::NoOpWriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x00487f90
-void TLongintList::NoOpReadFrom(TStream* stream) {
-  (void)stream;
-}
+void TLongintList::NoOpReadFrom(TStream* stream) {}
 
 // Compiler-emitted copies of the CList<long,long> base destructor. The 0x650a50
 // table is this template base, not a standalone linked-block state class.
@@ -27,8 +23,6 @@ void TLongintList::InsertLast(long value) {
 
 // FUNCTION: IMPERIALISM 0x004c67e0
 void TLongintList::InsertLastEx(long value, int unused1, int unused2) {
-  (void)unused1;
-  (void)unused2;
   AddTail(value);
 }
 

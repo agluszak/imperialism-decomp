@@ -749,7 +749,6 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
 
 // FUNCTION: IMPERIALISM 0x004e5300
 void TMinor::AddNoticeFrom(short sourceNation, short actionCode) {
-  (void)sourceNation;
   if (actionCode == kDiplomacyProposalDeclareWar) {
     this->KillEnemyCiviliansIn(-1);
     this->KillBoycottedForeignCompanies();

@@ -655,7 +655,6 @@ void TMapDialog::SetMapViewCellCoordinates(int column, int row) {
 
 // FUNCTION: IMPERIALISM 0x0051adf0
 void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode) {
-  (void)mode;
   if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
     int span = g_wMapDialogViewportTileSpan;
     if (static_cast<short>(col) > 0x6e - static_cast<short>(span)) {
@@ -750,7 +749,6 @@ void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int 
 
 // FUNCTION: IMPERIALISM 0x0051b1c0
 void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileIndex, int unusedArg) {
-  (void)unusedArg;
   CString mainText;
   CString numberText;
   CString nameText;

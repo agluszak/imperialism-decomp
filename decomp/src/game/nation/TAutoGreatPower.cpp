@@ -354,19 +354,13 @@ void TAutoGreatPower::MoveArmy(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7910
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) {
-  (void)message;
-}
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) {}
 
 // FUNCTION: IMPERIALISM 0x004e7930
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message) {
-  (void)message;
-}
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message) {}
 
 // FUNCTION: IMPERIALISM 0x004e7950
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message) {
-  (void)message;
-}
+void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message) {}
 
 // FUNCTION: IMPERIALISM 0x004e7970
 void TAutoGreatPower::RememberTradeBids(void) {}
@@ -1272,11 +1266,7 @@ void TAutoGreatPower::AddColony(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ea430
-void TAutoGreatPower::AnnounceLater(short orderKind, short payload, short flags) {
-  (void)orderKind;
-  (void)payload;
-  (void)flags;
-}
+void TAutoGreatPower::AnnounceLater(short orderKind, short payload, short flags) {}
 
 // FUNCTION: IMPERIALISM 0x004ea450
 void TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {}
@@ -1498,7 +1488,6 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
 
 // FUNCTION: IMPERIALISM 0x004eae70
 void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
-  (void)unused;
   if (city == nullptr) {
     return;
   }
@@ -1579,7 +1568,6 @@ void TAutoGreatPower::ReplaceObsoleteMissions(void) {
 
 // FUNCTION: IMPERIALISM 0x004eb190
 void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
-  (void)unused;
   if (this == 0) {
     return;
   }
@@ -1708,7 +1696,6 @@ short CompareMissionsByWeightedShortfall(TMission* left, TMission* right) {
 
 // FUNCTION: IMPERIALISM 0x004eb6b0
 void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused) {
-  (void)unused;
   missionQueue->SortBy(&CompareMissionOrderEntriesByMovementClassThenEfficiency, this);
 
   TMission* nextByClass[4] = {nullptr, nullptr, nullptr, nullptr};
@@ -1767,7 +1754,6 @@ inline float ComputeMissionRemainingPriorityScore(TMission* mission) {
 
 // FUNCTION: IMPERIALISM 0x004eb8b0
 void TAutoGreatPower::AssignUnitsToMissions(int unused) {
-  (void)unused;
   {
     CIterator resetIter(missionQueue);
     for (TMission* entry = static_cast<TMission*>(resetIter.Reset()); resetIter.More();
@@ -1936,7 +1922,6 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
                                                 char* selectedIsIndustry, char* selectedIsUpgrade,
                                                 int* selectedSlot, int unused,
                                                 float* selectedWeightedCost) {
-  (void)unused;
   *selectedSlot = -1;
   int resourceIndex = 0;
   while (resourceIndex < 9 && resourcePools[resourceIndex] <= 0) {

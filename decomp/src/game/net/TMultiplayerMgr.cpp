@@ -2533,7 +2533,6 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
 
 // FUNCTION: IMPERIALISM 0x0054b1b0
 void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused) {
-  (void)unused;
   FindActiveNationSlotIndexInGameFlowList();
   int mySlotIndex = FindActiveNationSlotIndexInGameFlowList();
   if (mySlotIndex == -1) {
@@ -2970,30 +2969,16 @@ void TMultiplayerMgr::SetDialogModeTagInitAndInvokeNoOpHook() {
 }
 
 // FUNCTION: IMPERIALISM 0x0054c660
-void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
-  (void)param;
-}
+void TMultiplayerMgr::NoOpCallbackRet4(void* param) {}
 
 // FUNCTION: IMPERIALISM 0x0054c680
 void TMultiplayerMgr::EmitTacticalCommandPacket(int commandTag, TTacticalUnit* unit, int arg3,
-                                                int arg4) {
-  (void)commandTag;
-  (void)unit;
-  (void)arg3;
-  (void)arg4;
-}
+                                                int arg4) {}
 
 // FUNCTION: IMPERIALISM 0x0054c6a0
 void TMultiplayerMgr::EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
                                                     TTacticalUnit* targetUnit, int damageA,
-                                                    int damageB, int effectCode) {
-  (void)commandTag;
-  (void)attackerUnit;
-  (void)targetUnit;
-  (void)damageA;
-  (void)damageB;
-  (void)effectCode;
-}
+                                                    int damageB, int effectCode) {}
 
 // FUNCTION: IMPERIALISM 0x0054c6c0
 void TMultiplayerMgr::SendTacticalBattle(TTacticalBattle* battle) {

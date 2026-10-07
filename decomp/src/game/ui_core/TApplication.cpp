@@ -61,11 +61,7 @@ BOOL TApplication::InModalState() {
   return GetMainViewHostFromActiveThread()->GetUiInteractiveFlag() == 0;
 }
 // FUNCTION: IMPERIALISM 0x00486990
-void TApplication::GetDefaultCursorRegion(int x, int y, void* cursorRegion) {
-  (void)x;
-  (void)y;
-  (void)cursorRegion;
-}
+void TApplication::GetDefaultCursorRegion(int x, int y, void* cursorRegion) {}
 
 // FUNCTION: IMPERIALISM 0x004869b0
 void TApplication::InstallCohandler(TEventHandler* cohandler, bool install) {

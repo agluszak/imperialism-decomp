@@ -1046,7 +1046,6 @@ void TTaskForce::CommitToOrders() {
 // Mac oracle: TTaskForce::CancelOrders(unsigned char).
 // FUNCTION: IMPERIALISM 0x005547d0
 void TTaskForce::CancelOrders(unsigned char cancellationMode) {
-  (void)cancellationMode;
   bool cancelsBeachhead = shipOrders == 5;
   short cityIndex = cancelsBeachhead
                         ? static_cast<short>(static_cast<Province*>(target)->GetIndex())

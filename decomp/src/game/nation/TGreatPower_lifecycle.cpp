@@ -185,9 +185,7 @@ TGreatPower::TGreatPower()
 void TGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 
 // FUNCTION: IMPERIALISM 0x004d8be0
-void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
-  (void)unused;
-}
+void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {}
 
 // FUNCTION: IMPERIALISM 0x004d8c00
 short TGreatPower::GetMerchantCapacity(void) {

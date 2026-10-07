@@ -140,7 +140,6 @@ void TBackdropWindow::OnPaint() {
 
 // FUNCTION: IMPERIALISM 0x0049d240
 void TBackdropWindow::OnTimer(UINT timerId) {
-  (void)timerId;
   DestroyWindow();
   AfxGetMainWnd()->UpdateWindow();
 }

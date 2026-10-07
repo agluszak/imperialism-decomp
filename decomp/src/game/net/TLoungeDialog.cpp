@@ -119,7 +119,6 @@ void TLoungeDialog::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0054db40
 bool TLoungeDialog::DoIdle(int action) {
-  (void)action;
   bool anyLocalSeat = false;
   for (int nationSlot = 0; nationSlot < TMultiplayerMgr::kMajorNationSessionSlotCount;
        ++nationSlot) {

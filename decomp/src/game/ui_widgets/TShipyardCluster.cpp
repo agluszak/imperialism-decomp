@@ -87,7 +87,6 @@ void TShipyardCluster::SetMoveAmount(short amount) {
   }
 
   static_cast<TBuildingView*>(this->ownerContext)->UpdateFields();
-  (void)amount;
 }
 
 // FUNCTION: IMPERIALISM 0x0058a940

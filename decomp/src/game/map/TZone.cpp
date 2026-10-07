@@ -83,19 +83,16 @@ bool TZone::QueryZoneCapabilityFlagC() {
 
 // FUNCTION: IMPERIALISM 0x0055e880
 bool TZone::QueryZoneCapabilityFlagD(NationSlot nationSlot) {
-  (void)nationSlot;
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e8a0
 bool TZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
-  (void)nationSlot;
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e8c0
 bool TZone::CanBeTargetOf(TTaskForce* force) {
-  (void)force;
   return distanceLevel > 0;
 }
 

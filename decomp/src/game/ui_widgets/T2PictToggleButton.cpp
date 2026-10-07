@@ -16,7 +16,6 @@ bool T2PictToggleButton::IsSelected() {
 
 // FUNCTION: IMPERIALISM 0x005849d0
 void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
-  (void)notifyParent;
   short glyphThreshold = glyphBase;
   int oldField3c = controlValue;
 

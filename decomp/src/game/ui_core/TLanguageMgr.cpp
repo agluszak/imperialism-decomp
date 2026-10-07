@@ -50,7 +50,6 @@ void TLanguageMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x00507e50
 bool TLanguageMgr::ReadPrepLUT(const char* basePath, unsigned long languageTag) {
-  (void)languageTag;
   CString tablePath(GetDataDirectoryPathLiteral());
   tablePath += basePath;
   newsTabPath = kNewsTabPath;

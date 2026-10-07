@@ -53,8 +53,6 @@ void TMapPreviewView::Free() {
 
 // FUNCTION: IMPERIALISM 0x005789e0
 void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)event;
-  (void)origin;
 
   TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface);
   unsigned char* pixels = GetPixBaseAddr(surfaceObject);
@@ -73,7 +71,6 @@ void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
 
 // FUNCTION: IMPERIALISM 0x00578a80
 void TMapPreviewView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
 
   RECT previewRect = {0, 0, frameWidth, frameHeight};
   UpdatePaletteIndexWithDefaultFallback(0x10);

@@ -60,10 +60,7 @@ bool TCountry::IsRemote(void) const {
 }
 
 // FUNCTION: IMPERIALISM 0x004d6790
-void TCountry::PlopDownCity(short selectedRegion, const char* mapCellLabel) {
-  (void)selectedRegion;
-  (void)mapCellLabel;
-}
+void TCountry::PlopDownCity(short selectedRegion, const char* mapCellLabel) {}
 
 IMPLEMENT_DYNCREATE(TCountry, TObject)
 
@@ -196,7 +193,6 @@ void TCountry::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004d7070
 void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
-  (void)unusedArg;
   stream->ReadBytes(&this->encodedNationSlot, 2);
   stream->ReadBytes(&this->treasuryValue, 4);
   stream->ReadBytes(&this->homeTileIndex, 4);
@@ -368,10 +364,6 @@ void TCountry::AddToTreasury(int amount) {
 // FUNCTION: IMPERIALISM 0x004d7b00
 bool TCountry::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                  ResourceKindStorage resourceKind) {
-  (void)targetNationSlot;
-  (void)amount;
-  (void)price;
-  (void)resourceKind;
   return false;
 }
 
@@ -479,9 +471,7 @@ void TCountry::NewStatusFor(int targetNationSlot, int policyCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7e90
-void TCountry::DeliverItem(short amount) {
-  (void)amount;
-}
+void TCountry::DeliverItem(short amount) {}
 
 // Mac oracle: TCountry::GenerateEthnicName(CStr32&) const.
 // FUNCTION: IMPERIALISM 0x004d7eb0
@@ -491,7 +481,6 @@ void TCountry::GenerateEthnicName(CString* out) const {
 
 // FUNCTION: IMPERIALISM 0x004d7ee0
 short TCountry::GetAmtUnsold(short resourceKind) {
-  (void)resourceKind;
   return 0;
 }
 
@@ -503,47 +492,33 @@ short TCountry::GetMerchantCapacity(void) {
 
 // FUNCTION: IMPERIALISM 0x004d7f20
 short TCountry::GetStockpile(short resourceKind) {
-  (void)resourceKind;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f40
 short TCountry::GetTradeOffersFor(short resourceKind) {
-  (void)resourceKind;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f60
 bool TCountry::IsInConsortiumWith(short policyCode) {
-  (void)policyCode;
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f80
-void TCountry::AddNoticeFrom(short sourceNation, short actionCode) {
-  (void)sourceNation;
-  (void)actionCode;
-}
+void TCountry::AddNoticeFrom(short sourceNation, short actionCode) {}
 
 // FUNCTION: IMPERIALISM 0x004d7fa0
-void TCountry::PurchaseItem(short resourceKind, short amount, short price) {
-  (void)resourceKind;
-  (void)amount;
-  (void)price;
-}
+void TCountry::PurchaseItem(short resourceKind, short amount, short price) {}
 
 // FUNCTION: IMPERIALISM 0x004d7fc0
 bool TCountry::StillBuyingItem(ResourceKindStorage resourceKind) {
-  (void)resourceKind;
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7fe0
 void TCountry::AddOfferFrom(NationSlot sourceNationSlot,
-                            DiplomacyProposalCodeStorage proposalCode) {
-  (void)sourceNationSlot;
-  (void)proposalCode;
-}
+                            DiplomacyProposalCodeStorage proposalCode) {}
 
 // FUNCTION: IMPERIALISM 0x004d8000
 void TCountry::NameUnits(void) {

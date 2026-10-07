@@ -50,9 +50,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
 }
 
 // FUNCTION: IMPERIALISM 0x005c2610
-void TUnit::MoveTo(short anchorIndex) {
-  (void)anchorIndex;
-}
+void TUnit::MoveTo(short anchorIndex) {}
 
 // FUNCTION: IMPERIALISM 0x005c2630
 void TUnit::SetOrders(UnitOrder order, int payload) {

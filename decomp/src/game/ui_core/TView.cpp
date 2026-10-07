@@ -34,11 +34,7 @@ unsigned short TView::GetCursorID() {
 void TView::PostRender() {}
 
 // FUNCTION: IMPERIALISM 0x00427240
-void TView::HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)point;
-  (void)event;
-  (void)origin;
-}
+void TView::HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event, CPoint origin) {}
 
 // FUNCTION: IMPERIALISM 0x00427260
 void TView::QueryContentBounds(CRect* boundsOut) {
@@ -80,18 +76,12 @@ int TView::GetEventNumber() {
 }
 
 // FUNCTION: IMPERIALISM 0x00430bf0
-void TView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
-}
+void TView::Draw(RECT* rectBuffer) {}
 
 // Base TView slot 0x47: orphan RET 0x10 stub (real capture on TControl 0x48e640).
 
 // FUNCTION: IMPERIALISM 0x00430c10
-void TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)point;
-  (void)event;
-  (void)origin;
-}
+void TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {}
 
 // TViewChildList's compiler-emitted CList<TView*,TView*>::Serialize body. The real source is
 // the childList template type in TView, not a TView method or TEventHandler record pool.
@@ -152,8 +142,6 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TVie
                                                     int* offsetLayout, int* sizeLayout,
                                                     int layoutParam6, int layoutParam7,
                                                     int attachFlag) {
-  (void)layoutParam6;
-  (void)layoutParam7;
   if (panel != 0) {
     nativeWindow = panel->nativeWindow;
   }
@@ -182,9 +170,7 @@ void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
   DoPostCreate(eventArg);
 }
 // FUNCTION: IMPERIALISM 0x0048ab70
-void TView::DoPostCreate(int arg) {
-  (void)arg;
-}
+void TView::DoPostCreate(int arg) {}
 // FUNCTION: IMPERIALISM 0x0048ab90
 void TView::ForwardMapViewVirtualC4IfPresent(RgnHandle region) {
   if (ownerContext != 0) {
@@ -437,7 +423,6 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
 
 // FUNCTION: IMPERIALISM 0x0048b5f0
 void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
-  (void)flag;
   if (nativeWindow == 0 || nativeWindow->m_hWnd == 0) {
     return;
   }
@@ -740,10 +725,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, R
 }
 
 // FUNCTION: IMPERIALISM 0x0048c1c0
-void TView::HandleHelp(const CPoint* point, RgnHandle helpRegion) {
-  (void)point;
-  (void)helpRegion;
-}
+void TView::HandleHelp(const CPoint* point, RgnHandle helpRegion) {}
 
 // FUNCTION: IMPERIALISM 0x0048c1e0
 void TView::GetDrawableRegion(RgnHandle clipRegion) {
@@ -874,7 +856,6 @@ void TView::DrawRectangleInCurrentUiContext(const RECT* rect) {
 }
 // FUNCTION: IMPERIALISM 0x0048c7a0
 void TView::AssertMcAppUiLine1914(int unusedArg) {
-  (void)unusedArg;
   if (g_McAppUiFlag_006A1AFC == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x77a);
   }
@@ -938,19 +919,10 @@ short TView::ContainsMouse(const CPoint& point) {
   return static_cast<short>(-static_cast<int>(PtInRect(&bounds, p) != 0) & 3);
 }
 // FUNCTION: IMPERIALISM 0x0048c9e0
-void TView::GoAwayByUser(const CPoint& point) {
-  (void)point;
-}
+void TView::GoAwayByUser(const CPoint& point) {}
 // FUNCTION: IMPERIALISM 0x0048ca00
-void TView::MoveByUser(const CPoint& point) {
-  (void)point;
-}
+void TView::MoveByUser(const CPoint& point) {}
 // FUNCTION: IMPERIALISM 0x0048ca20
-void TView::ResizeByUser(const CPoint& point) {
-  (void)point;
-}
+void TView::ResizeByUser(const CPoint& point) {}
 // FUNCTION: IMPERIALISM 0x0048ca40
-void TView::ZoomByUser(const CPoint& point, short partCode) {
-  (void)point;
-  (void)partCode;
-}
+void TView::ZoomByUser(const CPoint& point, short partCode) {}

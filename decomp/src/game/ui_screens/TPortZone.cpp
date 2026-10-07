@@ -61,8 +61,6 @@ void TPortZone::WriteTo(TStream* stream) {
 // slot 0x0a — TZone::NameThyself override.
 // FUNCTION: IMPERIALISM 0x005618b0
 void TPortZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) {
-  (void)usedCityFlags;
-  (void)overrideName;
   short cityIndex = g_pGlobalMapState->terrainStateTable[portTileIndex].cityRecordIndex;
   Province* city = cityIndex == -1 ? 0 : &g_pGlobalMapState->cityScoreTable[cityIndex];
   CString headlineTemplate;

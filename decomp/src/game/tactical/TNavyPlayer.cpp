@@ -38,7 +38,6 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
 }
 // FUNCTION: IMPERIALISM 0x0059edd0
 void TNavyPlayer::ApplyChanges(unsigned char sideWonFlag) {
-  (void)sideWonFlag;
   CIterator unitIter(unitList);
   for (TNavyTacUnit* unit = static_cast<TNavyTacUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TNavyTacUnit*>(unitIter.Advance())) {

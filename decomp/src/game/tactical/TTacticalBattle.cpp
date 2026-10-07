@@ -44,7 +44,6 @@
 // Turn-order comparator (see the header note on the AX/short return).
 // FUNCTION: IMPERIALISM 0x0059f610
 short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b, void* context) {
-  (void)context;
   TTacticalUnit* unitA = static_cast<TTacticalUnit*>(a);
   TTacticalUnit* unitB = static_cast<TTacticalUnit*>(b);
   unitA->AssertValid();
@@ -70,10 +69,7 @@ short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b, void* context) 
 }
 
 // FUNCTION: IMPERIALISM 0x0059f710
-void TTacticalBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
-  (void)unit;
-  (void)tileIndex;
-}
+void TTacticalBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {}
 
 // FUNCTION: IMPERIALISM 0x0059f730
 void TTacticalBattle::EndBattle(unsigned char) {

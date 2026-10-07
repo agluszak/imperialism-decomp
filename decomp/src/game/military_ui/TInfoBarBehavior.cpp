@@ -33,7 +33,6 @@ void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
 
 // FUNCTION: IMPERIALISM 0x004b0f50
 bool TInfoBarBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
-  (void)point;
   if (g_pCursorControlPanel != 0) {
     g_pCursorControlPanel->SetTextAndLayoutRect(text, &layoutRect);
     static_cast<TView*>(owner)->PrepareForDrawing();

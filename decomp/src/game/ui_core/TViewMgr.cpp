@@ -843,9 +843,7 @@ void TViewMgr::MakeMinorsTradeBidsDialog(int dialogContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6e30
-void TViewMgr::NoOpTurnEventStateVtableSlot8C(int arg) {
-  (void)arg;
-}
+void TViewMgr::NoOpTurnEventStateVtableSlot8C(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005d6e50
 void TViewMgr::MakeMinorRelationshipDialog(int dialogContext) {
@@ -936,9 +934,7 @@ char TViewMgr::PoseWarOfferIfTurnFlowReady(int sourceNation, int minorNationSlot
 }
 
 // FUNCTION: IMPERIALISM 0x005d7190
-void TViewMgr::NoOpTurnEventStateVtableSlotD4(int arg) {
-  (void)arg;
-}
+void TViewMgr::NoOpTurnEventStateVtableSlotD4(int arg) {}
 
 static void ClearMainViewChildWindowStyle(TView* mainView) {
   if (mainView->nativeWindow != nullptr) {
@@ -1032,7 +1028,6 @@ inline void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidt
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, styleWidth, styleSecondary);
   control->InstallTextStyle(styleDescriptor, 0);
-  (void)stylePrimary;
 }
 
 } // namespace turn_event_ui_refresh
@@ -1367,7 +1362,6 @@ void TViewMgr::CloseBuilding(short buildingSlot) {
 
 // FUNCTION: IMPERIALISM 0x005d7fc0
 void TViewMgr::SetCursorRangeAndRefreshMainPanel(int payload) {
-  (void)payload;
   TView* mainView = g_pDisplayMgr->activeDialog;
   TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = static_cast<TInfoBarText*>(cursor);

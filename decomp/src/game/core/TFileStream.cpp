@@ -72,13 +72,11 @@ bool TFileStream::ReadObject(void* outObject) {
 
 // FUNCTION: IMPERIALISM 0x00489330
 void TFileStream::WriteObject(void* objectRef, int flag) {
-  (void)flag;
   BackingArchive(this->backingArchiveOrStream)->WriteObject(static_cast<const CObject*>(objectRef));
 }
 
 // FUNCTION: IMPERIALISM 0x00489360
 void TFileStream::ReadSharedString(CString* dest, int maxLen) {
-  (void)maxLen;
   *BackingArchive(this->backingArchiveOrStream) >> *dest;
 }
 

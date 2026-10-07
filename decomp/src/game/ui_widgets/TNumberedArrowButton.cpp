@@ -40,7 +40,6 @@ void TNumberedArrowButton::SetState(short value86Arg, unsigned char refreshFlag)
 
 // FUNCTION: IMPERIALISM 0x0058c3d0
 void TNumberedArrowButton::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   UpdatePaletteIndexWithDefaultFallback(0x10);
   RECT srcRect;
   srcRect.left = (value86 != 2) ? 0xa : 0;
@@ -68,9 +67,6 @@ void TNumberedArrowButton::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x0058c640
 void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                                       CPoint& currentPoint, bool commandFlag) {
-  (void)commandFlag;
-  (void)startPoint;
-  (void)previousPoint;
   short visualState = 0;
   if (PointInBoundsAndActionable(&currentPoint) != 0) {
     CRect bounds;

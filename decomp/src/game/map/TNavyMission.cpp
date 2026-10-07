@@ -26,9 +26,7 @@ TNavyMission::TNavyMission(TZone* targetZone)
 }
 
 // FUNCTION: IMPERIALISM 0x005354c0
-void TNavyMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
-  (void)mapOrderEntry;
-}
+void TNavyMission::GiveActionOrders(TTaskForce* mapOrderEntry) {}
 
 // FUNCTION: IMPERIALISM 0x005354e0
 bool TNavyMission::IsNavyMission() const {
@@ -147,7 +145,6 @@ void TNavyMission::AcceptReenforcement(TShip* item, bool notify) {
 
 // FUNCTION: IMPERIALISM 0x005367d0
 void TNavyMission::RejectConstituent(TShip* item, bool notify) {
-  (void)notify;
   orderList = orderList->RemoveLinkedOrderNodeByValueRecursive(item);
   item->mission = nullptr;
   if (selectedOrder == item) {

@@ -527,7 +527,6 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
                                                           TArmyStack* enemyStack,
                                                           unsigned char sideWonFlag,
                                                           int ownerNationCodeInt, int unused) {
-  (void)unused;
 
   MapContextActionRecord record;
   record.childCount[1] = 0;
@@ -1870,7 +1869,6 @@ void TArmyMgr::CleanUpStacks() {
 
 // FUNCTION: IMPERIALISM 0x004a6e80
 void TArmyMgr::AddBattleRecord(MapOrderBattleSnapshot* record, int unusedArg2) {
-  (void)unusedArg2;
   mapContextActionRecordList->AppendCopiedRecordToPtrList(record);
   record->childRecords[1] = nullptr;
   record->childRecords[0] = nullptr;

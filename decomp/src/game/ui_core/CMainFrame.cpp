@@ -111,8 +111,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 
 // FUNCTION: IMPERIALISM 0x00484fb0
 LRESULT CMainFrame::OnMsg0464(WPARAM wParam, LPARAM lParam) {
-  (void)wParam;
-  (void)lParam;
   g_pImperialismApp->HandleStartupCommand100();
   return 0;
 }
@@ -257,14 +255,12 @@ void CMainFrame::OnConductDiplomacy() {
 
 // FUNCTION: IMPERIALISM 0x00485920
 LRESULT CMainFrame::OnTurnEventCodeMessage(WPARAM wParam, LPARAM lParam) {
-  (void)lParam;
   g_pViewMgr->DispatchTurnEvent(static_cast<short>(wParam), g_pSimMgr->GetPlayerCountry());
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00485960
 LRESULT CMainFrame::OnMsg0BC0(WPARAM wParam, LPARAM lParam) {
-  (void)wParam;
   TCommand* command = static_cast<TCommand*>(PointerFromAddressLong32(lParam));
   command->AssertValid();
   command->Process();
@@ -320,16 +316,11 @@ void CMainFrame::OnPaint() {
 
 // FUNCTION: IMPERIALISM 0x00485c00
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  (void)nChar;
-  (void)nRepCnt;
-  (void)nFlags;
   Default();
 }
 
 // FUNCTION: IMPERIALISM 0x00485c20
 void CMainFrame::WinHelp(DWORD dwData, UINT nCmd) {
-  (void)dwData;
-  (void)nCmd;
   if (GetMainViewHostFromActiveThread() != NULL) {
     ::SendMessage(GetMainViewHostFromActiveThread()->m_hWnd, WM_KEYDOWN, VK_F1, 0);
   }
@@ -342,7 +333,6 @@ void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized) {
 
 // FUNCTION: IMPERIALISM 0x00485c90
 void CMainFrame::OnActivateApp(BOOL bActive, DWORD dwThreadID) {
-  (void)dwThreadID;
   Default();
   WINDOWPLACEMENT placement;
   placement.length = sizeof(WINDOWPLACEMENT);

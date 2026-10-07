@@ -757,7 +757,6 @@ void TCity::AddTransportRequest(short low, short high) {
 
 // FUNCTION: IMPERIALISM 0x004b4580
 void TCity::MakeTown(short selectedResourceType) {
-  (void)selectedResourceType;
   if (ownerNation->townMarkerList == 0) {
     FailNilPointerWithAssert(kUCityCppPath, 0x53a);
   }

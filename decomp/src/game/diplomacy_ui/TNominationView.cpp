@@ -22,7 +22,6 @@ IMPLEMENT_DYNCREATE(TNominationView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004fb780
 void TNominationView::DoPostCreate(int arg) {
-  (void)arg;
   CString text;
   TextStyle style;
 

@@ -55,7 +55,6 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
 
 // FUNCTION: IMPERIALISM 0x0048cfd0
 void TIncludeView::DoPostCreate(int arg) {
-  (void)arg;
   if (turnEventCode != -1 && g_pTurnEventDialogFactoryRegistry != nullptr) {
     TurnEventId eventCode = DecodeTurnEventCode(turnEventCode);
     if (ownerContext != nullptr) {

@@ -133,7 +133,6 @@ CWnd* TEditText::Open() {
 
 // FUNCTION: IMPERIALISM 0x00490a50
 void TEditText::SetEditSelectionAndScrollCaret(short selStart, short selEnd, int unusedFlag) {
-  (void)unusedFlag;
   if (editWindow != nullptr) {
     editWindow->SendMessage(0xb1, selStart, selEnd);
     editWindow->SendMessage(0xb7, 0, 0);

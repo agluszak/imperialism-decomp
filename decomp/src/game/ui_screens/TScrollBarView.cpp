@@ -209,9 +209,6 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x00574d10
 void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                                 CPoint& currentPoint, bool commandFlag) {
-  (void)startPoint;
-  (void)previousPoint;
-  (void)commandFlag;
   short target = static_cast<short>(currentPoint.y) - 9;
   if (phase <= kTrackPhaseBegin || phase > kTrackPhaseEnd) {
     return;

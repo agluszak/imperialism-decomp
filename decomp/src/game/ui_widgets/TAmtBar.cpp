@@ -18,7 +18,6 @@
 
 // FUNCTION: IMPERIALISM 0x00586e50
 short TAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
-  (void)requestedValue;
   return baseValue;
 }
 
@@ -42,7 +41,6 @@ void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
 
 // FUNCTION: IMPERIALISM 0x00588670
 void TAmtBar::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   DrawAmt();
 }
 
@@ -112,8 +110,6 @@ void TAmtBar::DrawAmt() {
 
 // FUNCTION: IMPERIALISM 0x00588950
 void TAmtBar::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)event;
-  (void)origin;
   int baseValue;
   if (auxValueA <= 0 ||
       static_cast<int>(frameWidth) / (static_cast<int>(auxValueA) << 1) <= point.x) {

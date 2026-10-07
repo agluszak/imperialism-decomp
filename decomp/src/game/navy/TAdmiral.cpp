@@ -301,7 +301,6 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) cons
 // Mac oracle: EstimateStrengthRating.
 // FUNCTION: IMPERIALISM 0x00552160
 int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) const {
-  (void)unusedArg;
   int total = 0;
   for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
     TShip* ship = node->payload;

@@ -41,7 +41,6 @@ void TAmbitFileBasedDocument::DoMakeViews(unsigned char) {}
 
 // FUNCTION: IMPERIALISM 0x0049e6a0
 void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char flags) {
-  (void)flags;
 
   TFileStream* stream = new TFileStream();
   stream->SetBackingArchive(file);
@@ -118,7 +117,6 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
 
 // FUNCTION: IMPERIALISM 0x0049eb30
 void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char flags) {
-  (void)flags;
 
   TFileStream* stream = new TFileStream();
   stream->SetBackingArchive(file);
@@ -183,7 +181,6 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
 
 // FUNCTION: IMPERIALISM 0x0049ee70
 void TAmbitFileBasedDocument::SaveDocument(long saveMode) {
-  (void)saveMode;
   if (g_saveDocumentAssertGuard == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szUAmbitSourcePath, 0x537);
   }

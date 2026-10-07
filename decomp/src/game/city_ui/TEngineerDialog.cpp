@@ -94,8 +94,6 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
   BlitRectWithOptionalTransparency(this->footerSurface->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                    &bodyTileRect, &dstRect, 0);
-
-  (void)rectBuffer;
 }
 
 // FUNCTION: IMPERIALISM 0x004d0810

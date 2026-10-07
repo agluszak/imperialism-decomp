@@ -154,7 +154,6 @@ void TEscortMission::CalculateNeeds() {
 
 // FUNCTION: IMPERIALISM 0x0053a250
 bool TEscortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
-  (void)key;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeDefendProvince) &&
          zoneContext == missionTargetZone;
 }

@@ -109,7 +109,6 @@ CMcWindow::~CMcWindow() {
 
 // FUNCTION: IMPERIALISM 0x00493800
 LRESULT CMcWindow::OnWindowStateMsg468(WPARAM wParam, LPARAM lParam) {
-  (void)lParam;
   switch (wParam & 0xff) {
   case 0:
   case 1:
@@ -148,7 +147,6 @@ void CMcWindow::OnPaint() {
 
 // FUNCTION: IMPERIALISM 0x00493990
 void CMcWindow::OnLButtonDown(UINT nFlags, CPoint point) {
-  (void)nFlags;
   Default();
   ::BringWindowToTop(m_hWnd);
   CPoint pt(point);
@@ -184,17 +182,10 @@ void CMcWindow::OnClose() {
 
 // Deliberately empty: suppresses default WM_KEYDOWN processing (no Default() call).
 // FUNCTION: IMPERIALISM 0x00493b30
-void CMcWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  (void)nChar;
-  (void)nRepCnt;
-  (void)nFlags;
-}
+void CMcWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {}
 
 // FUNCTION: IMPERIALISM 0x00493b50
 void CMcWindow::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  (void)nChar;
-  (void)nRepCnt;
-  (void)nFlags;
   Default();
 }
 
@@ -241,15 +232,11 @@ BOOL CMcWindow::OnQueryNewPalette() {
 
 // FUNCTION: IMPERIALISM 0x00493cc0
 void CMcWindow::OnPaletteChanged(CWnd* pFocusWnd) {
-  (void)pFocusWnd;
   Default();
 }
 
 // FUNCTION: IMPERIALISM 0x00493ce0
 void CMcWindow::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  (void)nChar;
-  (void)nRepCnt;
-  (void)nFlags;
   static TUiEvent s_charEvent;
   (void)s_charEvent;
   Default();
@@ -257,7 +244,6 @@ void CMcWindow::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 // FUNCTION: IMPERIALISM 0x00493d50
 LRESULT CMcWindow::OnIdleUpdateMsg36A(WPARAM wParam, LPARAM lParam) {
-  (void)wParam;
   return g_pImperialismApp->OnIdle(static_cast<LONG>(lParam));
 }
 

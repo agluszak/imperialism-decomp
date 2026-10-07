@@ -201,7 +201,6 @@ ImperialismApp theApp;
 
 // FUNCTION: IMPERIALISM 0x00412d90
 int __cdecl ShowOutOfMemoryErrorNewHandler(size_t allocationSize) {
-  (void)allocationSize;
   MessageBoxA(NULL, s_OutOfMemoryText, s_ErrorCaption, MB_ICONEXCLAMATION);
   return 0;
 }
@@ -512,17 +511,13 @@ bool QueryDriveTypeByDriveIndex(char driveIndex);
 void ImperialismApp::OnSlowMemoryChecking() {}
 
 // FUNCTION: IMPERIALISM 0x004147d0
-void ImperialismApp::OnUpdateSlowMemoryChecking(CCmdUI* commandUi) {
-  (void)commandUi;
-}
+void ImperialismApp::OnUpdateSlowMemoryChecking(CCmdUI* commandUi) {}
 
 // FUNCTION: IMPERIALISM 0x004147f0
 void ImperialismApp::OnTraceEnabled() {}
 
 // FUNCTION: IMPERIALISM 0x00414810
-void ImperialismApp::OnUpdateTraceEnabled(CCmdUI* commandUi) {
-  (void)commandUi;
-}
+void ImperialismApp::OnUpdateTraceEnabled(CCmdUI* commandUi) {}
 
 // FUNCTION: IMPERIALISM 0x00414830
 void ImperialismApp::OnPeekAtGWorld() {}

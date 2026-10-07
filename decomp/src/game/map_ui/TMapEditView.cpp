@@ -70,7 +70,6 @@ void TMapEditView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0051ce60
 void TMapEditView::NormalClick(short tileIndex, int inputFlags) {
-  (void)inputFlags;
   ownerContext->ResolveControlByTag(kControlTagEcon)->AssertValid();
 
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
@@ -125,7 +124,6 @@ void TMapEditView::ControlClick(int tileIndex, int dispatchContext) {
 
 // FUNCTION: IMPERIALISM 0x0051d060
 void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
-  (void)dispatchContext;
   short provinceId =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].cityRecordIndex;
   TNumberText* provinceNumber =
@@ -169,8 +167,6 @@ void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
 // FUNCTION: IMPERIALISM 0x0051d210
 void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndexArg,
                                                                      int inputFlags) {
-  (void)tileIndexArg;
-  (void)inputFlags;
 
   int index;
   for (index = 0; index < kMapTileCount; ++index) {

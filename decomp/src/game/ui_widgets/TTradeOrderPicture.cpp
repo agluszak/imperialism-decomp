@@ -17,15 +17,11 @@ TTradeOrderPicture::~TTradeOrderPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00584500
 void TTradeOrderPicture::DoPostCreate(int arg) {
-  (void)arg;
   ViewEnable(1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00584520
 void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)point;
-  (void)event;
-  (void)origin;
 
   if (!IsActionable()) {
     return;

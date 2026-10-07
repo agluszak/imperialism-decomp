@@ -143,6 +143,4 @@ short TMinister::GetCountryAt(short index) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052efb0
-void TMinister::MakeNewCity(TCity* city) {
-  (void)city;
-}
+void TMinister::MakeNewCity(TCity* city) {}

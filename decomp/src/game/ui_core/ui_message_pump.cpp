@@ -4,7 +4,6 @@
 
 // FUNCTION: IMPERIALISM 0x004868c0
 char __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode) {
-  (void)nTaskPumpMode;
   MSG msg;
   int continueIdle = 1;
   LONG idleCount = 0;

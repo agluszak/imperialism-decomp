@@ -14,11 +14,7 @@ bool TRemoteMinor::IsRemote(void) const {
 }
 
 // FUNCTION: IMPERIALISM 0x00541cb0
-void TRemoteMinor::PurchaseItem(short resourceKind, short amount, short price) {
-  (void)resourceKind;
-  (void)amount;
-  (void)price;
-}
+void TRemoteMinor::PurchaseItem(short resourceKind, short amount, short price) {}
 
 // FUNCTION: IMPERIALISM 0x00541d00
 TRemoteMinor::~TRemoteMinor() {}

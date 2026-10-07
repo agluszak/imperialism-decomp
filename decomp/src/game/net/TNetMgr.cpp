@@ -39,7 +39,6 @@ void TNetMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x005e3490
 bool TNetMgr::DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet) {
-  (void)packet;
   return false;
 }
 
@@ -203,7 +202,6 @@ unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TVie
 
 // FUNCTION: IMPERIALISM 0x005e3a60
 bool TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag, const char* seed) {
-  (void)flag;
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seed, 0x20);
   const GUID* sessionGuid = &g_WNetSerializedPtrArrayA[index]->providerGuid;
   bool result =
@@ -369,9 +367,7 @@ int TNetMgr::GetSessionActiveNationId() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e42a0
-void TNetMgr::NoOpDialogModeTagChangedHook(int arg) {
-  (void)arg;
-}
+void TNetMgr::NoOpDialogModeTagChangedHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005e42c0
 void TNetMgr::NotifyIfNationMatchesSessionActiveNation(int nationId) {

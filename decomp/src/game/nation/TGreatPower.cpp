@@ -642,9 +642,7 @@ void TGreatPower::CalculatePotentials(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dca80
-void TGreatPower::UpdateCountryStockpile(short* needVector) {
-  (void)needVector;
-}
+void TGreatPower::UpdateCountryStockpile(short* needVector) {}
 
 // FUNCTION: IMPERIALISM 0x004dcaa0
 unsigned int TGreatPower::GetMerchantCapacityForProposal(int proposalCode) {
@@ -2336,14 +2334,10 @@ bool TGreatPower::HasEnemy() {
 }
 
 // FUNCTION: IMPERIALISM 0x004e0420
-void TGreatPower::SetEnemy(int targetNation) {
-  (void)targetNation;
-}
+void TGreatPower::SetEnemy(int targetNation) {}
 
 // FUNCTION: IMPERIALISM 0x004e0440
-void TGreatPower::StopBeingEnemiesWith(int targetNation) {
-  (void)targetNation;
-}
+void TGreatPower::StopBeingEnemiesWith(int targetNation) {}
 
 // FUNCTION: IMPERIALISM 0x004e0460
 int TGreatPower::SumNavyOrderPriorityForNationAndNodeType(TZone* zone) {
@@ -2785,7 +2779,6 @@ float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int n
 
 // FUNCTION: IMPERIALISM 0x004e1c00
 bool TGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
-  (void)targetNation;
   return false;
 }
 

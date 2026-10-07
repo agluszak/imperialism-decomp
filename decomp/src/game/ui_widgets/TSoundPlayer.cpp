@@ -67,7 +67,6 @@ TSoundPlayer::TSoundPlayer()
 
 // FUNCTION: IMPERIALISM 0x00593400
 bool TSoundPlayer::DoIdle(int action) {
-  (void)action;
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0) {
     if (this->cdAudioPlaybackActive) {
       if (g_cdAudioDevice.IsPlaybackActive()) {
@@ -433,8 +432,6 @@ void TSoundPlayer::RequestDirectSoundInitIfAllowed() {
 
 // FUNCTION: IMPERIALISM 0x005e4fb0
 bool TSoundPlayer::DefaultSoundCompatibilityPredicate(int unusedArg1, int unusedArg2) {
-  (void)unusedArg1;
-  (void)unusedArg2;
   return false;
 }
 
@@ -471,10 +468,7 @@ void TSoundPlayer::SetMasterVolumeFromPercent(short percent) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e50a0
-void TSoundPlayer::PriorityOverride(short currentPriority, short requestedPriority) {
-  (void)currentPriority;
-  (void)requestedPriority;
-}
+void TSoundPlayer::PriorityOverride(short currentPriority, short requestedPriority) {}
 
 // Slot 0x07 override — release the two channel peers, then run the base teardown.
 
@@ -483,9 +477,6 @@ int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfx
                                                                        int unusedArg2,
                                                                        int unusedArg3,
                                                                        int unusedArg4) {
-  (void)unusedArg2;
-  (void)unusedArg3;
-  (void)unusedArg4;
   if (g_pSimMgr->preferenceValues[kSoundEffectsVolumePreference] == 0) {
     return 0;
   }
@@ -508,25 +499,16 @@ int TSoundPlayer::PlaySoundEffect(short sfxToken, int forwardedArg2, int forward
 
 // FUNCTION: IMPERIALISM 0x005e5170
 int TSoundPlayer::PlaySoundAsynchronously(short soundId, short channel, short priority) {
-  (void)soundId;
-  (void)channel;
-  (void)priority;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e5190
 int TSoundPlayer::PlaySoundSynchronously(short soundId, short channel, short priority) {
-  (void)soundId;
-  (void)channel;
-  (void)priority;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e51b0
 int TSoundPlayer::PlayAiffFile(CString fileName, short channel, short priority) {
-  (void)fileName;
-  (void)channel;
-  (void)priority;
   return 0;
 }
 

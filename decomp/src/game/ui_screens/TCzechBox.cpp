@@ -18,7 +18,6 @@ void TCzechBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 
 // FUNCTION: IMPERIALISM 0x00571cf0
 void TCzechBox::DoPostCreate(int arg) {
-  (void)arg;
   eventNumber = 4;
 }
 

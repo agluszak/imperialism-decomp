@@ -8,9 +8,7 @@
 TMapUberUberPicture::TMapUberUberPicture() : TOffLimitsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0045d2a0
-void TMapUberUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
-  (void)edgeMask;
-}
+void TMapUberUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {}
 
 // FUNCTION: IMPERIALISM 0x0045d2f0
 TMapUberUberPicture::~TMapUberUberPicture() {}

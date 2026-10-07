@@ -19,9 +19,6 @@ TCommand::TCommand() : targetContext(0) {}
 // FUNCTION: IMPERIALISM 0x004878a0
 void TCommand::ICommand(long itsCommandNumber, TCommandHandler* itsContext, unsigned char canUndo,
                         unsigned char causesChange, TObject* itsChangedObject) {
-  (void)canUndo;
-  (void)causesChange;
-  (void)itsChangedObject;
   TCommandHandler* resolvedContext = itsContext;
   if (resolvedContext == 0) {
     resolvedContext = g_pApplication;

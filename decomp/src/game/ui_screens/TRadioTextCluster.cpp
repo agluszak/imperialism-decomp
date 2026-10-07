@@ -100,7 +100,6 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
 
 // FUNCTION: IMPERIALISM 0x00579a60
 void TRadioTextCluster::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   if (frameThemeCode > -1) {
     RECT frame = {0, 0, frameWidth, frameHeight};
     g_pViewMgr->SetForeColor(static_cast<short>(frameThemeCode));

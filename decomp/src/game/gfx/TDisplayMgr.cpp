@@ -51,7 +51,6 @@ GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized()
 
 // FUNCTION: IMPERIALISM 0x004972a0
 int InitializeTurnOrderNavigationDialogByViewportSize_Impl(int arg) {
-  (void)arg;
   return 0;
 }
 

@@ -13,9 +13,6 @@ TUpDownView::~TUpDownView() {}
 // FUNCTION: IMPERIALISM 0x00583dd0
 void TUpDownView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                              CPoint& currentPoint, bool commandFlag) {
-  (void)startPoint;
-  (void)previousPoint;
-  (void)commandFlag;
   if (phase == kTrackPhaseEnd) {
     return;
   }

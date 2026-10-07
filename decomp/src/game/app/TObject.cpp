@@ -49,11 +49,7 @@ void TObject::Serialize(CArchive& archive) {
 }
 
 // FUNCTION: IMPERIALISM 0x00485f70
-void TObject::WriteTo(TStream* stream) {
-  (void)stream;
-}
+void TObject::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x00485f90
-void TObject::ReadFrom(TStream* stream) {
-  (void)stream;
-}
+void TObject::ReadFrom(TStream* stream) {}

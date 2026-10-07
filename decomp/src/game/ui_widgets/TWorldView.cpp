@@ -43,9 +43,7 @@ short TWorldView::GetCentertile() {
 TWorldView::~TWorldView() {}
 
 // FUNCTION: IMPERIALISM 0x00594fc0
-void TWorldView::CenterOn(int tileIndex) {
-  (void)tileIndex;
-}
+void TWorldView::CenterOn(int tileIndex) {}
 
 IMPLEMENT_DYNCREATE(TWorldView, TView)
 
@@ -204,7 +202,6 @@ void TWorldView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
 // FUNCTION: IMPERIALISM 0x005958b0
 void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                      RgnHandle hitArg) {
-  (void)hitArg;
 
   short cursorToken = -1;
   short tileRow = 0;
@@ -392,64 +389,37 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 
 // FUNCTION: IMPERIALISM 0x00596020
 void TWorldView::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
-                                                int projectedY, int flag, short tileIndex) {
-  (void)orderEntry;
-  (void)projectedX;
-  (void)projectedY;
-  (void)flag;
-  (void)tileIndex;
-}
+                                                int projectedY, int flag, short tileIndex) {}
 
 // FUNCTION: IMPERIALISM 0x00596040
 void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
-                                                               int flag) {
-  (void)tileIndex;
-  (void)dstRect;
-  (void)flag;
-}
+                                                               int flag) {}
 
 // FUNCTION: IMPERIALISM 0x00596060
 void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                               bool altOverlay) {
-  (void)tileIndex;
-  (void)dstRect;
-  (void)altOverlay;
-}
+                                                               bool altOverlay) {}
 
 // FUNCTION: IMPERIALISM 0x00596080
 void TWorldView::FrameCursorArea() {}
 
 // FUNCTION: IMPERIALISM 0x005960a0
 short TWorldView::PointToTileID(int unusedArg) {
-  (void)unusedArg;
   return -1;
 }
 
 // FUNCTION: IMPERIALISM 0x005960c0
 void TWorldView::ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
-                              short& outRegionBand) {
-  (void)point;
-  (void)outColumn;
-  (void)outRow;
-  (void)outRegionBand;
-}
+                              short& outRegionBand) {}
 
 // FUNCTION: IMPERIALISM 0x005960e0
 void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
                                                                      const CPoint* viewportOrigin,
                                                                      short* outVerticalOffset,
                                                                      short* outHorizontalOffset,
-                                                                     int projectionScale) {
-  (void)tileIndex;
-  (void)viewportOrigin;
-  (void)outVerticalOffset;
-  (void)outHorizontalOffset;
-  (void)projectionScale;
-}
+                                                                     int projectionScale) {}
 
 // FUNCTION: IMPERIALISM 0x00596100
 char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)origin;
 
   CTemporaryRegion surface;
 
@@ -486,7 +456,6 @@ char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
 
 // FUNCTION: IMPERIALISM 0x00596270
 void TWorldView::ControlClick(int tileIndex, int dispatchContext) {
-  (void)dispatchContext;
   CenterOn(tileIndex);
   RefreshControl();
 }
@@ -494,7 +463,6 @@ void TWorldView::ControlClick(int tileIndex, int dispatchContext) {
 // FUNCTION: IMPERIALISM 0x005962a0
 void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndexArg,
                                                                    int inputFlags) {
-  (void)inputFlags;
   TEvent* event = new TEvent();
 
   int tileIndex = static_cast<short>(tileIndexArg);
@@ -528,7 +496,6 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndex
 
 // FUNCTION: IMPERIALISM 0x005963d0
 void TWorldView::ShiftClick(int stridedRecord, int dispatchContext) {
-  (void)dispatchContext;
   TEvent* event = new TEvent();
   event->dispatchMessage = 0x78;
   event->commandNumber = 0x78;
@@ -540,7 +507,6 @@ void TWorldView::ShiftClick(int stridedRecord, int dispatchContext) {
 
 // FUNCTION: IMPERIALISM 0x00596440
 void TWorldView::CommandOptionClick(int stridedRecord, int dispatchContext) {
-  (void)dispatchContext;
   TEvent* event = new TEvent();
   event->dispatchMessage = 0x78;
   event->commandNumber = 0x78;
@@ -607,24 +573,16 @@ void TWorldView::NormalClick(short nTileIndex, int nInputFlags) {
 }
 
 // FUNCTION: IMPERIALISM 0x00596680
-void TWorldView::SetMapViewCellCoordinates(int column, int row) {
-  (void)column;
-  (void)row;
-}
+void TWorldView::SetMapViewCellCoordinates(int column, int row) {}
 
 // FUNCTION: IMPERIALISM 0x005966a0
-void TWorldView::SetMapViewTileIndex(int tileIndex) {
-  (void)tileIndex;
-}
+void TWorldView::SetMapViewTileIndex(int tileIndex) {}
 
 // FUNCTION: IMPERIALISM 0x005966c0
-void TWorldView::RefreshMapTile(short tileIndex) {
-  (void)tileIndex;
-}
+void TWorldView::RefreshMapTile(short tileIndex) {}
 
 // FUNCTION: IMPERIALISM 0x005966e0
 bool TWorldView::IsTileVisible(short tileIndex) {
-  (void)tileIndex;
   return false;
 }
 

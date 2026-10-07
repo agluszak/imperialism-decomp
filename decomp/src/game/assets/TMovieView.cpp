@@ -61,9 +61,7 @@ void TMovieView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e2490
-void TMovieView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
-}
+void TMovieView::Draw(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x005e24b0
 bool TMovieView::OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath) {

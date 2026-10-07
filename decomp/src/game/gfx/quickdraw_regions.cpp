@@ -474,8 +474,6 @@ void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom)
 
 // FUNCTION: IMPERIALISM 0x00498c30
 bool EqualRgn(RgnHandle first, RgnHandle second) {
-  (void)first;
-  (void)second;
   if (g_QuickDrawEqualRgnAssertGate == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath, 0x999);
   }

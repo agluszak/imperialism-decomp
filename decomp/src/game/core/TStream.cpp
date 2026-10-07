@@ -78,7 +78,6 @@ int TStream::ReadLong() {
 
 // FUNCTION: IMPERIALISM 0x00488c50
 void TStream::ReadSharedString(CString* dest, int maxLen) {
-  (void)maxLen;
   int length = this->ReadInteger();
   char* buffer = dest->GetBuffer(length + 1);
   this->ReadBytes(buffer, length);
@@ -88,7 +87,6 @@ void TStream::ReadSharedString(CString* dest, int maxLen) {
 
 // FUNCTION: IMPERIALISM 0x00488ca0
 void TStream::ReadString(void* buffer, int maxLen) {
-  (void)maxLen;
   int length = this->ReadInteger();
   this->ReadBytes(buffer, length);
   static_cast<char*>(buffer)[length] = 0;

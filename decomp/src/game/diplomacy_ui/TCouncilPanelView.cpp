@@ -21,7 +21,6 @@ IMPLEMENT_DYNCREATE(TCouncilPanelView, TPanelView)
 
 // FUNCTION: IMPERIALISM 0x004fb030
 void TCouncilPanelView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   CString titleTemplate;
   CString scratchText;
   CString rowText;

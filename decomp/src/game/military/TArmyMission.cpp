@@ -165,7 +165,6 @@ void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, bool notify) {
 
 // FUNCTION: IMPERIALISM 0x0053c5e0
 void TArmyMission::RejectConstituent(TMilitaryUnit* unit, bool notify) {
-  (void)notify;
   if (orderList != nullptr) {
     POSITION pos = orderList->listState.Find(unit);
     if (pos != nullptr) {

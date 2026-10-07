@@ -11,8 +11,6 @@ THotspotBehavior::THotspotBehavior() : TBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0c00
 bool THotspotBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
-  (void)point;
-  (void)region;
   TView* target = static_cast<TView*>(owner);
   if (target->controlTag != kControlTagDialog && target->controlTag != kControlTagMain) {
     target = target->ownerContext;

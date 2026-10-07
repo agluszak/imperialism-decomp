@@ -26,7 +26,6 @@ TAssetMgr::~TAssetMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005df3a0
 void TAssetMgr::ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag) {
-  (void)languageTag;
   EnsurePictWvDataGobLoadedBySlot(0);
 }
 
@@ -37,14 +36,10 @@ TWindow* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(TurnEventId messa
 }
 
 // FUNCTION: IMPERIALISM 0x005df3f0
-void TAssetMgr::OpenFilesFor(short fileSet) {
-  (void)fileSet;
-}
+void TAssetMgr::OpenFilesFor(short fileSet) {}
 
 // FUNCTION: IMPERIALISM 0x005df410
-void TAssetMgr::CloseFilesFor(short fileSet) {
-  (void)fileSet;
-}
+void TAssetMgr::CloseFilesFor(short fileSet) {}
 
 int g_resourceStreamOpenSuppressAssert; // 0x6a5d20
 
@@ -94,14 +89,11 @@ int TAssetMgr::GetResourceStreamSize(CFile* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005df780
-void TAssetMgr::OpenFilesForView(short fileSet) {
-  (void)fileSet;
-}
+void TAssetMgr::OpenFilesForView(short fileSet) {}
 
 // FUNCTION: IMPERIALISM 0x005dfc10
 void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(const CString& movieName,
                                                           TMovieView* movieView, int unused) {
-  (void)unused;
   CString moviePath = CString("Movies/") + movieName;
   moviePath = moviePath + ".avi";
 

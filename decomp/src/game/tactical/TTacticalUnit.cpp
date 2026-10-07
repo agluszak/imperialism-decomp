@@ -38,7 +38,6 @@ void TTacticalUnit::ITacticalUnit() {
 
 // FUNCTION: IMPERIALISM 0x005a5e70
 void TTacticalUnit::ApplyDamage(int damageA, int damageB) {
-  (void)damageB;
   strength -= damageA;
   if (strength <= 0) {
     strength = 0;

@@ -49,7 +49,6 @@ void TInfoPanelView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004fa190
 void TInfoPanelView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   CString text;
   CString unusedText;
   short selectedNation;

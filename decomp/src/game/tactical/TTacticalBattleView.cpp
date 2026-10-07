@@ -896,10 +896,7 @@ TTacticalBattleView::TTacticalBattleView() : TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a83c0
-void TTacticalBattleView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
-  (void)tileIndex;
-  (void)clipRect;
-}
+void TTacticalBattleView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {}
 
 // FUNCTION: IMPERIALISM 0x005a8410
 TTacticalBattleView::~TTacticalBattleView() {}
@@ -954,8 +951,6 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
 
 // FUNCTION: IMPERIALISM 0x005a8660
 void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)event;
-  (void)origin;
   if (modalAnimWaitDoneFlag) {
     int row;
     int column;
@@ -1141,7 +1136,6 @@ void TTacticalBattleView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
 // FUNCTION: IMPERIALISM 0x005a8d40
 void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                               RgnHandle hitArg) {
-  (void)hitArg;
   int gridRow = 0;
   int gridCol = 0;
   ConvertPoint(point, &gridRow, &gridCol);

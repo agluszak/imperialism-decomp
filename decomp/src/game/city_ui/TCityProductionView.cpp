@@ -713,8 +713,6 @@ TCityProductionView::BuildingActionAnimationForRuntimeTest(short buildingSlot) {
 
 // FUNCTION: IMPERIALISM 0x004bc660
 void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)event;
-  (void)origin;
   short buildingSlot = -1;
   CPoint localPoint(point);
   for (int priority = 15; priority >= 0; --priority) {
@@ -761,9 +759,6 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
 // FUNCTION: IMPERIALISM 0x004bc870
 void TCityProductionView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                                      CPoint& currentPoint, bool commandFlag) {
-  (void)commandFlag;
-  (void)startPoint;
-  (void)previousPoint;
   if (phase != kTrackPhaseEnd) {
     return;
   }
@@ -797,8 +792,6 @@ void TCityProductionView::CloseAndSaveWindows() {
 
 // FUNCTION: IMPERIALISM 0x004bc9b0
 void TCityProductionView::SetBuildingPicture(short buildingSlot, short buildingType) {
-  (void)buildingSlot;
-  (void)buildingType;
   CTemporaryRegion surface;
 
   CRect boundsRecord;

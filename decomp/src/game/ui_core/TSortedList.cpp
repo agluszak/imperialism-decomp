@@ -111,8 +111,6 @@ POSITION TSortedList::AddHead(void* item) {
 
 // FUNCTION: IMPERIALISM 0x004885f0
 POSITION TSortedList::AddHeadEx(void* item, int unused1, int unused2) {
-  (void)unused1;
-  (void)unused2;
   return this->listState.AddHead(item);
 }
 
@@ -123,8 +121,6 @@ POSITION TSortedList::AddTail(void* item) {
 
 // FUNCTION: IMPERIALISM 0x00488630
 POSITION TSortedList::AddTailEx(void* item, int unused1, int unused2) {
-  (void)unused1;
-  (void)unused2;
   return this->listState.AddTail(item);
 }
 
@@ -192,18 +188,13 @@ void TSortedList::RemoveAll() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488800
-void TSortedList::ReadFrom(TStream* stream) {
-  (void)stream;
-}
+void TSortedList::ReadFrom(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x00488820
-void TSortedList::WriteTo(TStream* stream) {
-  (void)stream;
-}
+void TSortedList::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x00488840
 void TSortedList::SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag) {
-  (void)unusedFlag;
   POSITION pos = this->listState.FindIndex(ordinal - 1);
   if (pos != NULL) {
     this->listState.SetAt(pos, *entryPtr);

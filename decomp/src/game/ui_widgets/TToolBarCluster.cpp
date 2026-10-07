@@ -334,7 +334,6 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
 
 // FUNCTION: IMPERIALISM 0x00585ee0
 void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg) {
-  (void)unusedArg;
   CString unused1;
   CString unused2;
 }

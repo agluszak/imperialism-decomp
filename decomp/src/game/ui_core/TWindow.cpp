@@ -256,7 +256,6 @@ void TWindow::CloseAndFree() {
 
 // FUNCTION: IMPERIALISM 0x0048e150
 void TWindow::Center(bool centerX, bool centerY, bool unused) {
-  (void)unused;
   if (nativeWindow != 0) {
     nativeWindow->CenterWindow(0);
     return;
@@ -271,13 +270,11 @@ void TWindow::Center(bool centerX, bool centerY, bool unused) {
 
 // FUNCTION: IMPERIALISM 0x0048e1c0
 short TWindow::ContainsMouse(const CPoint& point) {
-  (void)point;
   return 3;
 }
 
 // FUNCTION: IMPERIALISM 0x0048e1e0
 void TWindow::GoAwayByUser(const CPoint& point) {
-  (void)point;
   if (g_McAppUiFlag_006A1B10 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0xac4);
   }
@@ -285,7 +282,6 @@ void TWindow::GoAwayByUser(const CPoint& point) {
 
 // FUNCTION: IMPERIALISM 0x0048e210
 void TWindow::MoveByUser(const CPoint& point) {
-  (void)point;
   if (g_McAppUiFlag_006A1B14 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0xad9);
   }
@@ -293,7 +289,6 @@ void TWindow::MoveByUser(const CPoint& point) {
 
 // FUNCTION: IMPERIALISM 0x0048e240
 void TWindow::ResizeByUser(const CPoint& point) {
-  (void)point;
   if (g_McAppUiFlag_006A1B18 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0xaee);
   }
@@ -301,8 +296,6 @@ void TWindow::ResizeByUser(const CPoint& point) {
 
 // FUNCTION: IMPERIALISM 0x0048e270
 void TWindow::ZoomByUser(const CPoint& point, short partCode) {
-  (void)point;
-  (void)partCode;
   if (g_McAppUiFlag_006A1B1C == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0xaff);
   }
@@ -382,9 +375,7 @@ void TWindow::TranslatePointToParentChain4D(CPoint* point) {}
 void TWindow::TranslateRectToWindow(CRect* rect) {}
 
 // FUNCTION: IMPERIALISM 0x00492d60
-void TWindow::WindowToLocal(CPoint* point) {
-  (void)point;
-}
+void TWindow::WindowToLocal(CPoint* point) {}
 
 // FUNCTION: IMPERIALISM 0x00492d80
 TObject* TWindow::ShallowClone() {

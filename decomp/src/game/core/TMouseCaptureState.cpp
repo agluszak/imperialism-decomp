@@ -8,10 +8,6 @@
 // FUNCTION: IMPERIALISM 0x00489b60
 VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT message, UINT timerId,
                                                              DWORD tickCount) {
-  (void)hwnd;
-  (void)message;
-  (void)timerId;
-  (void)tickCount;
   TControl* captured = g_McAppMouseCaptureState.capturedControl;
   if (captured != 0) {
     CPoint scratchPoint(0, 0);
@@ -55,7 +51,6 @@ void TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned i
 
 // FUNCTION: IMPERIALISM 0x00489d40
 void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, int x, int y) {
-  (void)nFlags;
   if (capturedControl == 0) {
     return;
   }

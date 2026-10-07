@@ -36,7 +36,6 @@ void TDialogBehavior::SetUiColorDescriptorGoldTriplet(bool flag, int colorA, int
 
 // FUNCTION: IMPERIALISM 0x00487430
 void TDialogBehavior::Dismiss(unsigned long commandCode, bool accepted) {
-  (void)accepted;
   if (owner != 0) {
     dismissPending = true;
     armedCommandCode = commandCode;
@@ -46,7 +45,6 @@ void TDialogBehavior::Dismiss(unsigned long commandCode, bool accepted) {
 
 // FUNCTION: IMPERIALISM 0x00487470
 void TDialogBehavior::DoEvent(long commandId, TEventHandler* sourceHandler, TEvent* event) {
-  (void)event;
   if (commandId == 0x22) {
     unsigned long commandCode = sourceHandler->controlTag;
     Dismiss(commandCode, commandCode != cancelCommandCode);

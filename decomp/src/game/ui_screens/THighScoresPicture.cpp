@@ -99,8 +99,6 @@ void THighScoresPicture::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x00575770
 void THighScoresPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  (void)sourceHandler;
-  (void)event;
   if (commandId == 0xa) {
     g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
     g_pSfxPlaybackSystem->ResetDualAudioCuePools();

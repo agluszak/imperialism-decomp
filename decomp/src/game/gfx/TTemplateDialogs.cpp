@@ -16,9 +16,7 @@
 #include <stdio.h>
 
 // FUNCTION: IMPERIALISM 0x004136c0
-void T64TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void T64TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(T64TemplateDialog, CDialog)
@@ -117,9 +115,7 @@ TDibPreviewDialog::TDibPreviewDialog(void* initParam)
       renderMode(0), flag84(0), outlinePolygon(0) {}
 
 // FUNCTION: IMPERIALISM 0x0047d5b0
-void TDibPreviewDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TDibPreviewDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TDibPreviewDialog, CDialog)
@@ -197,10 +193,7 @@ BOOL TDibPreviewDialog::OnInitDialog() {
 }
 
 // FUNCTION: IMPERIALISM 0x0047db80
-void TDibPreviewDialog::OnLButtonDblClk(UINT nFlags, CPoint point) {
-  (void)nFlags;
-  (void)point;
-}
+void TDibPreviewDialog::OnLButtonDblClk(UINT nFlags, CPoint point) {}
 
 // FUNCTION: IMPERIALISM 0x0047dba0
 TBequeathGoodiesDialog::TBequeathGoodiesDialog(void* initParam)
@@ -252,9 +245,7 @@ TFATemplateDialog::TFATemplateDialog(void* initParam)
 
 // DoDataExchange is an empty override in the original (the listbox is wired up outside DDX).
 // FUNCTION: IMPERIALISM 0x0047df90
-void TFATemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TFATemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TFATemplateDialog, CDialog)
@@ -266,15 +257,10 @@ TA3TemplateDialog::TA3TemplateDialog(void* initParam)
     : CDialog(0xa3, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x0047f2b0
-void TA3TemplateDialog::VerifyDialogContext(int unusedA, int unusedB) {
-  (void)unusedA;
-  (void)unusedB;
-}
+void TA3TemplateDialog::VerifyDialogContext(int unusedA, int unusedB) {}
 
 // FUNCTION: IMPERIALISM 0x0047f320
-void TA3TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TA3TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TA3TemplateDialog, CDialog)
@@ -287,17 +273,13 @@ TA4TemplateDialog::TA4TemplateDialog(void* initParam)
 
 // FUNCTION: IMPERIALISM 0x0047f3e0
 void TA4TemplateDialog::VerifyDialogContext(int unusedA, int unusedB) {
-  (void)unusedA;
-  (void)unusedB;
   if (g_diplomacyDialogAssertGuard == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szDiplomacyDialogsSourcePath, 0x3d);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0047f410
-void TA4TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TA4TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TA4TemplateDialog, CDialog)
@@ -348,9 +330,7 @@ T102TemplateDialog::T102TemplateDialog(void* initParam)
     : TModalDialogBase(0x102, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x004811e0
-void T102TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void T102TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(T102TemplateDialog, CDialog)
@@ -388,9 +368,7 @@ TA5TemplateDialog::TA5TemplateDialog(void* initParam)
     : CDialog(0xa5, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x00481670
-void TA5TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TA5TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TA5TemplateDialog, CDialog)
@@ -402,9 +380,7 @@ TA6TemplateDialog::TA6TemplateDialog(void* initParam)
     : CDialog(0xa6, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x00481730
-void TA6TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TA6TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TA6TemplateDialog, CDialog)
@@ -432,9 +408,7 @@ TA8TemplateDialog::TA8TemplateDialog(void* initParam)
     : CDialog(0xa8, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x00481970
-void TA8TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TA8TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TA8TemplateDialog, CDialog)
@@ -446,9 +420,7 @@ TA9TemplateDialog::TA9TemplateDialog(void* initParam)
     : CDialog(0xa9, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x00481a30
-void TA9TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TA9TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TA9TemplateDialog, CDialog)
@@ -460,9 +432,7 @@ TAATemplateDialog::TAATemplateDialog(void* initParam)
     : CDialog(0xaa, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x00481af0
-void TAATemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TAATemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TAATemplateDialog, CDialog)
@@ -492,9 +462,7 @@ TACTemplateDialog::TACTemplateDialog(void* initParam)
     : CDialog(0xac, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x00481d80
-void TACTemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TACTemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TACTemplateDialog, CDialog)
@@ -524,9 +492,7 @@ TAFTemplateDialog::TAFTemplateDialog(void* initParam)
     : CDialog(0xaf, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x00482010
-void TAFTemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TAFTemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TAFTemplateDialog, CDialog)
@@ -585,9 +551,7 @@ TF7TemplateDialog::TF7TemplateDialog(void* initParam)
     : CDialog(0xf7, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x00482420
-void TF7TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TF7TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TF7TemplateDialog, CDialog)
@@ -631,7 +595,6 @@ TE0TemplateDialog::~TE0TemplateDialog() {
 
 // FUNCTION: IMPERIALISM 0x0049bb60
 void TracePrintfWithContext(int context, const char* format, ...) {
-  (void)context;
   char buffer[512];
   va_list args;
   va_start(args, format);
@@ -699,9 +662,7 @@ TE0TemplateDialog::TE0TemplateDialog(void* initParam)
     : CDialog(0xe0, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x005dee80
-void TE0TemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  (void)pDX;
-}
+void TE0TemplateDialog::DoDataExchange(CDataExchange* pDX) {}
 
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TE0TemplateDialog, CDialog)
@@ -717,31 +678,21 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x005deec0
 void TE0TemplateDialog::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  (void)nChar;
-  (void)nRepCnt;
-  (void)nFlags;
   EndDialog(0);
 }
 
 // FUNCTION: IMPERIALISM 0x005deee0
 void TE0TemplateDialog::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  (void)nChar;
-  (void)nRepCnt;
-  (void)nFlags;
   EndDialog(0);
 }
 
 // FUNCTION: IMPERIALISM 0x005def00
 void TE0TemplateDialog::OnLButtonDown(UINT nFlags, CPoint point) {
-  (void)nFlags;
-  (void)point;
   EndDialog(0);
 }
 
 // FUNCTION: IMPERIALISM 0x005def20
 void TE0TemplateDialog::OnRButtonDown(UINT nFlags, CPoint point) {
-  (void)nFlags;
-  (void)point;
   EndDialog(0);
 }
 
@@ -765,9 +716,6 @@ BOOL TE0TemplateDialog::OnInitDialog() {
 // WM_SETCURSOR: reassert the custom cursor (resource 0xe4) and swallow the message.
 // FUNCTION: IMPERIALISM 0x005defe0
 BOOL TE0TemplateDialog::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
-  (void)pWnd;
-  (void)nHitTest;
-  (void)message;
   AFX_MODULE_STATE* moduleState = AfxGetModuleState();
   HCURSOR hCursor = ::LoadCursorA(moduleState->m_hCurrentInstanceHandle, MAKEINTRESOURCEA(0xe4));
   ::SetCursor(hCursor);

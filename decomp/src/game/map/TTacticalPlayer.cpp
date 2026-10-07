@@ -15,18 +15,13 @@ void TTacticalPlayer::StartBattle() {}
 void TTacticalPlayer::NextMove() {}
 
 // FUNCTION: IMPERIALISM 0x0059adb0
-void TTacticalPlayer::DoClick(int unused) {
-  (void)unused;
-}
+void TTacticalPlayer::DoClick(int unused) {}
 
 // FUNCTION: IMPERIALISM 0x0059add0
-void TTacticalPlayer::ApplyChanges(unsigned char sideWonFlag) {
-  (void)sideWonFlag;
-}
+void TTacticalPlayer::ApplyChanges(unsigned char sideWonFlag) {}
 
 // FUNCTION: IMPERIALISM 0x0059adf0
 bool TTacticalPlayer::AlwaysTrueTacticalPredicate10(TTacticalUnit* unit) {
-  (void)unit;
   return true;
 }
 

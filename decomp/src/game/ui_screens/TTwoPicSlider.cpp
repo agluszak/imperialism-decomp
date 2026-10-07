@@ -80,7 +80,6 @@ static int SliderScaledValue(TTwoPicSlider* slider, int scale) {
 
 // FUNCTION: IMPERIALISM 0x0056e370
 void TTwoPicSlider::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::Draw.
   if ((slider->lowerSurface != 0) && (slider->upperSurface != 0) &&
@@ -141,11 +140,8 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x0056e640
 void TTwoPicSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                                CPoint& currentPoint, bool commandFlag) {
-  (void)commandFlag;
   TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::TrackMouse.
-  (void)startPoint;
-  (void)previousPoint;
   if (kTrackPhaseBegin < phase) {
     if (kTrackPhaseEnd < phase) {
       return;

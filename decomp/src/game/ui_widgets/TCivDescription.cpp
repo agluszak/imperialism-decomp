@@ -115,8 +115,6 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
 void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)event;
-  (void)origin;
   int candidateOrdinal = 0;
   int provinceCount;
   int provinceOrdinal;
@@ -326,7 +324,6 @@ void TCivDescription::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0058f7b0
 void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
-  (void)boundsBuffer;
 
   CString labelText;
   CString costText;
@@ -429,7 +426,6 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0058fec0
 void TCivDescription::DrawProspector(RECT* bounds) {
-  (void)bounds;
 
   CString text;
   unsigned long themeColor = 0;
@@ -517,7 +513,6 @@ void TCivDescription::DrawProspector(RECT* bounds) {
 
 // FUNCTION: IMPERIALISM 0x005903c0
 void TCivDescription::DrawDeveloper(RECT* bounds) {
-  (void)bounds;
 
   CPoint origin(0, 0);
   WindowToLocal(&origin);

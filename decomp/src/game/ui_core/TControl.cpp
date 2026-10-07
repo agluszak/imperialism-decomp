@@ -22,8 +22,6 @@ int TControl::GetEventNumber() {
 
 // FUNCTION: IMPERIALISM 0x00429470
 void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
   if (g_McAppUiFlag_006A143C == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x56f);
   }
@@ -55,8 +53,6 @@ TControl::TControl()
 
 // FUNCTION: IMPERIALISM 0x0048e640
 void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)event;
-  (void)origin;
   int startX = point.x;
   int startY = point.y;
   g_McAppMouseCaptureState.capturedControl = this;
@@ -124,9 +120,6 @@ void TControl::HiliteState(unsigned char enabledState, bool refreshNow) {
 // FUNCTION: IMPERIALISM 0x0048e850
 void TControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint, bool commandFlag) {
-  (void)startPoint;
-  (void)previousPoint;
-  (void)commandFlag;
   if (phase == kTrackPhaseBegin) {
     HiliteState(1, true);
     return;
@@ -168,10 +161,7 @@ void TControl::BuildInsetContentRect(CRect* boundsBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e9c0
-void TControl::NoOpUiViewSlotHandler(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
-}
+void TControl::NoOpUiViewSlotHandler(int arg1, int arg2) {}
 
 // FUNCTION: IMPERIALISM 0x0048e9e0
 void TControl::NoOpControlAction(int) {}

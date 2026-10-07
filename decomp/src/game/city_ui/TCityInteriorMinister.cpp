@@ -86,7 +86,6 @@ void InsertScoredTileCandidateWithRandomTieBreak(float score, short tileIndex,
 
 // FUNCTION: IMPERIALISM 0x004be6f0
 float TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale(int* resourcePools) {
-  (void)resourcePools;
   return g_AiDevelopmentResourceBudgetScale;
 }
 
@@ -896,7 +895,6 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
 
 // FUNCTION: IMPERIALISM 0x004c0d90
 void TCityInteriorMinister::MakeNewCity(TCity* city) {
-  (void)city;
   if (greatPower->diplomacyEligibility == 0) {
     greatPower->treasuryValue = 10000;
     orderMetricTable[53] = 2;

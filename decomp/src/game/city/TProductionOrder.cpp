@@ -74,6 +74,5 @@ void TProductionOrder::ResetOrderSheet(OrderSheet* orderSheet) {
 
 // FUNCTION: IMPERIALISM 0x004b51b0
 void TProductionOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
-  (void)quantity;
   this->ResetOrderSheet(orderSheet);
 }

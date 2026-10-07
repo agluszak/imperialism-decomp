@@ -11,8 +11,6 @@ TCloseParentButton::~TCloseParentButton() {}
 
 // FUNCTION: IMPERIALISM 0x00584d30
 void TCloseParentButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  (void)sourceHandler;
-  (void)event;
   if (commandId == GetEventNumber()) {
     if (IsEnabled() != 0 && !LogUnhandledDialogMethodAndReturnFalse()) {
       GetWindow()->Close();

@@ -10,7 +10,6 @@ IMPLEMENT_DYNCREATE(TFrameRadioView, TControl)
 
 // FUNCTION: IMPERIALISM 0x004fdfc0
 void TFrameRadioView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   if (controlState != 0) {
     RECT frame = {1, 1, frameWidth, frameHeight};
     SetQuickDrawFillColor(0);

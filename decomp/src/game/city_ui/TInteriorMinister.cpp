@@ -178,6 +178,4 @@ void TInteriorMinister::AdvanceNeedTargetRoundRobin() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be6d0
-void TInteriorMinister::MakeNewCity(TCity* city) {
-  (void)city;
-}
+void TInteriorMinister::MakeNewCity(TCity* city) {}

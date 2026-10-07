@@ -37,10 +37,6 @@ TCluster::TCluster(const TCluster& source)
 void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size,
                                                        int layoutParam4, int layoutParam5,
                                                        int layoutParam6, int layoutParam7) {
-  (void)layoutParam4;
-  (void)layoutParam5;
-  (void)layoutParam6;
-  (void)layoutParam7;
   if (parent != nullptr) {
     nativeWindow = parent->nativeWindow;
   }

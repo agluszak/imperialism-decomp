@@ -82,8 +82,6 @@ TObject* TStaticText::ShallowClone() {
 void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam6,
                               int layoutParam7, short stringResourceGroup,
                               short stringResourceIndex) {
-  (void)layoutParam6;
-  (void)layoutParam7;
   if (panel != 0) {
     nativeWindow = panel->nativeWindow;
   }
@@ -140,7 +138,6 @@ void TStaticText::SetJustification(short alignmentCode, bool refreshFlag) {
 
 // FUNCTION: IMPERIALISM 0x0048ffb0
 void TStaticText::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   CDC* dc = GetActiveQuickDrawDc();
   dc->SetBkMode(TRANSPARENT);
   CRect bounds;
@@ -170,7 +167,6 @@ void TStaticText::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004900a0
 void TStaticText::ImageText(const char* textChars, int textLength, RECT* rect,
                             short alignmentCode) {
-  (void)textLength;
   CDC* dc = GetActiveQuickDrawDc();
   dc->SetBkMode(TRANSPARENT);
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle);

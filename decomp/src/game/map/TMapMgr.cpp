@@ -2258,7 +2258,6 @@ byte TMapMgr::CheckTileProspectingDiscoveryCandidate(StrategicTileIndex nTileInd
 void TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(StrategicTileIndex sourceTile,
                                                        StrategicTileIndex destTile,
                                                        int unusedParam3) {
-  (void)unusedParam3;
   short direction = GetDirectionFrom(sourceTile, destTile);
   terrainStateTable[sourceTile].adjacencyBits |=
       static_cast<unsigned char>(g_hexDirectionBitMasksAlt[direction]);
@@ -2271,7 +2270,6 @@ void TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(StrategicTileIndex source
 void TMapMgr::ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTile,
                                                      StrategicTileIndex destTile,
                                                      short ownerNation) {
-  (void)ownerNation;
   short dir = GetDirectionFrom(sourceTile, destTile);
   terrainStateTable[sourceTile].railFlags += g_railDirectionAddMasks[dir];
   terrainStateTable[destTile].railFlags += g_railDirectionAddMasks[(dir + 3) % 6];
@@ -2281,7 +2279,6 @@ void TMapMgr::ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTi
 void TMapMgr::ApplyEngineerRailCostDeltaForConnectedTiles(StrategicTileIndex tileA,
                                                           StrategicTileIndex tileB,
                                                           short ownerNation) {
-  (void)ownerNation;
   short dir = GetDirectionFrom(tileA, tileB);
   terrainStateTable[tileA].railFlags -= g_railDirectionSubtractMasks[dir];
   terrainStateTable[tileB].railFlags -= g_railDirectionSubtractMasks[(dir + 3) % 6];
@@ -2656,7 +2653,6 @@ void TMapMgr::SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag)
 
 // FUNCTION: IMPERIALISM 0x00514e80
 void TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(TCivUnit* unusedOrder) {
-  (void)unusedOrder;
   TTerrainStateRecord* tile = terrainStateTable;
   this->recruitSearchActive = 1;
   for (short tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex, ++tile) {
@@ -3194,7 +3190,6 @@ StrategicTileIndex TMapMgr::FindLinkedTileForAdjacentProvince(ProvinceIndex city
 
 // FUNCTION: IMPERIALISM 0x00516100
 void TMapMgr::SetCapitalCityDevelopmentStageIfValidNationSlot(int nation, int unused) {
-  (void)unused;
   short capitalTileIndex =
       static_cast<short>(g_apTerrainTypeDescriptorTable[nation]->homeTileIndex);
   short cityRecordIndex = terrainStateTable[capitalTileIndex].cityRecordIndex;
@@ -3327,7 +3322,6 @@ int TMapMgr::GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex
 
 // FUNCTION: IMPERIALISM 0x00517600
 short TMapMgr::GetTownOffset(StrategicTileIndex tileIndex, int unused) {
-  (void)unused;
   unsigned short flags = terrainStateTable[tileIndex].activeFlags;
   TTown* town = FindTownMarkerForTileByOwnerNation(tileIndex);
   bool linked = (town != nullptr) ? town->transportLinked : 1;
@@ -3386,7 +3380,6 @@ short TMapMgr::GetUnitOffset(short orderType, bool military, char idle) {
 
 // FUNCTION: IMPERIALISM 0x005177d0
 int TMapMgr::GetTinyIngotOffset(char ingotKind, int unused) {
-  (void)unused;
   return ingotKind * 16;
 }
 
@@ -3767,7 +3760,6 @@ void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005184e0
 short TMapMgr::GetProvinceUnitOrderWeight(ProvinceIndexStorage provinceId) {
-  (void)provinceId;
   return 0x21;
 }
 

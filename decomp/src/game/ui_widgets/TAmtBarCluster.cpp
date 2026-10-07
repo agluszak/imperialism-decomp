@@ -76,6 +76,4 @@ void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 }
 
 // FUNCTION: IMPERIALISM 0x00586ff0
-void TAmtBarCluster::SetMoveAmount(short amount) {
-  (void)amount;
-}
+void TAmtBarCluster::SetMoveAmount(short amount) {}

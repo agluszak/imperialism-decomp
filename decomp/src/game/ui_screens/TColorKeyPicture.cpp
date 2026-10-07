@@ -22,7 +22,6 @@ TColorKeyPicture::~TColorKeyPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00572e60
 void TColorKeyPicture::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   delete g_pColorKeyCompositeDib;
   g_pColorKeyCompositeDib = new CDib(*cachedBitmap);
 

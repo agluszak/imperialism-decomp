@@ -112,9 +112,6 @@ TBitmapSurfaceNode** GetGWorldPixMap(TQuickDrawSurfaceContext* context) {
 // FUNCTION: IMPERIALISM 0x004962c0
 short NewGWorld(TQuickDrawSurfaceContext** outContext, short bitDepth, const RECT* bounds,
                 int unusedHint, int unusedArg4, int unusedArg5) {
-  (void)unusedHint;
-  (void)unusedArg4;
-  (void)unusedArg5;
 
   TBitmapSurfaceContextDescriptor* descriptor = new TBitmapSurfaceContextDescriptor;
   *outContext = descriptor;
@@ -128,14 +125,11 @@ short NewGWorld(TQuickDrawSurfaceContext** outContext, short bitDepth, const REC
 
 // FUNCTION: IMPERIALISM 0x004972c0
 bool LockPixels(TBitmapSurfaceNode** pixMap) {
-  (void)pixMap;
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004972e0
-void UnlockPixels(TBitmapSurfaceNode** pixMap) {
-  (void)pixMap;
-}
+void UnlockPixels(TBitmapSurfaceNode** pixMap) {}
 
 // FUNCTION: IMPERIALISM 0x00497300
 unsigned char* GetPixBaseAddr(TBitmapSurfaceNode** pixMap) {
@@ -144,7 +138,6 @@ unsigned char* GetPixBaseAddr(TBitmapSurfaceNode** pixMap) {
 
 // FUNCTION: IMPERIALISM 0x00497c00
 int QDLoadResource(TBitmapResourceLoader** handle) {
-  (void)handle;
   return 0;
 }
 

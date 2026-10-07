@@ -15,7 +15,6 @@ IMPLEMENT_DYNCREATE(TWarningView, TPicture)
 // FUNCTION: IMPERIALISM 0x00592900
 TWarningView::TWarningView() : TPicture() {}
 
-
 // FUNCTION: IMPERIALISM 0x00592960
 TWarningView::~TWarningView() {}
 
@@ -46,7 +45,6 @@ void TWarningView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 
 // FUNCTION: IMPERIALISM 0x00592a70
 void TWarningView::DoPostCreate(int arg) {
-  (void)arg;
   const unsigned int kControlTagMsg1 = IMPERIALISM_FOURCC('m', 's', 'g', '1');
   const unsigned int kControlTagMsg2 = IMPERIALISM_FOURCC('m', 's', 'g', '2');
   const unsigned int kControlTagMsg3 = IMPERIALISM_FOURCC('m', 's', 'g', '3');

@@ -25,8 +25,6 @@ bool TMission::IsANoBrainer() const {
 }
 // FUNCTION: IMPERIALISM 0x00534c20
 int TMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack) const {
-  (void)accumulatedLack;
-  (void)includeExistingLack;
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534c40
@@ -56,9 +54,6 @@ TMission* TMission::GetReplacement() {
 }
 // FUNCTION: IMPERIALISM 0x00534d30
 bool TMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
-  (void)missionType;
-  (void)key;
-  (void)zoneContext;
   return false;
 }
 // FUNCTION: IMPERIALISM 0x00534d50
@@ -95,50 +90,30 @@ float TMission::IndustrialCostOfNeeds() {
 }
 // FUNCTION: IMPERIALISM 0x00534e50
 float TMission::ValueOf(TShip* candidate) {
-  (void)candidate;
   return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534e70
 float TMission::ValueOf(TMilitaryUnit* candidateUnit) {
-  (void)candidateUnit;
   return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534e90
 float TMission::FitnessOf(TShip* candidate, float* targetProfile) {
-  (void)candidate;
-  (void)targetProfile;
   return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534eb0
 float TMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
-  (void)candidateUnit;
-  (void)referenceVector;
   return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534ed0
-void TMission::AcceptReenforcement(TShip* ship, bool notify) {
-  (void)ship;
-  (void)notify;
-}
+void TMission::AcceptReenforcement(TShip* ship, bool notify) {}
 // FUNCTION: IMPERIALISM 0x00534ef0
-void TMission::AcceptReenforcement(TMilitaryUnit* unit, bool notify) {
-  (void)unit;
-  (void)notify;
-}
+void TMission::AcceptReenforcement(TMilitaryUnit* unit, bool notify) {}
 // FUNCTION: IMPERIALISM 0x00534f10
-void TMission::RejectConstituent(TShip* ship, bool notify) {
-  (void)ship;
-  (void)notify;
-}
+void TMission::RejectConstituent(TShip* ship, bool notify) {}
 // FUNCTION: IMPERIALISM 0x00534f30
-void TMission::RejectConstituent(TMilitaryUnit* unit, bool notify) {
-  (void)unit;
-  (void)notify;
-}
+void TMission::RejectConstituent(TMilitaryUnit* unit, bool notify) {}
 // FUNCTION: IMPERIALISM 0x00534f50
-void TMission::ForgetTaskForce(TTaskForce* taskForce) {
-  (void)taskForce;
-}
+void TMission::ForgetTaskForce(TTaskForce* taskForce) {}
 // FUNCTION: IMPERIALISM 0x00534f70
 void TMission::Hold(bool value) {
   flag10 = value;

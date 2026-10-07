@@ -614,8 +614,6 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
 
 // FUNCTION: IMPERIALISM 0x004f5410
 void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)event;
-  (void)origin;
 
   CRect invalidRect;
   CRect recurringGrantRect;
@@ -951,10 +949,7 @@ eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPo
 }
 
 // FUNCTION: IMPERIALISM 0x004f5f90
-void TDiplomacyMapView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
-  (void)point;
-  (void)hitArg;
-}
+void TDiplomacyMapView::DoSetCursor(CPoint* point, RgnHandle hitArg) {}
 
 // FUNCTION: IMPERIALISM 0x004f5fb0
 void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* clickPoint,

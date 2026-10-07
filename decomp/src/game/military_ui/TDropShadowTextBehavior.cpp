@@ -17,7 +17,6 @@ void TDropShadowTextBehavior::IDropShadowTextBehavior(COLORREF shadowColor) {
 
 // FUNCTION: IMPERIALISM 0x004b1150
 void TDropShadowTextBehavior::Draw(RECT* bounds) {
-  (void)bounds;
   TStaticText* textOwner = static_cast<TStaticText*>(owner);
   SetQuickDrawColorAndPropagateIfChanged(shadowColor);
 

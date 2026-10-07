@@ -29,9 +29,6 @@
 
 // FUNCTION: IMPERIALISM 0x00482760
 static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime) {
-  (void)uMsg;
-  (void)idEvent;
-  (void)dwTime;
   POINT cursorPos;
   GetCursorPos(&cursorPos);
   ScreenToClient(hWnd, &cursorPos);
@@ -134,7 +131,6 @@ LRESULT CIncludeView::OnRuntimeAction(WPARAM wParam, LPARAM lParam) {
 
 // FUNCTION: IMPERIALISM 0x00482bf0
 LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
-  (void)lParam;
   switch (wParam & 0xff) {
   case 0:
     if (g_nIncludeViewAssertGate == 0) {
@@ -333,14 +329,12 @@ void CIncludeView::SetUiRuntimeContextAndActivateMain(TView* activeDialog) {
 
 // FUNCTION: IMPERIALISM 0x00483380
 void CIncludeView::RefreshActiveDialogHost(int unusedArg) {
-  (void)unusedArg;
   m_activeDialogContext->PropagateUiResourceContextRecursive(this);
   m_activeDialogContext->ResolveControlByTag(kControlTagMain);
 }
 
 // FUNCTION: IMPERIALISM 0x004833b0
 TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedArg) {
-  (void)unusedArg;
   m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
     int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
@@ -489,7 +483,6 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
 
 // FUNCTION: IMPERIALISM 0x004839e0
 void CIncludeView::OnLButtonDown(UINT nFlags, CPoint point) {
-  (void)nFlags;
   if (m_uiInteractiveFlag != 0 && m_activeDialogContext != 0) {
     TToolboxEvent event;
     event.mouseX = point.x;
@@ -514,8 +507,6 @@ void CIncludeView::OnLButtonUp(UINT nFlags, CPoint point) {
 
 // FUNCTION: IMPERIALISM 0x00483b70
 void CIncludeView::OnLButtonDblClk(UINT nFlags, CPoint point) {
-  (void)nFlags;
-  (void)point;
   if (m_uiInteractiveFlag != 0) {
     Default();
   }
@@ -603,15 +594,11 @@ BOOL CIncludeView::OnCommand(WPARAM wParam, LPARAM lParam) {
 // Keep cursor selection in the standard MFC/default-window path.
 // FUNCTION: IMPERIALISM 0x00483ef0
 BOOL CIncludeView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
-  (void)pWnd;
-  (void)nHitTest;
-  (void)message;
   return static_cast<BOOL>(Default());
 }
 
 // FUNCTION: IMPERIALISM 0x00483f10
 void CIncludeView::OnRButtonDown(UINT nFlags, CPoint point) {
-  (void)nFlags;
   if (m_uiInteractiveFlag != 0 && m_activeDialogContext != 0) {
     TToolboxEvent event;
     event.mouseX = point.x;
@@ -649,15 +636,11 @@ int CIncludeView::SetUiInteractiveFlag(bool interactive) {
 // WM_CHAR: no game handling; defers to DefWindowProc (matches the original).
 // FUNCTION: IMPERIALISM 0x004840b0
 void CIncludeView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  (void)nChar;
-  (void)nRepCnt;
-  (void)nFlags;
   Default();
 }
 
 // FUNCTION: IMPERIALISM 0x004840d0
 void CIncludeView::CalcWindowRect(LPRECT lpClientRect, UINT nAdjustType) {
-  (void)nAdjustType;
   RECT proposedRect;
   CopyRect(&proposedRect, lpClientRect);
   lpClientRect->left = ((proposedRect.right - proposedRect.left) - 0x280) / 2;
@@ -691,7 +674,6 @@ void CIncludeView::OnParentNotify(UINT message, LPARAM lParam) {
 
 // FUNCTION: IMPERIALISM 0x00484230
 LRESULT CIncludeView::OnMciNotifyMode(WPARAM wParam, LPARAM mciMode) {
-  (void)wParam;
   if (mciMode == MCI_MODE_STOP) {
     g_pViewMgr->HandleTurnStateExitAndPostFollowupEventCode(0);
   }

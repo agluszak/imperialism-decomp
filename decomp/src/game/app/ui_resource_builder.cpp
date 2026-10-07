@@ -18,8 +18,6 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
                                      int offsetX, int offsetY, int width, int height,
                                      int stateValue, int enabledState, unsigned int ownerTag,
                                      int field3cValue) {
-  (void)nameTag;
-  (void)ownerTag;
 
   TView* parent;
   g_pUiResourceContext = widget;
@@ -82,8 +80,6 @@ void __cdecl SetUiResourceEventNumberAndInsets(int eventNumber, int rectLeft, in
 void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* szText, short nMode,
                                         short nFlag, short nPointSize, TUiStyleRef styleRef,
                                         short nThemeCode) {
-  (void)nGroupId;
-  (void)nVariant;
 
   TStaticText* context = static_cast<TStaticText*>(g_pUiResourceContext);
   {
@@ -122,7 +118,6 @@ void __cdecl ClearUiResourceContext() {
 
 // FUNCTION: IMPERIALISM 0x0041b610
 void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
-  (void)nameTag;
   g_UiWidgetBuildStack.RemoveTail();
 }
 

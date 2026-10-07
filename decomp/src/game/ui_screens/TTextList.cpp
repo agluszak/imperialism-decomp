@@ -34,7 +34,6 @@ void TTextList::AddEntry(char* entryText) {
 
 // FUNCTION: IMPERIALISM 0x0057acc0
 void TTextList::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
 
   COLORREF styleFlags1 = 0;
   COLORREF styleFlags2 = 0;
@@ -89,8 +88,6 @@ void TTextList::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0057af20
 void TTextList::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)event;
-  (void)origin;
 
   int index = (point.y / itemHeight) + scrollOffset;
   if (index < totalItems) {

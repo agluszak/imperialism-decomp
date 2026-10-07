@@ -156,7 +156,6 @@ void TEventHandler::HandleIdle(int idlePhase) {
 
 // FUNCTION: IMPERIALISM 0x0048a480
 bool TEventHandler::DoIdle(int action) {
-  (void)action;
   return false;
 }
 
@@ -237,9 +236,7 @@ void TEventHandler::ResignedWindowTarget() {
 void TEventHandler::ResignedTarget() {}
 
 // FUNCTION: IMPERIALISM 0x0048a6b0
-void TEventHandler::TargetValidationFailed(int gate) {
-  (void)gate;
-}
+void TEventHandler::TargetValidationFailed(int gate) {}
 
 // FUNCTION: IMPERIALISM 0x0048a6d0
 void TEventHandler::BecameWindowTarget() {

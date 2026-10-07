@@ -888,7 +888,6 @@ void DrawOceanRouteSegment(short sourceColumn, int sourceRow, short destinationC
 // FUNCTION: IMPERIALISM 0x00567fa0
 void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
                                                   int projectedY, int flag, short tileIndex) {
-  (void)flag;
   (void)tileIndex;
 
   CRect destinationRect(projectedY, projectedX, projectedY + 0x10, projectedX + 0x10);
@@ -917,7 +916,6 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int proj
 // FUNCTION: IMPERIALISM 0x00568120
 void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                                  int flag) {
-  (void)flag;
 
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   TMilitaryUnit* stationedUnit = 0;
@@ -953,7 +951,6 @@ void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex
 // FUNCTION: IMPERIALISM 0x005682d0
 void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                                  bool altOverlay) {
-  (void)altOverlay;
 
   signed char tileActionClass = g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState;
   if (tileActionClass < 0 || tileActionClass >= kMapTileActionStateOceanAtlasFrameCount) {
@@ -1018,8 +1015,6 @@ void TOceanDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileI
                                                                        short* outVerticalOffset,
                                                                        short* outHorizontalOffset,
                                                                        int projectionScale) {
-  (void)viewportOrigin;
-  (void)projectionScale;
 
   short mapTileIndex = static_cast<short>(tileIndex);
   int row = mapTileIndex / kStrategicMapColumns;

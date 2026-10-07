@@ -19,7 +19,6 @@ CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex) {
 
 // FUNCTION: IMPERIALISM 0x0057fef0
 void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...) {
-  (void)ctx;
   CString* result = out;
   const char* const* args = &input;
   *result = CString(g_szEmptyString);
@@ -68,8 +67,6 @@ void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...) 
 // FUNCTION: IMPERIALISM 0x00580060
 void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, int groupA,
                                                    int indexA, int groupB, int indexB) {
-  (void)groupB;
-  (void)indexB;
   *out = CString(g_szEmptyString);
 
   CString text;
@@ -119,11 +116,6 @@ void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, i
 char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const char* templateText,
                                                           const char* token1, const char* token2,
                                                           const char* token3, const char* token4) {
-  (void)sim;
-  (void)token1;
-  (void)token2;
-  (void)token3;
-  (void)token4;
   stretch<char> sink;
   stretch<char>* out = &sink;
   const char* const* args = &templateText;

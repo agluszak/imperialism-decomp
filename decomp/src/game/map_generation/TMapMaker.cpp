@@ -1651,7 +1651,6 @@ bool LinkIsEmpty(const SeaSegment* rec) {
 void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short regionClass,
                                                         short unusedClass, short northClass,
                                                         short southClass) {
-  (void)unusedClass;
   MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
 
   if (northClass == regionClass) {
@@ -1690,8 +1689,6 @@ void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short r
 void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
                                                      short unusedClass, short northClass,
                                                      short unusedClass2) {
-  (void)unusedClass;
-  (void)unusedClass2;
   int neighbor = GetAdjacentRegionGridCell(coarseIndex, 2);
   MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(neighbor);
   MapGeneratorTileRecord* source = cell - 108;

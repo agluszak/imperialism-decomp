@@ -111,7 +111,6 @@ TTurnEventDialogFactoryRegistry::ResolveDialogNodeByMessageContext(TurnEventId m
 // FUNCTION: IMPERIALISM 0x00491cc0
 TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
     int nContextId, TView* pEventPacket, TurnEventId nEventCode, const CPoint& anchorPoint) {
-  (void)nContextId;
   TView* result = nullptr;
   POSITION pos = factories.GetHeadPosition();
   while (pos != 0) {

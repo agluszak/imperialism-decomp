@@ -32,6 +32,4 @@ void TBehavior::SetEnabled(bool isEnabled) {
 }
 
 // FUNCTION: IMPERIALISM 0x004872e0
-void TBehavior::Draw(RECT* bounds) {
-  (void)bounds;
-}
+void TBehavior::Draw(RECT* bounds) {}

@@ -64,8 +64,6 @@ TPicture::~TPicture() {
 // FUNCTION: IMPERIALISM 0x0048f330
 void TPicture::IPicture(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam4,
                         int layoutParam5, short pictureId) {
-  (void)layoutParam4;
-  (void)layoutParam5;
   if (panel != 0) {
     nativeWindow = panel->nativeWindow;
   }

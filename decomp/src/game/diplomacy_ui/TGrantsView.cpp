@@ -39,7 +39,6 @@ void TGrantsView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004f81c0
 void TGrantsView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
   CString labelText;
   CString sumText;
 

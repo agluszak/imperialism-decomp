@@ -145,7 +145,6 @@ void TBlockadePortMission::CalculateNeeds() {
 
 // FUNCTION: IMPERIALISM 0x0053ba10
 bool TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
-  (void)key;
   return missionType == kMissionTypeBlockadePort && zoneContext == missionTargetZone;
 }
 
