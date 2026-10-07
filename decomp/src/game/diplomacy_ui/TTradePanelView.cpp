@@ -114,7 +114,7 @@ void TTradePanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       int tradeRow = sourceHandler->controlTag - kControlTagTraa; // 'traa'
       diplomacyMapView->selectedGrantRow = static_cast<short>(tradeRow);
       short threshold = g_awDiplomacyTradePolicyIconValueTable[tradeRow];
-      if (threshold == 300) {
+      if (threshold == kTradePolicyBoycott) {
         diplomacyMapView->actionCode = kDipActionBoycott;
       } else if (threshold <= 0x5f) {
         diplomacyMapView->actionCode = kDipActionTradeSubsidy;

@@ -438,7 +438,7 @@ void TForeignMinister::DoDevelopmentGrants() {
         g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot, nationSlot) == 2) {
       int grantAmount = SelectDevelopmentGrantAmount(availableBudget);
       availableBudget -= static_cast<short>(grantAmount);
-      owner->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(nationSlot, grantAmount);
+      owner->SetGrantPolicyTo(nationSlot, grantAmount);
       developmentGrantByNation[nationSlot] =
           static_cast<short>(developmentGrantByNation[nationSlot] + grantAmount);
     }
@@ -454,7 +454,7 @@ void TForeignMinister::DoDevelopmentGrants() {
       if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot, nationSlot) == 1) {
         int grantAmount = SelectDevelopmentGrantAmount(availableBudget);
         availableBudget -= static_cast<short>(grantAmount);
-        owner->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(nationSlot, grantAmount);
+        owner->SetGrantPolicyTo(nationSlot, grantAmount);
         developmentGrantByNation[nationSlot] =
             static_cast<short>(developmentGrantByNation[nationSlot] + grantAmount);
         if (developmentGrantByNation[nationSlot] >= 5000) {
@@ -695,8 +695,8 @@ void TForeignMinister::SetEmpirePolicies() {
           relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
       int selectedMajor = g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(entry->nationSlot);
       if (selectedMajor != owner->nationSlot && entry->standingScore > 0x31 &&
-          owner->needLevelByNation[entry->nationSlot] != 300) {
-        owner->DecrementNeedLevelByNationStep(entry->nationSlot);
+          owner->tradePolicyByNation[entry->nationSlot] != 300) {
+        owner->ImproveTradePolicyTo(entry->nationSlot);
         keepSearching = false;
       }
       --entryIndex;
@@ -724,7 +724,7 @@ void TForeignMinister::SetEmpirePolicies() {
             relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
         short minorNation = entry->nationSlot;
         if (g_pTradeMgr->categoryRows[policyCategory].tradeOfferCells[minorNation + 0x2e] != 0 &&
-            owner->needLevelByNation[minorNation] != 300) {
+            owner->tradePolicyByNation[minorNation] != 300) {
           selectedMinor = minorNation;
         }
         --entryIndex;
@@ -737,7 +737,7 @@ void TForeignMinister::SetEmpirePolicies() {
         if (compatibility < 1) {
           owner->SetDiplomacyPolicyTo(static_cast<short>(selectedMinor), 0x133);
         } else {
-          owner->DecrementNeedLevelByNationStep(static_cast<short>(selectedMinor));
+          owner->ImproveTradePolicyTo(static_cast<short>(selectedMinor));
         }
       }
     }
@@ -745,8 +745,8 @@ void TForeignMinister::SetEmpirePolicies() {
 
   for (short minorNation = 7; minorNation < kNationSlotCount; ++minorNation) {
     if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot, minorNation) >= 1 &&
-        owner->needLevelByNation[minorNation] > 0x5f &&
-        owner->needLevelByNation[minorNation] < 300 &&
+        owner->tradePolicyByNation[minorNation] > 0x5f &&
+        owner->tradePolicyByNation[minorNation] < 300 &&
         g_apTerrainTypeDescriptorTable[minorNation]->encodedNationSlot == -1) {
       owner->SetTradePolicyTo(static_cast<NationSlot>(minorNation), 0x5f);
     }
@@ -754,7 +754,7 @@ void TForeignMinister::SetEmpirePolicies() {
 
   if (owner->treasuryValue < 0) {
     for (short minorNation = 7; minorNation < kNationSlotCount; ++minorNation) {
-      if (owner->needLevelByNation[minorNation] < 0x4b) {
+      if (owner->tradePolicyByNation[minorNation] < 0x4b) {
         owner->SetTradePolicyTo(static_cast<NationSlot>(minorNation), 0x4b);
       }
     }

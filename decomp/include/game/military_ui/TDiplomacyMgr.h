@@ -47,8 +47,8 @@ public:
                                eDipAction action); // 23 (0x5c)
   virtual bool HasAllianceGuardForNationPair(NationSlot sourceNation,
                                              NationSlot targetNation); // 24 (0x60)
-  virtual bool HasNationPairNeedLevel300(NationSlot sourceNation,
-                                         NationSlot targetNation); // 25 (0x64)
+  virtual bool IsBoycott(NationSlot sourceNation,
+                         NationSlot targetNation); // 25 (0x64)
   virtual DiplomacyRelationshipNotch GetRelationshipNotch(NationSlot sourceNation,
                                                           NationSlot targetNation); // 26 (0x68)
   virtual void GetTreatyStatusText(NationSlot sourceNationSlot, NationSlot targetNationSlot,

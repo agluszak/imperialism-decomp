@@ -76,7 +76,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
   this->encodedNationSlot = -1;
 
   for (int nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
-    this->needLevelByNation[nationIndex] = 100;
+    this->tradePolicyByNation[nationIndex] = 100;
   }
 
   this->identitySharedString0 = CString(g_pszDescriptorDefaultName);
@@ -140,8 +140,8 @@ void TCountry::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->treasuryValue, 4);
   stream->ReadBytes(&this->homeTileIndex, 4);
   stream->ReadBytes(&this->overlayAnchorTileCache, 4);
-  stream->ReadBytes(this->needLevelByNation, 0x2e);
-  SwapShortArrayBytes(this->needLevelByNation, 0x17);
+  stream->ReadBytes(this->tradePolicyByNation, 0x2e);
+  SwapShortArrayBytes(this->tradePolicyByNation, 0x17);
 
   if (this->militaryUnitList->GetCount() != 0) {
     this->militaryUnitList->FreePayloads();
@@ -186,7 +186,7 @@ void TCountry::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->treasuryValue, 4);
   stream->WriteBytes(&this->homeTileIndex, 4);
   stream->WriteBytes(&this->overlayAnchorTileCache, 4);
-  WriteShortArrayElemsRev(stream, this->needLevelByNation, 0x17);
+  WriteShortArrayElemsRev(stream, this->tradePolicyByNation, 0x17);
 
   WriteTrackedListToStream(stream, this->militaryUnitList);
   WriteIntListToStream(stream, this->ownedRegionList);
@@ -412,7 +412,7 @@ void TCountry::BecomeProtectorateOf(int targetNationSlot) {
 // FUNCTION: IMPERIALISM 0x004d7c90
 void TCountry::BecomeColonyOf(int targetNationSlot) {
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
-  this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), 100);
+  this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
 
   int nationSlot = 0;
   do {
@@ -452,22 +452,22 @@ void TCountry::AddProvince(int regionId) {
 void TCountry::NewStatusFor(int targetNationSlot, int policyCode) {
   short targetNation = static_cast<short>(targetNationSlot);
   if (policyCode == 500 || policyCode != 200) {
-    this->needLevelByNation[targetNation] = 100;
+    this->tradePolicyByNation[targetNation] = 100;
     return;
   }
   TCountry* terrain = g_apTerrainTypeDescriptorTable[targetNationSlot];
   short encodedLink = terrain->encodedNationSlot;
   if (encodedLink > 199) {
-    this->needLevelByNation[targetNation] =
-        this->needLevelByNation[static_cast<short>(encodedLink - 200)];
+    this->tradePolicyByNation[targetNation] =
+        this->tradePolicyByNation[static_cast<short>(encodedLink - 200)];
     return;
   }
   if (encodedLink > 99) {
-    this->needLevelByNation[targetNation] =
-        this->needLevelByNation[static_cast<short>(encodedLink - 100)];
+    this->tradePolicyByNation[targetNation] =
+        this->tradePolicyByNation[static_cast<short>(encodedLink - 100)];
     return;
   }
-  this->needLevelByNation[targetNation] = this->needLevelByNation[terrain->nationSlot];
+  this->tradePolicyByNation[targetNation] = this->tradePolicyByNation[terrain->nationSlot];
 }
 
 // FUNCTION: IMPERIALISM 0x004d7e90
@@ -641,7 +641,7 @@ void TCountry::GrowMilitia(void) {
 // FUNCTION: IMPERIALISM 0x004d8920
 void TCountry::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
   if (nationSlot != this->nationSlot) {
-    this->needLevelByNation[nationSlot] = tradePolicy;
+    this->tradePolicyByNation[nationSlot] = tradePolicy;
   }
 }
 

@@ -69,7 +69,7 @@ struct TurnEvent19Packet : TimelyNetMessagePrefix {
   short metricBySlot7C[0x11];                       // +0x6a
   short diplomacyPolicyByNation[kNationSlotCount];  // +0x8c
   short diplomacyGrantByNation[kNationSlotCount];   // +0xba
-  short needLevelByNation[kNationSlotCount];        // +0xe8
+  short tradePolicyByNation[kNationSlotCount];      // +0xe8
   unsigned char pad116[2];                          // total 0x118
 };
 
@@ -526,8 +526,8 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         packet.DestinateTo(-2);
         packet.nationSlot = minorSlot;
         for (short j = 0; j < 0x17; ++j) {
-          packet.needLevelByNation[j] =
-              g_apSecondaryNationStateSlots[minorSlot]->needLevelByNation[j];
+          packet.tradePolicyByNation[j] =
+              g_apSecondaryNationStateSlots[minorSlot]->tradePolicyByNation[j];
         }
         g_pNetMgr->Send(&packet, false);
       }
@@ -560,7 +560,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         for (int j = 0; j < 0x17; ++j) {
           packet.diplomacyPolicyByNation[slot][j] = nation->diplomacyPolicyByNation[j];
           packet.diplomacyGrantByNation[slot][j] = nation->diplomacyGrantByNation[j];
-          packet.needLevelByNation[slot][j] = nation->needLevelByNation[j];
+          packet.tradePolicyByNation[slot][j] = nation->tradePolicyByNation[j];
         }
       }
     }
@@ -598,8 +598,8 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         packet.toNetworkId = 0;
         packet.nationSlot = minorSlot;
         for (short j = 0; j < 0x17; ++j) {
-          packet.needLevelByNation[j] =
-              g_apSecondaryNationStateSlots[minorSlot]->needLevelByNation[j];
+          packet.tradePolicyByNation[j] =
+              g_apSecondaryNationStateSlots[minorSlot]->tradePolicyByNation[j];
         }
         g_pNetMgr->Send(&packet, false);
       }
@@ -1408,7 +1408,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     for (int target19 = 0; target19 < 0x17; ++target19) {
       nation19->diplomacyPolicyByNation[target19] = stateArrays->diplomacyPolicyByNation[target19];
       nation19->diplomacyGrantByNation[target19] = stateArrays->diplomacyGrantByNation[target19];
-      nation19->needLevelByNation[target19] = stateArrays->needLevelByNation[target19];
+      nation19->tradePolicyByNation[target19] = stateArrays->tradePolicyByNation[target19];
     }
     break;
   }
@@ -1487,7 +1487,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     TurnEvent2DMinorNeedPacket* minorNeed = static_cast<TurnEvent2DMinorNeedPacket*>(packet);
     TMinor* minor2D = g_apSecondaryNationStateSlots[minorNeed->nationSlot];
     for (int needSlot2D = 0; needSlot2D < kNationSlotCount; ++needSlot2D) {
-      minor2D->needLevelByNation[needSlot2D] = minorNeed->needLevelByNation[needSlot2D];
+      minor2D->tradePolicyByNation[needSlot2D] = minorNeed->tradePolicyByNation[needSlot2D];
     }
     break;
   }
@@ -1522,8 +1522,8 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
               arrays->diplomacyPolicyByNation[arraySlot][arrayTarget];
           arrayNation->diplomacyGrantByNation[arrayTarget] =
               arrays->diplomacyGrantByNation[arraySlot][arrayTarget];
-          arrayNation->needLevelByNation[arrayTarget] =
-              arrays->needLevelByNation[arraySlot][arrayTarget];
+          arrayNation->tradePolicyByNation[arrayTarget] =
+              arrays->tradePolicyByNation[arraySlot][arrayTarget];
         }
       }
     }
@@ -2771,8 +2771,8 @@ void TMultiplayerMgr::DehumanizePlayer(int nationSlot) {
       newNation->nationSlot = oldNation->nationSlot;
       newNation->encodedNationSlot = oldNation->encodedNationSlot;
       newNation->treasuryValue = oldNation->treasuryValue;
-      memcpy(newNation->needLevelByNation, oldNation->needLevelByNation,
-             sizeof(newNation->needLevelByNation));
+      memcpy(newNation->tradePolicyByNation, oldNation->tradePolicyByNation,
+             sizeof(newNation->tradePolicyByNation));
       TSortedList* militaryUnits = newNation->militaryUnitList;
       newNation->militaryUnitList = oldNation->militaryUnitList;
       oldNation->militaryUnitList = militaryUnits;
@@ -3247,7 +3247,7 @@ void TMultiplayerMgr::SendNationStateMessage(short nationSlot, int destinationSl
   for (short target = 0; target < 0x17; ++target) {
     packet.diplomacyPolicyByNation[target] = nation->diplomacyPolicyByNation[target];
     packet.diplomacyGrantByNation[target] = nation->diplomacyGrantByNation[target];
-    packet.needLevelByNation[target] = nation->needLevelByNation[target];
+    packet.tradePolicyByNation[target] = nation->tradePolicyByNation[target];
   }
   g_pNetMgr->Send(&packet, destinationSlot == -3);
 }
@@ -3274,7 +3274,7 @@ void TMultiplayerMgr::SendMinorStateMessage(short nationSlot, int destinationSlo
   packet.nationSlot = nationSlot;
   TMinor* nation = g_apSecondaryNationStateSlots[nationSlot];
   for (short targetNation = 0; targetNation < kNationSlotCount; ++targetNation) {
-    packet.needLevelByNation[targetNation] = nation->needLevelByNation[targetNation];
+    packet.tradePolicyByNation[targetNation] = nation->tradePolicyByNation[targetNation];
   }
   g_pNetMgr->Send(&packet, destinationSlot == -3);
 }

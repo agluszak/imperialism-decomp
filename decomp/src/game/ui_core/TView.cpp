@@ -916,7 +916,7 @@ short TView::ContainsMouse(const CPoint& point) {
   p.x = point.x;
   p.y = point.y;
   // Returns 3 (not 1) on hit, unlike PointInBoundsAndActionable's near-identical body above.
-  return static_cast<short>(-static_cast<int>(PtInRect(&bounds, p) != 0) & 3);
+  return PtInRect(&bounds, p) ? 3 : 0;
 }
 // FUNCTION: IMPERIALISM 0x0048c9e0
 void TView::GoAwayByUser(const CPoint& point) {}

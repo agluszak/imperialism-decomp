@@ -313,7 +313,7 @@ RuntimeActionResult RunTradePolicySet(NativeTransition& transition) {
   const short kBoycottPolicy = 300;
   TGreatPower* nation = ActiveNation();
 
-  nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, grantAmount);
+  nation->SetGrantPolicyTo(targetNationSlot, grantAmount);
 
   JsonObject args;
   args.Set("nation", static_cast<int>(sourceNationSlot));
@@ -333,7 +333,7 @@ RuntimeActionResult RunTradePolicyStep(NativeTransition& transition) {
   const NationSlot targetNationSlot = sourceNationSlot == 0 ? 1 : 0;
   TGreatPower* nation = ActiveNation();
 
-  nation->needLevelByNation[targetNationSlot] = 75;
+  nation->tradePolicyByNation[targetNationSlot] = 75;
   nation->treasuryValue = 10001;
 
   JsonObject args;
@@ -344,7 +344,7 @@ RuntimeActionResult RunTradePolicyStep(NativeTransition& transition) {
     return started;
   }
 
-  nation->DecrementNeedLevelByNationStep(targetNationSlot);
+  nation->ImproveTradePolicyTo(targetNationSlot);
   return transition.Finish();
 }
 

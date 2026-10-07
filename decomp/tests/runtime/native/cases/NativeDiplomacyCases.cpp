@@ -106,7 +106,7 @@ int TogglePlayerTradePolicyResult(TGreatPower* nation, short targetNationSlot, s
   }
   nation->SetTradePolicyTo(
       static_cast<NationSlot>(targetNationSlot),
-      nation->needLevelByNation[targetNationSlot] == policyValue ? 100 : policyValue);
+      nation->tradePolicyByNation[targetNationSlot] == policyValue ? 100 : policyValue);
   return 1;
 }
 
@@ -185,8 +185,7 @@ RuntimeActionResult RunDiplomacyGrantEntry(NativeTransition& transition) {
     return started;
   }
 
-  const bool accepted =
-      nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, grantAmount);
+  const bool accepted = nation->SetGrantPolicyTo(targetNationSlot, grantAmount);
   return transition.Finish(accepted);
 }
 
@@ -203,13 +202,12 @@ RuntimeActionResult RunDiplomacyReset(NativeTransition& transition) {
   const short recurringGrantEntry = static_cast<short>(recurringGrant | kRecurringGrantFlag);
 
   for (short targetNation = 0; targetNation < kNationSlotCount; ++targetNation) {
-    nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1);
+    nation->SetGrantPolicyTo(targetNation, -1);
   }
 
   nation->diplomacyPolicyByNation[policyTarget] = kDiplomacyProposalBuildConsulate;
-  nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(oneTimeGrantTarget, oneTimeGrant);
-  nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(recurringGrantTarget,
-                                                           recurringGrantEntry);
+  nation->SetGrantPolicyTo(oneTimeGrantTarget, oneTimeGrant);
+  nation->SetGrantPolicyTo(recurringGrantTarget, recurringGrantEntry);
 
   JsonObject args;
   args.Set("nation", static_cast<int>(activeNationSlot));
@@ -242,7 +240,7 @@ RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition) {
     }
   }
 
-  if (!nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(grantTarget, 1000)) {
+  if (!nation->SetGrantPolicyTo(grantTarget, 1000)) {
     return RuntimeActionResult::Failure("retail rejected the seeded diplomacy grant");
   }
   nation->diplomacyPolicyByNation[consulateTarget] = kDiplomacyProposalBuildConsulate;
@@ -361,7 +359,7 @@ RuntimeActionResult RunPlayerDiplomacyPolicyPostDeclareWar(NativeTransition& tra
   const short source = ActiveNationSlot();
   const short target = OtherMajorNation(source, 1);
   SetRelationshipAndStamp(source, target, kDiplomacyRelationshipAlliance, -1);
-  ActiveNation()->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(target, 1000);
+  ActiveNation()->SetGrantPolicyTo(target, 1000);
   return RunConfiguredPlayerPolicy(transition, target, kDiplomacyProposalDeclareWar,
                                    kDipActionDeclareWar, false);
 }
@@ -422,13 +420,13 @@ RuntimeActionResult RunPlayerTradePolicyRetractSubsidy(NativeTransition& transit
   const short source = ActiveNationSlot();
   const short target = kMinorNationFirstSlot;
   SetMissionLevel(source, target, 1);
-  ActiveNation()->needLevelByNation[target] = 95;
+  ActiveNation()->tradePolicyByNation[target] = 95;
   return RunConfiguredPlayerTradePolicy(transition, target, 95);
 }
 
 RuntimeActionResult RunPlayerTradePolicyBoycottClearsGrant(NativeTransition& transition) {
   const short target = OtherMajorNation(ActiveNationSlot(), 1);
-  ActiveNation()->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(target, 1000);
+  ActiveNation()->SetGrantPolicyTo(target, 1000);
   return RunConfiguredPlayerTradePolicy(transition, target, 300);
 }
 

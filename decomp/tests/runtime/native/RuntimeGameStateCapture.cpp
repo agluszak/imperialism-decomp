@@ -1832,7 +1832,7 @@ JSON_Value* CaptureNationCommon(TCountry* country) {
   common.Set("treasury", country->treasuryValue);
   common.SetOptional("home_tile", country->homeTileIndex);
   common.Set("trade_policy_by_nation",
-             CaptureShortArray(country->needLevelByNation, kNationSlotCount));
+             CaptureShortArray(country->tradePolicyByNation, kNationSlotCount));
   return common.Release();
 }
 
@@ -3147,7 +3147,7 @@ JSON_Value* CaptureDiplomacyEphemeral() {
     entry.Set("budget_base", nation->diplomacyBudgetBase);
     entry.Set("escalation", static_cast<int>(nation->escalationCounter));
     entry.Set("pressure", static_cast<int>(nation->pressureCounter));
-    entry.Set("needs", CaptureShortArray(nation->needLevelByNation, kNationSlotCount));
+    entry.Set("needs", CaptureShortArray(nation->tradePolicyByNation, kNationSlotCount));
     {
       JsonArray boycotts;
       for (int index = 0; index < kNationSlotCount; ++index) {

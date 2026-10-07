@@ -656,8 +656,8 @@ void TMinor::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
   short targetNationSlot = static_cast<short>(nationSlot);
   short policyValue = tradePolicy;
   if (targetNationSlot != this->nationSlot) {
-    if (policyValue != this->needLevelByNation[targetNationSlot]) {
-      this->needLevelByNation[targetNationSlot] = policyValue;
+    if (policyValue != this->tradePolicyByNation[targetNationSlot]) {
+      this->tradePolicyByNation[targetNationSlot] = policyValue;
       if (policyValue == 300) {
         this->DeportCiviliansIn(-1, false);
       }
@@ -849,13 +849,15 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
   for (int standingNationSlot = 0; standingNationSlot < kMajorNationCount; ++standingNationSlot) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(standingNationSlot))) {
       if (standingNationSlot == targetNationSlot) {
-        this->SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), 100);
-        g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot, 100);
-        g_apNationStates[standingNationSlot]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
-            this->nationSlot, static_cast<unsigned short>(-1));
+        this->SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), kTradePolicyNormal);
+        g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot,
+                                                               kTradePolicyNormal);
+        g_apNationStates[standingNationSlot]->SetGrantPolicyTo(this->nationSlot,
+                                                               static_cast<unsigned short>(-1));
       } else {
-        this->SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), 300);
-        g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot, 300);
+        this->SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), kTradePolicyBoycott);
+        g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot,
+                                                               kTradePolicyBoycott);
       }
     }
   }
@@ -888,7 +890,7 @@ void TMinor::BecomeColonyOf(int targetNationSlot) {
   // MATCH: the original inlines the whole TCountry::BecomeColonyOf (0x4d7c90) body here
   // rather than calling it, so the base work is transcribed instead of delegated.
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
-  this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), 100);
+  this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
 
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
@@ -931,7 +933,7 @@ void TMinor::RegainIndependence(void) {
   this->AssimilateTroopsOf(decodedSlot);
   int nationSlot = 0;
   do {
-    this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 100);
+    this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyNormal);
     ++nationSlot;
   } while (nationSlot < kNationSlotCount);
 }
@@ -943,9 +945,9 @@ void TMinor::SetBoycottPoliciesToMatch(int targetNationSlot) {
         (nationSlot == this->nationSlot ||
          (g_apNationStates[targetNationSlot] != 0 &&
           g_apNationStates[targetNationSlot]->colonyBoycottFlags[nationSlot] == 0))) {
-      this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 100);
+      this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyNormal);
     } else {
-      this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 300);
+      this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kTradePolicyBoycott);
     }
   }
 }
@@ -989,7 +991,7 @@ void TMinor::KillBoycottedForeignCompanies(void) {
   int majorSlot;
   char needLevel300ByMajorSlot[kMajorNationCount];
   for (majorSlot = 0; majorSlot < kMajorNationCount; ++majorSlot) {
-    needLevel300ByMajorSlot[majorSlot] = (this->needLevelByNation[majorSlot] == 300) ? 1 : 0;
+    needLevel300ByMajorSlot[majorSlot] = (this->tradePolicyByNation[majorSlot] == 300) ? 1 : 0;
   }
 
   char notifyMajorSlots[kMajorNationCount] = {0};
@@ -1159,7 +1161,7 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
         (includeAllPolicyTargets ||
-         g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(this->nationSlot, nationSlot))) {
+         g_pDiplomacyTurnStateManager->IsBoycott(this->nationSlot, nationSlot))) {
       relationMaskByNation[nationSlot] = 1;
     }
   }

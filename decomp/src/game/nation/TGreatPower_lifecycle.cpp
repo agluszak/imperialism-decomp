@@ -149,7 +149,7 @@ TGreatPower::TGreatPower()
 
   int nationIndex = 0;
   do {
-    this->needLevelByNation[nationIndex] = 0;
+    this->tradePolicyByNation[nationIndex] = 0;
     this->diplomacyPolicyByNation[nationIndex] = 0;
     this->diplomacyGrantByNation[nationIndex] = 0;
     this->needCurrentByType[nationIndex] = 0;

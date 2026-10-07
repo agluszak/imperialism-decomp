@@ -50,7 +50,7 @@ struct WarTransitionPair {
   short targetNationSlot;
 };
 
-// MATCH: retail sign-extends the minor slot for the needLevelByNation index
+// MATCH: retail sign-extends the minor slot for the tradePolicyByNation index
 // (movsx eax, bx) while using the full register for the *23 matrix row — hence the
 // short cast at the index only. The tie-break is the codebase LCG idiom
 // ((seed >> 12) & 0x7fff) % 2 (signed mod: cdq/xor/sub/and 1/xor/sub).
@@ -65,7 +65,7 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
 
     int score =
         (200 -
-         g_apNationStates[majorNation]->needLevelByNation[static_cast<short>(minorNationSlot)]) *
+         g_apNationStates[majorNation]->tradePolicyByNation[static_cast<short>(minorNationSlot)]) *
         relationStandingScores[minorNationSlot * kNationSlotCount + majorNation];
     if (score > bestScore) {
       selectedNation = majorNation;
@@ -1353,15 +1353,15 @@ void TDiplomacyMgr::CalculateRatings() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f1970
-bool TDiplomacyMgr::HasNationPairNeedLevel300(NationSlot sourceNation, NationSlot targetNation) {
+bool TDiplomacyMgr::IsBoycott(NationSlot sourceNation, NationSlot targetNation) {
   int source = sourceNation;
   int target = targetNation;
   TCountry* sourceCountry = g_apTerrainTypeDescriptorTable[source];
-  if (sourceCountry->needLevelByNation[target] == 300) {
+  if (sourceCountry->tradePolicyByNation[target] == kTradePolicyBoycott) {
     return true;
   }
   TCountry* targetCountry = g_apTerrainTypeDescriptorTable[target];
-  return targetCountry->needLevelByNation[source] == 300;
+  return targetCountry->tradePolicyByNation[source] == kTradePolicyBoycott;
 }
 
 // FUNCTION: IMPERIALISM 0x004f19c0
@@ -1477,9 +1477,9 @@ void TDiplomacyMgr::SetTreatyStatus(NationSlot sourceNationSlot, NationSlot targ
       relationSideEffectMatrix[forwardIndex] = 2;
       relationSideEffectMatrix[reverseIndex] = 2;
       g_apTerrainTypeDescriptorTable[source]->SetTradePolicyTo(
-          static_cast<NationSlot>(targetNationSlot), 100);
+          static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
       g_apTerrainTypeDescriptorTable[target]->SetTradePolicyTo(
-          static_cast<NationSlot>(sourceNationSlot), 100);
+          static_cast<NationSlot>(sourceNationSlot), kTradePolicyNormal);
       return;
     }
     break;
@@ -1492,8 +1492,8 @@ void TDiplomacyMgr::SetTreatyStatus(NationSlot sourceNationSlot, NationSlot targ
     if ((sourceTerrain->encodedNationSlot == -1) && (targetTerrain->encodedNationSlot < 200)) {
       g_pNewsMgr->AddTreatyEvent(kInterNationEventWarWithIndependentMinor, source, target, false);
     }
-    sourceTerrain->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), 300);
-    targetTerrain->SetTradePolicyTo(static_cast<NationSlot>(sourceNationSlot), 300);
+    sourceTerrain->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyBoycott);
+    targetTerrain->SetTradePolicyTo(static_cast<NationSlot>(sourceNationSlot), kTradePolicyBoycott);
     relationSideEffectMatrix[forwardIndex] = 0;
     relationSideEffectMatrix[reverseIndex] = 0;
     if (IsGreatPower(sourceNationSlot)) {
@@ -1706,7 +1706,7 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationC
 
     for (int notifySlot = 0; notifySlot < 7; ++notifySlot) {
       if (g_pSimMgr->ReallyInTheGame(notifySlot)) {
-        g_apNationStates[notifySlot]->SetTradePolicyTo(minorSlot, 100);
+        g_apNationStates[notifySlot]->SetTradePolicyTo(minorSlot, kTradePolicyNormal);
       }
     }
   }

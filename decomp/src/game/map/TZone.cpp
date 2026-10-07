@@ -776,7 +776,7 @@ void TZone::ShowFocusIngot(unsigned char flag) {
         static_cast<unsigned char>(static_cast<signed char>(tileStateByte) >= 0 ? 1 : 0)) &&
        (g_pViewMgr != 0)) &&
       (g_pViewMgr->mapUberPicture != 0)) {
-    char sign = static_cast<char>((-(static_cast<int>(flag)) & 2) - 1);
+    char sign = flag ? 1 : -1;
     if (IsPortZone()) {
       g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
           activeTileIndex, static_cast<int>(sign) * kMapTileActionStatePortZoneMarkerFrame);

@@ -543,7 +543,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       }
     } else if (interactionMode == 2) {
       short relation =
-          g_apTerrainTypeDescriptorTable[frameRegionSelector]->needLevelByNation[terrainIndex];
+          g_apTerrainTypeDescriptorTable[frameRegionSelector]->tradePolicyByNation[terrainIndex];
       boycottFlag = (frameRegionSelector < 7) &&
                     (g_apNationStates[frameRegionSelector]->colonyBoycottFlags[terrainIndex] != 0);
       if (relation != 100) {
@@ -553,7 +553,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
           }
         }
         if (boycottFlag) {
-          if (relation == 300) {
+          if (relation == kTradePolicyBoycott) {
             iconOffset = 0x190;
             boycottFlag = false;
           } else {
@@ -713,18 +713,15 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   case kDipActionOneTimeGrant: {
     if (g_apNationStates[selectedTerrainIndex]->diplomacyGrantByNation[activeNation] ==
         g_awDiplomacyGrantValueTable[selectedGrantRow]) {
-      grantUpdated =
-          g_apNationStates[selectedTerrainIndex]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
-              activeNation, -1);
+      grantUpdated = g_apNationStates[selectedTerrainIndex]->SetGrantPolicyTo(activeNation, -1);
     } else {
       if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
                                                          action)) {
         rejectAction = true;
         break;
       }
-      grantUpdated =
-          g_apNationStates[selectedTerrainIndex]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
-              activeNation, g_awDiplomacyGrantValueTable[selectedGrantRow]);
+      grantUpdated = g_apNationStates[selectedTerrainIndex]->SetGrantPolicyTo(
+          activeNation, g_awDiplomacyGrantValueTable[selectedGrantRow]);
       if (!grantUpdated) {
         g_pDiplomacyTurnStateManager->proposalArrayMode = 0x17;
         rejectAction = true;
@@ -746,9 +743,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     short grantValue = static_cast<short>(g_awDiplomacyGrantValueTable[selectedGrantRow] | 0x4000);
     if (g_apNationStates[selectedTerrainIndex]->diplomacyGrantByNation[activeNation] ==
         grantValue) {
-      grantUpdated =
-          g_apNationStates[selectedTerrainIndex]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
-              activeNation, -1);
+      grantUpdated = g_apNationStates[selectedTerrainIndex]->SetGrantPolicyTo(activeNation, -1);
     } else {
       if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
                                                          action)) {
@@ -756,8 +751,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
         break;
       }
       grantUpdated =
-          g_apNationStates[selectedTerrainIndex]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
-              activeNation, grantValue);
+          g_apNationStates[selectedTerrainIndex]->SetGrantPolicyTo(activeNation, grantValue);
       if (!grantUpdated) {
         g_pDiplomacyTurnStateManager->proposalArrayMode = 0x17;
         rejectAction = true;
@@ -786,13 +780,14 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
 
     if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) == 0 || activeNation < kMajorNationCount) {
       short policyValue = g_awDiplomacyTradePolicyIconValueTable[selectedGrantRow];
-      if (g_apNationStates[selectedTerrainIndex]->needLevelByNation[activeNation] == policyValue) {
-        g_apNationStates[selectedTerrainIndex]->SetTradePolicyTo(activeNation, 100);
+      if (g_apNationStates[selectedTerrainIndex]->tradePolicyByNation[activeNation] ==
+          policyValue) {
+        g_apNationStates[selectedTerrainIndex]->SetTradePolicyTo(activeNation, kTradePolicyNormal);
       } else {
         g_apNationStates[selectedTerrainIndex]->SetTradePolicyTo(activeNation, policyValue);
       }
     } else {
-      g_apNationStates[selectedTerrainIndex]->SetTradePolicyTo(activeNation, 100);
+      g_apNationStates[selectedTerrainIndex]->SetTradePolicyTo(activeNation, kTradePolicyNormal);
       for (int policyIndex = 0; policyIndex < 6; ++policyIndex) {
         if (g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(activeNation) ==
             selectedTerrainIndex) {

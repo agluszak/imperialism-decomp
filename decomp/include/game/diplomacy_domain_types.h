@@ -1,5 +1,8 @@
 #pragma once
 
+// Trade policy toward a nation: a price percentage, 100 normal, below 100 a subsidy.
+enum { kTradePolicyNormal = 100, kTradePolicyBoycott = 300 };
+
 enum eDipAction {
   kDipActionNone = 0,
   kDipActionSelectedNation = 1,

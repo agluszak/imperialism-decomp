@@ -810,21 +810,21 @@ bool TGreatPower::IncreaseMerchantMarine(void) {
 // FUNCTION: IMPERIALISM 0x004dd040
 void TGreatPower::SetTradePolicyTo(NationSlot targetNationSlot, short tradePolicy) {
   short nation = static_cast<short>(targetNationSlot);
-  if (nation != this->nationSlot && tradePolicy != this->needLevelByNation[nation]) {
-    this->needLevelByNation[nation] = tradePolicy;
+  if (nation != this->nationSlot && tradePolicy != this->tradePolicyByNation[nation]) {
+    this->tradePolicyByNation[nation] = tradePolicy;
   }
   if (this->diplomacyEligibility != 0) {
     g_pHelpMgr->DiplomacyMsg(-1, targetNationSlot, 1);
   }
   if (tradePolicy == 300) {
-    this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, -1);
+    this->SetGrantPolicyTo(targetNationSlot, -1);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004dd0c0
 void TGreatPower::TellColoniesToBoycott(int targetNationSlot, int isBoycottEnabled) {
   unsigned char boycottFlag = static_cast<unsigned char>(isBoycottEnabled);
-  int policyValue = ((-(int)(boycottFlag != 0)) & 0xC8) + 0x64;
+  int policyValue = boycottFlag ? kTradePolicyBoycott : kTradePolicyNormal;
   this->colonyBoycottFlags[targetNationSlot] = boycottFlag;
 
   for (int secondarySlot = kMajorNationCount; secondarySlot < kNationSlotCount; ++secondarySlot) {
@@ -1383,7 +1383,7 @@ bool TGreatPower::SetDiplomacyPolicyTo(short targetClass, short policyCode) {
       }
 
       if (this->diplomacyEligibility != 0) {
-        this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetClass, -1);
+        this->SetGrantPolicyTo(targetClass, -1);
       }
       break;
     }
@@ -1434,7 +1434,7 @@ void TGreatPower::ResetPolicies(void) {
         static_cast<unsigned short>(this->diplomacyGrantByNation[targetNation]);
     this->diplomacyGrantByNation[targetNation] = static_cast<short>(kResetValue);
     if (grantEntry != kResetValue && (grantEntry & kRecurringGrantMask) != 0) {
-      this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, grantEntry);
+      this->SetGrantPolicyTo(targetNation, grantEntry);
     }
 
     ++targetNation;
@@ -1442,8 +1442,7 @@ void TGreatPower::ResetPolicies(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004de340
-bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int targetNationArg,
-                                                                   int grantValue) {
+bool TGreatPower::SetGrantPolicyTo(int targetNationArg, int grantValue) {
   const unsigned short kGrantClear = 0xFFFF;
   const unsigned short kGrantMask = 0x3FFF;
   const short kInfluenceAlertThreshold = 0x00FA;
@@ -1643,14 +1642,14 @@ void TGreatPower::BecomeProtectorateOf(int targetNationSlot) {
   this->unfilledTradeOfferCount = 0;
 
   unsigned char* enemyFlags = this->enemyFlags;
-  short* needLevelByNation = this->needLevelByNation;
+  short* tradePolicyByNation = this->tradePolicyByNation;
 
   int idx;
   for (idx = 0; idx < kNationSlotCount; ++idx) {
     this->diplomacyPolicyByNation[idx] = -1;
     this->diplomacyGrantByNation[idx] = -1;
     enemyFlags[idx] = 0;
-    needLevelByNation[idx] = 100;
+    tradePolicyByNation[idx] = 100;
   }
 
   for (idx = 0; idx < kNationSlotCount; ++idx) {
@@ -1698,7 +1697,7 @@ void TGreatPower::BecomeProtectorateOf(int targetNationSlot) {
         nationState->AddNoticeFrom(this->nationSlot, kDiplomacyProposalDeclareWar);
       }
       this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kResetDiplomacyLevel);
-      this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(nationSlot, kResetPolicyCode);
+      this->SetGrantPolicyTo(nationSlot, kResetPolicyCode);
     }
   }
 
@@ -1724,7 +1723,7 @@ void TGreatPower::BecomeProtectorateOf(int targetNationSlot) {
     }
 
     this->SetTradePolicyTo(static_cast<NationSlot>(secondarySlot), kResetDiplomacyLevel);
-    this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(secondarySlot, kResetPolicyCode);
+    this->SetGrantPolicyTo(secondarySlot, kResetPolicyCode);
 
     if (g_apTerrainTypeDescriptorTable[secondarySlot] != 0) {
       secondaryState->SetTradePolicyTo(this->nationSlot, kResetDiplomacyLevel);
@@ -1740,22 +1739,22 @@ void TGreatPower::BecomeProtectorateOf(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004deca0
-void TGreatPower::DecrementNeedLevelByNationStep(NationSlot nationSlot) {
-  short* needLevel = &this->needLevelByNation[nationSlot];
-  switch (*needLevel) {
+void TGreatPower::ImproveTradePolicyTo(NationSlot nationSlot) {
+  short* tradePolicy = &this->tradePolicyByNation[nationSlot];
+  switch (*tradePolicy) {
   case 0x4b:
     if (this->treasuryValue > 10000) {
-      *needLevel = 0x32;
+      *tradePolicy = 0x32;
     }
     break;
   case 0x5a:
-    *needLevel = 0x4b;
+    *tradePolicy = 0x4b;
     return;
   case 0x5f:
-    *needLevel = 0x5a;
+    *tradePolicy = 0x5a;
     return;
   case 100:
-    *needLevel = 0x5f;
+    *tradePolicy = 0x5f;
     return;
   }
 }
@@ -2943,7 +2942,7 @@ void TGreatPower::NewStatusFor(int targetNationSlot, int policyCode) {
 
   short targetNation = static_cast<short>(targetNationSlot);
   if (policyCode == kPolicyDefensivePact || policyCode != kPolicyTradeAgreement) {
-    this->needLevelByNation[targetNation] = 100;
+    this->tradePolicyByNation[targetNation] = 100;
   } else {
     TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[targetNation];
     short encodedNationSlot = terrainDescriptor->encodedNationSlot;
@@ -2955,7 +2954,7 @@ void TGreatPower::NewStatusFor(int targetNationSlot, int policyCode) {
     } else {
       resolvedNation = terrainDescriptor->nationSlot;
     }
-    this->needLevelByNation[targetNation] = this->needLevelByNation[resolvedNation];
+    this->tradePolicyByNation[targetNation] = this->tradePolicyByNation[resolvedNation];
   }
 
   this->diplomacyGrantByNation[targetNation] = -1;
@@ -3021,8 +3020,8 @@ void TGreatPower::KillUnitsIn(int ownerClass) {
 
 // FUNCTION: IMPERIALISM 0x004e25c0
 void TGreatPower::AddColony(int targetNation) {
-  this->SetTradePolicyTo(static_cast<NationSlot>(targetNation), 100);
-  this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1);
+  this->SetTradePolicyTo(static_cast<NationSlot>(targetNation), kTradePolicyNormal);
+  this->SetGrantPolicyTo(targetNation, -1);
   for (int nation = 0; nation < kNationSlotCount; ++nation) {
     if (g_pDiplomacyTurnStateManager->AreAtWar(this->nationSlot, nation)) {
       this->TellColoniesAboutNewEnemy(nation);
@@ -3067,7 +3066,8 @@ void TGreatPower::TellColoniesAboutNewPeace(int targetNationSlot) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
             minorNationSlot, targetNationSlot, kDiplomacyRelationshipPeace);
         if (this->colonyBoycottFlags[targetNationSlot] == 0) {
-          auxRuntimeState->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), 100);
+          auxRuntimeState->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot),
+                                            kTradePolicyNormal);
         }
       }
     }

@@ -194,7 +194,7 @@ void TTradeMgr::CalculateDealOrder() {
           int source = 0;
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
-                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target)) &&
+                (!g_pDiplomacyTurnStateManager->IsBoycott(source, target)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(source, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
@@ -225,7 +225,7 @@ void TTradeMgr::CalculateDealOrder() {
           int source = 0;
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
-                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget)) &&
+                (!g_pDiplomacyTurnStateManager->IsBoycott(source, secTarget)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(source, secTarget))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
@@ -262,7 +262,7 @@ void TTradeMgr::CalculateDealOrder() {
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
                 (cells[midRow * 0x50 + source] < 0) &&
-                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target)) &&
+                (!g_pDiplomacyTurnStateManager->IsBoycott(source, target)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(source, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
@@ -293,7 +293,7 @@ void TTradeMgr::CalculateDealOrder() {
             int source = 0;
             do {
               if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[7 * 0x50 + source] < 0) &&
-                  (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget)) &&
+                  (!g_pDiplomacyTurnStateManager->IsBoycott(source, secTarget)) &&
                   (!g_pDiplomacyTurnStateManager->AreAtWar(source, secTarget))) {
                 TradeDealEntry event;
                 event.sourceNationSlot = static_cast<short>(source);
@@ -332,7 +332,7 @@ void TTradeMgr::CalculateDealOrder() {
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
                 (cells[lastRow * 0x50 + source] < 0) &&
-                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target)) &&
+                (!g_pDiplomacyTurnStateManager->IsBoycott(source, target)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(source, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
@@ -353,8 +353,7 @@ void TTradeMgr::CalculateDealOrder() {
           do {
             if ((g_apTerrainTypeDescriptorTable[secondarySource] != 0) &&
                 (cells[lastRow * 0x50 + secondarySource] < 0) &&
-                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(secondarySource,
-                                                                          target)) &&
+                (!g_pDiplomacyTurnStateManager->IsBoycott(secondarySource, target)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(secondarySource, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(secondarySource);
@@ -482,20 +481,20 @@ int TTradeMgr::GetDealPrice(short sourceSlot, short targetSlot, short scoreA, sh
   }
 
   if (g_pDiplomacyTurnStateManager->IsGreatPower(targetSlot)) {
-    int relation = g_apNationStates[targetSlot]->needLevelByNation[sourceSlot];
-    if (relation == 100) {
+    int relation = g_apNationStates[targetSlot]->tradePolicyByNation[sourceSlot];
+    if (relation == kTradePolicyNormal) {
       return scoreA;
     }
-    if (relation == 300) {
+    if (relation == kTradePolicyBoycott) {
       return -1;
     }
     return static_cast<int>(static_cast<double>(scoreA * relation) * 0.01);
   }
-  int relation = g_apNationStates[sourceSlot]->needLevelByNation[targetSlot];
-  if (relation == 100) {
+  int relation = g_apNationStates[sourceSlot]->tradePolicyByNation[targetSlot];
+  if (relation == kTradePolicyNormal) {
     return scoreA;
   }
-  if (relation == 300) {
+  if (relation == kTradePolicyBoycott) {
     return -1;
   }
   int inverse = 200 - relation;

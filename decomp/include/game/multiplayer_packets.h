@@ -109,7 +109,7 @@ struct TurnEventBNationDirectoryPacket : TimelyNetMessagePrefix {
 struct TurnEvent18DiplomacyArraysPacket : TimelyNetMessagePrefix {
   short diplomacyPolicyByNation[kMajorNationCount][kNationSlotCount]; // +0x1c
   short diplomacyGrantByNation[kMajorNationCount][kNationSlotCount];  // +0x15e
-  short needLevelByNation[kMajorNationCount][kNationSlotCount];       // +0x2a0
+  short tradePolicyByNation[kMajorNationCount][kNationSlotCount];     // +0x2a0
   unsigned char pad3e2[2];                                            // total 0x3e4
 };
 
@@ -139,8 +139,8 @@ struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
 
 // Turn-event-0x2D payload: a minor nation's need-level array.
 struct TurnEvent2DMinorNeedPacket : TimelyNetMessagePrefix {
-  short nationSlot;                          // +0x1c
-  short needLevelByNation[kNationSlotCount]; // +0x1e, total 0x4c
+  short nationSlot;                            // +0x1c
+  short tradePolicyByNation[kNationSlotCount]; // +0x1e, total 0x4c
 };
 
 ASSERT_SIZE(TaggedSerializablePayload, 0x8);

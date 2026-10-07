@@ -185,18 +185,18 @@ public:
   virtual void ResetPolicies(void);    // index 115
   virtual bool SetDiplomacyPolicyTo(short targetClass,
                                     short policyCode); // index 116
-  virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int targetNation,
-                                                                int grantValue); // index 117
+  virtual bool SetGrantPolicyTo(int targetNation,
+                                int grantValue); // index 117
   // ORACLE: Mac names TGreatPower::GiveGrantTo(short).
   virtual void GiveGrantTo(int targetNationSlot); // index 118
   virtual bool CanAffordGrantTo(NationSlot targetNationSlot,
                                 unsigned short proposedGrantEntry); // index 119
   // ORACLE: Mac names TGreatPower::FinishDiplomacyPhase().
-  virtual void FinishDiplomacyPhase();                                // index 120 — body 0x004de7e0
-  virtual void DecrementNeedLevelByNationStep(NationSlot nationSlot); // index 121
-  virtual bool CanAfford(short additionalCost);                       // index 122
-  virtual void AcceptOffer(short proposalIndex);                      // index 123
-  virtual void RejectOffer(short proposalQueueIndex);                 // index 124
+  virtual void FinishDiplomacyPhase();                      // index 120 — body 0x004de7e0
+  virtual void ImproveTradePolicyTo(NationSlot nationSlot); // index 121
+  virtual bool CanAfford(short additionalCost);             // index 122
+  virtual void AcceptOffer(short proposalIndex);            // index 123
+  virtual void RejectOffer(short proposalQueueIndex);       // index 124
   virtual bool IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
                                                          int targetNation);
   virtual void InitializeDiplomacyOffers(void);

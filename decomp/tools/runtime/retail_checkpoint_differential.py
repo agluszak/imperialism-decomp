@@ -4401,7 +4401,7 @@ _TERRAIN_ENCODED_SLOT = 0x0E      # TCountry::encodedNationSlot
 _FN_VALIDATE_DIPLO_ACTION = 0x004EF700  # IsActionAllowed
 _FN_HAS_ALLIANCE_GUARD = 0x004EFC30     # HasAllianceGuardForNationPair
 _FN_APPLY_DIPLO_POLICY = 0x004DDFC0     # SetDiplomacyPolicyTo
-_FN_SET_DIPLO_GRANT = 0x004DE340        # SetDiplomacyGrantEntryForTargetAndUpdateTreasury
+_FN_SET_DIPLO_GRANT = 0x004DE340        # SetGrantPolicyTo
 
 # Relationship codes (DiplomacyRelationshipStorage).
 _REL_ALLIANCE = 2
@@ -4539,7 +4539,7 @@ def _toggle_player_policy(
 # Setup ops use symbolic slots resolved against the active nation:
 #   ("mission", a, b, level)        -> symmetric side-effect matrix write
 #   ("rel", a, b, relation[, stamp])-> symmetric propagation + turn-stamp write
-#   ("grant", target, amount)       -> SetDiplomacyGrantEntryForTargetAndUpdateTreasury
+#   ("grant", target, amount)       -> SetGrantPolicyTo
 #   ("treasury", value)             -> treasuryValue10
 #   ("budget", value)               -> diplomacyBudgetBase
 #   ("grant_total", value)          -> grantTotalCost
@@ -4701,7 +4701,7 @@ _PLAYER_TRADE_BOYCOTT_SCENARIOS = tuple(_PLAYER_TRADE_POLICY_SPECS) + tuple(
 
 # TCountry::SetTradePolicyTo -- vtable index 0x12 -> byte offset 0x48.
 _VT_SET_TRADE_POLICY = 0x12 * 4
-_GNATION_NEED_LEVELS = 0x14       # TCountry::needLevelByNation[23]
+_GNATION_NEED_LEVELS = 0x14       # TCountry::tradePolicyByNation[23]
 _GNATION_BOYCOTT_FLAGS = 0x918    # colonyBoycottFlags[23]
 _FN_SET_TRADE_POLICY_GP = 0x004DD040  # TGreatPower::SetTradePolicyTo
 _FN_COLONY_BOYCOTT = 0x004DD0C0  # TellColoniesToBoycott
@@ -4909,7 +4909,7 @@ _VT_RESET_NEED_SLOTS = 0x61 * 4           # ResetDiplomacyNeedSlots7012AndRefres
 _VT_SET_ITEM_POTENTIALS = 0x69 * 4        # SetItemPotentials
 _VT_REMEMBER_TRADE_BIDS = 0x6A * 4        # RememberTradeBids
 _VT_RESET_POLICY_GRANTS = 0x73 * 4        # ResetPolicies
-_VT_DECREMENT_NEED = 0x79 * 4             # DecrementNeedLevelByNationStep index 121
+_VT_DECREMENT_NEED = 0x79 * 4             # ImproveTradePolicyTo index 121
 
 _GNATION_REMEMBERED_OFFERS = 0x250
 _GNATION_ITEM_POTENTIALS = 0x1C6
