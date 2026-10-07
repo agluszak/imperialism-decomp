@@ -21,7 +21,6 @@ public:
   virtual void ToggleIf(unsigned char expectedState, unsigned char drawImmediate);
   virtual void DrawImmediate();
   unsigned char isOn;
-  unsigned char pad85[3];
   int iconStripHorizontalOffset;
   int checkedFrameOffsetApplied;
   TQuickDrawSurfaceContext* surfaceContext;

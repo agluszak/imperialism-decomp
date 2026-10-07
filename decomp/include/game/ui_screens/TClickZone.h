@@ -16,6 +16,5 @@ public:
   TClickZone();
 
   short clickSoundId;
-  unsigned char padding86[2];
 };
 ASSERT_SIZE(TClickZone, 0x88);

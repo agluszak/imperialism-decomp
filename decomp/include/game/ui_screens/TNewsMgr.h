@@ -22,7 +22,6 @@ struct newsStory {
   int parmKind[4];
   newsEntry entry; // copy of the matched template row
   bool feature;    // 1 for ranking/random filler stories, 0 for events
-  unsigned char pad39[3];
 };
 
 // VTABLE: IMPERIALISM 0x0065c598

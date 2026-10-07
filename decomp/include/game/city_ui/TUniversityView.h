@@ -23,7 +23,6 @@ public:
 
   unsigned char paddingA0[4];
   short selectedRecruitmentCategory;
-  unsigned char paddingA6[2];
   TUnitOrder* selectedRecruitmentOrder;
 };
 ASSERT_SIZE(TUniversityView, 0xac);

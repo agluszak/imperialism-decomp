@@ -21,7 +21,6 @@ public:
   short selectedBitmapId;
   short unavailableBitmapId;
   short selectionState;
-  char padding9A[2];
 
   THQButton();
 };

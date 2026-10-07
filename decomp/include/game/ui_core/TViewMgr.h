@@ -141,11 +141,9 @@ public:
   unsigned char pad11[3];
   HCURSOR turnEventCursors[0x36];
   short pendingTurnOverlayCode;
-  short padEe;
   class TMapUberPicture* mapUberPicture;
   TMovieView* activeMovieView;
   short pendingFollowupState;
-  short padFa;
 
   TViewMgr();
 

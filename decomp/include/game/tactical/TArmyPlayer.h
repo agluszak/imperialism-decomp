@@ -34,7 +34,6 @@ public:
   int cachedFortBombardmentTargetTile; // +0x4c init -1; cached fort-bombardment target tile for indirect fire
   char randomParityByte50;             // +0x50 coin flip at side init (move-first side?)
   bool hasArtilleryOrSappers; // +0x51 active units only
-  unsigned char pad52[2];
 
   // NOOP: verified empty in original 0x0059b112
   TArmyPlayer() {}

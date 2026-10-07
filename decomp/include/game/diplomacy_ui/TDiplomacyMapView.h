@@ -103,10 +103,8 @@ public:
 
 protected:
   short selectedTerrainIndex;
-  char pad_92[0x02];
   int interactionMode;
   short frameRegionSelector;
-  char pad_9a[0x02];
   RgnHandle region;
   TView* actionButtons[6];
   int stateFlag;

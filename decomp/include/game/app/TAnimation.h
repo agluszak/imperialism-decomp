@@ -20,7 +20,6 @@ public:
   short frameIndex;          // +0x08 current frame index; wraps at frameCount
   short frameCount;          // +0x0a frame count (2 for the selection-marker blink)
   short frameResourceBaseId; // +0x0c base resource ID for animation frames
-  short padding0E;
   int ticksSinceFrameChange; // +0x10 ticks since the last frame flip
   int ticksPerFrame;         // +0x14 tick interval between frame flips (0xa = marker)
   int registryTag;           // +0x18 animator-registry tag (0x2711 = selection marker)

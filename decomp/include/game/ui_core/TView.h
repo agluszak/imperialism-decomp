@@ -50,7 +50,6 @@ public:
   unsigned short cursorId;
   CWnd* nativeWindow; // host window (MFC CWnd; HWND via m_hWnd)
   unsigned short helpState;
-  unsigned char padding_56_to_57[0x02];
   CString hoverHelpText;
   int hoverHelpEnabled;
 

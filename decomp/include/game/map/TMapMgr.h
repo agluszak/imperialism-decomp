@@ -144,7 +144,6 @@ public:
   // LAYOUT: 0x28 bytes; terrainStateTable at +0x0c, cityScoreTable at +0x10.
   // Set once the palette preview is rendered; cleared on construction and load.
   bool strategicMapPalettePreviewReady;
-  unsigned char pad5;
   short mapViewOriginTile;
   unsigned char mapDataReady;
   unsigned char recruitSearchActive;

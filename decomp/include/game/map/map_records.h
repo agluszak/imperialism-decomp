@@ -99,7 +99,6 @@ struct Province {
   signed char linkedRegionCount;
   unsigned char byte3B;
   unsigned char byte3C;
-  unsigned char pad3D;
   StrategicTileIndex secondaryNeighborTileIndex;
   StrategicTileIndex primaryNeighborTileIndex;
   StrategicTileIndex linkedTileIndices[0x20];

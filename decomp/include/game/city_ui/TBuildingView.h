@@ -26,7 +26,6 @@ public:
   TCity* city;
   TCityProductionView* productionView;
   bool isEmbeddedPage;
-  unsigned char padding9D;
   short embeddedPageIndex;
 
   // Source evidence: unreferenced retained COMDAT in retail.

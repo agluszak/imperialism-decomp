@@ -34,11 +34,9 @@ public:
   s16 nation;
   short shipCountsByToolbarSlot[4];
   char defeated;
-  char pad_27;
   TTaskForce* previousForce;
   TTaskForce* nextForce;
   s16 ingotTileIndex;
-  char pad_32[0x02];
 
   TTaskForce()
       : aggression(1), shipOrders(0), target(NULL), shipList(NULL), flagship(NULL), location(NULL),

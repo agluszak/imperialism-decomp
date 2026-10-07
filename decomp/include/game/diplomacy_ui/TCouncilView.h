@@ -24,7 +24,6 @@ public:
 
   short councilNationCount; // compared (+2) against visibleVoteTier on hover
   short tickerSlots[10];    // zeroed by the slot-0x37 rebuild
-  short pad24de;
 };
 
 ASSERT_SIZE(TCouncilView, 0x24e0);

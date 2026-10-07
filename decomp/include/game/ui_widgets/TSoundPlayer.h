@@ -22,7 +22,6 @@ public:
   bool cdAudioPlaybackActive;
   unsigned char unused79; // ctor-only write; field-xrefs show no reader
   unsigned char unused7A; // ctor-only write; field-xrefs show no reader
-  unsigned char padding7B;
   unsigned int fadeStartTick;
   bool clearCuePoolsAfterFade;
   char pad81[0x03];

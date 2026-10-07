@@ -11,7 +11,6 @@ class TArmyMission : public TMission {
   DECLARE_SERIAL(TArmyMission)
 public:
   short presentLocation;
-  short padding_16;
   TSortedList* orderList;
   float requiredEquipageByClass[5];
 

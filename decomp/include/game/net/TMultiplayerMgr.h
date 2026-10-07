@@ -39,7 +39,6 @@ public:
   int queueSyncDword;
   char processPrimaryEventQueue;
   bool processSecondaryEventQueue;
-  unsigned char pad6a[2];
   TurnEventQueuePacket* primaryTurnEventQueueHead;
   TurnEventQueuePacket* secondaryTurnEventQueueHead;
   CString gameNameString;
@@ -51,16 +50,13 @@ public:
   int nationStatusTags[kMajorNationSessionSlotCount]; // four-cc tags ('suna', 'lwoa', …)
   int sessionPhaseTag;                                // four-cc phase tag ('adam', 'init', …)
   unsigned char activeNationTagIndex;
-  unsigned char padDd[3];
   int scenarioSelectionTag; // four-cc from the code-0xe session-init packet
                             // ('load', 'rand', 'scn0'..'szz9')
   unsigned char sessionReadyFlag;
-  unsigned char padE5[3];
   int pendingNationBitmask; // one bit per nation slot; the turn-state machine
   eGamePhaseNewStyle resumePhase;
   eGamePhaseNewStyle syncPhase;
   unsigned char networkSavePending;
-  unsigned char padF5[3];
 
   virtual ~TMultiplayerMgr() override;
   virtual void WriteTo(TStream* stream) override;

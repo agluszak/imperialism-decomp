@@ -35,7 +35,6 @@ public:
   TShip* previous;
   TMission* mission;
   short experience;
-  unsigned char pad32[2];
   int selection;
 
   TShip();

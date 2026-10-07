@@ -10,7 +10,6 @@ public:
   TMapOrderChildLinkNode* next;
   TMapOrderChildLinkNode* prev;
   unsigned char active;
-  unsigned char padding0D[3];
 
   // NOOP: verified empty in original 0x00553c25
   TMapOrderChildLinkNode() {}

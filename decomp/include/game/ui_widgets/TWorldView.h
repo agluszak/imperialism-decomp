@@ -19,7 +19,6 @@ public:
   short hoverRegionBand;
   short activeRegionBand;
   bool alternateOverlayEnabled;
-  unsigned char pad75;
   unsigned short projectionScale;
   unsigned short previewSquareRadius;
   short stridedCellRecordIndex;

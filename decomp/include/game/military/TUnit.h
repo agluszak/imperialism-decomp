@@ -24,7 +24,6 @@ public:
   short tileIndex;
   UnitOrder unitOrder;
   short orderTargetIndex;
-  short pad0E;
   TUnit* previousAtLocation;
   TUnit* nextAtLocation;
   short ownerNationSlot;

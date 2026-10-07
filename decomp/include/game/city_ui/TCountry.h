@@ -100,7 +100,6 @@ public:
   TSortedList* militaryUnitList;
   short unitNameOrdinalByType[0x1e];
   short unitNameCounter; // monotonically increasing name tag (stored at +0x1a)
-  short pad_86;
   int homeTileIndex;
   int overlayAnchorTileCache;
   TLongintList* ownedRegionList;

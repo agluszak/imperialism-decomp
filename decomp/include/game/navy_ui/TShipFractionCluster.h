@@ -23,7 +23,6 @@ public:
   void Less(unsigned char displayOnly);
 
   short availableShipCount;
-  short pad8a;
   // The 'main'-tagged control on GetWindow(), resolved by DoPostCreate.
   class TMapUberPicture* mainSelectionView;
   TNumberedArrowButton* shipCountButton;

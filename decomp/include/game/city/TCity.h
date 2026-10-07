@@ -94,8 +94,7 @@ public:
   short production22c[0x10];           // GetBuildingWindowState outCurrent
   short production24c[0x10];           // GetBuildingWindowState outAccum
   short populationGrowthPenaltyTicks;  // GrowthRate penalty counter
-  short pad26e;
-  TTaskList* trackedOrderList; // released via FreeList
+  TTaskList* trackedOrderList;         // released via FreeList
   class TPtrList* eventQueue;
   short unmetResourceRetryCount[kResourceKindCount];
   short consumedProductionInputByType[kResourceKindCount];

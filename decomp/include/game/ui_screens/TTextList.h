@@ -20,7 +20,6 @@ public:
   int scrollOffset;
   int selectedIndex;
   short itemHeight;
-  char padding_106e[2];
 
   TTextList();
 

@@ -22,13 +22,11 @@ public:
 
   void IDialogBehavior(bool flag, int colorA, int colorB);
 
-  bool armed; // state/flag byte
-  unsigned char padding_11_13[0x03];
+  bool armed;                       // state/flag byte
   unsigned long defaultCommandCode; // command fired on Enter/Return
   unsigned long cancelCommandCode;  // command fired on Escape/Delete
   unsigned long armedCommandCode;   // command armed via slot 0x0e
   bool dismissPending;              // set by Dismiss, cleared before the modal loop
-  unsigned char padding_21_23[0x03];
 
   TDialogBehavior();
 };

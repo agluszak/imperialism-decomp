@@ -21,7 +21,6 @@ public:
   TQuickDrawSurfaceContext* upperSurface;
   TQuickDrawSurfaceContext* compositeSurface;
   short splitPosition;
-  unsigned char pad92[2];
   int mode;
 
   TTwoPicSlider();

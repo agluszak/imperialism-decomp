@@ -31,7 +31,6 @@ public:
   bool tradeListEmpty; // CalculatePages starts true and clears it when a row exists
   bool alternatePageMode;
   unsigned char deadByteB2;
-  unsigned char paddingB3;
 
   TDealBookPicture();
   void SwitchPages();

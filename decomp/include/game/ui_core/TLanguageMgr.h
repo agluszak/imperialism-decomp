@@ -12,19 +12,16 @@ public:
   virtual ~TLanguageMgr() override;
   virtual void Free() override;
   unsigned char firstColumn;
-  unsigned char padding05[3];
   int columnCount;
   unsigned char firstPrimaryRow;
   unsigned char padding0d[3];
   int primaryRowCount;
   unsigned char firstExtraRow;
-  unsigned char padding15[3];
   int extraRowCount;
   char*** rowTextTable;
   unsigned int rowFlags;
   unsigned char groupCode;
   unsigned char delimiter;
-  unsigned char padding26[2];
   CString newsTexPath;
   CString newsTabPath;
 

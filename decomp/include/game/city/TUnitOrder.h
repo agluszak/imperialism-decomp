@@ -39,7 +39,6 @@ public:
   short cashCostPerUnit;          // nCashCostPerUnit
   short workforceMode;            // serialized eUnitOrderWorkforceMode value
   unsigned char specialistMode;   // bSpecialistMode
-  unsigned char pad59[0x5c - 0x59];
 
   TUnitOrder() {}
 };

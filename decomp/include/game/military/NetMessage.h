@@ -23,7 +23,6 @@ struct TurnEventQueuePacket : NetMessage {
 struct TimelyMessageHeader : NetMessage {
   int messageTag; // 'time'
   unsigned char activeNationId;
-  unsigned char pad15[3];
 
   TimelyMessageHeader* InitializeEmitEventHeaderWithActiveNation();
 };

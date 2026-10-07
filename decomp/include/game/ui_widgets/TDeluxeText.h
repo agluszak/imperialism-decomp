@@ -24,7 +24,6 @@ public:
   COLORREF textColor;
   COLORREF shadowTextColor;
   bool dropShadowEnabled;
-  unsigned char paddingA1[3];
 
   TDeluxeText();
 

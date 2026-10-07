@@ -13,7 +13,6 @@ public:
   virtual void Tick() override;
   virtual void DrawNextFrame(POINT* offset) override;
   short kindIndex;
-  short pad2e;
 
   // NOOP: verified empty in original 0x0049f602
   TCivAnimation2() {}

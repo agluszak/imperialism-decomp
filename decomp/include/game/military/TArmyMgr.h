@@ -24,16 +24,13 @@ struct MapContextActionRecord {
   CStr32 nameBuffer[2];
   CStr255 overlayLabel[2];
   short childCount[2];
-  unsigned char pad24e[2]; // +0x24e (alignment pad before the pointer array)
   // Owned per-side arrays, released by CleanUpStacks.
   MapOrderBattleSideChildRecord* sideChildRecords[2];
   int markerPixelX;
   int markerPixelY;
   bool placedFlag;
-  unsigned char pad261;
   short markerSpriteCode;
   short listOrdinal;
-  unsigned char pad266[0x268 - 0x266];
 
   ~MapContextActionRecord() {
     delete[] sideChildRecords[0];
@@ -102,7 +99,6 @@ public:
   short tacticalCombatUnitCountByType[2][30];
   // Consumed by EndBattlePhase.
   bool needsTerrainRefreshFlag;
-  unsigned char pad39b;
   // Battle participants cached for EndBattlePhase.
   class TArmyStack* ourStackBattle;
   class TArmyStack* enemyStackBattle;

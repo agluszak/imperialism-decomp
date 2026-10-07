@@ -27,9 +27,8 @@ public:
   short sortKey;          // composition class and random sort key
   signed char categoryFlag;
   unsigned char fortLevelAttackerPenaltyCache;
-  short unitCount;      // linked unit count, serialized as a signed word
-  unsigned char fieldC; // initialized by IArmyStack
-  unsigned char padD;
+  short unitCount;       // linked unit count, serialized as a signed word
+  unsigned char fieldC;  // initialized by IArmyStack
   short ownerNationCode; // region/owner-nation code
   short tileIndex;       // originating tile index / order-target province
   unsigned char pad12[2];

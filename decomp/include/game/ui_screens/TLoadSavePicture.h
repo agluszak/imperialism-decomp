@@ -18,7 +18,6 @@ public:
   void LoadHeader(short slotMode);
 
   bool loadModeFlag;
-  unsigned char pad91;
   short selectedSlot; // currently selected save slot (-1 = none)
   TextStyle styleAt94;
   TextStyle styleAt9e;

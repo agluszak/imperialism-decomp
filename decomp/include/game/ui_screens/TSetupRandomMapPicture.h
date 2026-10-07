@@ -29,6 +29,5 @@ public:
   unsigned int lastGlobeTick; // spinner timestamp
   int globeFrame;             // 0..23 spinner frame
   bool countryControlReady;   // ctor zeroes it
-  unsigned char padA5[3];
 };
 ASSERT_SIZE(TSetupRandomMapPicture, 0xa8);

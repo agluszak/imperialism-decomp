@@ -21,7 +21,6 @@ public:
   int morale;                // +0x34 init = sourceUnit->strength; floors at 0 -> state1c = 1
   TMilitaryUnit* sourceUnit; // +0x38 back-pointer (persisted as its persistentUnitId id)
   unsigned char flag3c;      // +0x3c = (source unitOrder == 2 && category[type] == 0)
-  unsigned char pad3d[3];
   int sapTargetTileIndex;    // +0x40 pending sap/mine target tile; -1 = none
   float projectionScores[5]; // +0x44 strength/quality-weighted military attributes 0..4
 

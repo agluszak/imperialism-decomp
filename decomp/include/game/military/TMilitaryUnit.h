@@ -22,8 +22,7 @@ public:
   short experiencePercent; // 0x38 init 0; divided by 100 in
   short battleStateFlags;  // 0x3a init 0
   short strengthSnapshot;  // 0x3c init 0
-  short pad3E;
-  TMission* ownerMission; // 0x40 owning mission back-pointer
+  TMission* ownerMission;  // 0x40 owning mission back-pointer
 
   TMilitaryUnit();
   virtual ~TMilitaryUnit() override;

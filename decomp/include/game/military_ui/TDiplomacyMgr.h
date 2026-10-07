@@ -79,7 +79,6 @@ public:
   CongressSupportTally congressSupport;
   NationSlot lastProcessedNationSlot;
   short lastDiplomaticEffortTurn;
-  unsigned char padding792[2];
   short* relationMatrixBaselineCopy;
   int relationMatrixBaselineSize;
   short relationStandingScores[kNationPairMatrixEntries];
@@ -93,7 +92,6 @@ public:
   NationSlot specialRelationTargetSlots[0x10];
   TSortedPtrList* pendingWarTransitionQueue;
   short proposalArrayMode;
-  unsigned char padding18da[2];
 
   TDiplomacyMgr();
   void IDiplomacyMgr();

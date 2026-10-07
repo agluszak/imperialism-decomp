@@ -155,23 +155,19 @@ public:
   int lastPersistentUnitId;
   // Names come from string group 0x2715 instead of generated flavor text.
   char useLocalizedNameTables;
-  unsigned char pad69;
   short mapArtSet;
   short finalCouncilYear; // calendar year; 1914 by default
   // Indexed by economicTurn / 40 from 1815; 0 none, 1 council, 2 final council.
   unsigned char councilByDecade[12];
   bool newsEventsSuppressed;
-  unsigned char pad7b;
   CString sharedTextSlots[kNationSlotCount];
   unsigned char multiplayerGameActive;
-  unsigned char padD9;
   // Contiguous GameSetup policy rows; no inter-row padding.
   short nationControlModes[kMajorNationCount];
   short cityMinisterPolicyIds[7];
   short foreignMinisterPolicyIds[7];
   short defenseMinisterPolicyIds[7];
   bool reloadPoliticalMapState;
-  unsigned char pad113;
   short scenarioMapIndexPlusOne;
 };
 

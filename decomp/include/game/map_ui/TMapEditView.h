@@ -30,7 +30,6 @@ public:
 
   // +0x364 is only constructor-zeroed; retain the byte without inventing semantics.
   unsigned char reservedFlag;
-  unsigned char padding365[3];
   int editorActionMode;
   int editorActionValue;
 };

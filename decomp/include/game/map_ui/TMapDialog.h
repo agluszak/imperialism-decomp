@@ -32,15 +32,12 @@ public:
   // CreateObject (0x00519c0e) allocates 0x364 bytes for the concrete object.
   TMapDialogTileMarker tileMarkers[90];
   bool suppressMarkerOverlay;
-  unsigned char pad34d[3];
   TQuickDrawSurfaceContext* quickDrawSurface;
   short unresolvedWord354; // +0x354 zeroed by the ctor; no confirmed reader yet
   short selectedTileIndex; // +0x356 ctor-init 0xffff (tile-index "none" sentinel)
   bool unresolvedFlag;     // +0x358 zeroed by the ctor; no confirmed reader yet
-  unsigned char pad359[3];
-  TObject* overlayObject; // Free() dispatches TObject::Free virtually, then clears it.
+  TObject* overlayObject;  // Free() dispatches TObject::Free virtually, then clears it.
   bool tileDebugOverlayEnabled;
-  unsigned char pad361[3];
 
   DECLARE_DYNCREATE(TMapDialog)
   TMapDialog();

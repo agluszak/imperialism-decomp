@@ -14,7 +14,6 @@ public:
   virtual void Tick() override;
 
   bool completeFlag; // set once all frames have played (stops the modal pump)
-  char pad2d[3];
 
   void InitializeOneTimeAnimation(TView* view, RECT* rect, short frameCountArg, short effectId,
                                   int tickLimit, int registryTag);

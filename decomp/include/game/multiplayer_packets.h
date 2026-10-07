@@ -105,7 +105,6 @@ struct TurnEvent18DiplomacyArraysPacket : TimelyNetMessagePrefix {
   short diplomacyPolicyByNation[kMajorNationCount][kNationSlotCount];
   short diplomacyGrantByNation[kMajorNationCount][kNationSlotCount];
   short tradePolicyByNation[kMajorNationCount][kNationSlotCount];
-  unsigned char pad3e2[2];
 };
 
 struct TurnEvent1FStatusPacket : TimelyMessageHeader {

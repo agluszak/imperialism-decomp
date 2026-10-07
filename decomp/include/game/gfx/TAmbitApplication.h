@@ -35,7 +35,6 @@ public:
 
   TMapUberUberPicture* edgeScrollTarget;
   bool dispatchBusyFlag;
-  unsigned char pad4d[3];
   int languagePackId;
 };
 ASSERT_SIZE(TAmbitApplication, 0x54);

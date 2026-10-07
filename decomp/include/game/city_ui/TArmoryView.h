@@ -23,7 +23,6 @@ public:
 
   unsigned char paddingA0[4];
   short selectedRowIndex;
-  char pad_a6[2];
   TUnitOrder* selectedUnitOrder;
 };
 ASSERT_SIZE(TArmoryView, 0xac);

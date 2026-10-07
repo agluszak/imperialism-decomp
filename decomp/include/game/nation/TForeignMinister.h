@@ -57,7 +57,6 @@ public:
   unsigned char field48;                            // cleared by the constructor
   unsigned char tradePartnerEnabled[7];             // per-major-nation trade status
   short developmentGrantByNation[kNationSlotCount]; // serialized grant accumulation
-  unsigned char pad7e[2];
 };
 
 ASSERT_SIZE(TForeignMinister, 0x80);

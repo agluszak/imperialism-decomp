@@ -23,7 +23,5 @@ public:
                        int ticksPerFrame, int registryTag);
 
   bool enabledFlag;
-
-  char padding2D[3];
 };
 ASSERT_SIZE(TFocusAnimation, 0x30);

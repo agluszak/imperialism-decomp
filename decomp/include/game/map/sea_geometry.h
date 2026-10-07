@@ -29,7 +29,6 @@ struct SeaSegment {
   short attrBySide[2];
   short angle;        // +0x14 heading angle (atan2 of the endpoint delta)
   unsigned char wrap; // +0x16 set when the segment spans the horizontal wrap (|dx| > 0x6c)
-  unsigned char pad17;
 
   short& BorderX0() {
     return x0;

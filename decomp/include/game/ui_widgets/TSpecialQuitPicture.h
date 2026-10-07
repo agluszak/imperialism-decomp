@@ -18,6 +18,5 @@ public:
   TSpecialQuitPicture() {}
 
   short quitAnimationFrame;
-  short padA2;
 };
 ASSERT_SIZE(TSpecialQuitPicture, 0x94);

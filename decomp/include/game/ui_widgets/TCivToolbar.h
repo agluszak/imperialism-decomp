@@ -11,7 +11,6 @@ public:
   virtual ~TCivToolbar() override;
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   short civilianClassId;
-  short pad_8a;
 
   TCivToolbar();
   DECLARE_DYNCREATE(TCivToolbar)

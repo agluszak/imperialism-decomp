@@ -18,7 +18,6 @@ public:
   short commoditySlot;
   short ownerNationSlot;
   short entryOrdinal;
-  short padding16;
 };
 
 ASSERT_SIZE(TDealLine, 0x18);

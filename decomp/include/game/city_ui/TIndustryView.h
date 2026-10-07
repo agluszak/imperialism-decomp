@@ -14,7 +14,6 @@ public:
   virtual void UpdateFields() override;
   int unresolvedZero;
   short selectedIndustryUnitType;
-  short padA6;
 
   TIndustryView();
 };
