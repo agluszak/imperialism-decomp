@@ -1,5 +1,4 @@
 address|name|symbol|size|type|prototype|provenance
-406ccb|thunk_HandleEngineerConstructionAction||5|function|bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)|
 4125a0|`dynamic initializer for 'g_gfxCoordinateScale_6A12F8''||21|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A12F8''(void)|source_recovery
 4125d0|`dynamic initializer for 'g_scaledShortConst_6A1340''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1340''(void)|library
 412600|`vector constructor iterator'|??_H@YGXPAXIHP6EX0@Z@Z|42|function|void __stdcall `vector constructor iterator'(void * base,unsigned int elementSize,int count,void * (__thiscall * ctor)(void *))|msvc500_library_oracle
@@ -7051,63 +7050,63 @@ address|name|symbol|size|type|prototype|provenance
 5e7980|_mbscmp|__mbscmp|247|function|undefined CompareAnsiStringsWithMbcsAwareness()|msvc500_library_oracle
 5e7a80|_set_new_handler|?_set_new_handler@@YAP6AHI@ZP6AHI@Z@Z|40|function|_PNH __cdecl _set_new_handler(_PNH)|msvc500_library_oracle
 5e7ac0|__callnewh|__callnewh|32|function|undefined InvokeGlobalAllocationFailureCallback()|
-5e7ae0|FindFirstFileAndPopulateFileInfoRecord|__findfirst|257|function|undefined FindFirstFileAndPopulateFileInfoRecord()|
-5e7c10|FindNextFileAndPopulateFileInfoRecord|__findnext|249|function|undefined FindNextFileAndPopulateFileInfoRecord()|
+5e7ae0|_findfirst|__findfirst|257|function|undefined _findfirst()|
+5e7c10|_findnext|__findnext|249|function|undefined _findnext()|
 5e7d30|_findclose|__findclose|33|function|int __cdecl _findclose(long)|
-5e7d60|ConvertFileTimeToLocalEpochSeconds|___timet_from_ft|140|function|undefined ConvertFileTimeToLocalEpochSeconds()|
+5e7d60|__timet_from_ft|___timet_from_ft|140|function|undefined __timet_from_ft()|
 5e7df0|__aullshr|__aullshr|31|function|undefined aullshr()|
 5e7e10|`eh vector dtor iterator'|??_M@YGXPAXIHP6EX0@Z@Z|115|function|undefined InvokeCallbackNTimesWithSehGuard()|
 5e7e89|$L12052|$L12052|23|function|undefined SehCleanup_InvokeCallbackNTimes()|
 5e7ec0|__ArrayUnwind|?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z|106|function|void __stdcall CallCallbackNTimes(undefined4 unused_arg0, undefined4 unused_arg1, int repeat_count, undefined * callback)|
-5e7f50|FreeHeapBlockWithAllocatorTracking|_free|104|function|undefined FreeHeapBlockWithAllocatorTracking()|
+5e7f50|free|_free|104|function|undefined free()|
 5e7fc0|_realloc|_realloc|432|function|undefined ReallocateHeapBlockWithAllocatorTracking()|msvc500_library_oracle
 5e8170|type_info::~type_info|??1type_info@@UAE@XZ|47|function|public: virtual __thiscall type_info::~type_info(void)|msvc500_library_oracle
 5e81a0|type_info::`scalar deleting dtor'|??_Gtype_info@@UAEPAXI@Z|30|function|public: virtual void * __thiscall type_info::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
-5e8310|AllocateWithGlobalNewMode|_malloc|20|function|undefined AllocateWithGlobalNewMode()|
+5e8310|malloc|_malloc|20|function|undefined malloc()|
 5e8330|__nh_malloc|__nh_malloc|68|function|undefined AllocateWithNewHandlerLoop()|
 5e8380|__heap_alloc|__heap_alloc|85|function|undefined AllocateAligned16FromSmallBlockOrHeap()|
 5e83e0|srand|_srand|13|function|void __cdecl srand(unsigned int)|msvc500_library_override
 5e83f0|rand|_rand|45|function|int __cdecl rand(void)|msvc500_library_override
 5e8420|memmove|_memmove|664|function|void * __cdecl memmove(void *,void const *,unsigned int)|msvc500_library_override
-5e8760|atoi-style signed decimal parse|_atol|153|function|undefined ParseSignedIntFromAsciiWithWhitespaceSkip()|
-5e8800|atoi wrapper|_atoi|14|function|undefined ParseSignedIntAndDiscardResult()|
-5e8970|_isdigit|_isdigit|42|function|undefined CheckCharacterTypeFlag4()|
-5e89d0|_isspace|_isspace|42|function|undefined HasTileAttributeMask08()|
-5e8bb0|_vsprintf|_vsprintf|104|function|undefined ProcessFormattedInputAndNullTerminateBuffer()|
+5e8760|atol|_atol|153|function|undefined ParseSignedIntFromAsciiWithWhitespaceSkip()|
+5e8800|atoi|_atoi|14|function|undefined ParseSignedIntAndDiscardResult()|
+5e8970|isdigit|_isdigit|42|function|undefined CheckCharacterTypeFlag4()|
+5e89d0|isspace|_isspace|42|function|undefined HasTileAttributeMask08()|
+5e8bb0|vsprintf|_vsprintf|104|function|undefined ProcessFormattedInputAndNullTerminateBuffer()|
 5e8c20|ProbeStackPagesForLargeFrameAllocation||47|function|undefined ProbeStackPagesForLargeFrameAllocation()|
 5e8c50|`eh vector ctor iterator'|??_L@YGXPAXIHP6EX0@Z1@Z|111|function|void __stdcall `eh vector ctor iterator'(void * base, unsigned int elementSize, int count, void (__thiscall * ctor)(void *), void (__thiscall * dtor)(void *))|msvc500_library_oracle
 5e8cc8|SehCleanup_CallCallbackRepeatedly||20|function|undefined SehCleanup_CallCallbackRepeatedly()|
 5e8cf0|ConvertEpochSecondsToLocalTmWithDstAdjust|_localtime|486|function|undefined ConvertEpochSecondsToLocalTmWithDstAdjust()|msvc500_library_oracle
 5e8ee0|GetCurrentLocalEpochSecondsWithTimezoneCache|_time|300|function|undefined GetCurrentLocalEpochSecondsWithTimezoneCache()|msvc500_library_oracle
-5e9010|_fclose|_fclose|61|function|undefined CloseBufferedStreamAndReleaseResources()|
-5e9050|flush/close/reset CRT FILE state|__fclose_lk|101|function|undefined FlushCloseAndResetBufferedStream()|
-5e90c0|fopen-style stream open with mode|__fsopen|55|function|undefined OpenBufferedStreamDescriptorWithModeAndLock()|
-5e9100|_fopen|_fopen|21|function|undefined OpenBufferedStreamWithMode40()|
-5e9120|_fprintf|_fprintf|73|function|int __cdecl _fprintf@005e9120(FILE * _File, wchar_t * _Format, ...)|
-5e9170|_fwrite|_fwrite|55|function|undefined WriteBufferItemsToStreamLocked()|
+5e9010|fclose|_fclose|61|function|undefined CloseBufferedStreamAndReleaseResources()|
+5e9050|_fclose_lk|__fclose_lk|101|function|undefined FlushCloseAndResetBufferedStream()|
+5e90c0|_fsopen|__fsopen|55|function|undefined OpenBufferedStreamDescriptorWithModeAndLock()|
+5e9100|fopen|_fopen|21|function|undefined OpenBufferedStreamWithMode40()|
+5e9120|fprintf|_fprintf|73|function|int __cdecl _fprintf@005e9120(FILE * _File, wchar_t * _Format, ...)|
+5e9170|fwrite|_fwrite|55|function|undefined WriteBufferItemsToStreamLocked()|
 5e91b0|__fwrite_lk|__fwrite_lk|326|function|undefined WriteBufferItemsToStreamUnlocked()|
-5e9300|_fscanf|_fscanf|50|function|undefined DecodeScenarioTilePaletteMaskWithStreamLock()|
-5e9340|_strncpy|_strncpy|254|function|char * __cdecl strncpy(char * _Dest, char * _Source, size_t _Count)|
-5e9440|_fread|_fread|55|function|undefined ReadBufferedStreamLocked()|
-5e9480|fread core over CRT FILE buffer|__fread_lk|316|function|undefined ReadBufferedStreamCoreUnlocked()|
-5e95c0|getc-style read with stream lock|_fgetc|74|function|undefined ReadNextByteFromBufferedStreamWithLock()|
+5e9300|fscanf|_fscanf|50|function|undefined DecodeScenarioTilePaletteMaskWithStreamLock()|
+5e9340|strncpy|_strncpy|254|function|char * __cdecl strncpy(char * _Dest, char * _Source, size_t _Count)|
+5e9440|fread|_fread|55|function|undefined ReadBufferedStreamLocked()|
+5e9480|_fread_lk|__fread_lk|316|function|undefined ReadBufferedStreamCoreUnlocked()|
+5e95c0|fgetc|_fgetc|74|function|undefined ReadNextByteFromBufferedStreamWithLock()|
 5e9620|__itoa|__itoa|61|function|undefined ConvertSignedIntToStringWithBaseAndSignHandling()|
-5e9660|_xtoa|_xtoa|97|function|undefined ConvertUnsignedIntToStringInBase()|
-5e9840|_sprintf|_sprintf|104|function|undefined ScanFormattedInputIntoBufferAndTerminate()|
-5e98b0|_WinMainCRTStartup|_WinMainCRTStartup|412|function|undefined _WinMainCRTStartup()|
+5e9660|xtoa|_xtoa|97|function|undefined ConvertUnsignedIntToStringInBase()|
+5e9840|sprintf|_sprintf|104|function|undefined ScanFormattedInputIntoBufferAndTerminate()|
+5e98b0|WinMainCRTStartup|_WinMainCRTStartup|412|function|undefined WinMainCRTStartup()|
 5e9a60|amsg_exit||38|function|void __cdecl amsg_exit(int param_1)|
 5e9a90|memset|_memset|88|function|void * __cdecl memset(void *,int,unsigned int)|msvc500_library_override
 5e9ae8|_EH_prolog|__EH_prolog|31|function|undefined EstablishSehFrameProlog()|msvc500_library_oracle
 5e9b10|__strdup|__strdup|80|function|undefined AllocateAnsiStringCopyWithGlobalNewMode()|
 5e9b60|__cinit|__cinit|48|function|undefined WrapperFor_fpmath_At005e9b60()|
-5e9b90|_exit|_exit|18|function|undefined ExitProcessWithCrtCleanup()|
+5e9b90|exit|_exit|18|function|undefined ExitProcessWithCrtCleanup()|
 5e9bb0|_exit|__exit|18|function|void __cdecl _exit(int)|msvc500_library_override
 5e9bf0|RunCrtExitHandlersAndTerminate||174|function|undefined RunCrtExitHandlersAndTerminate()|
 5e9cb0|__lockexit|__lockexit|11|function|undefined WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005e9cb0()|
 5e9cc0|__unlockexit|__unlockexit|11|function|undefined WrapperFor_LeaveIndexedCriticalSection_At005e9cc0()|
 5e9cd0|__initterm|__initterm|32|function|undefined InvokeNonNullFunctionPointerRange()|
-5e9cf0|_memcpy|_memcpy|664|function|undefined CopyMemoryPossiblyOverlapping()|
-5ea030|_wcslen|_wcslen|30|function|undefined ComputeWideStringLength()|
+5e9cf0|memcpy|_memcpy|664|function|undefined CopyMemoryPossiblyOverlapping()|
+5ea030|wcslen|_wcslen|30|function|undefined ComputeWideStringLength()|
 5ea050|__mbschr|__mbschr|194|function|undefined FindCharWithMbcsLeadByteSupport()|
 5ea120|__mbspbrk|__mbspbrk|173|function|undefined StrpbrkWithMbcFallback()|
 5ea1d0|__mbsupr|__mbsupr|174|function|undefined ToUpperInPlaceWithMbcFallback()|
@@ -7116,7 +7115,7 @@ address|name|symbol|size|type|prototype|provenance
 5ea3b0|__beginthreadex|__beginthreadex|123|function|undefined CreateThreadWithCrtStartupTrampoline()|
 5ea430|__threadstartex@4|__threadstartex@4|161|function|undefined CrtThreadStartWithTlsInitAndCleanup()|
 5ea4e0|CrtThreadExitWithTlsCleanup||53|function|undefined CrtThreadExitWithTlsCleanup()|
-5ea520|_memcmp|_memcmp|172|function|int __cdecl memcmp(void * _Buf1, void * _Buf2, size_t _Size)|
+5ea520|memcmp|_memcmp|172|function|int __cdecl memcmp(void * _Buf1, void * _Buf2, size_t _Size)|
 5ea5d0|__CxxThrowException@8|__CxxThrowException@8|71|function|undefined RaiseMfcSehExceptionWithArgs()|
 5ea620|__mbsspn|__mbsspn|175|function|undefined StrspnWithMbcFallback()|
 5ea6d0|__mbscspn|__mbscspn|175|function|undefined StrcspnWithMbcFallback()|
@@ -7127,9 +7126,9 @@ address|name|symbol|size|type|prototype|provenance
 5ea970|__mbsinc|__mbsinc|24|function|undefined AdvanceMbcsCharPointerByOneCharacter()|
 5ea990|__ismbcspace|__ismbcspace|148|function|undefined GetSpaceCharacterClassFlagForCodepoint()|
 5eaa30|ComputeAbsoluteIntValue||11|function|undefined ComputeAbsoluteIntValue()|
-5eaa40|_strtol|_strtol|26|function|undefined WrapperFor_ParseUnsignedLongFromStringWithBase_At005eaa40()|
-5eaa60|_strtoxl|_strtoxl|641|function|undefined ParseUnsignedLongFromStringWithBase()|
-5eacf0|_strtoul|_strtoul|26|function|undefined ParseSignedLongFromStringWithBase()|
+5eaa40|strtol|_strtol|26|function|undefined WrapperFor_ParseUnsignedLongFromStringWithBase_At005eaa40()|
+5eaa60|strtoxl|_strtoxl|641|function|undefined ParseUnsignedLongFromStringWithBase()|
+5eacf0|strtoul|_strtoul|26|function|undefined ParseSignedLongFromStringWithBase()|
 5ead10|_purecall|__purecall|11|function|void __cdecl _purecall(void)|msvc500_library_override
 5ead20|__dosmaperr|__dosmaperr|115|function|undefined MapWin32ErrorToCrtErrno()|
 5eada0|_errno|__errno|9|function|int * __cdecl _errno(void)|msvc500_library_oracle
@@ -7137,14 +7136,14 @@ address|name|symbol|size|type|prototype|provenance
 5eadc0|WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0||164|function|undefined WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0()|
 5eae70|__msize|__msize|99|function|undefined QueryAllocationSizeWithCustomAllocatorFallback()|
 5eaee0|__setmbcp|__setmbcp|539|function|undefined SetMultiByteCodePageLocked()|
-5eb100|_getSystemCP|_getSystemCP|77|function|undefined ResolveRequestedCodePageToken()|
-5eb150|_CPtoLCID|_CPtoLCID|56|function|undefined MapCodePageToMbcsTypeTableId()|
-5eb1b0|_setSBCS|_setSBCS|45|function|undefined ResetMultiByteClassificationTables()|
+5eb100|getSystemCP|_getSystemCP|77|function|undefined ResolveRequestedCodePageToken()|
+5eb150|CPtoLCID|_CPtoLCID|56|function|undefined MapCodePageToMbcsTypeTableId()|
+5eb1b0|setSBCS|_setSBCS|45|function|undefined ResetMultiByteClassificationTables()|
 5eb1f0|___initmbctable|___initmbctable|11|function|undefined InitializeMultiByteCodePageFromLocale()|
-5eb200|_mktime|_mktime|16|function|undefined CallCrtHelperWithDefaultFlag1()|
+5eb200|mktime|_mktime|16|function|undefined CallCrtHelperWithDefaultFlag1()|
 5eb220|__make_time_t|__make_time_t|572|function|undefined NormalizeTmFieldsAndComputeEpochSeconds()|
-5eb460|_gmtime|_gmtime|360|function|undefined ConvertEpochSecondsToTmFieldsThreadLocal()|
-5ebb20|_strftime|_strftime|31|function|undefined ConstructSharedStringFromCStrOrResourceIdLegacy()|
+5eb460|gmtime|_gmtime|360|function|undefined ConvertEpochSecondsToTmFieldsThreadLocal()|
+5ebb20|strftime|_strftime|31|function|undefined ConstructSharedStringFromCStrOrResourceIdLegacy()|
 5ebb40|__Strftime|__Strftime|321|function|undefined FormatBufferWithPercentDirectivesAndLocaleLock()|
 5ebc90|__expandtime|__expandtime|1254|function|undefined ExpandDateTimeFormatDirectiveToBuffer()|
 5ec230|__store_str|__store_str|45|function|undefined CopyCStringToOutputWithRemainingLimit()|
@@ -7184,11 +7183,11 @@ address|name|symbol|size|type|prototype|provenance
 5eda70|__mtinitlocks|__mtinitlocks|43|function|undefined InitializeCrtGlobalCriticalSections()|
 5edb20|_lock|__lock|118|function|undefined EnterIndexedCriticalSectionWithLazyInit()|msvc500_library_oracle
 5edba0|_unlock|__unlock|22|function|undefined LeaveIndexedCriticalSection()|msvc500_library_oracle
-5edbc0|CRT FILE stream lock enter|__lock_file|54|function|undefined EnterStreamCriticalSection()|
+5edbc0|_lock_file|__lock_file|54|function|undefined EnterStreamCriticalSection()|
 5edc00|__lock_file2|__lock_file2|40|function|undefined WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005edc00()|
-5edc30|CRT FILE stream lock leave|__unlock_file|54|function|undefined LeaveStreamCriticalSection()|
+5edc30|_unlock_file|__unlock_file|54|function|undefined LeaveStreamCriticalSection()|
 5edc70|__unlock_file2|__unlock_file2|40|function|undefined WrapperFor_LeaveIndexedCriticalSection_At005edc70()|
-5edcc0|ConvertBrokenDownLocalTimeToEpochSeconds|___loctotime_t|226|function|undefined ConvertBrokenDownLocalTimeToEpochSeconds()|
+5edcc0|__loctotime_t|___loctotime_t|226|function|undefined __loctotime_t()|
 5ede75|__seh_longjmp_unwind@4|__seh_longjmp_unwind@4|27|function|undefined seh_longjmp_unwind_4()|
 5ede90|__heap_init|__heap_init|55|function|undefined InitializeCrtHeapSubsystem()|
 5edf40|___sbh_new_region|___sbh_new_region|354|function|undefined AllocateCrtHeapRegionDescriptor()|
@@ -7203,26 +7202,26 @@ address|name|symbol|size|type|prototype|provenance
 5ee9a0|__allmul|__allmul|52|function|undefined allmul()|
 5ee9e0|__flsbuf|__flsbuf|304|function|undefined ReadByteFromCrtInputBufferWithRefill()|
 5eeb10|__output|__output|2172|function|undefined ProcessFormattedInputStateMachine()|
-5ef4a0|_write_char|_write_char|66|function|undefined WrapperFor_ReadByteFromCrtInputBufferWithRefill_At005ef4a0()|
-5ef4f0|_write_multi_char|_write_multi_char|57|function|undefined WrapperFor_ReadByteFromCrtInputBufferWithRefill_At005ef4f0()|
-5ef530|_write_string|_write_string|61|function|undefined WrapperFor_ReadByteFromCrtInputBufferWithRefill_At005ef530()|
-5ef570|_get_int_arg|_get_int_arg|17|function|undefined ReadUint32FromVaCursorAndAdvance()|
-5ef590|_get_int64_arg|_get_int64_arg|18|function|undefined ReadUint64FromVaCursorAndAdvance()|
-5ef5b0|_get_short_arg|_get_short_arg|18|function|undefined ReadUint16FromVaCursorAndAdvance()|
-5ef5d0|EnsureRuntimeLocaleTablesInitializedOnce|___tzset|50|function|undefined EnsureRuntimeLocaleTablesInitializedOnce()|
+5ef4a0|write_char|_write_char|66|function|undefined WrapperFor_ReadByteFromCrtInputBufferWithRefill_At005ef4a0()|
+5ef4f0|write_multi_char|_write_multi_char|57|function|undefined WrapperFor_ReadByteFromCrtInputBufferWithRefill_At005ef4f0()|
+5ef530|write_string|_write_string|61|function|undefined WrapperFor_ReadByteFromCrtInputBufferWithRefill_At005ef530()|
+5ef570|get_int_arg|_get_int_arg|17|function|undefined ReadUint32FromVaCursorAndAdvance()|
+5ef590|get_int64_arg|_get_int64_arg|18|function|undefined ReadUint64FromVaCursorAndAdvance()|
+5ef5b0|get_short_arg|_get_short_arg|18|function|undefined ReadUint16FromVaCursorAndAdvance()|
+5ef5d0|__tzset|___tzset|50|function|undefined __tzset()|
 5ef630|__tzset_lk|__tzset_lk|728|function|undefined InitializeRuntimeTimeZoneStateFromEnvironmentOrWin32()|
-5ef910|isindst|__isindst|40|function|int __cdecl isindst(tm * _Time)|
+5ef910|_isindst|__isindst|40|function|int __cdecl _isindst(tm * _Time)|
 5ef940|__isindst_lk|__isindst_lk|617|function|undefined EvaluateIsInDstUsingRuntimeRuleTables()|
-5efbb0|_cvtdate|_cvtdate|412|function|undefined ConfigureDstTransitionWindowFromRuleSet()|
-5efd50|close low-level file descriptor|__close|104|function|undefined CloseFileDescriptorWithLock()|
+5efbb0|cvtdate|_cvtdate|412|function|undefined ConfigureDstTransitionWindowFromRuleSet()|
+5efd50|_close|__close|104|function|undefined CloseFileDescriptorWithLock()|
 5efdc0|__close_lk|__close_lk|144|function|undefined CloseOsHandleAndReleaseFileDescriptor()|
-5efe50|free CRT FILE buffer|__freebuf|51|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At005efe50()|
-5efe90|_fflush|_fflush|55|function|undefined FlushStreamOrProcessAllFlaggedEntries()|
+5efe50|_freebuf|__freebuf|51|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At005efe50()|
+5efe90|fflush|_fflush|55|function|undefined FlushStreamOrProcessAllFlaggedEntries()|
 5efed0|__fflush_lk|__fflush_lk|53|function|undefined FlushStreamPendingWriteAndOptionalFdSync()|
-5eff10|fflush pending write buffer|__flush|110|function|undefined FlushBufferedStreamPendingWrite()|
-5eff90|_flsall|_flsall|187|function|undefined ProcessFlaggedMapContextEntriesUnderGlobalLock()|
-5f0050|initialize CRT FILE from mode string|__openfile|347|function|undefined OpenFileByModeStringAndInitStreamState()|
-5f0220|allocate/reuse CRT FILE slot|__getstream|217|function|undefined AcquireAndInitializeBufferedStreamSlot()|
+5eff10|_flush|__flush|110|function|undefined FlushBufferedStreamPendingWrite()|
+5eff90|flsall|_flsall|187|function|undefined ProcessFlaggedMapContextEntriesUnderGlobalLock()|
+5f0050|_openfile|__openfile|347|function|undefined OpenFileByModeStringAndInitStreamState()|
+5f0220|_getstream|__getstream|217|function|undefined AcquireAndInitializeBufferedStreamSlot()|
 5f0300|__stbuf|__stbuf|159|function|undefined EnsureCrtStreamFallbackBufferAllocatedForFlag40()|
 5f03a0|__ftbuf|__ftbuf|61|function|undefined ResetBufferedTileStreamStateIfFlushRequested()|
 5f03e0|__write|__write|114|function|undefined WriteToFileDescriptorWithLock()|
@@ -7232,36 +7231,36 @@ address|name|symbol|size|type|prototype|provenance
 5f13f0|__inc|__inc|33|function|undefined ReadBufferedFileByteWithRefillFallback()|
 5f1420|__un_inc|__un_inc|24|function|undefined AppendTileCodeIfValid()|
 5f1440|__whiteout|__whiteout|72|function|undefined ReadNextTileCodeSkippingAttributeMask08()|
-5f1490|refill CRT FILE buffer and read first byte|__filbuf|239|function|undefined RefillBufferedFileStreamAndReadFirstByte()|
-5f1580|read low-level file descriptor|__read|114|function|undefined ReadFromFileDescriptorWithLock()|
+5f1490|_filbuf|__filbuf|239|function|undefined RefillBufferedFileStreamAndReadFirstByte()|
+5f1580|_read|__read|114|function|undefined ReadFromFileDescriptorWithLock()|
 5f1600|__read_lk|__read_lk|549|function|undefined ReadFromFileDescriptorUnlocked()|
 5f1830|__aulldiv|__aulldiv|104|function|undefined aulldiv()|
 5f18a0|__aullrem|__aullrem|117|function|undefined aullrem()|
 5f1c70|__ismbblead|__ismbblead|18|function|undefined IsLeadByteInCurrentCodePage()|
-5f1ce0|_x_ismbbtype|_x_ismbbtype|58|function|undefined CheckMultibyteCharacterClass()|
+5f1ce0|x_ismbbtype|_x_ismbbtype|58|function|undefined CheckMultibyteCharacterClass()|
 5f1d20|__setenvp|__setenvp|238|function|undefined BuildEnvpArrayFromEnvironmentBlock()|
 5f1e10|__setargv|__setargv|158|function|undefined BuildArgvFromCommandLine()|
-5f1eb0|_parse_cmdline|_parse_cmdline|527|function|undefined ParseCommandLineToArgvBuffers()|
+5f1eb0|parse_cmdline|_parse_cmdline|527|function|undefined ParseCommandLineToArgvBuffers()|
 5f22c0|___crtGetEnvironmentStringsA|___crtGetEnvironmentStringsA|342|function|undefined BuildAnsiEnvironmentBlockCopy()|
 5f2420|__ioinit|__ioinit|524|function|undefined InitializeLowIoHandleTable()|
 5f2690|__FF_MSGBANNER|__FF_MSGBANNER|61|function|undefined CheckRuntimeErrorHookGuardAndReportFcFf()|
 5f26d0|__NMSG_WRITE|__NMSG_WRITE|470|function|undefined ReportCrtRuntimeErrorByCode()|
-5f28f0|_strchr|_strchr|188|function|char * __cdecl strchr(char * _Str, int _Val)|
-5f29b0|_strpbrk|_strpbrk|58|function|char * __cdecl strpbrk(char * _Str, char * _Control)|
+5f28f0|strchr|_strchr|188|function|char * __cdecl strchr(char * _Str, int _Val)|
+5f29b0|strpbrk|_strpbrk|58|function|char * __cdecl strpbrk(char * _Str, char * _Control)|
 5f29f0|___crtLCMapStringW|___crtLCMapStringW|519|function|undefined LocaleMapStringWideWithAnsiFallback()|
-5f2c00|_wcsncnt|_wcsncnt|53|function|undefined CountWideCharsUpToLimitOrNul()|
+5f2c00|wcsncnt|_wcsncnt|53|function|undefined CountWideCharsUpToLimitOrNul()|
 5f2c40|___crtLCMapStringA|___crtLCMapStringA|540|function|undefined MapStringWithLocaleAndMbcFallback()|
-5f2e60|_strncnt|_strncnt|47|function|undefined ComputeBoundedCStringLength()|
+5f2e60|strncnt|_strncnt|47|function|undefined ComputeBoundedCStringLength()|
 5f2e90|__strrev|__strrev|48|function|char * __cdecl strrev(char * _Str)|
-5f2ec0|_calloc|_calloc|171|function|undefined AllocateZeroedArrayWithRetryFallback()|
+5f2ec0|calloc|_calloc|171|function|undefined AllocateZeroedArrayWithRetryFallback()|
 5f2f70|__CxxUnhandledExceptionFilter|?__CxxUnhandledExceptionFilter@@YGJPAU_EXCEPTION_POINTERS@@@Z|83|function|long __stdcall __CxxUnhandledExceptionFilter(struct _EXCEPTION_POINTERS *)|msvc500_library_oracle
-5f3000|_strspn|_strspn|62|function|size_t __cdecl strspn(char * _Str, char * _Control)|
-5f3040|_strcspn|_strcspn|62|function|size_t __cdecl strcspn(char * _Str, char * _Control)|
-5f3080|_strrchr|_strrchr|39|function|char * __cdecl strrchr(char * _Str, int _Ch)|
-5f30b0|_strstr|_strstr|128|function|char * __cdecl strstr(char * _Str, char * _SubStr)|
+5f3000|strspn|_strspn|62|function|size_t __cdecl strspn(char * _Str, char * _Control)|
+5f3040|strcspn|_strcspn|62|function|size_t __cdecl strcspn(char * _Str, char * _Control)|
+5f3080|strrchr|_strrchr|39|function|char * __cdecl strrchr(char * _Str, int _Ch)|
+5f30b0|strstr|_strstr|128|function|char * __cdecl strstr(char * _Str, char * _SubStr)|
 5f3130|___crtGetStringTypeW|___crtGetStringTypeW|388|function|undefined GetStringTypeWideWithAnsiFallback()|
 5f32c0|___crtGetStringTypeA|___crtGetStringTypeA|301|function|undefined GetStringTypeWithCodePageFallback()|
-5f3400|_toupper|_toupper|130|function|undefined ToUpperAsciiOrLocaleThreadSafe()|
+5f3400|toupper|_toupper|130|function|undefined ToUpperAsciiOrLocaleThreadSafe()|
 5f3490|__toupper_lk|__toupper_lk|252|function|undefined ToUpperCodepointWithLocaleAndMbcFallback()|
 5f3ec0|__strcmpi|__strcmpi|208|function|undefined CompareStringsIgnoreCaseWithMbcFallback()|
 5f3f90|_statusfp|__statusfp|24|function|undefined MapFpControlLowByteToRuntimeBits_EntryA()|msvc500_library_oracle
@@ -7271,7 +7270,7 @@ address|name|symbol|size|type|prototype|provenance
 5f4060|MapFpControlWordToRuntimeControlBits||150|function|undefined MapFpControlWordToRuntimeControlBits()|
 5f4100|StoreMappedFpControlBits_NoOp||139|function|undefined StoreMappedFpControlBits_NoOp()|
 5f4190|MapFpControlLowByteToRuntimeBits||55|function|undefined MapFpControlLowByteToRuntimeBits()|
-5f41e0|_tolower|_tolower|130|function|undefined ToLowerCodepointAsciiOrLocaleAware()|
+5f41e0|tolower|_tolower|130|function|undefined ToLowerCodepointAsciiOrLocaleAware()|
 5f4270|__tolower_lk|__tolower_lk|252|function|undefined ToLowerCodepointWithLocaleAndMbcFallback()|
 5f4370|_ZeroTail|__ZeroTail|102|function|undefined Is96BitIntegerZeroAtOrAboveBitIndex()|msvc500_library_oracle
 5f43e0|_IncMan|__IncMan|105|function|undefined SetBitIn96BitIntegerWithCarry()|msvc500_library_oracle
@@ -7297,11 +7296,11 @@ address|name|symbol|size|type|prototype|provenance
 5f4d30|__lseek_lk|__lseek_lk|128|function|undefined SeekFileDescriptorAndClearEofFlag()|
 5f4db0|__getbuf|__getbuf|93|function|undefined InitializeFileStreamBufferWithAllocFallback()|
 5f4e10|__isatty|__isatty|43|function|undefined IsCrtStreamFlag40SetByIndex()|
-5f4e40|_wctomb|_wctomb|108|function|undefined GetOrCreateCrtThreadDataWithRefCountGate()|
+5f4e40|wctomb|_wctomb|108|function|undefined GetOrCreateCrtThreadDataWithRefCountGate()|
 5f4eb0|__wctomb_lk|__wctomb_lk|114|function|undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f4eb0()|
-5f4f30|_wcstombs|_wcstombs|113|function|undefined ConvertWideToMultiByteWithThreadGate()|
+5f4f30|wcstombs|_wcstombs|113|function|undefined ConvertWideToMultiByteWithThreadGate()|
 5f4fb0|__wcstombs_lk|__wcstombs_lk|490|function|undefined ConvertWideToMultiByteWithCodePageFallback()|
-5f51a0|_wcsncnt|_wcsncnt|50|function|undefined ComputeWideStringLengthOrLimit()|
+5f51a0|wcsncnt|_wcsncnt|50|function|undefined ComputeWideStringLengthOrLimit()|
 5f5210|__getenv_lk|__getenv_lk|142|function|undefined LookupEnvironmentVariableValueByName()|
 5f52a0|__alloc_osfhnd|__alloc_osfhnd|360|function|undefined AllocateFileDescriptorSlot()|
 5f5410|__set_osfhnd|__set_osfhnd|161|function|undefined AttachHandleToFileDescriptorSlot()|
@@ -7311,7 +7310,7 @@ address|name|symbol|size|type|prototype|provenance
 5f56d0|__unlock_fhandle|__unlock_fhandle|34|function|undefined LeaveFileDescriptorCriticalSection()|
 5f5700|__commit|__commit|158|function|undefined FlushFileDescriptorBuffersWithLock()|
 5f57c0|__sopen|__sopen|849|function|undefined CreateFileHandleFromCrtOpenFlags()|
-5f5b60|_mbtowc|_mbtowc|113|function|undefined CallWithAtomicRefAndOptionalCriticalSection13()|
+5f5b60|mbtowc|_mbtowc|113|function|undefined CallWithAtomicRefAndOptionalCriticalSection13()|
 5f5be0|__mbtowc_lk|__mbtowc_lk|254|function|undefined DecodeNextMultibyteCharToWideChar()|
 5f5ce0|__allshl|__allshl|31|function|undefined allshl()|
 5f5d00|ExecuteCallbackUnderStreamCriticalSection||45|function|undefined ExecuteCallbackUnderStreamCriticalSection()|
@@ -7320,18 +7319,18 @@ address|name|symbol|size|type|prototype|provenance
 5f5e50|RebuildActiveLocaleDateTimeNameTableAndAdoptOwnedBuffer||174|function|undefined RebuildActiveLocaleDateTimeNameTableAndAdoptOwnedBuffer()|
 5f5f00|__get_lc_time|__get_lc_time|881|function|undefined InitializeLocaleDateTimeNameTable()|
 5f6280|__free_lc_time|__free_lc_time|563|function|undefined FreeLocaleDateTimeNameTableEntries43()|
-5f64c0|_storeTimeFmt|_storeTimeFmt|246|function|undefined BuildLocaleTimeFormatPatternString()|
+5f64c0|storeTimeFmt|_storeTimeFmt|246|function|undefined BuildLocaleTimeFormatPatternString()|
 5f65c0|RebuildLocaleNumericFormattingTables_005f65c0||502|function|undefined RebuildLocaleNumericFormattingTables_005f65c0()|
-5f67c0|_fix_grouping|_fix_grouping|51|function|undefined NormalizeDigitStringInPlace_RemoveSemicolons()|
+5f67c0|fix_grouping|_fix_grouping|51|function|undefined NormalizeDigitStringInPlace_RemoveSemicolons()|
 5f68f0|__get_lc_lconv|__get_lc_lconv|331|function|undefined InitializeLocaleDateTimeFormattingFields()|
-5f6a40|_fix_grouping|_fix_grouping|51|function|undefined NormalizeDigitStringAndStripSemicolons()|
+5f6a40|fix_grouping|_fix_grouping|51|function|undefined NormalizeDigitStringAndStripSemicolons()|
 5f6a80|__free_lc_lconv|__free_lc_lconv|102|function|undefined FreeOwnedPointerFieldsIfNotUsingStaticBuffer()|
 5f6af9|RebuildLocaleWideCharClassificationTables_005f6af9||689|function|undefined RebuildLocaleWideCharClassificationTables_005f6af9()|
-5f6dc0|_strncmp|_strncmp|56|function|int __cdecl strncmp(char * _Str1, char * _Str2, size_t _MaxCount)|
-5f7300|_signal|_signal|516|function|undefined SetCrtSignalHandlerWithConsoleCtrlSetup()|
+5f6dc0|strncmp|_strncmp|56|function|int __cdecl strncmp(char * _Str1, char * _Str2, size_t _MaxCount)|
+5f7300|signal|_signal|516|function|undefined SetCrtSignalHandlerWithConsoleCtrlSetup()|
 5f7530|ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks||132|function|undefined ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks()|
 5f75c0|RaiseRuntimeSignalAndInvokeHandler||472|function|undefined RaiseRuntimeSignalAndInvokeHandler()|
-5f77d0|_siglookup|_siglookup|63|function|undefined FindMatchingKeyNodeInBucketChain()|
+5f77d0|siglookup|_siglookup|63|function|undefined FindMatchingKeyNodeInBucketChain()|
 5f7830|__addl|___addl|35|function|undefined AddUintWithCarryOutFlag()|msvc500_library_oracle
 5f7860|__add_12|___add_12|104|function|undefined Add96BitIntegerWithCarry()|msvc500_library_oracle
 5f78d0|__shl_12|___shl_12|46|function|undefined ShiftLeft96BitIntegerBy1()|msvc500_library_oracle
@@ -7345,18 +7344,18 @@ address|name|symbol|size|type|prototype|provenance
 5f88c0|___getlocaleinfo|___getlocaleinfo|428|function|undefined LoadLocaleInfoFieldByLctype()|
 5f8a80|___crtGetLocaleInfoW|___crtGetLocaleInfoW|304|function|undefined GetLocaleInfoWideWithAnsiFallback()|
 5f8bb0|___crtGetLocaleInfoA|___crtGetLocaleInfoA|319|function|undefined GetLocaleInfoAnsiWithWideFallback()|
-5f8d10|_wcstoxl|_wcstoxl|480|function|undefined ParseUnsignedLongFromWideStringWithRadixFlags()|
+5f8d10|wcstoxl|_wcstoxl|480|function|undefined ParseUnsignedLongFromWideStringWithRadixFlags()|
 5f8f10|__ld12mul|___ld12mul|696|function|undefined MultiplyExtendedFloatByTableFactor()|msvc500_library_oracle
 5f91d0|__multtenpow12|___multtenpow12|138|function|undefined ApplyPowerOf10ExponentToExtendedFloat()|msvc500_library_oracle
 5f94b0|___crtCompareStringA|___crtCompareStringA|709|function|undefined CompareLocaleStringsWithCodePageFallback()|
-5f9780|_strncnt|_strncnt|47|function|undefined ComputeCStringLengthBoundedByLimit()|
+5f9780|strncnt|_strncnt|47|function|undefined ComputeCStringLengthBoundedByLimit()|
 5f97b0|___crtsetenv|___crtsetenv|515|function|undefined SetEnvironmentEntryAndSyncWideState()|
-5f99c0|_findenv|_findenv|116|function|undefined FindEnvironmentEntryIndexByNamePrefix()|
-5f9a40|_copy_environ|_copy_environ|111|function|undefined DuplicateEnvironmentVectorWithStringCopies()|
+5f99c0|findenv|_findenv|116|function|undefined FindEnvironmentEntryIndexByNamePrefix()|
+5f9a40|copy_environ|_copy_environ|111|function|undefined DuplicateEnvironmentVectorWithStringCopies()|
 5f9b20|__setmode_lk|__setmode_lk|100|function|undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f9b20()|
-5f9b90|_towupper|_towupper|136|function|undefined ToLowerCodepointWithLocaleLock()|
+5f9b90|towupper|_towupper|136|function|undefined ToLowerCodepointWithLocaleLock()|
 5f9c20|__towupper_lk|__towupper_lk|125|function|undefined MapCodepointToLowercaseWithLocale()|
-5f9ca0|_iswctype|_iswctype|100|function|undefined GetCharTypeMaskForCodepoint()|
+5f9ca0|iswctype|_iswctype|100|function|undefined GetCharTypeMaskForCodepoint()|
 5fa7c2|_WinMain@16|_WinMain@16|24|function|undefined CallMfcAppLifecycleEntry()|
 5fa7da|AfxInitialize|?AfxInitialize@@YGHHK@Z|30|function|int __stdcall AfxInitialize(int, unsigned long)|msvc500_library_oracle
 5fa7f8|_AFX_TERM_APP_STATE::_AFX_TERM_APP_STATE|??0_AFX_TERM_APP_STATE@@QAE@XZ|19|function|public: __thiscall _AFX_TERM_APP_STATE::_AFX_TERM_APP_STATE(void)|msvc500_library_oracle
@@ -10343,7 +10342,7 @@ address|name|symbol|size|type|prototype|provenance
 6a1d78|g_defaultPoint_006A1D78|||global||
 6a1d80|g_nQuickDrawOriginX|||global||
 6a1d84|g_nQuickDrawOriginY|||global||
-6a1d90|g_nUiResourceEntryDefaultParam0|||global||
+6a1d90|g_UiResourceEntryDefaultTextStyle|||global||
 6a1d94|g_nUiResourceEntryDefaultParam1|||global||
 6a1d98|g_wUiResourceEntryDefaultParam2|||global||
 6a1d9c|g_pScopedMapQuickDrawDcHandleObject|||global||
