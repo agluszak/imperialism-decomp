@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import statistics
 import subprocess
 import sys
 from collections import Counter
@@ -38,14 +39,42 @@ def read_summary(report: Path) -> dict:
     return summary
 
 
+ANALYZED = frozenset({Outcome.DIFFERENCES.value, Outcome.NO_DIFFERENCES.value})
+
+
+def similarity(row: dict) -> float | None:
+    """Score of the producer-selected pass for an analyzed function."""
+    if row["outcome"] not in ANALYZED:
+        return None
+    score = selected_comparison(row)["similarity"]
+    return None if score is None else float(score)
+
+
 def function_counts(rows: list[dict]) -> dict:
     counts = Counter(row["outcome"] for row in rows)
     retried = [row for row in rows if row["selected_pass"] == "inline"]
+    analyzed = [row for row in rows if row["outcome"] in ANALYZED]
+    evidence = [selected_comparison(row) for row in analyzed]
+    scores = [score for row in analyzed if (score := similarity(row)) is not None]
     return {
         "outcomes": {outcome.value: counts[outcome.value] for outcome in Outcome},
+        "clean_rate": (
+            counts[Outcome.NO_DIFFERENCES.value] / len(analyzed) if analyzed else None
+        ),
+        "similarity": {
+            "mean": statistics.fmean(scores) if scores else None,
+            "median": statistics.median(scores) if scores else None,
+            "scored": len(scores),
+            "unscored": len(analyzed) - len(scores),
+        },
+        "code_differences": sum(bool(item.get("body_diff")) for item in evidence),
+        "data_differences": sum(bool(item.get("data")) for item in evidence),
         # Inferred declarations differ independently of body quality.
         "signature_differences": sum(
             bool(selected_comparison(row)["signature_diff"]) for row in rows
+        ),
+        "scalar_signedness_differences": sum(
+            item.get("change_kind") == "scalar-signedness" for item in evidence
         ),
         "inline_retries": len(retried),
         "inline_retries_clean": sum(

@@ -3,8 +3,8 @@ version = "12.3"
 release = "DEV"
 # Commit of github.com/agluszak/ghidra whose distribution is installed
 # (application.fork.revision); install with support/installForkDistribution.sh.
-revision = "cfd01e0128630ae9d162009ec7af402fe57bced2"
-sha256 = "7b7dbee0661241910855b8837c40ec3d848c1281a9eab6dd6a9aa40c01521239"
+revision = "739398dee314ba97c20bbaf715f62cdb9a82b2e1"
+sha256 = "2a426b4069fceb5bd2d357f06cc46cc498d0655e039b90c1bb295fc1ee2ccd56"
 program_name = "Imperialism.exe"
 
 [exports]

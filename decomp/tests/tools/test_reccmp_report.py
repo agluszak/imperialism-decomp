@@ -85,17 +85,24 @@ class ReccmpReportTests(unittest.TestCase):
                 self.assertTrue((output / "manifest.json").is_file())
 
     def test_counts_read_producer_selected_pass(self) -> None:
-        def row(outcome, selected="ordinary", signature=None):
-            evidence = {"outcome": outcome, "signature_diff": signature}
+        def row(outcome, selected="ordinary", signature=None, score=None):
+            evidence = {
+                "outcome": outcome,
+                "signature_diff": signature,
+                "similarity": score,
+                "body_diff": [] if outcome == "no-differences" else ["-a", "+b"],
+                "data": [],
+                "change_kind": "body",
+            }
             passes = {"ordinary": {"outcome": "differences", "signature_diff": None}}
             passes[selected] = evidence
             return {"outcome": outcome, "selected_pass": selected, "passes": passes}
 
         rows = [
-            row("no-differences"),
-            row("no-differences", signature=["-int", "+bool"]),
-            row("no-differences", "inline"),
-            row("differences", "inline"),
+            row("no-differences", score=1.0),
+            row("no-differences", signature=["-int", "+bool"], score=1.0),
+            row("no-differences", "inline", score=1.0),
+            row("differences", "inline", score=0.5),
             row("unpaired"),
             row("analysis-failed"),
         ]
@@ -108,7 +115,12 @@ class ReccmpReportTests(unittest.TestCase):
                     "unpaired": 1,
                     "analysis-failed": 1,
                 },
+                "clean_rate": 0.75,
+                "similarity": {"mean": 0.875, "median": 1.0, "scored": 4, "unscored": 0},
+                "code_differences": 1,
+                "data_differences": 0,
                 "signature_differences": 1,
+                "scalar_signedness_differences": 0,
                 "inline_retries": 2,
                 "inline_retries_clean": 1,
             },

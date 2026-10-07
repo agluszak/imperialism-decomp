@@ -5,6 +5,16 @@ import unittest
 from tools.reccmp.report import call_queue, reference_groups, report_delta
 
 
+def scored(address: str, outcome: str, score: float | None = None, name: str = "f") -> dict:
+    return {
+        "orig": address,
+        "name": name,
+        "outcome": outcome,
+        "selected_pass": "ordinary",
+        "passes": {"ordinary": {"similarity": score}},
+    }
+
+
 def summary(rows: list[dict], retail: str = "retail") -> dict:
     return {
         "target": "IMPERIALISM",
@@ -17,24 +27,39 @@ class CompareReportTests(unittest.TestCase):
     def test_delta_reports_population_changes_separately(self) -> None:
         before = summary(
             [
-                {"orig": "0x1", "outcome": "differences"},
-                {"orig": "0x2", "outcome": "no-differences"},
+                scored("0x1", "differences", 0.5),
+                scored("0x2", "no-differences", 1.0),
+                scored("0x4", "differences", 0.9, "g"),
             ]
         )
         after = summary(
             [
-                {"orig": "0x1", "outcome": "no-differences"},
-                {"orig": "0x3", "outcome": "unpaired"},
+                scored("0x1", "no-differences", 1.0),
+                scored("0x3", "unpaired"),
+                scored("0x4", "differences", 0.6, "g"),
             ]
         )
+        delta = report_delta(after, before)
         self.assertEqual(
-            report_delta(after, before),
+            delta["similarity"],
             {
-                "shared_functions": 1,
+                "improved": 1,
+                "regressed": 1,
+                "net": 0.2,
+                "largest_regressions": [{"orig": "0x4", "name": "g", "base": 0.9, "head": 0.6}],
+                "largest_improvements": [{"orig": "0x1", "name": "f", "base": 0.5, "head": 1.0}],
+            },
+        )
+        del delta["similarity"]
+        self.assertEqual(
+            delta,
+            {
+                "shared_functions": 2,
                 "added_to_dataset": ["0x3"],
                 "removed_from_dataset": ["0x2"],
                 "outcome_transitions": [
-                    {"base": "differences", "head": "no-differences", "count": 1}
+                    {"base": "differences", "head": "differences", "count": 1},
+                    {"base": "differences", "head": "no-differences", "count": 1},
                 ],
             },
         )

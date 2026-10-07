@@ -11,7 +11,7 @@ from pathlib import Path
 from reccmp.compare.call_census import call_delta
 from reccmp.ghidriff.report import selected_comparison
 
-from tools.common.reccmp_report import function_counts, read_summary
+from tools.common.reccmp_report import function_counts, read_summary, similarity
 from tools.common.repo import repo_root_from_file
 
 
@@ -26,8 +26,38 @@ def report_delta(head: dict, base: dict) -> dict:
         (old[address]["outcome"], new[address]["outcome"])
         for address in old.keys() & new.keys()
     )
+    shared = sorted(old.keys() & new.keys())
+    changes = [
+        (after - before, address)
+        for address in shared
+        if (before := similarity(old[address])) is not None
+        and (after := similarity(new[address])) is not None
+        and after != before
+    ]
+    changes.sort()
+
+    def change_rows(items):
+        return [
+            {
+                "orig": hex(address),
+                "name": new[address].get("name"),
+                "base": similarity(old[address]),
+                "head": similarity(new[address]),
+            }
+            for _, address in items
+        ]
+
     return {
-        "shared_functions": len(old.keys() & new.keys()),
+        "shared_functions": len(shared),
+        "similarity": {
+            "improved": sum(delta > 0 for delta, _ in changes),
+            "regressed": sum(delta < 0 for delta, _ in changes),
+            "net": round(sum(delta for delta, _ in changes), 4),
+            "largest_regressions": change_rows([c for c in changes if c[0] < 0][:15]),
+            "largest_improvements": change_rows(
+                [c for c in reversed(changes) if c[0] > 0][:15]
+            ),
+        },
         "added_to_dataset": [
             hex(address) for address in sorted(new.keys() - old.keys())
         ],
