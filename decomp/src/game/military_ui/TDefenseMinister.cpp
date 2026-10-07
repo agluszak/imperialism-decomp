@@ -1,3 +1,5 @@
+#include "game/nation_domain_types.h"
+#include "game/map_domain_types.h"
 #include "game/military_ui/TDefenseMinister.h"
 
 #include <stdlib.h>
@@ -361,8 +363,8 @@ int* TDefenseMinister::CreateHomeValueMap() {
 int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
   short ownNationSlot = greatPower->nationSlot;
 
-  bool atWarWithNation[0x17];
-  for (int nation = 0; nation < 0x17; ++nation) {
+  bool atWarWithNation[kNationSlotCount];
+  for (int nation = 0; nation < kNationSlotCount; ++nation) {
     atWarWithNation[nation] =
         g_pDiplomacyTurnStateManager->IsNationPairAtWar(ownNationSlot, static_cast<short>(nation));
   }

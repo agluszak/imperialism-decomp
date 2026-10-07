@@ -1,5 +1,6 @@
 // TEscortMission implementations.
 
+#include "game/nation_domain_types.h"
 #include "game/map/TEscortMission.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"

@@ -1,4 +1,6 @@
 #pragma once
+
+#include "game/nation_domain_types.h"
 #include "game/globals/global_types.h"
 
 class TGreatPower;
@@ -92,7 +94,7 @@ extern double g_Compute_Advisory_OnePointFive;
 // Per-order-type sort priority table (slot 0x55 selection sort).
 extern short g_anTrackedOrderSortPriorityByType[12];
 
-extern short g_Rebuild_Primary_Nation_Value[5][0x17];
+extern short g_Rebuild_Primary_Nation_Value[5][kNationSlotCount];
 
 extern short g_industryActionCostWeightResCode09[16];
 

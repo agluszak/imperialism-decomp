@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include <stdlib.h>
 #include "game/core/stream_byteswap.h"
 

@@ -1,3 +1,5 @@
+#include "game/nation_domain_types.h"
+#include "game/map_domain_types.h"
 #include "game/navy/TOcean.h"
 #include "game/ui_tags_common.h"
 #include "game/navy/TNavyMgr.h"
@@ -351,9 +353,9 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   if (0 < static_cast<short>(nationCountArg)) {
     do {
       int seedTile = SelectBestSeedTileForNationFromCostField(
-          costField, static_cast<short>(nationIndex + 0x17));
-      contextArray[nationIndex].SetMapActionContextTargetTileAndRefreshMarkers(nationIndex + 0x17,
-                                                                               seedTile);
+          costField, static_cast<short>(nationIndex + kNationSlotCount));
+      contextArray[nationIndex].SetMapActionContextTargetTileAndRefreshMarkers(
+          nationIndex + kNationSlotCount, seedTile);
       ++nationIndex;
     } while (nationIndex < static_cast<short>(nationCountArg));
   }
@@ -441,7 +443,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
 
 // FUNCTION: IMPERIALISM 0x00563300
 TZone* TOcean::Sea(short nationCode) {
-  return &contextArray[nationCode - 0x17];
+  return &contextArray[nationCode - kNationSlotCount];
 }
 
 // FUNCTION: IMPERIALISM 0x00563330
@@ -474,10 +476,10 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
     }
   }
   signed char nationCode = terrainRecord.ownerNationTag;
-  if (nationCode < 0x17) {
+  if (nationCode < kNationSlotCount) {
     return 0;
   }
-  return &contextArray[static_cast<short>(nationCode) - 0x17];
+  return &contextArray[static_cast<short>(nationCode) - kNationSlotCount];
 }
 
 // FUNCTION: IMPERIALISM 0x005634a0
@@ -601,7 +603,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
         continue;
       }
       signed char neighborNation = terrainTable[neighborTile].ownerNationTag;
-      if (neighborNation < 0x17 && neighborNation != nationSeed) {
+      if (neighborNation < kNationSlotCount && neighborNation != nationSeed) {
         allNeighborsQualify = false;
         break;
       }

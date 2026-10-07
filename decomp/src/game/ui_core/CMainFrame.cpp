@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/menu_commands.h"
 #include "game/ui_core/CMainFrame.h"
 
@@ -231,9 +232,9 @@ void CMainFrame::OnConductDiplomacy() {
       dialog.listbox.SetItemData(nationIndex, nationIndex);
       ++nationIndex;
     }
-    if (nationIndex < 0x17) {
+    if (nationIndex < kNationSlotCount) {
       for (country = &g_apTerrainTypeDescriptorTable[nationIndex];
-           country < &g_apTerrainTypeDescriptorTable[0x17]; ++country) {
+           country < &g_apTerrainTypeDescriptorTable[kNationSlotCount]; ++country) {
         CString label;
         CString name;
         (*country)->FormatOverlayTerrainLabelText(&name);

@@ -142,7 +142,7 @@ public:
   eGamePhaseNewStyle previousTurnStateCode;
   eGamePhaseNewStyle previousMode;
   unsigned char field14;
-  bool countryAvailable[0x17];
+  bool countryAvailable[kNationSlotCount];
   short economicTurn;
   NationSlot activeNationSlot;
   int numGreatPowers;
@@ -165,7 +165,7 @@ public:
   unsigned char councilByDecade[12];
   bool newsEventsSuppressed;
   unsigned char pad7b;
-  CString sharedTextSlots[0x17];
+  CString sharedTextSlots[kNationSlotCount];
   unsigned char multiplayerGameActive;
   unsigned char padD9;
   // Contiguous GameSetup policy rows; no inter-row padding.

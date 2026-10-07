@@ -1,6 +1,8 @@
 // TGreatPower — nation-state object for the seven playable great powers
 // Mac source: UCountry.cpp / UCountryAuto.cpp.
 
+#include "game/nation_domain_types.h"
+#include "game/map_domain_types.h"
 #include <math.h>
 #include "game/ui_tags_common.h"
 #include "game/resource_domain_types.h"
@@ -1439,7 +1441,7 @@ void TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(voi
   const unsigned short kRecurringGrantMask = 0x4000;
 
   int targetNation = 0;
-  while (static_cast<short>(targetNation) < 0x17) {
+  while (static_cast<short>(targetNation) < kNationSlotCount) {
     this->diplomacyPolicyByNation[targetNation] = static_cast<short>(kResetValue);
 
     unsigned short grantEntry =
@@ -3043,7 +3045,7 @@ void TGreatPower::KillUnitsIn(int ownerClass) {
 void TGreatPower::AddColony(int targetNation) {
   this->SetTradePolicyTo(static_cast<NationSlot>(targetNation), 100);
   this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1);
-  for (int nation = 0; nation < 0x17; ++nation) {
+  for (int nation = 0; nation < kNationSlotCount; ++nation) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nation)) {
       this->DeclareWarOnTargetForAlignedMinors(nation);
     }

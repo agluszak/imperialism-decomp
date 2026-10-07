@@ -1,3 +1,4 @@
+#include "game/resource_domain_types.h"
 #include "game/menu_commands.h"
 #include "game/ImperialismApp.h"
 
@@ -428,7 +429,7 @@ void ImperialismApp::OnBequeathGoodies() {
   if (dialog.DoModal() == IDOK) {
     int nationSlot = dialog.slider.GetPos();
     TCity* city = g_apNationStates[nationSlot] != 0 ? g_apNationStates[nationSlot]->city : 0;
-    for (short commodity = 0; commodity < 0x17; ++commodity) {
+    for (short commodity = 0; commodity < kResourceKindCount; ++commodity) {
       city->CityStockByType(commodity) = static_cast<short>(
           city->CityStockByType(commodity) + static_cast<short>(dialog.commodityAdjustment));
       city->VerifyStocks();

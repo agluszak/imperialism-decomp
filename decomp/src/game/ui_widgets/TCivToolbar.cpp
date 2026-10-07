@@ -97,7 +97,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   selectedStackButton = 0;
   selectedCivilianState = g_pSelectedCivilianOrderState;
 
-  for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
+  for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); ++slotIndex) {
     stackButton =
         static_cast<TControl*>(this->ResolveControlByTag(kControlTagStackSlotFirst + slotIndex));
     if (stackButton == 0) {

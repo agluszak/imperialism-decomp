@@ -1,3 +1,4 @@
+#include "game/map_domain_types.h"
 #include "game/map/sea_geometry.h"
 
 #include <math.h>

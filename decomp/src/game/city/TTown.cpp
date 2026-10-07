@@ -1,3 +1,4 @@
+#include "game/resource_domain_types.h"
 #include "game/city/TTown.h"
 
 #include "game/map/TMapMgr.h"

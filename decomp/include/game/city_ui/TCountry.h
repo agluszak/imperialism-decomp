@@ -98,7 +98,7 @@ public:
   NationSlot nationSlot;
   EncodedNationSlot encodedNationSlot;
   int treasuryValue;
-  short needLevelByNation[0x17];
+  short needLevelByNation[kNationSlotCount];
   short field42;
   TSortedList* militaryUnitList;
   short unitNameOrdinalByType[0x1e];

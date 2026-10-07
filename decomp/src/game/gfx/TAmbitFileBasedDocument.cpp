@@ -1,3 +1,4 @@
+#include "game/map_domain_types.h"
 #include "game/gfx/TAmbitFileBasedDocument.h"
 #include "game/ui_tags_widgets.h"
 

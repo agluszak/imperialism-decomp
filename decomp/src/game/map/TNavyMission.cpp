@@ -1061,10 +1061,10 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
       }
     }
     float total = 0.0f;
-    float* component = vector;
-    for (int remaining = 4; remaining != 0; --remaining) {
-      total += *component++;
+    for (int category = 0; category < 4; ++category) {
+      total += vector[category];
     }
+    float* component;
     if (total == static_cast<float>(0.0)) {
       return 0.0f;
     }
@@ -1111,10 +1111,10 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
         }
       }
       float total = 0.0f;
-      float* component = vector;
-      for (int remaining = 4; remaining != 0; --remaining) {
-        total += *component++;
+      for (int category = 0; category < 4; ++category) {
+        total += vector[category];
       }
+      float* component;
       float score = 0.0f;
       if (total != static_cast<float>(0.0)) {
         float diffSum = 0.0f;

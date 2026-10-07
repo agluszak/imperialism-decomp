@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/assets/TCdAudioDevice.h"
 #include "game/military_ui/TNextDiplomationCommand.h"

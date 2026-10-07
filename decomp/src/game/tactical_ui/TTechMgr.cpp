@@ -1,3 +1,4 @@
+#include "game/map_domain_types.h"
 #include "game/tactical_ui/TTechMgr.h"
 
 #include "decomp_types.h"

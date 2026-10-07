@@ -1,3 +1,4 @@
+#include "game/map_domain_types.h"
 #include "game/map_ui/TMapDialog.h"
 #include "game/resource_domain_types.h"
 #include "game/ui_tags_common.h"

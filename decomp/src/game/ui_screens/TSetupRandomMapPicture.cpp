@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_screens.h"
@@ -309,7 +310,7 @@ void TSetupRandomMapPicture::StartGame() {
   if (g_pSimMgr->useLocalizedNameTables != 0) {
     CString localizedName;
     bool duplicateName = false;
-    for (int nationSlot = 0; nationSlot < 0x17 && !duplicateName; ++nationSlot) {
+    for (int nationSlot = 0; nationSlot < kNationSlotCount && !duplicateName; ++nationSlot) {
       if (nationSlot != selectedNationSlot) {
         g_pSimMgr->GetString(0x2715, static_cast<short>(nationSlot), &localizedName);
         duplicateName = localizedName.Compare(countryText) == 0;

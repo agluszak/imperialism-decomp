@@ -1,3 +1,4 @@
+#include "game/resource_domain_types.h"
 #include "game/city/TProductionOrder.h"
 
 #include "game/city/TCity.h"

@@ -50,10 +50,10 @@ float ComputeNavyOrderDistributionScoreForNation(short nation) {
     }
   }
   float total = 0.0f;
-  float* component = categoryVector;
-  for (int remaining = 4; remaining != 0; --remaining) {
-    total += *component++;
+  for (int category = 0; category < 4; ++category) {
+    total += categoryVector[category];
   }
+  float* component;
   if (total == static_cast<float>(0.0)) {
     return 0.0f;
   }

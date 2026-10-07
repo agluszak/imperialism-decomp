@@ -1,3 +1,4 @@
+#include "game/map_domain_types.h"
 #include "game/navy_ui/TOceanDialog.h"
 
 #include "game/ui_core/bitmap_descriptor_helpers.h"

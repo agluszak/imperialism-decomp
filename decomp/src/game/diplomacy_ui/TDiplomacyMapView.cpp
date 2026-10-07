@@ -1,5 +1,7 @@
 // TDiplomacyMapView QuickDraw legend rendering slice.
 
+#include "game/nation_domain_types.h"
+#include "game/map_domain_types.h"
 #include "decomp_types.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_diplomacy.h"
@@ -205,7 +207,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b68);
 
-  for (short nationIndex = 0; nationIndex < 0x17; ++nationIndex) {
+  for (short nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
     DiplomacyMaskBufferRun* run = &maskRuns[nationIndex];
     RgnHandle nationRgn = g_pMacViewMgr->GetCountryRegion(nationIndex);
     (*nationRgn)->RefreshBoundingBox();
@@ -1154,7 +1156,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
           g_pActiveQuickDrawSurfaceContext->blitSurface.pixelBits, packedColor);
 
       nationIndex = static_cast<short>(nationIndex + 1);
-    } while (nationIndex < 0x17);
+    } while (nationIndex < kNationSlotCount);
 
     DrawNames(presentRect);
     legendSurfaceMode = 4;

@@ -1,3 +1,4 @@
+#include "game/resource_domain_types.h"
 #include "game/city_ui/TIndustryView.h"
 #include "game/city_ui/TCityProductionView.h"
 #include "game/ui_tags_city.h"

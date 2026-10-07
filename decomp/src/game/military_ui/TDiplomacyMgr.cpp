@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/diplomacy_domain_types.h"
 #include "game/ui_tags_military.h"
 #include "game/gfx/TAmbitApplication.h"
@@ -360,10 +361,8 @@ void TDiplomacyMgr::ReadFrom(TStream* stream) {
 
   if (g_nSaveFormatVersion > 0x1a) {
     stream->ReadBytes(specialRelationSourceSlots, sizeof(specialRelationSourceSlots));
-    NationSlot* slot = specialRelationSourceSlots;
-    for (int remaining = 0x10; remaining != 0; --remaining) {
-      ByteSwapShortInPlace(slot);
-      ++slot;
+    for (int i = 0; i < 0x10; ++i) {
+      ByteSwapShortInPlace(&specialRelationSourceSlots[i]);
     }
   }
 
@@ -388,12 +387,10 @@ void TDiplomacyMgr::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, &congressLeadership.chairmanNationSlot, 2);
   WriteShortArrayElems(stream, &congressSupport.chairmanSupportCount, 3);
 
-  NationSlot* slot = specialRelationSourceSlots;
-  for (int remaining = 0x10; remaining != 0; --remaining) {
-    short value = *slot;
+  for (int i = 0; i < 0x10; ++i) {
+    short value = specialRelationSourceSlots[i];
     SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
-    ++slot;
   }
 
   WriteByteSwappedShortArrayToStream(stream, specialRelationTargetSlots, 0x10);
@@ -422,7 +419,7 @@ bool TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate(NationSlot sourceNati
 
 // FUNCTION: IMPERIALISM 0x004ef600
 bool TDiplomacyMgr::HasAnyWarRelationForNation(NationSlot sourceNationSlot) {
-  for (int targetNationSlot = 0; targetNationSlot < 0x17; ++targetNationSlot) {
+  for (int targetNationSlot = 0; targetNationSlot < kNationSlotCount; ++targetNationSlot) {
     if (IsNationPairAtWar(sourceNationSlot, targetNationSlot)) {
       return true;
     }
@@ -432,7 +429,7 @@ bool TDiplomacyMgr::HasAnyWarRelationForNation(NationSlot sourceNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004ef650
 bool TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation(NationSlot sourceNationSlot) {
-  for (int targetNationSlot = 0; targetNationSlot < 0x17; ++targetNationSlot) {
+  for (int targetNationSlot = 0; targetNationSlot < kNationSlotCount; ++targetNationSlot) {
     if (IsNationPairRelationTurnStampOutOfDate(sourceNationSlot, targetNationSlot)) {
       return true;
     }

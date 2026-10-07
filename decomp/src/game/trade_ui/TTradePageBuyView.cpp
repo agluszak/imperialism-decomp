@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/trade_ui/TTradePageBuyView.h"
 
 #include "game/TList.h"
@@ -41,7 +42,7 @@ void TTradePageBuyView::SetItem(short categorySlot) {
       headerRow->SetTextLineStyleDescriptor(&headerStyle);
       orderedEntries->AddTail(headerRow);
 
-      for (short nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
+      for (short nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
         if (g_pTradeMgr->DidBidOn(nationSlot, categorySlot)) {
           TTradeBidNationLine* row = new TTradeBidNationLine();
           int rowBounds[2];

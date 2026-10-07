@@ -2,6 +2,7 @@ class TControl;
 class TView;
 class TInfoBarText;
 
+#include "game/nation_domain_types.h"
 #include "game/tactical/TArmyPlayer.h"
 #include "game/resource_manifest_tags.h"
 #include "game/ui_tags_common.h"
@@ -1730,7 +1731,7 @@ float g_Compute_Advisory_MinusSixFloat = -6.0f;
 double g_Compute_Advisory_Hundred = 100.0;
 double g_Compute_Advisory_OnePointFive = 1.5;
 
-short g_Rebuild_Primary_Nation_Value[5][0x17] = {
+short g_Rebuild_Primary_Nation_Value[5][kNationSlotCount] = {
     {20, 20, 40, 30, 30, 10, 0, 20, 20, 20, 20, 20, 0, 10, 10, 10, 10, 10, 5, 0, 5, 0, 0},
     {5, 5, 10, 5, 5, 2, 0, 20, 10, 15, 8, 10, 0, 5, 5, 0, 0, 10, 5, 0, 5, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 20, 10, 24, 8, 19, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0},

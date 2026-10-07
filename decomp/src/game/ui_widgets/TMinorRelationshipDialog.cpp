@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/ui_widgets/TMinorRelationshipDialog.h"
 
 #include "game/military_ui/TDiplomacyMgr.h"
@@ -18,7 +19,7 @@ IMPLEMENT_DYNCREATE(TMinorRelationshipDialog, TDialogView)
 
 // FUNCTION: IMPERIALISM 0x005b3400
 void TMinorRelationshipDialog::Close() {
-  for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
+  for (short minorNation = 7; minorNation < kNationSlotCount; ++minorNation) {
     int minorIndex = minorNation - 7;
     if (g_apTerrainTypeDescriptorTable[minorNation] == 0) {
       continue;

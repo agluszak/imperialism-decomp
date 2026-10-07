@@ -1,3 +1,5 @@
+#include "game/nation_domain_types.h"
+#include "game/map_domain_types.h"
 #include "game/city_ui/TCityInteriorMinister.h"
 #include "game/resource_domain_types.h"
 #include "game/ui_tags_city.h"

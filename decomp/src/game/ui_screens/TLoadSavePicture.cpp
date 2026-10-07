@@ -1,3 +1,4 @@
+#include "game/map_domain_types.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_tags_common.h"

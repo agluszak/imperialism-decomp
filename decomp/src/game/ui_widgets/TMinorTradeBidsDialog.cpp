@@ -1,3 +1,5 @@
+#include "game/nation_domain_types.h"
+#include "game/resource_domain_types.h"
 #include "game/ui_widgets/TMinorTradeBidsDialog.h"
 #include "game/ui_tags_widgets.h"
 
@@ -23,7 +25,7 @@ void TMinorTradeBidsDialog::StuffValues() {
   }
 
   short nationSlot;
-  for (nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
+  for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     TNumberText* amountControl = static_cast<TNumberText*>(
         costPanel->ResolveControlByTag(g_tradeBidNationMetricControlTags[nationSlot]));
     if (amountControl != 0) {
@@ -41,7 +43,7 @@ void TMinorTradeBidsDialog::StuffValues() {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x189);
       }
 
-      for (short metricSlot = 0; metricSlot < 0x17; ++metricSlot) {
+      for (short metricSlot = 0; metricSlot < kResourceKindCount; ++metricSlot) {
         TNumberText* amountControl = static_cast<TNumberText*>(
             minorPanel->ResolveControlByTag(g_tradeBidNationMetricControlTags[metricSlot]));
         if (amountControl != 0) {

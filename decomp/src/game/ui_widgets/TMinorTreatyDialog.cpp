@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/ui_widgets/TMinorTreatyDialog.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
@@ -23,7 +24,7 @@ void TMinorTreatyDialog::StuffValues() {
   unsigned int nameTags[8] = {kControlTagNam0, kControlTagNam1, kControlTagNam2, kControlTagNam3,
                               kControlTagNam4, kControlTagNam5, kControlTagNam6, kControlTagNam7};
 
-  for (short minorNationSlot = 7; minorNationSlot < 0x17; ++minorNationSlot) {
+  for (short minorNationSlot = 7; minorNationSlot < kNationSlotCount; ++minorNationSlot) {
     int minorIndex = minorNationSlot - 7;
     if (g_apTerrainTypeDescriptorTable[minorNationSlot] == 0) {
       continue;

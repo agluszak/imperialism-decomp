@@ -1,3 +1,6 @@
+#include "game/nation_domain_types.h"
+#include "game/resource_domain_types.h"
+#include "game/map_domain_types.h"
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/ui_core/TWindow.h"
 #include "game/ui_tags_common.h"
@@ -259,7 +262,7 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
   stridePixels = static_cast<short>(static_cast<ushort>((*atlasSurface)->stride) & 0x3fff);
   dstCursor = pixelBuffer - 0x20;
   commodityIndex = 0;
-  while (commodityIndex < 0x17) {
+  while (commodityIndex < kResourceKindCount) {
     TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(commodityIndex + 700);
     if (loaderHandle != NULL && *loaderHandle != 0) {
       TBitmapResourceLoader* loader = *loaderHandle;
@@ -792,7 +795,7 @@ void TMacViewMgr::RegenerateCountryRegions() {
   if (tileStateSlots[0] != 0) {
     RgnHandle regionWrapper = NewRgn();
     int nationIndex = 0;
-    while (nationIndex < 0x17) {
+    while (nationIndex < kNationSlotCount) {
       SetEmptyRgn(regionWrapper);
       int cityRecordIndex = 0;
       RgnHandle* tileSlot = tileStateSlots;

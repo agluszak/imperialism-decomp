@@ -1,3 +1,5 @@
+#include "game/nation_domain_types.h"
+#include "game/map_domain_types.h"
 #include "game/ui_screens/TPortZone.h"
 
 #include <new.h>
@@ -183,7 +185,7 @@ short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
         }
       } else {
         short nationCode = static_cast<short>(candidateRecord.ownerNationTag);
-        if (nationCode >= 0x17) {
+        if (nationCode >= kNationSlotCount) {
           candidateContext = &g_pActiveMapOrderContext->contextArray[nationCode - 0x17];
         }
       }

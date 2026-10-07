@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/nation_domain_types.h"
 #include "game/city_ui/TCountry.h"
 #include "game/resource_domain_types.h"
 

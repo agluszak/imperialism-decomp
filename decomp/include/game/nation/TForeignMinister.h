@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/nation_domain_types.h"
 #include "game/map/TMinister.h"
 
 class TGreatPower;
@@ -60,9 +61,9 @@ public:
   short purchasePriorityByResource[0x11]; // +0x1e..0x3f — per-resource demand
   short preferredResourceSlots[4];        // +0x40..0x47 — top four resource codes
 
-  unsigned char field48;                // +0x48 — cleared by the constructor
-  unsigned char tradePartnerEnabled[7]; // +0x49..0x4f — per-major-nation trade status
-  short developmentGrantByNation[0x17]; // +0x50..0x7d — serialized grant accumulation
+  unsigned char field48;                            // +0x48 — cleared by the constructor
+  unsigned char tradePartnerEnabled[7];             // +0x49..0x4f — per-major-nation trade status
+  short developmentGrantByNation[kNationSlotCount]; // +0x50..0x7d — serialized grant accumulation
   unsigned char pad7e[2];
 };
 

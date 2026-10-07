@@ -1,3 +1,5 @@
+#include "game/nation_domain_types.h"
+#include "game/map_domain_types.h"
 #include "game/nation/TMinor.h"
 #include "game/resource_domain_types.h"
 #include "game/core/stream_byteswap.h"

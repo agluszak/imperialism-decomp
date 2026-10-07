@@ -1,3 +1,4 @@
+#include "game/resource_domain_types.h"
 #include "game/tactical_ui/TShipBuildingTask.h"
 #include "game/tactical_ui/TTaskList.h"
 
@@ -61,7 +62,7 @@ bool TShipBuildingTask::Execute(TTaskList* taskList) {
     deficits[3] = static_cast<short>(g_industryActionCostWeightResCode03[requestedShipType] -
                                      shipOrder->trackingSlots[3]);
 
-    for (short resource = 0; resource < 0x17; ++resource) {
+    for (short resource = 0; resource < kResourceKindCount; ++resource) {
       short deficit = deficits[resource];
       if (deficit > 0) {
         short available = ownerCity->CityStockByType(resource);
@@ -80,7 +81,7 @@ bool TShipBuildingTask::Execute(TTaskList* taskList) {
     }
 
     if (alreadyQueuedFlag == 0) {
-      for (short resource = 0; resource < 0x17; ++resource) {
+      for (short resource = 0; resource < kResourceKindCount; ++resource) {
         short deficit = deficits[resource];
         if (deficit > 0) {
           TCityTask* task = new TCityTask();

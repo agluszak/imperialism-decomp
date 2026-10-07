@@ -234,7 +234,7 @@ void TArmyBattle::LoadMap(int compositionClass, int fortLevel) {
 
   TacticalTileRecord* record = tileGrid;
   char* src = tabData;
-  for (int rowsLeft = 0xf; rowsLeft != 0; --rowsLeft) {
+  for (int row = 0; row < 0xf; ++row) {
     for (int col = 0; col < 0x1d; ++col) {
       if (col < 0x1d - battlefieldColumnCount) {
         ++src; // margin char: no grid cell consumed

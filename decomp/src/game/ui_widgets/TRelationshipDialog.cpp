@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/ui_widgets/TRelationshipDialog.h"
 
 #include "game/military_ui/TDiplomacyMgr.h"

@@ -60,15 +60,15 @@ IMPLEMENT_DYNCREATE(TCityProductionView, TNoHilitePicture)
 TCityProductionView::TCityProductionView() {
   selectedBuildingSlot = -1;
   needsRefresh = false;
-  for (int i = 0; i < 16; i = i + 1) {
+  for (int i = 0; i < 16; ++i) {
     buildingClipRegions[i] = 0;
   }
-  for (int viewSlot = 0; viewSlot < 16; viewSlot = viewSlot + 1) {
+  for (int viewSlot = 0; viewSlot < 16; ++viewSlot) {
     buildingViews[viewSlot] = 0;
   }
   clockHour = -1;
-  for (int group = 0; group < 8; group = group + 1) {
-    for (int slot = 0; slot < 3; slot = slot + 1) {
+  for (int group = 0; group < 8; ++group) {
+    for (int slot = 0; slot < 3; ++slot) {
       buildingActionAnimations[group][slot] = 0;
     }
   }

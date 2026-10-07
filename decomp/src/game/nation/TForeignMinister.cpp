@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/diplomacy_domain_types.h"
 #include "game/resource_domain_types.h"
 #include "game/nation/TForeignMinister.h"
@@ -113,7 +114,7 @@ void TForeignMinister::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0052f430
 short TForeignMinister::GetRankingCriterionForGP(short nationSlot) {
   short relationTotal = 0;
-  for (short otherNation = 0; otherNation < 0x17; ++otherNation) {
+  for (short otherNation = 0; otherNation < kNationSlotCount; ++otherNation) {
     if (otherNation != nationSlot && g_apTerrainTypeDescriptorTable[otherNation] != 0) {
       relationTotal = static_cast<short>(
           relationTotal +
@@ -390,7 +391,7 @@ void TForeignMinister::GoodsMatchShipping() {
   bool matched = false;
   short terrainSlot = 7;
   do {
-    if (terrainSlot >= 0x17) {
+    if (terrainSlot >= kNationSlotCount) {
       break;
     }
     if (g_apTerrainTypeDescriptorTable[terrainSlot]->IsColonyOf(owner->nationSlot)) {
@@ -485,7 +486,7 @@ void TForeignMinister::DoDevelopmentGrants() {
 
 // FUNCTION: IMPERIALISM 0x00530200
 void TForeignMinister::DoProposeTreaties() {
-  for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
+  for (short minorNation = 7; minorNation < kNationSlotCount; ++minorNation) {
     TMinor* minor = g_apSecondaryNationStateSlots[minorNation];
     if (minor == 0 ||
         g_pDiplomacyTurnStateManager->GetEmbassyStatus(greatPower->nationSlot, minorNation) != 2) {
@@ -747,7 +748,7 @@ void TForeignMinister::SetEmpirePolicies() {
     }
   }
 
-  for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
+  for (short minorNation = 7; minorNation < kNationSlotCount; ++minorNation) {
     if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot, minorNation) >= 1 &&
         owner->needLevelByNation[minorNation] > 0x5f &&
         owner->needLevelByNation[minorNation] < 300 &&
@@ -757,7 +758,7 @@ void TForeignMinister::SetEmpirePolicies() {
   }
 
   if (owner->treasuryValue < 0) {
-    for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
+    for (short minorNation = 7; minorNation < kNationSlotCount; ++minorNation) {
       if (owner->needLevelByNation[minorNation] < 0x4b) {
         owner->SetTradePolicyTo(static_cast<NationSlot>(minorNation), 0x4b);
       }

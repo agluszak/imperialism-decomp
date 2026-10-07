@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TDialogBehavior.h"
 #include "game/multiplayer_session_tags.h"
@@ -45,7 +46,7 @@ struct TurnEvent2CPacket : TimelyNetMessagePrefix {
   short orderCountByType[kIndustryActionSlotCount];         // +0x7c
   int cityRollingItemProductionScore;                       // +0x98
   short cityFieldB4;                                        // +0x9c
-  short cityStock[0x17];                                    // +0x9e
+  short cityStock[kResourceKindCount];                      // +0x9e
   short productionOrderTable[0x10];                         // +0xcc
   short productionAccum[0x10];                              // +0xec
   short populationGrowthPenaltyTicks;                       // +0x10c
@@ -66,9 +67,9 @@ struct TurnEvent19Packet : TimelyNetMessagePrefix {
   short orderCountByType[kIndustryActionSlotCount]; // +0x20
   short externalStateByTarget[0x17];                // +0x3c
   short metricBySlot7C[0x11];                       // +0x6a
-  short diplomacyPolicyByNation[0x17];              // +0x8c
-  short diplomacyGrantByNation[0x17];               // +0xba
-  short needLevelByNation[0x17];                    // +0xe8
+  short diplomacyPolicyByNation[kNationSlotCount];  // +0x8c
+  short diplomacyGrantByNation[kNationSlotCount];   // +0xba
+  short needLevelByNation[kNationSlotCount];        // +0xe8
   unsigned char pad116[2];                          // total 0x118
 };
 
@@ -76,13 +77,13 @@ struct TurnEvent19Packet : TimelyNetMessagePrefix {
 struct TurnEvent15Packet : TimelyMessageHeader {
   short nationSlot; // +0x18
   unsigned char pad1a[2];
-  int treasuryValue;                    // +0x1c
-  int grantTotalCost;                   // +0x20
-  short needCurrentByType[0x17];        // +0x24
-  short needTargetByType[0x17];         // +0x52
-  short relationDeltaCurrent[0x17];     // +0x80
-  short purchasedItemsByResource[0x17]; // +0xae
-  short itemPotentials[0x17];           // +0xdc
+  int treasuryValue;                                  // +0x1c
+  int grantTotalCost;                                 // +0x20
+  short needCurrentByType[kResourceKindCount];        // +0x24
+  short needTargetByType[kResourceKindCount];         // +0x52
+  short relationDeltaCurrent[0x17];                   // +0x80
+  short purchasedItemsByResource[kResourceKindCount]; // +0xae
+  short itemPotentials[kResourceKindCount];           // +0xdc
   unsigned char pad10a[2];
   int aidAllocationMatrix[0x170]; // +0x10c
   int budgetPoolBase;             // +0x6cc
@@ -331,7 +332,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       SendStreamMessage(0x2e, -1, g_pSimMgr->GetPlayerCountry());
       SendStreamMessage(0x2f, -1, g_pSimMgr->GetPlayerCountry());
       SendStreamMessage(0x30, -1, g_pSimMgr->GetPlayerCountry());
-      for (int slot = 0; slot < 0x17; ++slot) {
+      for (int slot = 0; slot < kNationSlotCount; ++slot) {
         TMinor* minor = g_apSecondaryNationStateSlots[slot];
         if (minor != 0) {
           minor->InitializeTradeStatus();
@@ -440,7 +441,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       packet.messageLength = 0;
       packet.messageLength = 0x668;
       packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
-      for (int slot = 0; slot < 0x17; ++slot) {
+      for (int slot = 0; slot < kNationSlotCount; ++slot) {
         packet.homeTileBySlot[slot] = (short)g_apTerrainTypeDescriptorTable[slot]->homeTileIndex;
         int cityRecordIndex = g_apTerrainTypeDescriptorTable[slot]->GetCapitolProvince();
         CString cityName;
@@ -500,7 +501,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     }
 
     SendStreamMessage(0x2e, -2, -1);
-    for (int descriptorSlot = 0; descriptorSlot < 0x17; ++descriptorSlot) {
+    for (int descriptorSlot = 0; descriptorSlot < kNationSlotCount; ++descriptorSlot) {
       if (g_apTerrainTypeDescriptorTable[descriptorSlot] != 0) {
         SendStreamMessage(0x2f, -2, descriptorSlot);
       }
@@ -513,7 +514,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         EmitTurnEvent2CNationStateCompositeForSlot(stateSlot, -2);
       }
     }
-    for (short minorSlot = 7; minorSlot < 0x17; ++minorSlot) {
+    for (short minorSlot = 7; minorSlot < kNationSlotCount; ++minorSlot) {
       if (g_pSimMgr->ReallyInTheGame(minorSlot)) {
         TurnEvent2DMinorNeedPacket packet;
         packet.InitializeEmitEventHeaderWithActiveNation();
@@ -585,7 +586,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         EmitTurnEvent2CNationStateCompositeForSlot(stateSlot, -2);
       }
     }
-    for (short minorSlot = 7; minorSlot < 0x17; ++minorSlot) {
+    for (short minorSlot = 7; minorSlot < kNationSlotCount; ++minorSlot) {
       if (g_pSimMgr->ReallyInTheGame(minorSlot)) {
         TurnEvent2DMinorNeedPacket packet;
         packet.InitializeEmitEventHeaderWithActiveNation();
@@ -616,7 +617,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
 
   case kGamePhaseProduction: {
     SendStreamMessage(0x2e, -2, -1);
-    for (int descriptorSlot = 0; descriptorSlot < 0x17; ++descriptorSlot) {
+    for (int descriptorSlot = 0; descriptorSlot < kNationSlotCount; ++descriptorSlot) {
       if (g_apTerrainTypeDescriptorTable[descriptorSlot] != 0) {
         SendStreamMessage(0x2f, -2, descriptorSlot);
       }
@@ -708,7 +709,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
   case 0xb: {
     TurnEventBNationDirectoryPacket* directory =
         static_cast<TurnEventBNationDirectoryPacket*>(packet);
-    for (int dirSlot = 0; dirSlot < 0x17; ++dirSlot) {
+    for (int dirSlot = 0; dirSlot < kNationSlotCount; ++dirSlot) {
       if (dirSlot != g_pSimMgr->GetPlayerCountry() &&
           g_apTerrainTypeDescriptorTable[dirSlot]->IsRemote()) {
         g_apTerrainTypeDescriptorTable[dirSlot]->PlopDownCity(directory->homeTileBySlot[dirSlot],
@@ -1498,7 +1499,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     // Minor-nation need snapshot.
     TurnEvent2DMinorNeedPacket* minorNeed = static_cast<TurnEvent2DMinorNeedPacket*>(packet);
     TMinor* minor2D = g_apSecondaryNationStateSlots[minorNeed->nationSlot];
-    for (int needSlot2D = 0; needSlot2D < 0x17; ++needSlot2D) {
+    for (int needSlot2D = 0; needSlot2D < kNationSlotCount; ++needSlot2D) {
       minor2D->needLevelByNation[needSlot2D] = minorNeed->needLevelByNation[needSlot2D];
     }
     break;
@@ -2869,7 +2870,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       g_apNationStates[nationSlot] = newNation;
       g_apTerrainTypeDescriptorTable[nationSlot] = newNation;
       newNation->CreateInitialMissions();
-      for (int targetSlot = 0; targetSlot < 0x17; ++targetSlot) {
+      for (int targetSlot = 0; targetSlot < kNationSlotCount; ++targetSlot) {
         if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, targetSlot)) {
           newNation->enemyFlags[targetSlot] = 1;
         }
@@ -3298,7 +3299,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent2D_TableRowShortArray(short nationSl
   }
   packet.nationSlot = nationSlot;
   TMinor* nation = g_apSecondaryNationStateSlots[nationSlot];
-  for (short targetNation = 0; targetNation < 0x17; ++targetNation) {
+  for (short targetNation = 0; targetNation < kNationSlotCount; ++targetNation) {
     packet.needLevelByNation[targetNation] = nation->needLevelByNation[targetNation];
   }
   g_pNetMgr->Send(&packet, destinationSlot == -3);

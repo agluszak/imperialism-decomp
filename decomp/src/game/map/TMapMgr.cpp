@@ -1,3 +1,5 @@
+#include "game/nation_domain_types.h"
+#include "game/map_domain_types.h"
 #include <time.h>
 #include "game/resource_domain_types.h"
 #include "game/ui_tags_common.h"
@@ -2139,7 +2141,7 @@ bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileInd
           }
           if (neighborTile != -1) {
             short neighborNation = terrainStateTable[neighborTile].ownerNationTag;
-            if (neighborNation < 0x17 && neighborNation != homeNation) {
+            if (neighborNation < kNationSlotCount && neighborNation != homeNation) {
               isValid = false;
               break;
             }
@@ -3434,7 +3436,7 @@ short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationS
       continue;
     }
     bool includeTile = true;
-    if (nationSlot < 0x17 && g_apTerrainTypeDescriptorTable[nationSlot] != 0 &&
+    if (nationSlot < kNationSlotCount && g_apTerrainTypeDescriptorTable[nationSlot] != 0 &&
         g_apTerrainTypeDescriptorTable[nationSlot]->homeTileIndex != -1) {
       short nationHomeTile =
           static_cast<short>(g_apTerrainTypeDescriptorTable[nationSlot]->homeTileIndex);
@@ -3492,7 +3494,7 @@ short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationS
   }
 
   short fallbackTile = -1;
-  if (nationSlot < 0x17 && g_apTerrainTypeDescriptorTable[nationSlot] != 0) {
+  if (nationSlot < kNationSlotCount && g_apTerrainTypeDescriptorTable[nationSlot] != 0) {
     TLongintList* ownedRegions = g_apTerrainTypeDescriptorTable[nationSlot]->ownedRegionList;
     if (ownedRegions != 0 && ownedRegions->GetSize() > 0) {
       int lastMatch = -1;
@@ -3581,7 +3583,7 @@ bool TMapMgr::HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, i
     }
   }
 
-  for (int minorSlot = 7; minorSlot < 0x17; ++minorSlot) {
+  for (int minorSlot = 7; minorSlot < kNationSlotCount; ++minorSlot) {
     if (g_apTerrainTypeDescriptorTable[minorSlot] != NULL &&
         g_apSecondaryNationStateSlots[minorSlot]->IsColonyOf(nationCode)) {
       for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
@@ -4151,7 +4153,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
             laborCity1->productionSummary->baselineSlots->lowSkillCount,
             laborCity2->productionSummary->baselineSlots->mediumSkillCount,
             laborCity3->productionSummary->baselineSlots->highSkillCount);
-    for (slot = 0; slot < 0x17; ++slot) {
+    for (slot = 0; slot < kNationSlotCount; ++slot) {
       short embargo = g_pDiplomacyTurnStateManager->GetEmbassyStatus(nationIndex, slot);
       if (embargo > 0) {
         embargo = g_pDiplomacyTurnStateManager->GetEmbassyStatus(nationIndex, slot);
@@ -4171,7 +4173,7 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
   short preferredIsolationByProfile[7][3] = {{0, 1, 2}, {2, 1, 0}, {0, 1, 2}, {0, 1, 2},
                                              {1, 2, 0}, {1, 2, 0}, {0, 1, 2}};
   short slotIsolation[7];
-  short nationRegionClass[0x17];
+  short nationRegionClass[kNationSlotCount];
   int slot;
   int openSlot;
   int recordIndex;
@@ -4195,7 +4197,7 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
       }
     }
     if (slotIsolation[slot] == 2) {
-      for (int minor = 7; minor < 0x17; ++minor) {
+      for (int minor = 7; minor < kNationSlotCount; ++minor) {
         if (minor != slot && nationRegionClass[minor] == nationRegionClass[slot]) {
           slotIsolation[slot] = 1;
         }

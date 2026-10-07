@@ -1,3 +1,4 @@
+#include "game/nation_domain_types.h"
 #include "decomp_types.h"
 #include "game/ui_widgets/TTradeMgr.h"
 
@@ -1024,11 +1025,8 @@ short TTradeMgr::WhoTradesFirst(short proposalCode, short category) {
 // FUNCTION: IMPERIALISM 0x005ba0e0
 int TTradeMgr::GetMarketChange() {
   int sum = 0;
-  NationMetricCategoryRow* row = categoryRows;
-  for (int remaining = 0x11; remaining != 0; --remaining) {
-    short* weights = &row->previousPrice;
-    sum += weights[1] - weights[0];
-    ++row;
+  for (int category = 0; category < 0x11; ++category) {
+    sum += categoryRows[category].price - categoryRows[category].previousPrice;
   }
   return sum / 0x11;
 }

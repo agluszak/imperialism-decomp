@@ -1,6 +1,8 @@
 // TGreatPower construction, serialization and pending-action dispatch. Mac source:
 // UCountry.cpp / UCountryAuto.cpp.
 
+#include "game/nation_domain_types.h"
+#include "game/resource_domain_types.h"
 #include <math.h>
 #include <stddef.h>
 #include <string.h>
@@ -165,7 +167,7 @@ TGreatPower::TGreatPower()
       ++matrixRow;
     } while (matrixRow < 0x10);
     ++nationIndex;
-  } while (nationIndex < 0x17);
+  } while (nationIndex < kNationSlotCount);
 
   int pendingIndex = 0;
   do {
@@ -922,7 +924,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     return;
   }
 
-  int relationDeltaByNation[0x17];
+  int relationDeltaByNation[kNationSlotCount];
   for (int idx = 0; idx < 0x17; ++idx) {
     relationDeltaByNation[idx] = 0;
   }

@@ -1,3 +1,5 @@
+#include "game/nation_domain_types.h"
+#include "game/map_domain_types.h"
 #include "game/ui_tags_common.h"
 
 #include "game/map/TZone.h"
@@ -548,7 +550,7 @@ short TZone::FindNearestActiveSeaContextTileFromOffset216() {
     if (tileRecord.tileActionState == kMapTileActionStateNone) {
       short nationId = static_cast<short>(tileRecord.ownerNationTag);
       TZone* contextZone = 0;
-      if (nationId >= 0x17 && g_pActiveMapOrderContext != 0) {
+      if (nationId >= kNationSlotCount && g_pActiveMapOrderContext != 0) {
         contextZone = &g_pActiveMapOrderContext->contextArray[nationId - 0x17];
       }
       if (contextZone != 0) {
@@ -571,7 +573,7 @@ short TZone::GetActiveNationSlotTile() {
     if (tileRecord.tileActionState == kMapTileActionStateNone) {
       short nationId = static_cast<short>(tileRecord.ownerNationTag);
       TZone* contextZone = 0;
-      if (nationId >= 0x17 && g_pActiveMapOrderContext != 0) {
+      if (nationId >= kNationSlotCount && g_pActiveMapOrderContext != 0) {
         contextZone = &g_pActiveMapOrderContext->contextArray[nationId - 0x17];
       }
       if (contextZone != 0) {
@@ -1273,7 +1275,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
     if (tileRecord.tileActionState == kMapTileActionStateAnchor ||
         tileRecord.tileActionState == kMapTileActionStateDockedFleet) {
       zone = TZone::FindPortZoneByTile(static_cast<short>(tileIndex));
-    } else if (tileRecord.ownerNationTag >= 0x17) {
+    } else if (tileRecord.ownerNationTag >= kNationSlotCount) {
       zone = &g_pActiveMapOrderContext->contextArray[tileRecord.ownerNationTag - 0x17];
     } else {
       zone = 0;
@@ -1317,7 +1319,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
             }
             candidateContext = candidateContext->GetNextPortZone();
           }
-        } else if (neighborRecord.ownerNationTag >= 0x17) {
+        } else if (neighborRecord.ownerNationTag >= kNationSlotCount) {
           candidateContext =
               &g_pActiveMapOrderContext->contextArray[neighborRecord.ownerNationTag - 0x17];
         } else {

@@ -1,3 +1,4 @@
+#include "game/resource_domain_types.h"
 #include "game/city/TPopGrowthOrder.h"
 #include "game/city/TCity.h"
 #include "game/globals/global_types.h"

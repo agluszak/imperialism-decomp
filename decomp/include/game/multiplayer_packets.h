@@ -101,20 +101,20 @@ struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
 };
 
 struct TurnEventBNationDirectoryPacket : TimelyNetMessagePrefix {
-  short homeTileBySlot[0x17];        // +0x1c
-  char cityNameBySlot[0x17][0x17];   // +0x4a
-  unsigned char pad25b[0xe6];        // reserve to 0x17 * 0x21
-  char nationNameBySlot[0x17][0x17]; // +0x341
-  unsigned char pad552[0xe6];        // reserve to 0x17 * 0x21
-  short portZoneOrdinalBySlot[0x17]; // +0x638
-  unsigned char pad666[2];           // total 0x668
+  short homeTileBySlot[kNationSlotCount];        // +0x1c
+  char cityNameBySlot[kNationSlotCount][0x17];   // +0x4a
+  unsigned char pad25b[0xe6];                    // reserve to 0x17 * 0x21
+  char nationNameBySlot[kNationSlotCount][0x17]; // +0x341
+  unsigned char pad552[0xe6];                    // reserve to 0x17 * 0x21
+  short portZoneOrdinalBySlot[kNationSlotCount]; // +0x638
+  unsigned char pad666[2];                       // total 0x668
 };
 
 struct TurnEvent18DiplomacyArraysPacket : TimelyNetMessagePrefix {
-  short diplomacyPolicyByNation[7][0x17]; // +0x1c
-  short diplomacyGrantByNation[7][0x17];  // +0x15e
-  short needLevelByNation[7][0x17];       // +0x2a0
-  unsigned char pad3e2[2];                // total 0x3e4
+  short diplomacyPolicyByNation[7][kNationSlotCount]; // +0x1c
+  short diplomacyGrantByNation[7][kNationSlotCount];  // +0x15e
+  short needLevelByNation[7][kNationSlotCount];       // +0x2a0
+  unsigned char pad3e2[2];                            // total 0x3e4
 };
 
 struct TurnEvent1FStatusPacket : TimelyMessageHeader {
@@ -143,8 +143,8 @@ struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
 
 // Turn-event-0x2D payload: a minor nation's need-level array.
 struct TurnEvent2DMinorNeedPacket : TimelyNetMessagePrefix {
-  short nationSlot;              // +0x1c
-  short needLevelByNation[0x17]; // +0x1e, total 0x4c
+  short nationSlot;                          // +0x1c
+  short needLevelByNation[kNationSlotCount]; // +0x1e, total 0x4c
 };
 
 ASSERT_SIZE(TaggedSerializablePayload, 0x8);

@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "game/nation_domain_types.h"
 #include "compat.h"
 
 #include "game/app/TObject.h"
@@ -80,7 +81,7 @@ public:
   virtual RgnHandle GetCountryRegion(short index); // slot 0x26 0x509e10
 
   TCityProductionView* activeCityProductionView;
-  RgnHandle countryRegions[0x17];
+  RgnHandle countryRegions[kNationSlotCount];
   RgnHandle tileStateSlots[0x180];
   int padding664;
   TQuickDrawSurfaceContext* terrainTileWorld;

@@ -243,7 +243,7 @@ bool ShouldRetryMappedFlavorTextGeneration(CString* dest) {
                                 s_mcflavor_0069b55c, s_mcflavor_0069b554,
                                 s_mcflavor_0069b54c, s_mcflavor_0069b544,
                                 s_mcflavor_0069b53c, 0};
-  for (const char* const* set = bannedSets; *set != 0; set = set + 1) {
+  for (const char* const* set = bannedSets; *set != 0; ++set) {
     if (dest->Find(*set) > -1) {
       return true;
     }

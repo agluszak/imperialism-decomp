@@ -1,3 +1,4 @@
+#include "game/map_domain_types.h"
 #include "game/military_ui/TBattleReportView.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
