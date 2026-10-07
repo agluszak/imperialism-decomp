@@ -33,7 +33,7 @@ IMPLEMENT_DYNCREATE(TAdmiral, TObject)
 
 // FUNCTION: IMPERIALISM 0x00551430
 TAdmiral::TAdmiral(NationSlot nationSlotArg)
-    : nationSlot(nationSlotArg), assignedShip(0), displayName(), experiencePoints(0),
+    : nationSlot(nationSlotArg), assignedShip(0), experiencePoints(0),
       next(g_pNavySecondaryOrderListHead), prev(0) {
   g_pNavySecondaryOrderListHead = this;
   if (next != 0) {

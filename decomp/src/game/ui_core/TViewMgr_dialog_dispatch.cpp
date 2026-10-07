@@ -130,8 +130,7 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine() {
 
 // FUNCTION: IMPERIALISM 0x005dcdf0
 bool TViewMgr::MakeNewTownDialog(TTown* town) {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNewCityDialog));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNewCityDialog);
   if (node == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0xbe);
   }
@@ -162,8 +161,7 @@ void TViewMgr::MakeCombatReport(TCombatReportContext* reportContext) {
   }
   activeMapDialog->CenterOn(reportContext->mapTileIndex);
 
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCombatReport));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCombatReport);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0xe5);
   }
@@ -186,8 +184,8 @@ void TViewMgr::MakeCombatReport(TCombatReportContext* reportContext) {
 
 // FUNCTION: IMPERIALISM 0x005dd0a0
 int TViewMgr::MakeEngineeringDialog(int dialogValue) {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEngineerBuildMenu));
+  TWindow* node =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEngineerBuildMenu);
   if (node == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x100);
   }
@@ -207,8 +205,7 @@ int TViewMgr::MakeEngineeringDialog(int dialogValue) {
 // FUNCTION: IMPERIALISM 0x005dd180
 void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused) {
   if (static_cast<short>(nationSlot) == g_pGlobalMapState->pendingRiverMouthTile) {
-    TWindow* node = static_cast<TWindow*>(
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainInfo));
+    TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainInfo);
     if (node == 0) {
       FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x11e);
     }
@@ -222,8 +219,8 @@ void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused)
 
 // FUNCTION: IMPERIALISM 0x005dd220
 void TViewMgr::ShowTownNameDialog(int stringCode) {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTownNamesStringList));
+  TWindow* node =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTownNamesStringList);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x14a);
   }
@@ -244,8 +241,7 @@ void TViewMgr::ShowTownNameDialog(int stringCode) {
 
 // FUNCTION: IMPERIALISM 0x005dd340
 TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyRoster));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyRoster);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x167);
   }
@@ -266,8 +262,7 @@ TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
 
 // FUNCTION: IMPERIALISM 0x005dd450
 void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyRoster));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyRoster);
   if (node == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x183);
   }
@@ -327,8 +322,8 @@ void TViewMgr::ShowUnreachableCityDialog(void* selection) {
   short cityRecordIndex = mapSelection->cityRecordIndex;
   activeMapDialog->CenterOn(g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex);
 
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalMapPictureBase));
+  TWindow* node =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalMapPictureBase);
   if (node == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1c9);
   }
@@ -350,8 +345,7 @@ void TViewMgr::ShowUnreachableCityDialog(void* selection) {
 
 // FUNCTION: IMPERIALISM 0x005dd900
 void TViewMgr::MakeGarrisonWindow(int tileIndex) {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1e2);
   }
@@ -376,8 +370,7 @@ void TViewMgr::MakeGarrisonWindow(int tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005dda30
 void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x202);
   }
@@ -419,8 +412,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
 
 // FUNCTION: IMPERIALISM 0x005ddd20
 void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x232);
   }
@@ -468,8 +460,8 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
 int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
                                    const char* firstChoice, const char* secondChoice,
                                    int initialChoice, bool showCancel) const {
-  TWindow* dialog = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventPlanetSeedDialog));
+  TWindow* dialog =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventPlanetSeedDialog);
   if (dialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x26a);
   }
@@ -558,8 +550,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
 
 // FUNCTION: IMPERIALISM 0x005de4f0
 bool TViewMgr::MakeCivInfoWindow(TCivUnit* pCivilianOrderEntry) {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCivilianInfo));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCivilianInfo);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x2c1);
   }
@@ -579,8 +570,8 @@ bool TViewMgr::MakeCivInfoWindow(TCivUnit* pCivilianOrderEntry) {
 
 // FUNCTION: IMPERIALISM 0x005de5d0
 bool TViewMgr::MakeArmyInfoWindow(short cityRecordIndex, int* categoryCounts) {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyArmyReport));
+  TWindow* node =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyArmyReport);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x2e1);
   }
@@ -600,8 +591,7 @@ bool TViewMgr::MakeArmyInfoWindow(short cityRecordIndex, int* categoryCounts) {
 
 // FUNCTION: IMPERIALISM 0x005de8f0
 void TViewMgr::ShowQueryWindow() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventQueryFloater));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventQueryFloater);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x33f);
   }

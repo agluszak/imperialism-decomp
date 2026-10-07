@@ -118,7 +118,7 @@ static void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstR
 IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0
-TMacViewMgr::TMacViewMgr() : TObject() {
+TMacViewMgr::TMacViewMgr() {
   activeCityProductionView = 0;
   int index = 0;
   while (index < 0x17) {
@@ -244,7 +244,7 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
   g_pDisplayMgr->MakeNewGWorld(commodityIconWorld, 8, atlasBounds);
   GetGWorld(&savedContext, &savedFlags);
   SetGWorld(commodityIconWorld, savedFlags);
-  atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(commodityIconWorld));
+  atlasSurface = GetGWorldPixMap(commodityIconWorld);
   LockPixels(atlasSurface);
   ResetQuickDrawStrokeState();
   pixelBuffer = GetPixBaseAddr(atlasSurface);
@@ -641,7 +641,7 @@ void TMacViewMgr::GenerateMiniMap() {
   fillRect.bottom = 0x78;
   GetGWorld(&savedContext, &savedFlags);
   SetGWorld(miniMapWorld, savedFlags);
-  surfaceObject = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(miniMapWorld));
+  surfaceObject = GetGWorldPixMap(miniMapWorld);
   LockPixels(surfaceObject);
   ResetQuickDrawStrokeState();
   pixelBase = GetPixBaseAddr(surfaceObject);
@@ -657,8 +657,7 @@ void TMacViewMgr::GenerateMiniMap() {
       if (terrainCode == 0) {
         terrainCode = 0x3e;
       }
-      paletteByte =
-          static_cast<unsigned char>(g_pViewMgr->GetColor(static_cast<short>(terrainCode)));
+      paletteByte = static_cast<unsigned char>(g_pViewMgr->GetColor(terrainCode));
       pixelBase[colOffset] = paletteByte;
       pixelBase[colOffset + 1] = paletteByte;
       pixelBase[strideBytes + colOffset] = paletteByte;
@@ -1114,10 +1113,10 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     useBracketOnlyPath = true;
     break;
   default:
-    needTarget = static_cast<short>(resourceSlot);
-    needCurrent = static_cast<short>(resourceSlot);
-    showArrowWidgets = static_cast<short>(resourceSlot);
-    deficitCount = static_cast<short>(resourceSlot);
+    needTarget = resourceSlot;
+    needCurrent = resourceSlot;
+    showArrowWidgets = resourceSlot;
+    deficitCount = resourceSlot;
     break;
   }
 
@@ -1207,7 +1206,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     valueEntry->controlTag = kControlTagValu;
   }
 
-  panel->resourceMetricSlot = static_cast<short>(resourceSlot);
+  panel->resourceMetricSlot = resourceSlot;
   panel->splitValue94 = needTarget;
   panel->splitValue96 = needCurrent;
 }
@@ -1329,8 +1328,7 @@ void TMacViewMgr::MakeCountryRegion(int country) {
     BlitBitmapResourceLoaderToActiveDc(loaderHandle, &resourceBounds);
   }
   ReleaseBitmapLoaderHandle(loaderHandle);
-  TBitmapSurfaceNode** surfaceHandle =
-      static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(tileSurface));
+  TBitmapSurfaceNode** surfaceHandle = GetGWorldPixMap(tileSurface);
   // The region rebuild consumes the node itself (it reads node->dib at +0x1c).
   if (BitMapToRegion(countryRegions[country], *surfaceHandle) != 0) {
     BitMapToRegion(countryRegions[country], *surfaceHandle);
@@ -1399,10 +1397,10 @@ void TMacViewMgr::CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, 
   TBitmapSurfaceNode** atlasSurface;
   short srcRowOffset;
   if (iconIndex < 100) {
-    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(commodityIconWorld));
+    atlasSurface = GetGWorldPixMap(commodityIconWorld);
     srcRowOffset = static_cast<short>(iconIndex << 5);
   } else {
-    atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(flagWorld));
+    atlasSurface = GetGWorldPixMap(flagWorld);
     srcRowOffset = static_cast<short>((iconIndex - 100) * 0x20);
   }
   ushort dstStrideRaw = static_cast<ushort>((*dstSurface)->stride);
@@ -1489,8 +1487,7 @@ void TMacViewMgr::CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, 
 // FUNCTION: IMPERIALISM 0x0050dd40
 void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, short nIconVariant,
                                            short nDstX, short nYShift) {
-  TBitmapSurfaceNode** atlasSurface =
-      static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(unitIconAtlas));
+  TBitmapSurfaceNode** atlasSurface = GetGWorldPixMap(unitIconAtlas);
   LockPixels(atlasSurface);
   unsigned char* srcPixels = GetPixBaseAddr(atlasSurface);
   ushort srcStrideRaw = static_cast<ushort>((*atlasSurface)->stride);

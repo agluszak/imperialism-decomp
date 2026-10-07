@@ -18,7 +18,7 @@
 IMPLEMENT_DYNCREATE(TCivReport, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00590c30
-TCivReport::TCivReport() : TPicture() {}
+TCivReport::TCivReport() {}
 
 // FUNCTION: IMPERIALISM 0x00590c90
 TCivReport::~TCivReport() {}

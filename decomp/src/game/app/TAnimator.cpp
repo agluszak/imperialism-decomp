@@ -19,8 +19,7 @@
 IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x004a0aa0
-TAnimator::TAnimator()
-    : TEventHandler(), renderSurfaceContext(0), registryList(0), mapUberPicture(0) {}
+TAnimator::TAnimator() : renderSurfaceContext(0), registryList(0), mapUberPicture(0) {}
 
 // FUNCTION: IMPERIALISM 0x004a0b20
 void TAnimator::IAnimator(int idleFrequency) {

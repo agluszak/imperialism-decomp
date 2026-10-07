@@ -73,8 +73,8 @@ IMPLEMENT_DYNCREATE(TShip, TObject)
 
 // FUNCTION: IMPERIALISM 0x0054f500
 TShip::TShip()
-    : TObject(), type(0), pad06(0), location(0), taskForce(0), aggression(1), nation(-1), name(),
-      strength(0), pad1e(0), admiral(0), next(g_pNavyPrimaryOrderListHead), previous(0), mission(0),
+    : type(0), pad06(0), location(0), taskForce(0), aggression(1), nation(-1), strength(0),
+      pad1e(0), admiral(0), next(g_pNavyPrimaryOrderListHead), previous(0), mission(0),
       experience(0), selection(0) {
   g_pNavyPrimaryOrderListHead = this;
   if (next != 0) {
@@ -116,8 +116,7 @@ void TShip::Free() {
       }
       owner->shipList = head;
 
-      short bucketIndex =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
+      short bucketIndex = g_NavyOrderResourceDescriptorTable[type].ToolbarSlot();
       --owner->shipCountsByToolbarSlot[bucketIndex];
     }
     if (owner->flagship == this) {
@@ -391,9 +390,8 @@ int TShip::ComputeValueForMission(int missionType) const {
     default:
       contribution = 0;
     }
-    total +=
-        static_cast<short>(g_Populate_Beachhead_Mission_LookupTable[missionType * 4 + category]) *
-        static_cast<int>(contribution);
+    total += g_Populate_Beachhead_Mission_LookupTable[missionType * 4 + category] *
+             static_cast<int>(contribution);
   }
   return total;
 }
@@ -430,8 +428,7 @@ TTaskForce* TShip::DemandExclusiveTaskForce() {
       if (found != NULL) {
         owner_ctx->shipList = head->RemoveLinkedOrderNodeByValueRecursive(this);
 
-        short bucketIndex =
-            static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
+        short bucketIndex = g_NavyOrderResourceDescriptorTable[type].ToolbarSlot();
         --owner_ctx->shipCountsByToolbarSlot[bucketIndex];
       }
       if (this == owner_ctx->flagship) {
@@ -733,8 +730,7 @@ void TShip::ReassignToForce(TTaskForce* newOwnerEntry) {
 
       owner_ctx->shipList = list_head;
 
-      short bucket_offset =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
+      short bucket_offset = g_NavyOrderResourceDescriptorTable[type].ToolbarSlot();
       --owner_ctx->shipCountsByToolbarSlot[bucket_offset];
     }
 
@@ -773,8 +769,7 @@ void TShip::Capture(short nation) {
       }
       parent->shipList = head;
 
-      short bucketIndex =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
+      short bucketIndex = g_NavyOrderResourceDescriptorTable[type].ToolbarSlot();
       --parent->shipCountsByToolbarSlot[bucketIndex];
     }
 

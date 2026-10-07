@@ -41,7 +41,7 @@ bool TCityTask::Execute(TTaskList* taskList) {
     }
   }
 
-  TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlots[citySlotIndex]);
+  TProductionOrder* order = ownerCity->orderSlots[citySlotIndex];
   if (order != 0) {
     short maxOrder = order->MaxOrder();
     short headroom = maxOrder - order->quantity;
@@ -89,7 +89,7 @@ bool TCityTask::Execute(TTaskList* taskList) {
 
 // FUNCTION: IMPERIALISM 0x005ae010
 void TCityTask::IncompleteTraining(TTaskList* taskList) {
-  TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlots[citySlotIndex]);
+  TProductionOrder* order = ownerCity->orderSlots[citySlotIndex];
   order->MaxOrder();
   if (order->limitingConstraint == kProductionOrderLimitResources) {
     short amount = requestedAmount;
@@ -113,7 +113,7 @@ void TCityTask::IncompleteTraining(TTaskList* taskList) {
 
 // FUNCTION: IMPERIALISM 0x005ae0e0
 void TCityTask::IncompleteCapacity(TTaskList* taskList) {
-  TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlots[citySlotIndex]);
+  TProductionOrder* order = ownerCity->orderSlots[citySlotIndex];
   order->MaxOrder();
   bool queuedAny = false;
   if (order->limitingConstraint == kProductionOrderLimitResources && alreadyQueuedFlag == 0) {
@@ -209,7 +209,7 @@ void TCityTask::IncompleteLandUnit(TTaskList* taskList) {
 
 // FUNCTION: IMPERIALISM 0x005ae420
 void TCityTask::IncompleteMaterials() {
-  TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlots[citySlotIndex]);
+  TProductionOrder* order = ownerCity->orderSlots[citySlotIndex];
   TForeignMinister* foreignMinister = ownerCity->ownerNation->foreignMinister;
 
   OrderSheet sheet;

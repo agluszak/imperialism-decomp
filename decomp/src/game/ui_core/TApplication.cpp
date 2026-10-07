@@ -33,7 +33,7 @@ void TApplication::PostTurnEventCodeMessage(TurnEventCodeStorage eventCode) {
 IMPLEMENT_DYNCREATE(TApplication, TCommandHandler)
 
 // FUNCTION: IMPERIALISM 0x00486760
-TApplication::TApplication() : TCommandHandler(), currentTarget(0), screenMode(0), cohandlers() {
+TApplication::TApplication() : currentTarget(0), screenMode(0) {
   g_pApplication = this;
 }
 

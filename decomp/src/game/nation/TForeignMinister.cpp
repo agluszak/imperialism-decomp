@@ -48,7 +48,7 @@ static int SelectDevelopmentGrantAmount(int availableBudget) {
 IMPLEMENT_DYNCREATE(TForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x0052f070
-TForeignMinister::TForeignMinister() : TMinister() {
+TForeignMinister::TForeignMinister() {
   memset(tradePartnerEnabled, 1, sizeof(tradePartnerEnabled));
   memset(developmentGrantByNation, 0, sizeof(developmentGrantByNation));
   specialOfferQuota = 0;
@@ -343,8 +343,7 @@ void TForeignMinister::ReplyToTradeOffer(short targetNation, short amount, short
     }
     short availableAmount = owner->GetUnreservedMerchantCapacity(resourceCode);
     if (availableAmount < static_cast<short>(dispatchAmount)) {
-      dispatchAmount =
-          static_cast<unsigned int>(owner->GetUnreservedMerchantCapacity(resourceCode));
+      dispatchAmount = owner->GetUnreservedMerchantCapacity(resourceCode);
     }
     *ledgerEntry = static_cast<short>(*ledgerEntry - static_cast<short>(dispatchAmount));
   }

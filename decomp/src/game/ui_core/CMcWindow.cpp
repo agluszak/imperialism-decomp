@@ -15,7 +15,7 @@
 #include "game/pointer_representation.h"
 
 // FUNCTION: IMPERIALISM 0x00493470
-CMcWindow::CMcWindow(TWindow* descriptor) : CWnd() {
+CMcWindow::CMcWindow(TWindow* descriptor) {
   m_pOwnerWindow = descriptor;
 
   DWORD dwExStyle = 0;

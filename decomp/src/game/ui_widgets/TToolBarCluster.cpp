@@ -331,8 +331,7 @@ void TToolBarCluster::UpdateGrantDisplay(int grantTotal) {
 }
 // FUNCTION: IMPERIALISM 0x005dc560
 void MakeFlagButtonDialog() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf6c);
   }

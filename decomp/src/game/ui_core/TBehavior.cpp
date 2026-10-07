@@ -9,7 +9,7 @@
 IMPLEMENT_DYNCREATE(TBehavior, TObject)
 
 // FUNCTION: IMPERIALISM 0x004871e0
-TBehavior::TBehavior() : TObject(), behaviorTag(kControlTagSpSpSpSp), owner(0), enabled(1) {}
+TBehavior::TBehavior() : behaviorTag(kControlTagSpSpSpSp), owner(0), enabled(1) {}
 
 // FUNCTION: IMPERIALISM 0x00487260
 void TBehavior::SetBehaviorTag(unsigned long tag) {

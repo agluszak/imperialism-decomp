@@ -477,8 +477,8 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
 
   // ORACLE: Mac MapView.rsrc:9474, event 0x2502, "Friendly Fleet Report".
-  TWindow* dialog = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyFleetReport));
+  TWindow* dialog =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyFleetReport);
   if (dialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x728);
   }
@@ -663,8 +663,8 @@ void TMapUberPicture::ArmyCheatClick(short provinceIndex) {
   hiliteColor.rgbReserved = 0;
   g_pDisplayMgr->SetHiliteColor(&hiliteColor);
 
-  TWindow* dialog = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x24f4)));
+  TWindow* dialog =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x24f4));
   if (dialog == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\USuperMap.cpp", 0x846);
   }
@@ -715,8 +715,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   RGBQUAD highlightColor = {0xff, 0xff, 0xff, 0};
   g_pDisplayMgr->SetHiliteColor(&highlightColor);
 
-  TWindow* dialog = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyMaker));
+  TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyMaker);
   if (dialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x8cc);
   }
@@ -746,8 +745,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
       short count = countControl->UpdateControlCachedIntFromWindowText();
       if (count != 0) {
         while (count > 0) {
-          CreateNavyPrimaryOrderNodeAndAssignDisplayName(static_cast<short>(index), portZone,
-                                                         ownerNation, 0);
+          CreateNavyPrimaryOrderNodeAndAssignDisplayName(index, portZone, ownerNation, 0);
           --count;
         }
         createdOrders = true;
@@ -792,8 +790,8 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
 
   // ORACLE: Mac MapView.rsrc:9475, event 0x2503, "Enemy Fleet Report".
-  TWindow* dialog = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
+  TWindow* dialog =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport);
   if (dialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x923);
   }

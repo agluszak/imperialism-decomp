@@ -16,7 +16,7 @@
 IMPLEMENT_DYNCREATE(TArmyPlacard, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058bed0
-TArmyPlacard::TArmyPlacard() : TPicture() {
+TArmyPlacard::TArmyPlacard() {
   this->glyph = -1;
 }
 

@@ -293,7 +293,7 @@ static int g_mapDialogViewportTileSpanInitializer = (InitializeMapDialogViewport
 IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
 // FUNCTION: IMPERIALISM 0x00519b50
-TMapDialog::TMapDialog() : TWorldView() {
+TMapDialog::TMapDialog() {
   int row;
   int col;
   viewportOrigin.x = 0;
@@ -547,8 +547,7 @@ void TMapDialog::InvalidateTile(short tileIndex) {
   ProjectTileIndexToWrappedScreenOffsetByScale(static_cast<short>(originalTileIndex),
                                                &viewportOrigin, &projectedY, &tileIndex, 1);
 
-  CRect invalidateRect(static_cast<short>(tileIndex), projectedY,
-                       static_cast<short>(tileIndex) + 0x40, projectedY + 0x40);
+  CRect invalidateRect(tileIndex, projectedY, tileIndex + 0x40, projectedY + 0x40);
   DeCache(static_cast<short>(originalTileIndex));
   InvalidateCityDialogRectRegion(&invalidateRect, 1);
 }
@@ -1268,10 +1267,8 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   }
 
   if ((activeFlags & 3) == 0 || terrain.gateFlag == 0) {
-    const char lowImprovementClass =
-        static_cast<char>(g_pGlobalMapState->GetDevelopmentLevel(tileIndex, false));
-    const char highImprovementClass =
-        static_cast<char>(g_pGlobalMapState->GetDevelopmentLevel(tileIndex, true));
+    const char lowImprovementClass = g_pGlobalMapState->GetDevelopmentLevel(tileIndex, false);
+    const char highImprovementClass = g_pGlobalMapState->GetDevelopmentLevel(tileIndex, true);
     const signed char firstResourceType = terrain.resourceTypeByEdge[0];
     const bool firstResourceIsProspectable =
         firstResourceType == kResourceCoal || firstResourceType == kResourceIron ||

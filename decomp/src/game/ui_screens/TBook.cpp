@@ -6,7 +6,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x00430250
-TBook::TBook() : TPicture() {
+TBook::TBook() {
   previousPageButton = 0;
   nextPageButton = 0;
 }

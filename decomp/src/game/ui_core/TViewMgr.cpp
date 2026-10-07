@@ -116,7 +116,7 @@ HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId);
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005d5060
-TViewMgr::TViewMgr() : TObject() {
+TViewMgr::TViewMgr() {
   this->pendingTurnOverlayCode = 0;
   this->currentTurnEventCode = 0;
   this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
@@ -345,8 +345,7 @@ void TViewMgr::VerifyEndTurn() {
   if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return;
   }
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x223);
   }
@@ -460,12 +459,10 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
 
   TWindow* dialog;
   if (static_cast<short>(payloadResource) == 0) {
-    dialog = static_cast<TWindow*>(
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
+    dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage);
   } else {
     g_pAssetMgr->OpenFilesFor(0xb);
-    dialog = static_cast<TWindow*>(
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterReward));
+    dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterReward);
   }
   if (dialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x2e9);
@@ -485,9 +482,9 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   if (gold == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x2fa);
   }
-  int contextTagSx = static_cast<short>(contextTag);
+  int contextTagSx = contextTag;
   int goldResource = contextTagSx * 2 + 0x24cd;
-  if (static_cast<short>(contextTag) == 2 && g_nationInfoGoldResourceOverride != 0) {
+  if (contextTag == 2 && g_nationInfoGoldResourceOverride != 0) {
     goldResource = g_nationInfoGoldResourceOverride;
   }
   gold->SetPictureRsrcID(static_cast<short>(goldResource), 0);
@@ -896,8 +893,7 @@ bool TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->FindSubView(kControlTagMain));
   mainView->AssertValid();
-  mainView->PoseOffer(static_cast<short>(sourceNation), static_cast<short>(targetNation),
-                      static_cast<short>(proposalCode));
+  mainView->PoseOffer(sourceNation, targetNation, proposalCode);
   return false;
 }
 
@@ -1221,7 +1217,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
 
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(mainView->FindSubView(kControlTagTool));
   toolbar->AssertValid();
-  toolbar->SetReadouts(static_cast<short>(nationSlot));
+  toolbar->SetReadouts(nationSlot);
   toolbar->AddInfoBehaviors();
 
   TControl* querControl = static_cast<TControl*>(mainView->FindSubView(kControlTagQuer));
@@ -1240,7 +1236,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   productionView->AssertValid();
   g_pMacViewMgr->activeCityProductionView = productionView;
 
-  TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
+  TGreatPower* nation = g_apNationStates[nationSlot];
   TCity* city = nation != NULL ? nation->city : NULL;
   productionView->InitializeCityProductionDialog(city, mainView);
 }
@@ -1467,8 +1463,7 @@ void TViewMgr::ShowAbilityStatusReport(short abilityIndex) {
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
-  short pictureResourceId =
-      static_cast<short>(g_anAbilityStatusPictureIndex[static_cast<short>(abilityIndex)] + 0x897);
+  short pictureResourceId = static_cast<short>(g_anAbilityStatusPictureIndex[abilityIndex] + 0x897);
   mainControl->SetPictureRsrcID(pictureResourceId, true);
 
   TDeluxeText* textControl = static_cast<TDeluxeText*>(activeDialog->FindSubView(kControlTagText));
@@ -1705,7 +1700,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   TView* coal = mainView->FindSubView(kTagCoal);
   if (static_cast<int>(city->stockByType[kResourceCoal]) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceCoal]) <
-      static_cast<int>(city->GetBuildingType(2))) {
+      city->GetBuildingType(2)) {
     coal->Show(1, 0);
     g_pSimMgr->GetString(0x2731, 0x16, &sharedString);
   } else {
@@ -1717,7 +1712,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   TView* iron = mainView->FindSubView(kTagIron);
   if (static_cast<int>(city->stockByType[kResourceIron]) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceIron]) <
-      static_cast<int>(city->GetBuildingType(2))) {
+      city->GetBuildingType(2)) {
     iron->Show(1, 0);
     g_pSimMgr->GetString(0x2731, 0x17, &sharedString);
   } else {
@@ -2314,8 +2309,8 @@ void TViewMgr::ConfigureMapEditorGoldValueGrid() {
 // FUNCTION: IMPERIALISM 0x005dc430
 void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
                                            TCityProductionView* productionView) {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander));
+  TWindow* node =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf50);
   }

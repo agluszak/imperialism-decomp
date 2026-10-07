@@ -15,8 +15,8 @@ IMPLEMENT_DYNCREATE(TMiniMapView, TControl)
 
 // FUNCTION: IMPERIALISM 0x0059a380
 TMiniMapView::TMiniMapView()
-    : TControl(), ownerPicture(NULL), scrollTileColumn(0), scrollTileRow(0), markerBoxX(0),
-      markerBoxY(0), markerBoxWidth(g_defaultMarkerBoxWidth), markerBoxHeight(8) {}
+    : ownerPicture(NULL), scrollTileColumn(0), scrollTileRow(0), markerBoxX(0), markerBoxY(0),
+      markerBoxWidth(g_defaultMarkerBoxWidth), markerBoxHeight(8) {}
 
 // FUNCTION: IMPERIALISM 0x0059a420
 TMiniMapView::~TMiniMapView() {}

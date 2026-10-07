@@ -9,7 +9,7 @@
 IMPLEMENT_DYNCREATE(TMyStaticText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x005b5420
-TMyStaticText::TMyStaticText() : TStaticText() {}
+TMyStaticText::TMyStaticText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5480
 TMyStaticText::~TMyStaticText() {}

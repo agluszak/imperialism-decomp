@@ -22,9 +22,8 @@ IMPLEMENT_DYNCREATE(TDialogBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x00487370
 TDialogBehavior::TDialogBehavior()
-    : TBehavior(), armed(0), defaultCommandCode(kControlTagSpSpSpSp),
-      cancelCommandCode(kControlTagSpSpSpSp), armedCommandCode(kControlTagSpSpSpSp),
-      dismissPending(1) {}
+    : armed(0), defaultCommandCode(kControlTagSpSpSpSp), cancelCommandCode(kControlTagSpSpSpSp),
+      armedCommandCode(kControlTagSpSpSpSp), dismissPending(1) {}
 
 // FUNCTION: IMPERIALISM 0x00487400
 void TDialogBehavior::IDialogBehavior(bool flag, int colorA, int colorB) {

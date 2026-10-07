@@ -16,8 +16,8 @@
 
 // FUNCTION: IMPERIALISM 0x00535470
 TNavyMission::TNavyMission(TZone* targetZone)
-    : TMission(), missionTargetZone(targetZone), resolvedPortZone(NULL), selectedOrder(NULL),
-      taskForce(NULL), orderList(NULL), navyState(0) {
+    : missionTargetZone(targetZone), resolvedPortZone(NULL), selectedOrder(NULL), taskForce(NULL),
+      orderList(NULL), navyState(0) {
   for (int i = 0; i < 4; ++i) {
     requiredShipEquipageByCategory[i] = 0.0f;
   }
@@ -889,8 +889,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
   float accum = 0.0f;
   for (int diffIndex = 0; diffIndex < 4; ++diffIndex) {
     float diff = vector[diffIndex] / sum -
-                 static_cast<float>(
-                     static_cast<short>(g_Populate_Beachhead_Mission_LookupTable[diffIndex])) *
+                 static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[diffIndex]) *
                      static_cast<float>(0.01);
     if (diff <= static_cast<float>(0.0)) {
       diff = -diff;
@@ -937,8 +936,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
   float accum = 0.0f;
   for (int diffIndex = 0; diffIndex < 4; ++diffIndex) {
     float diff = vector[diffIndex] / sum -
-                 static_cast<float>(
-                     static_cast<short>(g_Populate_Beachhead_Mission_LookupTable[diffIndex])) *
+                 static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[diffIndex]) *
                      static_cast<float>(0.01);
     if (diff <= static_cast<float>(0.0)) {
       diff = -diff;
@@ -979,8 +977,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfil
   for (int i = 0; i < 4; ++i) {
     float diff =
         vector[i] / total -
-        static_cast<float>(static_cast<short>(g_Populate_Beachhead_Mission_LookupTable[i])) *
-            static_cast<float>(0.01);
+        static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[i]) * static_cast<float>(0.01);
     if (diff <= static_cast<float>(0.0)) {
       diff = -diff;
     }
@@ -1016,9 +1013,8 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
   float diffSum = 0.0f;
   for (int i = 0; i < 4; ++i) {
     float diff =
-        vector[i] / total -
-        static_cast<float>(static_cast<short>(g_Populate_Beachhead_Mission_LookupTable[4 + i])) *
-            static_cast<float>(0.01);
+        vector[i] / total - static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[4 + i]) *
+                                static_cast<float>(0.01);
     if (diff <= static_cast<float>(0.0)) {
       diff = -diff;
     }

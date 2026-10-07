@@ -5,7 +5,7 @@
 IMPLEMENT_DYNCREATE(TOffLimitsPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005737d0
-TOffLimitsPicture::TOffLimitsPicture() : TPicture(), ownClipRegion(NULL) {}
+TOffLimitsPicture::TOffLimitsPicture() : ownClipRegion(NULL) {}
 
 // FUNCTION: IMPERIALISM 0x00573830
 TOffLimitsPicture::~TOffLimitsPicture() {}

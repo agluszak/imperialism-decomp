@@ -510,7 +510,7 @@ void TBattleReportView::DrawBattleNuggets(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004adfc0
 void TBattleReportView::DisplayBattle(MapContextActionRecord* record) {
-  if (selectedReportIndex == static_cast<short>(record->listOrdinal)) {
+  if (selectedReportIndex == record->listOrdinal) {
     return;
   }
 
@@ -526,7 +526,7 @@ void TBattleReportView::DisplayBattle(MapContextActionRecord* record) {
     InvalidateCityDialogRectRegion(&oldRect, 1);
   }
 
-  selectedReportIndex = static_cast<short>(record->listOrdinal);
+  selectedReportIndex = record->listOrdinal;
   if (selectedReportIndex != 0) {
     MapContextActionRecord* newRecord = static_cast<MapContextActionRecord*>(
         g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(

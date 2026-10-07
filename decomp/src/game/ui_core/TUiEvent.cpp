@@ -3,4 +3,4 @@
 TUiEvent::~TUiEvent() {}
 
 // FUNCTION: IMPERIALISM 0x004845a0
-TUiEvent::TUiEvent() : TEvent() {}
+TUiEvent::TUiEvent() {}

@@ -27,7 +27,7 @@
 IMPLEMENT_DYNCREATE(TArmyUnitView, TView)
 
 // FUNCTION: IMPERIALISM 0x004a94e0
-TArmyUnitView::TArmyUnitView() : TView() {}
+TArmyUnitView::TArmyUnitView() {}
 
 // FUNCTION: IMPERIALISM 0x004a9540
 TArmyUnitView::~TArmyUnitView() {}
@@ -169,8 +169,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
 // FUNCTION: IMPERIALISM 0x004a9ca0
 void TArmyUnitView::RenameUnit() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUArmyViews, 0x204);
   }

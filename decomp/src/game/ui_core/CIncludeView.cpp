@@ -60,7 +60,7 @@ IMPLEMENT_DYNCREATE(CIncludeView, CView)
 
 // FUNCTION: IMPERIALISM 0x00482950
 CIncludeView::CIncludeView()
-    : CView(), m_activeDialogContext(0), m_pMainPaneDib(0), m_pOffscreenDib(0), m_tickTimerId(0),
+    : m_activeDialogContext(0), m_pMainPaneDib(0), m_pOffscreenDib(0), m_tickTimerId(0),
       m_unused70(0), m_capturedControl(0), m_uiInteractiveFlag(1) {}
 
 // FUNCTION: IMPERIALISM 0x00482ab0

@@ -15,7 +15,7 @@ ON_WM_TIMER()
 END_MESSAGE_MAP()
 #endif
 
-TBackdropWindow::TBackdropWindow() : CWnd() {}
+TBackdropWindow::TBackdropWindow() {}
 
 // FUNCTION: IMPERIALISM 0x0049cbf0
 TBackdropWindow::~TBackdropWindow() {

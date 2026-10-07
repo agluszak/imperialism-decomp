@@ -43,7 +43,7 @@ IMPLEMENT_DYNCREATE(TControl, TView)
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : TView(), eventNumber(1), controlState(0), contentInsets(0, 0, 0, 0),
+    : eventNumber(1), controlState(0), contentInsets(0, 0, 0, 0),
       textStyle(g_UiResourceEntryDefaultTextStyle) {}
 
 // FUNCTION: IMPERIALISM 0x0048e640
@@ -104,8 +104,8 @@ void TControl::InstallTextStyle(const TextStyle& style, char refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x0048e810
 void TControl::HiliteState(unsigned char enabledState, bool refreshNow) {
-  if (controlState != static_cast<unsigned char>(enabledState)) {
-    controlState = static_cast<unsigned char>(enabledState);
+  if (controlState != enabledState) {
+    controlState = enabledState;
     if (refreshNow) {
       RefreshControl();
     }

@@ -37,7 +37,7 @@ const unsigned int kEndControlTagReselectAlt = kControlTagScoreCaps; // mode 0x1
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00430630
-TCouncilView::TCouncilView() : TDiplomacyMapView() {}
+TCouncilView::TCouncilView() {}
 
 // FUNCTION: IMPERIALISM 0x00430690
 TCouncilView::~TCouncilView() {}

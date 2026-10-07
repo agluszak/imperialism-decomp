@@ -4,7 +4,7 @@
 IMPLEMENT_DYNCREATE(TPictureNumberText, TNumberText)
 
 // FUNCTION: IMPERIALISM 0x005b51e0
-TPictureNumberText::TPictureNumberText() : TNumberText() {
+TPictureNumberText::TPictureNumberText() {
   this->value = 0;
 }
 

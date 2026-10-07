@@ -13,7 +13,7 @@
 IMPLEMENT_DYNCREATE(TTradeTotalsView, TView)
 
 // FUNCTION: IMPERIALISM 0x005c1b10
-TTradeTotalsView::TTradeTotalsView() : TView() {}
+TTradeTotalsView::TTradeTotalsView() {}
 
 // FUNCTION: IMPERIALISM 0x005c1b70
 TTradeTotalsView::~TTradeTotalsView() {}

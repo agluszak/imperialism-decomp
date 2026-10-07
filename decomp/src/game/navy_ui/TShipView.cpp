@@ -130,8 +130,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 
 // FUNCTION: IMPERIALISM 0x00565a40
 void TShipView::RenameShip() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
+  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUOceanViews, 0x203);
   }

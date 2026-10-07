@@ -16,7 +16,7 @@ const WORD kBitmapFileSignature = 0x4d42;
 IMPLEMENT_SERIAL(CDib, CObject, 0)
 
 // FUNCTION: IMPERIALISM 0x00479f40
-CDib::CDib() : CObject() {
+CDib::CDib() {
   m_hBitmap = NULL;
   m_infoOwnMode = kDibInfoNotOwned;
   m_dibBitsOwned = 0;
@@ -26,7 +26,7 @@ CDib::CDib() : CObject() {
 }
 
 // FUNCTION: IMPERIALISM 0x00479fe0
-CDib::CDib(int width, int height, int bitDepth) : CObject() {
+CDib::CDib(int width, int height, int bitDepth) {
   m_hBitmap = NULL;
   m_infoOwnMode = kDibInfoNotOwned;
   m_dibBitsOwned = 0;
@@ -98,10 +98,10 @@ CDib::CDib(int width, int height, int bitDepth) : CObject() {
 
 // FUNCTION: IMPERIALISM 0x0047a200
 CDib::CDib(const CDib& source)
-    : CObject(), m_colorTablePixels(0), m_hBitmap(NULL), m_dibBits(0), m_pInfoHeader(0),
-      m_hGlobalInfo(NULL), m_infoOwnMode(kDibInfoOwnedByteArray), m_dibBitsOwned(1),
-      m_pixelBytes(source.m_pixelBytes), m_paletteCount(source.m_paletteCount),
-      m_hFileMapping(NULL), m_hFile(NULL), m_mappedView(0), m_hPalette(NULL) {
+    : m_colorTablePixels(0), m_hBitmap(NULL), m_dibBits(0), m_pInfoHeader(0), m_hGlobalInfo(NULL),
+      m_infoOwnMode(kDibInfoOwnedByteArray), m_dibBitsOwned(1), m_pixelBytes(source.m_pixelBytes),
+      m_paletteCount(source.m_paletteCount), m_hFileMapping(NULL), m_hFile(NULL), m_mappedView(0),
+      m_hPalette(NULL) {
   unsigned int infoBytes =
       static_cast<unsigned int>(m_paletteCount) * sizeof(RGBQUAD) + sizeof(BITMAPINFOHEADER);
   m_pInfoHeader = static_cast<BITMAPINFO*>(static_cast<void*>(new unsigned char[infoBytes]));

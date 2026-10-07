@@ -15,7 +15,7 @@
 IMPLEMENT_DYNCREATE(TShipAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x0058ab60
-TShipAmtBar::TShipAmtBar() : TAmtBar() {
+TShipAmtBar::TShipAmtBar() {
   rangeOrMaxValue = 0;
   stepOrCurrentValue = 0;
   auxValueA = 0;
@@ -53,7 +53,7 @@ void TShipAmtBar::DrawAmt() {
 
       if (rangeOrMaxValue > 0) {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
-        g_pViewMgr->SetForeColor(static_cast<short>(auxValueB));
+        g_pViewMgr->SetForeColor(auxValueB);
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
         DrawCenteredGuideLineOnMapDc(static_cast<short>(rangeOrMaxValue - 1), 1);
         ResetQuickDrawStrokeState();

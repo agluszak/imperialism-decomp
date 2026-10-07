@@ -488,8 +488,8 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
     return FALSE;
   }
 
-  TWindow* dialog = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMultiplayerPickGame));
+  TWindow* dialog =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMultiplayerPickGame);
   dialog->SetModality(true);
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
@@ -530,4 +530,4 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
 }
 
 // FUNCTION: IMPERIALISM 0x005e3310
-TWNetSessionManager::TWNetSessionManager() : TDirectPlaySessionManagerBase() {}
+TWNetSessionManager::TWNetSessionManager() {}

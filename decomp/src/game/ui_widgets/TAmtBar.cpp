@@ -90,7 +90,7 @@ void TAmtBar::DrawAmt() {
 
   if (barRange > 0) {
     SetQuickDrawTextOriginWithContextOffset(0, 1);
-    g_pViewMgr->SetForeColor(static_cast<short>(auxValueB));
+    g_pViewMgr->SetForeColor(auxValueB);
     SetQuickDrawPenSizeAndMarkDirty(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
     DrawCenteredGuideLineOnMapDc(static_cast<short>(guideValue - 1), 1);
@@ -111,10 +111,9 @@ void TAmtBar::DrawAmt() {
 // FUNCTION: IMPERIALISM 0x00588950
 void TAmtBar::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   int baseValue;
-  if (auxValueA <= 0 ||
-      static_cast<int>(frameWidth) / (static_cast<int>(auxValueA) << 1) <= point.x) {
+  if (auxValueA <= 0 || frameWidth / (static_cast<int>(auxValueA) << 1) <= point.x) {
     double ratio = static_cast<double>(point.x) * static_cast<double>(auxValueA) /
-                       static_cast<double>(static_cast<int>(frameWidth)) +
+                       static_cast<double>(frameWidth) +
                    1.0;
     baseValue = static_cast<int>(ratio);
   } else {

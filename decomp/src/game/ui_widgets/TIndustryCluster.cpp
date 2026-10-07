@@ -29,7 +29,7 @@ IMPLEMENT_DYNCREATE(TIndustryCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x00588af0
 TIndustryCluster::TIndustryCluster()
-    : TAmtBarCluster(), selectedMetricOrder(0), selectedMetricValue(0), selectedMetricStep(0) {}
+    : selectedMetricOrder(0), selectedMetricValue(0), selectedMetricStep(0) {}
 
 // FUNCTION: IMPERIALISM 0x00588b50
 TIndustryCluster::~TIndustryCluster() {}

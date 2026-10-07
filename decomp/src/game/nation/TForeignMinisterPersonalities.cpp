@@ -84,7 +84,7 @@ static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, sh
 IMPLEMENT_DYNCREATE(TTedForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005311d0
-TTedForeignMinister::TTedForeignMinister() : TForeignMinister() {
+TTedForeignMinister::TTedForeignMinister() {
   tradeBidRefreshInterval = 4;
   this->skillIndex = 5;
 }
@@ -265,7 +265,7 @@ void TTedForeignMinister::MakeNewCity(TCity* city) {
 IMPLEMENT_DYNCREATE(TBillForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00531be0
-TBillForeignMinister::TBillForeignMinister() : TForeignMinister() {
+TBillForeignMinister::TBillForeignMinister() {
   orderFlag = 0;
   field48 = 1;
   interiorOrderKind = 1;
@@ -476,7 +476,7 @@ void TBillForeignMinister::MakeNewCity(TCity* city) {
 IMPLEMENT_DYNCREATE(TDiplomatForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00532780
-TDiplomatForeignMinister::TDiplomatForeignMinister() : TForeignMinister() {
+TDiplomatForeignMinister::TDiplomatForeignMinister() {
   skillIndex = 3;
 }
 
@@ -646,7 +646,7 @@ void TDiplomatForeignMinister::MakeNewCity(TCity* city) {
 IMPLEMENT_DYNCREATE(TTextileForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00533110
-TTextileForeignMinister::TTextileForeignMinister() : TForeignMinister() {
+TTextileForeignMinister::TTextileForeignMinister() {
   skillIndex = 2;
   field48 = 1;
 }
@@ -752,7 +752,7 @@ void TTextileForeignMinister::MakeNewCity(TCity* city) {
 IMPLEMENT_DYNCREATE(TTraderForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005338a0
-TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {
+TTraderForeignMinister::TTraderForeignMinister() {
   skillIndex = 1;
 }
 
@@ -867,7 +867,7 @@ void TTraderForeignMinister::MakeNewCity(TCity* city) {
 IMPLEMENT_DYNCREATE(TArmsForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00534010
-TArmsForeignMinister::TArmsForeignMinister() : TForeignMinister() {
+TArmsForeignMinister::TArmsForeignMinister() {
   field48 = 1;
   tradeBidRefreshInterval = 4;
   interiorOrderKind = 1;

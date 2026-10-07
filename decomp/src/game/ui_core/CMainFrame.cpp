@@ -46,7 +46,7 @@ END_MESSAGE_MAP()
 #endif
 
 // FUNCTION: IMPERIALISM 0x00484bf0
-CMainFrame::CMainFrame() : CFrameWnd(), m_pDibPalette(0), m_pBackdropDib(0), field_CC(1) {
+CMainFrame::CMainFrame() : m_pDibPalette(0), m_pBackdropDib(0), field_CC(1) {
   m_backgroundColor = kTiledBackdropSentinelColor;
 }
 

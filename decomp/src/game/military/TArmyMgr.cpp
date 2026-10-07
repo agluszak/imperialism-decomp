@@ -1503,8 +1503,7 @@ int TArmyMgr::GetLandForceIn(int nodeIndexArg) {
   if (nodeIndex < 0 || nodeIndex >= kProvinceCount) {
     chain = 0;
   } else {
-    chain = static_cast<TMilitaryUnit*>(
-        g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain);
+    chain = g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain;
   }
   int sum = 0;
   for (; chain != 0; chain = static_cast<TMilitaryUnit*>(chain->nextAtLocation)) {
@@ -1575,8 +1574,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
       if (g_pGlobalMapState->FindCountry(regionId) == g_pSimMgr->GetPlayerCountry()) {
         TMilitaryUnit* unit = NULL;
         if (regionId >= 0 && regionId < kProvinceCount) {
-          unit = static_cast<TMilitaryUnit*>(
-              g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain);
+          unit = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain;
         }
         for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
           if (unit->orderType >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
@@ -1643,8 +1641,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
   short citySlot = cityRecordIndex;
   TMilitaryUnit* unit = NULL;
   if (citySlot >= 0 && citySlot < kProvinceCount) {
-    unit =
-        static_cast<TMilitaryUnit*>(g_pGlobalMapState->cityScoreTable[citySlot].stationedUnitChain);
+    unit = g_pGlobalMapState->cityScoreTable[citySlot].stationedUnitChain;
   }
   if (unit != NULL) {
     const short* pointCostWeights = g_MapOrderResourceRollWeightTable[bestScore];
@@ -1735,8 +1732,8 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
     return;
   }
 
-  TWindow* node = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
+  TWindow* node =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUArmyMgr, 0xa4d);
   }

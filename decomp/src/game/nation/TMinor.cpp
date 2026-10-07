@@ -531,7 +531,7 @@ void TMinor::SetTradeBids(void) {
   short savedPredicate = primaryManufacturedRequest;
   short proposalWeight = 0;
   if (this == 0 || encodedNationSlot <= 99 || encodedNationSlot >= 200) {
-    int randomBucket = static_cast<int>(rand()) % 100;
+    int randomBucket = rand() % 100;
     int resourceType = 0;
     if (randomBucket < 0x19) {
       resourceType = 0;
@@ -588,7 +588,7 @@ void TMinor::SetTradeBids(void) {
   if (savedPredicate == primaryManufacturedRequest) {
     short rolledPredicate = primaryManufacturedRequest;
     do {
-      int roll = static_cast<int>(rand()) % 100;
+      int roll = rand() % 100;
       if (roll < 0x1e) {
         rolledPredicate = 0xd;
       } else if (roll < 0x3c) {

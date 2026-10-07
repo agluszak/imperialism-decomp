@@ -40,7 +40,7 @@ const int kRegionIdBias = kNationSlotCount; // tile[4] holds region id + kNation
 IMPLEMENT_DYNCREATE(TMapMaker, TControl)
 
 // FUNCTION: IMPERIALISM 0x00525970
-TMapMaker::TMapMaker() : TObject() {}
+TMapMaker::TMapMaker() {}
 
 // FUNCTION: IMPERIALISM 0x005259c0
 TMapMaker::~TMapMaker() {}
@@ -1495,21 +1495,17 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
 void TMapMaker::RandomizeRegionTemplatesAndSmoothOwnership() {
   int coarseIndex;
   for (coarseIndex = 0; coarseIndex < 0x17a; ++coarseIndex) {
-    unsigned short baseClass =
-        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid[0][coarseIndex]));
+    unsigned short baseClass = static_cast<unsigned short>(regionClassGrid[0][coarseIndex]);
 
     AdjacentZone(coarseIndex, 0);
     AdjacentZone(coarseIndex, 5);
 
     int neighbor = AdjacentZone(coarseIndex, 1);
-    unsigned short class1 =
-        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid[0][neighbor]));
+    unsigned short class1 = static_cast<unsigned short>(regionClassGrid[0][neighbor]);
     neighbor = AdjacentZone(coarseIndex, 2);
-    unsigned short class2 =
-        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid[0][neighbor]));
+    unsigned short class2 = static_cast<unsigned short>(regionClassGrid[0][neighbor]);
     neighbor = AdjacentZone(coarseIndex, 3);
-    unsigned short class3 =
-        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid[0][neighbor]));
+    unsigned short class3 = static_cast<unsigned short>(regionClassGrid[0][neighbor]);
     AdjacentZone(coarseIndex, 4);
 
     RandomizeRegionTemplateBanksForMismatchedNeighborClasses(coarseIndex, baseClass, class1, class3,

@@ -190,10 +190,7 @@ END_MESSAGE_MAP()
 #endif
 
 // FUNCTION: IMPERIALISM 0x00412ac0
-ImperialismApp::ImperialismApp()
-    : CWinApp(), waitCursorAnchor(0), installDrivePrefix(), appliedAutoResMode(0), languageLabel(),
-      localizedPictGobName(), assetLibraryName(), primaryDataLibName(), soundLibraryName(),
-      languageCodeString(), languagePackId(0) {}
+ImperialismApp::ImperialismApp() : waitCursorAnchor(0), appliedAutoResMode(0), languagePackId(0) {}
 
 // FUNCTION: IMPERIALISM 0x00412c60
 ImperialismApp::~ImperialismApp() {}

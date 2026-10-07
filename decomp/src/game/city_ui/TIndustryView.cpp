@@ -33,7 +33,7 @@ static void SetIndustryControlEnabledIfChanged(TView* control, bool enabled) {
 IMPLEMENT_DYNCREATE(TIndustryView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004cc790
-TIndustryView::TIndustryView() : TBuildingView(), unresolvedZero(0), selectedIndustryUnitType(-1) {}
+TIndustryView::TIndustryView() : unresolvedZero(0), selectedIndustryUnitType(-1) {}
 
 // FUNCTION: IMPERIALISM 0x004cc800
 TIndustryView::~TIndustryView() {}
@@ -210,8 +210,8 @@ void TIndustryView::UpdateFields() {
     }
 
     if (child->controlTag == kControlTagFlag) { // 'flag'
-      TProductionOrder* flagOrder = static_cast<TProductionOrder*>(
-          city->trailingOrderSlots[static_cast<short>(embeddedPageIndex + 2)]);
+      TProductionOrder* flagOrder =
+          city->trailingOrderSlots[static_cast<short>(embeddedPageIndex + 2)];
       SetIndustryControlEnabledIfChanged(child, flagOrder->quantity != 0);
     }
 

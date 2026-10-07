@@ -67,7 +67,7 @@ TMilitaryUnit* TMapMgr::GetMilitaryMaster(short provinceIndex) {
 IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0050e3d0
-TMapMgr::TMapMgr() : TObject(), cityScoreTable(0), scenarioTagText() {
+TMapMgr::TMapMgr() : cityScoreTable(0) {
   mapDataReady = 0;
   strategicMapPalettePreviewReady = false;
   terrainStateTable = 0;
@@ -1926,8 +1926,7 @@ void TMapMgr::ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex, short ne
   city->ownerNationCode = static_cast<signed char>(newNationTag);
   g_apTerrainTypeDescriptorTable[oldNationCode]->LoseProvince(cityRecordIndex);
   g_apTerrainTypeDescriptorTable[newNationTag]->AddProvince(cityRecordIndex);
-  g_pMapContextActionManager->perTileOwnerNationCodeCache[cityRecordIndex] =
-      static_cast<short>(newNationTag);
+  g_pMapContextActionManager->perTileOwnerNationCodeCache[cityRecordIndex] = newNationTag;
 
   bool isPrimary = g_pDiplomacyTurnStateManager->IsGreatPower(newNationTag);
   if (isPrimary && g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) {
@@ -2161,7 +2160,7 @@ bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileInd
 
 // FUNCTION: IMPERIALISM 0x00513ca0
 bool TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTileIndex tileIndex) {
-  int originNation = static_cast<signed char>(terrainStateTable[tileIndex].ownerNationTag);
+  int originNation = terrainStateTable[tileIndex].ownerNationTag;
   bool result = false;
   short row = tileIndex / kStrategicMapColumns;
   int colX2 = row % 2 + (tileIndex % kStrategicMapColumns) * 2;

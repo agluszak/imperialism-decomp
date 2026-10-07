@@ -12,7 +12,7 @@
 IMPLEMENT_DYNCREATE(TCommodityLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x005c14c0
-TCommodityLine::TCommodityLine() : TLineData() {}
+TCommodityLine::TCommodityLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c1540
 void TCommodityLine::ICommodityLine(short rowArg, short colArg, int* bounds, short value) {

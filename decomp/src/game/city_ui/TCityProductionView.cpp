@@ -833,7 +833,7 @@ void TCityProductionView::UpdateFields() {
 
   total = 0;
   for (i = 25; i < 29; ++i) {
-    TProductionOrder* order = static_cast<TProductionOrder*>(city->orderSlots[i]);
+    TProductionOrder* order = city->orderSlots[i];
     if (order == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x5f2);
     }
@@ -849,7 +849,7 @@ void TCityProductionView::UpdateFields() {
 
   total = 0;
   for (i = 34; i < 39; ++i) {
-    TProductionOrder* order = static_cast<TProductionOrder*>(city->orderSlots[i]);
+    TProductionOrder* order = city->orderSlots[i];
     if (order == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x600);
     }

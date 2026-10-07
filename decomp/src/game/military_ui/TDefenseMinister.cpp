@@ -37,7 +37,7 @@ double TDefenseMinister::GetStategicEscalationMultiplier(bool) {
 IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x004ec0e0
-TDefenseMinister::TDefenseMinister() : TMinister() {}
+TDefenseMinister::TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::IDefenseMinister(TGreatPower* owner) {
@@ -379,8 +379,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
     if ((atWarWithNation[ownerTag] && excludeEnemyTiles == 0) || ownerTag == ownNationSlot) {
       TMilitaryUnit* unit;
       if (tile >= 0 && tile < kProvinceCount) {
-        unit =
-            static_cast<TMilitaryUnit*>(g_pGlobalMapState->cityScoreTable[tile].stationedUnitChain);
+        unit = g_pGlobalMapState->cityScoreTable[tile].stationedUnitChain;
       } else {
         unit = 0;
       }

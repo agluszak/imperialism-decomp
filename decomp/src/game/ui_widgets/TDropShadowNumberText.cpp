@@ -9,7 +9,7 @@
 IMPLEMENT_DYNCREATE(TDropShadowNumberText, TPictureNumberText)
 
 // FUNCTION: IMPERIALISM 0x005b5910
-TDropShadowNumberText::TDropShadowNumberText() : TPictureNumberText() {
+TDropShadowNumberText::TDropShadowNumberText() {
   shadowColor = g_defaultDropShadowTextColor;
 }
 

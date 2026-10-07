@@ -143,7 +143,7 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
     SetQuickDrawFillColor(0);
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
     OffsetRect(&swatch, -1, -1);
-    g_pViewMgr->SetForeColor(static_cast<short>(pictureIds[i]));
+    g_pViewMgr->SetForeColor(pictureIds[i]);
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
   }
 }

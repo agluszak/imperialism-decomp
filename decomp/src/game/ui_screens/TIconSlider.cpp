@@ -6,8 +6,7 @@
 IMPLEMENT_DYNCREATE(TIconSlider, TIconBar)
 
 // FUNCTION: IMPERIALISM 0x005063c0
-TIconSlider::TIconSlider()
-    : TIconBar(), value(0), knobBitmap(0), minTrackOffset(0), maxTrackOffset(0) {
+TIconSlider::TIconSlider() : value(0), knobBitmap(0), minTrackOffset(0), maxTrackOffset(0) {
   knobBaseRect.left = 0;
   knobBaseRect.top = 0;
   knobBaseRect.right = 0;

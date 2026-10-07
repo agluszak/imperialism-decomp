@@ -21,8 +21,7 @@
 IMPLEMENT_DYNCREATE(TTwoPicSlider, TControl)
 
 // FUNCTION: IMPERIALISM 0x0043d610
-TTwoPicSlider::TTwoPicSlider()
-    : TControl(), lowerSurface(0), upperSurface(0), splitPosition(0), mode(0) {}
+TTwoPicSlider::TTwoPicSlider() : lowerSurface(0), upperSurface(0), splitPosition(0), mode(0) {}
 
 // FUNCTION: IMPERIALISM 0x0043d680
 TTwoPicSlider::~TTwoPicSlider() {}

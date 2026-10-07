@@ -16,7 +16,7 @@
 #include <string.h>
 
 // FUNCTION: IMPERIALISM 0x0043d590
-TMapPreviewView::TMapPreviewView() : TView() {
+TMapPreviewView::TMapPreviewView() {
   selectedRegion = -1;
 }
 

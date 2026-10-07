@@ -58,7 +58,7 @@ IMPLEMENT_DYNCREATE(TDisplayMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x004fe7a0
 TDisplayMgr::TDisplayMgr()
-    : TObject(), activeDialog(0), viewportMetric(8), dialogActiveFlag(0), field0c(0), eventCode(0),
+    : activeDialog(0), viewportMetric(8), dialogActiveFlag(0), field0c(0), eventCode(0),
       gworldFlags(0), clipSnapshotEvent(0), field1e(0), turnOrderList(0) {
   hiliteColor.rgbBlue = 0;
   hiliteColor.rgbGreen = 0;

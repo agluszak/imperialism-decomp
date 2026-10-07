@@ -3,7 +3,7 @@
 IMPLEMENT_DYNCREATE(TLineData, TObject)
 
 // FUNCTION: IMPERIALISM 0x0056f3b0
-TLineData::TLineData() : TObject() {}
+TLineData::TLineData() {}
 
 // FUNCTION: IMPERIALISM 0x0056f420
 void TLineData::ILineData(short rowArg, short colArg, int* bounds) {

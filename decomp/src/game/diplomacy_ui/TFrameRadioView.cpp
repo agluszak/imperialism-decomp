@@ -54,8 +54,8 @@ void TFrameRadioView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 
 // FUNCTION: IMPERIALISM 0x004fe190
 void TFrameRadioView::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
-  if (static_cast<unsigned char>(fEnabledState) != controlState) {
-    controlState = static_cast<unsigned char>(fEnabledState);
+  if (fEnabledState != controlState) {
+    controlState = fEnabledState;
     if (fRefreshNow) {
       RefreshControl();
       ForceRedraw();

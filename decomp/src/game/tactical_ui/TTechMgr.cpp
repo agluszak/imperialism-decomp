@@ -509,7 +509,7 @@ void TTechMgr::GeneralActivation(int techId, int nationSlot) {
     if (record->ownerNationTag == nationSlot && (record->activeFlags & 1) != 0) {
       short maxCap =
           static_cast<char>(g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 0, nationSlot));
-      if (static_cast<char>(g_pGlobalMapState->GetDevelopmentLevel(tileIndex, false)) < maxCap) {
+      if (g_pGlobalMapState->GetDevelopmentLevel(tileIndex, false) < maxCap) {
         g_pGlobalMapState->SetDevelopmentLevel(tileIndex, false, static_cast<unsigned char>(maxCap),
                                                true);
       }

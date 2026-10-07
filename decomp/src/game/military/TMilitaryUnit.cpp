@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(TMilitaryUnit, TObject)
 
 // FUNCTION: IMPERIALISM 0x005c2df0
 TMilitaryUnit::TMilitaryUnit()
-    : name(), experiencePercent(0), battleStateFlags(0), strengthSnapshot(0), ownerMission(NULL) {
+    : experiencePercent(0), battleStateFlags(0), strengthSnapshot(0), ownerMission(NULL) {
   militaryRegistrationFlag = true;
   strength = 0x1f4;
   eraIndex = 0;

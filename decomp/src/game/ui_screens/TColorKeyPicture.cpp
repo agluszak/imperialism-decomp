@@ -15,7 +15,7 @@
 IMPLEMENT_DYNCREATE(TColorKeyPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00572de0
-TColorKeyPicture::TColorKeyPicture() : TNoHilitePicture(), colorKeySurface(0) {}
+TColorKeyPicture::TColorKeyPicture() : colorKeySurface(0) {}
 
 // FUNCTION: IMPERIALISM 0x00572e40
 TColorKeyPicture::~TColorKeyPicture() {}

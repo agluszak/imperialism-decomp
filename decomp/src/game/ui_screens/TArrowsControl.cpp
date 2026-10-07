@@ -5,7 +5,7 @@ IMPLEMENT_DYNCREATE(TArrowsControl, TPicture)
 #include "game/gfx/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583970
-TArrowsControl::TArrowsControl() : TPicture(), nextRepeatTick(0) {}
+TArrowsControl::TArrowsControl() : nextRepeatTick(0) {}
 
 // FUNCTION: IMPERIALISM 0x005839d0
 TArrowsControl::~TArrowsControl() {}

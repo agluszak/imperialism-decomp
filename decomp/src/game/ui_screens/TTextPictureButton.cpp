@@ -7,8 +7,7 @@
 IMPLEMENT_DYNCREATE(TTextPictureButton, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005725d0
-TTextPictureButton::TTextPictureButton()
-    : TUpDownPictureButton(), pointSize(0), themeCode9A(0), themeCode9C(0) {}
+TTextPictureButton::TTextPictureButton() : pointSize(0), themeCode9A(0), themeCode9C(0) {}
 
 // FUNCTION: IMPERIALISM 0x005726a0
 TTextPictureButton::~TTextPictureButton() {}

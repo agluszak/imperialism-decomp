@@ -5,10 +5,9 @@
 #include <string.h>
 
 // FUNCTION: IMPERIALISM 0x0047e360
-CDibPal::CDibPal() : CPalette() {
+CDibPal::CDibPal() {
   m_pLogPalette = NULL;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0047e3c0
 CDibPal::~CDibPal() {

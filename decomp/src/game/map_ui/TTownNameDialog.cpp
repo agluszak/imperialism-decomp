@@ -15,7 +15,7 @@
 IMPLEMENT_DYNCREATE(TTownNameDialog, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x0051bb10
-TTownNameDialog::TTownNameDialog() : TNoHilitePicture() {}
+TTownNameDialog::TTownNameDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0051bb70
 TTownNameDialog::~TTownNameDialog() {}

@@ -4,7 +4,7 @@
 IMPLEMENT_DYNCREATE(TRearFloatWindow, TFloatWindow)
 
 // FUNCTION: IMPERIALISM 0x004f38e0
-TRearFloatWindow::TRearFloatWindow() : TFloatWindow() {
+TRearFloatWindow::TRearFloatWindow() {
   // Base constructor TFloatWindow() handles registration and setup.
 }
 

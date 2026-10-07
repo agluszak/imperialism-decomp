@@ -36,7 +36,7 @@ const int kScenarioRecordTags[] = {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0058aef0
-TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
+TTraderAmtBar::TTraderAmtBar() {}
 
 IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 
@@ -87,8 +87,7 @@ short TTraderAmtBar::AdjustForZero(int baseValue, short requestedValue) {
   if (requestedValue > 0) {
     TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     short merchantCapacity = nationState->merchantCapacity;
-    if (static_cast<int>(requestedValue) <
-        (static_cast<int>(frameWidth) / static_cast<int>(merchantCapacity))) {
+    if (static_cast<int>(requestedValue) < (frameWidth / static_cast<int>(merchantCapacity))) {
       if (ownerContext->FindSubView(kControlTagSell) != 0) {
         result = 1;
       }
@@ -117,7 +116,7 @@ void TTraderAmtBar::DrawAmt() {
       if (styleValueAt60 > 0) {
         short styleValueAt66 = auxValueB;
         SetQuickDrawTextOriginWithContextOffset(0, 0);
-        g_pViewMgr->SetForeColor(static_cast<short>(styleValueAt66));
+        g_pViewMgr->SetForeColor(styleValueAt66);
         SetQuickDrawPenSizeAndMarkDirty(1, 5);
         DrawCenteredGuideLineOnMapDc(static_cast<short>(styleValueAt60 - 1), 0);
         ResetQuickDrawStrokeState();

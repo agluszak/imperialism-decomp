@@ -205,8 +205,8 @@ void TArmyPlayer::StartBattle() {
     int opposingNationIndex = opponent->nationIndex;
 
     // Battle-intro ("hola") dialog, id 0xf19.
-    TWindow* dialog = static_cast<TWindow*>(
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalDeployChoice));
+    TWindow* dialog =
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalDeployChoice);
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUTacPlayer, 0x18d);
     }
@@ -1427,8 +1427,7 @@ int TArmyPlayer::SelectTarget(TTacticalUnit* unit, int flag) {
     if (cachedFortBombardmentTargetTile == -1) {
       TacticalTileIndex rolledTileIndex;
       do {
-        rolledTileIndex =
-            (static_cast<int>(rand()) % 0xd) * 29 + battle->battlefieldColumnCount + 0x17;
+        rolledTileIndex = (rand() % 0xd) * 29 + battle->battlefieldColumnCount + 0x17;
         cachedFortBombardmentTargetTile = rolledTileIndex;
       } while (battle->IsTacticalTileAtFortWallSectionSlot(rolledTileIndex));
     }

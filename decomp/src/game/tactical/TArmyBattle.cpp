@@ -86,8 +86,8 @@ void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourS
   // Show the live tactical-battle view when forced globally or either side is watched.
   if (g_nForceTacticalBattleViewFlag || enemySideWatchFlag != 0 || ourSideWatchFlag != 0) {
     g_nTurnCooldownDeferCounter = 0;
-    g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(
-        static_cast<int>(rand()) % 3 + 6, false); // battle cue 6..8
+    g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(rand() % 3 + 6,
+                                                                    false); // battle cue 6..8
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTacticalView), 0);
     TTacArmyView* battleView =
         static_cast<TTacArmyView*>(g_pDisplayMgr->activeDialog->FindSubView(kControlTagDialog));

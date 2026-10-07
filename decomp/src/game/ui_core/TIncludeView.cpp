@@ -11,8 +11,7 @@
 IMPLEMENT_DYNCREATE(TIncludeView, TView)
 
 // FUNCTION: IMPERIALISM 0x0048cd70
-TIncludeView::TIncludeView()
-    : TView(), turnEventCode(-1), padding62(0), labelText(), completionFlag(1), padding72(0) {
+TIncludeView::TIncludeView() : turnEventCode(-1), padding62(0), completionFlag(1), padding72(0) {
   anchorPoint.x = 0;
   anchorPoint.y = 0;
   CString empty(g_szEmptyString);

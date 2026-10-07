@@ -560,8 +560,8 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
             node = node->next;
           } else {
             node->payload->SetTaskForce(0);
-            short bucketIndex = static_cast<short>(
-                g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot());
+            short bucketIndex =
+                g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot();
             short* bucketCounter = &entry->shipCountsByToolbarSlot[bucketIndex];
             --*bucketCounter;
             if (node == entry->shipList) {
@@ -1583,9 +1583,9 @@ static void ApplyTaskForceConflictAttrition(TTaskForce* force, float favorRatio,
   do {
     for (TMapOrderChildLinkNode* node = force->shipList; node != NULL && selected < target;
          node = node->next) {
-      if (currentCount == target || static_cast<int>(rand()) % currentCount < target) {
+      if (currentCount == target || rand() % currentCount < target) {
         ++selected;
-        int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
+        int roll = rand() % 100 + rand() % 100 + 100;
         TShip* child = node->payload;
         short damage =
             static_cast<short>(0.5 - g_NavyOrderResourceDescriptorTable[child->type].Armor() *
@@ -1708,7 +1708,7 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
         (rightBucket + 10) * CalculateActiveChildAverageDescriptorWeightX10(rightEntry->shipList);
     int totalWeight = leftWeight + rightWeight;
 
-    if (static_cast<int>(rand()) % totalWeight < leftWeight) {
+    if (rand() % totalWeight < leftWeight) {
       if (leftTierAdjust == 0) {
         --candidateTier;
       }
@@ -1716,7 +1716,7 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
         ++candidateTier;
       }
     }
-    if (static_cast<int>(rand()) % totalWeight < rightWeight) {
+    if (rand() % totalWeight < rightWeight) {
       if (rightTierAdjust == 0) {
         --candidateTier;
       }

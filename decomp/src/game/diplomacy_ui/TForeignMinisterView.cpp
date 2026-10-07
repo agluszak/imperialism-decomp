@@ -12,7 +12,7 @@
 IMPLEMENT_DYNCREATE(TForeignMinisterView, TMinisterView)
 
 // FUNCTION: IMPERIALISM 0x004f2fd0
-TForeignMinisterView::TForeignMinisterView() : TMinisterView() {}
+TForeignMinisterView::TForeignMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3030
 TForeignMinisterView::~TForeignMinisterView() {}

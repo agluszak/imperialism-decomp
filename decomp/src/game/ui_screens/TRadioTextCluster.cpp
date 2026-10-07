@@ -12,7 +12,7 @@
 IMPLEMENT_DYNCREATE(TRadioTextCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x005796a0
-TRadioTextCluster::TRadioTextCluster() : TCluster() {
+TRadioTextCluster::TRadioTextCluster() {
   selectedColorCode = 0x4b;
   unselectedColorCode = 0x49;
   frameThemeCode = -1;
@@ -102,7 +102,7 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
 void TRadioTextCluster::Draw(RECT* rectBuffer) {
   if (frameThemeCode > -1) {
     RECT frame = {0, 0, frameWidth, frameHeight};
-    g_pViewMgr->SetForeColor(static_cast<short>(frameThemeCode));
+    g_pViewMgr->SetForeColor(frameThemeCode);
     QDFrameRect(&frame);
     SetQuickDrawFillColor(0);
   }

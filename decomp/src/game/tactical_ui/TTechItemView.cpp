@@ -179,8 +179,8 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         LoadUiStringAndDispatchSharedMessageCommand(0x274f, 9, purchaseButton);
       }
     } else if (sourceHandler->controlTag == kControlTagDesc) {
-      TWindow* node = static_cast<TWindow*>(
-          g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTechnologyHistory));
+      TWindow* node =
+          g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTechnologyHistory);
       TTechHistoryView* historyView =
           static_cast<TTechHistoryView*>(node->FindSubView(kControlTagDialog));
       historyView->AssertValid();

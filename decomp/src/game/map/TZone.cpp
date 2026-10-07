@@ -47,13 +47,13 @@ enum { kFirstMapRegionNationTag = 0x17 };
 IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055e700
-TZone::TZone() : displayName(), primaryNeighbors(), secondaryNeighbors() {
+TZone::TZone() : primaryNeighbors(), secondaryNeighbors() {
   seedNationId = -1;
   contextOrdinal = static_cast<short>(g_nMapActionContextCount);
   ++g_nMapActionContextCount;
   tileOrTerrainId = -1;
   nationKeyMask = 0;
-  prev18 = static_cast<TZone*>(g_pMapActionContextListHead);
+  prev18 = g_pMapActionContextListHead;
   next1c = 0;
   distanceLevel = 0;
   statusCode = -1;
@@ -763,8 +763,7 @@ void TZone::ReconsiderFocusIngot() {
 void TZone::ShowFocusIngot(unsigned char flag) {
   unsigned char tileStateByte =
       g_pGlobalMapState->terrainStateTable[activeTileIndex].tileActionState;
-  if (((static_cast<unsigned char>(flag) !=
-        static_cast<unsigned char>(static_cast<signed char>(tileStateByte) >= 0 ? 1 : 0)) &&
+  if (((flag != static_cast<unsigned char>(static_cast<signed char>(tileStateByte) >= 0 ? 1 : 0)) &&
        (g_pViewMgr != 0)) &&
       (g_pViewMgr->mapUberPicture != 0)) {
     char sign = flag ? 1 : -1;

@@ -44,8 +44,7 @@
 IMPLEMENT_DYNCREATE(TOfferDeskPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005be570
-TOfferDeskPicture::TOfferDeskPicture()
-    : TPicture(), selectionActive(false), acceptButton(0), rejectButton(0) {}
+TOfferDeskPicture::TOfferDeskPicture() : selectionActive(false), acceptButton(0), rejectButton(0) {}
 
 // FUNCTION: IMPERIALISM 0x005be5e0
 TOfferDeskPicture::~TOfferDeskPicture() {}
@@ -579,8 +578,7 @@ void TOfferDeskPicture::SaveAndDismiss(int actionCode) {
     if (proposedAmount != 0) {
       TView* toolbar = g_pDisplayMgr->activeDialog->FindSubView(kControlTagTool);
       if (toolbar != NULL) {
-        static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(
-            static_cast<short>(respondingNationSlot));
+        static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(respondingNationSlot);
       }
     }
 

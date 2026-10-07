@@ -15,8 +15,7 @@ IMPLEMENT_DYNCREATE(TArmyCheckBox, TControl)
 // FUNCTION: IMPERIALISM 0x004a9fe0
 TArmyCheckBox::TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, int unused1,
                              int unused2, TQuickDrawSurfaceContext* surfaceContext90Value,
-                             int iconStripHorizontalOffsetValue)
-    : TControl() {
+                             int iconStripHorizontalOffsetValue) {
   (void)unused1;
   (void)unused2;
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);

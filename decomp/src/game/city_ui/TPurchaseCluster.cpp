@@ -14,7 +14,7 @@
 IMPLEMENT_DYNCREATE(TPurchaseCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x004cc3c0
-TPurchaseCluster::TPurchaseCluster() : TCluster(), linkedControl(0) {}
+TPurchaseCluster::TPurchaseCluster() : linkedControl(0) {}
 
 // FUNCTION: IMPERIALISM 0x004cc420
 TPurchaseCluster::~TPurchaseCluster() {}

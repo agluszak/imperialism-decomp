@@ -40,8 +40,7 @@
 IMPLEMENT_DYNCREATE(TSetupRandomMapPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00576d80
-TSetupRandomMapPicture::TSetupRandomMapPicture()
-    : TNoHilitePicture(), planetSeed(), wrapHorizontally(0), countryControlReady(0) {}
+TSetupRandomMapPicture::TSetupRandomMapPicture() : wrapHorizontally(0), countryControlReady(0) {}
 
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 

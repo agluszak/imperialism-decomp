@@ -27,7 +27,7 @@ const char kReadTextMode[] = "rt";
 IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00507c60
-TLanguageMgr::TLanguageMgr() : TObject() {
+TLanguageMgr::TLanguageMgr() {
   columnCount = 0;
   primaryRowCount = 0;
   rowTextTable = 0;
@@ -251,8 +251,8 @@ char TLanguageMgr::PickGender(const char* name) const {
     return delimiter;
   }
 
-  TWindow* dialog = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventVerbFormDialog));
+  TWindow* dialog =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventVerbFormDialog);
   g_pSimMgr->GetString(0x2737, 0x34, &questionText);
   TStaticText* question = static_cast<TStaticText*>(dialog->FindSubView(kControlTagQues));
   ApplyControlThemeStyleAndOptionalCaption(question, 0, 0xc, 0x2b6b, 1, questionText);

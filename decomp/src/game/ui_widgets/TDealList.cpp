@@ -8,7 +8,7 @@
 IMPLEMENT_DYNCREATE(TDealList, TSortedPtrList)
 
 // FUNCTION: IMPERIALISM 0x005ba1c0
-TDealList::TDealList() : TSortedPtrList() {}
+TDealList::TDealList() {}
 
 // FUNCTION: IMPERIALISM 0x005ba220
 TDealList::~TDealList() {}

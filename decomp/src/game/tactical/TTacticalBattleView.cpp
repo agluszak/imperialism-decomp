@@ -881,7 +881,7 @@ void InitializeTacticalUnitFacingOffsetTable() {
 IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 
 // FUNCTION: IMPERIALISM 0x005a8350
-TTacticalBattleView::TTacticalBattleView() : TView() {
+TTacticalBattleView::TTacticalBattleView() {
   tacticalBattle = 0;
   battlefieldSurface = 0;
   viewOriginX = 0;

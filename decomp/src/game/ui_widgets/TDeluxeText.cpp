@@ -8,8 +8,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x00430950
-TDeluxeText::TDeluxeText()
-    : TTEView(), textColor(0), shadowTextColor(0), dropShadowEnabled(false) {}
+TDeluxeText::TDeluxeText() : textColor(0), shadowTextColor(0), dropShadowEnabled(false) {}
 
 // FUNCTION: IMPERIALISM 0x00430a10
 TDeluxeText::~TDeluxeText() {}

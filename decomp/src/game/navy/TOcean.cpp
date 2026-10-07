@@ -512,7 +512,7 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x00563540
 TZone* TOcean::GetPortZone(short nationSlot) {
-  TZone* esi = static_cast<TZone*>(g_pMapActionContextListHead);
+  TZone* esi = g_pMapActionContextListHead;
   if (esi != 0) {
     do {
       if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {

@@ -57,7 +57,7 @@ bool TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(
 IMPLEMENT_DYNCREATE(TAutoGreatPower, TGreatPower)
 
 // FUNCTION: IMPERIALISM 0x004e6b50
-TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
+TAutoGreatPower::TAutoGreatPower() {
   missionQueue = 0;
 }
 
@@ -286,11 +286,11 @@ void TAutoGreatPower::PurchaseItem(short resourceKind, short amount, short price
 
 // FUNCTION: IMPERIALISM 0x004e7680
 void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) {
-  if (g_apNationStates[static_cast<short>(offerContext)]->diplomacyEligibility != 0) {
-    if (static_cast<short>(resourceKind) != 5) {
+  if (g_apNationStates[offerContext]->diplomacyEligibility != 0) {
+    if (resourceKind != 5) {
       short relationScore =
-          g_pDiplomacyTurnStateManager->relationStandingScores[nationSlot * kNationSlotCount +
-                                                               static_cast<short>(offerContext)];
+          g_pDiplomacyTurnStateManager
+              ->relationStandingScores[nationSlot * kNationSlotCount + offerContext];
       double scaledScore = static_cast<double>(relationScore) * 0.00392156862745098;
       int roll = rand();
       if (static_cast<double>(roll) > scaledScore * 32767.0) {
@@ -298,18 +298,18 @@ void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) 
       }
       return;
     }
-  } else if (static_cast<short>(resourceKind) != 5) {
+  } else if (resourceKind != 5) {
     short metricCap = 10;
-    if (GetStockpile(static_cast<short>(resourceKind)) < 10) {
-      metricCap = GetStockpile(static_cast<short>(resourceKind));
+    if (GetStockpile(resourceKind) < 10) {
+      metricCap = GetStockpile(resourceKind);
     }
     if (merchantCapacity < metricCap) {
       metricCap = merchantCapacity;
     }
-    if (GetTradeOffersFor(static_cast<short>(resourceKind)) == -1) {
+    if (GetTradeOffersFor(resourceKind) == -1) {
       return;
     }
-    SetItemPotentials(static_cast<short>(resourceKind), metricCap);
+    SetItemPotentials(resourceKind, metricCap);
     return;
   }
   if (GetStockpile(kResourceHorses) != 0 && GetTradeOffersFor(kResourceHorses) != -1) {
@@ -345,7 +345,7 @@ void TAutoGreatPower::InitializeTradeStatus(void) {
 
 // FUNCTION: IMPERIALISM 0x004e78d0
 void TAutoGreatPower::MoveCivilians(void) {
-  static_cast<TCityInteriorMinister*>(interiorMinister)->ProcessUnitOrders();
+  interiorMinister->ProcessUnitOrders();
 }
 
 // FUNCTION: IMPERIALISM 0x004e78f0
@@ -462,7 +462,7 @@ void TAutoGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
     return;
   }
   if (actionCode == kDiplomacyProposalDeclareWar) {
-    SetEnemy(static_cast<short>(sourceNation));
+    SetEnemy(sourceNation);
   }
   TGreatPower::AddNoticeFrom(sourceNation, actionCode);
 }

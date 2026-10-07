@@ -5,7 +5,7 @@
 IMPLEMENT_DYNCREATE(TRightLeftView, TControl)
 
 // FUNCTION: IMPERIALISM 0x00583f30
-TRightLeftView::TRightLeftView() : TControl(), repeatTick(0) {}
+TRightLeftView::TRightLeftView() : repeatTick(0) {}
 
 // FUNCTION: IMPERIALISM 0x00583f90
 TRightLeftView::~TRightLeftView() {}

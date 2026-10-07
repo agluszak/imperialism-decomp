@@ -68,7 +68,7 @@ int TSortedList::QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare,
 int TSortedList::QSPartition(int lo, int hi, TSortedListCompareFunc compare, void* context) {
   int pivotOrdinal = lo;
   if (lo != hi) {
-    pivotOrdinal = static_cast<int>(rand()) % abs(hi - lo) + lo;
+    pivotOrdinal = rand() % abs(hi - lo) + lo;
   }
   void* loEntry = GetEntryByOrdinal(lo);
   void* pivotEntry = GetEntryByOrdinal(pivotOrdinal);

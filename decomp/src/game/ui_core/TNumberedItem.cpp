@@ -10,7 +10,7 @@
 IMPLEMENT_DYNCREATE(TNumberedItem, TView)
 
 // FUNCTION: IMPERIALISM 0x005077c0
-TNumberedItem::TNumberedItem() : TMegaPicture() {
+TNumberedItem::TNumberedItem() {
   iconRowIndex = 0;
   badgeCount = 0;
 }

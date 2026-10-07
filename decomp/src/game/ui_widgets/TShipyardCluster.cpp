@@ -25,7 +25,7 @@ IMPLEMENT_DYNCREATE(TShipyardCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x0058a590
 TShipyardCluster::TShipyardCluster()
-    : TAmtBarCluster(), selectedMetricOrder(0), selectedMetricValue(0), selectedMetricStep(0) {}
+    : selectedMetricOrder(0), selectedMetricValue(0), selectedMetricStep(0) {}
 
 // FUNCTION: IMPERIALISM 0x0058a5f0
 TShipyardCluster::~TShipyardCluster() {}

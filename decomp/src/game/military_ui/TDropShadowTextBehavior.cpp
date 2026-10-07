@@ -7,7 +7,7 @@
 IMPLEMENT_DYNCREATE(TDropShadowTextBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x004b10a0
-TDropShadowTextBehavior::TDropShadowTextBehavior() : TBehavior(), shadowColor(0) {}
+TDropShadowTextBehavior::TDropShadowTextBehavior() : shadowColor(0) {}
 
 // FUNCTION: IMPERIALISM 0x004b1120
 void TDropShadowTextBehavior::IDropShadowTextBehavior(COLORREF shadowColor) {

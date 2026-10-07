@@ -60,8 +60,8 @@ IMPLEMENT_DYNCREATE(TSoundPlayer, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x00593370
 TSoundPlayer::TSoundPlayer()
-    : TEventHandler(), audioCuePool(0), remainingRandomAudioCues(0), cdAudioPlaybackActive(0),
-      unused79(0), unused7A(0), fadeStartTick(0) {}
+    : audioCuePool(0), remainingRandomAudioCues(0), cdAudioPlaybackActive(0), unused79(0),
+      unused7A(0), fadeStartTick(0) {}
 
 // FUNCTION: IMPERIALISM 0x00593400
 bool TSoundPlayer::DoIdle(int action) {
@@ -149,7 +149,7 @@ void TSoundPlayer::CheckMusicStatus() {
 
   short pending = pendingAudioCueId;
   if (pending != 0 && fadeStartTick == 0) {
-    if (static_cast<short>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) != 0) {
+    if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] != 0) {
       if (!IsTurnFlowCooldownActiveAndResetExpiredState()) {
         if (ReturnTrueStub() == 0) {
           g_pSimMgr->preferenceValues[kCdAudioVolumePreference] = 0;
@@ -160,7 +160,7 @@ void TSoundPlayer::CheckMusicStatus() {
           activeAudioCueId = pending;
           g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(pending);
           g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
-              static_cast<short>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) << 8);
+              g_pSimMgr->preferenceValues[kCdAudioVolumePreference] << 8);
           cdAudioPlaybackActive = true;
         }
       }
@@ -212,7 +212,7 @@ void TSoundPlayer::PlayRandomTrack() {
   }
 
   int total = remainingRandomAudioCues->GetSize();
-  int pick = static_cast<int>(rand()) % total + 1;
+  int pick = rand() % total + 1;
   int chosen = remainingRandomAudioCues->At(pick);
   remainingRandomAudioCues->AtDelete(pick);
 

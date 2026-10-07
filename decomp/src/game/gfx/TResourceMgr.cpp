@@ -151,7 +151,7 @@ CDib* TResourceMgr::LoadBmpResourceByIdCached(short bmpId) {
     }
     if (dib->LoadBitmapResourceAndInitializeSurfaceState(resourceName, module)) {
       record = new CacheRecord;
-      record->id = static_cast<short>(bmpId);
+      record->id = bmpId;
       record->pObject = dib;
       record->refCount = 1;
       m_recordsByResourceId.SetAt(bmpId, record);
@@ -167,7 +167,7 @@ CDib* TResourceMgr::LoadBmpResourceByIdCached(short bmpId) {
     }
     if (dib->LoadBitmapResourceAndInitializeSurfaceState(MAKEINTRESOURCE(bmpId), module)) {
       record = new CacheRecord;
-      record->id = static_cast<short>(bmpId);
+      record->id = bmpId;
       record->pObject = dib;
       record->refCount = 1;
       m_recordsByResourceId.SetAt(bmpId, record);

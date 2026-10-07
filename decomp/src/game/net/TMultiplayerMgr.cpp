@@ -981,8 +981,8 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     TextStyle styleDescriptor;
     styleDescriptor.textColor = 0;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
-    TWindow* dialog = static_cast<TWindow*>(
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
+    TWindow* dialog =
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage);
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr, 0x7ef);
     }

@@ -214,8 +214,8 @@ void TCountry::SetCenterTile(int value) {
 // FUNCTION: IMPERIALISM 0x004d7170
 short TCountry::GeopoliticalCenter() {
   if (overlayAnchorTileCache == -1) {
-    overlayAnchorTileCache = static_cast<short>(
-        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, true));
+    overlayAnchorTileCache =
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, true);
   }
   return overlayAnchorTileCache;
 }

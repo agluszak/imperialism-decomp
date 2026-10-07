@@ -431,8 +431,7 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
     TShip* child = pruneNode->payload;
     child->SetTaskForce(NULL);
 
-    short bucketIndex =
-        static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].ToolbarSlot());
+    short bucketIndex = g_NavyOrderResourceDescriptorTable[child->type].ToolbarSlot();
     short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
     --*bucketCounter;
 
@@ -623,11 +622,9 @@ void TTaskForce::Add(TShip* node) {
   TMapOrderChildLinkNode* nextLink = shipList;
   TMapOrderChildLinkNode* prevLink = 0;
   if (nextLink != 0) {
-    short nodePriority =
-        static_cast<short>(g_NavyOrderResourceDescriptorTable[node->type].ToolbarSlot());
+    short nodePriority = g_NavyOrderResourceDescriptorTable[node->type].ToolbarSlot();
     do {
-      if (static_cast<short>(
-              g_NavyOrderResourceDescriptorTable[nextLink->payload->type].ToolbarSlot()) >=
+      if (g_NavyOrderResourceDescriptorTable[nextLink->payload->type].ToolbarSlot() >=
           nodePriority) {
         break;
       }
@@ -658,8 +655,7 @@ void TTaskForce::Add(TShip* node) {
 
   flagship = node->Finest(flagship, false);
 
-  short bucketIndex =
-      static_cast<short>(g_NavyOrderResourceDescriptorTable[node->type].ToolbarSlot());
+  short bucketIndex = g_NavyOrderResourceDescriptorTable[node->type].ToolbarSlot();
   ++shipCountsByToolbarSlot[bucketIndex];
 
   node->taskForce = this;
@@ -695,8 +691,7 @@ void TTaskForce::Remove(TShip* ship) {
         shipList->next->RemoveLinkedOrderNodeByValueRecursive(ship);
       }
     }
-    short bucketIndex =
-        static_cast<short>(g_NavyOrderResourceDescriptorTable[ship->type].ToolbarSlot());
+    short bucketIndex = g_NavyOrderResourceDescriptorTable[ship->type].ToolbarSlot();
     --shipCountsByToolbarSlot[bucketIndex];
   }
 
@@ -746,8 +741,7 @@ void TTaskForce::FreeAvailables() {
       TShip* entry = node->payload;
       entry->taskForce = NULL;
 
-      short bucketIndex =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[entry->type].ToolbarSlot());
+      short bucketIndex = g_NavyOrderResourceDescriptorTable[entry->type].ToolbarSlot();
       short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
       --*bucketCounter;
 
@@ -835,7 +829,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
     bool queued;
     if (cursor != 0) {
       queued = true;
-    } else if (static_cast<short>(CountShips()) < 1) {
+    } else if (CountShips() < 1) {
       Free();
       queued = false;
     } else {
@@ -868,8 +862,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
       if (link->active == 0) {
         TShip* ship = link->payload;
         ship->SetTaskForce(0);
-        short bucketIndex =
-            static_cast<short>(g_NavyOrderResourceDescriptorTable[ship->type].ToolbarSlot());
+        short bucketIndex = g_NavyOrderResourceDescriptorTable[ship->type].ToolbarSlot();
         --shipCountsByToolbarSlot[bucketIndex];
         if (link == shipList) {
           shipList = link->next;
@@ -1088,10 +1081,8 @@ void TTaskForce::Select(short toolbarSlot, unsigned char activeFlag) {
   if (node == NULL) {
     return;
   }
-  while (
-      static_cast<short>(g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot()) !=
-          toolbarSlot ||
-      node->active == activeFlag) {
+  while (g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot() != toolbarSlot ||
+         node->active == activeFlag) {
     node = node->next;
     if (node == NULL) {
       return;
@@ -1135,8 +1126,7 @@ int TTaskForce::GetInvasionCapacity() const {
 int TTaskForce::GetSelected(short nationClass) const {
   int count = 0;
   for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
-    if (static_cast<short>(g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot()) ==
-            nationClass &&
+    if (g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot() == nationClass &&
         node->active != 0) {
       ++count;
     }
@@ -1560,8 +1550,7 @@ bool TTaskForce::AttemptToEvade(const TTaskForce* other) {
   unsigned short minDescriptorWeight = 10000;
   for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (node->active != 0) {
-      short weight = static_cast<short>(
-          g_NavyOrderResourceDescriptorTable[node->payload->type].SailingSpeed());
+      short weight = g_NavyOrderResourceDescriptorTable[node->payload->type].SailingSpeed();
       if (weight < static_cast<short>(minDescriptorWeight)) {
         minDescriptorWeight = static_cast<unsigned short>(weight);
       }
@@ -1838,8 +1827,7 @@ void TTaskForce::CreateIngot() {
     break;
   case 5:
     markerType = 6;
-    ingotTileIndex =
-        static_cast<short>(location->PickInvasionIngotTile(static_cast<Province*>(target)));
+    ingotTileIndex = location->PickInvasionIngotTile(static_cast<Province*>(target));
     break;
   case 6:
     markerType = 2;

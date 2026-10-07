@@ -11,7 +11,7 @@ TPictureButton::~TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570870
 void TPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
-  if (static_cast<unsigned char>(enabledState) != controlState) {
+  if (enabledState != controlState) {
     controlState = enabledState;
     Show(enabledState, true);
     if (refreshNow) {

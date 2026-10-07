@@ -10,7 +10,7 @@
 IMPLEMENT_DYNCREATE(TOverlayRadioButton, TRadioPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00453800
-TOverlayRadioButton::TOverlayRadioButton() : TRadioPictureButton() {
+TOverlayRadioButton::TOverlayRadioButton() {
   overlaySurfaceContext = 0;
 }
 

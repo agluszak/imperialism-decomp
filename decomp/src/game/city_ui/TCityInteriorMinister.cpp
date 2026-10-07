@@ -109,7 +109,7 @@ void TCityInteriorMinister::ResetHistoricalNeedFor(int arg) {
 IMPLEMENT_DYNCREATE(TCityInteriorMinister, TInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004be840
-TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister(), orderList(0) {}
+TCityInteriorMinister::TCityInteriorMinister() : orderList(0) {}
 
 // FUNCTION: IMPERIALISM 0x004be8d0
 void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
@@ -419,7 +419,7 @@ void TCityInteriorMinister::FillOrders() {
 
   for (short orderSlot = 7; orderSlot < 61; ++orderSlot) {
     if (city->orderSlots[orderSlot] != 0) {
-      static_cast<TProductionOrder*>(city->orderSlots[orderSlot])->SetQuantity(0);
+      city->orderSlots[orderSlot]->SetQuantity(0);
     }
   }
 
@@ -2332,7 +2332,7 @@ void TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle(
 void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(short orderSlot) {
   TCity* city = greatPower->city;
   TPopulationMgr* population = city->productionSummary;
-  TProductionOrder* order = static_cast<TProductionOrder*>(city->orderSlots[orderSlot]);
+  TProductionOrder* order = city->orderSlots[orderSlot];
 
   if (orderSlot < 23 && orderSlot != 7) {
     order->AssertValid();

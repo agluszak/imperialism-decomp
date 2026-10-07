@@ -18,7 +18,7 @@
 IMPLEMENT_DYNCREATE(TArmyInfoView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005915a0
-TArmyInfoView::TArmyInfoView() : TPicture() {}
+TArmyInfoView::TArmyInfoView() {}
 
 // FUNCTION: IMPERIALISM 0x00591600
 TArmyInfoView::~TArmyInfoView() {}

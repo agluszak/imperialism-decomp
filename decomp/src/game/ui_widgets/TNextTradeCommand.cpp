@@ -7,7 +7,7 @@
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x005ba400
-TNextTradeCommand::TNextTradeCommand() : TCommand() {}
+TNextTradeCommand::TNextTradeCommand() {}
 
 // FUNCTION: IMPERIALISM 0x005ba460
 TNextTradeCommand::~TNextTradeCommand() {}

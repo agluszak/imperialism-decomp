@@ -10,7 +10,7 @@
 IMPLEMENT_DYNCREATE(TTextLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x00570290
-TTextLine::TTextLine() : TLineData() {
+TTextLine::TTextLine() {
   styleDescriptor.textColor = 0;
 }
 

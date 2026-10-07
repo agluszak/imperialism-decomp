@@ -10,7 +10,7 @@
 IMPLEMENT_DYNCREATE(TPlacard, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058ba10
-TPlacard::TPlacard() : TPicture() {
+TPlacard::TPlacard() {
   this->glyph = 0;
 }
 

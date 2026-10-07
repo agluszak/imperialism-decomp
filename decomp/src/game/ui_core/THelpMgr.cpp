@@ -88,7 +88,7 @@ void SetTurnAlertObservationOnlyForRuntimeTest(bool enabled) {
 IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005005e0
-THelpMgr::THelpMgr() : TObject() {
+THelpMgr::THelpMgr() {
   pendingDialogView8 = 0;
   pendingDialogViewC = 0;
   tradeAdviceDetailLevel = 0;
@@ -872,8 +872,8 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 12, 0x2b67, 1);
 
   if (pendingDialogView8 == 0) {
-    pendingDialogView8 = static_cast<TWindow*>(
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventHelpMessage));
+    pendingDialogView8 =
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventHelpMessage);
     if (pendingDialogView8 == 0) {
       FailNilPointerWithAssert(s_SourcePathUHelpMgr, 0x5cd);
     }
@@ -1027,8 +1027,8 @@ void THelpMgr::CheckUnitAdvice(TCivUnit* civilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x00503ac0
 void THelpMgr::OpenTerrainHelpWindow(int mapContextIndex) {
   if (pendingDialogViewC == 0) {
-    pendingDialogViewC = static_cast<TWindow*>(
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainHelp));
+    pendingDialogViewC =
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainHelp);
     if (pendingDialogViewC == 0) {
       FailNilPointerWithAssert(s_SourcePathUHelpMgr, 0x6c1);
     }

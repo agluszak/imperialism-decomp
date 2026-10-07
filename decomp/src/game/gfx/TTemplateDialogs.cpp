@@ -52,7 +52,7 @@ BOOL T64TemplateDialog::OnInitDialog() {
 
 // FUNCTION: IMPERIALISM 0x0047cfd0
 TWarpToScreenDialog::TWarpToScreenDialog(void* initParam)
-    : TModalDialogBase(0xc2, static_cast<CWnd*>(initParam)), slider(), listbox() {}
+    : TModalDialogBase(0xc2, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x0047d160
 void TWarpToScreenDialog::DoDataExchange(CDataExchange* pDX) {
@@ -67,7 +67,7 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x0047d1c0
 TConductDiplomacyDialog::TConductDiplomacyDialog(void* initParam)
-    : TModalDialogBase(0xd2, static_cast<CWnd*>(initParam)), listbox() {}
+    : TModalDialogBase(0xd2, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x0047d310
 void TConductDiplomacyDialog::DoDataExchange(CDataExchange* pDX) {
@@ -81,7 +81,7 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x0047d360
 TSwitchGreatPowerDialog::TSwitchGreatPowerDialog(void* initParam)
-    : TModalDialogBase(0xdb, static_cast<CWnd*>(initParam)), slider() {}
+    : TModalDialogBase(0xdb, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x0047d420
 void TSwitchGreatPowerDialog::DoDataExchange(CDataExchange* pDX) {
@@ -196,7 +196,7 @@ void TDibPreviewDialog::OnLButtonDblClk(UINT nFlags, CPoint point) {}
 
 // FUNCTION: IMPERIALISM 0x0047dba0
 TBequeathGoodiesDialog::TBequeathGoodiesDialog(void* initParam)
-    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), slider(), populationAdjustment(0),
+    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), populationAdjustment(0),
       commodityAdjustment(0) {}
 
 // FUNCTION: IMPERIALISM 0x0047dc70
@@ -240,7 +240,7 @@ BOOL TPeekAtDibDialog::OnInitDialog() {
 
 // FUNCTION: IMPERIALISM 0x0047de40
 TFATemplateDialog::TFATemplateDialog(void* initParam)
-    : TModalDialogBase(0xfa, static_cast<CWnd*>(initParam)), listbox() {}
+    : TModalDialogBase(0xfa, static_cast<CWnd*>(initParam)) {}
 
 // DoDataExchange is an empty override in the original (the listbox is wired up outside DDX).
 // FUNCTION: IMPERIALISM 0x0047df90
@@ -287,7 +287,7 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x0047f450
 TADTemplateDialog::TADTemplateDialog(void* initParam)
-    : TModalDialogBase(0xad, static_cast<CWnd*>(initParam)), listbox() {}
+    : TModalDialogBase(0xad, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x0047f5a0
 int TADTemplateDialog::AddListboxText(const CString* text) {
@@ -312,7 +312,7 @@ BOOL TADTemplateDialog::OnInitDialog() {
 
 // FUNCTION: IMPERIALISM 0x00480a10
 TPickGameDialog::TPickGameDialog(void* initParam)
-    : TModalDialogBase(0x104, static_cast<CWnd*>(initParam)), listbox() {}
+    : TModalDialogBase(0x104, static_cast<CWnd*>(initParam)) {}
 
 // FUNCTION: IMPERIALISM 0x00480ad0
 void TPickGameDialog::DoDataExchange(CDataExchange* pDX) {
@@ -344,8 +344,7 @@ BOOL T102TemplateDialog::OnInitDialog() {
 
 // FUNCTION: IMPERIALISM 0x004813a0
 TGameSetupOptionsDialog::TGameSetupOptionsDialog(void* initParam)
-    : CDialog(0xa1, static_cast<CWnd*>(initParam)), slider5c(), slider98(), sliderD4(), check110(0),
-      check114(0) {}
+    : CDialog(0xa1, static_cast<CWnd*>(initParam)), check110(0), check114(0) {}
 
 // FUNCTION: IMPERIALISM 0x00481540
 void TGameSetupOptionsDialog::DoDataExchange(CDataExchange* pDX) {
@@ -388,7 +387,7 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x00481770
 TA7TemplateDialog::TA7TemplateDialog(void* initParam)
-    : CDialog(0xa7, static_cast<CWnd*>(initParam)), text5c() {
+    : CDialog(0xa7, static_cast<CWnd*>(initParam)) {
   text5c = g_szEmptyString;
 }
 
@@ -440,7 +439,7 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x00481b30
 TABTemplateDialog::TABTemplateDialog(void* initParam)
-    : CDialog(0xab, static_cast<CWnd*>(initParam)), text5c(), text60() {
+    : CDialog(0xab, static_cast<CWnd*>(initParam)) {
   text5c = g_szEmptyString;
   text60 = g_szEmptyString;
 }
@@ -470,7 +469,7 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x00481dc0
 TAETemplateDialog::TAETemplateDialog(void* initParam)
-    : CDialog(0xae, static_cast<CWnd*>(initParam)), text5c(), text60() {
+    : CDialog(0xae, static_cast<CWnd*>(initParam)) {
   text5c = g_szEmptyString;
   text60 = g_szEmptyString;
 }
@@ -500,7 +499,7 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x00482050
 TB1TemplateDialog::TB1TemplateDialog(void* initParam)
-    : CDialog(0xb1, static_cast<CWnd*>(initParam)), text5c() {
+    : CDialog(0xb1, static_cast<CWnd*>(initParam)) {
   text5c = g_szEmptyString;
 }
 
@@ -614,7 +613,7 @@ void TracePrintf(const char* format, ...) {
 
 // FUNCTION: IMPERIALISM 0x0049bcd0
 TTraceDialog::TTraceDialog(void* initParam)
-    : CDialog(0xd0, static_cast<CWnd*>(initParam)), listbox(), dialogCreated(0) {}
+    : CDialog(0xd0, static_cast<CWnd*>(initParam)), dialogCreated(0) {}
 
 // FUNCTION: IMPERIALISM 0x0049bd90
 void TTraceDialog::AppendTraceTextAndFlushCompleteLines(const char* text) {

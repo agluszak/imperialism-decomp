@@ -4,14 +4,14 @@
 IMPLEMENT_DYNCREATE(TAlwaysPictureButton, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005709f0
-TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}
+TAlwaysPictureButton::TAlwaysPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570a50
 TAlwaysPictureButton::~TAlwaysPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570a70
 void TAlwaysPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
-  if (static_cast<unsigned char>(enabledState) != controlState) {
+  if (enabledState != controlState) {
     controlState = enabledState;
     short pictureId;
     if (enabledState == 0) {

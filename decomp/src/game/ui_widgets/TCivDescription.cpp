@@ -44,7 +44,7 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0044a770
-TCivDescription::TCivDescription() : TView() {
+TCivDescription::TCivDescription() {
   selectedCivilianClass = -1;
   targetTileCountsBySlot[4] = 0;
 }
@@ -233,7 +233,7 @@ void TCivDescription::CountWorkableSpaces(TCivUnit* orderState) {
     if (provinceRecord->linkedRegionCount > 0) {
       provinceTileIndices = provinceRecord->linkedTileIndices;
       do {
-        provinceTileIndex = (short)*provinceTileIndices;
+        provinceTileIndex = (*provinceTileIndices);
         tileRecord = &g_pGlobalMapState->terrainStateTable[static_cast<short>(provinceTileIndex)];
         if (tileRecord->recruitSearchVisited == 0) {
           tileProfileId = static_cast<short>(tileRecord->gateFlag);

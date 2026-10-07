@@ -8,7 +8,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x00429330
-TInfoBarText::TInfoBarText() : TDeluxeText() {}
+TInfoBarText::TInfoBarText() {}
 
 // FUNCTION: IMPERIALISM 0x004293f0
 TInfoBarText::~TInfoBarText() {}

@@ -185,9 +185,7 @@ const char* GetGamePhaseNameString(int gamePhase) {
 IMPLEMENT_DYNCREATE(TMultiplayerMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00542670
-TMultiplayerMgr::TMultiplayerMgr()
-    : TEventHandler(), gameNameString(), defaultNationTextSlots(), nationDisplayNameSlots(),
-      playerNameString(), playerNameMirror(), fieldb8() {
+TMultiplayerMgr::TMultiplayerMgr() : defaultNationTextSlots(), nationDisplayNameSlots() {
   lobbyDialogView = 0;
   primaryTurnEventQueueHead = 0;
   secondaryTurnEventQueueHead = 0;

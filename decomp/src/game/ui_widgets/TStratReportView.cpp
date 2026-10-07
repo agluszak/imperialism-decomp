@@ -14,7 +14,7 @@
 IMPLEMENT_DYNCREATE(TStratReportView, TView)
 
 // FUNCTION: IMPERIALISM 0x0058e3c0
-TStratReportView::TStratReportView() : TView() {}
+TStratReportView::TStratReportView() {}
 
 // FUNCTION: IMPERIALISM 0x0058e420
 TStratReportView::~TStratReportView() {}

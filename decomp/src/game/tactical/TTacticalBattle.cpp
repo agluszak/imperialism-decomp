@@ -1445,8 +1445,8 @@ void TTacticalBattle::CheckForVictory() {
 
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
-  TWindow* dialog = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalBattleResult));
+  TWindow* dialog =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalBattleResult);
 
   TPicture* headerPicture = static_cast<TPicture*>(dialog->FindSubView(kControlTagDialog));
   headerPicture->AssertValid();
@@ -1680,7 +1680,7 @@ void TTacticalBattle::DispatchTacticalActionByHoverStateIndex(TacticalTileIndex 
 // FUNCTION: IMPERIALISM 0x005a34d0
 void TTacticalBattle::MineWall(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   int unitType = unit->unitType;
-  int amount = static_cast<int>(rand()) % 400 + unitType * 250 - 5600;
+  int amount = rand() % 400 + unitType * 250 - 5600;
   bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (multiplayerActive) {
     g_pGameFlowState->SendTacLa(kControlTagMine, 0, tileIndex, amount);
@@ -1771,7 +1771,7 @@ void TTacticalBattle::RallyUnit(TTacticalUnit* rallyingUnit, TArmyTacUnit* rally
     newMorale += rallyTarget->strength / 10 * (rallyingUnit->qualityLevel + 3);
   } else if (newState == 1) {
     int qualityLevel = rallyingUnit->qualityLevel;
-    if (static_cast<int>(rand()) % 100 < (qualityLevel + 5) * 10) {
+    if (rand() % 100 < (qualityLevel + 5) * 10) {
       newMorale = rallyTarget->strength / 10 + 20;
       newState = 0;
     }

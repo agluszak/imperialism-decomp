@@ -1805,7 +1805,7 @@ void TGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
     }
 
     if (!g_pDiplomacyTurnStateManager->AreAtWar(slot, nationSlot)) {
-      DeclareWarOn(slot, 2, static_cast<short>(sourceNation));
+      DeclareWarOn(slot, 2, sourceNation);
     }
   }
 }

@@ -21,8 +21,7 @@ IMPLEMENT_DYNCREATE(TPicture, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048efc0
 TPicture::TPicture()
-    : TControl(), glyphBase(-1), reserved86(0), bitmapId(0), resourceNamespaceId(0),
-      cachedBitmap(0) {}
+    : glyphBase(-1), reserved86(0), bitmapId(0), resourceNamespaceId(0), cachedBitmap(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048f080
 TPicture::TPicture(const TPicture& source)

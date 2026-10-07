@@ -26,10 +26,10 @@ void TGWorldButton::IGWorldButton(TView* panel, int* offsetLayout, int* sizeLayo
 
 // FUNCTION: IMPERIALISM 0x00572200
 void TGWorldButton::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
-  if (static_cast<unsigned char>(fEnabledState) == controlState) {
+  if (fEnabledState == controlState) {
     return;
   }
-  controlState = static_cast<unsigned char>(fEnabledState);
+  controlState = fEnabledState;
   if (fEnabledState == 0) {
     frameOffsetX = static_cast<short>(frameOffsetX - frameWidth);
   } else {

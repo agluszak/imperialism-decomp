@@ -17,7 +17,7 @@
 IMPLEMENT_DYNCREATE(TArmyUnitLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x004a8d30
-TArmyUnitLine::TArmyUnitLine() : TLineData() {}
+TArmyUnitLine::TArmyUnitLine() {}
 
 // FUNCTION: IMPERIALISM 0x004a8db0
 void TArmyUnitLine::IArmyUnitLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item) {

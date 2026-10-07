@@ -950,7 +950,7 @@ void TCivMgr::ResolveCivilianDisputes() {
       continue;
     }
 
-    int ownerNationSlot = static_cast<signed char>(tile.ownerNationTag);
+    int ownerNationSlot = tile.ownerNationTag;
     TCivUnit* winningOrder = competingOrders[0];
     short winningStanding =
         g_pDiplomacyTurnStateManager

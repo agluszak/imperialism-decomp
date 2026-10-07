@@ -19,7 +19,7 @@
 IMPLEMENT_DYNCREATE(TAssetMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005df280
-TAssetMgr::TAssetMgr() : TObject(), sharedTextSlots() {}
+TAssetMgr::TAssetMgr() : sharedTextSlots() {}
 
 // FUNCTION: IMPERIALISM 0x005df330
 TAssetMgr::~TAssetMgr() {}

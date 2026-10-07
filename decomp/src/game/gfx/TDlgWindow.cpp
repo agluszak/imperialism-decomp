@@ -8,7 +8,7 @@
 IMPLEMENT_DYNCREATE(TDlgWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x00500320
-TDlgWindow::TDlgWindow() : TWindow() {}
+TDlgWindow::TDlgWindow() {}
 
 // FUNCTION: IMPERIALISM 0x00500380
 TDlgWindow::~TDlgWindow() {}

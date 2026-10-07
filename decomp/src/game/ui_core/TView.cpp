@@ -119,9 +119,9 @@ IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
-    : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue(0), childList(0),
-      stylePayload(0), inputGateFlag(1), childHitTestFlag(1), cursorId(0xffff), nativeWindow(0),
-      helpState(1), hoverHelpText(), hoverHelpEnabled(0) {}
+    : ownerContext(0), absoluteX(0), absoluteY(0), controlValue(0), childList(0), stylePayload(0),
+      inputGateFlag(1), childHitTestFlag(1), cursorId(0xffff), nativeWindow(0), helpState(1),
+      hoverHelpEnabled(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
@@ -627,8 +627,7 @@ TView::TView(const TView& source)
       frameWidth(source.frameWidth), frameHeight(source.frameHeight),
       controlValue(source.controlValue), childList(0), stylePayload(0),
       inputGateFlag(source.inputGateFlag), childHitTestFlag(source.childHitTestFlag),
-      nativeWindow(source.nativeWindow), helpState(source.helpState), hoverHelpText(),
-      hoverHelpEnabled(0) {
+      nativeWindow(source.nativeWindow), helpState(source.helpState), hoverHelpEnabled(0) {
   if (source.childList != 0) {
     POSITION position = source.childList->GetHeadPosition();
     while (position != 0) {

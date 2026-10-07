@@ -5,7 +5,7 @@
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0045d270
-TMapUberUberPicture::TMapUberUberPicture() : TOffLimitsPicture() {}
+TMapUberUberPicture::TMapUberUberPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0045d2a0
 void TMapUberUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {}

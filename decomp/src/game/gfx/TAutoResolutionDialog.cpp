@@ -23,8 +23,7 @@ TAutoResolutionDialog::~TAutoResolutionDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0047dfd0
 TAutoResolutionDialog::TAutoResolutionDialog(void* initParam)
-    : TModalDialogBase(0xfb, static_cast<CWnd*>(initParam)), primaryDialogControl(),
-      secondaryDialogControl(), autoResolutionCheckState(0) {}
+    : TModalDialogBase(0xfb, static_cast<CWnd*>(initParam)), autoResolutionCheckState(0) {}
 
 // FUNCTION: IMPERIALISM 0x0047e0c0
 void TAutoResolutionDialog::DoDataExchange(CDataExchange* pDX) {

@@ -7,7 +7,7 @@
 IMPLEMENT_DYNCREATE(THotspotBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x004b0b80
-THotspotBehavior::THotspotBehavior() : TBehavior() {}
+THotspotBehavior::THotspotBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0c00
 bool THotspotBehavior::DoSetCursor(CPoint* point, RgnHandle region) {

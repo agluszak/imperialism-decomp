@@ -20,7 +20,7 @@ IMPLEMENT_DYNCREATE(TTransportPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00591e70
 TTransportPicture::TTransportPicture()
-    : TPicture(), gaugeMetricId(0x3a), splitValue94(0), splitValue96(0),
+    : gaugeMetricId(0x3a), splitValue94(0), splitValue96(0),
       splitLimit(static_cast<short>(0xffff)) {}
 
 // FUNCTION: IMPERIALISM 0x00591ef0

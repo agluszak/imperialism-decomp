@@ -1471,10 +1471,10 @@ void TDiplomacyMgr::SetTreatyStatus(NationSlot sourceNationSlot, NationSlot targ
     if ((IsGreatPower(sourceNationSlot)) && (IsGreatPower(targetNationSlot))) {
       relationSideEffectMatrix[forwardIndex] = 2;
       relationSideEffectMatrix[reverseIndex] = 2;
-      g_apTerrainTypeDescriptorTable[source]->SetTradePolicyTo(
-          static_cast<NationSlot>(targetNationSlot), kTradePolicyNormal);
-      g_apTerrainTypeDescriptorTable[target]->SetTradePolicyTo(
-          static_cast<NationSlot>(sourceNationSlot), kTradePolicyNormal);
+      g_apTerrainTypeDescriptorTable[source]->SetTradePolicyTo(targetNationSlot,
+                                                               kTradePolicyNormal);
+      g_apTerrainTypeDescriptorTable[target]->SetTradePolicyTo(sourceNationSlot,
+                                                               kTradePolicyNormal);
       return;
     }
     break;
@@ -1487,8 +1487,8 @@ void TDiplomacyMgr::SetTreatyStatus(NationSlot sourceNationSlot, NationSlot targ
     if ((sourceTerrain->encodedNationSlot == -1) && (targetTerrain->encodedNationSlot < 200)) {
       g_pNewsMgr->AddTreatyEvent(kInterNationEventWarWithIndependentMinor, source, target, false);
     }
-    sourceTerrain->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), kTradePolicyBoycott);
-    targetTerrain->SetTradePolicyTo(static_cast<NationSlot>(sourceNationSlot), kTradePolicyBoycott);
+    sourceTerrain->SetTradePolicyTo(targetNationSlot, kTradePolicyBoycott);
+    targetTerrain->SetTradePolicyTo(sourceNationSlot, kTradePolicyBoycott);
     relationSideEffectMatrix[forwardIndex] = 0;
     relationSideEffectMatrix[reverseIndex] = 0;
     if (IsGreatPower(sourceNationSlot)) {
@@ -1534,7 +1534,7 @@ void TDiplomacyMgr::BuildRelationshipList(NationSlot sourceNationSlot, short pri
     return;
   }
 
-  int candidateIndex = static_cast<short>(candidateNationSlot);
+  int candidateIndex = candidateNationSlot;
   TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[candidateIndex];
   do {
     TCountry* terrain = *terrainCursor;

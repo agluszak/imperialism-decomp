@@ -37,7 +37,7 @@ short TArmyMission::GetPresentLocation() const {
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053c0a0
-TArmyMission::TArmyMission(int nodeKey) : TMission() {
+TArmyMission::TArmyMission(int nodeKey) {
   presentLocation = static_cast<short>(nodeKey);
 
   TList* list = new TList;

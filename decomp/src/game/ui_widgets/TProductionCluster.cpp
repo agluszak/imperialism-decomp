@@ -22,8 +22,7 @@ IMPLEMENT_DYNCREATE(TProductionCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586920
 TProductionCluster::TProductionCluster()
-    : TUberCluster(), field88(0), laborRate(0), stockpileRate(0), currentStockpile(0),
-      maximumStockpile(0) {}
+    : field88(0), laborRate(0), stockpileRate(0), currentStockpile(0), maximumStockpile(0) {}
 
 // FUNCTION: IMPERIALISM 0x005869a0
 TProductionCluster::~TProductionCluster() {}

@@ -15,7 +15,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x00564920
-TMilitaryPageView::TMilitaryPageView() : TPageView(), primaryUnitAtlas(0) {}
+TMilitaryPageView::TMilitaryPageView() : primaryUnitAtlas(0) {}
 
 IMPLEMENT_DYNCREATE(TMilitaryPageView, TPageView)
 

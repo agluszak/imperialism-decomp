@@ -5,7 +5,7 @@
 IMPLEMENT_DYNCREATE(TOnOffRadioButton, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005719f0
-TOnOffRadioButton::TOnOffRadioButton() : TPictureButton() {
+TOnOffRadioButton::TOnOffRadioButton() {
   eventNumber = 0xc;
   state94 = 0;
 }

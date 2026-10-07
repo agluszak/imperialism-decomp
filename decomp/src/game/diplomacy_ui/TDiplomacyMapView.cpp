@@ -126,7 +126,7 @@ void __cdecl ClampRectWithinBoundsPreservingSize(RECT* rect, RECT* bounds) {
 IMPLEMENT_DYNCREATE(TDiplomacyMapView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004f3b80
-TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
+TDiplomacyMapView::TDiplomacyMapView() {
   interactionMode = 0;
   frameRegionSelector = 0;
   selectedTerrainIndex = 0;
@@ -391,7 +391,7 @@ void TDiplomacyMapView::Draw(RECT* rectBuffer) {
   }
 
   SetQuickDrawFillColor(0xffffff);
-  RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(static_cast<short>(frameRegionSelector));
+  RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(frameRegionSelector);
   QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 
@@ -1070,7 +1070,7 @@ void TDiplomacyMapView::DrawCountries(RECT* presentRect) {
   }
 
   SetQuickDrawFillColor(0xffffff);
-  RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(static_cast<short>(frameRegionSelector));
+  RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(frameRegionSelector);
   QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 }
@@ -1083,7 +1083,7 @@ void TDiplomacyMapView::InvalidateCountries() {
   TCountry** terrainDescriptors = g_apTerrainTypeDescriptorTable;
   do {
     if (*terrainDescriptors != 0) {
-      RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(static_cast<short>(terrainIndex));
+      RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(terrainIndex);
       UnionRgn(region, frameRegion, region);
     }
     ++terrainIndex;

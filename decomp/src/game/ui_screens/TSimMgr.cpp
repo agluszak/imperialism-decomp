@@ -2054,8 +2054,7 @@ void TSimMgr::ProcessScenarioScript() {
   g_bScenarioScriptTerminationRequested = false;
   g_nScenarioScriptInstructionCount = 0;
 
-  g_pAssetMgr->GetScenarioFileName(static_cast<short>(scenarioMapIndexPlusOne) - 1, 2,
-                                   &scenarioPath);
+  g_pAssetMgr->GetScenarioFileName(scenarioMapIndexPlusOne - 1, 2, &scenarioPath);
 
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
     CString ordinalText;

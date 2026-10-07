@@ -639,7 +639,7 @@ int TCity::PickRandomMerchantVictims(short maxWeight, short* outCounts) {
     }
   }
   while (remaining > 0 && static_cast<short>(allocatedWeight) < maxWeight) {
-    int roll = static_cast<int>(rand()) % remaining + 1;
+    int roll = rand() % remaining + 1;
     int type = 0;
     for (;;) {
       if (TShip::GetTypeFirepower(static_cast<short>(type)) == 0) {
@@ -651,8 +651,8 @@ int TCity::PickRandomMerchantVictims(short maxWeight, short* outCounts) {
       ++type;
     }
     short weight = TShip::GetTypeCargoHold(static_cast<short>(type));
-    if (maxWeight < weight && TShip::GetTypeCargoHold(static_cast<short>(type)) - 1 <
-                                  static_cast<int>(rand()) % maxWeight) {
+    if (maxWeight < weight &&
+        TShip::GetTypeCargoHold(static_cast<short>(type)) - 1 < rand() % maxWeight) {
       break;
     }
     outCounts[type] = static_cast<short>(outCounts[type] + 1);

@@ -156,12 +156,12 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass(char glyph) {
   if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  CFont* prevFont = static_cast<CFont*>(dc->SelectObject(g_pQuickDrawCachedMeasureFont));
+  CFont* prevFont = dc->SelectObject(g_pQuickDrawCachedMeasureFont);
   dc = g_pQuickDrawMemoryDc;
   if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.textColor));
+  dc->SetTextColor(g_QuickDrawMeasureFontPreset.textColor);
   dc = g_pQuickDrawMemoryDc;
   if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
@@ -211,7 +211,7 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.textColor));
+  dc->SetTextColor(g_QuickDrawMeasureFontPreset.textColor);
 
   dc = g_pQuickDrawMemoryDc;
   if (dc == NULL) {
@@ -277,7 +277,7 @@ void __cdecl RenderTradeScreenCommoditySummaryRows(CString* text, RECT* rect, sh
   if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.textColor));
+  dc->SetTextColor(g_QuickDrawMeasureFontPreset.textColor);
 
   dc = g_pQuickDrawMemoryDc;
   if (dc == NULL) {

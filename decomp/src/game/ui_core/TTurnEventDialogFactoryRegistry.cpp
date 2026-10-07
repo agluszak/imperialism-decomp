@@ -85,7 +85,7 @@ void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* regi
 }
 
 // FUNCTION: IMPERIALISM 0x00491ad0
-TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), factories(10) {}
+TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : factories(10) {}
 
 // FUNCTION: IMPERIALISM 0x00491b40
 TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry() {}
