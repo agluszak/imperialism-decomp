@@ -17,7 +17,8 @@ struct TextStyle;
 // stay in quickdraw_rendering.h with their own forward-decl.)
 
 void ResolveUiThemeColor(short themeCode, COLORREF* outColor);
-void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int arg2, int themeCode);
+void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int fontSize,
+                                int themeCode);
 void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, short pointSize,
                                      int themeCode, short font);
 

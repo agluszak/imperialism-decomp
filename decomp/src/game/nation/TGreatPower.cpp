@@ -1456,16 +1456,17 @@ void TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(voi
 }
 
 // FUNCTION: IMPERIALISM 0x004de340
-bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2) {
+bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int targetNationArg,
+                                                                   int grantValue) {
   const unsigned short kGrantClear = 0xFFFF;
   const unsigned short kGrantMask = 0x3FFF;
   const short kInfluenceAlertThreshold = 0x00FA;
 
-  short targetNation = static_cast<short>(arg1);
+  short targetNation = static_cast<short>(targetNationArg);
   int targetIndex = static_cast<int>(targetNation);
   unsigned short oldGrantRaw =
       static_cast<unsigned short>(this->diplomacyGrantByNation[targetIndex]);
-  unsigned short newGrantRaw = static_cast<unsigned short>(arg2);
+  unsigned short newGrantRaw = static_cast<unsigned short>(grantValue);
   bool accepted = true;
 
   if (newGrantRaw != oldGrantRaw) {
@@ -1522,8 +1523,8 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
 }
 
 // FUNCTION: IMPERIALISM 0x004de5e0
-void TGreatPower::GiveGrantTo(int arg1) {
-  short targetNation = static_cast<short>(arg1);
+void TGreatPower::GiveGrantTo(int targetNationSlot) {
+  short targetNation = static_cast<short>(targetNationSlot);
   short grantValue = static_cast<short>(
       static_cast<unsigned short>(this->diplomacyGrantByNation[targetNation]) & 0x3FFF);
   if (grantValue <= 0) {
@@ -1613,7 +1614,7 @@ void TGreatPower::ClearCivilianOrders(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004de860
-void TGreatPower::BecomeProtectorateOf(int arg1) {
+void TGreatPower::BecomeProtectorateOf(int targetNationSlot) {
   const int kResetDiplomacyLevel = 100;
   const int kResetPolicyCode = -1;
   const DiplomacyRelationship kResetRelationship = kDiplomacyRelationshipWar;
@@ -1622,12 +1623,12 @@ void TGreatPower::BecomeProtectorateOf(int arg1) {
   g_pNewsMgr->AddTreatyEvent(kInterNationEventNationTransferred, this->nationSlot, 7, false);
   g_pDiplomacyTurnStateManager->RebuildMinorNationDispositionLookupTables(this->nationSlot);
 
-  this->encodedNationSlot = static_cast<short>(arg1 + 100);
+  this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
 
   int nationSlot;
   for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pSimMgr->ReallyInTheGame(nationSlot) && nationSlot != this->nationSlot &&
-        nationSlot != arg1) {
+        nationSlot != targetNationSlot) {
       g_apTerrainTypeDescriptorTable[nationSlot]->NewStatusFor(this->nationSlot,
                                                                kResetDiplomacyLevel);
     }
@@ -1777,19 +1778,19 @@ void TGreatPower::DecrementNeedLevelByNationStep(NationSlot nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dedf0
-void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
-  DiplomacyProposalCodeStorage proposalCode = static_cast<DiplomacyProposalCodeStorage>(arg2);
+void TGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
+  DiplomacyProposalCodeStorage proposalCode = static_cast<DiplomacyProposalCodeStorage>(actionCode);
 
   if (this->diplomacyEligibility != 0) {
-    int packedCode = (static_cast<int>(static_cast<unsigned short>(arg1)) << 16) |
-                     static_cast<unsigned short>(arg2);
+    int packedCode = (static_cast<int>(static_cast<unsigned short>(sourceNation)) << 16) |
+                     static_cast<unsigned short>(actionCode);
     this->turnEventQueue->InsertCopiedRecordSortedByComparator(&packedCode);
 
     NewsEvent payload;
     payload.marker0 = 1;
     payload.subjectNationMask = 1 << (static_cast<unsigned char>(this->nationSlot) & 0x1F);
     payload.marker8 = 1;
-    payload.targetNationMask = 1 << (static_cast<unsigned char>(arg1) & 0x1F);
+    payload.targetNationMask = 1 << (static_cast<unsigned char>(sourceNation) & 0x1F);
 
     bool immediateDispatch = this->IsRemote();
     if (!immediateDispatch) {
@@ -1803,7 +1804,7 @@ void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
   int nationSlot = static_cast<int>(this->nationSlot);
 
   if (proposalCode == kDiplomacyProposalPeaceTreaty &&
-      g_pDiplomacyTurnStateManager->IsGreatPower(arg1)) {
+      g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation)) {
     for (int slot = 0; slot < kMajorNationCount; ++slot) {
       if (!g_pSimMgr->ReallyInTheGame(slot)) {
         continue;
@@ -1815,7 +1816,7 @@ void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
         continue;
       }
 
-      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, arg1)) {
+      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, sourceNation)) {
         g_pDiplomacyTurnStateManager->TerminateAlliance(nationSlot, slot, 1);
       }
     }
@@ -1830,12 +1831,13 @@ void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
       continue;
     }
 
-    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, arg1)) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, sourceNation)) {
       continue;
     }
 
     if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, nationSlot)) {
-      this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(slot, 2, static_cast<short>(arg1));
+      this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(slot, 2,
+                                                          static_cast<short>(sourceNation));
     }
   }
 }

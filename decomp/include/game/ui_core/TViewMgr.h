@@ -65,7 +65,8 @@ public:
   virtual void NoOpTurnEventStateVtableSlot8C(int arg);        // 0x8c
   virtual bool MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
                                         short proposalCode); // 0x90
-  virtual char PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2,
+  virtual char PoseWarOfferIfTurnFlowReady(int sourceNation, int minorNationSlot,
+                                           int enemyNationSlot,
                                            int promptCode); // 0x94
   virtual void ShowOfferSheet(short respondingNation, short offeringNation, short proposedAmount,
                               short maxAmount, short commodityType); // 0x98; Mac oracle

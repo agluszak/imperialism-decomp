@@ -492,11 +492,12 @@ void TWorldView::ControlClick(int tileIndex, int dispatchContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x005962a0
-void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2) {
-  (void)arg2;
+void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndexArg,
+                                                                   int inputFlags) {
+  (void)inputFlags;
   TEvent* event = new TEvent();
 
-  int tileIndex = static_cast<short>(arg1);
+  int tileIndex = static_cast<short>(tileIndexArg);
   if (g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainWater) {
     TZone* orderContext =
         g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(static_cast<short>(tileIndex));
@@ -612,8 +613,8 @@ void TWorldView::SetMapViewCellCoordinates(int column, int row) {
 }
 
 // FUNCTION: IMPERIALISM 0x005966a0
-void TWorldView::SetMapViewTileIndex(int arg1) {
-  (void)arg1;
+void TWorldView::SetMapViewTileIndex(int tileIndex) {
+  (void)tileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x005966c0

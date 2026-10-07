@@ -641,11 +641,11 @@ int TMapDialog::GetCenterTile() const {
 }
 
 // FUNCTION: IMPERIALISM 0x0051ad70
-void TMapDialog::SetMapViewTileIndex(int arg1) {
+void TMapDialog::SetMapViewTileIndex(int tileIndex) {
   int tileCol;
-  SplitTileIndexToRowAndColumn(static_cast<short>(arg1), reinterpret_cast<short*>(&arg1),
+  SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), reinterpret_cast<short*>(&tileIndex),
                                reinterpret_cast<short*>(&tileCol));
-  SetMapViewCellCoordinates(tileCol, arg1);
+  SetMapViewCellCoordinates(tileCol, tileIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x0051adc0

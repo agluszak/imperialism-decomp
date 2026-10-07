@@ -46,7 +46,8 @@ public:
   virtual void ArrangeMaterialsOffers();
   virtual void SetTradeBids();
   virtual void DoUsualSubsidyRule();
-  virtual void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode);
+  virtual void ReplyToTradeOffer(short targetNation, short amount, short maximumAmount,
+                                 short resourceCode);
   virtual void EndTradePhase();
 
   short interiorBidResource;              // +0x10 — SetInteriorMinisterBid resource code

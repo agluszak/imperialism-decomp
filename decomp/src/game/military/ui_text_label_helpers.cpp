@@ -66,15 +66,16 @@ void ResolveUiThemeColor(short themeCode, COLORREF* outColor) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3e80
-void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int arg2, int themeCode) {
+void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int fontSize,
+                                int themeCode) {
   (void)unused;
   CString deadLocal;
   styleDescriptor->fontStyleFlags = 0;
   COLORREF textColor = 0;
   ResolveUiThemeColor(static_cast<short>(themeCode), &textColor);
   styleDescriptor->textColor = textColor;
-  styleDescriptor->fontSize = static_cast<short>(arg2);
-  styleDescriptor->fontFamily = (arg2 >= 0xc) ? 1 : 3;
+  styleDescriptor->fontSize = static_cast<short>(fontSize);
+  styleDescriptor->fontFamily = (fontSize >= 0xc) ? 1 : 3;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3f50

@@ -921,7 +921,8 @@ bool TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
 }
 
 // FUNCTION: IMPERIALISM 0x005d7100
-char TViewMgr::PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2, int promptCode) {
+char TViewMgr::PoseWarOfferIfTurnFlowReady(int sourceNation, int minorNationSlot,
+                                           int enemyNationSlot, int promptCode) {
   if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return 1;
   }
@@ -930,7 +931,8 @@ char TViewMgr::PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2,
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainView->AssertValid();
-  return mainView->PoseWarOffer(static_cast<short>(sourceNation), arg1, arg2, promptCode);
+  return mainView->PoseWarOffer(static_cast<short>(sourceNation), minorNationSlot, enemyNationSlot,
+                                promptCode);
 }
 
 // FUNCTION: IMPERIALISM 0x005d7190

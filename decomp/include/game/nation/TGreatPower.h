@@ -186,10 +186,11 @@ public:
   virtual void SetDiplomacyPolicies();                                           // index 114
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void); // index 115
   virtual bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
-                                                                short policyCode);   // index 116
-  virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // index 117
+                                                                short policyCode); // index 116
+  virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int targetNation,
+                                                                int grantValue); // index 117
   // ORACLE: Mac names TGreatPower::GiveGrantTo(short).
-  virtual void GiveGrantTo(int sourceNation); // index 118
+  virtual void GiveGrantTo(int targetNationSlot); // index 118
   virtual bool
   CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationSlot,
                                         unsigned short proposedGrantEntry); // index 119

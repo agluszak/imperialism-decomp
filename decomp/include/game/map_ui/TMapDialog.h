@@ -72,7 +72,7 @@ public:
 
   void RefreshMapTile(short tileIndex) override;
   bool IsTileVisible(short tileIndex) override;
-  void SetMapViewTileIndex(int arg1) override;
+  void SetMapViewTileIndex(int tileIndex) override;
   void SetMapViewCellCoordinates(int column, int row) override;
   virtual void FrameNeighbors(short* neighborTiles);
   // Resets the map-tile sprite variants and all 90 transient tile-marker slots to sentinels.

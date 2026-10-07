@@ -12,7 +12,8 @@ public:
   virtual void DoKeyEvent(TToolboxEvent* event) override;
   virtual void DoPostCreate(int arg) override;
   virtual void ControlClick(int tileIndex, int dispatchContext) override;
-  virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2) override;
+  virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndexArg,
+                                                                 int inputFlags) override;
   virtual void ShiftClick(int stridedRecord, int dispatchContext) override;
   virtual void NormalClick(short nTileIndex, int nInputFlags) override;
 

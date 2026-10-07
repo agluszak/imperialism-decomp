@@ -54,7 +54,7 @@ public:
   virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
                             short& outRegionBand);
   virtual void ControlClick(int tileIndex, int dispatchContext);
-  virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2);
+  virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndexArg, int inputFlags);
   virtual void ShiftClick(int stridedRecord, int dispatchContext);
   virtual void CommandOptionClick(int stridedRecord, int dispatchContext);
   virtual void NormalClick(short nTileIndex, int nInputFlags);
@@ -62,7 +62,7 @@ public:
   // consumes the promoted stack dword and concrete bodies reuse its upper word.
   virtual void CenterOn(int tileIndex);
   virtual short GetCentertile();
-  virtual void SetMapViewTileIndex(int arg1);
+  virtual void SetMapViewTileIndex(int tileIndex);
   virtual void SetMapViewCellCoordinates(int column, int row);
   virtual void RefreshMapTile(short tileIndex);
   virtual bool IsTileVisible(short tileIndex);

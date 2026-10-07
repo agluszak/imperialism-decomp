@@ -14,7 +14,8 @@ public:
   void MakeNewCity(TCity* city) override;
   void SetBuyPriorities() override;
   void SetTradeBids() override;
-  void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
+  void ReplyToTradeOffer(short targetNation, short amount, short maximumAmount,
+                         short resourceCode) override;
 };
 ASSERT_SIZE(TArmsForeignMinister, 0x80);
 
@@ -30,7 +31,8 @@ public:
   void DoSecondTurnDiplomacy() override;
   void SetBuyPriorities() override;
   void SetTradeBids() override;
-  void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
+  void ReplyToTradeOffer(short targetNation, short amount, short maximumAmount,
+                         short resourceCode) override;
 };
 ASSERT_SIZE(TTedForeignMinister, 0x80);
 
@@ -48,7 +50,8 @@ public:
   void DoSecondTurnDiplomacy() override;
   void SetBuyPriorities() override;
   void SetTradeBids() override;
-  void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
+  void ReplyToTradeOffer(short targetNation, short amount, short maximumAmount,
+                         short resourceCode) override;
 
   unsigned char orderFlag;
   unsigned char pad81[3];
@@ -68,7 +71,8 @@ public:
   void DoSecondTurnDiplomacy() override;
   void SetBuyPriorities() override;
   void SetTradeBids() override;
-  void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
+  void ReplyToTradeOffer(short targetNation, short amount, short maximumAmount,
+                         short resourceCode) override;
 };
 ASSERT_SIZE(TDiplomatForeignMinister, 0x80);
 
@@ -82,7 +86,8 @@ public:
   void MakeNewCity(TCity* city) override;
   void SetBuyPriorities() override;
   void SetTradeBids() override;
-  void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
+  void ReplyToTradeOffer(short targetNation, short amount, short maximumAmount,
+                         short resourceCode) override;
 };
 ASSERT_SIZE(TTextileForeignMinister, 0x80);
 
@@ -97,6 +102,7 @@ public:
   void DoFirstTurnDiplomacy() override;
   void SetBuyPriorities() override;
   void SetTradeBids() override;
-  void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
+  void ReplyToTradeOffer(short targetNation, short amount, short maximumAmount,
+                         short resourceCode) override;
 };
 ASSERT_SIZE(TTraderForeignMinister, 0x80);

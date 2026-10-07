@@ -167,9 +167,10 @@ void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051d210
-void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndexArg,
+                                                                     int inputFlags) {
+  (void)tileIndexArg;
+  (void)inputFlags;
 
   int index;
   for (index = 0; index < kMapTileCount; ++index) {

@@ -316,9 +316,10 @@ void TForeignMinister::DoUsualSubsidyRule() {
 }
 
 // FUNCTION: IMPERIALISM 0x0052fba0
-void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) {
+void TForeignMinister::ReplyToTradeOffer(short targetNation, short amount, short maximumAmount,
+                                         short resourceCode) {
   TGreatPower* owner = this->greatPower;
-  unsigned int dispatchAmount = static_cast<unsigned int>(arg2);
+  unsigned int dispatchAmount = static_cast<unsigned int>(amount);
   if (resourceCode == interiorBidResource) {
     if (interiorBidAmount < static_cast<short>(dispatchAmount)) {
       dispatchAmount = static_cast<unsigned short>(interiorBidAmount);
@@ -326,9 +327,9 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     short availableAmount = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
       g_pTradeMgr->SetDealResults(
-          owner->nationSlot, arg1,
-          static_cast<int>(owner->GetMerchantCapacityForProposal(resourceCode)), arg3, resourceCode,
-          0, false);
+          owner->nationSlot, targetNation,
+          static_cast<int>(owner->GetMerchantCapacityForProposal(resourceCode)), maximumAmount,
+          resourceCode, 0, false);
       return;
     }
   } else {
@@ -347,8 +348,8 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     }
     *ledgerEntry = static_cast<short>(*ledgerEntry - static_cast<short>(dispatchAmount));
   }
-  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, static_cast<int>(dispatchAmount), arg3,
-                              resourceCode, 0, false);
+  g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, static_cast<int>(dispatchAmount),
+                              maximumAmount, resourceCode, 0, false);
 }
 
 // FUNCTION: IMPERIALISM 0x0052fcc0
