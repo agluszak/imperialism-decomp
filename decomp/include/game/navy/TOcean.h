@@ -47,7 +47,7 @@ public:
 
   void RefreshMapActionContextNationOverlaysAndOrderRanks();
 
-  TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode);
+  TZone* Sea(short nationCode);
 
   // Resolves port-zone or per-nation map-action context for a sea/coastal tile. 0x5633b0.
   TZone* GetLinkedZoneForSeaTile(short seaTileIndex);

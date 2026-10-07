@@ -220,7 +220,7 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7150
-void TCountry::SetSerializedField8c(int value) {
+void TCountry::SetOverlayAnchorTile(int value) {
   this->overlayAnchorTileCache = static_cast<short>(value);
 }
 
@@ -237,7 +237,7 @@ short TCountry::GetOrComputeOverlayAnchorTileIndex() {
 void TCountry::InitialMilitia(void) {
   TSimMgr* simMgr = g_pSimMgr;
   if (simMgr->scenarioMapIndexPlusOne > 0) {
-    g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(
+    g_pGlobalMapState->BuildFort(
         g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)]
             .cityRecordIndex);
     return;
@@ -263,7 +263,7 @@ void TCountry::InitialMilitia(void) {
         if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
-        g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(regionId);
+        g_pGlobalMapState->BuildFort(regionId);
         if (this->nationSlot < 7 && g_apNationStates[this->nationSlot]->diplomacyEligibility == 0 &&
             g_pSimMgr->difficultyLevel == kDifficultyNighOnImpossible) {
           order = new TMilitaryUnit();
@@ -359,12 +359,12 @@ void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7a40
-void TCountry::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
+void TCountry::GetName(CString* destString) {
   *destString = g_pLanguageMgr->StripCodeStr(identitySharedString1);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7ac0
-void TCountry::LoadNationDisplayNameRawFromField8(CString* destString) {
+void TCountry::GetNameWithCode(CString* destString) {
   *destString = identitySharedString1;
 }
 
@@ -670,7 +670,7 @@ void TCountry::GrowMilitia(void) {
     if (garrisonCount < static_cast<short>(garrisonThreshold)) {
       this->AddMilitia(static_cast<int>(regionId));
     }
-    ordinal = ordinal + 1;
+    ++ordinal;
     regionCount = this->ownedRegionList->GetSize();
   } while (ordinal <= regionCount);
 }

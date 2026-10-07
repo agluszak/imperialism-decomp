@@ -81,7 +81,7 @@ public:
   virtual void GiveReconOrders(TZone* location,
                                TShip** selectedOrder); // slot 0x2a 0x537090
   // Selects the active target zone from lifecycle state28 (0 -> zone18, 1..2 -> zone14).
-  virtual TZone* GetActiveTargetZoneByState28() const; // slot 0x2b 0x537060
+  virtual TZone* GetActiveTargetZone() const; // slot 0x2b 0x537060
 
   void CombineForce(TZone* location, TTaskForce*& taskForce); // 0x536d60
 

@@ -251,9 +251,9 @@ void TDefendProvinceMission::CalculateImportance() {
   int tileIndex = presentLocation;
   const Province& cityRecord = g_pGlobalMapState->cityScoreTable[tileIndex];
 
-  float local_8 = static_cast<float>(cityRecord.cityScoreValue);
+  float score = static_cast<float>(cityRecord.cityScoreValue);
   int adjacentCount = static_cast<int>(cityRecord.adjacentRegionCount);
-  int local_c = 0;
+  int ownedNeighborCount = 0;
 
   if (adjacentCount > 0) {
     const short* adjArray = cityRecord.adjacentRegionIds;
@@ -262,16 +262,16 @@ void TDefendProvinceMission::CalculateImportance() {
       short tileOwnerNationCode =
           g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(adjTileIndex);
       if (nationId == tileOwnerNationCode) {
-        local_c++;
+        ownedNeighborCount++;
       }
     }
 
-    local_8 = (static_cast<float>(local_c) / static_cast<float>(adjacentCount) -
-               static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0)) *
-              local_8;
+    score = (static_cast<float>(ownedNeighborCount) / static_cast<float>(adjacentCount) -
+             static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0)) *
+            score;
   }
 
-  importanceScore = local_8 / g_fMissionScoreNormalizationDivisor;
+  importanceScore = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // FUNCTION: IMPERIALISM 0x0053edf0
@@ -280,54 +280,54 @@ void TDefendProvinceMission::CalculateNeeds() {
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nationState->AssertValid();
 
-  float fStack_c = nationState->averageUnitDivergencePerOwnedRegion;
+  float pressure = nationState->averageUnitDivergencePerOwnedRegion;
 
-  if (fStack_c <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
-    fStack_c = g_MissionPositiveFallback;
+  if (pressure <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+    pressure = g_MissionPositiveFallback;
   }
 
   bool compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(presentLocation);
 
   if (!compat) {
-    unsigned char bVar8;
+    unsigned char unitTier;
     if (g_pTechMgr->abilityActiveRows[nationId].abilityActiveById[0x10] == 0) {
-      bVar8 = (g_pTechMgr->abilityActiveRows[nationId].abilityActiveById[8] != 0) ? 8 : 0;
+      unitTier = (g_pTechMgr->abilityActiveRows[nationId].abilityActiveById[8] != 0) ? 8 : 0;
     } else {
-      bVar8 = 0x10;
+      unitTier = 0x10;
     }
 
     int i;
     int sumCosts = 0;
     for (i = 0; i < 5; ++i) {
-      sumCosts += TMilitaryUnit::GetTypeAttribute(bVar8, static_cast<short>(i));
+      sumCosts += TMilitaryUnit::GetTypeAttribute(unitTier, static_cast<short>(i));
     }
 
     for (i = 0; i < 5; ++i) {
-      short cost = TMilitaryUnit::GetTypeAttribute(bVar8, static_cast<short>(i));
+      short cost = TMilitaryUnit::GetTypeAttribute(unitTier, static_cast<short>(i));
       requiredEquipageByClass[i] =
-          (static_cast<float>(cost) * fStack_c) / static_cast<float>(sumCosts);
+          (static_cast<float>(cost) * pressure) / static_cast<float>(sumCosts);
     }
     return;
   }
 
   bool hasWar = g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId);
-  float unaff_EBX = nationState->expansionPressurePerCompatibleRegion + fStack_c;
+  float requiredStrength = nationState->expansionPressurePerCompatibleRegion + pressure;
 
   if (hasWar) {
     float crossScore = ComputeCrossNationSupportVectorScore(presentLocation);
     float factor = g_DefendProvinceMissionCrossSupportFloorScale;
-    if (unaff_EBX < crossScore * factor) {
-      unaff_EBX = crossScore * factor;
+    if (requiredStrength < crossScore * factor) {
+      requiredStrength = crossScore * factor;
     }
   }
 
   signed char fortLevel = g_pGlobalMapState->cityScoreTable[presentLocation].fortLevel;
   int offset = (fortLevel < 1) ? 0 : 15;
-  short* psVar5 = g_awTacticalCompositionReferenceProfiles + offset;
+  short* referenceProfile = g_awTacticalCompositionReferenceProfiles + offset;
 
   for (int j = 0; j < 5; ++j) {
-    short val = psVar5[j];
-    requiredEquipageByClass[j] = static_cast<float>(val) * unaff_EBX *
+    short val = referenceProfile[j];
+    requiredEquipageByClass[j] = static_cast<float>(val) * requiredStrength *
                                  static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
   }
 }

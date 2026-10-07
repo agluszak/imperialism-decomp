@@ -22,8 +22,8 @@ inline const char* PickWeighted(const char* const* strings, const int* weights, 
   int remaining = (useMask ? (sample & range) : (sample % range)) - weights[0];
   int index = 0;
   while (remaining >= 0) {
-    index = index + 1;
-    remaining = remaining - weights[index];
+    ++index;
+    remaining -= weights[index];
   }
   return strings[index];
 }
@@ -39,8 +39,8 @@ inline int DrawCountNoStep(const int* weights, int range) {
   int remaining = static_cast<int>((g_zoneStatusCodePrngSeed >> 0xc) & 0x7fff) % range - weights[0];
   int index = 0;
   while (remaining >= 0) {
-    index = index + 1;
-    remaining = remaining - weights[index];
+    ++index;
+    remaining -= weights[index];
   }
   return index;
 }
@@ -121,7 +121,7 @@ void BuildMapContextStatusStringVariantA(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -194,7 +194,7 @@ void BuildMapContextStatusStringVariantB(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -286,7 +286,7 @@ void BuildMapContextStatusStringVariantC(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -365,7 +365,7 @@ void BuildMapContextStatusStringVariantD(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -439,7 +439,7 @@ void BuildMapContextStatusStringVariantE(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -506,7 +506,7 @@ void BuildMapContextStatusStringVariantF(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -620,7 +620,7 @@ void BuildMapContextStatusStringVariantG(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -699,7 +699,7 @@ void BuildMapContextStatusStringVariantH(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -765,7 +765,7 @@ void BuildMapContextStatusStringVariantI(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -834,7 +834,7 @@ void BuildMapContextStatusStringVariantJ(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -917,7 +917,7 @@ void BuildMapContextStatusStringVariantK(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -980,7 +980,7 @@ void BuildMapContextStatusStringVariantL(CString* out) {
     if (text != 0) {
       *out += text;
     }
-    p = p + 1;
+    ++p;
   }
 }
 
@@ -995,7 +995,7 @@ void GenerateMappedFlavorTextVariantE(CString* out) {
     const int countWeights[8] = {0x33, 0xa, 0x55, 0xe, 0x1e, 5, 1, 0};
     count = DrawCountNoStep(countWeights, 0xc4);
   }
-  count = count + 3;
+  count += 3;
 
   *out = CString(g_szEmptyString);
 
@@ -1019,7 +1019,7 @@ void GenerateMappedFlavorTextVariantE(CString* out) {
   }
 
   if (1 < count - 1) {
-    count = count - 2;
+    count -= 2;
     do {
       flag = (flag == 0);
       if (flag == 0) {
@@ -1064,7 +1064,7 @@ void GenerateMappedFlavorTextVariantE(CString* out) {
             1,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
         *out += PickWeighted(strings, weights, 0xd6, false);
       }
-      count = count - 1;
+      --count;
     } while (count != 0);
   }
 
@@ -1127,7 +1127,7 @@ void BuildRandomMapContextStatusBaseString(CString* out) {
   }
 
   if (1 < count + 2) {
-    count = count + 1;
+    ++count;
     do {
       flag = (flag == 0);
       if (flag == 0) {
@@ -1156,7 +1156,7 @@ void BuildRandomMapContextStatusBaseString(CString* out) {
                                  8,    8,    8,    7,    7,    7,    7};
         *out += PickWeighted(strings, weights, 0x568, false);
       }
-      count = count - 1;
+      --count;
     } while (count != 0);
   }
 
@@ -1222,7 +1222,7 @@ void GenerateMappedFlavorTextVariantC(CString* out) {
     const int countWeights[8] = {0, 0x35, 0, 0x89, 0, 7, 0, 0};
     count = DrawCountNoStep(countWeights, 0xc5);
   }
-  count = count + 3;
+  count += 3;
 
   *out = CString(g_szEmptyString);
 
@@ -1242,7 +1242,7 @@ void GenerateMappedFlavorTextVariantC(CString* out) {
   }
 
   if (1 < count - 1) {
-    count = count - 2;
+    count -= 2;
     do {
       flag = (flag == 0);
       if (flag == 0) {
@@ -1267,7 +1267,7 @@ void GenerateMappedFlavorTextVariantC(CString* out) {
                                  3,    3,    3,    2,    2,    2,    2};
         *out += PickWeighted(strings, weights, 0x19e, false);
       }
-      count = count - 1;
+      --count;
     } while (count != 0);
   }
 
@@ -1330,7 +1330,7 @@ void GenerateMappedFlavorTextVariantB(CString* out) {
   }
 
   if (1 < count + 2) {
-    count = count + 1;
+    ++count;
     do {
       flag = (flag == 0);
       if (flag == 0) {
@@ -1372,7 +1372,7 @@ void GenerateMappedFlavorTextVariantB(CString* out) {
             6,     6,     6,     5,     5,     5,    5,    5};
         *out += PickWeighted(strings, weights, 0x1318, false);
       }
-      count = count - 1;
+      --count;
     } while (count != 0);
   }
 
@@ -1419,7 +1419,7 @@ void GenerateMappedFlavorTextVariantA(CString* out) {
     const int countWeights[8] = {0x8f, 0x49, 0xe0, 0x38, 0x3f, 0x17, 4, 0};
     count = DrawCountNoStep(countWeights, 0x24a);
   }
-  count = count + 3;
+  count += 3;
 
   *out = CString(g_szEmptyString);
 
@@ -1446,7 +1446,7 @@ void GenerateMappedFlavorTextVariantA(CString* out) {
   }
 
   if (1 < count - 1) {
-    count = count - 2;
+    count -= 2;
     do {
       flag = (flag == 0);
       if (flag == 0) {
@@ -1515,7 +1515,7 @@ void GenerateMappedFlavorTextVariantA(CString* out) {
             1,    1,    1,    1,    1,    1,    1,    1};
         *out += PickWeighted(strings, weights, 0x30d, false);
       }
-      count = count - 1;
+      --count;
     } while (count != 0);
   }
 
@@ -1571,7 +1571,7 @@ void GenerateMappedFlavorTextVariantD(CString* out) {
     const int countWeights[8] = {0, 0x37, 0x12, 0x6a, 0x24, 0x1e, 8, 0};
     count = DrawCountNoStep(countWeights, 0xfd);
   }
-  count = count + 3;
+  count += 3;
 
   *out = CString(g_szEmptyString);
 
@@ -1594,7 +1594,7 @@ void GenerateMappedFlavorTextVariantD(CString* out) {
   }
 
   if (1 < count - 1) {
-    count = count - 2;
+    count -= 2;
     do {
       flag = (flag == 0);
       if (flag == 0) {
@@ -1624,7 +1624,7 @@ void GenerateMappedFlavorTextVariantD(CString* out) {
             4,    3,    3,    3,    3,    3,    3,    2,   2,   2,   2,   2,   2,   2,   2,   2};
         *out += PickWeighted(strings, weights, 0x21a, false);
       }
-      count = count - 1;
+      --count;
     } while (count != 0);
   }
 

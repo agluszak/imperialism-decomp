@@ -98,8 +98,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   if (buildingSlotId == 0xb) {
     CRect tex2Bounds;
     tex2->QueryBounds(&tex2Bounds);
-    tex2Bounds.top = tex2Bounds.top + 5;
-    tex2Bounds.bottom = tex2Bounds.bottom + 5;
+    tex2Bounds.top += 5;
+    tex2Bounds.bottom += 5;
     tex2->ApplyBounds(&tex2Bounds, true);
   }
 

@@ -102,7 +102,7 @@ void TDialogBehavior::DoCommandKeyEvent(TToolboxEvent* event) {
 // FUNCTION: IMPERIALISM 0x00487660
 void TDialogBehavior::PoseModally() {
   CIncludeView* mainView = GetMainViewHostFromActiveThread();
-  int wasInteractive = mainView->SetUiInteractiveFlag90(false);
+  int wasInteractive = mainView->SetUiInteractiveFlag(false);
 
   TView* ownerPanel = owner->GetWindow();
   ownerPanel->Open();
@@ -117,6 +117,6 @@ void TDialogBehavior::PoseModally() {
   nativeWindow->RunModalLoop(0);
 
   if (wasInteractive != 0) {
-    GetMainViewHostFromActiveThread()->SetUiInteractiveFlag90(true);
+    GetMainViewHostFromActiveThread()->SetUiInteractiveFlag(true);
   }
 }

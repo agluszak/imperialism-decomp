@@ -567,7 +567,7 @@ int StrategicMapScreen::OceanOriginRow() const {
 
 int StrategicMapScreen::OceanCenterTile() const {
   return mapView != 0 && mapView->goodGoldTagControl != 0
-             ? mapView->goodGoldTagControl->ComputeWrappedTileIndexFromObjectOffset7C7E()
+             ? mapView->goodGoldTagControl->GetCenterTile()
              : -1;
 }
 

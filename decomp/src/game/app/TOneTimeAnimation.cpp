@@ -43,7 +43,7 @@ void TOneTimeAnimation::Tick() {
 
       ticksSinceFrameChange = 0;
       if (frameIndex < frameCount - 1) {
-        frameIndex = frameIndex + 1;
+        ++frameIndex;
       } else {
         completeFlag = true;
       }

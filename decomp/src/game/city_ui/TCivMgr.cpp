@@ -891,7 +891,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
     order->completionMarker = 0x2329;
     break;
   case 7:
-    g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(
+    g_pGlobalMapState->BuildFort(
         g_pGlobalMapState->terrainStateTable[order->tileIndex].cityRecordIndex);
     break;
   default:

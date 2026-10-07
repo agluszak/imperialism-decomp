@@ -1273,7 +1273,7 @@ void TGreatPower::AddToDealBook(short kind, NationSlot targetNation, short value
 }
 
 // FUNCTION: IMPERIALISM 0x004dde30
-bool TGreatPower::AnyTrackedSlotEntryHasZeroField4(short targetSlot) {
+bool TGreatPower::AnyDealHasZeroValue(short targetSlot) {
   bool found = false;
   for (short entryIndex = 1; !found; ++entryIndex) {
     TPtrList* trackedSlot = this->diplomacyTrackedSlots[targetSlot];
@@ -1306,8 +1306,7 @@ void TGreatPower::GetDealInfo(short slotIndex, short ordinal, short* outKind, sh
 }
 
 // FUNCTION: IMPERIALISM 0x004ddf20
-void TGreatPower::AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
-                                                                int payload) {
+void TGreatPower::SetDealPayloadForTarget(int targetSlot, int matchKey, int payload) {
   bool matched = false;
   for (int entryIndex = 1; !matched; ++entryIndex) {
     TPtrList* trackedSlot = this->diplomacyTrackedSlots[targetSlot];
@@ -1339,62 +1338,47 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
 
   bool shouldApply = true;
 
-  if (policyCode <= kPolicyRequiresCompatibilityStart) {
-    if (policyCode != kPolicyRequiresCompatibilityStart) {
-      if (policyCode == kPolicyClear) {
-        short previousPolicy = this->diplomacyPolicyByNation[targetClass];
-        if (previousPolicy == kPolicyTreasurySmall) {
-          this->AddToTreasury(500);
-        } else if (previousPolicy == kPolicyTreasuryLarge) {
-          this->AddToTreasury(5000);
-        }
+  if (policyCode < kPolicyRequiresCompatibilityStart) {
+    if (policyCode == kPolicyClear) {
+      short previousPolicy = this->diplomacyPolicyByNation[targetClass];
+      if (previousPolicy == kPolicyTreasurySmall) {
+        this->AddToTreasury(500);
+      } else if (previousPolicy == kPolicyTreasuryLarge) {
+        this->AddToTreasury(5000);
       }
-      goto APPLY_POLICY_IF_ALLOWED;
     }
+  } else if (policyCode == kPolicyRequiresCompatibilityStart) {
     if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(this->nationSlot, targetClass) != 2) {
       shouldApply = false;
     }
-    goto APPLY_POLICY_IF_ALLOWED;
-  }
+  } else
+    switch (policyCode - (kPolicyRequiresCompatibilityStart + 1)) {
+    case 0:
+    case 1:
+      if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(this->nationSlot, targetClass) != 2) {
+        shouldApply = false;
+      }
+      break;
 
-  switch (policyCode - (kPolicyRequiresCompatibilityStart + 1)) {
-  case 0:
-  case 1:
-    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(this->nationSlot, targetClass) != 2) {
-      shouldApply = false;
-    }
-    break;
-
-  case 3: {
-    TSimMgr* simMgr = g_pSimMgr;
-    if (simMgr != 0 && simMgr->mode == kGamePhaseDiplomacy) {
-      this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetClass, 4, -1);
-    }
-
-    TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
-    DiplomacyRelationshipStorage relationship =
-        g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(targetClass,
-                                                                         this->nationSlot);
-    if (relationship == kDiplomacyRelationshipAlliance) {
-      g_pDiplomacyTurnStateManager->TerminateAlliance(this->nationSlot, targetClass, 1);
-    }
-
-    TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[targetClass];
-    bool isClientNation = terrainDescriptor->encodedNationSlot >= 200;
-    if (isClientNation) {
-      short encodedNationSlot = terrainDescriptor->encodedNationSlot;
-      short resolvedNationSlot;
-      if (encodedNationSlot >= 200) {
-        resolvedNationSlot = static_cast<short>(encodedNationSlot - 200);
-      } else if (encodedNationSlot >= 100) {
-        resolvedNationSlot = static_cast<short>(encodedNationSlot - 100);
-      } else {
-        resolvedNationSlot = terrainDescriptor->nationSlot;
+    case 3: {
+      TSimMgr* simMgr = g_pSimMgr;
+      if (simMgr != 0 && simMgr->mode == kGamePhaseDiplomacy) {
+        this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetClass, 4, -1);
       }
 
-      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, resolvedNationSlot)) {
-        terrainDescriptor = g_apTerrainTypeDescriptorTable[targetClass];
-        encodedNationSlot = terrainDescriptor->encodedNationSlot;
+      TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
+      DiplomacyRelationshipStorage relationship =
+          g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(targetClass,
+                                                                           this->nationSlot);
+      if (relationship == kDiplomacyRelationshipAlliance) {
+        g_pDiplomacyTurnStateManager->TerminateAlliance(this->nationSlot, targetClass, 1);
+      }
+
+      TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[targetClass];
+      bool isClientNation = terrainDescriptor->encodedNationSlot >= 200;
+      if (isClientNation) {
+        short encodedNationSlot = terrainDescriptor->encodedNationSlot;
+        short resolvedNationSlot;
         if (encodedNationSlot >= 200) {
           resolvedNationSlot = static_cast<short>(encodedNationSlot - 200);
         } else if (encodedNationSlot >= 100) {
@@ -1402,38 +1386,49 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
         } else {
           resolvedNationSlot = terrainDescriptor->nationSlot;
         }
-        this->ApplyDiplomacyPolicyStateForTargetWithCostChecks(resolvedNationSlot,
-                                                               kDiplomacyProposalDeclareWar);
+
+        if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot,
+                                                             resolvedNationSlot)) {
+          terrainDescriptor = g_apTerrainTypeDescriptorTable[targetClass];
+          encodedNationSlot = terrainDescriptor->encodedNationSlot;
+          if (encodedNationSlot >= 200) {
+            resolvedNationSlot = static_cast<short>(encodedNationSlot - 200);
+          } else if (encodedNationSlot >= 100) {
+            resolvedNationSlot = static_cast<short>(encodedNationSlot - 100);
+          } else {
+            resolvedNationSlot = terrainDescriptor->nationSlot;
+          }
+          this->ApplyDiplomacyPolicyStateForTargetWithCostChecks(resolvedNationSlot,
+                                                                 kDiplomacyProposalDeclareWar);
+        }
       }
+
+      if (this->diplomacyEligibility != 0) {
+        this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetClass, -1);
+      }
+      break;
     }
 
-    if (this->diplomacyEligibility != 0) {
-      this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetClass, -1);
+    case 5:
+      if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(500)) {
+        this->AddToTreasury(0xFFFFFE0C);
+      } else {
+        shouldApply = false;
+      }
+      break;
+
+    case 6:
+      if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(5000)) {
+        this->AddToTreasury(0xFFFFEC78);
+      } else {
+        shouldApply = false;
+      }
+      break;
+
+    default:
+      break;
     }
-    break;
-  }
 
-  case 5:
-    if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(500)) {
-      this->AddToTreasury(0xFFFFFE0C);
-    } else {
-      shouldApply = false;
-    }
-    break;
-
-  case 6:
-    if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(5000)) {
-      this->AddToTreasury(0xFFFFEC78);
-    } else {
-      shouldApply = false;
-    }
-    break;
-
-  default:
-    break;
-  }
-
-APPLY_POLICY_IF_ALLOWED:
   if (shouldApply) {
     this->diplomacyPolicyByNation[targetClass] = policyCode;
   }
@@ -3170,7 +3165,7 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
           production +=
               static_cast<short>(peerMgr->GetBuildingType(static_cast<short>(buildingSlot)));
         }
-        sampleCount = sampleCount - g_Classify_Nation_Military_Value_00653704;
+        sampleCount -= g_Classify_Nation_Military_Value_00653704;
         productionSum = static_cast<float>(production) + productionSum;
         productionSquares = static_cast<float>(production * production) + productionSquares;
       }

@@ -31,8 +31,8 @@ void TTransFocusAnimation::ITransFocusAnimation(TView* target, RECT* bounds, sho
   frameIndex = 0;
   ticksSinceFrameChange = 0;
 
-  RECT local_bounds = {0, 0, bounds->right - bounds->left, bounds->bottom - bounds->top};
-  g_pDisplayMgr->MakeNewGWorld(transientSurfaceContext, 8, local_bounds);
+  RECT surfaceBounds = {0, 0, bounds->right - bounds->left, bounds->bottom - bounds->top};
+  g_pDisplayMgr->MakeNewGWorld(transientSurfaceContext, 8, surfaceBounds);
   insetBitmapSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(frameResourceBaseIdArg);
 }
 

@@ -1808,7 +1808,7 @@ JSON_Value* CaptureNationCommon(TCountry* country) {
   }
   JsonObject common;
   CString displayName;
-  country->LoadNationDisplayNameSharedRefFromField8(&displayName);
+  country->GetName(&displayName);
   common.Set("display_name", static_cast<const char*>(displayName));
   JsonObject status;
   if (country->encodedNationSlot == -1) {

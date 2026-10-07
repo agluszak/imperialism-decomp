@@ -54,8 +54,8 @@ void ReadByteSwappedShortArrayFromStream(TStream* stream, short* values, int sho
       unsigned char secondByte = cursor[1];
       cursor[0] = secondByte;
       cursor[1] = firstByte;
-      cursor = cursor + 2;
-      shortCount = shortCount - 1;
+      cursor += 2;
+      --shortCount;
     } while (shortCount != 0);
   }
 }

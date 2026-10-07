@@ -45,9 +45,8 @@ void TControlSeaZoneMission::Initialize() {
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
-      score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId)
-                   ? g_PortZoneFriendlyMissionScoreMultiplier
-                   : g_PortZoneForeignMissionScoreMultiplier;
+      score *= (zone->GetPortOwnerNation() == nationId) ? g_PortZoneFriendlyMissionScoreMultiplier
+                                                        : g_PortZoneForeignMissionScoreMultiplier;
     }
   }
 
@@ -149,9 +148,8 @@ void TControlSeaZoneMission::CalculateImportance() {
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
-      score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId)
-                   ? g_PortZoneFriendlyMissionScoreMultiplier
-                   : g_PortZoneForeignMissionScoreMultiplier;
+      score *= (zone->GetPortOwnerNation() == nationId) ? g_PortZoneFriendlyMissionScoreMultiplier
+                                                        : g_PortZoneForeignMissionScoreMultiplier;
     }
   }
 

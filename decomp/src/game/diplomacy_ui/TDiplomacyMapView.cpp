@@ -240,7 +240,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         short anchorTile = nation->GetOrComputeOverlayAnchorTileIndex();
         int labelCenterX = (anchorTile % 0x6c) * 5 + 0x31;
         int labelY = (anchorTile / 0x6c + 9) * 5;
-        nation->LoadNationDisplayNameSharedRefFromField8(&nationName);
+        nation->GetName(&nationName);
         short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&nationName);
         labelY -= 6;
         labelWidths[nationIndex] = textWidth;
@@ -428,7 +428,7 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
       ResolveUiThemeColor(0x2b68, &styleForeground);
       ResolveUiThemeColor(0x2b6b, &styleShadow);
     } else {
-      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
+      terrain->GetName(&label);
       ResolveUiThemeColor(0x2b67, &styleForeground);
       ResolveUiThemeColor(0x2b6f, &styleShadow);
     }
@@ -461,7 +461,7 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
       ResolveUiThemeColor(0x2b6b, &styleForeground);
       ResolveUiThemeColor(0x2b68, &styleShadow);
     } else if (code >= 100 && code < 200) {
-      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
+      terrain->GetName(&label);
       ResolveUiThemeColor(0x2b67, &styleForeground);
       ResolveUiThemeColor(0x2b6f, &styleShadow);
     } else {
@@ -510,9 +510,9 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       continue;
     }
 
-    bool boycottFlag = false;    // bVar3
-    bool offsetOverlayX = false; // bVar4
-    short iconOffset = -1;       // sVar9
+    bool boycottFlag = false;
+    bool offsetOverlayX = false;
+    short iconOffset = -1;
 
     short compatValue =
         g_pDiplomacyTurnStateManager->GetEmbassyStatus(frameRegionSelector, terrainIndex);
@@ -621,6 +621,9 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   CRect recurringGrantRect;
   bool grantUpdated;
   bool policyUpdated;
+  bool rejectAction = false;
+  bool clearAction = false;
+  bool refreshToolbar = false;
   eDipAction action = ResolveDiplomacyActionFromClickAndUpdateTarget(&point);
 
   switch (action) {
@@ -633,10 +636,12 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndex, activeNation, action)) {
-      goto reject_action;
+      rejectAction = true;
+      break;
     }
     if (!CheckEntanglements(activeNation, action)) {
-      goto clear_action;
+      clearAction = true;
+      break;
     }
     g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
         activeNation, kDiplomacyProposalJoinEmpire);
@@ -651,10 +656,12 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndex, activeNation, action)) {
-      goto reject_action;
+      rejectAction = true;
+      break;
     }
     if (!CheckEntanglements(activeNation, action)) {
-      goto clear_action;
+      clearAction = true;
+      break;
     }
     g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
         activeNation, kDiplomacyProposalAlliance);
@@ -669,7 +676,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndex, activeNation, action)) {
-      goto reject_action;
+      rejectAction = true;
+      break;
     }
     g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
         activeNation, kDiplomacyProposalNonAggressionPact);
@@ -684,7 +692,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndex, activeNation, action)) {
-      goto reject_action;
+      rejectAction = true;
+      break;
     }
     g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
         activeNation, kDiplomacyProposalPeaceTreaty);
@@ -699,7 +708,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndex, activeNation, action)) {
-      goto reject_action;
+      rejectAction = true;
+      break;
     }
     g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
         activeNation, kDiplomacyProposalDeclareWar);
@@ -714,24 +724,18 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     } else {
       if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               selectedTerrainIndex, activeNation, action)) {
-        goto reject_one_time_validation;
+        rejectAction = true;
+        break;
       }
       grantUpdated =
           g_apNationStates[selectedTerrainIndex]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
               activeNation, g_awDiplomacyGrantValueTable[selectedGrantRow]);
       if (!grantUpdated) {
         g_pDiplomacyTurnStateManager->proposalArrayMode = 0x17;
-        ShowDiplomacyActionRejectedNotice();
-        action = kDipActionNone;
-        goto finish_one_time_grant;
+        rejectAction = true;
+        break;
       }
     }
-    goto finish_one_time_grant;
-  reject_one_time_validation:
-    ShowDiplomacyActionRejectedNotice();
-    action = kDipActionNone;
-    grantUpdated = false;
-  finish_one_time_grant:
     if (!grantUpdated) {
       break;
     }
@@ -740,7 +744,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     invalidRect.right = 0xe6;
     invalidRect.bottom = 0x190;
     InvalidateCityDialogRectRegion(&invalidRect, 1);
-    goto refresh_toolbar;
+    refreshToolbar = true;
+    break;
   }
   case kDipActionRecurringGrant: {
     short grantValue = static_cast<short>(g_awDiplomacyGrantValueTable[selectedGrantRow] | 0x4000);
@@ -752,24 +757,18 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     } else {
       if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               selectedTerrainIndex, activeNation, action)) {
-        goto reject_recurring_validation;
+        rejectAction = true;
+        break;
       }
       grantUpdated =
           g_apNationStates[selectedTerrainIndex]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
               activeNation, grantValue);
       if (!grantUpdated) {
         g_pDiplomacyTurnStateManager->proposalArrayMode = 0x17;
-        ShowDiplomacyActionRejectedNotice();
-        action = kDipActionNone;
-        goto finish_recurring_grant;
+        rejectAction = true;
+        break;
       }
     }
-    goto finish_recurring_grant;
-  reject_recurring_validation:
-    ShowDiplomacyActionRejectedNotice();
-    action = kDipActionNone;
-    grantUpdated = false;
-  finish_recurring_grant:
     if (!grantUpdated) {
       break;
     }
@@ -778,14 +777,16 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     recurringGrantRect.right = 0xe6;
     recurringGrantRect.bottom = 0x190;
     InvalidateCityDialogRectRegion(&recurringGrantRect, 1);
-    goto refresh_toolbar;
+    refreshToolbar = true;
+    break;
   }
   case kDipActionTradeSubsidy:
   case kDipActionTradePolicy:
   case kDipActionBoycott: {
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndex, activeNation, action)) {
-      goto reject_action;
+      rejectAction = true;
+      break;
     }
 
     if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) == 0 || activeNation < 7) {
@@ -808,11 +809,6 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     }
     break;
   }
-  reject_action:
-    ShowDiplomacyActionRejectedNotice();
-  clear_action:
-    action = kDipActionNone;
-    break;
   case kDipActionInspectNation: {
     if (frameRegionSelector != activeNation) {
       frameRegionSelector = activeNation;
@@ -832,13 +828,15 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     } else {
       if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               selectedTerrainIndex, activeNation, action)) {
-        goto reject_policy_action;
+        rejectAction = true;
+        break;
       }
       policyUpdated =
           g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
               activeNation, kDiplomacyProposalBuildEmbassy);
     }
-    goto finish_policy_update;
+    refreshToolbar = policyUpdated;
+    break;
   }
   case kDipActionBuildConsulate: {
     if (g_apNationStates[selectedTerrainIndex]->diplomacyPolicyByNation[activeNation] ==
@@ -849,23 +847,16 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     } else {
       if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               selectedTerrainIndex, activeNation, action)) {
-        goto reject_policy_action;
+        rejectAction = true;
+        break;
       }
       policyUpdated =
           g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
               activeNation, kDiplomacyProposalBuildConsulate);
     }
-    goto finish_policy_update;
-  }
-  reject_policy_action:
-    ShowDiplomacyActionRejectedNotice();
-    action = kDipActionNone;
-    policyUpdated = false;
-  finish_policy_update:
-    if (policyUpdated) {
-      goto refresh_toolbar;
-    }
+    refreshToolbar = policyUpdated;
     break;
+  }
   case kDipActionLinkTradePolicy: {
     TCountry* targetNation = g_apTerrainTypeDescriptorTable[activeNation];
     short controllingNation = targetNation->encodedNationSlot;
@@ -886,15 +877,18 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   default:
     break;
   }
-  goto finalize_action;
 
-refresh_toolbar: {
-  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
-  toolbar->AssertValid();
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
-}
-
-finalize_action:
+  if (rejectAction) {
+    ShowDiplomacyActionRejectedNotice();
+  }
+  if (rejectAction || clearAction) {
+    action = kDipActionNone;
+  }
+  if (refreshToolbar) {
+    TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
+    toolbar->AssertValid();
+    toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
+  }
   if (action != kDipActionNone && activeNation != -1) {
     invalidRect = nationTextHitRects[activeNation];
     invalidRect.right += 0x10;
@@ -1062,7 +1056,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
         this->BlitDiplomacyMapEventPaletteMaskToSurface(terrainIndex, terrainIndex + 0x258);
       }
       terrainIndex = static_cast<short>(terrainIndex + 1);
-      terrainDescriptors = terrainDescriptors + 1;
+      ++terrainDescriptors;
     } while (terrainIndex < 7);
 
     g_pViewMgr->SetForeColor(0x3f);
@@ -1074,7 +1068,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
         this->BlitDiplomacyMapEventPaletteMaskToSurface(terrainIndex, 0x2bb);
       }
       terrainIndex = static_cast<short>(terrainIndex + 1);
-      terrainDescriptors = terrainDescriptors + 1;
+      ++terrainDescriptors;
     } while (terrainIndex < 0x17);
 
     SetQuickDrawFillColor(0);
@@ -1117,7 +1111,7 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
       UnionRgn(region, frameRegion, region);
     }
     terrainIndex = static_cast<short>(terrainIndex + 1);
-    terrainDescriptors = terrainDescriptors + 1;
+    ++terrainDescriptors;
   } while (terrainIndex < 0x17);
 
   ForwardMapViewVirtualC4IfPresent(region);
@@ -1229,7 +1223,7 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(TQuickDrawBl
               if ((*maskCursor & static_cast<unsigned char>(bit)) != 0) {
                 *destCursor = static_cast<unsigned char>(paletteColor.value);
               }
-              bit = bit * 2;
+              bit *= 2;
               x += 1;
               destCursor += 1;
             } while (bit < 0x100);
@@ -1374,7 +1368,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
                 if ((*maskCursor & static_cast<unsigned char>(bit)) != 0) {
                   *destCursor = *srcCursor;
                 }
-                bit = bit * 2;
+                bit *= 2;
                 x += 1;
                 destCursor += 1;
                 srcCursor += 1;

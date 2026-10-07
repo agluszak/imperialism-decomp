@@ -24,7 +24,7 @@ int ComputeStrategicHexTileDistance(StrategicTileIndex tileA, StrategicTileIndex
 
 short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connectionMask,
                                                            bool waterTerrain);
-int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
+int TileIndexFromColumnRow(int recordBase, int recordIndex);
 StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex);
 
 extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIndex centerTileIndex,
@@ -147,7 +147,7 @@ public:
                                    char useAltOffset); // slot 0x3d 0x517410
   virtual short GetDeltaTileOffset(char bitmaskIndex, char direction,
                                    short terrainPict); // slot 0x3e 0x517480
-  virtual short GetFixedConstant0xc80();               // slot 0x3f 0x517520
+  virtual short GetWrapSeamOffset();                   // slot 0x3f 0x517520
   virtual int
   GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex tileIndex,
                                                    short categoryCode);  // slot 0x40 0x517540
@@ -165,8 +165,7 @@ public:
   virtual int QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nNationId);
   virtual void QueuePortConstructionOrder(StrategicTileIndex nTileIndex,
                                           short nNationId); // slot 0x4a 0x5147d0
-  virtual void
-  SetProvinceCapitalTileFlagBit08(ProvinceIndexStorage nProvinceId); // slot 0x4b 0x5149d0
+  virtual void BuildFort(ProvinceIndexStorage nProvinceId); // slot 0x4b 0x5149d0
   virtual void FloodFillTileRegionMarker(StrategicTileIndex nTileIndex,
                                          short nOwnerNationId);                // slot 0x4c 0x5143d0
   virtual void PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId); // slot 0x4d 0x514a20

@@ -569,8 +569,8 @@ void TView::TranslatePointToParentChain4D(CPoint* point) {
 // FUNCTION: IMPERIALISM 0x0048bac0
 void TView::WindowToLocal(CPoint* point) {
   int offY = ownerLocalY;
-  point->x = point->x - ownerLocalX;
-  point->y = point->y - offY;
+  point->x -= ownerLocalX;
+  point->y -= offY;
   ownerContext->WindowToLocal(point);
 }
 
@@ -610,7 +610,7 @@ CRect TView::ViewToQDRect(CRect* inRect) {
 }
 // FUNCTION: IMPERIALISM 0x0048bc30
 void TView::AddControlPosToPoint(int x, int y, CPoint* outPoint) {
-  x = x + absoluteX;
+  x += absoluteX;
   y = absoluteY + y;
   outPoint->x = x;
   outPoint->y = y;

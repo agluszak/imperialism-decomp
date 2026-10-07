@@ -164,7 +164,7 @@ double g_mapCellRowScale = DefaultMapCellScale();
 double g_mapCellColumnScale = DefaultMapCellScale();
 double g_mapProjectionColumnScale = DefaultMapCellScale();
 double g_mapProjectionRowScale = DefaultMapCellScale();
-short g_mapProjectionSeamColumn = static_cast<short>(g_mapProjectionColumnScale * 512.0 - -1.0);
+short g_mapProjectionSeamColumn = static_cast<short>(g_mapProjectionColumnScale * 512.0 + 1.0);
 
 // FUNCTION: IMPERIALISM 0x00512440
 void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
@@ -283,7 +283,7 @@ void NormalizeProjectionColumnForRowParity(short* column, short* row) {
 
 // FUNCTION: IMPERIALISM 0x00519970
 void InitializeMapDialogViewportTileSpan() {
-  short viewportTileSpan = static_cast<short>(g_mapCellRowScale * 512.0 - -1.0);
+  short viewportTileSpan = static_cast<short>(g_mapCellRowScale * 512.0 + 1.0);
   memcpy(&g_wMapDialogViewportTileSpan, &viewportTileSpan, sizeof(viewportTileSpan));
 }
 
@@ -665,9 +665,9 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
     }
   }
   if (static_cast<short>(col) < 0) {
-    col = col + 0x6c;
+    col += 0x6c;
   } else if (static_cast<short>(col) >= 0x6c) {
-    col = col - 0x6c;
+    col -= 0x6c;
   }
   if (static_cast<short>(row) < 0) {
     row = 0;
@@ -680,8 +680,7 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
   viewportOrigin.y = static_cast<short>(row) << 6;
   viewportOrigin.x = static_cast<short>(col) << 6;
 
-  g_pGlobalMapState->mapViewOriginTile =
-      static_cast<short>(ComputeStridedRecordAddress6C(col, row));
+  g_pGlobalMapState->mapViewOriginTile = static_cast<short>(TileIndexFromColumnRow(col, row));
 
   if (ownerContext != 0) {
     RECT rect;
@@ -810,7 +809,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     TCountry* owner = g_apTerrainTypeDescriptorTable[g_pGlobalMapState->terrainStateTable[tileIndex]
                                                          .ownerNationTag];
     if (owner != 0 && owner->encodedNationSlot >= 0x64 && owner->encodedNationSlot < 0xc8) {
-      static_cast<TGreatPower*>(owner)->LoadNationDisplayNameSharedRefFromField8(&nameText);
+      static_cast<TGreatPower*>(owner)->GetName(&nameText);
     } else {
       // The original invokes this on the table entry even when it is null.
       owner->FormatOverlayTerrainLabelText(&nameText);
@@ -824,8 +823,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     if (currentOwner != formerOwner) {
       if (formerOwner >= 0 && formerOwner <= 0x17 &&
           g_apTerrainTypeDescriptorTable[formerOwner] != 0) {
-        static_cast<TGreatPower*>(g_apTerrainTypeDescriptorTable[formerOwner])
-            ->LoadNationDisplayNameSharedRefFromField8(&nameText);
+        static_cast<TGreatPower*>(g_apTerrainTypeDescriptorTable[formerOwner])->GetName(&nameText);
       } else {
         nameText.Format(g_szDecimalFormat, formerOwner);
         nameText = "#" + nameText;
@@ -837,7 +835,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x4a3);
     }
   } else {
-    TZone* zone = g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(
+    TZone* zone = g_pActiveMapOrderContext->Sea(
         g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag);
     zone->AssignZoneDisplayNameToOutputRef(&mainText);
     locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
@@ -860,7 +858,7 @@ void InitializeMapInteractionPreviewScaleYDefault() {
 
 // FUNCTION: IMPERIALISM 0x0051e110
 void RecomputeMapInteractionPreviewVerticalOffsetFromScale() {
-  g_MapPreviewVerticalOffset6A3448 = static_cast<short>(g_MapPreviewScaleY6A33D0 * 512.0 - -1.0);
+  g_MapPreviewVerticalOffset6A3448 = static_cast<short>(g_MapPreviewScaleY6A33D0 * 512.0 + 1.0);
 }
 
 // FUNCTION: IMPERIALISM 0x0051e1a0
@@ -943,8 +941,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           col += 108;
         }
 
-        short tileIndex =
-            static_cast<short>(ComputeStridedRecordAddress6C(static_cast<int>(col), row));
+        short tileIndex = static_cast<short>(TileIndexFromColumnRow(static_cast<int>(col), row));
         short projectedY;
         short projectedX;
         ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &projectedY,
@@ -1062,7 +1059,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     short centerTile = static_cast<short>(GetCenterTile());
     int centerColumn = centerTile % 108;
     if ((tileColumn == 0 && centerColumn > 54) || (tileColumn == 107 && centerColumn < 54)) {
-      short seamOffset = g_pGlobalMapState->GetFixedConstant0xc80();
+      short seamOffset = g_pGlobalMapState->GetWrapSeamOffset();
       NewCopy64(sourcePixels + seamOffset, destinationPixels, sourceStride, destinationStride);
       usedWrappedSeamTile = true;
     }
@@ -1671,7 +1668,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetD(int originX, int originY, short v
   }
   if (variant == 2) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 5);
-    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + -3);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY - 3);
     return;
   }
   SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
@@ -1707,7 +1704,7 @@ void TMapDialog::DrawMapDialogTileGuidePatternByVariant(int originX, int originY
     DrawCenteredGuideLineOnMapDc(originX + 0x3c, originY + 0x19);
     DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x20);
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 5);
-    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + -3);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY - 3);
   }
 }
 
@@ -2166,9 +2163,9 @@ void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
 void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2) {
   if (abs(static_cast<int>(col1) - static_cast<int>(col2)) > 0x6c) {
     if (col1 > 0x6c) {
-      col1 = col1 - 0xd8;
+      col1 -= 0xd8;
     } else if (col2 > 0x6c) {
-      col2 = col2 - 0xd8;
+      col2 -= 0xd8;
     }
   }
   if (col1 < 0) {
@@ -2254,6 +2251,7 @@ void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int
     }
 
     int bottomY;
+    bool drawBottom = true;
     if ((connectionMask & 4) == 0 ||
         tiles[neighborTiles[0]].GetTerrainKind() != kStrategicTerrainWater) {
       SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x20);
@@ -2263,17 +2261,19 @@ void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int
       SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x20);
       DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x28);
       DrawCenteredGuideLineOnMapDc(screenX + 0x2c, screenY + 0x38);
-      if ((connectionMask & 0x80) == 0) {
-        goto tail;
+      bottomY = 0;
+      drawBottom = (connectionMask & 0x80) != 0;
+      if (drawBottom) {
+        SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x28);
+        bottomY = screenY + 0x38;
       }
-      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x28);
-      bottomY = screenY + 0x38;
     }
-    DrawCenteredGuideLineOnMapDc(screenX + 0x3c, bottomY);
-    DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x40);
+    if (drawBottom) {
+      DrawCenteredGuideLineOnMapDc(screenX + 0x3c, bottomY);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x40);
+    }
   }
 
-tail:
   if ((connectionMask & 1) != 0 &&
       tiles[neighborTiles[2]].GetTerrainKind() == kStrategicTerrainWater) {
     SetQuickDrawTextOriginWithContextOffset(screenX + 0x18, screenY);
@@ -2745,11 +2745,11 @@ void TMapDialog::NewCopy64(unsigned char* src, unsigned char* dest, short srcStr
       CopyPixelDword(d + 0x14, s + 0x14);
       CopyPixelDword(d + 0x18, s + 0x18);
       CopyPixelDword(d + 0x1c, s + 0x1c);
-      inner = inner - 1;
+      --inner;
       dest = d + 0x20;
       src = s + 0x20;
     } while (inner != 0);
-    row = row - 1;
+    --row;
     dest = d + destStrideDwords * 4 - 0x20;
     src = s + srcStrideDwords * 4 - 0x20;
   } while (row != 0);

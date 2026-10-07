@@ -234,14 +234,14 @@ void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
             *valInner = outerVal;
           }
         }
-        idInner = idInner + 1;
-        valInner = valInner + 1;
-        remaining = remaining - 1;
+        ++idInner;
+        ++valInner;
+        --remaining;
       } while (remaining != 0);
     }
-    idOuter = idOuter + 1;
-    valOuter = valOuter + 1;
-    outer = outer + 1;
+    ++idOuter;
+    ++valOuter;
+    ++outer;
   } while (outer < 7);
 
   // Push each sorted entry's picture id into its child picture widget.
@@ -254,7 +254,7 @@ void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
       widget->AssertValid();
       widget->SetPictureRsrcID(static_cast<short>(*idPtr + 0x10d7), true);
     }
-    index = index + 1;
-    idPtr = idPtr + 1;
+    ++index;
+    ++idPtr;
   } while (index < 7);
 }

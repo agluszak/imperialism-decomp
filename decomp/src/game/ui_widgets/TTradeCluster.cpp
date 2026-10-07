@@ -95,7 +95,7 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
     boundsBuffer.left = 0;
     boundsBuffer.top = 0;
     sellControl->QueryBounds(&boundsBuffer);
-    boundsBuffer.top = boundsBuffer.top - 2;
+    boundsBuffer.top -= 2;
     sellControl->ApplyBounds(&boundsBuffer, true);
   }
 

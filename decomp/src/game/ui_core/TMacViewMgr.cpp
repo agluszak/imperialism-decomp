@@ -271,7 +271,7 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
       loader->flags &= static_cast<unsigned char>(~1);
     }
     ReleaseBitmapLoaderHandle(loaderHandle);
-    commodityIndex = commodityIndex + 1;
+    ++commodityIndex;
   }
   UnlockPixels(GetGWorldPixMap(atlas674));
   SetGWorld(savedContext, savedFlags);
@@ -417,7 +417,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
       delete loaderHandle;
     }
     UnlockPixels(GetGWorldPixMap(atlas694[stripIndex]));
-    stripIndex = stripIndex + 1;
+    ++stripIndex;
   }
   SetGWorld(savedContext, savedFlags);
 }
@@ -449,8 +449,8 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(10000 + index, &blitRect);
-    dstX = dstX + 0x40;
-    index = index + 1;
+    dstX += 0x40;
+    ++index;
   }
   index = 0;
   while (index < 4) {
@@ -460,8 +460,8 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x276e + index, &blitRect);
-    dstX = dstX + 0x40;
-    index = index + 1;
+    dstX += 0x40;
+    ++index;
   }
   index = 0;
   while (index < 4) {
@@ -471,8 +471,8 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x2774 + index, &blitRect);
-    dstX = dstX + 0x40;
-    index = index + 1;
+    dstX += 0x40;
+    ++index;
   }
   {
     RECT blitRect;
@@ -502,8 +502,8 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
       blitRect.bottom = 0x40;
       ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
     }
-    dstX = dstX + 0x40;
-    resourceId = resourceId + 1;
+    dstX += 0x40;
+    ++resourceId;
   }
   resourceId = 0x226;
   while (resourceId < 0x22e) {
@@ -513,8 +513,8 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
-    dstX = dstX + 0x40;
-    resourceId = resourceId + 1;
+    dstX += 0x40;
+    ++resourceId;
   }
   resourceId = 0x230;
   while (resourceId < 0x233) {
@@ -524,8 +524,8 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
-    dstX = dstX + 0x40;
-    resourceId = resourceId + 1;
+    dstX += 0x40;
+    ++resourceId;
   }
   index = 0;
   while (index < 2) {
@@ -535,8 +535,8 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x2778 + index, &blitRect);
-    dstX = dstX + 0x40;
-    index = index + 1;
+    dstX += 0x40;
+    ++index;
   }
   index = 0;
   while (index < 2) {
@@ -546,8 +546,8 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
     ResolveAndBlitBitmapResourceToActiveAtlas(0x242 + index, &blitRect);
-    dstX = dstX + 0x40;
-    index = index + 1;
+    dstX += 0x40;
+    ++index;
   }
   UnlockPixels(GetGWorldPixMap(atlas66c));
   SetGWorld(savedContext, savedFlags);
@@ -571,8 +571,8 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
     blitRect.right = dstX + 0x12;
     blitRect.bottom = 0x26;
     ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
-    dstX = dstX + 0x12;
-    resourceId = resourceId + 1;
+    dstX += 0x12;
+    ++resourceId;
   }
   UnlockPixels(GetGWorldPixMap(atlas6b4));
   SetGWorld(savedContext, savedFlags);
@@ -597,7 +597,7 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
   while (index < 0x10) {
     strategicTileMasks[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40,
                                                                           0x40, 0x1680, 0x10);
-    index = index + 1;
+    ++index;
   }
   resourceId = 0x2760;
   while (resourceId < 0x2766) {
@@ -605,13 +605,13 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
         resourceId - 0x26, 0x40, 0x40, 0x1680, 0x10);
     strategicTileMasks[0x1e + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
         resourceId, 0x40, 0x40, 0x1680, 0x10);
-    resourceId = resourceId + 1;
+    ++resourceId;
   }
   index = 0x10;
   while (index < 0x18) {
     strategicTileMasks[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40,
                                                                           0x40, 0x1680, 0x10);
-    index = index + 1;
+    ++index;
   }
 }
 
@@ -670,12 +670,12 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
       pixelBase[strideBytes + colOffset] = paletteByte;
       pixelBase[strideBytes + colOffset + 1] = paletteByte;
     }
-    colOffset = colOffset + 2;
+    colOffset += 2;
     if (colOffset == 0xd8) {
       colOffset = 0;
       pixelBase = pixelBase + strideBytes * 2;
     }
-    tileIndex = tileIndex + 1;
+    ++tileIndex;
   }
   unsigned char* surfaceBase = GetPixBaseAddr(surfaceObject);
   unsigned char* smoothingBase = surfaceBase + strideBytes * 2;
@@ -691,10 +691,10 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
       int copyCol = 0;
       while (copyCol < 0xd8) {
         *scratchCursor = srcCursor[copyCol];
-        scratchCursor = scratchCursor + 1;
-        copyCol = copyCol + 1;
+        ++scratchCursor;
+        ++copyCol;
       }
-      copyRow = copyRow + 1;
+      ++copyRow;
     }
   }
   {
@@ -717,13 +717,13 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
              (neighborPixel = compareRow[1], neighborPixel != centerPixel))) {
           scratchRow[0] = neighborPixel;
         }
-        compareRow = compareRow + 1;
-        scratchRow = scratchRow + 1;
-        edgeCol = edgeCol - 1;
+        ++compareRow;
+        ++scratchRow;
+        --edgeCol;
       }
-      rowStart = rowStart + strideBytes;
-      scratchRow = scratchRow + 2;
-      edgeRow = edgeRow - 1;
+      rowStart += strideBytes;
+      scratchRow += 2;
+      --edgeRow;
     }
   }
   {
@@ -734,10 +734,10 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
       int copyCol = 0;
       while (copyCol < 0xd8) {
         dstCursor[copyCol] = scratchCursor[0];
-        scratchCursor = scratchCursor + 1;
-        copyCol = copyCol + 1;
+        ++scratchCursor;
+        ++copyCol;
       }
-      copyRow = copyRow + 1;
+      ++copyRow;
     }
   }
   delete[] scratchBuffer;
@@ -770,14 +770,14 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
         StrategicTileIndex* neighborCursor = cityRecord.linkedTileIndices;
         while (neighborIndex < neighborCount) {
           InvokeBuildHexNeighborHighlightPolygonForTile(neighborCursor[0], cityRecordIndex);
-          neighborIndex = neighborIndex + 1;
-          neighborCursor = neighborCursor + 1;
+          ++neighborIndex;
+          ++neighborCursor;
         }
       }
       CloseRgn(*tileSlot);
     }
-    cityRecordIndex = cityRecordIndex + 1;
-    tileSlot = tileSlot + 1;
+    ++cityRecordIndex;
+    ++tileSlot;
   }
   RegenerateCountryRegions();
 }
@@ -798,11 +798,11 @@ void TMacViewMgr::RegenerateCountryRegions() {
         if (g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode == nationIndex) {
           UnionRgn(regionWrapper, *tileSlot, regionWrapper);
         }
-        cityRecordIndex = cityRecordIndex + 1;
-        tileSlot = tileSlot + 1;
+        ++cityRecordIndex;
+        ++tileSlot;
       }
       SetCountryRgn(regionWrapper, static_cast<short>(nationIndex));
-      nationIndex = nationIndex + 1;
+      ++nationIndex;
     }
     DisposeRgn(regionWrapper);
     RenderTurnEventPalettePreviewSurfaceAndProgress();
@@ -1489,8 +1489,8 @@ void TMacViewMgr::CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, 
       dstRow[0x1e] = srcRow[0x1e];
     if (srcRow[0x1f] != '\x10')
       dstRow[0x1f] = srcRow[0x1f];
-    rowsRemaining = rowsRemaining - 1;
-    dstRow = dstRow + dstStrideBytes;
+    --rowsRemaining;
+    dstRow += dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
   } while (rowsRemaining != 0);
   UnlockPixels(atlasSurface);
@@ -1550,8 +1550,8 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, sho
       dstRow[0x12] = srcRow[0x12];
     if (srcRow[0x13] != '\x10')
       dstRow[0x13] = srcRow[0x13];
-    rowsRemaining = rowsRemaining - 1;
-    dstRow = dstRow + dstStrideBytes;
+    --rowsRemaining;
+    dstRow += dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
   } while (rowsRemaining != 0);
   UnlockPixels(atlasSurface);
@@ -1587,10 +1587,10 @@ void TMacViewMgr::CopyDevelopmentIcon(TBitmapSurfaceNode** pDstSurface, ushort w
       }
       ++srcPixel;
       ++dstPixel;
-      colsRemaining = colsRemaining - 1;
+      --colsRemaining;
     } while (colsRemaining != 0);
-    rowsRemaining = rowsRemaining - 1;
-    dstRow = dstRow + dstStrideBytes;
+    --rowsRemaining;
+    dstRow += dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
   } while (rowsRemaining != 0);
   UnlockPixels(atlasSurface);

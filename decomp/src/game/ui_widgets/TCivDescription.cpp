@@ -160,13 +160,13 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
                         (unsigned short)((unsigned int)(*currentLegendSelectionCounter) + 1);
                     return;
                   }
-                  candidateOrdinal = candidateOrdinal + 1;
+                  ++candidateOrdinal;
                 }
-                provinceTileOrdinal = provinceTileOrdinal + 1;
-                provinceTileIndices = provinceTileIndices + 1;
+                ++provinceTileOrdinal;
+                ++provinceTileIndices;
               }
             }
-            provinceOrdinal = provinceOrdinal + 1;
+            ++provinceOrdinal;
             provinceCount = ownerNationProvinceCollection->GetSize();
           } while (provinceOrdinal <= provinceCount);
         }
@@ -177,9 +177,9 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
       } while ((candidateOrdinal > 0) &&
                (candidateOrdinal < (int)(unsigned int)(*currentLegendSelectionCounter)));
     }
-    currentLegendSelectionCounter = currentLegendSelectionCounter + 1;
-    slotIndex = slotIndex + 1;
-    legendRect = legendRect + 1;
+    ++currentLegendSelectionCounter;
+    ++slotIndex;
+    ++legendRect;
     if (g_awCivilianLegendSelectionCountsBySlot + 16 <= currentLegendSelectionCounter) {
       return;
     }
@@ -255,16 +255,16 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
                                                             context->selectedCivilianClass * 5]) {
               *targetCountSlot = (short)(*targetCountSlot + 1);
             }
-            classSlotOrdinal = classSlotOrdinal + 1;
-            targetCountSlot = targetCountSlot + 1;
-            remainingSlots = remainingSlots - 1;
+            ++classSlotOrdinal;
+            ++targetCountSlot;
+            --remainingSlots;
           } while (remainingSlots != 0);
         }
-        provinceTileOrdinal = provinceTileOrdinal + 1;
-        provinceTileIndices = provinceTileIndices + 1;
+        ++provinceTileOrdinal;
+        ++provinceTileIndices;
       } while (provinceTileOrdinal < provinceRecord->linkedRegionCount);
     }
-    provinceOrdinal = provinceOrdinal + 1;
+    ++provinceOrdinal;
     provinceCount = ownerNationProvinceCollection->GetSize();
   } while (provinceOrdinal <= provinceCount);
 }

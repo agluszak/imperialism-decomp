@@ -53,16 +53,16 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&displayName);
 
   short level = militaryUnit->strength;
-  short sVar1 = level / 0x19 + 1;
-  if (sVar1 > 0x14) {
-    sVar1 = 0x14;
+  short barLength = level / 0x19 + 1;
+  if (barLength > 0x14) {
+    barLength = 0x14;
   }
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
-  short sVar2 = (sVar1 < 5) ? 0x1a : ((sVar1 > 0xe) ? 10 : 18);
+  short barSpriteRow = (barLength < 5) ? 0x1a : ((barLength > 0xe) ? 10 : 18);
 
   TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
-  RECT srcRect = {0, sVar2, sVar1 * 4 - 1, sVar2 + 7};
-  RECT dstRect = {0x8c, 4, sVar1 * 4 + 0x8b, 0xb};
+  RECT srcRect = {0, barSpriteRow, barLength * 4 - 1, barSpriteRow + 7};
+  RECT dstRect = {0x8c, 4, barLength * 4 + 0x8b, 0xb};
   UpdatePaletteIndexWithDefaultFallback(0x10);
   BlitRectWithOptionalTransparency(iconStripSurface,
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,

@@ -818,7 +818,7 @@ IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
 // FUNCTION: IMPERIALISM 0x00557f10
 bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
                                        TZone* portZoneContext, short nation, short offerAmount) {
-  short portOwnerNation = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
+  short portOwnerNation = portZoneContext->GetPortOwnerNation();
   TGreatPower* nationState = g_apNationStates[nation];
   short remainingTradeCapacity =
       static_cast<short>(nationState->merchantCapacity - nationState->availableMerchantCapacity);
@@ -1262,20 +1262,16 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
 
         if (acceptNation < 7) {
           if (movedTrackedCounter) {
-            g_apNationStates[acceptNation]->AssignPayloadToTrackedSlotEntryMatchingField2(
-                slot, offerNation, -123456);
+            g_apNationStates[acceptNation]->SetDealPayloadForTarget(slot, offerNation, -123456);
           } else if (matchesOfferPass) {
-            g_apNationStates[acceptNation]->AssignPayloadToTrackedSlotEntryMatchingField2(
-                slot, offerNation, -123457);
+            g_apNationStates[acceptNation]->SetDealPayloadForTarget(slot, offerNation, -123457);
           }
         }
         if (offerNation < 7) {
           if (movedTrackedCounter) {
-            g_apNationStates[offerNation]->AssignPayloadToTrackedSlotEntryMatchingField2(
-                slot, acceptNation, -123456);
+            g_apNationStates[offerNation]->SetDealPayloadForTarget(slot, acceptNation, -123456);
           } else if (matchesOfferPass) {
-            g_apNationStates[offerNation]->AssignPayloadToTrackedSlotEntryMatchingField2(
-                slot, acceptNation, -123459);
+            g_apNationStates[offerNation]->SetDealPayloadForTarget(slot, acceptNation, -123459);
           }
         }
       }

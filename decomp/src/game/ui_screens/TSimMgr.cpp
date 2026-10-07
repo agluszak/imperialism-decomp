@@ -510,10 +510,10 @@ void TSimMgr::CreateSimObjects(bool flag) {
 void TSimMgr::CreatePlanet(int rebuild, const char* mapName, int wrapHorizontally) {
   int i;
   if (!g_bMultiplayerScenarioSetupActive) {
-    CString local_10;
+    CString flavorName;
     for (i = 0; i < 0x17; ++i) {
-      SetSharedStringFromMappedFlavorTextWithLengthClamp(&local_10, i);
-      sharedTextSlots[i] = local_10;
+      SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, i);
+      sharedTextSlots[i] = flavorName;
     }
   }
 
@@ -2085,7 +2085,7 @@ void TSimMgr::ProcessScenarioScript() {
     instructionTag = *instruction.tokenCursor;
     int instructionCount = g_nScenarioScriptInstructionCount;
     DECODE_SCENARIO_DWORD_TOKEN(instructionTag);
-    instruction.tokenCursor = instruction.tokenCursor + 1;
+    ++instruction.tokenCursor;
     ++instructionCount;
     g_nScenarioScriptInstructionCount = instructionCount;
 
@@ -2119,22 +2119,22 @@ void TSimMgr::ScSetLabor(STurnInstructionCursor* instruction) {
 
   unsigned int ownerToken;
   ownerToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(ownerToken);
 
   unsigned int tierAToken;
   tierAToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(tierAToken);
 
   unsigned int tierBToken;
   tierBToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(tierBToken);
 
   unsigned int tierCToken;
   tierCToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(tierCToken);
 
   TGreatPower* nation = g_apNationStates[ownerToken];
@@ -2155,19 +2155,19 @@ void TSimMgr::ScSetCapacity(STurnInstructionCursor* instruction) {
 
   unsigned int nationToken;
   nationToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
   unsigned int indexToken;
   indexToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(indexToken);
 
   unsigned int valueToken;
   valueToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
@@ -2190,19 +2190,19 @@ void TSimMgr::ScSetWarehouse(STurnInstructionCursor* instruction) {
 
   unsigned int nationToken;
   nationToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
   unsigned int indexToken;
   indexToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(indexToken);
 
   unsigned int valueToken;
   valueToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
@@ -2221,17 +2221,17 @@ void TSimMgr::ScAddArmy(STurnInstructionCursor* instruction) {
 
   unsigned int regionToken;
   regionToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(regionToken);
 
   unsigned int orderTypeToken;
   orderTypeToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(orderTypeToken);
 
   unsigned int countToken;
   countToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(countToken);
 
   int remaining = static_cast<int>(countToken);
@@ -2251,12 +2251,12 @@ void TSimMgr::ScAddCivilian(STurnInstructionCursor* instruction) {
 
   unsigned int orderTypeToken;
   orderTypeToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(orderTypeToken);
 
   unsigned int terrainToken;
   terrainToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(terrainToken);
 
   int ownerNationTag =
@@ -2270,22 +2270,22 @@ void TSimMgr::ScAddShip(STurnInstructionCursor* instruction) {
 
   unsigned int nationToken;
   nationToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
   unsigned int orderTypeToken;
   orderTypeToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(orderTypeToken);
 
   unsigned int contextToken;
   contextToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(contextToken);
 
   unsigned int countToken;
   countToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(countToken);
 
   short orderType = static_cast<short>(orderTypeToken);
@@ -2313,13 +2313,13 @@ void TSimMgr::ScSetTransport(STurnInstructionCursor* instruction) {
 
   unsigned int nationToken;
   nationToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
   unsigned int valueToken;
   valueToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
@@ -2333,14 +2333,14 @@ void TSimMgr::ScSetDevLevel(STurnInstructionCursor* instruction) {
 
   unsigned int tileToken;
   tileToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(tileToken);
   short tileIndex = static_cast<short>(tileToken);
 
   unsigned int valueToken;
   valueToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
 
   int tileResourceKind = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[0];
@@ -2391,13 +2391,13 @@ void TSimMgr::ScAddTech(STurnInstructionCursor* instruction) {
 
   unsigned int nationToken;
   nationToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
   unsigned int techToken;
   techToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(techToken);
 
@@ -2411,13 +2411,13 @@ void TSimMgr::ScSetPrice(STurnInstructionCursor* instruction) {
 
   unsigned int categoryToken;
   categoryToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(categoryToken);
 
   unsigned int valueToken;
   valueToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
@@ -2430,19 +2430,19 @@ void TSimMgr::ScSetEmbassy(STurnInstructionCursor* instruction) {
 
   unsigned int nationAToken;
   nationAToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(nationAToken);
 
   unsigned int nationBToken;
   nationBToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(nationBToken);
 
   unsigned int valueToken;
   valueToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
@@ -2459,17 +2459,17 @@ void TSimMgr::ScSetSubsidy(STurnInstructionCursor* instruction) {
 
   unsigned int ownerToken;
   ownerToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(ownerToken);
 
   unsigned int targetToken;
   targetToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(targetToken);
 
   unsigned int levelToken;
   levelToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(levelToken);
 
   g_apNationStates[ownerToken]->SetTradePolicyTo(static_cast<NationSlot>(targetToken),
@@ -2481,17 +2481,17 @@ void TSimMgr::ScSetTreaty(STurnInstructionCursor* instruction) {
 
   unsigned int sourceToken;
   sourceToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(sourceToken);
 
   unsigned int targetToken;
   targetToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(targetToken);
 
   unsigned int relationToken;
   relationToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(relationToken);
 
   int sourceNation = static_cast<int>(sourceToken);
@@ -2526,13 +2526,13 @@ void TSimMgr::ScSetProvince(STurnInstructionCursor* instruction) {
 
   unsigned int cityToken;
   cityToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(cityToken);
 
   unsigned int nationToken;
   nationToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(nationToken);
 
@@ -2547,7 +2547,7 @@ void TSimMgr::ScSetSeazoneName(STurnInstructionCursor* instruction) {
   contextToken = *instruction->tokenCursor;
   const char* rawName =
       reinterpret_cast<const char*>(instruction->tokenCursor) + sizeof(unsigned int);
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(contextToken);
 
   CString contextName(rawName);
@@ -2567,7 +2567,7 @@ void TSimMgr::ScSetCountryName(STurnInstructionCursor* instruction) {
   countryToken = *instruction->tokenCursor;
   const char* rawName =
       reinterpret_cast<const char*>(instruction->tokenCursor) + sizeof(unsigned int);
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(countryToken);
 
   CString countryName(rawName);
@@ -2587,17 +2587,17 @@ void TSimMgr::ScSetRelationship(STurnInstructionCursor* instruction) {
 
   unsigned int sourceToken;
   sourceToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(sourceToken);
 
   unsigned int targetToken;
   targetToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(targetToken);
 
   unsigned int scoreToken;
   scoreToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_SHORT_TOKEN(scoreToken);
 
   g_pDiplomacyTurnStateManager->SetRelationship(sourceToken, targetToken, scoreToken);
@@ -2610,7 +2610,7 @@ void TSimMgr::ScSetProvinceName(STurnInstructionCursor* instruction) {
   tileToken = *instruction->tokenCursor;
   const char* rawName =
       reinterpret_cast<const char*>(instruction->tokenCursor) + sizeof(unsigned int);
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(tileToken);
 
   CString rawText(rawName);
@@ -2625,13 +2625,13 @@ void TSimMgr::ScSetTreasury(STurnInstructionCursor* instruction) {
 
   unsigned int nationToken;
   nationToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
   unsigned int cashToken;
   cashToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(cashToken);
 
@@ -2656,12 +2656,12 @@ void TSimMgr::ScSetTechDate(STurnInstructionCursor* instruction) {
 
   unsigned int indexToken;
   indexToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(indexToken);
 
   unsigned int valueToken;
   valueToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(valueToken);
 
   g_pTechMgr->SetCityOrderCapabilityTierScaledValueByIndex(static_cast<int>(indexToken),
@@ -2673,17 +2673,17 @@ void TSimMgr::ScSetTransportBar(STurnInstructionCursor* instruction) {
 
   unsigned int ownerToken;
   ownerToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(ownerToken);
 
   unsigned int typeToken;
   typeToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(typeToken);
 
   unsigned int valueToken;
   valueToken = *instruction->tokenCursor;
-  instruction->tokenCursor = instruction->tokenCursor + 1;
+  ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(valueToken);
 
   short needIndex = static_cast<short>(typeToken);
@@ -2731,13 +2731,13 @@ void TSimMgr::ScSetCouncilMeeting(STurnInstructionCursor* instruction) {
 
   unsigned int slotToken;
   slotToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(slotToken);
 
   unsigned int stateToken;
   stateToken = *cursor;
-  cursor = cursor + 1;
+  ++cursor;
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(stateToken);
 

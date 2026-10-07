@@ -49,7 +49,7 @@ void LoadRegionBorderLinkTableFromCoordsFile() {
     }
     int coord1 = (clampedRow1 & 1) + column1 * 2;
     if (coord1 >= 0xd8) {
-      coord1 = coord1 - 0xd8;
+      coord1 -= 0xd8;
     }
     coord1 = coord1 + clampedRow1 * 0xd8;
 
@@ -62,7 +62,7 @@ void LoadRegionBorderLinkTableFromCoordsFile() {
     }
     int coord0 = (clampedRow0 & 1) + column0 * 2;
     if (coord0 >= 0xd8) {
-      coord0 = coord0 - 0xd8;
+      coord0 -= 0xd8;
     }
     coord0 = coord0 + clampedRow0 * 0xd8;
 
@@ -78,7 +78,7 @@ void LoadRegionBorderLinkTableFromCoordsFile() {
     segment.attrBySide[1] = -1;
     segment.RecomputeEndpointsAndAngle();
     g_regionBorderLinkTable[index] = segment;
-    index = index + 1;
+    ++index;
   }
   fclose(file);
 }
@@ -145,7 +145,7 @@ void RebuildRegionBorderLinkLattice() {
       }
       int coordAhead = (clampedAhead & 1) + column * 2 + 0xc;
       if (coordAhead >= 0xd8) {
-        coordAhead = coordAhead - 0xd8;
+        coordAhead -= 0xd8;
       }
       coordAhead = coordAhead + clampedAhead * 0xd8;
 
@@ -159,7 +159,7 @@ void RebuildRegionBorderLinkLattice() {
       }
       int coordBehind = (clampedBehind & 1) + column * 2;
       if (coordBehind >= 0xd8) {
-        coordBehind = coordBehind - 0xd8;
+        coordBehind -= 0xd8;
       }
       coordBehind = coordBehind + clampedBehind * 0xd8;
 
@@ -175,7 +175,7 @@ void RebuildRegionBorderLinkLattice() {
       cellSegment.attrBySide[1] = -1;
       cellSegment.RecomputeEndpointsAndAngle();
       g_regionBorderLinkTable[index] = cellSegment;
-      index = index + 1;
+      ++index;
 
       int clampedEdgeRow = rowBehind;
       if (clampedEdgeRow < 0) {
@@ -188,7 +188,7 @@ void RebuildRegionBorderLinkLattice() {
       edgePoint.f0c = 4;
       int edgeCoord = (clampedEdgeRow & 1) + edgeBase;
       if (edgeCoord >= 0xd8) {
-        edgeCoord = edgeCoord - 0xd8;
+        edgeCoord -= 0xd8;
       }
       edgePoint.coord00 = edgeCoord + clampedEdgeRow * 0xd8;
       edgePoint.lo04 = -1;
@@ -203,14 +203,14 @@ void RebuildRegionBorderLinkLattice() {
       }
       int spanCoord = (clampedSpanRow & 1) + column * 2 + 0xc;
       if (spanCoord >= 0xd8) {
-        spanCoord = spanCoord - 0xd8;
+        spanCoord -= 0xd8;
       }
       Seapoint spanPoint;
       spanPoint.InitSorted(spanCoord + clampedSpanRow * 0xd8, -1, -1, 1);
       SeaSegment spanSegment;
       spanSegment.InitFromPoints(&spanPoint, &edgePoint);
       g_regionBorderLinkTable[index] = spanSegment;
-      index = index + 1;
+      ++index;
 
       int laneColumn = columnStagger + column;
       Seapoint laneStart;
@@ -222,12 +222,12 @@ void RebuildRegionBorderLinkLattice() {
       SeaSegment laneSegment;
       laneSegment.InitFromPoints(&laneEnd, &laneStart);
       g_regionBorderLinkTable[index] = laneSegment;
-      index = index + 1;
+      ++index;
 
-      row = row + 0xc;
+      row += 0xc;
     } while (row < 0x3c);
-    column = column + 0xc;
-    edgeBase = edgeBase + 0x18;
+    column += 0xc;
+    edgeBase += 0x18;
   } while (column - 2 < 0x6c);
 
   int edgeColumn = 8;
@@ -240,7 +240,7 @@ void RebuildRegionBorderLinkLattice() {
     SeaSegment topSegment;
     topSegment.InitFromPoints(&topNeighbor, &topPoint);
     g_regionBorderLinkTable[index] = topSegment;
-    index = index + 1;
+    ++index;
 
     Seapoint bottomPoint;
     bottomPoint.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn + 6, 1000, 1), -1, -1,
@@ -250,9 +250,9 @@ void RebuildRegionBorderLinkLattice() {
     SeaSegment bottomSegment;
     bottomSegment.InitFromPoints(&bottomNeighbor, &bottomPoint);
     g_regionBorderLinkTable[index] = bottomSegment;
-    index = index + 1;
+    ++index;
 
-    edgeColumn = edgeColumn + 0xc;
+    edgeColumn += 0xc;
   } while (edgeColumn - 8 < 0x6c);
 }
 
@@ -266,13 +266,13 @@ int OverlayCoordFromTileColumnRowAndSide(int column, int row, char side) {
   }
   int overlayX = (row & 1) + column * 2;
   if (side == '\0') {
-    row = row + 1;
-    overlayX = overlayX + 2;
+    ++row;
+    overlayX += 2;
     if (overlayX >= 0xd8) {
-      overlayX = overlayX - 0xd8;
+      overlayX -= 0xd8;
     }
   } else if (overlayX >= 0xd8) {
-    overlayX = overlayX - 0xd8;
+    overlayX -= 0xd8;
   }
   return overlayX + row * 0xd8;
 }
@@ -404,7 +404,7 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
             }
           }
         }
-        candidate = candidate + 1;
+        ++candidate;
       } while (candidate < static_cast<unsigned int>(g_regionBorderLinkTable.count));
     }
     index = bestIndex;
@@ -423,7 +423,7 @@ void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
         return;
       }
       if (cx < 0) {
-        cx = cx + 0xd8;
+        cx += 0xd8;
       }
     }
     out[0] = cx;
@@ -435,10 +435,10 @@ void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
   if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
     if (cx < 0xd8) {
       if (cx < 0) {
-        cx = cx + 0xd8;
+        cx += 0xd8;
       }
     } else {
-      cx = cx - 0xd8;
+      cx -= 0xd8;
     }
   }
   out[0] = cx;
@@ -460,10 +460,10 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
   unsigned int row = tileIndex / 0x6c;
   int overlayX = (row & 1) + (tileIndex % 0x6c) * 2;
   if (side == '\0') {
-    overlayX = overlayX + 2;
-    row = row + 1;
+    overlayX += 2;
+    ++row;
     if (overlayX >= 0xd8) {
-      overlayX = overlayX - 0xd8;
+      overlayX -= 0xd8;
     }
   }
   int coord = overlayX + row * 0xd8;

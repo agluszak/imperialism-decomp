@@ -231,15 +231,15 @@ void TCouncilView::StartVoting() {
 
   TStaticText* can0 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan0));
   can0->AssertValid();
-  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot]
-      ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
+  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot]->GetName(
+      &candidateName);
   can0->SetTextAndMaybeRefresh(&candidateName, true);
   can0->InstallTextStyle(councilTextStyle, 0);
 
   TStaticText* can1 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
   can1->AssertValid();
-  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot]
-      ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
+  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot]->GetName(
+      &candidateName);
   can1->SetTextAndMaybeRefresh(&candidateName, true);
   can1->InstallTextStyle(councilTextStyle, 0);
 

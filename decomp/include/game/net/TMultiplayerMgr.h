@@ -81,7 +81,7 @@ public:
   TurnEventQueuePacket* PopVerbalMessage();
   void QueueVerbalMessage(TurnEventQueuePacket* packet);
   bool IsTimelyMessage(NetMessage* packet);
-  void AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node);
+  void QueueTimelyMessage(TurnEventQueuePacket* node);
   void InstallCohandler(TEventHandler* nContext, bool fEnable);
   void DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, int field1CValue,
                                                const char* senderText, const char* messageText);

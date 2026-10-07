@@ -504,15 +504,15 @@ void TPopulationMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x004b6a00
 void TPopulationMgr::AddUntrained(short count) {
-  baselineSlots->lowSkillCount = baselineSlots->lowSkillCount + count;
-  productionSlots->lowSkillCount = productionSlots->lowSkillCount + count;
-  populationCount = populationCount + count;
+  baselineSlots->lowSkillCount += count;
+  productionSlots->lowSkillCount += count;
+  populationCount += count;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6a30
 void TPopulationMgr::AddExpert(short count) {
-  baselineSlots->highSkillCount = baselineSlots->highSkillCount + count;
-  productionSlots->highSkillCount = productionSlots->highSkillCount + count;
-  populationCount = populationCount + count;
+  baselineSlots->highSkillCount += count;
+  productionSlots->highSkillCount += count;
+  populationCount += count;
   strength = static_cast<short>(strength + count * 4);
 }

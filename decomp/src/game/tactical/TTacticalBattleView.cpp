@@ -971,7 +971,7 @@ void TTacticalBattleView::ConvertPoint(POINT* screenPoint, int* outRow, int* out
   if (row < 0) {
     *outRow = 0;
   }
-  int maxRow = frameHeight / tileRowHeightPx + -1;
+  int maxRow = frameHeight / tileRowHeightPx - 1;
   if (*outRow >= maxRow) {
     *outRow = maxRow;
   }
@@ -987,7 +987,7 @@ void TTacticalBattleView::ConvertPoint(POINT* screenPoint, int* outRow, int* out
   }
   int maxCol = tacticalBattle->battlefieldColumnCount;
   if (*outCol >= maxCol) {
-    *outCol = maxCol + -1;
+    *outCol = maxCol - 1;
   }
 }
 

@@ -530,8 +530,8 @@ void TOfferDeskPicture::ShowAdvice() {
 
   CRect bounds;
   info->QueryBounds(&bounds);
-  bounds.left = bounds.left - 1;
-  bounds.top = bounds.top - 1;
+  --bounds.left;
+  --bounds.top;
   RECT grown = bounds;
   RECT inval;
   ::CopyRect(&inval, &grown);

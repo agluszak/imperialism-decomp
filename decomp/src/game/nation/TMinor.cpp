@@ -526,7 +526,7 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
         floatAmount = floatAmount * static_cast<float>(standing);
         floatAmount = floatAmount * static_cast<float>(price);
         floatAmount = floatAmount * static_cast<float>(deltaShort);
-        floatAmount = floatAmount * g_ApplyIndexedResourceDeltaScale;
+        floatAmount *= g_ApplyIndexedResourceDeltaScale;
         float integerAmount =
             static_cast<float>(intFactor * static_cast<int>(standing) * price / 255);
         int integerGrantAmount = static_cast<int>(integerAmount);
@@ -629,7 +629,7 @@ void TMinor::SetTradeBids(void) {
       this->secondaryManufacturedRequest = static_cast<short>(candidatePredicate);
       candidatePredicate = 0x11;
     }
-    candidatePredicate = candidatePredicate + 1;
+    ++candidatePredicate;
   } while (candidatePredicate < 0x11);
 
   if (this->primaryManufacturedRequest != -10) {

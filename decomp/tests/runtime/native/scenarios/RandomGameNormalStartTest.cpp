@@ -80,7 +80,7 @@ private:
         continue;
       }
       CString name;
-      country->LoadNationDisplayNameSharedRefFromField8(&name);
+      country->GetName(&name);
       JsonObject row;
       row.Set("slot", slot);
       CString hex = HexRetailText(name);

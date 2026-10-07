@@ -20,12 +20,13 @@ bool T2PictToggleButton::IsSelected() {
 // FUNCTION: IMPERIALISM 0x005849d0
 void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   (void)notifyParent;
-  short sVar1 = glyphBase;
+  short glyphThreshold = glyphBase;
   int oldField3c = controlValue;
 
-  if ((!isPressed && oldField3c < (int)sVar1) || (isPressed && (int)sVar1 < oldField3c)) {
+  if ((!isPressed && oldField3c < (int)glyphThreshold) ||
+      (isPressed && (int)glyphThreshold < oldField3c)) {
     SetPictureRsrcID(static_cast<short>(oldField3c), false);
-    controlValue = (int)sVar1;
+    controlValue = (int)glyphThreshold;
   }
   PrepareForDrawing();
   PaintOrInvalidateControl(0);

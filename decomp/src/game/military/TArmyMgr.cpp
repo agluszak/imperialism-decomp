@@ -294,7 +294,7 @@ void TArmyMgr::EndBattlePhase() {
     g_pMacViewMgr->RegenerateCountryRegions();
     for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
       if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
-        g_apTerrainTypeDescriptorTable[i]->SetSerializedField8c(-1);
+        g_apTerrainTypeDescriptorTable[i]->SetOverlayAnchorTile(-1);
       }
     }
   }
@@ -1333,7 +1333,7 @@ void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
       if (province->adjacentRegionIds[index] == static_cast<short>(contextArg)) {
         isAdjacent = true;
       }
-      index = index + 1;
+      ++index;
     } while (index < adjacentCount);
   }
   if (!isAdjacent) {

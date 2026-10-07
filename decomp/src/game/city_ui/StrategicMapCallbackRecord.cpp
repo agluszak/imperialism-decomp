@@ -110,8 +110,8 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
         int displacement = x - generatedBaseOffset + rowDestinationOffset;
         while (displacement > 0x7f) {
           int advance = displacement + 0x80;
-          displacement = displacement - advance;
-          generatedBaseOffset = generatedBaseOffset + advance;
+          displacement -= advance;
+          generatedBaseOffset += advance;
 
           unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor);
           opcodeAppendCursor = static_cast<int>(opcodeIndex) + 1;
@@ -145,9 +145,9 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
             AppendOpcodeByte(displacement);
             AppendOpcodeBytePair(byteSwappedPixels >> 16);
             AppendOpcodeBytePair(byteSwappedPixels);
-            x = x + 3;
-            xPlusOne = xPlusOne + 3;
-            xPlusThree = xPlusThree + 3;
+            x += 3;
+            xPlusOne += 3;
+            xPlusThree += 3;
           } else {
             AppendOpcodeByte(0x66);
             AppendOpcodeByte(0xc7);
@@ -155,19 +155,19 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
             AppendOpcodeByte(displacement);
             AppendOpcodeByte(pixel);
             AppendOpcodeByte(row[xPlusOne]);
-            x = x + 1;
-            xPlusOne = xPlusOne + 1;
-            xPlusThree = xPlusThree + 1;
+            ++x;
+            ++xPlusOne;
+            ++xPlusThree;
           }
         }
       }
-      x = x + 1;
-      xPlusOne = xPlusOne + 1;
-      xPlusThree = xPlusThree + 1;
+      ++x;
+      ++xPlusOne;
+      ++xPlusThree;
     }
-    row = row + sourceRowStride;
-    rowDestinationOffset = rowDestinationOffset + destinationRowStride;
-    remainingHeight = remainingHeight - 1;
+    row += sourceRowStride;
+    rowDestinationOffset += destinationRowStride;
+    --remainingHeight;
   }
 
   g_pResourceMgr->ReleaseRecordById(static_cast<short>(resourceId));

@@ -26,7 +26,7 @@ void TAnimation::IAnimation(TView* ownerViewArg, RECT* rect, short frameCountArg
 
 // FUNCTION: IMPERIALISM 0x0049f140
 void TAnimation::Tick() {
-  ticksSinceFrameChange = ticksSinceFrameChange + 1;
+  ++ticksSinceFrameChange;
   if (ticksSinceFrameChange == ticksPerFrame) {
     ownerView->InvalidateCityDialogRectRegion(&screenRect, 1);
     ticksSinceFrameChange = 0;

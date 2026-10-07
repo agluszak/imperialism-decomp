@@ -45,14 +45,14 @@
 #include "RuntimeTestDriver.h"
 #endif
 
-extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0, 1,  2,  2,  2,  1,
-                                                              0, -2, -2, -2, -2, -1};
-extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {-2, -2, -1, 1,  2,  2,
-                                                              2,  2,  0,  -1, -2, -2};
-extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0, 2,  3,  3,  2,  2,
-                                                              0, -2, -3, -3, -2, -1};
-extern "C" short g_Render_Nation_Header_Value_00696228[12] = {-3, -2, 0, 2,  3,  4,
-                                                              3,  3,  0, -1, -3, -3};
+// GLOBAL: IMPERIALISM 0x006961e0
+extern "C" short g_clockHourHandOffsetX[12] = {0, 1, 2, 2, 2, 1, 0, -2, -2, -2, -2, -1};
+// GLOBAL: IMPERIALISM 0x006961f8
+extern "C" short g_clockHourHandOffsetY[12] = {-2, -2, -1, 1, 2, 2, 2, 2, 0, -1, -2, -2};
+// GLOBAL: IMPERIALISM 0x00696210
+extern "C" short g_clockMinuteHandOffsetX[12] = {0, 2, 3, 3, 2, 2, 0, -2, -3, -3, -2, -1};
+// GLOBAL: IMPERIALISM 0x00696228
+extern "C" short g_clockMinuteHandOffsetY[12] = {-3, -2, 0, 2, 3, 4, 3, 3, 0, -1, -3, -3};
 
 IMPLEMENT_DYNCREATE(TCityProductionView, TNoHilitePicture)
 
@@ -66,7 +66,7 @@ TCityProductionView::TCityProductionView() {
   for (int viewSlot = 0; viewSlot < 16; viewSlot = viewSlot + 1) {
     buildingViews[viewSlot] = 0;
   }
-  currentMonth = -1;
+  clockHour = -1;
   for (int group = 0; group < 8; group = group + 1) {
     for (int slot = 0; slot < 3; slot = slot + 1) {
       buildingActionAnimations[group][slot] = 0;
@@ -307,49 +307,40 @@ void TCityProductionView::DrawTopLevel() {
   }
   short nextBuildingType = subObject->GetNextBuildingType(0xe);
 
-  int mask1 = -static_cast<int>(nextBuildingType == 2);
-  int mask2 = -static_cast<int>(nextBuildingType == 2);
-  short originX = (mask1 & 0xffe9) + 0x213;
-  short sVar2 = (mask2 & 0x14) + 0x6b;
+  // The clock face moves left and down when the next building level is 2.
+  short clockX = (nextBuildingType == 2) ? 0x1fc : 0x213;
+  short clockY = (nextBuildingType == 2) ? 0x7f : 0x6b;
 
-  if (currentMonth < 0) {
+  if (clockHour < 0) {
     time_t epochSeconds;
     time(&epochSeconds);
-    struct tm* tm = localtime(&epochSeconds);
+    struct tm* now = localtime(&epochSeconds);
 
-    int iVar4 = tm->tm_min;
-    short sVar6 = static_cast<short>(iVar4 / 5);
-    currentWeek = sVar6;
-
-    short sVar1 = static_cast<short>(tm->tm_hour);
-    currentMonth = sVar1;
-    if (6 < sVar6) {
-      currentMonth = sVar1 + 1;
+    short minuteMark = static_cast<short>(now->tm_min / 5);
+    clockMinuteMark = minuteMark;
+    clockHour = static_cast<short>(now->tm_hour);
+    if (6 < minuteMark) {
+      clockHour = static_cast<short>(now->tm_hour + 1);
     }
-    if (11 < currentMonth) {
-      currentMonth -= 12;
+    if (11 < clockHour) {
+      clockHour -= 12;
     }
-    if (11 < currentMonth) {
-      currentMonth -= 12;
+    if (11 < clockHour) {
+      clockHour -= 12;
     }
   }
 
   ResetQuickDrawStrokeState();
   g_pViewMgr->SetForeColor(1);
-  SetQuickDrawTextOriginWithContextOffset(originX, sVar2);
-
-  short offset_x1 = g_Render_Nation_Header_Value_006961E0[currentMonth];
-  short offset_y1 = g_Render_Nation_Header_Value_006961F8[currentMonth];
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(offset_x1 + originX),
-                               static_cast<short>(offset_y1 + sVar2));
+  SetQuickDrawTextOriginWithContextOffset(clockX, clockY);
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(g_clockHourHandOffsetX[clockHour] + clockX),
+                               static_cast<short>(g_clockHourHandOffsetY[clockHour] + clockY));
 
   SetQuickDrawFillColor(0);
-  SetQuickDrawTextOriginWithContextOffset(originX, sVar2);
-
-  short offset_x2 = g_Render_Nation_Header_Value_00696210[currentWeek];
-  short offset_y2 = g_Render_Nation_Header_Value_00696228[currentWeek];
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(offset_x2 + originX),
-                               static_cast<short>(offset_y2 + sVar2));
+  SetQuickDrawTextOriginWithContextOffset(clockX, clockY);
+  DrawCenteredGuideLineOnMapDc(
+      static_cast<short>(g_clockMinuteHandOffsetX[clockMinuteMark] + clockX),
+      static_cast<short>(g_clockMinuteHandOffsetY[clockMinuteMark] + clockY));
 }
 
 // FUNCTION: IMPERIALISM 0x004bafa0

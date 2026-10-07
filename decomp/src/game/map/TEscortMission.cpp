@@ -59,7 +59,7 @@ void TEscortMission::CalculateImportance() {
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     TZone** zoneOwnerSlot = &zone->primaryNeighbors[0];
     if (*zoneOwnerSlot == cachedOwner) {
-      short ownerNationCode = zone->GetPortZoneOwnerNationCodeFromMissionField48();
+      short ownerNationCode = zone->GetPortOwnerNation();
       score *= (ownerNationCode == nationId)
                    ? static_cast<float>(g_PortZoneFriendlyMissionScoreMultiplier)
                    : static_cast<float>(g_PortZoneForeignMissionScoreMultiplier);

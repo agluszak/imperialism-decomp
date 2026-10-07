@@ -309,7 +309,7 @@ void TGreatPower::Free(void) {
     }
     *trackedSlots = 0;
     ++trackedSlots;
-    trackedSlotCount = trackedSlotCount + -1;
+    --trackedSlotCount;
   } while (trackedSlotCount != 0);
   if (this->townMarkerList != 0) {
     this->townMarkerList->FreePayloadsAndDestroy();
@@ -697,12 +697,12 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
   if (flags[7] == 0x32) {
     if (this->field8d6[7] == 2) {
       TCity* cityPtr = this->city;
-      cityPtr->cityStockPaper = cityPtr->cityStockPaper + 10;
+      cityPtr->cityStockPaper += 10;
       cityPtr->VerifyStocks();
       g_pViewMgr->BuildAndShowTurnOverlayByMode(7, this->field8d6[7]);
     } else if (this->field8d6[7] == 3) {
       TCity* cityPtr = this->city;
-      cityPtr->cityStockPaper = cityPtr->cityStockPaper + 10;
+      cityPtr->cityStockPaper += 10;
       cityPtr->VerifyStocks();
       g_pViewMgr->BuildAndShowTurnOverlayByMode(7, -1);
     }
@@ -864,15 +864,16 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
       if (g_pDiplomacyTurnStateManager
               ->relationStandingScores[zoneCursor + nationSlot * kNationSlotCount] > 0xa9) {
         TCountry* minor = *minorEntry;
+        bool ownProtectorate = false;
         if (minor != 0) {
           short ownerTag = minor->encodedNationSlot;
-          if (ownerTag > 99 && ownerTag < 200 && static_cast<short>(ownerTag - 100) == nationSlot) {
-            goto nextMinorEntry;
-          }
+          ownProtectorate =
+              ownerTag > 99 && ownerTag < 200 && static_cast<short>(ownerTag - 100) == nationSlot;
         }
-        needsCivOrder = true;
+        if (!ownProtectorate) {
+          needsCivOrder = true;
+        }
       }
-    nextMinorEntry:
       ++minorEntry;
       ++zoneCursor;
     } while (minorEntry < &g_apTerrainTypeDescriptorTable[kNationSlotCount]);

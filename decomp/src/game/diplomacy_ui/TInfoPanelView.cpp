@@ -127,7 +127,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
   TCountry* selectedCountry = g_apTerrainTypeDescriptorTable[selectedNation];
-  selectedCountry->LoadNationDisplayNameSharedRefFromField8(&text);
+  selectedCountry->GetName(&text);
   short valueX = static_cast<short>(0xa7 - ownerX);
   SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(valueX + 1, baseY + 1);

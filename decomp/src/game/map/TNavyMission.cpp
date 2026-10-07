@@ -167,8 +167,8 @@ int TNavyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack)
   for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
     TShip* ship = node->payload;
     short distance = 0;
-    if (GetActiveTargetZoneByState28() != nullptr) {
-      distance = ship->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+    if (GetActiveTargetZone() != nullptr) {
+      distance = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distance > 5) {
       distance = 5;
@@ -204,10 +204,10 @@ float TNavyMission::ComputeSeaZoneImportance(TZone* zone) {
 
   for (TZone* port = TZone::GetFirstPortZone(); port != 0; port = port->GetNextPortZone()) {
     if (port->primaryNeighbors[0] == zone) {
-      if (port->GetPortZoneOwnerNationCodeFromMissionField48() == nationId) {
-        importance = importance * 1.5f;
+      if (port->GetPortOwnerNation() == nationId) {
+        importance *= 1.5f;
       } else {
-        importance = importance * 1.25f;
+        importance *= 1.25f;
       }
     }
   }
@@ -360,7 +360,7 @@ TShip* TNavyMission::PickBestShipForMissionType(int missionType) const {
 }
 
 // FUNCTION: IMPERIALISM 0x00537060
-TZone* TNavyMission::GetActiveTargetZoneByState28() const {
+TZone* TNavyMission::GetActiveTargetZone() const {
   int state = navyState;
   if (state != 0) {
     if (state > 0 && state <= 2) {
@@ -392,19 +392,19 @@ void TNavyMission::GiveReconOrders(TZone* location, TShip** selectedOrder) {
     if (topOrder == *selectedOrder) {
       topOrder = nullptr;
     } else {
+      bool keepSelected = false;
       if (*selectedOrder != nullptr) {
         short target1 = (*selectedOrder)->GetTurnDistanceTo(missionTargetZone);
         short target2 = topOrder->GetTurnDistanceTo(missionTargetZone);
-        if (target1 < target2) {
-          goto activateSelectedOrders;
-        }
+        keepSelected = target1 < target2;
       }
-      *selectedOrder = topOrder;
-      topOrder = nullptr;
+      if (!keepSelected) {
+        *selectedOrder = topOrder;
+        topOrder = nullptr;
+      }
     }
   }
 
-activateSelectedOrders:
   TShip* startOrder = *selectedOrder;
   for (TShip* order = startOrder; (order == startOrder || order == topOrder) && order != nullptr;
        order += topOrder - startOrder) {
@@ -454,8 +454,8 @@ float TNavyMission::ValueOf(TShip* candidate) {
     for (TMapOrderChildLinkNode* node = orderList; node != 0; node = node->next) {
       TShip* entry = node->payload;
       short bucket;
-      if (GetActiveTargetZoneByState28() != 0) {
-        bucket = entry->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+      if (GetActiveTargetZone() != 0) {
+        bucket = entry->GetTurnDistanceTo(GetActiveTargetZone());
       } else {
         bucket = 0;
       }
@@ -466,8 +466,8 @@ float TNavyMission::ValueOf(TShip* candidate) {
                                                  g_MissionOrderDistanceDecayWeightTable[bucket]);
     }
     short bucket;
-    if (GetActiveTargetZoneByState28() != 0) {
-      bucket = orderNode->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+    if (GetActiveTargetZone() != 0) {
+      bucket = orderNode->GetTurnDistanceTo(GetActiveTargetZone());
     } else {
       bucket = 0;
     }
@@ -510,8 +510,8 @@ float TNavyMission::ValueOf(TShip* candidate) {
   for (TMapOrderChildLinkNode* node = orderList; node != 0; node = node->next) {
     TShip* entry = node->payload;
     short bucket;
-    if (GetActiveTargetZoneByState28() != 0) {
-      bucket = entry->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+    if (GetActiveTargetZone() != 0) {
+      bucket = entry->GetTurnDistanceTo(GetActiveTargetZone());
     } else {
       bucket = 0;
     }
@@ -522,8 +522,8 @@ float TNavyMission::ValueOf(TShip* candidate) {
                                                g_MissionOrderDistanceDecayWeightTable[bucket]);
   }
   short bucket;
-  if (GetActiveTargetZoneByState28() != 0) {
-    bucket = orderNode->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+  if (GetActiveTargetZone() != 0) {
+    bucket = orderNode->GetTurnDistanceTo(GetActiveTargetZone());
   } else {
     bucket = 0;
   }
@@ -552,8 +552,8 @@ float TNavyMission::FitnessOf(TShip* candidate, float* targetProfile) {
   }
   float profile[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   short distanceBucket;
-  if (GetActiveTargetZoneByState28() != 0) {
-    distanceBucket = orderNode->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+  if (GetActiveTargetZone() != 0) {
+    distanceBucket = orderNode->GetTurnDistanceTo(GetActiveTargetZone());
   } else {
     distanceBucket = 0;
   }
@@ -632,8 +632,8 @@ void TNavyMission::ProjectEquipage(float* vector, TZone* nearZone, short distanc
 // FUNCTION: IMPERIALISM 0x00537b20
 void TNavyMission::AccumulateWeightedShipEquipage(TShip* ship, float* vector, char positive) {
   short distanceIndex = 0;
-  if (GetActiveTargetZoneByState28() != 0) {
-    distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+  if (GetActiveTargetZone() != 0) {
+    distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZone());
   }
   if (distanceIndex > 5) {
     distanceIndex = 5;
@@ -688,10 +688,10 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
   vector[3] = 0.0f;
   for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
     TShip* ship = node->payload;
-    TZone* targetZone = GetActiveTargetZoneByState28();
+    TZone* targetZone = GetActiveTargetZone();
     short distanceIndex = 0;
     if (targetZone != nullptr) {
-      distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+      distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distanceIndex > 5) {
       distanceIndex = 5;
@@ -720,8 +720,8 @@ float TNavyMission::GetWeightedSatisfaction() {
   for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
     TShip* ship = node->payload;
     short distance = 0;
-    if (GetActiveTargetZoneByState28() != nullptr) {
-      distance = ship->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+    if (GetActiveTargetZone() != nullptr) {
+      distance = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distance > 5) {
       distance = 5;
@@ -758,10 +758,10 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
     TShip* ship = node->payload;
-    TZone* targetZone = GetActiveTargetZoneByState28();
+    TZone* targetZone = GetActiveTargetZone();
     short distanceIndex = 0;
     if (targetZone != nullptr) {
-      distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+      distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distanceIndex > 5) {
       distanceIndex = 5;
@@ -778,10 +778,10 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
         static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * scale;
   }
 
-  TZone* targetZone = GetActiveTargetZoneByState28();
+  TZone* targetZone = GetActiveTargetZone();
   short distanceIndex = 0;
   if (targetZone != nullptr) {
-    distanceIndex = candidateOrder->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+    distanceIndex = candidateOrder->GetTurnDistanceTo(GetActiveTargetZone());
   }
   if (distanceIndex > 5) {
     distanceIndex = 5;
@@ -818,10 +818,10 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
     TShip* ship = node->payload;
-    TZone* targetZone = GetActiveTargetZoneByState28();
+    TZone* targetZone = GetActiveTargetZone();
     short distanceIndex = 0;
     if (targetZone != nullptr) {
-      distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+      distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distanceIndex > 5) {
       distanceIndex = 5;
@@ -838,10 +838,10 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
         static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * scale;
   }
 
-  TZone* targetZone = GetActiveTargetZoneByState28();
+  TZone* targetZone = GetActiveTargetZone();
   short distanceIndex = 0;
   if (targetZone != nullptr) {
-    distanceIndex = candidateOrder->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+    distanceIndex = candidateOrder->GetTurnDistanceTo(GetActiveTargetZone());
   }
   if (distanceIndex > 5) {
     distanceIndex = 5;
@@ -1057,9 +1057,9 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
 // FUNCTION: IMPERIALISM 0x0053b350
 float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone) {
   float best = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  short ownerNation = portZone->GetPortZoneOwnerNationCodeFromMissionField48();
+  short ownerNation = portZone->GetPortOwnerNation();
   if (ownerNation < 7) {
-    short scoreNation = portZone->GetPortZoneOwnerNationCodeFromMissionField48();
+    short scoreNation = portZone->GetPortOwnerNation();
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
       if (ship->nation == scoreNation && ship->IsInHomePort() &&
@@ -1111,7 +1111,7 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
   for (short allyIdx = 0; allyIdx < 7; ++allyIdx) {
     if (g_apNationStates[allyIdx] != nullptr &&
         g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, allyIdx)) {
-      short scoreNation = portZone->GetPortZoneOwnerNationCodeFromMissionField48();
+      short scoreNation = portZone->GetPortOwnerNation();
       float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
       for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
         if (ship->nation == scoreNation && ship->IsInHomePort() &&

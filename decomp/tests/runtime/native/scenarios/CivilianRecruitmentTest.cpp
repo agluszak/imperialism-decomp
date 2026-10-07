@@ -246,7 +246,7 @@ private:
         short band;
         CPoint candidate(x, y);
         mapDialog->ConvertPoint(candidate, column, row, band);
-        short tile = static_cast<short>(ComputeStridedRecordAddress6C(column, row));
+        short tile = static_cast<short>(TileIndexFromColumnRow(column, row));
         if (tile == targetTile) {
           *outPoint = candidate;
           *outBand = band;

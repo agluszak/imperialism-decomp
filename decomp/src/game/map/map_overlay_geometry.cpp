@@ -228,9 +228,9 @@ int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
   int row = tileIndex / 0x6c + g_hexRowOffset[direction];
   if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
     if (col < 0) {
-      col = col + 0x6c;
+      col += 0x6c;
     } else if (0x6b < col) {
-      col = col - 0x6c;
+      col -= 0x6c;
     }
   } else {
     if (col < 0) {
@@ -268,7 +268,7 @@ int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side) {
   int result = column;
   if (side == '\0') {
     result = column + 2;
-    row = row + 1;
+    ++row;
     if (result >= 0xd8) {
       result -= 0xd8;
     }

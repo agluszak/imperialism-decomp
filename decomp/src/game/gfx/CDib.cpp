@@ -79,7 +79,7 @@ CDib::CDib(int width, int height, int bitDepth) : CObject() {
                            m_pInfoHeader->bmiHeader.biWidth;
     unsigned int rowDwords = rowBits >> 5;
     if ((rowBits & 0x1f) != 0) {
-      rowDwords = rowDwords + 1;
+      ++rowDwords;
     }
     int rows = m_pInfoHeader->bmiHeader.biHeight;
     if (rows < 1) {
@@ -202,7 +202,7 @@ int CDib::LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite) {
         info->bmiHeader.biWidth * static_cast<unsigned int>(info->bmiHeader.biBitCount);
     unsigned int rowDwords = rowBits >> 5;
     if ((rowBits & 0x1f) != 0) {
-      rowDwords = rowDwords + 1;
+      ++rowDwords;
     }
     int rows = info->bmiHeader.biHeight;
     if (rows < 1) {
@@ -289,7 +289,7 @@ int CDib::RemapSurfaceToMemoryMappedBmpFile(LPCSTR fileName) {
                            static_cast<unsigned int>(m_pInfoHeader->bmiHeader.biBitCount);
     unsigned int rowDwords = rowBits >> 5;
     if ((rowBits & 0x1f) != 0) {
-      rowDwords = rowDwords + 1;
+      ++rowDwords;
     }
     int rows = m_pInfoHeader->bmiHeader.biHeight;
     if (rows < 1) {
@@ -342,7 +342,7 @@ BOOL CDib::AttachPackedInfoHeader(BITMAPINFO* info, BOOL ownsInfo, HGLOBAL hGlob
         info->bmiHeader.biWidth * static_cast<unsigned int>(info->bmiHeader.biBitCount);
     unsigned int rowDwords = rowBits >> 5;
     if ((rowBits & 0x1f) != 0) {
-      rowDwords = rowDwords + 1;
+      ++rowDwords;
     }
     unsigned int rowBytes = rowDwords * 4;
     int rows = info->bmiHeader.biHeight;
@@ -556,9 +556,9 @@ void CDib::AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette) {
       dest->rgbGreen = entry->peGreen;
       dest->rgbBlue = entry->peBlue;
       dest->rgbReserved = entry->peFlags;
-      dest = dest + 1;
-      index = index + 1;
-      entry = entry + 1;
+      ++dest;
+      ++index;
+      ++entry;
     } while (index < m_paletteCount);
   }
 }
@@ -744,7 +744,7 @@ int CDib::Read(CFile* file) {
                            m_pInfoHeader->bmiHeader.biWidth;
     unsigned int rowDwords = rowBits >> 5;
     if ((rowBits & 0x1f) != 0) {
-      rowDwords = rowDwords + 1;
+      ++rowDwords;
     }
     int rows = m_pInfoHeader->bmiHeader.biHeight;
     if (rows < 1) {
@@ -1066,7 +1066,7 @@ int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODU
                            m_pInfoHeader->bmiHeader.biBitCount;
     unsigned int rowDwords = rowBits >> 5;
     if ((rowBits & 0x1f) != 0) {
-      rowDwords = rowDwords + 1;
+      ++rowDwords;
     }
     int rows = m_pInfoHeader->bmiHeader.biHeight;
     if (rows < 1) {
@@ -1130,250 +1130,126 @@ int CDib::BuildMonochromeOutlineMaskInPlace() {
 // DIB rows are stored bottom-up.
 // FUNCTION: IMPERIALISM 0x0047c3d0
 POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
-  byte bVar1;
-  int scan_offset;
-  int col_idx;
-  int byte_idx;
+  // The outline is points[0].x = vertex count, then the left edge top to bottom, the right edge
+  // bottom to top, and a closing copy of the first vertex. y is flipped to top-down rows.
+  int row;
+  int col;
+  int count;
   POINT* points;
-  unsigned int stride;
-  int byte_scan;
-  int row_stride;
-  char cVar9;
-  char cVar10;
-  byte* scan_ptr;
-  int height;
-  byte* pixel_ptr;
-  int bit_row;
-  int width;
-  POINT* out_iter;
-  int row_idx;
-  int pair_count;
-  byte* row_ptr;
-  byte* bit_pixels;
-  byte* bit_scan_row;
+  POINT* out;
 
   if (m_pInfoHeader->bmiHeader.biBitCount == 1) {
-    // 1-bpp path: two phases over bit-packed rows (a set bit = opaque).
-    width = m_pInfoHeader->bmiHeader.biWidth;
-    height = m_pInfoHeader->bmiHeader.biHeight;
-    bit_row = 0;
-    transparentIndex = 0;
-    scan_offset = (int)(width + 0x1f + ((width + 0x1f) >> 0x1f & 0x1fU)) >> 5;
-    bit_pixels = static_cast<byte*>(m_dibBits);
-    col_idx = scan_offset * 0x20;
-    bit_scan_row = bit_pixels;
-    while (true) {
-      byte_idx = height;
-      if (height < 1) {
-        byte_idx = -height;
+    // 1-bpp mask: a set bit is opaque; every eighth row is sampled.
+    int width = m_pInfoHeader->bmiHeader.biWidth;
+    int height = m_pInfoHeader->bmiHeader.biHeight;
+    int absHeight = height < 1 ? -height : height;
+    int dwordsPerRow = (width + 0x1f) / 32;
+    int sampleStep = dwordsPerRow * 0x20; // eight rows of bytes
+    int rowBytes = width / 8;
+    byte* bits = static_cast<byte*>(m_dibBits);
+
+    count = 0;
+    byte* scanRow = bits;
+    for (row = 0; row < absHeight; row += 8, scanRow += sampleStep) {
+      for (col = 0; col < rowBytes; ++col) {
+        if (scanRow[col] != 0) {
+          ++count;
+          break;
+        }
       }
-      if (byte_idx <= bit_row) {
-        break;
-      }
-      byte_scan = 0;
-      byte_idx = (int)(width + (width >> 0x1f & 7U)) >> 3;
-      if (byte_idx < 1) {
-      advanceMaskScanRow:
-        bit_row = bit_row + 8;
-        bit_scan_row = bit_scan_row + col_idx;
-      } else {
-        do {
-          if (bit_scan_row[byte_scan] != 0) {
-            transparentIndex = transparentIndex + 1;
-            goto advanceMaskScanRow;
+    }
+
+    points = new POINT[(count + 1) * 2];
+    points[0].x = count * 2 + 1;
+    count = 1;
+    out = points + 1;
+    int offset = 0;
+    for (row = 0; row < absHeight; row += 8, offset += sampleStep) {
+      for (col = 0; col < rowBytes; ++col) {
+        byte value = bits[col + offset];
+        if (value != 0) {
+          char bitLength = 0;
+          for (; value != 0; value = value >> 1) {
+            ++bitLength;
           }
-          byte_scan = byte_scan + 1;
-        } while (byte_scan < byte_idx);
-        bit_row = bit_row + 8;
-        bit_scan_row = bit_scan_row + col_idx;
+          out->x = (col * 8 + 8) - bitLength;
+          out->y = (absHeight - row) - 1;
+          ++count;
+          ++out;
+          break;
+        }
       }
     }
-    points = new POINT[(transparentIndex + 1) * 2];
-    width = 0;
-    points[0].x = transparentIndex * 2 + 1;
-    transparentIndex = 1;
-    height = 0;
-    out_iter = points + 1;
-  scanMaskLeftEdge:
-    do {
-      row_idx = m_pInfoHeader->bmiHeader.biHeight;
-      bit_row = row_idx;
-      if (row_idx < 1) {
-        bit_row = -row_idx;
+    for (row -= 8, offset = row * dwordsPerRow * 4; row >= 0; row -= 8, offset -= sampleStep) {
+      for (col = rowBytes - 1; col >= 0; --col) {
+        if (bits[col + offset] != 0) {
+          char shiftsToClear = 0;
+          for (char value = bits[col + offset]; value != 0; value = static_cast<char>(value << 1)) {
+            ++shiftsToClear;
+          }
+          out->x = shiftsToClear + col * 8;
+          out->y = (absHeight - row) - 1;
+          ++count;
+          ++out;
+          break;
+        }
       }
-      if (bit_row <= width) {
-        width = width + -8;
-        if (-1 < width) {
-          height = width * scan_offset * 4;
-          out_iter = points + transparentIndex;
-          do {
-            row_idx = m_pInfoHeader->bmiHeader.biWidth;
-            row_idx = ((int)(row_idx + (row_idx >> 0x1f & 7U)) >> 3) + -1;
-            if (-1 < row_idx) {
-            scanMaskRightByte:
-              if (bit_pixels[row_idx + height] == 0) {
-                goto skipEmptyMaskRightByte;
-              }
-              cVar10 = '\0';
-              for (cVar9 = bit_pixels[row_idx + height]; cVar9 != '\0'; cVar9 = cVar9 << 1) {
-                cVar10 = cVar10 + '\x01';
-              }
-              col_idx = m_pInfoHeader->bmiHeader.biHeight;
-              if (col_idx < 1) {
-                col_idx = -col_idx;
-              }
-              out_iter->x = (int)cVar10 + row_idx * 8;
-              out_iter->y = (col_idx - width) + -1;
-              transparentIndex = transparentIndex + 1;
-              out_iter = out_iter + 1;
-            }
-          advanceMaskRightRow:
-            width = width + -8;
-            height = height + scan_offset * -0x20;
-          } while (-1 < width);
-        }
-        points[transparentIndex] = points[1];
-        return points;
-      }
-      bit_row = m_pInfoHeader->bmiHeader.biWidth;
-      byte_idx = 0;
-      bit_row = (int)(bit_row + (bit_row >> 0x1f & 7U)) >> 3;
-      if (0 < bit_row) {
-      scanMaskLeftByte:
-        if (bit_pixels[byte_idx + height] == 0) {
-          goto skipEmptyMaskLeftByte;
-        }
-        cVar9 = '\0';
-        for (bVar1 = bit_pixels[byte_idx + height]; bVar1 != 0; bVar1 = bVar1 >> 1) {
-          cVar9 = cVar9 + '\x01';
-        }
-        if (row_idx < 1) {
-          row_idx = -row_idx;
-        }
-        out_iter->x = (byte_idx * 8 + 8) - (int)cVar9;
-        transparentIndex = transparentIndex + 1;
-        out_iter->y = (row_idx - width) + -1;
-        out_iter = out_iter + 1;
-      }
-      width = width + 8;
-      height = height + col_idx;
-    } while (true);
-  skipEmptyMaskRightByte:
-    row_idx = row_idx + -1;
-    if (row_idx < 0) {
-      goto advanceMaskRightRow;
     }
-    goto scanMaskRightByte;
-  skipEmptyMaskLeftByte:
-    byte_idx = byte_idx + 1;
-    if (bit_row <= byte_idx) {
-      goto advanceMaskLeftRow;
-    }
-    goto scanMaskLeftByte;
-  advanceMaskLeftRow:
-    width = width + 8;
-    height = height + col_idx;
-    goto scanMaskLeftEdge;
+    points[count] = points[1];
+    return points;
   }
 
-  // 8-bpp path.
-  width = m_pInfoHeader->bmiHeader.biWidth;
-  pixel_ptr = static_cast<byte*>(m_dibBits);
-  stride = width + 3U & 0xfffffffc;
+  // 8-bpp: every other row is sampled; -1 takes the transparent index from the first pixel.
+  int width = m_pInfoHeader->bmiHeader.biWidth;
+  byte* pixels = static_cast<byte*>(m_dibBits);
+  unsigned int stride = width + 3U & 0xfffffffc;
   if (transparentIndex == 0xffffffff) {
-    transparentIndex = *pixel_ptr;
+    transparentIndex = *pixels;
   }
-  height = m_pInfoHeader->bmiHeader.biHeight;
-  row_idx = 0;
-  scan_offset = 0;
-  row_stride = stride * 2;
-  scan_ptr = pixel_ptr;
-countOpaqueRows:
-  do {
-    col_idx = height;
-    if (height < 1) {
-      col_idx = -height;
+  int height = m_pInfoHeader->bmiHeader.biHeight;
+  int absHeight = height < 1 ? -height : height;
+
+  count = 0;
+  byte* scanRow = pixels;
+  for (row = 0; row < absHeight; row += 2, scanRow += stride * 2) {
+    for (col = 0; col < width; ++col) {
+      if (scanRow[col] != transparentIndex) {
+        ++count;
+        break;
+      }
     }
-    if (col_idx <= scan_offset) {
-      points = new POINT[(row_idx + 1) * 2];
-      points[0].x = row_idx * 2 + 1;
-      pair_count = 1;
-      height = 0;
-      out_iter = points + 1;
-      row_ptr = pixel_ptr;
-      do {
-        width = m_pInfoHeader->bmiHeader.biHeight;
-        row_idx = width;
-        if (width < 1) {
-          row_idx = -width;
-        }
-        if (row_idx <= height) {
-          height = height + -2;
-          if (-1 < height) {
-            out_iter = points + pair_count;
-            pixel_ptr = pixel_ptr + height * stride;
-            do {
-              width = m_pInfoHeader->bmiHeader.biWidth;
-              do {
-                width = width + -1;
-                if (width < 0) {
-                  goto advanceOpaqueRightRow;
-                }
-              } while (pixel_ptr[width] == transparentIndex);
-              row_stride = m_pInfoHeader->bmiHeader.biHeight;
-              if (row_stride < 1) {
-                row_stride = -row_stride;
-              }
-              out_iter->x = width;
-              pair_count = pair_count + 1;
-              out_iter->y = (row_stride - height) + -1;
-              out_iter = out_iter + 1;
-            advanceOpaqueRightRow:
-              height = height + -2;
-              pixel_ptr = pixel_ptr + stride * -2;
-            } while (-1 < height);
-          }
-          points[pair_count] = points[1];
-          return points;
-        }
-        row_idx = m_pInfoHeader->bmiHeader.biWidth;
-        scan_offset = 0;
-        if (0 < row_idx) {
-          do {
-            if (row_ptr[scan_offset] != transparentIndex) {
-              if (width < 1) {
-                width = -width;
-              }
-              out_iter->x = scan_offset;
-              out_iter->y = (width - height) + -1;
-              pair_count = pair_count + 1;
-              out_iter = out_iter + 1;
-              break;
-            }
-            scan_offset = scan_offset + 1;
-          } while (scan_offset < row_idx);
-        }
-        height = height + 2;
-        row_ptr = row_ptr + row_stride;
-      } while (true);
+  }
+
+  points = new POINT[(count + 1) * 2];
+  points[0].x = count * 2 + 1;
+  count = 1;
+  out = points + 1;
+  scanRow = pixels;
+  for (row = 0; row < absHeight; row += 2, scanRow += stride * 2) {
+    for (col = 0; col < width; ++col) {
+      if (scanRow[col] != transparentIndex) {
+        out->x = col;
+        out->y = (absHeight - row) - 1;
+        ++count;
+        ++out;
+        break;
+      }
     }
-    col_idx = 0;
-    if (0 < width) {
-      do {
-        if (scan_ptr[col_idx] != transparentIndex) {
-          row_idx = row_idx + 1;
-          goto advanceOpaqueScanRow;
-        }
-        col_idx = col_idx + 1;
-      } while (col_idx < width);
-      scan_offset = scan_offset + 2;
-      scan_ptr = scan_ptr + row_stride;
-      goto countOpaqueRows;
+  }
+  row -= 2;
+  for (scanRow = pixels + row * stride; row >= 0; row -= 2, scanRow -= stride * 2) {
+    for (col = width - 1; col >= 0; --col) {
+      if (scanRow[col] != transparentIndex) {
+        out->x = col;
+        out->y = (absHeight - row) - 1;
+        ++count;
+        ++out;
+        break;
+      }
     }
-  advanceOpaqueScanRow:
-    scan_offset = scan_offset + 2;
-    scan_ptr = scan_ptr + row_stride;
-  } while (true);
+  }
+  points[count] = points[1];
+  return points;
 }
 
 // FUNCTION: IMPERIALISM 0x0047c850

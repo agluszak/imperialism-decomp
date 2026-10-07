@@ -154,7 +154,7 @@ void TOceanDialog::ConvertPoint(const CPoint& point, short& outColumn, short& ou
   outRegionBand = 2;
   TMapUberPicture* mapPicture = static_cast<TMapUberPicture*>(ownerContext);
   if (mapPicture->activeUnitCategoryIndex == 0) {
-    int tileIndex = ComputeStridedRecordAddress6C(outColumn, outRow);
+    int tileIndex = TileIndexFromColumnRow(outColumn, outRow);
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     if ((tile.activeFlags & 1) != 0) {
       short ownerNation = static_cast<short>(tile.ownerNationTag);
@@ -187,41 +187,29 @@ void DrawTileClassCornerTick(short colorCode, int x, int y, unsigned int cornerF
 // cell values indexed by edge.
 // FUNCTION: IMPERIALISM 0x005663c0
 void DrawHexCellBorderGuideLines(int baseX, int baseY, short cellValue, short* neighborValues) {
-  int iVar1;
-  int iVar2;
-
-  if (cellValue == neighborValues[4]) {
-    goto strokeLower;
-  }
-  iVar2 = baseY + 3;
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX), static_cast<short>(iVar2));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX), static_cast<short>(baseY + 0xc));
-  if (neighborValues[4] == neighborValues[5]) {
-    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX), static_cast<short>(iVar2));
-    iVar1 = baseX + 3;
-    iVar2 = baseY;
-  strokeDiag:
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(iVar1), static_cast<short>(iVar2));
-  } else if (cellValue != neighborValues[5]) {
-    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX), static_cast<short>(baseY));
-    iVar1 = baseX;
-    goto strokeDiag;
-  }
-  if (neighborValues[4] == neighborValues[3]) {
+  if (cellValue != neighborValues[4]) {
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX),
-                                            static_cast<short>(baseY + 0xd));
-    iVar2 = baseX + 2;
-  } else {
-    if (cellValue == neighborValues[3]) {
-      goto strokeLower;
+                                            static_cast<short>(baseY + 3));
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX), static_cast<short>(baseY + 0xc));
+    if (neighborValues[4] == neighborValues[5]) {
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX),
+                                              static_cast<short>(baseY + 3));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX + 3), static_cast<short>(baseY));
+    } else if (cellValue != neighborValues[5]) {
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX), static_cast<short>(baseY));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX), static_cast<short>(baseY + 3));
     }
-    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX),
-                                            static_cast<short>(baseY + 0xd));
-    iVar2 = baseX;
+    if (neighborValues[4] == neighborValues[3]) {
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX),
+                                              static_cast<short>(baseY + 0xd));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX + 2), static_cast<short>(baseY + 0xf));
+    } else if (cellValue != neighborValues[3]) {
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX),
+                                              static_cast<short>(baseY + 0xd));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX), static_cast<short>(baseY + 0xf));
+    }
   }
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(iVar2), static_cast<short>(baseY + 0xf));
 
-strokeLower:
   if (cellValue != neighborValues[5]) {
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX + 4),
                                             static_cast<short>(baseY));
@@ -239,16 +227,11 @@ strokeLower:
   if (cellValue != neighborValues[0]) {
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX + 0xb),
                                             static_cast<short>(baseY));
-    iVar2 = baseX + 0xd;
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(iVar2), static_cast<short>(baseY));
-    if (neighborValues[0] == neighborValues[1]) {
-      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(iVar2), static_cast<short>(baseY));
-      iVar2 = baseY + 2;
-    } else {
-      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(iVar2), static_cast<short>(baseY));
-      iVar2 = baseY;
-    }
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX + 0xf), static_cast<short>(iVar2));
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX + 0xd), static_cast<short>(baseY));
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX + 0xd),
+                                            static_cast<short>(baseY));
+    int endY = (neighborValues[0] == neighborValues[1]) ? baseY + 2 : baseY;
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(baseX + 0xf), static_cast<short>(endY));
   }
   if (cellValue != neighborValues[1] && neighborValues[1] == neighborValues[2]) {
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(baseX + 0xd),
@@ -1160,7 +1143,7 @@ void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directio
 }
 
 // FUNCTION: IMPERIALISM 0x00568ab0
-int TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E() {
+int TOceanDialog::GetCenterTile() {
   short row = static_cast<short>(scrollRowOffset + 0xe);
   short col = static_cast<short>(scrollColOffset + 0x10);
   NormalizeWrappedMapCoord108x60(&col, &row);

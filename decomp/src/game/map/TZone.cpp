@@ -48,7 +48,7 @@ IMPLEMENT_DYNCREATE(TZone, TObject)
 TZone::TZone() : displayName(), primaryNeighbors(), secondaryNeighbors() {
   seedNationId = -1;
   contextOrdinal = static_cast<short>(g_nMapActionContextCount);
-  g_nMapActionContextCount = g_nMapActionContextCount + 1;
+  ++g_nMapActionContextCount;
   tileOrTerrainId = -1;
   nationKeyMask = 0;
   prev18 = static_cast<TZone*>(g_pMapActionContextListHead);
@@ -363,8 +363,8 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
             category = 1;
             break;
           }
-          i = i + 1;
-          scan = scan + 1;
+          ++i;
+          ++scan;
         } while (i < neighborCount);
       }
     }
@@ -489,26 +489,16 @@ void TZone::HandleKeyDown(int key_id) {
         static_cast<unsigned short>(nationKeyMask | (1U << ((unsigned char)key_id & 0x1f)));
     sVarSlotId = g_pSimMgr->GetPlayerCountry();
 
-    if ((nationKeyMask & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
+    bSlotIsActive = (nationKeyMask & (1U << ((unsigned char)sVarSlotId & 0x1f))) != 0;
+    if (!bSlotIsActive) {
       uSlotCountLocal = slotCount;
-      uSlotIndex = 0;
-      if (uSlotCountLocal != 0) {
-        do {
-          if (uSlotIndex < uSlotCountLocal) {
-            piSlotEntry = slotTable + static_cast<int>(uSlotIndex);
-          } else {
-            piSlotEntry = 0;
-          }
-          if ((*piSlotEntry)->ownerNationCode == static_cast<char>(sVarSlotId)) {
-            goto activateNationSlot;
-          }
-          uSlotIndex = uSlotIndex + 1;
-        } while (uSlotIndex < uSlotCountLocal);
+      for (uSlotIndex = 0; uSlotIndex < uSlotCountLocal; ++uSlotIndex) {
+        piSlotEntry = slotTable + static_cast<int>(uSlotIndex);
+        if ((*piSlotEntry)->ownerNationCode == static_cast<char>(sVarSlotId)) {
+          bSlotIsActive = true;
+          break;
+        }
       }
-      bSlotIsActive = false;
-    } else {
-    activateNationSlot:
-      bSlotIsActive = true;
     }
 
     if (bSlotIsActive) {
@@ -523,8 +513,8 @@ void TZone::HandleKeyDown(int key_id) {
                 sVarSlotId, key_id % 7 + kMapTileActionStateNationOrderFirst);
             g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal = -1;
           }
-          key_id = key_id + 1;
-          nSlotsRemaining = nSlotsRemaining - 1;
+          ++key_id;
+          --nSlotsRemaining;
         } while (nSlotsRemaining != 0);
       } else {
         sVarSlotId = GetActiveNationSlotTile();
@@ -630,7 +620,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
             neighborSubtype == kMapTileActionStateDockedFleet) {
           TZone* portZone = TZone::FindPortZoneByTile(neighborTile);
           if (portZone != contextZone) {
-            score = score - 1;
+            --score;
           }
         } else {
           short cityStateLink = neighborRecord.cityRecordIndex;
@@ -639,14 +629,14 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
             province = &g_pGlobalMapState->cityScoreTable[cityStateLink];
           }
           if (province == contextProvince) {
-            score = score + 0x64;
+            score += 0x64;
           } else {
-            score = score - 0xa;
+            score -= 0xa;
           }
         }
       }
     }
-    neighborDir = neighborDir + 1;
+    ++neighborDir;
   } while (neighborDir < 6);
 
   return score;
@@ -694,7 +684,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
               }
             }
           }
-          neighborDir = neighborDir + 1;
+          ++neighborDir;
         } while (neighborDir < 6);
         if (neighborDir < 6) {
           break;
@@ -745,12 +735,12 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
     }
 
     bestTile = tileCandidate;
-    spiral.stepInRing = spiral.stepInRing + 1;
+    ++spiral.stepInRing;
     if (spiral.ring <= spiral.stepInRing) {
       spiral.stepInRing = 0;
-      spiral.direction = spiral.direction + 1;
+      ++spiral.direction;
       if (5 < spiral.direction) {
-        spiral.ring = spiral.ring + 1;
+        ++spiral.ring;
         spiral.direction = 0;
         TMapMgr::StepHexRowColByDirectionWithWrapRules(&spiral.row, &spiral.col,
                                                        kStrategicHexDirectionWest);
@@ -1114,7 +1104,7 @@ void TZone::ResolvePortZoneOwnerContextAndDispatch() {
 }
 
 // FUNCTION: IMPERIALISM 0x00561b90
-short TZone::GetPortZoneOwnerNationCodeFromMissionField48() {
+short TZone::GetPortOwnerNation() {
   short tileIndex = static_cast<TPortZone*>(this)->portTileIndex;
   return g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
 }
@@ -1190,7 +1180,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   int seed = kControlTagNada;
   while (*tag != '\0') {
     seed = (seed >> 0x10) + seed * 2 + static_cast<int>(*tag);
-    tag = tag + 1;
+    ++tag;
   }
   g_zoneStatusCodePrngSeed = seed;
   if (seed == 0) {
@@ -1262,8 +1252,8 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
                   match = entries + j;
                   break;
                 }
-                j = j + 1;
-                scan = scan + 1;
+                ++j;
+                ++scan;
               } while (j < static_cast<unsigned int>(context->secondaryNeighbors.Count()));
             }
             if (match == 0) {
@@ -1271,11 +1261,11 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
             }
           }
         }
-        direction = direction + 1;
+        ++direction;
       } while (direction < 6);
     }
 
-    tileIndex = tileIndex + 1;
+    ++tileIndex;
   } while (static_cast<short>(tileIndex) < 0x1950);
 }
 

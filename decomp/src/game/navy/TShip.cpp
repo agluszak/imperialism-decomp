@@ -206,20 +206,17 @@ void TShip::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0054fbf0
 void TShip::NameThyself() {
+  bool duplicate;
   do {
     g_apTerrainTypeDescriptorTable[nation]->GenerateEthnicName(&name);
+    duplicate = false;
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0; existing = existing->next) {
-      if (existing == this) {
-        continue;
-      }
-      bool duplicate = (existing->name.Compare(name) == 0);
-      if (duplicate) {
-        goto retry;
+      if (existing != this && existing->name.Compare(name) == 0) {
+        duplicate = true;
+        break;
       }
     }
-    return;
-  retry:;
-  } while (1);
+  } while (duplicate);
 }
 
 // FUNCTION: IMPERIALISM 0x0054fc60

@@ -101,8 +101,8 @@ public:
   CPoint m_captureCurrentPoint; // 0x88
   int m_uiInteractiveFlag;
 
-  int GetUiInteractiveFlag90();                 // 0x00484060
-  int SetUiInteractiveFlag90(bool interactive); // 0x00484080
+  int GetUiInteractiveFlag();                 // 0x00484060
+  int SetUiInteractiveFlag(bool interactive); // 0x00484080
 };
 
 ASSERT_SIZE(CIncludeView, 0x94);

@@ -557,14 +557,14 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
 #endif
 
   int* pInit = seedFound;
-  for (i = 0x17; i != 0; i = i + -1) {
+  for (i = 0x17; i != 0; i = i - 1) {
     *pInit = 0;
-    pInit = pInit + 1;
+    ++pInit;
   }
   pInit = seedCandidate;
-  for (i = 0x17; i != 0; i = i + -1) {
+  for (i = 0x17; i != 0; i = i - 1) {
     *pInit = 0;
-    pInit = pInit + 1;
+    ++pInit;
   }
 
   int tileIndex = 0;
@@ -589,22 +589,16 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
           }
           nCol = col + nCol;
           int nRow = row + g_hexRowOffset[idx];
-          short nIdx;
           if (wrapFlag == '\0') {
             if (nCol < 0) {
-              nCol = nCol + 0x6c;
+              nCol += 0x6c;
             } else if (0x6b < nCol) {
-              nCol = nCol + -0x6c;
+              nCol -= 0x6c;
             }
-          LAB_neighbor_index:
-            if ((nRow < 0) || (0x3b < nRow))
-              goto LAB_neighbor_invalid;
+          }
+          short nIdx = -1;
+          if ((wrapFlag == '\0' || (nCol >= 0 && nCol < 0x6c)) && nRow >= 0 && nRow <= 0x3b) {
             nIdx = (short)nCol + (short)nRow * 0x6c;
-          } else {
-            if ((-1 < nCol) && (nCol < 0x6c))
-              goto LAB_neighbor_index;
-          LAB_neighbor_invalid:
-            nIdx = -1;
           }
           if ((nIdx != -1) && (idx = (int)nIdx, tiles[idx * 0x24] == kStrategicTerrainWater)) {
             haveCandidate = true;
@@ -622,18 +616,14 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
               int sRow = seedRow + g_hexRowOffset[k];
               if (wrapFlag == '\0') {
                 if (sCol < 0) {
-                  sCol = sCol + 0x6c;
+                  sCol += 0x6c;
                 } else if (0x6b < sCol) {
-                  sCol = sCol + -0x6c;
+                  sCol -= 0x6c;
                 }
-              LAB_seed_neighbor_index:
-                if ((sRow < 0) || (0x3b < sRow))
-                  goto LAB_seed_neighbor_invalid;
+              }
+              if ((wrapFlag == '\0' || (sCol >= 0 && sCol < 0x6c)) && sRow >= 0 && sRow <= 0x3b) {
                 sCol = sCol + sRow * 0x6c;
               } else {
-                if ((-1 < sCol) && (sCol < 0x6c))
-                  goto LAB_seed_neighbor_index;
-              LAB_seed_neighbor_invalid:
                 sCol = -1;
               }
               char nbCls;
@@ -642,7 +632,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
                 haveCandidate = false;
                 break;
               }
-              k = k + 1;
+              ++k;
             } while (k < 6);
             if (haveCandidate) {
               if ((seedCandidate[cls] == 0) || (g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1,
@@ -655,7 +645,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
               break;
             }
           }
-          dir = dir + 1;
+          ++dir;
         } while (dir < 6);
         char typeByte;
         if (haveCandidate &&
@@ -666,15 +656,15 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
         }
       }
     }
-    tileOffset = tileOffset + 0x24;
-    tileIndex = tileIndex + 1;
+    tileOffset += 0x24;
+    ++tileIndex;
     if (0x38f3f < tileOffset) {
       int* p = seedFound;
       for (i = 0; i < 0x17; i = i + 1) {
         if (*p == 0) {
           return '\0';
         }
-        p = p + 1;
+        ++p;
       }
       return '\x01';
     }
@@ -1631,7 +1621,7 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
     case 4:
     case 6:
       src = dst;
-      dst = dst + 108;
+      dst += 108;
       break;
     default:
       copy = false;
@@ -1786,10 +1776,10 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
   do {
     int count = CountSeaTilesInColumn(columnIndex);
     *w = count;
-    total = total + count;
+    total += count;
     ++columnIndex;
-    w = w + 1;
-    prime = prime + -1;
+    ++w;
+    --prime;
   } while (prime != 0);
 
   // Slide across all 108 columns, tracking the peak 3-column sum.
@@ -1797,55 +1787,55 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
   columnIndex = 0;
   do {
     int count = CountSeaTilesInColumn(columnIndex);
-    total = total + count;
+    total += count;
     if (bestDensity < total) {
       bestColumn = scanCol;
       bestDensity = total;
     }
     int evicted = window[windowPos];
     window[windowPos] = count;
-    total = total - evicted;
-    windowPos = windowPos + 1;
+    total -= evicted;
+    ++windowPos;
     if (2 < windowPos) {
       windowPos = 0;
     }
-    scanCol = scanCol + 1;
+    ++scanCol;
     ++columnIndex;
   } while (scanCol < 0x6c);
 
   if (CountSeaTilesInColumn(bestColumn) == 0) {
-    int leftCol = bestColumn + -1;
+    int leftCol = bestColumn - 1;
     if (leftCol < 0) {
       leftCol = bestColumn + 0x6b;
     }
-    bestColumn = bestColumn + 1;
+    ++bestColumn;
     if (0x6b < bestColumn) {
       bestColumn = 0;
     }
     while (CountSeaTilesInColumn(leftCol) == 0) {
-      leftCol = leftCol + -1;
+      --leftCol;
       if (leftCol < 0) {
         leftCol = 0x6b;
       }
     }
     while (CountSeaTilesInColumn(bestColumn) == 0) {
-      bestColumn = bestColumn + 1;
+      ++bestColumn;
       if (0x6b < bestColumn) {
         bestColumn = 0;
       }
     }
-    leftCol = leftCol + 1;
+    ++leftCol;
     if (0x6b < leftCol) {
       leftCol = 0;
     }
-    int rightCol = bestColumn + -1;
+    int rightCol = bestColumn - 1;
     if (rightCol < 0) {
       rightCol = bestColumn + 0x6b;
     }
     if (rightCol < leftCol) {
       bestColumn = (leftCol + 0x6c + rightCol) / 2;
       if (0x6c < bestColumn) {
-        bestColumn = bestColumn + -0x6c;
+        bestColumn -= 0x6c;
       }
     } else {
       bestColumn = (rightCol + leftCol) / 2;
@@ -1869,13 +1859,13 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
     int* scratchRow = scratch + (sourceCol % 0x6c) * 9;
     int rowByte = destByte;
     do {
-      rows = rows + -1;
+      --rows;
       memcpy(mapTileGrid + rowByte, scratchRow, 0x24);
-      scratchRow = scratchRow + 0x3cc;
-      rowByte = rowByte + 0xf30;
+      scratchRow += 0x3cc;
+      rowByte += 0xf30;
     } while (rows != 0);
-    destByte = destByte + 0x24;
-    sourceCol = sourceCol + 1;
+    destByte += 0x24;
+    ++sourceCol;
   } while (destByte < 0xf30);
 
   if (scratch != nullptr) {
@@ -1892,7 +1882,7 @@ int TMapMaker::ZoneCorner(long nationCode) {
 
   do {
     if (*owner == nationCode) {
-      currentRun = currentRun + 1;
+      ++currentRun;
     } else {
       if (longestRun < currentRun) {
         longestRun = currentRun;
@@ -1900,8 +1890,8 @@ int TMapMaker::ZoneCorner(long nationCode) {
       }
       currentRun = 0;
     }
-    tileIndex = tileIndex + 1;
-    owner = owner + 0x24;
+    ++tileIndex;
+    owner += 0x24;
   } while (tileIndex < 0x1950);
 
   int leftEdgeCount = 0;
@@ -1914,16 +1904,16 @@ int TMapMaker::ZoneCorner(long nationCode) {
   do {
     if (*owner == nationCode) {
       if (column < 0x19) {
-        leftEdgeCount = leftEdgeCount + 1;
+        ++leftEdgeCount;
       }
       if (0x53 < column) {
-        rightEdgeCount = rightEdgeCount + 1;
+        ++rightEdgeCount;
       }
-      columnSum = columnSum + column;
-      matchCount = matchCount + 1;
+      columnSum += column;
+      ++matchCount;
     }
-    column = column + 1;
-    owner = owner + 0x24;
+    ++column;
+    owner += 0x24;
   } while (column < 0x6c);
 
   if (0 < leftEdgeCount && 0 < rightEdgeCount) {
@@ -1955,12 +1945,12 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
       if (0x53 < column) {
         rightEdgeCount = rightEdgeCount + '\x01';
       }
-      columnSum = columnSum + column;
+      columnSum += column;
       rowSum = rowSum + tileIndex / 0x6c;
-      matchCount = matchCount + 1;
+      ++matchCount;
     }
-    tileIndex = tileIndex + 1;
-    owner = owner + 0x24;
+    ++tileIndex;
+    owner += 0x24;
   } while (tileIndex < 0x1950);
 
   bool wrapsHorizontally;
@@ -1983,12 +1973,12 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
           if (0x36 < column && rightEdgeCount < leftEdgeCount) {
             column = 0;
           }
-          columnSum = columnSum + column;
+          columnSum += column;
           rowSum = rowSum + tileIndex / 0x6c;
-          matchCount = matchCount + 1;
+          ++matchCount;
         }
-        tileIndex = tileIndex + 1;
-        owner = owner + 0x24;
+        ++tileIndex;
+        owner += 0x24;
       } while (tileIndex < 0x1950);
       if (matchCount != 0) {
         return (columnSum / matchCount) % 0x6c + (rowSum / matchCount) * 0x6c;
@@ -2057,7 +2047,7 @@ void TMapMaker::CompactCityRegionIds() {
   int* remapCursor = g_cityRegionIdRemapTable;
   for (int remaining = 0x100; remaining != 0; remaining = remaining - 1) {
     *remapCursor = -1;
-    remapCursor = remapCursor + 1;
+    ++remapCursor;
   }
 
   int byteOffset = 0;
@@ -2071,12 +2061,12 @@ void TMapMaker::CompactCityRegionIds() {
     if (-1 < regionClass) {
       if (g_cityRegionIdRemapTable[regionClass] == -1) {
         g_cityRegionIdRemapTable[regionClass] = cityRegionCount;
-        cityRegionCount = cityRegionCount + 1;
+        ++cityRegionCount;
       }
       mapTileGrid[byteOffset + 4] =
           static_cast<char>(g_cityRegionIdRemapTable[regionClass]) + '\x17';
     }
-    byteOffset = byteOffset + 0x24;
+    byteOffset += 0x24;
   } while (byteOffset < 0x38f40);
 }
 
@@ -2089,10 +2079,10 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
   short* p = labels;
   do {
     short index = static_cast<short>(i);
-    i = i + 1;
+    ++i;
     *p = (g_pGlobalMapState->terrainStateTable[index].GetTerrainKind() == kStrategicTerrainWater) -
          2;
-    p = p + 1;
+    ++p;
   } while (i < 0x1950);
   cityRegionCount = 0;
 
@@ -2113,7 +2103,7 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
           if ((colIdx & 1) != 0) {
             col = col + rows / 2;
             if (0x6b < col) {
-              col = col - 0x6c;
+              col -= 0x6c;
             }
           }
           int radius = 0;
@@ -2130,29 +2120,29 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
             }
             if (neighbor != -1 && labels[neighbor] == -1) {
               labels[neighbor] = static_cast<short>(cityRegionCount);
-              cityRegionCount = cityRegionCount + 1;
+              ++cityRegionCount;
               break;
             }
-            radius = radius + 1;
+            ++radius;
             if (ring <= radius) {
               radius = 0;
-              direction = direction + 1;
+              ++direction;
               if (5 < direction) {
-                ring = ring + 1;
+                ++ring;
                 direction = 0;
                 TMapMgr::StepHexRowColByDirectionWithWrapRules(&row, &col, 4);
               }
             }
             TMapMgr::StepHexRowColByDirectionWithWrapRules(&row, &col, direction);
           }
-          colIdx = colIdx + 1;
-          colBase = colBase + 0x6c;
+          ++colIdx;
+          colBase += 0x6c;
           cols = g_regionSeedGridCols;
           rows = g_regionSeedGridRows;
         } while (colIdx < g_regionSeedGridCols);
       }
-      rowIdx = rowIdx + 1;
-      rowBase = rowBase + 0x6c;
+      ++rowIdx;
+      rowBase += 0x6c;
     } while (rowIdx < rows);
   }
 
@@ -2168,13 +2158,13 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
             short nl = labels[neighbor];
             if (-1 < nl && nl < 0x400) {
               *pj = nl + 0x400;
-              changed = changed + 1;
+              ++changed;
             }
           }
         }
       }
-      j = j + 1;
-      pj = pj + 1;
+      ++j;
+      ++pj;
     } while (j < 0x1950);
 
     int k = 0x1950;
@@ -2183,8 +2173,8 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
       if (0x3ff < *pk) {
         *pk = *pk - 0x400;
       }
-      pk = pk + 1;
-      k = k - 1;
+      ++pk;
+      --k;
     } while (k != 0);
 
     if (changed < 1) {
@@ -2194,8 +2184,8 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
         if (-1 < *pw) {
           *(mapTileGrid + 4 + off) = static_cast<char>(*pw) + '\x17';
         }
-        off = off + 0x24;
-        pw = pw + 1;
+        off += 0x24;
+        ++pw;
       } while (off < 0x38f40);
 #ifdef IMPERIALISM_RUNTIME_TESTS
       RuntimeTerrainMapOracleCaptureStage("after_water_regions", this, g_mapGenLcgState);
@@ -2265,7 +2255,7 @@ void TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides() {
         AssignRegionIdAlongBorderSegmentChain(index, '\0', static_cast<short>(regionId));
         count = g_regionBorderLinkTable.count;
       }
-      index = index + 1;
+      ++index;
     } while (index < count);
   }
 
@@ -2273,7 +2263,7 @@ void TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides() {
   if (index < count) {
     do {
       g_regionBorderLinkTable[index];
-      index = index + 1;
+      ++index;
     } while (index < static_cast<unsigned int>(g_regionBorderLinkTable.count));
   }
 }
@@ -2311,10 +2301,10 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
               dx = seg->x1 - seg->x0;
             } else {
               if (spanLo < 0x6c) {
-                spanLo = spanLo + 0xd8;
+                spanLo += 0xd8;
               }
               if (spanHi < 0x6c) {
-                spanHi = spanHi + 0xd8;
+                spanHi += 0xd8;
               }
               // The wrapped branch measures the crossing across the 0xd8-wide seam.
               dx = -0xd8;
@@ -2361,7 +2351,7 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
             }
           }
         }
-        si = si + 1;
+        ++si;
       } while (si < static_cast<unsigned int>(segments.Count()));
     }
 
@@ -2374,7 +2364,7 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
 
     int col = cellX;
     if (0x6b < cellX) {
-      col = cellX + -0x6c;
+      col = cellX - 0x6c;
     }
     char* tile = mapTileGrid + (col + rowBase) * 0x24;
     if (*tile == kStrategicTerrainWater && region != -1) {
@@ -2384,8 +2374,8 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
     cellX = col + 1;
     if (firstX == cellX) {
       leftCol = 0;
-      scanY = scanY + 1;
-      rowBase = rowBase + 0x6c;
+      ++scanY;
+      rowBase += 0x6c;
       cellX = 0;
       region = -1;
       firstX = -1;
@@ -2542,7 +2532,7 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
   do {
     bool isInvalid = quad[i].coord00 == -1;
     if (isInvalid) {
-      i = i + 1;
+      ++i;
       continue;
     }
     quad[i];
@@ -2589,7 +2579,7 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
             }
           }
         }
-        j = j + 1;
+        ++j;
       } while (j < static_cast<unsigned int>(quad.count));
     }
     if (bestPrimary == 0xffffffff) {
@@ -2637,9 +2627,9 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
       value = -1;
     }
     *p = value;
-    i = i + 1;
-    tile = tile + 0x24;
-    p = p + 1;
+    ++i;
+    tile += 0x24;
+    ++p;
   } while (i < 0x1950);
 
   int newCount = 0;
@@ -2655,15 +2645,15 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
         do {
           if (label == *pj) {
             labels[j] = static_cast<short>(newCount);
-            newCount = newCount + 1;
-            assigned = assigned + 1;
+            ++newCount;
+            ++assigned;
             break;
           }
-          j = j + 1;
-          pj = pj + 1;
+          ++j;
+          ++pj;
         } while (j < 0x1950);
-        label = label - 1;
-        remaining = remaining - 1;
+        --label;
+        --remaining;
       } while (remaining != 0);
     }
 
@@ -2676,8 +2666,8 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
         if (*t == kStrategicTerrainWater) {
           t[4] = static_cast<char>(*pw) + '\x17';
         }
-        off = off + 0x24;
-        pw = pw + 1;
+        off += 0x24;
+        ++pw;
       } while (off < 0x38f40);
       cityRegionCount = newCount;
       return;
@@ -2695,14 +2685,14 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
             if (-1 < neighbor && -1 < labels[neighbor]) {
               if (GetCityRegionIdAtTileIndex(j) == GetCityRegionIdAtTileIndex(neighbor)) {
                 *pj = labels[neighbor];
-                changed = changed + 1;
+                ++changed;
                 break;
               }
             }
           }
         }
-        j = j + 1;
-        pj = pj + 1;
+        ++j;
+        ++pj;
       } while (j < 0x1950);
     } while (changed != 0);
   } while (true);
@@ -2739,16 +2729,16 @@ int TMapMaker::RepairOrphanedTileValuesFromNeighbors(short* tileValues) {
 
           if (ownClass == neighborClass) {
             *cursor = tileValues[neighbor];
-            repairedCount = repairedCount + 1;
+            ++repairedCount;
             break;
           }
         }
-        direction = direction + 1;
+        ++direction;
       } while (direction < 6);
     }
-    byteOffset = byteOffset + 0x24;
-    tileIndex = tileIndex + 1;
-    cursor = cursor + 1;
+    byteOffset += 0x24;
+    ++tileIndex;
+    ++cursor;
   } while (byteOffset <= 0x38f3f);
 
   return repairedCount;
@@ -2767,15 +2757,15 @@ int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int
       do {
         if (placeholder == *cursor) {
           tileValues[tileIndex] = static_cast<short>(*nextValue);
-          assignedCount = assignedCount + 1;
+          ++assignedCount;
           *nextValue = *nextValue + 1;
           break;
         }
-        tileIndex = tileIndex + 1;
-        cursor = cursor + 1;
+        ++tileIndex;
+        ++cursor;
       } while (tileIndex < 0x1950);
-      regionOrdinal = regionOrdinal + 1;
-      placeholder = placeholder + -1;
+      ++regionOrdinal;
+      --placeholder;
     } while (regionOrdinal < cityRegionCount);
   }
 
@@ -2989,7 +2979,7 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
       rec->coord0 = -1;
     }
     if (!LinkIsEmpty(links.At(i))) {
-      liveCount = liveCount + 1;
+      ++liveCount;
     }
   }
 
@@ -3009,7 +2999,7 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
       SeaSegment* rec = &links[i];
       CRect rect(rec->x0, rec->y0, rec->x1, rec->y1);
       g_pActiveMapOrderContext->routeSegments[routeIndex] = rect;
-      routeIndex = routeIndex + 1;
+      ++routeIndex;
     }
   }
 

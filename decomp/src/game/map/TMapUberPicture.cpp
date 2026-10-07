@@ -185,7 +185,7 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
 
   if (strcmp(g_szEmptyString, static_cast<LPCSTR>(versionText)) != 0) {
     if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
-      summary = summary + s_szDoubleNewline;
+      summary += s_szDoubleNewline;
     }
     summary += versionText;
   }
@@ -993,7 +993,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
   }
   this->invalidationFlag = true;
 
-  subview2A8->CenterOn(goodGoldTagControl->ComputeWrappedTileIndexFromObjectOffset7C7E());
+  subview2A8->CenterOn(goodGoldTagControl->GetCenterTile());
 
   this->goodGoldTagControl->Locate(g_MapUberModeLayoutScratch, false);
   this->subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch, true);

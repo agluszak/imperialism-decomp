@@ -109,7 +109,7 @@ public:
 
   int CountDiplomaticallyRelatedNationsInKeyMask(int nation);
 
-  short GetPortZoneOwnerNationCodeFromMissionField48();
+  short GetPortOwnerNation();
 
   void ResolvePortZoneOwnerContextAndDispatch();
 

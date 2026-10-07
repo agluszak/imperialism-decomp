@@ -39,7 +39,7 @@ public:
   virtual bool IsTileVisible(short tileIndex) override;
   void BuildTileViewportRect(short tileIndex, CRect* outRect);       // 0x5686d0
   int ComputeWrappedTileIndexFromViewportPoint(const CPoint* point); // 0x568840
-  virtual int ComputeWrappedTileIndexFromObjectOffset7C7E();
+  virtual int GetCenterTile();
   void InvalidateTile(short tileIndex);
   void InvalidateZone(TZone* zone); // 0x565f80
   CRect BoundingRect(TZone* zone);  // 0x566060

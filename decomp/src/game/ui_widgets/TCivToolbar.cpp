@@ -119,7 +119,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15df);
     }
     static_cast<TCivilianButton*>(stackButton)->SetButton(0);
-    slotIndex = slotIndex + 1;
+    ++slotIndex;
   }
 
   selectedSlotTag = kControlTagNada;

@@ -354,7 +354,7 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
           costField, static_cast<short>(nationIndex + 0x17));
       contextArray[nationIndex].SetMapActionContextTargetTileAndRefreshMarkers(nationIndex + 0x17,
                                                                                seedTile);
-      nationIndex = nationIndex + 1;
+      ++nationIndex;
     } while (nationIndex < static_cast<short>(nationCountArg));
   }
   delete costField;
@@ -442,7 +442,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
 }
 
 // FUNCTION: IMPERIALISM 0x00563300
-TZone* TOcean::GetMapActionContextEntryByNationCodeOffset17(short nationCode) {
+TZone* TOcean::Sea(short nationCode) {
   return &contextArray[nationCode - 0x17];
 }
 
@@ -632,8 +632,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
     if (seaTileOwner < 0x17) {
       linkedContext = 0;
     } else {
-      linkedContext =
-          g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(seaTileOwner);
+      linkedContext = g_pActiveMapOrderContext->Sea(seaTileOwner);
     }
   }
 

@@ -91,7 +91,7 @@ UINT WaveReadFile(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT*
     if (pckIn->cksize < cbRead) {
       cbRead = pckIn->cksize;
     }
-    pckIn->cksize = pckIn->cksize - cbRead;
+    pckIn->cksize -= cbRead;
     for (cT = 0; cT < cbRead; ++cT) {
       if (mmioinfoIn.pchNext == mmioinfoIn.pchEndRead) {
         result = mmioAdvance(hmmio, &mmioinfoIn, 0);

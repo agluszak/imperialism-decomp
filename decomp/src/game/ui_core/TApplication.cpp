@@ -58,7 +58,7 @@ TEventHandler* TApplication::GetTarget() {
 // vtable slot 0x28 (0x00486990 via ILT 0x00405551): `RET 0xc` no-op. MacApp's
 // FUNCTION: IMPERIALISM 0x00486960
 BOOL TApplication::InModalState() {
-  return GetMainViewHostFromActiveThread()->GetUiInteractiveFlag90() == 0;
+  return GetMainViewHostFromActiveThread()->GetUiInteractiveFlag() == 0;
 }
 // FUNCTION: IMPERIALISM 0x00486990
 void TApplication::GetDefaultCursorRegion(int x, int y, void* cursorRegion) {

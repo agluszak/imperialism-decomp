@@ -714,21 +714,14 @@ void TTextileForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short ar
     return;
   }
   TGreatPower* owner = greatPower;
-  if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
-    if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) >= arg2) {
-      goto accept_requested_amount;
-    }
-  } else if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) >= arg2) {
-    goto accept_requested_amount;
+  if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) >= arg2) {
+    g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, false);
+    return;
   }
   g_pTradeMgr->SetDealResults(
       owner->nationSlot, arg1,
       static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)), arg3, resourceCode,
       0, false);
-  return;
-
-accept_requested_amount:
-  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, false);
 }
 
 // FUNCTION: IMPERIALISM 0x00533780

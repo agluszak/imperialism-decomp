@@ -212,7 +212,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   short* hoverBand = &hoverRegionBand;
   ConvertPoint(*point, tileRow, tileColumn, *hoverBand);
   hoveredTileIndex = static_cast<unsigned short>(
-      ComputeStridedRecordAddress6C(static_cast<int>(tileRow), static_cast<int>(tileColumn)));
+      TileIndexFromColumnRow(static_cast<int>(tileRow), static_cast<int>(tileColumn)));
 
   if (hoveredTileIndex == paintedHoverTileIndex && *hoverBand == activeRegionBand) {
     return;
@@ -459,7 +459,7 @@ char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
   ConvertPoint(point, tileRow, tileCol, regionBand);
   NormalizeWrappedMapCoord108x60(&tileRow, &tileCol);
 
-  int stridedRecord = ComputeStridedRecordAddress6C((int)tileRow, (int)tileCol);
+  int stridedRecord = TileIndexFromColumnRow((int)tileRow, (int)tileCol);
   if (event->mouseButton == 1) {
     ShiftClick(stridedRecord, regionBand);
     return 1;
@@ -551,52 +551,54 @@ void TWorldView::CommandOptionClick(int stridedRecord, int dispatchContext) {
 
 // FUNCTION: IMPERIALISM 0x005964b0
 void TWorldView::NormalClick(short nTileIndex, int nInputFlags) {
-  char handled;
-  switch (static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex) {
+  TMapUberPicture* mapPicture = static_cast<TMapUberPicture*>(ownerContext);
+  bool refresh = false;
+  bool handled = false;
+  switch (mapPicture->activeUnitCategoryIndex) {
   case 0:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ||
         g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags)) {
-      goto refresh;
+      refresh = true;
+    } else {
+      handled = g_pSelectedCivilianOrderState->HandleCivilianTileOrderAction(nTileIndex,
+                                                                             nInputFlags) != 0;
     }
-    handled = g_pSelectedCivilianOrderState->HandleCivilianTileOrderAction(nTileIndex, nInputFlags);
-    goto cycle;
+    break;
   case 1:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ||
         g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
                                                                                 nInputFlags) ||
         g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags)) {
-      goto refresh;
+      refresh = true;
+    } else {
+      handled = g_pMapContextActionManager->HandleMapClickByCivilianCursorState(nTileIndex,
+                                                                                nInputFlags) != 0;
     }
-    handled =
-        g_pMapContextActionManager->HandleMapClickByCivilianCursorState(nTileIndex, nInputFlags);
-    goto cycle;
+    break;
   case 2:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ||
         g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
                                                                                 nInputFlags)) {
-      RefreshControl();
-      goto tail;
+      refresh = true;
+    } else {
+      handled = g_pNavyOrderManager->DoTileClick(nTileIndex, nInputFlags) != 0;
     }
-    handled = static_cast<char>(g_pNavyOrderManager->DoTileClick(nTileIndex, nInputFlags));
-    goto cycle;
+    break;
   case 3:
     if (!g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) &&
         !g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
                                                                                  nInputFlags)) {
       g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags);
     }
-    goto tail;
+    break;
   default:
-    goto tail;
+    break;
   }
-refresh:
-  RefreshControl();
-  goto tail;
-cycle:
-  if (handled != 0) {
-    static_cast<TMapUberPicture*>(ownerContext)->CycleMapInteractionSelectionAfterHandledClick();
+  if (refresh) {
+    RefreshControl();
+  } else if (handled) {
+    mapPicture->CycleMapInteractionSelectionAfterHandledClick();
   }
-tail:
   ++activeRegionBand;
   if (activeRegionBand > 4) {
     activeRegionBand = 1;

@@ -51,14 +51,14 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
 
   short levelDivisor = TShip::GetTypeHullPoints(battleDetail->resourceType);
   short level = battleDetail->stockOrRequired;
-  short sVar2 = (level * 0x14) / levelDivisor + 1;
-  if (sVar2 > 0x14) {
-    sVar2 = 0x14;
+  short barLength = (level * 0x14) / levelDivisor + 1;
+  if (barLength > 0x14) {
+    barLength = 0x14;
   }
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
-  short sVar3 = (sVar2 < 5) ? 0x1a : ((sVar2 > 0xe) ? 10 : 18);
-  RECT srcRect = {0, sVar3, sVar2 * 4 - 1, sVar3 + 7};
-  RECT dstRect = {0x52, 0x1e, sVar2 * 4 + 0x51, 0x25};
+  short barSpriteRow = (barLength < 5) ? 0x1a : ((barLength > 0xe) ? 10 : 18);
+  RECT srcRect = {0, barSpriteRow, barLength * 4 - 1, barSpriteRow + 7};
+  RECT dstRect = {0x52, 0x1e, barLength * 4 + 0x51, 0x25};
 
   if (level > 0) {
     TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();

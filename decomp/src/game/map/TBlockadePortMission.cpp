@@ -61,9 +61,8 @@ void TBlockadePortMission::Initialize() {
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
-      score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId)
-                   ? g_PortZoneFriendlyMissionScoreMultiplier
-                   : g_PortZoneForeignMissionScoreMultiplier;
+      score *= (zone->GetPortOwnerNation() == nationId) ? g_PortZoneFriendlyMissionScoreMultiplier
+                                                        : g_PortZoneForeignMissionScoreMultiplier;
     }
   }
 
@@ -75,7 +74,7 @@ void TBlockadePortMission::Initialize() {
 TMission* TBlockadePortMission::GetReplacement() {
   TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nation->AssertValid();
-  short ownerCode = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
+  short ownerCode = portZoneContext->GetPortOwnerNation();
   bool hasCoverage = nation->enemyFlags[ownerCode] != 0;
 
   if (!hasCoverage) {
@@ -104,8 +103,8 @@ void TBlockadePortMission::CalculateNeeds() {
   const short* navyDistributionWeights = g_NavyOrderDistributionCategoryWeights;
 
   float threatScore = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  if (portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48() < 7) {
-    short targetNationCode = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
+  if (portZoneContext->GetPortOwnerNation() < 7) {
+    short targetNationCode = portZoneContext->GetPortOwnerNation();
     float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
                        g_Recompute_Nation_Order_LookupTable_0065A9E8,
                        g_Recompute_Nation_Order_LookupTable_0065A9E8,
@@ -126,7 +125,7 @@ void TBlockadePortMission::CalculateNeeds() {
       if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, nation)) {
         continue;
       }
-      short targetNationCode = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
+      short targetNationCode = portZoneContext->GetPortOwnerNation();
       float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
                          g_Recompute_Nation_Order_LookupTable_0065A9E8,
                          g_Recompute_Nation_Order_LookupTable_0065A9E8,

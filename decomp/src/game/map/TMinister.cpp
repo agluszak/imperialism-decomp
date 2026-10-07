@@ -61,8 +61,8 @@ void TMinister::FigureOutRanking() {
       entry.value = GetRankingCriterionForGP(static_cast<short>(nationSlot));
       this->ranking->InsertCopiedRecordSortedByComparator(&entry);
     }
-    nationSlot = nationSlot + 1;
-    tableCursor = tableCursor + 1;
+    ++nationSlot;
+    ++tableCursor;
   } while (nationSlot < 7);
 
   int entryIndex = 1;
@@ -78,7 +78,7 @@ void TMinister::FigureOutRanking() {
         rank = static_cast<short>(rank + 1);
       }
       next->rank = rank;
-      entryIndex = entryIndex + 1;
+      ++entryIndex;
     } while (entryIndex < this->ranking->GetSize());
   }
 }
@@ -97,7 +97,7 @@ short TMinister::GetRankOf(short nationSlot) {
       result = entry->rank;
       entryIndex = this->ranking->GetSize() + 10;
     }
-    entryIndex = entryIndex + 1;
+    ++entryIndex;
   } while (entryIndex <= this->ranking->GetSize());
   return result;
 }
@@ -116,7 +116,7 @@ short TMinister::GetCountryInRank(short rank) {
       result = entry->index;
       entryIndex = this->ranking->GetSize() + 10;
     }
-    entryIndex = entryIndex + 1;
+    ++entryIndex;
   } while (entryIndex <= this->ranking->GetSize());
   return result;
 }

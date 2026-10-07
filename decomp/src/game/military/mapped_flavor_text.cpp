@@ -54,14 +54,14 @@ void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...) 
       }
       ch = p[idx];
       while (ch != ']' && ch != '\0') {
-        idx = idx + 1;
+        ++idx;
         ch = p[idx];
       }
     } else {
       *result += ch;
     }
     ch = p[idx + 1];
-    idx = idx + 1;
+    ++idx;
   }
 }
 
@@ -83,7 +83,7 @@ void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, i
           break;
         }
         ch = text[i + 1];
-        i = i + 1;
+        ++i;
         if (ch >= '0' && ch <= '9') {
           CString expansion;
           sim->GetString(static_cast<short>((&groupA)[(ch - '0') * 2]),
@@ -103,7 +103,7 @@ void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, i
       if (text[i] != ']') {
         while (i < text.GetLength()) {
           char next = text[i + 1];
-          i = i + 1;
+          ++i;
           if (next == ']') {
             break;
           }

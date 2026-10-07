@@ -635,12 +635,12 @@ void CIncludeView::OnRButtonUp(UINT nFlags, CPoint point) {
 }
 
 // FUNCTION: IMPERIALISM 0x00484060
-int CIncludeView::GetUiInteractiveFlag90() {
+int CIncludeView::GetUiInteractiveFlag() {
   return m_uiInteractiveFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x00484080
-int CIncludeView::SetUiInteractiveFlag90(bool interactive) {
+int CIncludeView::SetUiInteractiveFlag(bool interactive) {
   int previous = m_uiInteractiveFlag;
   m_uiInteractiveFlag = interactive;
   return previous;

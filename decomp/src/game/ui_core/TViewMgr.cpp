@@ -184,19 +184,19 @@ QuickDrawPaletteIndex TViewMgr::GetColor(short eventCode) {
       }
       switch (eventCode) {
       case 0xc9:
-        goto case_33;
+        return 0x2d;
       case 0xca:
         return 0x30;
       case 0xcb:
-        goto case_6;
+        return 0x2e;
       case 0xcc:
-        goto case_3b;
+        return 0x27;
       case 0xcd:
         return 0x24;
       case 0xce:
         return 0x26;
       case 0xcf:
-        goto case_34;
+        return 0x18;
       case 0xd0:
         return 0x14;
       }
@@ -236,7 +236,6 @@ QuickDrawPaletteIndex TViewMgr::GetColor(short eventCode) {
     case 5:
       return 0x1e;
     case 6:
-    case_6:
       return 0x2e;
     case 7:
     case 0x35:
@@ -285,17 +284,14 @@ QuickDrawPaletteIndex TViewMgr::GetColor(short eventCode) {
     case 0x32:
       return 0x1a;
     case 0x33:
-    case_33:
       return 0x2d;
     case 0x34:
-    case_34:
       return 0x18;
     case 0x37:
       return 0xbd;
     case 0x3a:
       return 0xc6;
     case 0x3b:
-    case_3b:
       return 0x27;
     case 0x3e:
       return 0x15;
@@ -674,8 +670,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
   case 6:
-    g_apTerrainTypeDescriptorTable[contextArg]->LoadNationDisplayNameSharedRefFromField8(
-        &nationNameText);
+    g_apTerrainTypeDescriptorTable[contextArg]->GetName(&nationNameText);
     g_pSimMgr->GetString(0x273a, 6, &templateText);
     scanBracketExpressions(g_pSimMgr, &messageText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationNameText));

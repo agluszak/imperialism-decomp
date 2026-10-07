@@ -165,7 +165,7 @@ struct TurnEvent12Packet : TimelyMessageHeader {
 struct TurnEventCKickMessagePacket : TimelyMessageHeader {
   char messageText[0x100];           // +0x18
   unsigned char targetNationBitmask; // +0x118 - 1 << slot per addressed nation
-  signed char kickerNationId;        // +0x119 - -1 = no specific kicker
+  signed char kickerNationId;        // +0x119 + 1 = no specific kicker
   unsigned char pad11a[2];           // total 0x11c
 };
 
@@ -669,7 +669,12 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     pendingMaskPacket.messageLength = 0;
     pendingMaskPacket.messageLength = 0x1c;
     pendingMaskPacket.toNetworkId = 0;
-    goto sendPendingMask;
+    g_pNetMgr->Send(&pendingMaskPacket, false);
+    if (pendingNationBitmask == 0 && syncPhase != kGamePhaseNone) {
+      HandleDiplomacyTurnEventPacketByCode();
+      return true;
+    }
+    break;
   }
   case 0xa: {
     // A resuming nation announces its home region and city name.
@@ -693,14 +698,13 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     pendingMaskPacket.messageLength = 0;
     pendingMaskPacket.messageLength = 0x1c;
     pendingMaskPacket.toNetworkId = 0;
-  }
-  sendPendingMask:
     g_pNetMgr->Send(&pendingMaskPacket, false);
     if (pendingNationBitmask == 0 && syncPhase != kGamePhaseNone) {
       HandleDiplomacyTurnEventPacketByCode();
       return true;
     }
     break;
+  }
   case 0xb: {
     TurnEventBNationDirectoryPacket* directory =
         static_cast<TurnEventBNationDirectoryPacket*>(packet);
@@ -1939,7 +1943,7 @@ TurnEventQueuePacket* TMultiplayerMgr::PopTimelyMessage() {
 }
 
 // FUNCTION: IMPERIALISM 0x00549280
-void TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node) {
+void TMultiplayerMgr::QueueTimelyMessage(TurnEventQueuePacket* node) {
   node->nextQueuePacket = 0;
   TurnEventQueuePacket** tail = &primaryTurnEventQueueHead;
   for (TurnEventQueuePacket* queued = primaryTurnEventQueueHead; queued != 0;
@@ -2675,17 +2679,15 @@ int TMultiplayerMgr::GetNationStatusCodeForSlotOrActiveNation(int slot) {
       int sessionActive = g_pNetMgr->GetSessionActiveNationId();
       slot = 0;
       int* sessionId = g_pGameFlowState->nationSessionIds;
-      do {
-        if (*sessionId == sessionActive) {
-          goto resolved;
-        }
+      while (slot < 7 && *sessionId != sessionActive) {
         ++slot;
         ++sessionId;
-      } while (slot < 7);
-      slot = -1;
+      }
+      if (slot == 7) {
+        slot = -1;
+      }
     }
   }
-resolved:
   return nationStatusTags[slot];
 }
 

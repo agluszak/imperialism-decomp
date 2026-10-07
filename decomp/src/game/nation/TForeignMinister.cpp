@@ -294,8 +294,8 @@ void TForeignMinister::DoUsualSubsidyRule() {
           owner->SetItemPotentials(orderKind, static_cast<short>(assignAmount));
         }
       }
-      orderKindCursor = orderKindCursor + 1;
-      loopCount = loopCount + -1;
+      ++orderKindCursor;
+      --loopCount;
     } while (loopCount != 0);
   }
 

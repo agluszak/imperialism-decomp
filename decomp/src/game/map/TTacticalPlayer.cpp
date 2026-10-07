@@ -64,7 +64,7 @@ TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
   int startCursor = cursorIndex;
   TTacticalUnit* unit;
   do {
-    cursorIndex = cursorIndex + 1;
+    ++cursorIndex;
     if (cursorIndex > unitList->GetCount()) {
       cursorIndex = 1; // 1-based ordinal wrap
     }

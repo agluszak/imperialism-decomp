@@ -435,307 +435,307 @@ int g_dibCompressAssertGate = 0;
 // GLOBAL: IMPERIALISM 0x006a14e0
 double g_gfxScale6A14E0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1528
-short g_scaledShortConst_6A1528 = static_cast<short>(g_gfxScale6A14E0 * 512.0 - -1.0);
+short g_scaledShortConst_6A1528 = static_cast<short>(g_gfxScale6A14E0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a1580
 double g_gfxScale6A1580 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a15c8
-short g_scaledShortConst_6A15C8 = static_cast<short>(g_gfxScale6A1580 * 512.0 - -1.0);
+short g_scaledShortConst_6A15C8 = static_cast<short>(g_gfxScale6A1580 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a12f8
 double g_gfxCoordinateScale_6A12F8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1340
-short g_scaledShortConst_6A1340 = static_cast<short>(g_gfxCoordinateScale_6A12F8 * 512.0 - -1.0);
+short g_scaledShortConst_6A1340 = static_cast<short>(g_gfxCoordinateScale_6A12F8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a13a8
 double g_gfxCoordinateScale_6A13A8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1418
-short g_scaledShortConst_6A1418 = static_cast<short>(g_gfxCoordinateScale_6A13A8 * 512.0 - -1.0);
+short g_scaledShortConst_6A1418 = static_cast<short>(g_gfxCoordinateScale_6A13A8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a1638
 double g_gfxCoordinateScale_6A1638 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1680
-short g_scaledShortConst_6A1680 = static_cast<short>(g_gfxCoordinateScale_6A1638 * 512.0 - -1.0);
+short g_scaledShortConst_6A1680 = static_cast<short>(g_gfxCoordinateScale_6A1638 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a1690
 double g_gfxCoordinateScale_6A1690 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a16d8
-short g_scaledShortConst_6A16D8 = static_cast<short>(g_gfxCoordinateScale_6A1690 * 512.0 - -1.0);
+short g_scaledShortConst_6A16D8 = static_cast<short>(g_gfxCoordinateScale_6A1690 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a1730
 double g_gfxCoordinateScale_6A1730 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a177c
-short g_scaledShortConst_6A177C = static_cast<short>(g_gfxCoordinateScale_6A1730 * 512.0 - -1.0);
+short g_scaledShortConst_6A177C = static_cast<short>(g_gfxCoordinateScale_6A1730 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a17e8
 double g_gfxCoordinateScale_6A17E8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1830
-short g_scaledShortConst_6A1830 = static_cast<short>(g_gfxCoordinateScale_6A17E8 * 512.0 - -1.0);
+short g_scaledShortConst_6A1830 = static_cast<short>(g_gfxCoordinateScale_6A17E8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a18f0
 double g_gfxCoordinateScale_6A18F0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1938
-short g_scaledShortConst_6A1938 = static_cast<short>(g_gfxCoordinateScale_6A18F0 * 512.0 - -1.0);
+short g_scaledShortConst_6A1938 = static_cast<short>(g_gfxCoordinateScale_6A18F0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a1a30
 double g_gfxCoordinateScale_6A1A30 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1ab8
-short g_scaledShortConst_6A1AB8 = static_cast<short>(g_gfxCoordinateScale_6A1A30 * 512.0 - -1.0);
+short g_scaledShortConst_6A1AB8 = static_cast<short>(g_gfxCoordinateScale_6A1A30 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a1bf0
 double g_gfxCoordinateScale_6A1BF0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1c38
-short g_scaledShortConst_6A1C38 = static_cast<short>(g_gfxCoordinateScale_6A1BF0 * 512.0 - -1.0);
+short g_scaledShortConst_6A1C38 = static_cast<short>(g_gfxCoordinateScale_6A1BF0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a1cd8
 double g_gfxCoordinateScale_6A1CD8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1d88
-short g_scaledShortConst_6A1D88 = static_cast<short>(g_gfxCoordinateScale_6A1CD8 * 512.0 - -1.0);
+short g_scaledShortConst_6A1D88 = static_cast<short>(g_gfxCoordinateScale_6A1CD8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a21f8
 double g_gfxCoordinateScale_6A21F8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2248
-short g_scaledShortConst_6A2248 = static_cast<short>(g_gfxCoordinateScale_6A21F8 * 512.0 - -1.0);
+short g_scaledShortConst_6A2248 = static_cast<short>(g_gfxCoordinateScale_6A21F8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2268
 double g_gfxCoordinateScale_6A2268 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a22d8
-short g_scaledShortConst_6A22D8 = static_cast<short>(g_gfxCoordinateScale_6A2268 * 512.0 - -1.0);
+short g_scaledShortConst_6A22D8 = static_cast<short>(g_gfxCoordinateScale_6A2268 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2308
 double g_gfxCoordinateScale_6A2308 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2350
-short g_scaledShortConst_6A2350 = static_cast<short>(g_gfxCoordinateScale_6A2308 * 512.0 - -1.0);
+short g_scaledShortConst_6A2350 = static_cast<short>(g_gfxCoordinateScale_6A2308 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2360
 double g_gfxCoordinateScale_6A2360 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a23b0
-short g_scaledShortConst_6A23B0 = static_cast<short>(g_gfxCoordinateScale_6A2360 * 512.0 - -1.0);
+short g_scaledShortConst_6A23B0 = static_cast<short>(g_gfxCoordinateScale_6A2360 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a23d0
 double g_gfxCoordinateScale_6A23D0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2418
-short g_scaledShortConst_6A2418 = static_cast<short>(g_gfxCoordinateScale_6A23D0 * 512.0 - -1.0);
+short g_scaledShortConst_6A2418 = static_cast<short>(g_gfxCoordinateScale_6A23D0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2428
 double g_gfxCoordinateScale_6A2428 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2470
-short g_scaledShortConst_6A2470 = static_cast<short>(g_gfxCoordinateScale_6A2428 * 512.0 - -1.0);
+short g_scaledShortConst_6A2470 = static_cast<short>(g_gfxCoordinateScale_6A2428 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2488
 double g_gfxCoordinateScale_6A2488 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a24d0
-short g_scaledShortConst_6A24D0 = static_cast<short>(g_gfxCoordinateScale_6A2488 * 512.0 - -1.0);
+short g_scaledShortConst_6A24D0 = static_cast<short>(g_gfxCoordinateScale_6A2488 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2968
 double g_gfxCoordinateScale_6A2968 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2ab8
-short g_scaledShortConst_6A2AB8 = static_cast<short>(g_gfxCoordinateScale_6A2968 * 512.0 - -1.0);
+short g_scaledShortConst_6A2AB8 = static_cast<short>(g_gfxCoordinateScale_6A2968 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2bf8
 double g_gfxCoordinateScale_6A2BF8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2c60
-short g_scaledShortConst_6A2C60 = static_cast<short>(g_gfxCoordinateScale_6A2BF8 * 512.0 - -1.0);
+short g_scaledShortConst_6A2C60 = static_cast<short>(g_gfxCoordinateScale_6A2BF8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2c98
 double g_gfxCoordinateScale_6A2C98 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2d00
-short g_scaledShortConst_6A2D00 = static_cast<short>(g_gfxCoordinateScale_6A2C98 * 512.0 - -1.0);
+short g_scaledShortConst_6A2D00 = static_cast<short>(g_gfxCoordinateScale_6A2C98 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2d30
 double g_gfxCoordinateScale_6A2D30 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2d80
-short g_scaledShortConst_6A2D80 = static_cast<short>(g_gfxCoordinateScale_6A2D30 * 512.0 - -1.0);
+short g_scaledShortConst_6A2D80 = static_cast<short>(g_gfxCoordinateScale_6A2D30 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2de0
 double g_gfxCoordinateScale_6A2DE0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2e28
-short g_scaledShortConst_6A2E28 = static_cast<short>(g_gfxCoordinateScale_6A2DE0 * 512.0 - -1.0);
+short g_scaledShortConst_6A2E28 = static_cast<short>(g_gfxCoordinateScale_6A2DE0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2e38
 double g_gfxCoordinateScale_6A2E38 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2e80
-short g_scaledShortConst_6A2E80 = static_cast<short>(g_gfxCoordinateScale_6A2E38 * 512.0 - -1.0);
+short g_scaledShortConst_6A2E80 = static_cast<short>(g_gfxCoordinateScale_6A2E38 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2e90
 double g_gfxCoordinateScale_6A2E90 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2ee8
-short g_scaledShortConst_6A2EE8 = static_cast<short>(g_gfxCoordinateScale_6A2E90 * 512.0 - -1.0);
+short g_scaledShortConst_6A2EE8 = static_cast<short>(g_gfxCoordinateScale_6A2E90 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2f00
 double g_gfxCoordinateScale_6A2F00 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2f48
-short g_scaledShortConst_6A2F48 = static_cast<short>(g_gfxCoordinateScale_6A2F00 * 512.0 - -1.0);
+short g_scaledShortConst_6A2F48 = static_cast<short>(g_gfxCoordinateScale_6A2F00 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2f58
 double g_gfxCoordinateScale_6A2F58 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2fa0
-short g_scaledShortConst_6A2FA0 = static_cast<short>(g_gfxCoordinateScale_6A2F58 * 512.0 - -1.0);
+short g_scaledShortConst_6A2FA0 = static_cast<short>(g_gfxCoordinateScale_6A2F58 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a2fb0
 double g_gfxCoordinateScale_6A2FB0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3018
-short g_scaledShortConst_6A3018 = static_cast<short>(g_gfxCoordinateScale_6A2FB0 * 512.0 - -1.0);
+short g_scaledShortConst_6A3018 = static_cast<short>(g_gfxCoordinateScale_6A2FB0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3048
 double g_gfxCoordinateScale_6A3048 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a30a0
-short g_scaledShortConst_6A30A0 = static_cast<short>(g_gfxCoordinateScale_6A3048 * 512.0 - -1.0);
+short g_scaledShortConst_6A30A0 = static_cast<short>(g_gfxCoordinateScale_6A3048 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3118
 double g_gfxCoordinateScale_6A3118 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3160
-short g_scaledShortConst_6A3160 = static_cast<short>(g_gfxCoordinateScale_6A3118 * 512.0 - -1.0);
+short g_scaledShortConst_6A3160 = static_cast<short>(g_gfxCoordinateScale_6A3118 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3170
 double g_gfxCoordinateScale_6A3170 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a31b8
-short g_scaledShortConst_6A31B8 = static_cast<short>(g_gfxCoordinateScale_6A3170 * 512.0 - -1.0);
+short g_scaledShortConst_6A31B8 = static_cast<short>(g_gfxCoordinateScale_6A3170 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a31d8
 double g_gfxCoordinateScale_6A31D8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3220
-short g_scaledShortConst_6A3220 = static_cast<short>(g_gfxCoordinateScale_6A31D8 * 512.0 - -1.0);
+short g_scaledShortConst_6A3220 = static_cast<short>(g_gfxCoordinateScale_6A31D8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3230
 double g_gfxCoordinateScale_6A3230 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3278
-short g_scaledShortConst_6A3278 = static_cast<short>(g_gfxCoordinateScale_6A3230 * 512.0 - -1.0);
+short g_scaledShortConst_6A3278 = static_cast<short>(g_gfxCoordinateScale_6A3230 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3290
 double g_gfxCoordinateScale_6A3290 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a32e0
-short g_scaledShortConst_6A32E0 = static_cast<short>(g_gfxCoordinateScale_6A3290 * 512.0 - -1.0);
+short g_scaledShortConst_6A32E0 = static_cast<short>(g_gfxCoordinateScale_6A3290 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3488
 double g_gfxCoordinateScale_6A3488 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a38f4
-short g_scaledShortConst_6A38F4 = static_cast<short>(g_gfxCoordinateScale_6A3488 * 512.0 - -1.0);
+short g_scaledShortConst_6A38F4 = static_cast<short>(g_gfxCoordinateScale_6A3488 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3a08
 double g_gfxCoordinateScale_6A3A08 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3a50
-short g_scaledShortConst_6A3A50 = static_cast<short>(g_gfxCoordinateScale_6A3A08 * 512.0 - -1.0);
+short g_scaledShortConst_6A3A50 = static_cast<short>(g_gfxCoordinateScale_6A3A08 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3a78
 double g_gfxCoordinateScale_6A3A78 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3b80
-short g_scaledShortConst_6A3B80 = static_cast<short>(g_gfxCoordinateScale_6A3A78 * 512.0 - -1.0);
+short g_scaledShortConst_6A3B80 = static_cast<short>(g_gfxCoordinateScale_6A3A78 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3bf8
 double g_gfxCoordinateScale_6A3BF8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3c64
-short g_scaledShortConst_6A3C64 = static_cast<short>(g_gfxCoordinateScale_6A3BF8 * 512.0 - -1.0);
+short g_scaledShortConst_6A3C64 = static_cast<short>(g_gfxCoordinateScale_6A3BF8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3c88
 double g_gfxCoordinateScale_6A3C88 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3cd0
-short g_scaledShortConst_6A3CD0 = static_cast<short>(g_gfxCoordinateScale_6A3C88 * 512.0 - -1.0);
+short g_scaledShortConst_6A3CD0 = static_cast<short>(g_gfxCoordinateScale_6A3C88 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3ce8
 double g_gfxCoordinateScale_6A3CE8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3d50
-short g_scaledShortConst_6A3D50 = static_cast<short>(g_gfxCoordinateScale_6A3CE8 * 512.0 - -1.0);
+short g_scaledShortConst_6A3D50 = static_cast<short>(g_gfxCoordinateScale_6A3CE8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3d88
 double g_gfxCoordinateScale_6A3D88 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3dd0
-short g_scaledShortConst_6A3DD0 = static_cast<short>(g_gfxCoordinateScale_6A3D88 * 512.0 - -1.0);
+short g_scaledShortConst_6A3DD0 = static_cast<short>(g_gfxCoordinateScale_6A3D88 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3de8
 double g_gfxCoordinateScale_6A3DE8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3eb8
-short g_scaledShortConst_6A3EB8 = static_cast<short>(g_gfxCoordinateScale_6A3DE8 * 512.0 - -1.0);
+short g_scaledShortConst_6A3EB8 = static_cast<short>(g_gfxCoordinateScale_6A3DE8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3f18
 double g_gfxCoordinateScale_6A3F18 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3f60
-short g_scaledShortConst_6A3F60 = static_cast<short>(g_gfxCoordinateScale_6A3F18 * 512.0 - -1.0);
+short g_scaledShortConst_6A3F60 = static_cast<short>(g_gfxCoordinateScale_6A3F18 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3f70
 double g_gfxCoordinateScale_6A3F70 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a3fb8
-short g_scaledShortConst_6A3FB8 = static_cast<short>(g_gfxCoordinateScale_6A3F70 * 512.0 - -1.0);
+short g_scaledShortConst_6A3FB8 = static_cast<short>(g_gfxCoordinateScale_6A3F70 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a3fe0
 double g_gfxCoordinateScale_6A3FE0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a4028
-short g_scaledShortConst_6A4028 = static_cast<short>(g_gfxCoordinateScale_6A3FE0 * 512.0 - -1.0);
+short g_scaledShortConst_6A4028 = static_cast<short>(g_gfxCoordinateScale_6A3FE0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a4038
 double g_gfxCoordinateScale_6A4038 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a4080
-short g_scaledShortConst_6A4080 = static_cast<short>(g_gfxCoordinateScale_6A4038 * 512.0 - -1.0);
+short g_scaledShortConst_6A4080 = static_cast<short>(g_gfxCoordinateScale_6A4038 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a4098
 double g_gfxCoordinateScale_6A4098 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a40e0
-short g_scaledShortConst_6A40E0 = static_cast<short>(g_gfxCoordinateScale_6A4098 * 512.0 - -1.0);
+short g_scaledShortConst_6A40E0 = static_cast<short>(g_gfxCoordinateScale_6A4098 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a40f0
 double g_gfxCoordinateScale_6A40F0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a4138
-short g_scaledShortConst_6A4138 = static_cast<short>(g_gfxCoordinateScale_6A40F0 * 512.0 - -1.0);
+short g_scaledShortConst_6A4138 = static_cast<short>(g_gfxCoordinateScale_6A40F0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a4148
 double g_gfxCoordinateScale_6A4148 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a4190
-short g_scaledShortConst_6A4190 = static_cast<short>(g_gfxCoordinateScale_6A4148 * 512.0 - -1.0);
+short g_scaledShortConst_6A4190 = static_cast<short>(g_gfxCoordinateScale_6A4148 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a41b0
 double g_gfxCoordinateScale_6A41B0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a41f8
-short g_scaledShortConst_6A41F8 = static_cast<short>(g_gfxCoordinateScale_6A41B0 * 512.0 - -1.0);
+short g_scaledShortConst_6A41F8 = static_cast<short>(g_gfxCoordinateScale_6A41B0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a4208
 double g_gfxCoordinateScale_6A4208 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a4260
-short g_scaledShortConst_6A4260 = static_cast<short>(g_gfxCoordinateScale_6A4208 * 512.0 - -1.0);
+short g_scaledShortConst_6A4260 = static_cast<short>(g_gfxCoordinateScale_6A4208 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a42e0
 double g_gfxCoordinateScale_6A42E0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a43bc
-short g_scaledShortConst_6A43BC = static_cast<short>(g_gfxCoordinateScale_6A42E0 * 512.0 - -1.0);
+short g_scaledShortConst_6A43BC = static_cast<short>(g_gfxCoordinateScale_6A42E0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a4440
 double g_gfxCoordinateScale_6A4440 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a4488
-short g_scaledShortConst_6A4488 = static_cast<short>(g_gfxCoordinateScale_6A4440 * 512.0 - -1.0);
+short g_scaledShortConst_6A4488 = static_cast<short>(g_gfxCoordinateScale_6A4440 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a44d0
 double g_gfxCoordinateScale_6A44D0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a4518
-short g_scaledShortConst_6A4518 = static_cast<short>(g_gfxCoordinateScale_6A44D0 * 512.0 - -1.0);
+short g_scaledShortConst_6A4518 = static_cast<short>(g_gfxCoordinateScale_6A44D0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a4538
 double g_gfxCoordinateScale_6A4538 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a4580
-short g_scaledShortConst_6A4580 = static_cast<short>(g_gfxCoordinateScale_6A4538 * 512.0 - -1.0);
+short g_scaledShortConst_6A4580 = static_cast<short>(g_gfxCoordinateScale_6A4538 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a4630
 double g_gfxCoordinateScale_6A4630 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a46a0
-short g_scaledShortConst_6A46A0 = static_cast<short>(g_gfxCoordinateScale_6A4630 * 512.0 - -1.0);
+short g_scaledShortConst_6A46A0 = static_cast<short>(g_gfxCoordinateScale_6A4630 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a46d8
 double g_gfxCoordinateScale_6A46D8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a4748
-short g_scaledShortConst_6A4748 = static_cast<short>(g_gfxCoordinateScale_6A46D8 * 512.0 - -1.0);
+short g_scaledShortConst_6A4748 = static_cast<short>(g_gfxCoordinateScale_6A46D8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5438
 double g_gfxCoordinateScale_6A5438 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a54a8
-short g_scaledShortConst_6A54A8 = static_cast<short>(g_gfxCoordinateScale_6A5438 * 512.0 - -1.0);
+short g_scaledShortConst_6A54A8 = static_cast<short>(g_gfxCoordinateScale_6A5438 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5760
 double g_gfxCoordinateScale_6A5760 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a57a8
-short g_scaledShortConst_6A57A8 = static_cast<short>(g_gfxCoordinateScale_6A5760 * 512.0 - -1.0);
+short g_scaledShortConst_6A57A8 = static_cast<short>(g_gfxCoordinateScale_6A5760 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a57b8
 double g_gfxCoordinateScale_6A57B8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5800
-short g_scaledShortConst_6A5800 = static_cast<short>(g_gfxCoordinateScale_6A57B8 * 512.0 - -1.0);
+short g_scaledShortConst_6A5800 = static_cast<short>(g_gfxCoordinateScale_6A57B8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5810
 double g_gfxCoordinateScale_6A5810 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5858
-short g_scaledShortConst_6A5858 = static_cast<short>(g_gfxCoordinateScale_6A5810 * 512.0 - -1.0);
+short g_scaledShortConst_6A5858 = static_cast<short>(g_gfxCoordinateScale_6A5810 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5868
 double g_gfxCoordinateScale_6A5868 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a58b0
-short g_scaledShortConst_6A58B0 = static_cast<short>(g_gfxCoordinateScale_6A5868 * 512.0 - -1.0);
+short g_scaledShortConst_6A58B0 = static_cast<short>(g_gfxCoordinateScale_6A5868 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a58c0
 double g_gfxCoordinateScale_6A58C0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5908
-short g_scaledShortConst_6A5908 = static_cast<short>(g_gfxCoordinateScale_6A58C0 * 512.0 - -1.0);
+short g_scaledShortConst_6A5908 = static_cast<short>(g_gfxCoordinateScale_6A58C0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5920
 double g_gfxCoordinateScale_6A5920 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5968
-short g_scaledShortConst_6A5968 = static_cast<short>(g_gfxCoordinateScale_6A5920 * 512.0 - -1.0);
+short g_scaledShortConst_6A5968 = static_cast<short>(g_gfxCoordinateScale_6A5920 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5978
 double g_gfxCoordinateScale_6A5978 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a59c0
-short g_scaledShortConst_6A59C0 = static_cast<short>(g_gfxCoordinateScale_6A5978 * 512.0 - -1.0);
+short g_scaledShortConst_6A59C0 = static_cast<short>(g_gfxCoordinateScale_6A5978 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a59d0
 double g_gfxCoordinateScale_6A59D0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5a20
-short g_scaledShortConst_6A5A20 = static_cast<short>(g_gfxCoordinateScale_6A59D0 * 512.0 - -1.0);
+short g_scaledShortConst_6A5A20 = static_cast<short>(g_gfxCoordinateScale_6A59D0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5a48
 double g_gfxCoordinateScale_6A5A48 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5a90
-short g_scaledShortConst_6A5A90 = static_cast<short>(g_gfxCoordinateScale_6A5A48 * 512.0 - -1.0);
+short g_scaledShortConst_6A5A90 = static_cast<short>(g_gfxCoordinateScale_6A5A48 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5aa0
 double g_gfxCoordinateScale_6A5AA0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5ae8
-short g_scaledShortConst_6A5AE8 = static_cast<short>(g_gfxCoordinateScale_6A5AA0 * 512.0 - -1.0);
+short g_scaledShortConst_6A5AE8 = static_cast<short>(g_gfxCoordinateScale_6A5AA0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5b48
 double g_gfxCoordinateScale_6A5B48 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5ba8
-short g_scaledShortConst_6A5BA8 = static_cast<short>(g_gfxCoordinateScale_6A5B48 * 512.0 - -1.0);
+short g_scaledShortConst_6A5BA8 = static_cast<short>(g_gfxCoordinateScale_6A5B48 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5bd0
 double g_gfxCoordinateScale_6A5BD0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5c18
-short g_scaledShortConst_6A5C18 = static_cast<short>(g_gfxCoordinateScale_6A5BD0 * 512.0 - -1.0);
+short g_scaledShortConst_6A5C18 = static_cast<short>(g_gfxCoordinateScale_6A5BD0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5c28
 double g_gfxCoordinateScale_6A5C28 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5c70
-short g_scaledShortConst_6A5C70 = static_cast<short>(g_gfxCoordinateScale_6A5C28 * 512.0 - -1.0);
+short g_scaledShortConst_6A5C70 = static_cast<short>(g_gfxCoordinateScale_6A5C28 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5c80
 double g_gfxCoordinateScale_6A5C80 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5cf0
-short g_scaledShortConst_6A5CF0 = static_cast<short>(g_gfxCoordinateScale_6A5C80 * 512.0 - -1.0);
+short g_scaledShortConst_6A5CF0 = static_cast<short>(g_gfxCoordinateScale_6A5C80 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5de0
 double g_gfxCoordinateScale_6A5DE0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5e28
-short g_scaledShortConst_6A5E28 = static_cast<short>(g_gfxCoordinateScale_6A5DE0 * 512.0 - -1.0);
+short g_scaledShortConst_6A5E28 = static_cast<short>(g_gfxCoordinateScale_6A5DE0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a5ec8
 double g_gfxCoordinateScale_6A5EC8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a5f3c
-short g_scaledShortConst_6A5F3C = static_cast<short>(g_gfxCoordinateScale_6A5EC8 * 512.0 - -1.0);
+short g_scaledShortConst_6A5F3C = static_cast<short>(g_gfxCoordinateScale_6A5EC8 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a6070
 double g_gfxCoordinateScale_6A6070 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a60b8
-short g_scaledShortConst_6A60B8 = static_cast<short>(g_gfxCoordinateScale_6A6070 * 512.0 - -1.0);
+short g_scaledShortConst_6A60B8 = static_cast<short>(g_gfxCoordinateScale_6A6070 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x00698ab8
 char g_szSetupScreensSourcePath[] = "D:\\Ambit\\Cross\\USetupScreens.cpp";
 // GLOBAL: IMPERIALISM 0x006a4264
@@ -1317,7 +1317,7 @@ double g_ScaleDefault6A1FE8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1fc0
 double g_ScaleDefault6A1FC0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2008
-short g_scaledDefaultWidth = static_cast<short>(g_ScaleDefault6A1FC0 * 512.0 - -1.0);
+short g_scaledDefaultWidth = static_cast<short>(g_ScaleDefault6A1FC0 * 512.0 + 1.0);
 // GLOBAL: IMPERIALISM 0x006a1fd0
 CPoint g_defaultPoint_006A1FD0(0, 0);
 // GLOBAL: IMPERIALISM 0x006a2000
@@ -1367,7 +1367,7 @@ double g_ScaleDefault6A2140 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2108
 double g_ScaleDefault6A2108 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a21ac
-short g_scaledShortConst_6A21AC = static_cast<short>(g_ScaleDefault6A2108 * 512.0 - -1.0);
+short g_scaledShortConst_6A21AC = static_cast<short>(g_ScaleDefault6A2108 * 512.0 + 1.0);
 
 // Nonzero CPoint defaults emitted as direct dword stores.
 // GLOBAL: IMPERIALISM 0x006a2150
@@ -2002,7 +2002,7 @@ static inline double DefaultMiniMapViewportCoordinateScale() {
 
 static double s_miniMapViewportCoordinateScale = DefaultMiniMapViewportCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a460c
-short g_defaultMarkerBoxWidth = static_cast<short>(s_miniMapViewportCoordinateScale * 512.0 - -1.0);
+short g_defaultMarkerBoxWidth = static_cast<short>(s_miniMapViewportCoordinateScale * 512.0 + 1.0);
 
 // Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
 // GLOBAL: IMPERIALISM 0x00698010

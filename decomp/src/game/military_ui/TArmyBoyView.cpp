@@ -26,14 +26,14 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&nameString);
   SetQuickDrawFillColor(0);
 
-  short sVar1 = level / 0x19 + 1;
-  if (sVar1 > 0x14) {
-    sVar1 = 0x14;
+  short barLength = level / 0x19 + 1;
+  if (barLength > 0x14) {
+    barLength = 0x14;
   }
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
-  short sVar2 = (sVar1 < 5) ? 0x1a : ((sVar1 > 0xe) ? 10 : 18);
-  RECT srcRect = {0, sVar2, sVar1 * 4 - 1, sVar2 + 7};
-  RECT dstRect = {0x43, 0x1f, sVar1 * 4 + 0x42, 0x26};
+  short barSpriteRow = (barLength < 5) ? 0x1a : ((barLength > 0xe) ? 10 : 18);
+  RECT srcRect = {0, barSpriteRow, barLength * 4 - 1, barSpriteRow + 7};
+  RECT dstRect = {0x43, 0x1f, barLength * 4 + 0x42, 0x26};
 
   if (level < 1) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1, 0xc, 0x2b67);

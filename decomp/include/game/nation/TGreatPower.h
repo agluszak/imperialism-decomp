@@ -174,14 +174,14 @@ public:
   // ORACLE: Mac names this TGreatPower::AddToDealBook(short, short, short, short, long).
   virtual void AddToDealBook(short kind, NationSlot targetNation, short value, short slotIndex,
                              int payload);
-  virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d
-  virtual bool AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
+  virtual short GetTrackedSlotEntryCountLow(short targetSlot); // slot 0x6d
+  virtual bool AnyDealHasZeroValue(short targetSlot);          // slot 0x6e
   // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
   virtual void GetDealInfo(short slotIndex, short ordinal, short* outKind, short* outValue,
                            short* outTargetNation, int* outPayload);
-  virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
-                                                             int payload); // slot 0x70
-  virtual void ClearTradeOffers(void);                                     // index 113
+  virtual void SetDealPayloadForTarget(int targetSlot, int matchKey,
+                                       int payload); // slot 0x70
+  virtual void ClearTradeOffers(void);               // index 113
   // ORACLE: Mac names TGreatPower::SetDiplomacyPolicies().
   virtual void SetDiplomacyPolicies();                                           // index 114
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void); // index 115
@@ -283,7 +283,7 @@ public:
   virtual void AnnounceLater(short orderKind, short payload, short flags);
   virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 
-  // LoadNationDisplayNameSharedRefFromField8 moved to TCountry (its field's owner).
+  // GetName moved to TCountry (its field's owner).
 
   int ComputeNationNavyOrderWeightedMovementScore();
   int RecomputeNationComparativePowerMetrics_Impl();

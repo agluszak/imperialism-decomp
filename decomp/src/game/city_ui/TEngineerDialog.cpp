@@ -85,7 +85,7 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &bodyTileRect, &dstRect, 0);
       bodyY = static_cast<short>(bodyY + 0x0e);
-      bodyRowCount = bodyRowCount - 1;
+      --bodyRowCount;
     } while (bodyRowCount != 0);
   }
 

@@ -80,14 +80,14 @@ public:
   void InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot);
   void GenerateEthnicName(CString* out) const; // 0x4d7eb0
   void FormatOverlayTerrainLabelText(CString* out);
-  void LoadNationDisplayNameSharedRefFromField8(CString* destString);
-  void LoadNationDisplayNameRawFromField8(CString* destString);
+  void GetName(CString* destString);
+  void GetNameWithCode(CString* destString);
   int ComputeSelectedMilitaryPowerScore();
   void AssignSharedStringFromDescriptorNameOrDefault(CString* out);
 
   void SetNationDisplayNameAndLocalizationSlotRef(const CString& name);
 
-  void SetSerializedField8c(int value);
+  void SetOverlayAnchorTile(int value);
 
   bool IsNationProfileInMinorRange100To199();
 

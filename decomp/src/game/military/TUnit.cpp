@@ -45,7 +45,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
   this->orderTargetIndex = static_cast<short>(-1);
 
   TSimMgr* simMgr = g_pSimMgr;
-  simMgr->lastPersistentUnitId = simMgr->lastPersistentUnitId + 1;
+  ++simMgr->lastPersistentUnitId;
   this->persistentUnitId = simMgr->lastPersistentUnitId;
 }
 

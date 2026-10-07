@@ -1251,7 +1251,7 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   float attackPower;
   {
     double strengthFactor = 1.0 - attackerUnit->qualityLevel * -0.1; // = 1 + 0.1*quality
-    strengthFactor = strengthFactor * g_afTacticalBaseAttackPowerByUnitType[attackerUnit->unitType];
+    strengthFactor *= g_afTacticalBaseAttackPowerByUnitType[attackerUnit->unitType];
     if (meleeAdjacent) {
       strengthFactor = strengthFactor *
                        g_afTacticalMeleeMultiplierByCategory

@@ -57,8 +57,8 @@ private:
   short selectedBuildingSlot;
   bool needsRefresh;
   unsigned char paddingA7;
-  short currentMonth;
-  short currentWeek;
+  short clockHour;       // 0-11, -1 until first drawn
+  short clockMinuteMark; // minutes / 5
   TBuildingView* buildingViews[16];
   // One region handle per building slot, disposed by Free().
   RgnHandle buildingClipRegions[16];

@@ -524,9 +524,9 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
     TMinor* minor = g_apSecondaryNationStateSlots[targetNation];
     short ownerSlot = minor->encodedNationSlot;
     if (ownerSlot >= 200) {
-      ownerSlot = static_cast<short>(ownerSlot + -200);
+      ownerSlot = static_cast<short>(ownerSlot - 200);
     } else if (ownerSlot >= 100) {
-      ownerSlot = static_cast<short>(ownerSlot + -100);
+      ownerSlot = static_cast<short>(ownerSlot - 100);
     } else {
       ownerSlot = minor->nationSlot;
     }
@@ -1692,7 +1692,7 @@ short CompareMissionsByWeightedShortfall(TMission* left, TMission* right) {
 
   float rightShortfall = 1.0f - right->GetWeightedSatisfaction();
   if (0.0f <= rightShortfall) {
-    rightShortfall = rightShortfall * right->importanceScore;
+    rightShortfall *= right->importanceScore;
   } else {
     rightShortfall = rightShortfall / right->importanceScore;
   }

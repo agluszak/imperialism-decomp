@@ -302,7 +302,7 @@ bool MapRenderingProbe::HoverMovementRestoresPreviousTiles(TMapDialog* mapDialog
       short band;
       CPoint point(x, y);
       mapDialog->ConvertPoint(point, column, row, band);
-      short tile = static_cast<short>(ComputeStridedRecordAddress6C(column, row));
+      short tile = static_cast<short>(TileIndexFromColumnRow(column, row));
       if (tile == excludedTile) {
         continue;
       }
