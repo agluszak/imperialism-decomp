@@ -1,11 +1,6 @@
 # ---------------------------------------------------------------------------
-# recovery — slice discovery and Mac evidence.
+# recovery — Mac evidence and source-model diagnostics.
 # ---------------------------------------------------------------------------
-
-[private]
-[group('recovery')]
-slice-discovery class address:
-  uv run python -m tools.workflow.slice_discovery "{{class}}" --address "{{address}}"
 
 # MUTATES: vendor/macos_codewarrior/evidence (regenerates the vendored Mac evidence).
 [private]

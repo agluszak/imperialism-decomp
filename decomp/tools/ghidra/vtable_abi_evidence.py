@@ -122,7 +122,7 @@ class Extractor:
         return ("none", 0)
 
     def ecx_verdict(self, fn) -> str:
-        """'ecx_this' | 'no_ecx' | 'empty' (same rules as scan_cdecl_thiscall)."""
+        """'ecx_this' | 'no_ecx' | 'empty' (incoming ECX heuristic)."""
         it = self.listing.getInstructions(fn.getBody(), True)
         seen = 0
         while it.hasNext() and seen < 10:
