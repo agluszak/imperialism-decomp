@@ -70,21 +70,21 @@ wheels = [
 
 [[package]]
 name = "ghidra-stubs"
-version = "12.1.2"
-source = { registry = "https://pypi.org/simple" }
+version = "12.3"
+source = { url = "https://github.com/agluszak/ghidra/releases/download/wizardry-cfd01e0128630ae9d162009ec7af402fe57bced2/ghidra_stubs-12.3-py3-none-any.whl" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a2/04/e081d16bfa66d5117e5b1de49607fb57488fd9efad9fc89c7eb4ed5c5ae2/ghidra_stubs-12.1.2-py3-none-any.whl", hash = "sha256:52bfa4c5b194b3acc5d5a2213324a2f922c23f4a12e8d4b6a23e304310a53b18", size = 3784662, upload-time = "2026-06-08T11:07:49.662Z" },
+    { url = "https://github.com/agluszak/ghidra/releases/download/wizardry-cfd01e0128630ae9d162009ec7af402fe57bced2/ghidra_stubs-12.3-py3-none-any.whl", hash = "sha256:6fcad24726d31ff44b1e87efa465799568e8c845aef589c638069c1e91e170f1" },
 ]
 
 [[package]]
 name = "ghidriff"
 version = "1.0.0"
-source = { url = "https://github.com/agluszak/ghidriff/archive/b1b7f11a3eecfc605151982acba6b444a00db702.tar.gz" }
+source = { url = "https://github.com/agluszak/ghidriff/archive/a1ddd07630bfb4ac9b56057a24808e92acc6ab97.tar.gz" }
 dependencies = [
     { name = "mdutils" },
     { name = "pyghidra" },
 ]
-sdist = { hash = "sha256:d8e0b71544f531be3963747ac18ec79404b8124b3f1c5f66b81cb8e22d09f204" }
+sdist = { hash = "sha256:90ddaf1f1fa31b8a1eb1c06373991b6f60c7be1d45b71574ea99eebe12d69e75" }
 
 [package.metadata]
 requires-dist = [
@@ -122,13 +122,13 @@ dependencies = [
 requires-dist = [
     { name = "capstone", specifier = ">=5.0.7" },
     { name = "clang-format", specifier = "==21.1.8" },
-    { name = "ghidra-stubs", specifier = ">=12.1.2" },
+    { name = "ghidra-stubs", url = "https://github.com/agluszak/ghidra/releases/download/wizardry-cfd01e0128630ae9d162009ec7af402fe57bced2/ghidra_stubs-12.3-py3-none-any.whl" },
     { name = "pillow", specifier = ">=11.3.0" },
     { name = "pygdbmi", specifier = "==0.11.0.0" },
-    { name = "pyghidra", specifier = "==3.1.0" },
+    { name = "pyghidra", url = "https://github.com/agluszak/ghidra/releases/download/wizardry-cfd01e0128630ae9d162009ec7af402fe57bced2/pyghidra-3.3.0-py3-none-any.whl" },
     { name = "python-xlib", specifier = ">=0.33" },
     { name = "pyyaml", specifier = ">=6.0.3" },
-    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=00bf5625ad9f54cd0690867b9e9bcdc7e835df14" },
+    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=03c5428199d71adfd83f2c05aa4cb06b0cfd3f63" },
     { name = "tree-sitter", specifier = ">=0.26.0" },
     { name = "tree-sitter-cpp", specifier = ">=0.23.4" },
 ]
@@ -418,16 +418,26 @@ wheels = [
 
 [[package]]
 name = "pyghidra"
-version = "3.1.0"
-source = { registry = "https://pypi.org/simple" }
+version = "3.3.0"
+source = { url = "https://github.com/agluszak/ghidra/releases/download/wizardry-cfd01e0128630ae9d162009ec7af402fe57bced2/pyghidra-3.3.0-py3-none-any.whl" }
 dependencies = [
     { name = "jpype1" },
     { name = "packaging" },
+    { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1f/eb/842a540cf3a8328a76636de17b0f5b3b11ac75c50a89660260f27021412a/pyghidra-3.1.0.tar.gz", hash = "sha256:2106ac131eb9a4990a79ee84dc2d39a792cf7b2d0de5eaaf1b0e6d7d2d290bb6", size = 53509, upload-time = "2026-05-14T10:00:11.403Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0d/e9/1d8f9a790be5c6d3f95a8c1428016269c0c049ae70463bc3edbc76f2bb04/pyghidra-3.1.0-py3-none-any.whl", hash = "sha256:62d76e4c42352fc38cb3a9526ba7e25681d21388c16e59a2d17e99aeaf47ac94", size = 51595, upload-time = "2026-05-14T09:59:59.323Z" },
+    { url = "https://github.com/agluszak/ghidra/releases/download/wizardry-cfd01e0128630ae9d162009ec7af402fe57bced2/pyghidra-3.3.0-py3-none-any.whl", hash = "sha256:815cbeded2902f30ace80db95434856b04134ac953f945144035157591e9b878" },
 ]
+
+[package.metadata]
+requires-dist = [
+    { name = "jpype1", specifier = ">=1.5.2,!=1.6.0,!=1.7.0" },
+    { name = "packaging" },
+    { name = "pytest", marker = "extra == 'testing'" },
+    { name = "pytest-datadir", marker = "extra == 'testing'" },
+    { name = "typing-extensions", specifier = "~=4.16" },
+]
+provides-extras = ["testing"]
 
 [[package]]
 name = "python-xlib"
@@ -499,7 +509,7 @@ wheels = [
 [[package]]
 name = "reccmp"
 version = "0.1.7"
-source = { git = "https://github.com/agluszak/reccmp.git?rev=00bf5625ad9f54cd0690867b9e9bcdc7e835df14#00bf5625ad9f54cd0690867b9e9bcdc7e835df14" }
+source = { git = "https://github.com/agluszak/reccmp.git?rev=03c5428199d71adfd83f2c05aa4cb06b0cfd3f63#03c5428199d71adfd83f2c05aa4cb06b0cfd3f63" }
 dependencies = [
     { name = "capstone" },
     { name = "colorama" },
@@ -585,11 +595,11 @@ wheels = [
 
 [[package]]
 name = "typing-extensions"
-version = "4.15.0"
+version = "4.16.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/72/94/1a15dd82efb362ac84269196e94cf00f187f7ed21c242792a923cdb1c61f/typing_extensions-4.15.0.tar.gz", hash = "sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466", size = 109391, upload-time = "2025-08-25T13:49:26.313Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f6/cc/6253133b5bb138fc3306cebfbda2c520f545d36b5be2c7255cc528bb45d6/typing_extensions-4.16.0.tar.gz", hash = "sha256:dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5", size = 113555, upload-time = "2026-07-02T08:40:05.92Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/18/67/36e9267722cc04a6b9f15c7f3441c2363321a3ea07da7ae0c0707beb2a9c/typing_extensions-4.15.0-py3-none-any.whl", hash = "sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548", size = 44614, upload-time = "2025-08-25T13:49:24.86Z" },
+    { url = "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl", hash = "sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8", size = 45571, upload-time = "2026-07-02T08:40:04.659Z" },
 ]
 
 [[package]]

@@ -4,10 +4,10 @@ version = "0.1.0"
 description = "Imperialism (1997) decompilation tooling"
 requires-python = ">=3.11"
 dependencies = [
-    "pyghidra==3.1.0",
+    "pyghidra @ https://github.com/agluszak/ghidra/releases/download/wizardry-cfd01e0128630ae9d162009ec7af402fe57bced2/pyghidra-3.3.0-py3-none-any.whl",
     "clang-format==21.1.8",
-    "reccmp @ git+https://github.com/agluszak/reccmp.git@00bf5625ad9f54cd0690867b9e9bcdc7e835df14",
-    "ghidra-stubs>=12.1.2",
+    "reccmp @ git+https://github.com/agluszak/reccmp.git@03c5428199d71adfd83f2c05aa4cb06b0cfd3f63",
+    "ghidra-stubs @ https://github.com/agluszak/ghidra/releases/download/wizardry-cfd01e0128630ae9d162009ec7af402fe57bced2/ghidra_stubs-12.3-py3-none-any.whl",
     "pyyaml>=6.0.3",
     "capstone>=5.0.7",
     "tree-sitter>=0.26.0",

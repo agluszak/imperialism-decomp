@@ -37,7 +37,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--ghidra-install-dir",
         default=os.getenv("GHIDRA_INSTALL_DIR"),
-        help="Path to ghidra_12.1_PUBLIC installation directory",
+        help="Path to the pinned Ghidra fork distribution (see ghidra.toml)",
     )
     parser.add_argument(
         "--ghidra-project-dir",
@@ -137,15 +137,9 @@ def main() -> int:
 
         gh_cfg = cfg.get("ghidra", {})
         exp_cfg = cfg.get("exports", {})
-        expected_version = str(gh_cfg.get("version", "")).strip()
-        expected_release = str(gh_cfg.get("release", "")).strip()
         default_program = str(gh_cfg.get("program_name", "Imperialism.exe")).strip()
         default_max_per_file = int(exp_cfg.get("decomp_max_functions_per_file", 250))
 
-        if not expected_version or not expected_release:
-            raise RuntimeError(
-                f"{REPO_CONFIG_PATH} must define [ghidra].version and [ghidra].release"
-            )
 
         ghidra_install_dir = Path(require(args.ghidra_install_dir, "--ghidra-install-dir"))
         ghidra_project_dir = Path(require(args.ghidra_project_dir, "--ghidra-project-dir"))
@@ -199,8 +193,6 @@ def main() -> int:
             str(decomp_output_dir),
             str(types_output_dir),
             str(max_per_file),
-            expected_version,
-            expected_release,
             "inventory-only" if args.inventory_only else "full",
         ]
 

@@ -7,11 +7,7 @@
 #   2: decomp_output_dir
 #   3: types_output_dir
 #   4: decomp_max_functions_per_file (optional, default 250)
-#   5: expected_ghidra_version (optional, default 12.1)
-#   6: expected_ghidra_release (optional, default PUBLIC)
-#
-# This script intentionally supports only Ghidra 12.1 PUBLIC unless
-# expected version/release args are explicitly changed by the caller.
+#   5: export mode (optional, full | inventory-only)
 
 import json
 import os
@@ -22,7 +18,6 @@ from java.io import StringWriter
 from java.util import ArrayList
 
 from ghidra.app.decompiler import DecompInterface
-from ghidra.framework import Application
 from ghidra.program.model.data import (
     DataTypeWriter,
     Enum,
@@ -36,8 +31,6 @@ from ghidra.program.model.symbol import SourceType, SymbolType
 if TYPE_CHECKING:
     from ghidra.ghidra_builtins import currentProgram, getScriptArgs, monitor
 
-DEFAULT_EXPECTED_GHIDRA_VERSION = "12.1"
-DEFAULT_EXPECTED_GHIDRA_RELEASE = "PUBLIC"
 DEFAULT_DECOMPILER_TIMEOUT_SECONDS = 60
 DEFAULT_MAX_FUNCTIONS_PER_FILE = 250
 
@@ -56,19 +49,6 @@ def get_arg(idx, default_value):
         return default_value
     return value
 
-
-def enforce_ghidra_version(expected_version, expected_release):
-    actual_version = Application.getApplicationVersion()
-    actual_release = Application.getApplicationReleaseName()
-    if actual_version != expected_version or actual_release != expected_release:
-        raise RuntimeError(
-            "Unsupported Ghidra runtime: {} {}. Expected {} {}.".format(
-                actual_version,
-                actual_release,
-                expected_version,
-                expected_release,
-            )
-        )
 
 
 def has_ws(s):
@@ -630,11 +610,8 @@ symbols_csv = require_nonempty(get_arg(1, None), "symbols_csv_path")
 decomp_dir = require_nonempty(get_arg(2, None), "decomp_output_dir")
 types_dir = require_nonempty(get_arg(3, None), "types_output_dir")
 max_per_file = int(get_arg(4, str(DEFAULT_MAX_FUNCTIONS_PER_FILE)))
-expected_version = get_arg(5, DEFAULT_EXPECTED_GHIDRA_VERSION)
-expected_release = get_arg(6, DEFAULT_EXPECTED_GHIDRA_RELEASE)
-export_mode = get_arg(7, "full")  # full | inventory-only
+export_mode = get_arg(5, "full")  # full | inventory-only
 
-enforce_ghidra_version(expected_version, expected_release)
 
 if symbols_txt and str(symbols_txt).strip() not in ("", "-"):
     export_user_symbols(symbols_txt)

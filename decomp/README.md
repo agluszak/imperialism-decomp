@@ -12,12 +12,12 @@ binary or copyrighted game assets; use your own legally obtained copy.
 
 - `git` and `git-lfs` for the vendored Ghidra archive.
 - `just` for project commands and `uv` for Python tools.
-- Docker for the MSVC500 build, Wine plus GDB/MI for the native runtime suite, and Ghidra 12.1.4.
+- Docker for the MSVC500 build, Wine plus GDB/MI for the native runtime suite, and the pinned Ghidra fork distribution (Java 25).
 
 ## First setup
 
 ```sh
-cp .env.example .env             # set GHIDRA_INSTALL_DIR and ORIGINAL_BINARY
+cp .env.example .env             # set GHIDRA_INSTALL_DIR, JAVA_HOME and ORIGINAL_BINARY
 git lfs pull
 just vendor-msvc500-headers
 just restore-project

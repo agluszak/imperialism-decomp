@@ -61,7 +61,7 @@ def load_dotenv(path: Path | None = None) -> None:
             os.environ.setdefault(key, value)
 
 # pyghidra runtime pin (kept in lockstep with the Ghidra version in ghidra.toml).
-EXPECTED_PYGHIDRA_VERSION = "3.1.0"
+EXPECTED_PYGHIDRA_VERSION = "3.3.0"
 
 DEFAULT_PROJECT_DIR = REPO_ROOT / "vendor" / "ghidra"
 DEFAULT_PROJECT_NAME = "imperialism-decomp"
@@ -96,14 +96,15 @@ def _read_repo_config() -> dict:
         return tomllib.load(fd)
 
 
-def read_ghidra_props(ghidra_install_dir: Path) -> tuple[str, str]:
-    """Return (version, release) from the installed Ghidra's application.properties."""
+def read_ghidra_props(ghidra_install_dir: Path) -> tuple[str, str, str | None]:
+    """Return (version, release, fork revision) from the installed application.properties."""
     props_path = ghidra_install_dir / "Ghidra" / "application.properties"
     if not props_path.is_file():
         raise FileNotFoundError(f"Missing Ghidra application.properties: {props_path}")
 
     version = None
     release = None
+    revision = None
     for raw in props_path.read_text(encoding="utf-8").splitlines():
         line = raw.strip()
         if not line or line.startswith("#") or line.startswith("!"):
@@ -112,20 +113,25 @@ def read_ghidra_props(ghidra_install_dir: Path) -> tuple[str, str]:
             version = line.split("=", 1)[1].strip()
         elif line.startswith("application.release.name="):
             release = line.split("=", 1)[1].strip()
+        elif line.startswith("application.fork.revision="):
+            revision = line.split("=", 1)[1].strip()
 
     if not version or not release:
         raise RuntimeError(f"Could not read version/release from {props_path}")
-    return version, release
+    return version, release, revision
 
 
-def expected_versions() -> tuple[str, str]:
-    """Return (version, release) the repo expects, from ghidra.toml."""
+def expected_versions() -> tuple[str, str, str]:
+    """Return (version, release, fork revision) the repo expects, from ghidra.toml."""
     gh_cfg = _read_repo_config().get("ghidra", {})
     version = str(gh_cfg.get("version", "")).strip()
     release = str(gh_cfg.get("release", "")).strip()
-    if not version or not release:
-        raise RuntimeError(f"{REPO_CONFIG_PATH} must define [ghidra].version and [ghidra].release")
-    return version, release
+    revision = str(gh_cfg.get("revision", "")).strip()
+    if not version or not release or not revision:
+        raise RuntimeError(
+            f"{REPO_CONFIG_PATH} must define [ghidra].version, .release and .revision"
+        )
+    return version, release, revision
 
 
 def enforce_versions(ghidra_install_dir: Path | None) -> None:
@@ -139,19 +145,24 @@ def enforce_versions(ghidra_install_dir: Path | None) -> None:
             f"Expected {EXPECTED_PYGHIDRA_VERSION}."
         )
 
-    expected_version, expected_release = expected_versions()
+    expected_version, expected_release, expected_revision = expected_versions()
 
     if ghidra_install_dir is None:
         raise RuntimeError(
             "GHIDRA_INSTALL_DIR is not set; cannot verify the Ghidra runtime. "
             "Set it in .env."
         )
-    actual_version, actual_release = read_ghidra_props(ghidra_install_dir)
-    if actual_version != expected_version or actual_release != expected_release:
+    actual_version, actual_release, actual_revision = read_ghidra_props(ghidra_install_dir)
+    if (actual_version, actual_release, actual_revision) != (
+        expected_version,
+        expected_release,
+        expected_revision,
+    ):
         raise RuntimeError(
-            f"Unsupported Ghidra runtime: {actual_version} {actual_release}. "
-            f"Expected {expected_version} {expected_release} (per {REPO_CONFIG_PATH.name}). "
-            f"Update ghidra.toml or point GHIDRA_INSTALL_DIR at the matching install."
+            f"Unsupported Ghidra runtime: {actual_version} {actual_release} "
+            f"fork {actual_revision or 'missing'}. Expected {expected_version} "
+            f"{expected_release} fork {expected_revision} (per {REPO_CONFIG_PATH.name}). "
+            f"Point GHIDRA_INSTALL_DIR at the matching fork distribution."
         )
 
 

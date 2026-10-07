@@ -2,7 +2,7 @@
 # Remote environment bootstrap for imperialism-decomp.
 #
 # One-time / from-scratch provisioning of a remote or sandbox host: system
-# packages, just/uv/docker, JDK 21, Ghidra 12.1.4 PUBLIC, the original game
+# packages, just/uv/docker, JDK 25, the pinned Ghidra fork, the original game
 # binary, decomp-local config, and a first build.
 #
 # Assumes: repo already cloned and this is run from the decomp project root. Works either
@@ -18,10 +18,8 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 GIT_ROOT="$(git -C "$REPO_ROOT" rev-parse --show-toplevel)"
-GHIDRA_VERSION="12.1.4"
-GHIDRA_TAG="Ghidra_${GHIDRA_VERSION}_build"
-# Extract directly under /opt so the install dir is /opt/ghidra_<ver>_PUBLIC
-# (the zip's own top-level dir); this reuses an existing install if present.
+GHIDRA_REVISION="$(sed -n 's/^revision = "\(.*\)"$/\1/p' "$REPO_ROOT/ghidra.toml")"
+GHIDRA_SHA256="$(sed -n 's/^sha256 = "\(.*\)"$/\1/p' "$REPO_ROOT/ghidra.toml")"
 GHIDRA_PARENT_DIR="${GHIDRA_PARENT_DIR:-/opt}"
 BOOTSTRAP_TMP="$(mktemp -d)"
 cleanup_bootstrap_tmp() { rm -rf "$BOOTSTRAP_TMP"; }
@@ -57,7 +55,7 @@ $SUDO apt-get install -y --no-install-recommends \
   git git-lfs curl wget ca-certificates unzip p7zip-full \
   build-essential cmake ninja-build \
   python3 python3-pip python3-venv \
-  openjdk-21-jdk \
+  openjdk-25-jdk-headless \
   jq
 
 # Wine is needed both by reccmp (it runs the Windows `cvdump.exe` to parse the
@@ -146,27 +144,16 @@ run_just_docker() {
 }
 
 # ---------------------------------------------------------------------------
-# 6. Ghidra 12.1.4 PUBLIC
+# 6. Ghidra fork distribution pinned in ghidra.toml
 # ---------------------------------------------------------------------------
-log "Ghidra ${GHIDRA_VERSION} PUBLIC"
-$SUDO mkdir -p "$GHIDRA_PARENT_DIR"
-
-if [ -z "$(find "$GHIDRA_PARENT_DIR" -maxdepth 1 -iname "ghidra_${GHIDRA_VERSION}_PUBLIC" 2>/dev/null)" ]; then
-  ASSET_URL="$(
-    curl -sSf "https://api.github.com/repos/NationalSecurityAgency/ghidra/releases/tags/${GHIDRA_TAG}" \
-      | jq -r '.assets[] | select(.name | test("PUBLIC.*\\.zip$")) | .browser_download_url' \
-      | head -n1
-  )"
-  if [ -z "$ASSET_URL" ]; then
-    echo "ERROR: could not resolve Ghidra release asset for tag ${GHIDRA_TAG}" >&2
-    exit 1
-  fi
-  curl -Lo "$BOOTSTRAP_TMP/ghidra.zip" "$ASSET_URL"
-  $SUDO unzip -q "$BOOTSTRAP_TMP/ghidra.zip" -d "$GHIDRA_PARENT_DIR"
+log "Ghidra fork ${GHIDRA_REVISION}"
+GHIDRA_INSTALL_DIR="${GHIDRA_PARENT_DIR}/ghidra_fork_${GHIDRA_REVISION:0:12}"
+if [ ! -d "$GHIDRA_INSTALL_DIR" ]; then
+  curl -fsSL -o "$BOOTSTRAP_TMP/installForkDistribution.sh" \
+    "https://raw.githubusercontent.com/agluszak/ghidra/${GHIDRA_REVISION}/support/installForkDistribution.sh"
+  $SUDO bash "$BOOTSTRAP_TMP/installForkDistribution.sh" "$GHIDRA_REVISION" "$GHIDRA_SHA256" \
+    "$GHIDRA_INSTALL_DIR"
 fi
-
-GHIDRA_INSTALL_DIR="$(find "$GHIDRA_PARENT_DIR" -maxdepth 1 -iname "ghidra_${GHIDRA_VERSION}_PUBLIC" | head -n1)"
-[ -n "$GHIDRA_INSTALL_DIR" ] || { echo "ERROR: Ghidra install dir not found under ${GHIDRA_PARENT_DIR}" >&2; exit 1; }
 
 # ---------------------------------------------------------------------------
 # 7. Original game binary from Google Drive
