@@ -667,7 +667,7 @@ void TGreatPower::NoOpNationPendingActionHook(void) {}
 void TGreatPower::DispatchPendingStatusPrompts(void) {
   signed char* flags = pendingActionStatus.byAction;
   bool flag5Handled = (flags[5]) >= 0x33;
-  if (!flag5Handled && g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) {
+  if (!flag5Handled && g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[15] == 2) {
     g_pViewMgr->BuildAndShowTurnOverlayByMode(5, pendingActionPayload[5]);
   }
   if (flags[6] == 0x32) {
@@ -720,7 +720,7 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
 
 // FUNCTION: IMPERIALISM 0x004da860
 void TGreatPower::MarkStatus5Handled(void) {
-  if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) {
+  if (g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[15] == 2) {
     pendingActionStatus.byAction[5] = 0x33;
   }
 }
@@ -729,7 +729,7 @@ void TGreatPower::MarkStatus5Handled(void) {
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
   signed char* flags = pendingActionStatus.byAction;
   bool flag5Handled = (flags[5]) >= 0x33;
-  if (!flag5Handled && g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) {
+  if (!flag5Handled && g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[15] == 2) {
     flags[5] = 0x33;
   }
   if (flags[6] == 0x32) {
@@ -812,7 +812,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   if (pendingActionStatus.byAction[1] == 0x32) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
     int nodeContext = GetCapitolProvince();
-    short capValue = g_pTechMgr->nationCapRows1e8[nationSlot].slots[9];
+    short capValue = g_pTechMgr->nationCapabilityRows[nationSlot].slots[9];
     militaryOrder->IMilitaryUnit(capValue, nodeContext, nationSlot);
     AnnounceLater(3, capValue, 1);
   }

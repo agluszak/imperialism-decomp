@@ -400,7 +400,7 @@ private:
 
   bool LiveZoneMasksCountOnlyNationsAtWar() const {
     int examinedRelations = 0;
-    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
       for (int nation = 0; nation < 7; ++nation) {
         int expected = 0;
         for (int slot = 0; slot < 7; ++slot) {

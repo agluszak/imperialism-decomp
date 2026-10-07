@@ -92,7 +92,7 @@ private:
     MarkScriptStep("capture_random_zone_names");
     JsonArray zones;
     TZone* zone = g_pMapActionContextListHead;
-    for (int count = 0; zone != 0 && count < 0x70; ++count, zone = zone->prev18) {
+    for (int count = 0; zone != 0 && count < 0x70; ++count, zone = zone->prevZone) {
       JsonObject row;
       row.Set("ordinal", static_cast<int>(zone->contextOrdinal));
       row.Set("status_code", static_cast<int>(zone->statusCode));

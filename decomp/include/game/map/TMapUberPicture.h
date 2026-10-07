@@ -46,7 +46,7 @@ public:
   int deadStore9C;
   TNavyRoster* navyRoster;
   TOceanDialog* goodGoldTagControl;
-  TMapDialog* subview2A8;
+  TMapDialog* mapDialog;
   TWorldView* subview;
   TView* categoryPages[4];
   TMiniMapView* miniMapView;

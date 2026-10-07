@@ -182,9 +182,9 @@ void RebuildRegionBorderLinkLattice() {
       if (edgeCoord >= 0xd8) {
         edgeCoord -= 0xd8;
       }
-      edgePoint.coord00 = edgeCoord + clampedEdgeRow * 216;
-      edgePoint.lo04 = -1;
-      edgePoint.hi08 = -1;
+      edgePoint.coord = edgeCoord + clampedEdgeRow * 216;
+      edgePoint.lo = -1;
+      edgePoint.hi = -1;
 
       int clampedSpanRow = rowAhead;
       if (clampedSpanRow < 0) {
@@ -271,29 +271,29 @@ int OverlayCoordFromTileColumnRowAndSide(int column, int row, char side) {
 
 // FUNCTION: IMPERIALISM 0x0052b1e0
 void Seapoint::InitSorted(int value, int a, int b, int extra) {
-  coord00 = value;
+  coord = value;
   f0c = extra;
-  lo04 = a;
-  hi08 = b;
+  lo = a;
+  hi = b;
   if (a > b) {
-    lo04 = b;
-    hi08 = a;
+    lo = b;
+    hi = a;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0052b220
 void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
   angle = 0;
-  int c0 = p0->coord00;
+  int c0 = p0->coord;
   coord0 = c0;
-  coord1 = p1->coord00;
+  coord1 = p1->coord;
   int c1 = coord1;
   x0 = static_cast<short>(c0 % 216);
   y0 = static_cast<short>(c0 / 216);
   x1 = static_cast<short>(c1 % 216);
   y1 = static_cast<short>(c1 / 216);
-  attrBySide[0] = static_cast<short>(p0->lo04);
-  attrBySide[1] = static_cast<short>(p0->hi08);
+  attrBySide[0] = static_cast<short>(p0->lo);
+  attrBySide[1] = static_cast<short>(p0->hi);
   if (y1 < y0 || (y0 == y1 && x1 < x0)) {
     short nx0 = x1;
     short ny0 = y1;
@@ -464,9 +464,9 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
     hi = a;
   }
   Seapoint pt;
-  pt.coord00 = coord;
-  pt.lo04 = lo;
-  pt.hi08 = hi;
+  pt.coord = coord;
+  pt.lo = lo;
+  pt.hi = hi;
   pt.f0c = extra;
   stretch<Seapoint>* table = &g_seapointQuadTable;
   table->Add(pt);
@@ -474,8 +474,8 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
 
 // FUNCTION: IMPERIALISM 0x0052d030
 double Seapoint::WrappedDeltaMetric(const Seapoint* other) const {
-  int thisCoordinate = coord00;
-  int otherCoordinate = other->coord00;
+  int thisCoordinate = coord;
+  int otherCoordinate = other->coord;
   int rowDelta = thisCoordinate / 216 - otherCoordinate / 216;
   if (rowDelta < 0) {
     rowDelta = -rowDelta;

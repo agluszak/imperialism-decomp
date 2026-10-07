@@ -1218,9 +1218,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseTechnology: {
     turnStateCode = kGamePhaseNews;
     bool actionNeeded = true;
-    const short capabilityBefore = g_pTechMgr != NULL ? g_pTechMgr->marker262 : 0;
+    const short capabilityBefore = g_pTechMgr != NULL ? g_pTechMgr->lastResearchedTech : 0;
     g_pTechMgr->CheckForAdvances();
-    if (capabilityBefore == (g_pTechMgr != NULL ? g_pTechMgr->marker262 : 0)) {
+    if (capabilityBefore == (g_pTechMgr != NULL ? g_pTechMgr->lastResearchedTech : 0)) {
       turnFlowStatusFlags |= 0x40;
     }
     for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
@@ -2052,7 +2052,7 @@ void TSimMgr::ProcessScenarioScript() {
 
   g_pAssetMgr->GetScenarioFileName(scenarioMapIndexPlusOne - 1, 2, &scenarioPath);
 
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
     CString ordinalText;
     ordinalText.Format(g_szDecimalFormat, zone->GetContextOrdinalOrInvalid());
     zone->displayName = ordinalText;

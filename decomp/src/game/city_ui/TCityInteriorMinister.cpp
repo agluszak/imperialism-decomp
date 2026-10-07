@@ -1425,7 +1425,7 @@ void TCityInteriorMinister::ProspectAndDevelop() {
   resourceWeights[2] = exteriorNeedByType[kResourceTimber];
   resourceWeights[3] = exteriorNeedByType[kResourceCoal] + 5;
   resourceWeights[4] = exteriorNeedByType[kResourceIron] + 5;
-  bool hasOilProspecting = g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
+  bool hasOilProspecting = g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[19] == 2;
   if (hasOilProspecting) {
     resourceWeights[6] = exteriorNeedByType[kResourceOil] + 10;
   }
@@ -1795,11 +1795,11 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
   allowedTerrain[kStrategicTerrainPlains] = 1;
   allowedTerrain[kStrategicTerrainForest] = 1;
   allowedTerrain[kStrategicTerrainHills] =
-      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[12] == 2;
+      g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[12] == 2;
   allowedTerrain[kStrategicTerrainMountain] =
-      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[23] == 2;
+      g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[23] == 2;
   allowedTerrain[kStrategicTerrainSwamp] =
-      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[6] == 2;
+      g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[6] == 2;
   allowedTerrain[kStrategicTerrainWater] = 0;
   allowedTerrain[kStrategicTerrainDesert] = 1;
   allowedTerrain[kStrategicTerrainFarmland] = 1;
@@ -1859,11 +1859,11 @@ char* TCityInteriorMinister::CreateHarborDistanceMap(TShortintList* ownedTiles) 
   allowedTerrain[kStrategicTerrainPlains] = 1;
   allowedTerrain[kStrategicTerrainForest] = 1;
   allowedTerrain[kStrategicTerrainHills] =
-      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[11] == 2;
+      g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[11] == 2;
   allowedTerrain[kStrategicTerrainMountain] =
-      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
+      g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[19] == 2;
   allowedTerrain[kStrategicTerrainSwamp] =
-      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[5] == 2;
+      g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[5] == 2;
   allowedTerrain[kStrategicTerrainWater] = 0;
   allowedTerrain[kStrategicTerrainDesert] = 1;
   allowedTerrain[kStrategicTerrainFarmland] = 1;
@@ -2146,7 +2146,7 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations() {
 void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand() {
   TCity* city = greatPower->city;
   short nationSlot = greatPower->nationSlot;
-  bool hasOilTechnology = g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
+  bool hasOilTechnology = g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[19] == 2;
 
   if (orderMetricTable[0x33] != 0) {
     UpdateProductionMetrics(0x33);
@@ -2301,7 +2301,7 @@ void TCityInteriorMinister::RebuildOrderCycle() {
   }
 
   short nationSlot = greatPower->nationSlot;
-  if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2) {
+  if (g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[19] == 2) {
     UpdateProductionMetrics(12);
   }
   UpdateProductionMetrics(7);
@@ -2423,7 +2423,7 @@ short TCityInteriorMinister::RequestLabor(short targetLabor) {
   short currentLabor = city->productionSummary->strength;
   if (currentLabor < targetLabor) {
     short nationSlot = greatPower->nationSlot;
-    if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] != 2) {
+    if (g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[19] != 2) {
       return currentLabor;
     }
     TProductionOrder* powerPlantOrder = city->trailingOrderSlots[1];

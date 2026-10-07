@@ -363,9 +363,9 @@ void TMacViewMgr::ReloadCityArt() {
   }
   g_pAssetMgr->OpenFilesFor(3);
   nationId = g_pSimMgr->GetPlayerCountry();
-  variant = g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[0x0f] != 0;
+  variant = g_pTechMgr->techStatusRows[nationId].techStatusByTechId[0x0f] != 0;
   nationId = g_pSimMgr->GetPlayerCountry();
-  if (g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[0x18] != 0) {
+  if (g_pTechMgr->techStatusRows[nationId].techStatusByTechId[0x18] != 0) {
     variant = 2;
   }
   nationId = g_pSimMgr->GetPlayerCountry();

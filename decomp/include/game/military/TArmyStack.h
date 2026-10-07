@@ -32,7 +32,7 @@ public:
   short ownerNationCode; // region/owner-nation code
   short tileIndex;       // originating tile index / order-target province
   unsigned char pad12[2];
-  TArmyStackUnitNode* head14; // head of the owned node chain
+  TArmyStackUnitNode* head;   // head of the owned node chain
   TArmyStackUnitNode* cursor; // traversal cursor over the chain
 
   void MoveAll();

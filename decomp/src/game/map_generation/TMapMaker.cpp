@@ -2484,7 +2484,7 @@ void TMapMaker::BuildBorderSpans() {
     return;
   }
   do {
-    bool isInvalid = quad[i].coord00 == -1;
+    bool isInvalid = quad[i].coord == -1;
     if (isInvalid) {
       ++i;
       continue;
@@ -2498,7 +2498,7 @@ void TMapMaker::BuildBorderSpans() {
       do {
         Seapoint* a = &quad[i];
         Seapoint* b = &quad[j];
-        bool sameEdge = a->lo04 == b->lo04 && a->hi08 == b->hi08;
+        bool sameEdge = a->lo == b->lo && a->hi == b->hi;
         if (sameEdge) {
           int dirDelta = ((b->f0c - a->f0c) + 6) % 6;
           bool isPrimaryDirection = dirDelta >= 2 && dirDelta <= 4;
@@ -2508,11 +2508,11 @@ void TMapMaker::BuildBorderSpans() {
             } else {
               Seapoint* pa = &quad[i];
               Seapoint* pb = &quad[j];
-              int rowDelta = pa->coord00 / 216 - pb->coord00 / 216;
+              int rowDelta = pa->coord / 216 - pb->coord / 216;
               if (rowDelta < 0) {
                 rowDelta = -rowDelta;
               }
-              int colDelta = ((pa->coord00 % 216 - pb->coord00 % 216) + 0xd8) % 216;
+              int colDelta = ((pa->coord % 216 - pb->coord % 216) + 0xd8) % 216;
               if (colDelta > 0x6c) {
                 colDelta = 0xd7 - colDelta;
               }
@@ -2541,22 +2541,22 @@ void TMapMaker::BuildBorderSpans() {
     }
     if (bestPrimary == 0xffffffff) {
       Seapoint* p = (&quad[i]);
-      p->coord00 = -1;
-      p->hi08 = -1;
-      p->lo04 = -1;
+      p->coord = -1;
+      p->hi = -1;
+      p->lo = -1;
     } else {
       SeaSegment tmp;
       tmp.InitFromPoints((&quad[bestPrimary]), (&quad[i]));
       stretch<SeaSegment>* out = &seg;
       out->Add(tmp);
       Seapoint* pi = (&quad[i]);
-      pi->coord00 = -1;
-      pi->hi08 = -1;
-      pi->lo04 = -1;
+      pi->coord = -1;
+      pi->hi = -1;
+      pi->lo = -1;
       Seapoint* pm = (&quad[bestPrimary]);
-      pm->coord00 = -1;
-      pm->hi08 = -1;
-      pm->lo04 = -1;
+      pm->coord = -1;
+      pm->hi = -1;
+      pm->lo = -1;
     }
   } while (i < static_cast<unsigned int>(quad.count));
 }

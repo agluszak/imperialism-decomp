@@ -377,7 +377,7 @@ private:
     short selectedProfile = -1;
     int candidateCount = 0;
     const int visibleColumnCount =
-        g_pTechMgr->orderCapRows277[ActiveNation()].techStatusByTechId[4] == 2 ? 5 : 2;
+        g_pTechMgr->techStatusRows[ActiveNation()].techStatusByTechId[4] == 2 ? 5 : 2;
     for (int column = 0; column < visibleColumnCount; ++column) {
       short profile = g_anTargetTileProfileByCivilianClassAndSlot[5 + column];
       RECT* legendRect = &description->legendRects[profile];

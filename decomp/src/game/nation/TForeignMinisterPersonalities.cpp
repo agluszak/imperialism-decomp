@@ -23,7 +23,7 @@ struct ResourcePriorityEntry {
 };
 
 static bool HasAdvancedTradeResource(const TForeignMinister* minister) {
-  return g_pTechMgr->orderCapRows277[minister->greatPower->nationSlot].techStatusByTechId[19] == 2;
+  return g_pTechMgr->techStatusRows[minister->greatPower->nationSlot].techStatusByTechId[19] == 2;
 }
 
 static inline short MinShort(short a, short b) {

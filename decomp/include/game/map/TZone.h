@@ -80,8 +80,8 @@ public:
   short seedNationId;           // seed nation id arg
   short contextOrdinal;         // context ordinal
   char pad16[2];
-  TZone* prev18;         // older in g_pMapActionContextListHead chain
-  TZone* next1c;         // newer link
+  TZone* prevZone;       // older in g_pMapActionContextListHead chain
+  TZone* nextZone;       // newer link
   short activeTileIndex; // active tile index
   char pad22[2];
   TZonePrimaryNeighborStretch primaryNeighbors;

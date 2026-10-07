@@ -830,7 +830,7 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   case 7: {
     short nationSlot = g_pSimMgr->GetPlayerCountry();
     result = static_cast<short>(
-        (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) + 1);
+        (g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[15] == 2) + 1);
     return result;
   }
 

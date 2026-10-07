@@ -367,7 +367,8 @@ void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
   // Constructed and destroyed unused in the original (EH state 2).
   CString unusedText;
   if (tickMod == 0 || tickMod == 5) {
-    if (g_pTechMgr->orderCapRows277[activeNation].techStatusByTechId[g_pTechMgr->marker262] == 0) {
+    if (g_pTechMgr->techStatusRows[activeNation]
+            .techStatusByTechId[g_pTechMgr->lastResearchedTech] == 0) {
       g_pSimMgr->GetString(0x2753, 0x18, &titleText);
       g_pSimMgr->GetString(0x2753, 0x19, &messageText);
       g_pViewMgr->ModalMessage(5, titleText, messageText, g_ptNationComparisonModalMessage, 2, 0);
@@ -535,7 +536,7 @@ bool THelpMgr::CheckDireTurnStartWarnings() {
       if (best <= 4) {
         break;
       }
-      if (g_pTechMgr->orderCapRows277[activeNation].techStatusByTechId[0x13] != 0) {
+      if (g_pTechMgr->techStatusRows[activeNation].techStatusByTechId[0x13] != 0) {
         g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
         g_pSimMgr->GetString(0x2753, 0xc, &formatText);
         g_pSimMgr->GetString(0x2753, 0xd, &templateText);

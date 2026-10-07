@@ -322,13 +322,13 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
 
   unsigned char cannotBuildTerrain[4];
   cannotBuildTerrain[0] =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[6] != 2;
+      g_pTechMgr->techStatusRows[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[6] != 2;
   cannotBuildTerrain[1] =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[12] != 2;
+      g_pTechMgr->techStatusRows[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[12] != 2;
   cannotBuildTerrain[2] =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[12] != 2;
+      g_pTechMgr->techStatusRows[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[12] != 2;
   cannotBuildTerrain[3] =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[23] != 2;
+      g_pTechMgr->techStatusRows[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[23] != 2;
 
   SetTextStyleAndApply(0, 10, 0x2b6c, 3);
 
@@ -420,7 +420,7 @@ void TCivDescription::DrawProspector(RECT* bounds) {
   unsigned long themeColor = 0;
 
   bool oilUnlocked =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[4] == 2;
+      g_pTechMgr->techStatusRows[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[4] == 2;
 
   short columnResourceIcons[5][4] = {
       {3, 4, -1, -1}, {3, 4, 0x16, 0x15}, {6, -1, -1, -1}, {6, -1, -1, -1}, {6, -1, -1, -1}};

@@ -2771,7 +2771,7 @@ void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
   unsigned char eligibleGateFlags[24] = {0};
   eligibleGateFlags[8] = 1;
   eligibleGateFlags[9] = 1;
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[19] == 2) {
+  if (g_pTechMgr->techStatusRows[nationTag].techStatusByTechId[19] == 2) {
     eligibleGateFlags[10] = 1;
     eligibleGateFlags[11] = 1;
     eligibleGateFlags[12] = 1;
@@ -2804,7 +2804,7 @@ void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x00515460
 void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
-  bool recruitTierFlagIsTwo = (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[19] == 2);
+  bool recruitTierFlagIsTwo = (g_pTechMgr->techStatusRows[nationTag].techStatusByTechId[19] == 2);
   recruitSearchActive = 1;
   unsigned char nationBit = 1 << nationTag;
   for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
@@ -2980,13 +2980,13 @@ void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
   StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex;
 
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[6] == 2) {
+  if (g_pTechMgr->techStatusRows[nationTag].techStatusByTechId[6] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainSwamp] = 1;
   }
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[12] == 2) {
+  if (g_pTechMgr->techStatusRows[nationTag].techStatusByTechId[12] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainHills] = 1;
   }
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[23] == 2) {
+  if (g_pTechMgr->techStatusRows[nationTag].techStatusByTechId[23] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainMountain] = 1;
   }
 
@@ -3012,19 +3012,19 @@ void TMapMgr::DimByEngineering(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
 
   unsigned char terrainKindGate[kStrategicTerrainCount] = {1, 1, 0, 0, 0, 0, 1, 1};
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[6] == 2) {
+  if (g_pTechMgr->techStatusRows[nationTag].techStatusByTechId[6] == 2) {
     terrainKindGate[kStrategicTerrainSwamp] = 1;
     terrainKindGate[kStrategicTerrainWater] = 0;
     terrainKindGate[kStrategicTerrainDesert] = 1;
     terrainKindGate[kStrategicTerrainFarmland] = 1;
   }
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[12] == 2) {
+  if (g_pTechMgr->techStatusRows[nationTag].techStatusByTechId[12] == 2) {
     terrainKindGate[kStrategicTerrainPlains] = 1;
     terrainKindGate[kStrategicTerrainForest] = 1;
     terrainKindGate[kStrategicTerrainHills] = 1;
     terrainKindGate[kStrategicTerrainMountain] = 0;
   }
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[23] == 2) {
+  if (g_pTechMgr->techStatusRows[nationTag].techStatusByTechId[23] == 2) {
     terrainKindGate[kStrategicTerrainMountain] = 1;
   }
 
@@ -4000,7 +4000,7 @@ int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
 void TMapMgr::DumpAndResetMapScriptState() {
   FILE* logFile = fopen(g_szScriptFileName, s_mcflavor_00697238);
 
-  for (TZone* zone = g_pMapActionContextListHead; zone != NULL; zone = zone->prev18) {
+  for (TZone* zone = g_pMapActionContextListHead; zone != NULL; zone = zone->prevZone) {
     CString name;
     zone->AssignZoneDisplayNameToOutputRef(&name);
     fprintf(logFile, g_szFmtZone, zone->GetContextOrdinalOrInvalid(),

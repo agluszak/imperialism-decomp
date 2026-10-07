@@ -67,7 +67,7 @@ struct TurnEvent1DWarTransitionPacket : TimelyNetMessagePrefix {
   char actionCode; // 'i' selects the two-arg check
   signed char nationA1D;
   signed char nationB1E;
-  unsigned char mode1F;
+  unsigned char swapRoles;
 };
 
 #pragma pack(push, 1)

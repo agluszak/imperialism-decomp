@@ -84,10 +84,10 @@ RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& trans
   for (int techId = 3; techId < 0x1d; ++techId) {
     g_pTechMgr->perTechUnlockFlag[techId] = 0;
     g_pTechMgr->prioritySlots[techId] = 0;
-    g_pTechMgr->orderCapRows277[aiNationSlot].techStatusByTechId[techId] = 2;
+    g_pTechMgr->techStatusRows[aiNationSlot].techStatusByTechId[techId] = 2;
   }
   g_pTechMgr->perTechUnlockFlag[3] = 1;
-  g_pTechMgr->orderCapRows277[aiNationSlot].techStatusByTechId[3] = 0;
+  g_pTechMgr->techStatusRows[aiNationSlot].techStatusByTechId[3] = 0;
   aiNation->diplomacyEligibility = 0;
   aiNation->treasuryValue = 50000;
 
@@ -131,7 +131,7 @@ RuntimeActionResult RunTechnologyNavalCapabilityUpgrade(NativeTransition& transi
   admiral->AssignToShip(obsolete);
 
   const int technologyId = 9;
-  g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[technologyId] = 1;
+  g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[technologyId] = 1;
   g_pTechMgr->capRowsE4a6[nationSlot].completionYearOffsetByTechId[technologyId] = 77;
 
   JsonObject args;
@@ -163,7 +163,7 @@ RuntimeActionResult RunTechnologyNavalCapabilitySequence(NativeTransition& trans
   const int technologyIds[] = {4, 9, 15, 21, 24, 27};
   for (int index = 0; index < 6; ++index) {
     const int technologyId = technologyIds[index];
-    g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[technologyId] = 1;
+    g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[technologyId] = 1;
     g_pTechMgr->capRowsE4a6[nationSlot].completionYearOffsetByTechId[technologyId] =
         static_cast<short>(70 + index);
   }
@@ -188,7 +188,7 @@ RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition) {
   const int technologyId = 3;
   ClearScheduledUnlocksExcept(-1, 1);
   const short activeNationSlot = g_pSimMgr->GetPlayerCountry();
-  g_pTechMgr->orderCapRows277[activeNationSlot].techStatusByTechId[technologyId] = 1;
+  g_pTechMgr->techStatusRows[activeNationSlot].techStatusByTechId[technologyId] = 1;
   g_pSimMgr->turnStateCode = kGamePhaseTechnology;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());

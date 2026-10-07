@@ -636,7 +636,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     g_pSimMgr->GetString(0x273a, 1, &messageText);
     dialogContext = 1;
     short nationId = g_pSimMgr->GetPlayerCountry();
-    int cap = g_pTechMgr->nationCapRows1e8[nationId].slots[9];
+    int cap = g_pTechMgr->nationCapabilityRows[nationId].slots[9];
     if (cap == 0x1c) {
       resourceId = 0x2518;
     } else {

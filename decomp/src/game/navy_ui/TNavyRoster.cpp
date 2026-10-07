@@ -62,7 +62,7 @@ void TNavyRoster::Close() {
   TView::Close();
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
-  TMapDialog* mapDialog = mapUberPicture->subview2A8;
+  TMapDialog* mapDialog = mapUberPicture->mapDialog;
   mapDialog->suppressMarkerOverlay = false;
   mapDialog->FlushCache();
   mapUberPicture->navyRoster = 0;

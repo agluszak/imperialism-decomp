@@ -49,10 +49,10 @@ TMapUberPicture* MapView() {
 
 RuntimeActionResult StrategicMapProbe::VerifyRendering() {
   TMapUberPicture* mapView = MapView();
-  if (mapView == 0 || mapView->subview2A8 == 0) {
+  if (mapView == 0 || mapView->mapDialog == 0) {
     return RuntimeActionResult::Failure("the combined map has no map dialog");
   }
-  if (!VerifyRuntimeStrategicCoastCornerComposite(mapView->subview2A8)) {
+  if (!VerifyRuntimeStrategicCoastCornerComposite(mapView->mapDialog)) {
     return RuntimeActionResult::Failure(
         "strategic coast corners do not match the adjacency-selected atlas composite");
   }
@@ -60,7 +60,7 @@ RuntimeActionResult StrategicMapProbe::VerifyRendering() {
     return RuntimeActionResult::Failure(
         "mini-map viewport frame did not alter the rendered thumbnail");
   }
-  if (!MapRenderingProbe::TransportConnectivityChangesTilePixels(mapView->subview2A8)) {
+  if (!MapRenderingProbe::TransportConnectivityChangesTilePixels(mapView->mapDialog)) {
     return RuntimeActionResult::Failure(
         "strategic road or rail connectivity did not change the rendered tile pixels");
   }
@@ -69,7 +69,7 @@ RuntimeActionResult StrategicMapProbe::VerifyRendering() {
 
 RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
   TMapUberPicture* mapView = MapView();
-  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+  TMapDialog* mapDialog = mapView != 0 ? mapView->mapDialog : 0;
   TQuickDrawBlitSurface* mapCache =
       g_pPrimaryRenderSurfaceContext != 0 ? g_pPrimaryRenderSurfaceContext->GetBlitSurface() : 0;
   if (mapDialog == 0 || mapCache == 0 || mapCache->pixelBits == 0) {
@@ -134,7 +134,7 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
 
 RuntimeActionResult StrategicMapProbe::VerifyScrolling() {
   TMapUberPicture* mapView = MapView();
-  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+  TMapDialog* mapDialog = mapView != 0 ? mapView->mapDialog : 0;
   if (mapDialog == 0) {
     return RuntimeActionResult::Failure("combined map has no scrollable map dialog");
   }

@@ -114,7 +114,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
     g_pSimMgr->GetString(0x2758, 0xc, &prompt);
     g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, false);
 
-    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
       CString zoneName;
       zone->AssignZoneDisplayNameToOutputRef(&zoneName);
       if (searchText.Compare(zoneName) == 0) {

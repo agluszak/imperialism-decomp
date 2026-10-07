@@ -140,7 +140,7 @@ int TProxyGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, 
   packet.actionCode = 'a';
   packet.nationA1D = static_cast<signed char>(targetNation);
   packet.nationB1E = static_cast<signed char>(sourceNation);
-  packet.mode1F = static_cast<unsigned char>(swapRoles);
+  packet.swapRoles = static_cast<unsigned char>(swapRoles);
   g_pNetMgr->Send(&packet, false);
   return 2;
 }

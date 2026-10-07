@@ -782,7 +782,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
 
   if (g_bDrawOceanZoneLabels) {
     SetTextStyleAndApply(2, 0xc, 0x2b68, 3);
-    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
       int tileIndex = zone->tileOrTerrainId;
       if (tileIndex == -1) {
         continue;

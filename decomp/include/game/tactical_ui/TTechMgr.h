@@ -32,13 +32,13 @@ public:
   struct NationCapRow {
     short slots[10];
   };
-  NationCapRow nationCapRows1e8[kMajorNationCount];
-  short marker262;
+  NationCapRow nationCapabilityRows[kMajorNationCount];
+  short lastResearchedTech;
   TechPrerequisitePair activePrerequisitePair;
   struct OrderCapRow {
     unsigned char techStatusByTechId[29];
   };
-  OrderCapRow orderCapRows277[7];
+  OrderCapRow techStatusRows[7];
   struct CapRowB {
     unsigned char selectedByResourceType[14];
   };

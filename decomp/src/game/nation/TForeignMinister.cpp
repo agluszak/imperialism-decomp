@@ -275,7 +275,7 @@ void TForeignMinister::DoUsualSubsidyRule() {
   TGreatPower* owner = greatPower;
   short nationSlot = owner->nationSlot;
   const short kOrderKinds[] = {0, 1, 2, 3, 4, 5, 6};
-  int loopCount = (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2) + 5;
+  int loopCount = (g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[19] == 2) + 5;
   if (loopCount != 0) {
     const short* orderKindCursor = kOrderKinds;
     do {

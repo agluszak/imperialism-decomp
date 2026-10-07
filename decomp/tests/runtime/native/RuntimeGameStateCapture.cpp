@@ -753,7 +753,7 @@ JSON_Value* CaptureTechnology() {
   JsonArray cityCapabilitiesByNation;
   JsonArray researchStatusByNation;
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-    const TTechMgr::OrderCapRow& technologyStatus = g_pTechMgr->orderCapRows277[nationSlot];
+    const TTechMgr::OrderCapRow& technologyStatus = g_pTechMgr->techStatusRows[nationSlot];
     const unsigned char advancedIronWorkingStatus =
         technologyStatus.techStatusByTechId[kAdvancedIronWorkingTechId];
     const unsigned char oilDrillingStatus = technologyStatus.techStatusByTechId[kOilDrillingTechId];
@@ -840,7 +840,7 @@ JSON_Value* CaptureTechnology() {
   JsonArray selectedCapabilitySlotsByNation;
   for (int capabilityNation = 0; capabilityNation < kMajorNationCount; ++capabilityNation) {
     selectedCapabilitySlotsByNation.Add(
-        CaptureShortArray(g_pTechMgr->nationCapRows1e8[capabilityNation].slots, 10));
+        CaptureShortArray(g_pTechMgr->nationCapabilityRows[capabilityNation].slots, 10));
   }
   technology.Set("advanced_iron_working", advancedIronWorking != 0);
   technology.Set("marine_engineering", marineEngineering != 0);
@@ -871,7 +871,7 @@ int ValidateLiveZoneContextCount() {
   unsigned char seen[0x70];
   memset(seen, 0, sizeof(seen));
   int liveCount = 0;
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
     if (liveCount >= static_cast<int>(sizeof(seen))) {
       FailSemanticCapture("live map-action context count exceeds the AI state capacity");
     }
@@ -1021,7 +1021,7 @@ JSON_Value* CaptureOcean() {
   const int liveCount = ValidateLiveZoneContextCount();
   TZone* orderedZones[0x70];
   memset(orderedZones, 0, sizeof(orderedZones));
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
     orderedZones[RequiredZoneOrdinal(zone, liveCount)] = zone;
   }
 
@@ -2390,7 +2390,7 @@ int RuntimeZoneIndex(const TZone* zone) {
   if (zone == 0) {
     return -1;
   }
-  for (TZone* live = g_pMapActionContextListHead; live != 0; live = live->prev18) {
+  for (TZone* live = g_pMapActionContextListHead; live != 0; live = live->prevZone) {
     if (live == zone) {
       const int index = static_cast<int>(live->contextOrdinal);
       if (index < 0 || index >= g_nMapActionContextCount) {
@@ -3619,7 +3619,7 @@ JSON_Value* CaptureDevelopmentEphemeral() {
 // university availability row.
 JSON_Value* CaptureTechnologyEphemeral() {
   JsonObject object;
-  object.Set("marker", static_cast<int>(g_pTechMgr->marker262));
+  object.Set("marker", static_cast<int>(g_pTechMgr->lastResearchedTech));
   object.Set("prereq_primary", static_cast<int>(g_pTechMgr->activePrerequisitePair.primaryTechId));
   object.Set("prereq_secondary",
              static_cast<int>(g_pTechMgr->activePrerequisitePair.secondaryTechId));
@@ -3648,7 +3648,7 @@ JSON_Value* CaptureTechnologyEphemeral() {
     JsonArray years;
     for (int techIndex = 0; techIndex < 0x1d; ++techIndex) {
       status.Add(
-          static_cast<int>(g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[techIndex]));
+          static_cast<int>(g_pTechMgr->techStatusRows[nationSlot].techStatusByTechId[techIndex]));
       years.Add(static_cast<int>(
           g_pTechMgr->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techIndex]));
     }

@@ -1007,7 +1007,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
 
   // Port-zone contexts flagged available (state 1) compete with the region winner.
   TZone* zone;
-  for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+  for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
     if (zoneStatus[zone->GetContextOrdinalOrInvalid()] == kMissionDesirabilityCandidate) {
       float zoneScore = ScoreZone(zone);
       if (zoneScore > bestScore) {
@@ -1070,7 +1070,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
     }
   }
   if (anyEligibleAtWar) {
-    for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
       short contextOrdinal = zone->GetContextOrdinalOrInvalid();
       if (zoneStatus[contextOrdinal] != kMissionDesirabilityQueued &&
           zone->IsAdjacentToCountry(nationSlot)) {

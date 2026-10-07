@@ -79,16 +79,16 @@ void TTechMgr::ITechMgr(void) {
   memset(initFlags1ab, 1, sizeof(initFlags1ab));
   memset(initFlags1af, 1, sizeof(initFlags1af));
   flag1c3 = true;
-  marker262 = 2;
+  lastResearchedTech = 2;
 
   // Per-nation capability tables, in the original's two separate 7-nation passes.
   int n;
   for (n = 0; n < 7; ++n) {
-    // orderCapRows: first three tech statuses = 2, rest cleared.
-    orderCapRows277[n].techStatusByTechId[0] = 2;
-    orderCapRows277[n].techStatusByTechId[1] = 2;
-    orderCapRows277[n].techStatusByTechId[2] = 2;
-    memset(&orderCapRows277[n].techStatusByTechId[3], 0, 26);
+    // The first three techs start known.
+    techStatusRows[n].techStatusByTechId[0] = 2;
+    techStatusRows[n].techStatusByTechId[1] = 2;
+    techStatusRows[n].techStatusByTechId[2] = 2;
+    memset(&techStatusRows[n].techStatusByTechId[3], 0, 26);
     memset(&capRowsE4a6[n], 0, sizeof(CapRowE));
     memset(&capRowsB333[n], 0, sizeof(CapRowB));
     memset(&abilityActiveRows[n], 0, sizeof(MilitaryCapRow));
@@ -129,10 +129,10 @@ void TTechMgr::ITechMgr(void) {
     // nationCapRows: slots[0..7] = 0..7, slots[8] = 0x18, slots[9] = 0x1b.
     int j;
     for (j = 0; j < 8; ++j) {
-      nationCapRows1e8[n].slots[j] = static_cast<short>(j);
+      nationCapabilityRows[n].slots[j] = static_cast<short>(j);
     }
-    nationCapRows1e8[n].slots[8] = 0x18;
-    nationCapRows1e8[n].slots[9] = 0x1b;
+    nationCapabilityRows[n].slots[8] = 0x18;
+    nationCapabilityRows[n].slots[9] = 0x1b;
   }
 
   activePrerequisitePair = g_aTechItemPrerequisitePairs[30];
@@ -212,11 +212,11 @@ void TTechMgr::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion > 0xf) {
-    stream->ReadBytes(nationCapRows1e8, sizeof(nationCapRows1e8));
-    SwapShortArrayBytes(nationCapRows1e8, 70);
+    stream->ReadBytes(nationCapabilityRows, sizeof(nationCapabilityRows));
+    SwapShortArrayBytes(nationCapabilityRows, 70);
   }
   if (g_nSaveFormatVersion > 0x17) {
-    stream->ReadBytes(orderCapRows277, sizeof(orderCapRows277));
+    stream->ReadBytes(techStatusRows, sizeof(techStatusRows));
     stream->ReadBytes(capRowsB333, sizeof(capRowsB333));
     stream->ReadBytes(abilityActiveRows, sizeof(abilityActiveRows));
     stream->ReadBytes(universityRecruitmentAvailabilityByNation,
@@ -230,7 +230,7 @@ void TTechMgr::ReadFrom(TStream* stream) {
     SwapShortArrayBytes(capabilityValueByNationAndResource, 161);
   }
   if (g_nSaveFormatVersion > 0x1e) {
-    stream->ReadBytes(&marker262, sizeof(marker262));
+    stream->ReadBytes(&lastResearchedTech, sizeof(lastResearchedTech));
   }
   RecomputeGlobalCapabilityAverages();
 }
@@ -247,15 +247,15 @@ void TTechMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(initFlags1ab, 30);
   stream->WriteBytes(initFlags1c9, sizeof(initFlags1c9));
   stream->WriteBytes(&activePrerequisitePair, sizeof(activePrerequisitePair));
-  WriteShortArrayElems(stream, nationCapRows1e8[0].slots, 70);
-  stream->WriteBytes(orderCapRows277, sizeof(orderCapRows277));
+  WriteShortArrayElems(stream, nationCapabilityRows[0].slots, 70);
+  stream->WriteBytes(techStatusRows, sizeof(techStatusRows));
   stream->WriteBytes(capRowsB333, sizeof(capRowsB333));
   stream->WriteBytes(abilityActiveRows, sizeof(abilityActiveRows));
   stream->WriteBytes(universityRecruitmentAvailabilityByNation,
                      sizeof(universityRecruitmentAvailabilityByNation));
   WriteShortArrayElems(stream, capRowsE4a6[0].completionYearOffsetByTechId, 203);
   WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 161);
-  stream->WriteBytes(&marker262, sizeof(marker262));
+  stream->WriteBytes(&lastResearchedTech, sizeof(lastResearchedTech));
 }
 
 // FUNCTION: IMPERIALISM 0x005af980
@@ -274,9 +274,9 @@ void TTechMgr::CheckForAdvances() {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
           nation->diplomacyEligibility == 0 &&
-          orderCapRows277[nationSlot].techStatusByTechId[techId] != 2) {
+          techStatusRows[nationSlot].techStatusByTechId[techId] != 2) {
         nation->AddToTreasury(-g_anTechItemPurchaseCostBySlot[techId]);
-        orderCapRows277[nationSlot].techStatusByTechId[techId] = 1;
+        techStatusRows[nationSlot].techStatusByTechId[techId] = 1;
         capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
             static_cast<short>(g_pSimMgr->economicTurn / 4);
       }
@@ -299,7 +299,7 @@ void TTechMgr::ActivateAdvance(int techId, int forcedNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005afba0
 void TTechMgr::UniversalActivation(int nTechId) {
-  marker262 = static_cast<short>(nTechId);
+  lastResearchedTech = static_cast<short>(nTechId);
   perTechUnlockFlag[nTechId] = 1;
   switch (nTechId) {
   case 9:
@@ -340,10 +340,10 @@ void TTechMgr::UniversalActivation(int nTechId) {
 
 // FUNCTION: IMPERIALISM 0x005afd00
 void TTechMgr::GeneralActivation(int techId, int nationSlot) {
-  if (orderCapRows277[nationSlot].techStatusByTechId[techId] == 2) {
+  if (techStatusRows[nationSlot].techStatusByTechId[techId] == 2) {
     return;
   }
-  orderCapRows277[nationSlot].techStatusByTechId[techId] = 2;
+  techStatusRows[nationSlot].techStatusByTechId[techId] = 2;
 
   // Late-era arms bonus scale: only for AI-eligible nations once the sim level passes 2.
   short eraOffset = 0;
@@ -521,7 +521,7 @@ void TTechMgr::GeneralActivation(int techId, int nationSlot) {
 void TTechMgr::ActivateLandUnit(int abilityId, int nationSlot) {
   short group = g_awTacticalUnitCategoryCodeBySlot[abilityId];
   abilityActiveRows[nationSlot].abilityActiveById[abilityId] = 1;
-  nationCapRows1e8[nationSlot].slots[group] = static_cast<short>(abilityId);
+  nationCapabilityRows[nationSlot].slots[group] = static_cast<short>(abilityId);
   if (group > 0 && group < 9) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation != 0 && nation->city != 0) {
@@ -659,11 +659,11 @@ void TTechMgr::ActivateShip(int resourceType, int nationSlot) {
 bool TTechMgr::HavePreReqs(int techId, int nationSlot) {
   short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].primaryTechId;
   unsigned char* primaryStatusByNation =
-      &orderCapRows277[0].techStatusByTechId[primaryPrerequisiteTechId];
+      &techStatusRows[0].techStatusByTechId[primaryPrerequisiteTechId];
   if (primaryStatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
     short secondaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].secondaryTechId;
     unsigned char* secondaryStatusByNation =
-        &orderCapRows277[0].techStatusByTechId[secondaryPrerequisiteTechId];
+        &techStatusRows[0].techStatusByTechId[secondaryPrerequisiteTechId];
     if (secondaryStatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
       return true;
     }
@@ -675,14 +675,14 @@ bool TTechMgr::HavePreReqs(int techId, int nationSlot) {
 void TTechMgr::GetPreReqs(int techId, int nationSlot, int* missingPrimaryTechId,
                           int* missingSecondaryTechId) {
   short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].primaryTechId;
-  if (orderCapRows277[nationSlot].techStatusByTechId[primaryPrerequisiteTechId] == 2) {
+  if (techStatusRows[nationSlot].techStatusByTechId[primaryPrerequisiteTechId] == 2) {
     *missingPrimaryTechId = g_aTechItemPrerequisitePairs[techId].secondaryTechId;
     *missingSecondaryTechId = 0;
   } else {
     *missingPrimaryTechId = primaryPrerequisiteTechId;
     short secondaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].secondaryTechId;
     *missingSecondaryTechId =
-        (orderCapRows277[nationSlot].techStatusByTechId[secondaryPrerequisiteTechId] != 2)
+        (techStatusRows[nationSlot].techStatusByTechId[secondaryPrerequisiteTechId] != 2)
             ? secondaryPrerequisiteTechId
             : 0;
   }
@@ -691,7 +691,7 @@ void TTechMgr::GetPreReqs(int techId, int nationSlot, int* missingPrimaryTechId,
 // FUNCTION: IMPERIALISM 0x005b0b30
 void TTechMgr::PurchaseTech(int slot, int nationIndex) {
   g_apNationStates[nationIndex]->AddToTreasury(-g_anTechItemPurchaseCostBySlot[slot]);
-  orderCapRows277[nationIndex].techStatusByTechId[slot] = 1;
+  techStatusRows[nationIndex].techStatusByTechId[slot] = 1;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] =
       static_cast<short>(g_pSimMgr->economicTurn / 4);
 }
@@ -699,14 +699,14 @@ void TTechMgr::PurchaseTech(int slot, int nationIndex) {
 // FUNCTION: IMPERIALISM 0x005b0bb0
 void TTechMgr::CancelPurchase(int slot, int nationIndex) {
   g_apNationStates[nationIndex]->AddToTreasury(g_anTechItemPurchaseCostBySlot[slot]);
-  orderCapRows277[nationIndex].techStatusByTechId[slot] = 0;
+  techStatusRows[nationIndex].techStatusByTechId[slot] = 0;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b0c20
 short TTechMgr::GetNextNewAdvance(short nationSlot) {
   for (int techId = 0; techId < 29; ++techId) {
-    if (orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
+    if (techStatusRows[nationSlot].techStatusByTechId[techId] == 1) {
       GeneralActivation(techId, nationSlot);
       return techId;
     }
@@ -721,8 +721,8 @@ void TTechMgr::SetAdvanceDate(int index, int value) {
 
 // FUNCTION: IMPERIALISM 0x005b0ca0
 int TTechMgr::GetBestFort(int nNationId) {
-  if (orderCapRows277[nNationId].techStatusByTechId[0x16] != 0) {
+  if (techStatusRows[nNationId].techStatusByTechId[0x16] != 0) {
     return 3;
   }
-  return (orderCapRows277[nNationId].techStatusByTechId[0x0b] != 0) + 1;
+  return (techStatusRows[nNationId].techStatusByTechId[0x0b] != 0) + 1;
 }

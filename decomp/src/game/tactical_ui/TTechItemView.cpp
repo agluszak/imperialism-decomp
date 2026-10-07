@@ -89,7 +89,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
 
   // Status area: completion date, buy button, or missing-prerequisites line.
   TTechMgr* techMgr = g_pTechMgr;
-  if (techMgr->orderCapRows277[nationSlot].techStatusByTechId[techId] == 2) {
+  if (techMgr->techStatusRows[nationSlot].techStatusByTechId[techId] == 2) {
     TDeluxeText* dateControl = new TDeluxeText();
     int dateOffset[2] = {0xba, 0};
     int dateSize[2] = {0x53, 0x3f};
@@ -106,7 +106,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     dateControl->CenterVertically(false);
   } else if (techMgr->HavePreReqs(techId, nationSlot)) {
     short labelIndex;
-    if (techMgr->orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
+    if (techMgr->techStatusRows[nationSlot].techStatusByTechId[techId] == 1) {
       g_pSimMgr->GetString(0x274f, 3, &labelText);
       labelIndex = 0xa;
     } else {
@@ -155,7 +155,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     if (sourceHandler->controlTag == kControlTagPurc) {
       TTextPictureButton* purchaseButton = static_cast<TTextPictureButton*>(sourceHandler);
       TTechMgr* techMgr = g_pTechMgr;
-      if (techMgr->orderCapRows277[nationSlot].techStatusByTechId[techId] == 0) {
+      if (techMgr->techStatusRows[nationSlot].techStatusByTechId[techId] == 0) {
         short activeNationId = g_pSimMgr->GetPlayerCountry();
         int availableBudget = g_apNationStates[activeNationId]->ComputeAvailableDiplomacyBudget();
         if (g_anTechItemResearchCostByTechId[techId] > availableBudget) {

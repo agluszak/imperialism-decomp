@@ -381,7 +381,7 @@ void TCityProductionView::AdjustCursor(CPoint* point, RgnHandle hitArg) {
     bool technologyAvailable = true;
     if (restrictedSlot) {
       short activeNation = g_pSimMgr->GetPlayerCountry();
-      if (g_pTechMgr->orderCapRows277[activeNation].techStatusByTechId[0x13] != 2) {
+      if (g_pTechMgr->techStatusRows[activeNation].techStatusByTechId[0x13] != 2) {
         technologyAvailable = false;
         available = false;
       }
@@ -735,7 +735,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
       bool available = true;
       if (buildingSlot == 6 || buildingSlot == 11) {
         short nationId = g_pSimMgr->GetPlayerCountry();
-        available = g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[19] == 2;
+        available = g_pTechMgr->techStatusRows[nationId].techStatusByTechId[19] == 2;
       }
       if (available) {
         TrackMouse(kTrackPhaseEnd, localPoint, localPoint, localPoint, false);

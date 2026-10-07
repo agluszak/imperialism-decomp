@@ -567,7 +567,7 @@ bool TGreatPower::BuildZoneEventMessages(CString* outMessageText) {
           }
         }
       }
-      contextEntry = contextEntry->prev18;
+      contextEntry = contextEntry->prevZone;
     }
   }
   return anyMessage;
@@ -2330,7 +2330,7 @@ int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
       if ((static_cast<unsigned char>(node->nationKeyMask) & nationBit) != 0) {
         ++count;
       }
-      node = node->prev18;
+      node = node->prevZone;
     } while (node != 0);
   }
   return count;

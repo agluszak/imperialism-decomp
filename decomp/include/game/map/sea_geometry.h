@@ -8,12 +8,12 @@
 // with a single-slot vtable whose slot is Add.
 
 struct Seapoint {
-  int coord00; // linear overlay index / raw value
-  int lo04;    // sorted-low attribute
-  int hi08;    // sorted-high attribute
+  int coord; // linear overlay index / raw value
+  int lo;    // sorted-low attribute
+  int hi;    // sorted-high attribute
   int f0c;
 
-  // Store the four dwords, ordering lo04<=hi08.
+  // Store the four dwords, ordering lo <= hi.
   void InitSorted(int value, int a, int b, int extra);
   double WrappedDeltaMetric(const Seapoint* other) const;
 };
@@ -25,7 +25,7 @@ struct SeaSegment {
   short y1;   // overlay row of endpoint 1
   int coord0; // linear overlay index of endpoint 0 (x0 + y0*0xd8)
   int coord1; // linear overlay index of endpoint 1
-  // +0x10: carried attributes from endpoint 0's lo04/hi08; border links store the two regions.
+  // Attributes carried from endpoint 0; border links store the two regions.
   short attrBySide[2];
   short angle;        // heading angle (atan2 of the endpoint delta)
   unsigned char wrap; // set when the segment spans the horizontal wrap (|dx| > 0x6c)
@@ -95,7 +95,7 @@ IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 ASSERT_SIZE(SeapointStretch, 0x10);
 ASSERT_SIZE(SeaSegmentStretch, 0x10);
 ASSERT_SIZE(Seapoint, 0x10);
-ASSERT_OFFSET(Seapoint, coord00, 0x00);
+ASSERT_OFFSET(Seapoint, coord, 0x00);
 ASSERT_OFFSET(Seapoint, f0c, 0x0c);
 ASSERT_SIZE(SeaSegment, 0x18);
 ASSERT_OFFSET(SeaSegment, coord0, 0x08);

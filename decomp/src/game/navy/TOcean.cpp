@@ -70,23 +70,23 @@ void TOcean::Free() {
   for (int i = 0; i < nationCount; ++i) {
     TZone* zone = &contextArray[i];
     if (g_pMapActionContextListHead == zone) {
-      g_pMapActionContextListHead = zone->prev18;
+      g_pMapActionContextListHead = zone->prevZone;
     }
-    if (zone->prev18 != 0) {
-      zone->prev18->next1c = zone->next1c;
+    if (zone->prevZone != 0) {
+      zone->prevZone->nextZone = zone->nextZone;
     }
-    if (zone->next1c != 0) {
-      zone->next1c->prev18 = zone->prev18;
+    if (zone->nextZone != 0) {
+      zone->nextZone->prevZone = zone->prevZone;
     }
-    zone->next1c = 0;
-    zone->prev18 = 0;
+    zone->nextZone = 0;
+    zone->prevZone = 0;
   }
   delete[] contextArray;
 
   for (;;) {
     TZone* portZoneProbe = g_pMapActionContextListHead;
     while (portZoneProbe != 0 && portZoneProbe->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      portZoneProbe = portZoneProbe->prev18;
+      portZoneProbe = portZoneProbe->prevZone;
     }
     if (portZoneProbe == 0) {
       break;
@@ -94,7 +94,7 @@ void TOcean::Free() {
 
     TZone* portZone = g_pMapActionContextListHead;
     while (portZone != 0 && portZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      portZone = portZone->prev18;
+      portZone = portZone->prevZone;
     }
     portZone->Free();
   }
@@ -118,23 +118,23 @@ void TOcean::ReadFrom(TStream* stream) {
   for (i = 0; i < nationCount; ++i) {
     TZone* zone = &contextArray[i];
     if (g_pMapActionContextListHead == zone) {
-      g_pMapActionContextListHead = zone->prev18;
+      g_pMapActionContextListHead = zone->prevZone;
     }
-    if (zone->prev18 != 0) {
-      zone->prev18->next1c = zone->next1c;
+    if (zone->prevZone != 0) {
+      zone->prevZone->nextZone = zone->nextZone;
     }
-    if (zone->next1c != 0) {
-      zone->next1c->prev18 = zone->prev18;
+    if (zone->nextZone != 0) {
+      zone->nextZone->prevZone = zone->prevZone;
     }
-    zone->next1c = 0;
-    zone->prev18 = 0;
+    zone->nextZone = 0;
+    zone->prevZone = 0;
   }
   delete[] contextArray;
 
   for (;;) {
     TZone* portZoneProbe = g_pMapActionContextListHead;
     while (portZoneProbe != 0 && portZoneProbe->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      portZoneProbe = portZoneProbe->prev18;
+      portZoneProbe = portZoneProbe->prevZone;
     }
     if (portZoneProbe == 0) {
       break;
@@ -142,7 +142,7 @@ void TOcean::ReadFrom(TStream* stream) {
 
     TZone* portZone = g_pMapActionContextListHead;
     while (portZone != 0 && portZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      portZone = portZone->prev18;
+      portZone = portZone->prevZone;
     }
     portZone->Free();
   }
@@ -178,7 +178,7 @@ void TOcean::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion < 0xd) {
-    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
       if (zone->primaryNeighbors.Data() != 0) {
         free(zone->primaryNeighbors.Detach());
       }
@@ -202,26 +202,26 @@ void TOcean::WriteTo(TStream* stream) {
   short portZoneCount = 0;
   TZone* portZone = g_pMapActionContextListHead;
   while (portZone != 0 && portZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-    portZone = portZone->prev18;
+    portZone = portZone->prevZone;
   }
   while (portZone != 0) {
     ++portZoneCount;
-    portZone = portZone->prev18;
+    portZone = portZone->prevZone;
     while (portZone != 0 && portZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      portZone = portZone->prev18;
+      portZone = portZone->prevZone;
     }
   }
   stream->WriteBytes(&portZoneCount, 2);
 
   portZone = g_pMapActionContextListHead;
   while (portZone != 0 && portZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-    portZone = portZone->prev18;
+    portZone = portZone->prevZone;
   }
   TZone* oldestPortZone = portZone;
   while (oldestPortZone != 0) {
-    TZone* previousPortZone = oldestPortZone->prev18;
+    TZone* previousPortZone = oldestPortZone->prevZone;
     while (previousPortZone != 0 && previousPortZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      previousPortZone = previousPortZone->prev18;
+      previousPortZone = previousPortZone->prevZone;
     }
     if (previousPortZone == 0) {
       break;
@@ -231,9 +231,9 @@ void TOcean::WriteTo(TStream* stream) {
   portZone = oldestPortZone;
   while (portZone != 0) {
     portZone->WriteTo(stream);
-    portZone = portZone->next1c;
+    portZone = portZone->nextZone;
     while (portZone != 0 && portZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      portZone = portZone->next1c;
+      portZone = portZone->nextZone;
     }
   }
 
@@ -363,7 +363,8 @@ void TOcean::CreateZones(short nationCountArg) {
 // FUNCTION: IMPERIALISM 0x00562f20
 void TOcean::UpdateOccupants() {
   // 1) IFuzzySet every map-action context's per-nation key mask.
-  for (TZone* maskZone = g_pMapActionContextListHead; maskZone != 0; maskZone = maskZone->prev18) {
+  for (TZone* maskZone = g_pMapActionContextListHead; maskZone != 0;
+       maskZone = maskZone->prevZone) {
     maskZone->nationKeyMask = 0;
   }
 
@@ -392,7 +393,7 @@ void TOcean::UpdateOccupants() {
   short activeNationId = g_pSimMgr->GetPlayerCountry();
   if (g_pMapActionContextListHead != 0) {
     unsigned char activeNationBit = 1 << activeNationId;
-    for (TZone* ctxZone = g_pMapActionContextListHead; ctxZone != 0; ctxZone = ctxZone->prev18) {
+    for (TZone* ctxZone = g_pMapActionContextListHead; ctxZone != 0; ctxZone = ctxZone->prevZone) {
       bool nationFlagged = (ctxZone->nationKeyMask & activeNationBit) != 0 ||
                            ctxZone->IsAdjacentToCountry(activeNationId);
       if (nationFlagged) {
@@ -455,7 +456,7 @@ TZone* TOcean::GetZoneAt(short seaTileIndex) {
   if (terrainClass == kMapTileActionStateAnchor || terrainClass == kMapTileActionStateDockedFleet) {
     TZone* zone = g_pMapActionContextListHead;
     while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      zone = zone->prev18;
+      zone = zone->prevZone;
     }
     for (;;) {
       if (zone == 0) {
@@ -466,9 +467,9 @@ TZone* TOcean::GetZoneAt(short seaTileIndex) {
           static_cast<TPortZone*>(zone)->portTileIndex == seaTileIndex) {
         return zone;
       }
-      zone = zone->prev18;
+      zone = zone->prevZone;
       while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-        zone = zone->prev18;
+        zone = zone->prevZone;
       }
     }
   }
@@ -484,7 +485,7 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
   short selectedTileId = city->HomeTownTileId();
   TZone* node = g_pMapActionContextListHead;
   while (node != 0 && node->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-    node = node->prev18;
+    node = node->prevZone;
   }
   for (;;) {
     TPortZone* portZone = static_cast<TPortZone*>(node);
@@ -500,9 +501,9 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
     if (portZone->portTileIndex == selectedTileId) {
       break;
     }
-    node = portZone->prev18;
+    node = portZone->prevZone;
     while (node != 0 && node->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      node = node->prev18;
+      node = node->prevZone;
     }
   }
   return node;
@@ -516,7 +517,7 @@ TZone* TOcean::GetPortZone(short nationSlot) {
       if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
         break;
       }
-      esi = esi->prev18;
+      esi = esi->prevZone;
     } while (esi != 0);
   }
 
@@ -533,13 +534,13 @@ TZone* TOcean::GetPortZone(short nationSlot) {
       return eax;
     }
 
-    esi = eax->prev18;
+    esi = eax->prevZone;
     if (esi != 0) {
       do {
         if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
           break;
         }
-        esi = esi->prev18;
+        esi = esi->prevZone;
       } while (esi != 0);
     }
     eax = esi;
@@ -660,7 +661,7 @@ void TOcean::BuildPort(short nTileIndex) {
 void TOcean::NukePort(short nTileIndex) {
   TZone* zone = g_pMapActionContextListHead;
   while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-    zone = zone->prev18;
+    zone = zone->prevZone;
   }
   while (zone != 0) {
     if (static_cast<short>(zone->tileOrTerrainId) == nTileIndex ||
@@ -669,9 +670,9 @@ void TOcean::NukePort(short nTileIndex) {
       zone->Free();
       return;
     }
-    zone = zone->prev18;
+    zone = zone->prevZone;
     while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      zone = zone->prev18;
+      zone = zone->prevZone;
     }
   }
 }
@@ -761,7 +762,7 @@ int TOcean::GetAverageSeaZoneValue() {
   int sum = 0;
   int count = 0;
 
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
     sum += zone->GetStrategicValue();
     ++count;
   }
@@ -772,7 +773,7 @@ int TOcean::GetAverageSeaZoneValue() {
 // FUNCTION: IMPERIALISM 0x00564570
 TZone* TOcean::GetSeaZoneAdjacentTo(int cityRecordIndex) {
   Province* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
     if (zone->secondaryNeighbors.ContainsEntry(target)) {
       return zone;
     }

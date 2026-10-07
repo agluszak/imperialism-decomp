@@ -16,8 +16,8 @@
 
 // FUNCTION: IMPERIALISM 0x004a3b70
 TMilitaryUnit* TArmyStack::ResetCursorAndGetHeadUnit() {
-  cursor = head14;
-  return (head14 != NULL) ? head14->unit : NULL;
+  cursor = head;
+  return (head != NULL) ? head->unit : NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3b90
@@ -35,7 +35,7 @@ IMPLEMENT_DYNCREATE(TArmyStack, TObject)
 
 // FUNCTION: IMPERIALISM 0x004a76f0
 TArmyStack::TArmyStack() {
-  head14 = 0;
+  head = 0;
   cursor = 0;
 }
 
@@ -112,18 +112,18 @@ void TArmyStack::AddUnit(TMilitaryUnit* unit) {
     FailNilPointerWithAssert(s_SourcePathUArmyMgr, 0xbeb);
   }
   node->unit = unit;
-  node->next = head14;
+  node->next = head;
   ++unitCount;
-  head14 = node;
+  head = node;
 }
 
 // FUNCTION: IMPERIALISM 0x004a7ba0
 void TArmyStack::RemoveUnit(TMilitaryUnit* unit) {
-  TArmyStackUnitNode* prev = head14;
+  TArmyStackUnitNode* prev = head;
   if (prev != NULL) {
     TArmyStackUnitNode* node = prev->next;
     if (prev->unit == unit) {
-      head14 = node;
+      head = node;
       delete prev;
       --unitCount;
       return;
@@ -142,7 +142,7 @@ void TArmyStack::RemoveUnit(TMilitaryUnit* unit) {
 
 // FUNCTION: IMPERIALISM 0x004a7c20
 void TArmyStack::Free() {
-  TArmyStackUnitNode* next = head14;
+  TArmyStackUnitNode* next = head;
   while (next != 0) {
     TArmyStackUnitNode* node = next;
     next = next->next;

@@ -46,7 +46,7 @@ IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x00564a60
 void TMilitaryPageView::PrepareUnitCache(unsigned short bitmapResourceId, int width, int height) {
-  TMapDialog* mapDialog = g_pViewMgr->mapUberPicture->subview2A8;
+  TMapDialog* mapDialog = g_pViewMgr->mapUberPicture->mapDialog;
   primaryUnitAtlas = mapDialog->quickDrawSurface;
   mapDialog->suppressMarkerOverlay = true;
   mapDialog->FlushCache();
@@ -89,7 +89,7 @@ IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x00564bf0
 void TMilitaryPageView::Close() {
   TView::Close();
-  TMapDialog* mapDialog = g_pViewMgr->mapUberPicture->subview2A8;
+  TMapDialog* mapDialog = g_pViewMgr->mapUberPicture->mapDialog;
   mapDialog->suppressMarkerOverlay = false;
   mapDialog->FlushCache();
 }

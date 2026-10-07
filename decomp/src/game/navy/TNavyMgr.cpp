@@ -579,7 +579,7 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
         }
       }
     }
-    zone = zone->prev18;
+    zone = zone->prevZone;
   } while (zone != 0);
 }
 

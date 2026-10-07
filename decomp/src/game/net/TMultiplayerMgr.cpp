@@ -1247,7 +1247,7 @@ bool TMultiplayerMgr::ReadMessage(NetMessage* packet) {
       nation1D->ConsiderWarOfIntervention(warTransition->nationA1D, warTransition->nationB1E);
     } else {
       nation1D->ConsiderWarOfAlliance(warTransition->nationA1D, warTransition->nationB1E,
-                                      warTransition->mode1F);
+                                      warTransition->swapRoles);
     }
     break;
   }

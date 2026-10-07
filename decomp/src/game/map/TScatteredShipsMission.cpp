@@ -79,7 +79,7 @@ bool TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* z
 
 // FUNCTION: IMPERIALISM 0x0053bd00
 TZone* AdvanceZoneCursorToPrevOrWrapToHead(TZone** cursor) {
-  TZone* next = (*cursor)->prev18;
+  TZone* next = (*cursor)->prevZone;
   *cursor = next;
   if (next == NULL) {
     *cursor = g_pMapActionContextListHead;
@@ -128,7 +128,7 @@ void TScatteredShipsMission::GiveOrders() {
     if (!zone->IsPortZone() && zone->IsAdjacentToCountry(nationId)) {
       break;
     }
-    zone = zone->prev18;
+    zone = zone->prevZone;
   }
   if (zone == NULL) {
     return;
@@ -136,7 +136,7 @@ void TScatteredShipsMission::GiveOrders() {
 
   TZone* current = g_pMapActionContextListHead;
   while (stepCount-- != 0) {
-    TZone* nextZone = current->prev18;
+    TZone* nextZone = current->prevZone;
     current = (nextZone != NULL) ? nextZone : g_pMapActionContextListHead;
   }
 
@@ -173,7 +173,7 @@ void TScatteredShipsMission::GiveOrders() {
       }
     }
 
-    TZone* nextZone = current->prev18;
+    TZone* nextZone = current->prevZone;
     current = (nextZone != NULL) ? nextZone : g_pMapActionContextListHead;
   }
 }

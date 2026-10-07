@@ -22,7 +22,7 @@ void TSuperNavyRoster::FillNavyPages(TView* panel, int* offsetLayout, int* sizeL
   TPageView::DoPostCreate(0);
 
   short activeNation = g_pSimMgr->GetPlayerCountry();
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
     for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
       if (ship->location != zone || ship->nation != activeNation) {
         continue;

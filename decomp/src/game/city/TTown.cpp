@@ -244,7 +244,7 @@ void TTown::Grow() {
     }
 
     if (resourceYieldByType[kResourceOil] != 0 &&
-        g_pTechMgr->orderCapRows277[ownerNation].techStatusByTechId[20] == 2) {
+        g_pTechMgr->techStatusRows[ownerNation].techStatusByTechId[20] == 2) {
       short& fuel = resourceYieldByType[kResourceFuel];
       if (fuel < resourceYieldByType[kResourceOil] / 2) {
         ++fuel;

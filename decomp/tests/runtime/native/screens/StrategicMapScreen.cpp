@@ -509,7 +509,7 @@ TMapUberPicture* StrategicMapScreen::View() const {
 }
 
 TMapDialog* StrategicMapScreen::Dialog() const {
-  return mapView != 0 ? mapView->subview2A8 : 0;
+  return mapView != 0 ? mapView->mapDialog : 0;
 }
 
 bool StrategicMapScreen::HasDialog() const {
@@ -532,8 +532,8 @@ bool StrategicMapScreen::IsZoomedOut() const {
 }
 
 bool StrategicMapScreen::IsZoomedIn() const {
-  return mapView != 0 && mapView->invalidationFlag != 0 &&
-         mapView->subview == mapView->subview2A8 && Find(kControlTagZmOt) != 0;
+  return mapView != 0 && mapView->invalidationFlag != 0 && mapView->subview == mapView->mapDialog &&
+         Find(kControlTagZmOt) != 0;
 }
 
 int StrategicMapScreen::ViewportOriginX() const {

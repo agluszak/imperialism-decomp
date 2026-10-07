@@ -390,13 +390,13 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
     const short unitType = order->resourceTypeIndex;
     // The row, the tech table and the ability table have to agree on which unit this row builds.
     if (g_awTacticalUnitCategoryCodeBySlot[unitType] != category + 1 ||
-        g_pTechMgr->nationCapRows1e8[nationSlot].slots[category + 1] != unitType ||
+        g_pTechMgr->nationCapabilityRows[nationSlot].slots[category + 1] != unitType ||
         g_pTechMgr->abilityActiveRows[nationSlot].abilityActiveById[unitType] == 0) {
       CString detail;
       detail.Format("row %d profile mismatch: type=%d category=%d selected=%d active=%d",
                     static_cast<int>(category), static_cast<int>(unitType),
                     g_awTacticalUnitCategoryCodeBySlot[unitType],
-                    g_pTechMgr->nationCapRows1e8[nationSlot].slots[category + 1],
+                    g_pTechMgr->nationCapabilityRows[nationSlot].slots[category + 1],
                     g_pTechMgr->abilityActiveRows[nationSlot].abilityActiveById[unitType]);
       return PageFailure("verify the armory's state", detail);
     }

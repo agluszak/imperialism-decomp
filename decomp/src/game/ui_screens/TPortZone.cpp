@@ -77,16 +77,16 @@ void TPortZone::Free() {
     }
   }
   if (g_pMapActionContextListHead == this) {
-    g_pMapActionContextListHead = prev18;
+    g_pMapActionContextListHead = prevZone;
   }
-  if (prev18 != 0) {
-    prev18->next1c = next1c;
+  if (prevZone != 0) {
+    prevZone->nextZone = nextZone;
   }
-  if (next1c != 0) {
-    next1c->prev18 = prev18;
+  if (nextZone != 0) {
+    nextZone->prevZone = prevZone;
   }
-  next1c = 0;
-  prev18 = 0;
+  nextZone = 0;
+  prevZone = 0;
   delete this;
 }
 
@@ -112,7 +112,7 @@ short TPortZone::GetOriginalOwner() {
 // FUNCTION: IMPERIALISM 0x00561cc0
 TPortZone* FindLastPortZoneInMapActionContextList() {
   TPortZone* lastPort = 0;
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
     if (zone->IsKindOf(RUNTIME_CLASS(TPortZone))) {
       lastPort = static_cast<TPortZone*>(zone);
     }
@@ -123,9 +123,9 @@ TPortZone* FindLastPortZoneInMapActionContextList() {
 // Finds the preceding port-zone node in the map-action-context chain.
 // FUNCTION: IMPERIALISM 0x00561d80
 TPortZone* TPortZone::GetPrevPort() {
-  TZone* zone = prev18;
+  TZone* zone = prevZone;
   while (zone != 0 && !zone->IsKindOf(RUNTIME_CLASS(TPortZone))) {
-    zone = zone->prev18;
+    zone = zone->prevZone;
   }
   return static_cast<TPortZone*>(zone);
 }

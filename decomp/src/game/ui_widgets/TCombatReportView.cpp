@@ -54,38 +54,38 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   m_reportContext = reportContext;
 
   short participantAUnitCount = 0;
-  int participantAField18Total = 0;
-  int participantAField1cTotal = 0;
+  int participantAStrengthTotal = 0;
+  int participantALossTotal = 0;
   while (reportContext->unitsA[participantAUnitCount].statusStringIndex != -1) {
-    participantAField18Total += reportContext->unitsA[participantAUnitCount].fieldAt18;
-    participantAField1cTotal += reportContext->unitsA[participantAUnitCount].fieldAt1c;
+    participantAStrengthTotal += reportContext->unitsA[participantAUnitCount].initialStrength;
+    participantALossTotal += reportContext->unitsA[participantAUnitCount].losses;
     participantAUnitCount++;
   }
   this->participantAUnitCount = participantAUnitCount;
   participantBFirstPage = static_cast<short>((participantAUnitCount + 3) / 4 + 1);
-  int participantAMinimumTotal = participantAField1cTotal;
-  if (participantAField18Total < participantAMinimumTotal) {
-    participantAMinimumTotal = participantAField18Total;
+  int participantAMinimumTotal = participantALossTotal;
+  if (participantAStrengthTotal < participantAMinimumTotal) {
+    participantAMinimumTotal = participantAStrengthTotal;
   }
 
   short participantBUnitCount = 0;
-  int participantBField18Total = 0;
-  int participantBField1cTotal = 0;
+  int participantBStrengthTotal = 0;
+  int participantBLossTotal = 0;
   while (reportContext->unitsB[participantBUnitCount].statusStringIndex != -1) {
-    participantBField18Total += reportContext->unitsB[participantBUnitCount].fieldAt18;
-    participantBField1cTotal += reportContext->unitsB[participantBUnitCount].fieldAt1c;
+    participantBStrengthTotal += reportContext->unitsB[participantBUnitCount].initialStrength;
+    participantBLossTotal += reportContext->unitsB[participantBUnitCount].losses;
     participantBUnitCount++;
   }
   this->participantBUnitCount = participantBUnitCount;
   totalPages = static_cast<short>((participantBUnitCount + 2) / 4 + participantBFirstPage);
-  int participantBMinimumTotal = participantBField1cTotal;
-  if (participantBField18Total < participantBMinimumTotal) {
-    participantBMinimumTotal = participantBField18Total;
+  int participantBMinimumTotal = participantBLossTotal;
+  if (participantBStrengthTotal < participantBMinimumTotal) {
+    participantBMinimumTotal = participantBStrengthTotal;
   }
 
-  int sharedForceTotal = participantBField18Total;
-  if (participantAField18Total < sharedForceTotal) {
-    sharedForceTotal = participantAField18Total;
+  int sharedForceTotal = participantBStrengthTotal;
+  if (participantAStrengthTotal < sharedForceTotal) {
+    sharedForceTotal = participantAStrengthTotal;
   }
   int reportTitleIndex = sharedForceTotal / 2000;
   if (reportTitleIndex > 4) {
@@ -150,7 +150,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
       &scratchText);
   reportText += scratchText + s_szTurnHistorySeparator;
 
-  int participantAPercentage = participantAMinimumTotal * 100 / participantAField18Total;
+  int participantAPercentage = participantAMinimumTotal * 100 / participantAStrengthTotal;
   g_pSimMgr->GetString(0x271f, GetCombatLossDescriptionIndex(participantAPercentage), &scratchText);
   scratchText += '\n';
   reportText += scratchText;
@@ -158,7 +158,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   g_apTerrainTypeDescriptorTable[reportContext->nationIdB]->FormatOverlayTerrainLabelText(
       &scratchText);
   reportText += scratchText + ": ";
-  int participantBPercentage = participantBMinimumTotal * 100 / participantBField18Total;
+  int participantBPercentage = participantBMinimumTotal * 100 / participantBStrengthTotal;
   g_pSimMgr->GetString(0x271f, GetCombatLossDescriptionIndex(participantBPercentage), &scratchText);
   scratchText += '\n';
   reportText += scratchText;
@@ -245,10 +245,10 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       SetQuickDrawTextOriginWithContextOffset(7, static_cast<short>(y + 3));
       SetQuickDrawPenSizeAndMarkDirty(1, 4);
       g_pViewMgr->SetForeColor(0x34);
-      int guideX = (record->fieldAt18 * 3) / 7 + 7;
+      int guideX = (record->initialStrength * 3) / 7 + 7;
       DrawCenteredGuideLineOnMapDc(static_cast<short>(guideX), static_cast<short>(y + 3));
       g_pViewMgr->SetForeColor(0x33);
-      DrawCenteredGuideLineOnMapDc(static_cast<short>(guideX - (record->fieldAt1c * 3) / 7),
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(guideX - (record->losses * 3) / 7),
                                    static_cast<short>(y + 3));
       g_pViewMgr->SetForeColor(0);
 
@@ -270,7 +270,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
                                          &overlaySrcRect, &overlayDstRect, 0x24, 0);
       }
 
-      if (record->flagAt15 != 0) {
+      if (record->showMarker != 0) {
         RECT markerSrcRect = {0, 0x12, 5, 0x17};
         RECT markerDstRect = {0x7c, y + 0xb, 0x81, y + 0x13};
         BlitRectWithOptionalTransparency(g_pMacViewMgr->markerWorld->GetBlitSurface(),

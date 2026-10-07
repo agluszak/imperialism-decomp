@@ -218,7 +218,7 @@ RuntimeActionResult RunNavyZoneTarget(NativeTransition& transition) {
   if (force == 0) {
     return RuntimeActionResult::Failure("could not commit a task force");
   }
-  other = zone->prev18;
+  other = zone->prevZone;
   if (other == 0) {
     other = g_pMapActionContextListHead;
   }
@@ -298,7 +298,7 @@ RuntimeActionResult RunNavySelectionCycling(NativeTransition& transition) {
     return started;
   }
   next = 0;
-  for (TZone* candidate = zone->prev18; candidate != 0; candidate = candidate->prev18) {
+  for (TZone* candidate = zone->prevZone; candidate != 0; candidate = candidate->prevZone) {
     if (candidate->HasFreeShipsOfPlayer(ActiveNationSlot(), 0)) {
       next = candidate;
       break;

@@ -7,11 +7,11 @@ struct CRuntimeClass;
 struct CombatReportUnitRecord {
   char name[20];                 // unit/rank display name
   signed char statusStringIndex; // GetString(0x2717, idx) index for the "(...)" suffix
-  unsigned char flagAt15;        // gates the fixed 5x5 marker-icon overlay blit
+  unsigned char showMarker;      // gates the fixed 5x5 marker-icon overlay blit
   unsigned char pad16;
   signed char widthParam; // gates + sizes the second icon overlay blit
-  int fieldAt18;          // feeds the first guide-line x position (fieldAt18*3/7 + 7)
-  int fieldAt1c;          // feeds the second guide-line x position (fieldAt1c*3/7)
+  int initialStrength;
+  int losses;
 };
 ASSERT_SIZE(CombatReportUnitRecord, 0x20);
 

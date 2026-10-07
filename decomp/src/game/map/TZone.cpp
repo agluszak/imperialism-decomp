@@ -53,14 +53,14 @@ TZone::TZone() : displayName(), primaryNeighbors(), secondaryNeighbors() {
   ++g_nMapActionContextCount;
   tileOrTerrainId = -1;
   nationKeyMask = 0;
-  prev18 = g_pMapActionContextListHead;
-  next1c = 0;
+  prevZone = g_pMapActionContextListHead;
+  nextZone = 0;
   distanceLevel = 0;
   statusCode = -1;
   activeTileIndex = -1;
   g_pMapActionContextListHead = this;
-  if (prev18 != 0) {
-    prev18->next1c = this;
+  if (prevZone != 0) {
+    prevZone->nextZone = this;
   }
   if (g_pMapActionContextDistanceCache != 0) {
     delete[] static_cast<char*>(g_pMapActionContextDistanceCache);
@@ -119,32 +119,32 @@ Province** TZoneSecondaryNeighborStretch::Add(Province* entry) {
 // FUNCTION: IMPERIALISM 0x0055ec60
 void TZone::Free() {
   if (g_pMapActionContextListHead == this) {
-    g_pMapActionContextListHead = prev18;
+    g_pMapActionContextListHead = prevZone;
   }
-  if (prev18 != 0) {
-    prev18->next1c = next1c;
+  if (prevZone != 0) {
+    prevZone->nextZone = nextZone;
   }
-  if (next1c != 0) {
-    next1c->prev18 = prev18;
+  if (nextZone != 0) {
+    nextZone->prevZone = prevZone;
   }
-  next1c = 0;
-  prev18 = 0;
+  nextZone = 0;
+  prevZone = 0;
   delete this;
 }
 
 // FUNCTION: IMPERIALISM 0x0055ecd0
 void TZone::Vanish() {
   if (g_pMapActionContextListHead == this) {
-    g_pMapActionContextListHead = prev18;
+    g_pMapActionContextListHead = prevZone;
   }
-  if (prev18 != 0) {
-    prev18->next1c = next1c;
+  if (prevZone != 0) {
+    prevZone->nextZone = nextZone;
   }
-  if (next1c != 0) {
-    next1c->prev18 = prev18;
+  if (nextZone != 0) {
+    nextZone->prevZone = prevZone;
   }
-  next1c = 0;
-  prev18 = 0;
+  nextZone = 0;
+  prevZone = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055ed20
@@ -226,8 +226,8 @@ short TZone::GetContextOrdinalOrInvalid() {
 // FUNCTION: IMPERIALISM 0x0055f0d0
 TZone* GetLastMapActionContext() {
   TZone* zone = g_pMapActionContextListHead;
-  while (zone != 0 && zone->prev18 != 0) {
-    zone = zone->prev18;
+  while (zone != 0 && zone->prevZone != 0) {
+    zone = zone->prevZone;
   }
   return zone;
 }
@@ -238,7 +238,7 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
     return 0;
   }
   TZone* node;
-  for (node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
+  for (node = g_pMapActionContextListHead; node != 0; node = node->prevZone) {
     short ordinal = (node != 0) ? node->contextOrdinal : -1;
     if (ordinal == nodeId) {
       break;
@@ -876,7 +876,7 @@ void TZone::LightUp(int remainingDepth, bool markAdjacentCities) {
 
 // FUNCTION: IMPERIALISM 0x00560e20
 void ResetZoneActivity() {
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prevZone) {
     zone->distanceLevel = 0;
   }
   for (int cityIndex = 0; cityIndex < kProvinceCount; ++cityIndex) {
@@ -911,7 +911,7 @@ TZone* TZone::GetSafestNearbyZoneFor(short nationSlot) const {
 // FUNCTION: IMPERIALISM 0x00560f80
 void TZone::LightDistanceRecursive(short level) {
   if (level == -1) {
-    for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
+    for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prevZone) {
       node->distanceLevel = 0x29a;
     }
     level = 0;
@@ -948,7 +948,7 @@ short TZone::GetDistanceTo(TZone* other) {
   signed char cachedDistance = cache[thisOrd * g_nMapActionContextCount + otherOrd];
 
   if (cachedDistance < 0) {
-    for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
+    for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prevZone) {
       node->distanceLevel = 0x29a;
     }
 
@@ -961,7 +961,7 @@ short TZone::GetDistanceTo(TZone* other) {
     }
 
     for (TZone* writeNode = g_pMapActionContextListHead; writeNode != 0;
-         writeNode = writeNode->prev18) {
+         writeNode = writeNode->prevZone) {
       short nodeOrd = writeNode != 0 ? writeNode->contextOrdinal : -1;
       cache = static_cast<char*>(g_pMapActionContextDistanceCache);
       cache[thisOrd * g_nMapActionContextCount + nodeOrd] =
@@ -1067,7 +1067,7 @@ short TZone::GetPortOwnerNation() {
 TZone* TZone::FindPortZoneByTile(short nTileIndex) {
   TZone* zone = g_pMapActionContextListHead;
   while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-    zone = zone->prev18;
+    zone = zone->prevZone;
   }
   for (;;) {
     if (zone == 0) {
@@ -1078,9 +1078,9 @@ TZone* TZone::FindPortZoneByTile(short nTileIndex) {
         static_cast<TPortZone*>(zone)->portTileIndex == nTileIndex) {
       return zone;
     }
-    zone = zone->prev18;
+    zone = zone->prevZone;
     while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-      zone = zone->prev18;
+      zone = zone->prevZone;
     }
   }
 }
@@ -1089,16 +1089,16 @@ TZone* TZone::FindPortZoneByTile(short nTileIndex) {
 TZone* TZone::GetFirstPort() {
   TZone* cursor = g_pMapActionContextListHead;
   while (cursor != 0 && cursor->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-    cursor = cursor->prev18;
+    cursor = cursor->prevZone;
   }
   return cursor;
 }
 
 // FUNCTION: IMPERIALISM 0x00561d40
 TZone* TZone::GetNextPort() {
-  TZone* cursor = prev18;
+  TZone* cursor = prevZone;
   while (cursor != 0 && cursor->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
-    cursor = cursor->prev18;
+    cursor = cursor->prevZone;
   }
   return cursor;
 }
@@ -1108,16 +1108,16 @@ TZone* TZone::GetNextPort() {
 // FUNCTION: IMPERIALISM 0x005627a0
 TZone::~TZone() {
   if (g_pMapActionContextListHead == this) {
-    g_pMapActionContextListHead = prev18;
+    g_pMapActionContextListHead = prevZone;
   }
-  if (prev18 != 0) {
-    prev18->next1c = next1c;
+  if (prevZone != 0) {
+    prevZone->nextZone = nextZone;
   }
-  if (next1c != 0) {
-    next1c->prev18 = prev18;
+  if (nextZone != 0) {
+    nextZone->prevZone = prevZone;
   }
-  next1c = 0;
-  prev18 = 0;
+  nextZone = 0;
+  prevZone = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00563220
@@ -1137,7 +1137,7 @@ void RegenerateZoneCodes(void) {
   unsigned char statusScratch[kProvinceCount];
   memset(statusScratch, 0, sizeof(statusScratch));
 
-  for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
+  for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prevZone) {
     node->GenerateZoneStatusCodeIfUnset();
     node->NameThyself(statusScratch, 0);
   }

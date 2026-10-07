@@ -341,7 +341,7 @@ void ClearAllMilitaryOrders() {
 
 void CollectStackUnitIds(TArmyStack* stack, JsonArray* ids) {
   TArmyStackUnitNode* node;
-  for (node = stack->head14; node != 0; node = node->next) {
+  for (node = stack->head; node != 0; node = node->next) {
     if (node->unit != 0) {
       ids->Add(node->unit->persistentUnitId);
     }
@@ -514,7 +514,7 @@ void ForceWarBetween(short left, short right) {
 
 TZone* FindUnoccupiedMapZone() {
   TZone* candidate;
-  for (candidate = g_pMapActionContextListHead; candidate != 0; candidate = candidate->prev18) {
+  for (candidate = g_pMapActionContextListHead; candidate != 0; candidate = candidate->prevZone) {
     int occupied = 0;
     TShip* ship;
     for (ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
@@ -766,7 +766,7 @@ RuntimeActionResult RunMilitaryPhaseNavalEncounterImpl(NativeTransition& transit
   }
   TZone* zone = 0;
   for (TZone* candidate = g_pMapActionContextListHead; candidate != 0;
-       candidate = candidate->prev18) {
+       candidate = candidate->prevZone) {
     bool occupied = false;
     for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
       if (ship->location == candidate) {

@@ -26,8 +26,8 @@ TArmyPlacard::~TArmyPlacard() {}
 // FUNCTION: IMPERIALISM 0x0058bf50
 void TArmyPlacard::SetValue(short value, bool refreshNow) {
   short activeNationId = g_pSimMgr->GetPlayerCountry();
-  short capValue =
-      g_pTechMgr->nationCapRows1e8[activeNationId].slots[controlTag - kControlTagArmyPlacardFirst];
+  short capValue = g_pTechMgr->nationCapabilityRows[activeNationId]
+                       .slots[controlTag - kControlTagArmyPlacardFirst];
   short pictureId = capValue + 0x4c4;
   if (value != glyph) {
     if (value <= 0) {

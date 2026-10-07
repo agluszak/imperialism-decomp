@@ -59,7 +59,7 @@ bool IsTileCompatible(int tileIndex) {
   }
   unsigned char excludeOwnerMask = (1 << (primaryOwner & 0x1f)) ^ 0x7f;
   while ((zone->nationKeyMask & excludeOwnerMask) == 0 || !zone->ContainsProvince(tileIndex)) {
-    zone = zone->prev18;
+    zone = zone->prevZone;
     if (zone == NULL) {
       return false;
     }

@@ -132,7 +132,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
                                    ? static_cast<TMapUberPicture*>(mainView)
                                    : 0;
     if (g_pViewMgr->currentTurnEventCode != 0x3b8 || mapView == 0 || g_pGlobalMapState == 0 ||
-        mapView->subview2A8 == 0 || mapView->miniMapView == 0 ||
+        mapView->mapDialog == 0 || mapView->miniMapView == 0 ||
         mapView->FindSubView(kControlTagCanc) == 0 || mapView->FindSubView(kControlTagQuer) == 0) {
       scenario.FailScenario("capital-selection map is missing navigation prerequisites");
       return kRuntimeFlowRunning;
@@ -146,7 +146,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
 
   if (phase == kSelectingCapitalSite) {
     TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
-    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    TMapDialog* mapDialog = mapView != 0 ? mapView->mapDialog : 0;
     if (mapDialog == 0 || !RuntimeIsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
       scenario.FailScenario("capital-selection map has no TCitySiteView");
       return kRuntimeFlowRunning;
@@ -208,8 +208,8 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
       scenario.AwaitUiChange("accepted capital site did not reach the combined map");
       return kRuntimeFlowRunning;
     }
-    if (mapView->subview2A8 == 0 ||
-        RuntimeIsViewKindOf(mapView->subview2A8, RUNTIME_CLASS(TCitySiteView))) {
+    if (mapView->mapDialog == 0 ||
+        RuntimeIsViewKindOf(mapView->mapDialog, RUNTIME_CLASS(TCitySiteView))) {
       scenario.FailScenario("combined map retained the capital-selection map view");
       return kRuntimeFlowRunning;
     }

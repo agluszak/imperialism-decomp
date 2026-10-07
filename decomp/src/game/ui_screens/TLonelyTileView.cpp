@@ -29,7 +29,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
   RECT srcRect;
   if (controlTag == kControlTagTile && mapUberPicture->invalidationFlag) {
-    TQuickDrawSurfaceContext* tileAtlasCtx = mapUberPicture->subview2A8->quickDrawSurface;
+    TQuickDrawSurfaceContext* tileAtlasCtx = mapUberPicture->mapDialog->quickDrawSurface;
     // The tile's transient marker-slot index selects a 64-pixel atlas column.
     int spriteX = static_cast<int>(g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex)
                   << 6;
