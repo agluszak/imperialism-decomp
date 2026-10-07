@@ -49,7 +49,7 @@ public:
   void WriteTo(TStream* stream) override;  // body 0x004d9c70
   void ReadFrom(TStream* stream) override; // body 0x004d92e0
   void Free() override;                    // body 0x004d9160
-  void WriteCoreFieldsToStream(TStream* stream) override;
+  void MultiWriteTo(TStream* stream) override;
   void MultiReadFrom(TStream* stream, int unusedArg) override;
 
   // ---- diplomacy grants / policies / proposal queue ----
@@ -149,15 +149,14 @@ public:
   // ORACLE: Mac names TGreatPower::RecallTradeBids().
   virtual void RecallTradeBids(void);
   virtual void InitializeDealBook(void); // slot 0x5c
-  virtual void AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex,
-                                                          short rowIndex);
-  virtual int SumAidAllocationMatrixColumnForTarget(NationSlot targetNationSlot);
-  virtual int SumAidAllocationMatrixAllCells(void); // slot 0x5f
+  virtual void AddOverseasProfitFrom(int amount, short columnIndex, short rowIndex);
+  virtual int GetOverseasProfitFrom(NationSlot targetNationSlot);
+  virtual int GetTotalOverseasProfits(void); // slot 0x5f
   virtual int ComputeRemainingDiplomacyAidBudget(void);
   virtual void SetTradeBids(void);
   virtual void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
-  virtual void SetCityStockCounterAndRefresh(short targetSlot, short value);   // slot 0x63
-  virtual void AddToCityStockCounterAndRefresh(short targetSlot, short value); // slot 0x64
+  virtual void SetStockpile(short targetSlot, short value);   // slot 0x63
+  virtual void AddToStockpile(short targetSlot, short value); // slot 0x64
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
   virtual void ConsumeMerchantCapacityForPurchase(int delta);             // slot 0x66
   virtual void SetTradeOffersFor(short resourceKind, short offerContext); // slot 0x19c
@@ -183,17 +182,16 @@ public:
                                        int payload); // slot 0x70
   virtual void ClearTradeOffers(void);               // index 113
   // ORACLE: Mac names TGreatPower::SetDiplomacyPolicies().
-  virtual void SetDiplomacyPolicies();                                           // index 114
-  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void); // index 115
+  virtual void SetDiplomacyPolicies(); // index 114
+  virtual void ResetPolicies(void);    // index 115
   virtual bool SetDiplomacyPolicyTo(short targetClass,
                                     short policyCode); // index 116
   virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int targetNation,
                                                                 int grantValue); // index 117
   // ORACLE: Mac names TGreatPower::GiveGrantTo(short).
   virtual void GiveGrantTo(int targetNationSlot); // index 118
-  virtual bool
-  CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationSlot,
-                                        unsigned short proposedGrantEntry); // index 119
+  virtual bool CanAffordGrantTo(NationSlot targetNationSlot,
+                                unsigned short proposedGrantEntry); // index 119
   // ORACLE: Mac names TGreatPower::FinishDiplomacyPhase().
   virtual void FinishDiplomacyPhase();                                // index 120 — body 0x004de7e0
   virtual void DecrementNeedLevelByNationStep(NationSlot nationSlot); // index 121

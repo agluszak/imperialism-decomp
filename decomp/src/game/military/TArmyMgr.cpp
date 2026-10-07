@@ -294,7 +294,7 @@ void TArmyMgr::EndBattlePhase() {
     g_pMacViewMgr->RegenerateCountryRegions();
     for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
       if (g_apTerrainTypeDescriptorTable[i] != NULL) {
-        g_apTerrainTypeDescriptorTable[i]->SetOverlayAnchorTile(-1);
+        g_apTerrainTypeDescriptorTable[i]->SetCenterTile(-1);
       }
     }
   }
@@ -1200,13 +1200,12 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
 
 // FUNCTION: IMPERIALISM 0x004a4aa0
 unsigned short TArmyMgr::LookupCivilianMapCursorTokenByStateIndex(short tileIndex, short mode) {
-  return g_civilianMapCursorTokenByStateIndex[this->ComputeCivilianMapCursorStateIndex(tileIndex,
-                                                                                       mode)];
+  return g_civilianMapCursorTokenByStateIndex[this->GetTileSelection(tileIndex, mode)];
 }
 
 // FUNCTION: IMPERIALISM 0x004a4ad0
 bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) {
-  int cursorState = this->ComputeCivilianMapCursorStateIndex(tileIndex, mode);
+  int cursorState = this->GetTileSelection(tileIndex, mode);
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   switch (cursorState) {
   case 2:
@@ -1245,7 +1244,7 @@ bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) 
 }
 
 // FUNCTION: IMPERIALISM 0x004a4c80
-int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
+int TArmyMgr::GetTileSelection(short tileIndex, short mode) {
   if (this->pendingMapActionIndex == -1) {
     return ComputeMapCursorStateIndex(tileIndex, mode);
   }
@@ -1877,8 +1876,8 @@ void TArmyMgr::AddBattleRecord(MapOrderBattleSnapshot* record, int unusedArg2) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a6ef0
-void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
-                                                               MapOrderBattleSnapshot* snapshot) {
+void TArmyMgr::CheckForDrownedUnits(char nationId, int cityIndex,
+                                    MapOrderBattleSnapshot* snapshot) {
   int side = (nationId != snapshot->nationIds[0]) ? 1 : 0;
 
   TList* scratchList = new TList();

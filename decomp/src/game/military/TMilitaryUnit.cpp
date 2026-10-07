@@ -283,9 +283,8 @@ bool TMilitaryUnit::Upgrade() {
       static_cast<int>(cashCost) > nation->ComputeAvailableDiplomacyBudget()) {
     return false;
   }
-  nation->SetCityStockCounterAndRefresh(
-      0x10, static_cast<short>(nation->GetStockpile(kResourceArms) - primaryCost));
-  g_apNationStates[ownerNationSlot]->SetCityStockCounterAndRefresh(
+  nation->SetStockpile(0x10, static_cast<short>(nation->GetStockpile(kResourceArms) - primaryCost));
+  g_apNationStates[ownerNationSlot]->SetStockpile(
       0xc, static_cast<short>(g_apNationStates[ownerNationSlot]->GetStockpile(kResourceFuel) -
                               secondaryCost));
   g_apNationStates[ownerNationSlot]->treasuryValue -= cashCost;

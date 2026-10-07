@@ -201,7 +201,7 @@ void TCountry::MultiReadFrom(TStream* stream, int unusedArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d70e0
-void TCountry::WriteCoreFieldsToStream(TStream* stream) {
+void TCountry::MultiWriteTo(TStream* stream) {
   stream->WriteBytes(&this->encodedNationSlot, 2);
   stream->WriteBytes(&this->treasuryValue, 4);
   stream->WriteBytes(&this->homeTileIndex, 4);
@@ -209,12 +209,12 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7150
-void TCountry::SetOverlayAnchorTile(int value) {
+void TCountry::SetCenterTile(int value) {
   this->overlayAnchorTileCache = static_cast<short>(value);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7170
-short TCountry::GetOrComputeOverlayAnchorTileIndex() {
+short TCountry::GeopoliticalCenter() {
   if (overlayAnchorTileCache == -1) {
     overlayAnchorTileCache = static_cast<short>(
         g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, true));

@@ -50,7 +50,7 @@ void TRemoteGreatPower::InitializeDiplomacyNotices(void) {}
 
 // FUNCTION: IMPERIALISM 0x005419e0
 void TRemoteGreatPower::ReplyToDiplomacyOffers(void) {
-  ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
+  ResetPolicies();
 }
 
 // FUNCTION: IMPERIALISM 0x00541a00

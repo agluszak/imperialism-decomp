@@ -177,7 +177,7 @@ RuntimeActionResult RunPlayerTradePhaseReset(NativeTransition& transition) {
   nation->budgetPoolDelta = -140;
   nation->merchantCapacity = 19;
   nation->availableMerchantCapacity = 7;
-  nation->AddAmountToAidAllocationMatrixCellAndTotal(37, kResourceSteel, kMinorNationFirstSlot);
+  nation->AddOverseasProfitFrom(37, kResourceSteel, kMinorNationFirstSlot);
 
   JsonObject args;
   args.Set("nation", static_cast<int>(ActiveNationSlot()));
@@ -447,11 +447,10 @@ void DrainRankedDealsWithHumanAutoAccept() {
         if (tradeManager->categoryRows[0].dealCategoryOrderIndex > 0x10) {
           break;
         }
-      } while (
-          tradeManager
-              ->categoryRankLists[g_aTradeDealCategoryOrder[tradeManager->categoryRows[0]
-                                                                         .dealCategoryOrderIndex]]
-              ->GetSize() == 0);
+      } while (tradeManager
+                   ->categoryRankLists[g_aTradeDealCategoryOrder[tradeManager->categoryRows[0]
+                                                                     .dealCategoryOrderIndex]]
+                   ->GetSize() == 0);
       tradeManager->categoryRows[0].dealEntryOrdinal = 1;
     }
   }
@@ -578,10 +577,10 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
   g_pSimMgr->AdvanceGlobalTurnStateMachine();
 
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  TOfferDeskPicture* sheet = activeDialog == 0
-                                 ? 0
-                                 : static_cast<TOfferDeskPicture*>(
-                                       activeDialog->ResolveControlByTag(kControlTagMain));
+  TOfferDeskPicture* sheet =
+      activeDialog == 0
+          ? 0
+          : static_cast<TOfferDeskPicture*>(activeDialog->ResolveControlByTag(kControlTagMain));
   if (sheet == 0 || sheet->respondingNationSlot < 0) {
     return RuntimeActionResult::Failure("trade phase did not pose an Offer Sheet");
   }
@@ -599,8 +598,8 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
   TDealList* deals = g_pTradeMgr->categoryRankLists[dispatchIdx];
   JsonArray dealRows;
   for (int ordinal = 1; ordinal <= deals->GetSize(); ++ordinal) {
-    TradeDealEntry* deal = static_cast<TradeDealEntry*>(
-        deals->GetPtrListEntryByOneBasedIndex(ordinal));
+    TradeDealEntry* deal =
+        static_cast<TradeDealEntry*>(deals->GetPtrListEntryByOneBasedIndex(ordinal));
     JsonObject row;
     row.Set("source", deal->sourceNationSlot);
     row.Set("target", deal->targetNationSlot);

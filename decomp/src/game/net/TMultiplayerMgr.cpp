@@ -1405,8 +1405,8 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     }
     nation19->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     for (int stockSlot19 = 0; stockSlot19 < 0x17; ++stockSlot19) {
-      nation19->SetCityStockCounterAndRefresh(static_cast<short>(stockSlot19),
-                                              stateArrays->externalStateByTarget[stockSlot19]);
+      nation19->SetStockpile(static_cast<short>(stockSlot19),
+                             stateArrays->externalStateByTarget[stockSlot19]);
     }
     nation19->InitializeTradeStatus();
     for (int metricSlot19 = 0; metricSlot19 < 0x11; ++metricSlot19) {

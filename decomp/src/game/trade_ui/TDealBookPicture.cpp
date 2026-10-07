@@ -213,7 +213,7 @@ void TDealBookPicture::CalculatePages() {
     }
   }
 
-  if (nation->SumAidAllocationMatrixAllCells() != 0) {
+  if (nation->GetTotalOverseasProfits() != 0) {
     CString aidHeading;
     tradeListEmpty = false;
 
@@ -230,8 +230,7 @@ void TDealBookPicture::CalculatePages() {
     soldTradesView->AddOrderedEntry(heading);
 
     for (short targetNation = 0; targetNation < 23; ++targetNation) {
-      if (nation->SumAidAllocationMatrixColumnForTarget(static_cast<NationSlot>(targetNation)) ==
-          0) {
+      if (nation->GetOverseasProfitFrom(static_cast<NationSlot>(targetNation)) == 0) {
         continue;
       }
 

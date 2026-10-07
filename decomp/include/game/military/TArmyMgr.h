@@ -142,7 +142,7 @@ public:
                                                           short mode); // 0x4a4aa0
 
   // Civilian counterpart of ComputeMapCursorStateIndex. 0x004a4c80.
-  int ComputeCivilianMapCursorStateIndex(short tileIndex, short mode);
+  int GetTileSelection(short tileIndex, short mode);
   bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
   void MarchSelectedArmies(short tileIndex);
   void CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
@@ -153,8 +153,7 @@ public:
   bool GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummary,
                          CString& outGarrisonSummary);
 
-  void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
-                                                       struct MapOrderBattleSnapshot* snapshot);
+  void CheckForDrownedUnits(char nationId, int cityIndex, struct MapOrderBattleSnapshot* snapshot);
 
   bool HasBattlesToReport() const; // Mac oracle; 0x4a6dd0
 

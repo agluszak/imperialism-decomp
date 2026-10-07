@@ -660,8 +660,8 @@ void TGreatPower::MultiReadFrom(TStream* stream, int unusedArg) {
 // --- Slot 0x0a/0x0b stream serialization pair and status-flag slots 0x2b-0x33 ---
 
 // FUNCTION: IMPERIALISM 0x004da500
-void TGreatPower::WriteCoreFieldsToStream(TStream* stream) {
-  TCountry::WriteCoreFieldsToStream(stream);
+void TGreatPower::MultiWriteTo(TStream* stream) {
+  TCountry::MultiWriteTo(stream);
 
   this->trackedObjectList->WriteTo(stream);
   int orderCount = this->trackedObjectList->GetCount();
@@ -991,7 +991,7 @@ bool TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
   }
 
   int treasuryValue = this->treasuryValue;
-  int basePressure = this->SumAidAllocationMatrixAllCells();
+  int basePressure = this->GetTotalOverseasProfits();
   basePressure += static_cast<int>(this->needTargetByType[kResourceGold]) * 200;
   basePressure += static_cast<int>(this->needTargetByType[kResourceGems]) * 500;
   basePressure += this->budgetPoolBase;

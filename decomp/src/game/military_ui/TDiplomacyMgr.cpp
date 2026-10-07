@@ -796,7 +796,7 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
     int remaining = 7;
     do {
       if (*nationCursor != 0) {
-        (*nationCursor)->ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
+        (*nationCursor)->ResetPolicies();
       }
       --nationCursor;
       --remaining;

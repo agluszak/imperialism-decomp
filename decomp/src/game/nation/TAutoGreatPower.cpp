@@ -268,7 +268,7 @@ void TAutoGreatPower::FillInteriorMinisterOrders(void) {
 // FUNCTION: IMPERIALISM 0x004e75c0
 void TAutoGreatPower::RaiseNeedPlanningMetrics(int needSlot) {
   actionMetricByQuarter[static_cast<short>(needSlot) - 7] += 4;
-  SetCityStockCounterAndRefresh(needSlot, GetStockpile(needSlot) + 4);
+  SetStockpile(needSlot, GetStockpile(needSlot) + 4);
   SetItemPotentials(needSlot, GetTradeOffersFor(needSlot) + 4);
 }
 
@@ -392,9 +392,9 @@ void TAutoGreatPower::ClearTradeOffers(void) {
       if (pending > 0) {
         short current = this->GetStockpile(needSlot);
         if (current >= pending) {
-          this->SetCityStockCounterAndRefresh(needSlot, static_cast<short>(current - pending));
+          this->SetStockpile(needSlot, static_cast<short>(current - pending));
         } else {
-          this->SetCityStockCounterAndRefresh(needSlot, 0);
+          this->SetStockpile(needSlot, 0);
         }
       }
       *pendingMetric = 0;
@@ -452,7 +452,7 @@ void TAutoGreatPower::ReplyToDiplomacyOffers(void) {
     } while (rowIndex <= this->proposalQueue->GetSize());
   }
 
-  this->ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
+  this->ResetPolicies();
 }
 
 // FUNCTION: IMPERIALISM 0x004e7c50

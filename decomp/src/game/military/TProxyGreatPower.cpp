@@ -21,7 +21,7 @@ bool TProxyGreatPower::IsRemote(void) const {
 
 // FUNCTION: IMPERIALISM 0x00540900
 void TProxyGreatPower::ReplyToDiplomacyOffers() {
-  ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
+  ResetPolicies();
 }
 
 // FUNCTION: IMPERIALISM 0x00540920

@@ -239,7 +239,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     TCountry* nation = g_apTerrainTypeDescriptorTable[nationIndex];
     if (nation != 0) {
       if (EmptyRgn(g_pMacViewMgr->GetCountryRegion(nationIndex)) == 0) {
-        short anchorTile = nation->GetOrComputeOverlayAnchorTileIndex();
+        short anchorTile = nation->GeopoliticalCenter();
         int labelCenterX = (anchorTile % kStrategicMapColumns) * 5 + 0x31;
         int labelY = (anchorTile / kStrategicMapColumns + 9) * 5;
         nation->GetName(&nationName);

@@ -163,8 +163,7 @@ RuntimeActionResult RunArmyToolbarCounts(NativeTransition& transition) {
     return started;
   }
   JsonObject toolbar(ToolbarCountJson(province));
-  toolbar.Set("pending_index",
-              static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  toolbar.Set("pending_index", static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
   return transition.Finish(toolbar.Release());
 }
 
@@ -184,7 +183,8 @@ RuntimeActionResult RunArmySelectCategory(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  remaining = g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(2, province);
+  remaining =
+      g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(2, province);
   JsonObject selectResult;
   selectResult.Set("remaining", static_cast<int>(remaining));
   selectResult.Set("pending_index",
@@ -239,9 +239,8 @@ RuntimeActionResult RunArmySelectProvince(NativeTransition& transition) {
   }
   g_pMapContextActionManager->SetSelectedProvince(province);
   JsonObject provinceResult;
-  provinceResult.Set(
-      "pending_index",
-      static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  provinceResult.Set("pending_index",
+                     static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
   return transition.Finish(provinceResult.Release());
 }
 
@@ -262,7 +261,7 @@ RuntimeActionResult RunArmyClickBlocked(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  cursor = g_pMapContextActionManager->ComputeCivilianMapCursorStateIndex(tile, 0);
+  cursor = g_pMapContextActionManager->GetTileSelection(tile, 0);
   JsonObject cursorResult;
   cursorResult.Set("cursor", cursor);
   cursorResult.Set("pending_index",
@@ -289,9 +288,8 @@ RuntimeActionResult RunArmyClickFriendly(NativeTransition& transition) {
   }
   g_pMapContextActionManager->SelectMovableUnitOnCurrentTileAndPlaySfx(dest);
   JsonObject friendlyResult;
-  friendlyResult.Set(
-      "pending_index",
-      static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  friendlyResult.Set("pending_index",
+                     static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
   return transition.Finish(friendlyResult.Release());
 }
 
@@ -304,12 +302,14 @@ RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
   }
   SpawnStationed(kMilitaryUnitRegulars, province);
   g_pMapContextActionManager->pendingMapActionIndex = province;
-  g_pDiplomacyTurnStateManager->relationPropagationMatrix
-      [ActiveNationSlot() * kNationSlotCount +
-       g_pGlobalMapState->cityScoreTable[dest].ownerNationCode] = kDiplomacyRelationshipWar;
-  g_pDiplomacyTurnStateManager->relationPropagationMatrix
-      [g_pGlobalMapState->cityScoreTable[dest].ownerNationCode * kNationSlotCount +
-       ActiveNationSlot()] = kDiplomacyRelationshipWar;
+  g_pDiplomacyTurnStateManager
+      ->relationPropagationMatrix[ActiveNationSlot() * kNationSlotCount +
+                                  g_pGlobalMapState->cityScoreTable[dest].ownerNationCode] =
+      kDiplomacyRelationshipWar;
+  g_pDiplomacyTurnStateManager
+      ->relationPropagationMatrix[g_pGlobalMapState->cityScoreTable[dest].ownerNationCode *
+                                      kNationSlotCount +
+                                  ActiveNationSlot()] = kDiplomacyRelationshipWar;
 
   args.Set("province", static_cast<int>(province));
   args.Set("target", static_cast<int>(dest));
@@ -323,9 +323,8 @@ RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
   // presentation state; keep the differential focused on the validated order transition.
   g_pGlobalMapState->mapViewOriginTile = mapViewOrigin;
   JsonObject hostileResult;
-  hostileResult.Set(
-      "pending_index",
-      static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
+  hostileResult.Set("pending_index",
+                    static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
   return transition.Finish(hostileResult.Release());
 }
 

@@ -449,7 +449,7 @@ void TMinor::InitializeTradeStatus(void) {
           foreignControlledResourceYieldByTypeAndMajorNation[kResourceGold]
               .amountByMajorNation[power];
       if (goldYieldControlledByPower != 0) {
-        g_apNationStates[power]->AddAmountToAidAllocationMatrixCellAndTotal(
+        g_apNationStates[power]->AddOverseasProfitFrom(
             g_pDiplomacyTurnStateManager
                     ->relationStandingScores[this->nationSlot * kNationSlotCount + power] *
                 goldYieldControlledByPower * 200 / 255,
@@ -459,7 +459,7 @@ void TMinor::InitializeTradeStatus(void) {
           foreignControlledResourceYieldByTypeAndMajorNation[kResourceGems]
               .amountByMajorNation[power];
       if (gemYieldControlledByPower != 0) {
-        g_apNationStates[power]->AddAmountToAidAllocationMatrixCellAndTotal(
+        g_apNationStates[power]->AddOverseasProfitFrom(
             g_pDiplomacyTurnStateManager
                     ->relationStandingScores[this->nationSlot * kNationSlotCount + power] *
                 gemYieldControlledByPower * 500 / 255,
@@ -521,8 +521,8 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
         if (integerGrantAmount > grantAmount) {
           grantAmount = integerGrantAmount;
         }
-        g_apNationStates[majorNationSlot]->AddAmountToAidAllocationMatrixCellAndTotal(
-            grantAmount, resourceSlot, this->nationSlot);
+        g_apNationStates[majorNationSlot]->AddOverseasProfitFrom(grantAmount, resourceSlot,
+                                                                 this->nationSlot);
       }
     }
   }

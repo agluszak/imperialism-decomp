@@ -127,8 +127,8 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
 
   if (entry != NULL && entry->shipOrders == 5) {
     int cityIndex = static_cast<Province*>(entry->target)->GetIndex();
-    g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
-        snapshot->nationIds[side], cityIndex, snapshot);
+    g_pMapContextActionManager->CheckForDrownedUnits(snapshot->nationIds[side], cityIndex,
+                                                     snapshot);
   }
 }
 

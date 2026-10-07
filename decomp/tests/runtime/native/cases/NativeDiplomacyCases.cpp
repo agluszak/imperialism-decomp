@@ -166,7 +166,7 @@ RuntimeActionResult RunAidAllocation(NativeTransition& transition) {
     return started;
   }
 
-  nation->AddAmountToAidAllocationMatrixCellAndTotal(37, kResourceSteel, kMinorNationFirstSlot);
+  nation->AddOverseasProfitFrom(37, kResourceSteel, kMinorNationFirstSlot);
   return transition.Finish();
 }
 
@@ -218,7 +218,7 @@ RuntimeActionResult RunDiplomacyReset(NativeTransition& transition) {
     return started;
   }
 
-  nation->ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
+  nation->ResetPolicies();
   return transition.Finish();
 }
 

@@ -24,7 +24,7 @@ public:
   void ReadFrom(TStream* stream) override; // body 0x004d6bf0
   void Free() override;                    // body 0x004d6ba0
 
-  virtual void WriteCoreFieldsToStream(TStream* stream);
+  virtual void MultiWriteTo(TStream* stream);
   virtual void MultiReadFrom(TStream* stream, int unusedArg);
   virtual void InitialMilitia(void);
   virtual void AddMilitia(int nodeContext);
@@ -87,11 +87,11 @@ public:
 
   void SetNationDisplayNameAndLocalizationSlotRef(const CString& name);
 
-  void SetOverlayAnchorTile(int value);
+  void SetCenterTile(int value);
 
   bool IsNationProfileInMinorRange100To199();
 
-  short GetOrComputeOverlayAnchorTileIndex();
+  short GeopoliticalCenter();
 
   CString identitySharedString0;
   CString identitySharedString1;

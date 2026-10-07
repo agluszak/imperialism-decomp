@@ -699,8 +699,7 @@ void TGreatPower::FillInteriorMinisterOrders(void) {}
 // FUNCTION: IMPERIALISM 0x004dcc50
 void TGreatPower::AddTransportedItems(void) {
   for (short resourceKind = 0; resourceKind < kResourceKindCount; ++resourceKind) {
-    this->AddToCityStockCounterAndRefresh(resourceKind,
-                                          this->transportedItemsByResource[resourceKind]);
+    this->AddToStockpile(resourceKind, this->transportedItemsByResource[resourceKind]);
     this->transportedItemsByResource[resourceKind] = 0;
   }
 }
@@ -708,8 +707,7 @@ void TGreatPower::AddTransportedItems(void) {
 // FUNCTION: IMPERIALISM 0x004dcca0
 void TGreatPower::AddPurchasedItems(void) {
   for (short resourceKind = 0; resourceKind < kResourceKindCount; ++resourceKind) {
-    this->AddToCityStockCounterAndRefresh(resourceKind,
-                                          this->purchasedItemsByResource[resourceKind]);
+    this->AddToStockpile(resourceKind, this->purchasedItemsByResource[resourceKind]);
     if (this->rememberedTradeOffersByResource[resourceKind] == -1 &&
         this->purchasedItemsByResource[resourceKind] == 0) {
       this->unfilledTradeTurnCountsByResource[resourceKind] =
@@ -735,8 +733,7 @@ void TGreatPower::AddCreatedItems(void) {
   cityPtr->VerifyStocks();
 
   for (int needIndex = 0; static_cast<short>(needIndex) < kNationSlotCount; ++needIndex) {
-    this->AddToCityStockCounterAndRefresh(static_cast<short>(needIndex),
-                                          this->needTargetByType[needIndex]);
+    this->AddToStockpile(static_cast<short>(needIndex), this->needTargetByType[needIndex]);
   }
 }
 
@@ -792,8 +789,8 @@ bool TGreatPower::IsTransportCapacityExceeded(void) {
 bool TGreatPower::IncreaseRollingStock(void) {
   if (this->GetStockpile(kResourceLumber) != 0) {
     if (this->GetStockpile(kResourceSteel) != 0) {
-      this->AddToCityStockCounterAndRefresh(9, -1);
-      this->AddToCityStockCounterAndRefresh(0xb, -1);
+      this->AddToStockpile(9, -1);
+      this->AddToStockpile(0xb, -1);
       this->transportCapacity = static_cast<short>(this->transportCapacity + 1);
       return true;
     }
@@ -805,8 +802,8 @@ bool TGreatPower::IncreaseRollingStock(void) {
 bool TGreatPower::IncreaseMerchantMarine(void) {
   if (this->GetStockpile(kResourceLumber) > 2) {
     if (this->GetStockpile(kResourceFabric) != 0) {
-      this->AddToCityStockCounterAndRefresh(9, -3);
-      this->AddToCityStockCounterAndRefresh(8, -1);
+      this->AddToStockpile(9, -3);
+      this->AddToStockpile(8, -1);
       this->merchantCapacity = static_cast<short>(this->merchantCapacity + 1);
       return true;
     }
@@ -910,8 +907,7 @@ void TGreatPower::InitializeDealBook(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dd340
-void TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex,
-                                                             short rowIndex) {
+void TGreatPower::AddOverseasProfitFrom(int amount, short columnIndex, short rowIndex) {
   this->AddToTreasury(amount);
   this->aidAllocationMatrix[rowIndex * kAidAllocationColumnCount + columnIndex -
                             7 * kAidAllocationColumnCount] += amount;
@@ -919,7 +915,7 @@ void TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal(int amount, short c
 }
 
 // FUNCTION: IMPERIALISM 0x004dd3b0
-int TGreatPower::SumAidAllocationMatrixColumnForTarget(NationSlot targetNationSlot) {
+int TGreatPower::GetOverseasProfitFrom(NationSlot targetNationSlot) {
   int total = 0;
   int rowIndex = 0;
   while (rowIndex < kAidAllocationRowCount) {
@@ -931,7 +927,7 @@ int TGreatPower::SumAidAllocationMatrixColumnForTarget(NationSlot targetNationSl
 }
 
 // FUNCTION: IMPERIALISM 0x004dd3f0
-int TGreatPower::SumAidAllocationMatrixAllCells(void) {
+int TGreatPower::GetTotalOverseasProfits(void) {
   int total = 0;
   int rowIndex = 0;
   while (rowIndex < kAidAllocationRowCount) {
@@ -950,7 +946,7 @@ int TGreatPower::SumAidAllocationMatrixAllCells(void) {
 int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
   int outstandingCommitments = this->pendingCommitmentCost;
   int militaryExpenses = this->militaryExpenses;
-  int baseBudget = this->SumAidAllocationMatrixAllCells();
+  int baseBudget = this->GetTotalOverseasProfits();
   return baseBudget + this->budgetPoolBase + this->budgetPoolDelta - militaryExpenses -
          outstandingCommitments;
 }
@@ -1052,14 +1048,14 @@ short TGreatPower::GetStockpile(short resourceKind) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dd770
-void TGreatPower::SetCityStockCounterAndRefresh(short targetSlot, short value) {
+void TGreatPower::SetStockpile(short targetSlot, short value) {
   TCity* cityPtr = this->city;
   (&cityPtr->cityStockCotton)[targetSlot] = value;
   cityPtr->VerifyStocks();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd7b0
-void TGreatPower::AddToCityStockCounterAndRefresh(short targetSlot, short value) {
+void TGreatPower::AddToStockpile(short targetSlot, short value) {
   TCity* cityPtr = this->city;
   (&cityPtr->cityStockCotton)[targetSlot] =
       static_cast<short>((&cityPtr->cityStockCotton)[targetSlot] + value);
@@ -1433,7 +1429,7 @@ bool TGreatPower::SetDiplomacyPolicyTo(short targetClass, short policyCode) {
 void TGreatPower::SetDiplomacyPolicies() {}
 
 // FUNCTION: IMPERIALISM 0x004de2d0
-void TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void) {
+void TGreatPower::ResetPolicies(void) {
   const unsigned short kResetValue = 0xFFFF;
   const unsigned short kRecurringGrantMask = 0x4000;
 
@@ -1467,8 +1463,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int targetNat
   bool accepted = true;
 
   if (newGrantRaw != oldGrantRaw) {
-    if (newGrantRaw != kGrantClear &&
-        !this->CanAffordDiplomacyGrantEntryForTarget(targetNation, newGrantRaw)) {
+    if (newGrantRaw != kGrantClear && !this->CanAffordGrantTo(targetNation, newGrantRaw)) {
       accepted = false;
     } else {
       if (oldGrantRaw != kGrantClear) {
@@ -1563,8 +1558,7 @@ void TGreatPower::GiveGrantTo(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004de700
-bool TGreatPower::CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationSlot,
-                                                        unsigned short proposedGrantEntry) {
+bool TGreatPower::CanAffordGrantTo(NationSlot targetNationSlot, unsigned short proposedGrantEntry) {
   int proposedGrantValue = static_cast<short>(proposedGrantEntry & 0x3FFF);
   if (proposedGrantValue < 0) {
     return true;
@@ -2090,7 +2084,7 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
     } while (static_cast<short>(proposalIndex) <= proposalCount);
   }
 
-  this->ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
+  this->ResetPolicies();
 }
 
 // FUNCTION: IMPERIALISM 0x004df810

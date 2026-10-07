@@ -73,7 +73,7 @@ void TTradeTotalsView::Draw(RECT* rectBuffer) {
   int y = 0x42;
   SetQuickDrawTextOriginWithContextOffset(8, y);
   DrawTextWithCachedQuickDrawStyleState(&strA);
-  g_pSimMgr->NumToCurrency(nation->SumAidAllocationMatrixAllCells(), &strA);
+  g_pSimMgr->NumToCurrency(nation->GetTotalOverseasProfits(), &strA);
   SetQuickDrawTextOriginWithContextOffset(0x80, y);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 

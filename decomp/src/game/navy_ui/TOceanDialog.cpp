@@ -826,7 +826,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
     do {
       TCountry* descriptor = *descriptorSlot;
       if (descriptor != 0) {
-        int tileIndex = descriptor->GetOrComputeOverlayAnchorTileIndex();
+        int tileIndex = descriptor->GeopoliticalCenter();
         if (tileIndex == -1) {
           break;
         }
