@@ -130,7 +130,7 @@ public:
   short production24c[0x10];           // 0x24C — GetBuildingWindowState outAccum
   short populationGrowthPenaltyTicks;  // 0x26C — GrowthRate penalty counter
   short pad26e;
-  TTaskList* trackedOrderList; // 0x270 — released via FreePayloadsAndDestroy
+  TTaskList* trackedOrderList; // 0x270 — released via FreeList
   class TPtrList* eventQueue;
   short unmetResourceRetryCount[kResourceKindCount];
   short consumedProductionInputByType[kResourceKindCount];

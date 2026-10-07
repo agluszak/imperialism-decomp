@@ -16,7 +16,7 @@ public:
   virtual void HandleSaveGameSlotSelectionAndPromptFlow(); // slot 0x73 0x56d2a0
   virtual void HandleTurnFlowStateTickOrShowMainMenu();    // slot 0x74 0x56d190
 
-  void RefreshSlotPreviewFromSaveFile(short slotMode);
+  void LoadHeader(short slotMode);
 
   bool loadModeFlag; // +0x90
   unsigned char pad91;

@@ -69,13 +69,13 @@ public:
                                TArmyStack* stack2); // slot 0x11 0x4a3830
   virtual void DoOwnershipChanges();                // slot 0x12 0x4a3bc0
   // tileActionCode 1/4 selects a unit (slot 0x14); 7 commits the action cost (slot 0x15).
-  virtual void DispatchTileActionByKind(int contextArg,
-                                        short tileActionCode); // slot 0x13 0x4a3d90
+  virtual void OrderArmies(int contextArg,
+                           short tileActionCode); // slot 0x13 0x4a3d90
   // contextArg is the TUnit::SetOrders payload; returns whether a unit was commanded.
-  virtual bool SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg); // slot 0x14 0x4a3e50
+  virtual bool MoveArmies(int contextArg); // slot 0x14 0x4a3e50
   // Returns whether the tile's move cost was affordable and committed.
-  virtual bool CommitCityActionGateCostIfAffordable(int contextArg); // slot 0x15 0x4a3f30
-  virtual void SetOrdersForIdleUnitsOnPendingTile(int mode);         // slot 0x16 0x4a4260
+  virtual bool DeploySelectedArmies(int contextArg); // slot 0x15 0x4a3f30
+  virtual void OrderSelectedArmies(int mode);        // slot 0x16 0x4a4260
   virtual bool HandleMapClickByComputedCursorState(short tileIndex,
                                                    short mode); // slot 0x17 0x4a4870
   // Civilian-cursor counterpart of HandleMapClickByComputedCursorState.
@@ -84,7 +84,7 @@ public:
 
   // Weighted strength of the units stationed in the province. ABI: thiscall on the
   // singleton; the body ignores `this`. 0x004a5aa0.
-  int ComputeWeightedNeighborLinkScoreForNodeIndex(int nodeIndex);
+  int GetLandForceIn(int nodeIndex);
 
   // Battle records (MapContextActionRecord) for this turn's reports.
   class TSortedPtrList* mapContextActionRecordList;

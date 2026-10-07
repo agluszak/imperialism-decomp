@@ -12,6 +12,7 @@ public:
   // FUNCTION: IMPERIALISM 0x004ed540
   ~TNapoleonMinister() override {}
   TNapoleonMinister();
+  void INapoleonMinister(TGreatPower* owner);
   DECLARE_DYNCREATE(TNapoleonMinister)
   void MakeNewCity(TCity* city) override;
   double GetStategicEscalationMultiplier(bool flag) override;
@@ -24,6 +25,7 @@ public:
   // FUNCTION: IMPERIALISM 0x004ed870
   ~TBismarckMinister() override {}
   TBismarckMinister();
+  void IBismarckMinister(TGreatPower* owner);
   DECLARE_DYNCREATE(TBismarckMinister)
   void MakeNewCity(TCity* city) override;
   double GetStategicEscalationMultiplier(bool flag) override;
@@ -36,6 +38,7 @@ public:
   // FUNCTION: IMPERIALISM 0x004edb60
   ~TPirateMinister() override {}
   TPirateMinister();
+  void IPirateMinister(TGreatPower* owner);
   DECLARE_DYNCREATE(TPirateMinister)
   void MakeNewCity(TCity* city) override;
   double GetStategicEscalationMultiplier(bool flag) override;
@@ -48,6 +51,7 @@ public:
   // FUNCTION: IMPERIALISM 0x004ede40
   ~TDefenderMinister() override {}
   TDefenderMinister();
+  void IDefenderMinister(TGreatPower* owner);
   DECLARE_DYNCREATE(TDefenderMinister)
   void MakeNewCity(TCity* city) override;
   double GetStategicEscalationMultiplier(bool flag) override;
@@ -60,6 +64,7 @@ public:
   // FUNCTION: IMPERIALISM 0x004ee130
   ~TBullyMinister() override {}
   TBullyMinister();
+  void IBullyMinister(TGreatPower* owner);
   DECLARE_DYNCREATE(TBullyMinister)
   void MakeNewCity(TCity* city) override;
   double GetStategicEscalationMultiplier(bool flag) override;

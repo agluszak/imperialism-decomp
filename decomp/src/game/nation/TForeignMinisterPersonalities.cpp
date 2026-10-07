@@ -54,7 +54,7 @@ static inline void AddSortedResourcePrice(TSortByPriceList* prices, short resour
   ResourcePriorityEntry entry;
   entry.resourceCode = resourceCode;
   entry.priority = g_pTradeMgr->GetPrice(resourceCode);
-  prices->InsertCopiedRecordSortedByComparator(&entry);
+  prices->Insert(&entry);
 }
 
 static inline short GetSortedResourceCode(TSortByPriceList* prices, int oneBasedIndex) {
@@ -342,7 +342,7 @@ void TBillForeignMinister::SetTradeBids() {
     }
     ++iteration;
   }
-  prices->ReleasePtrList();
+  prices->FreeList();
   SetTedStyleAdvancedResourceBid(this, 1500);
 }
 
@@ -612,7 +612,7 @@ void TDiplomatForeignMinister::SetTradeBids() {
     }
     ++iteration;
   }
-  prices->ReleasePtrList();
+  prices->FreeList();
   if (g_pTradeMgr->GetPrice(0x10) > 1200 && owner->GetStockpile(kResourceArms) > 6 &&
       !g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(owner->nationSlot)) {
     owner->SetItemPotentials(kResourceArms, 2);
@@ -660,17 +660,17 @@ void TTextileForeignMinister::SetBuyPriorities() {
   ResourcePriorityEntry entry;
   entry.resourceCode = 3;
   entry.priority = greatPower->GetStockpile(3);
-  priorities->InsertCopiedRecordSortedByComparator(&entry);
+  priorities->Insert(&entry);
   entry.resourceCode = 4;
   entry.priority = greatPower->GetStockpile(4);
-  priorities->InsertCopiedRecordSortedByComparator(&entry);
+  priorities->Insert(&entry);
   entry.resourceCode = 2;
   entry.priority = greatPower->GetStockpile(2);
-  priorities->InsertCopiedRecordSortedByComparator(&entry);
+  priorities->Insert(&entry);
   if (HasAdvancedTradeResource(this)) {
     entry.resourceCode = 6;
     entry.priority = greatPower->GetStockpile(6);
-    priorities->InsertCopiedRecordSortedByComparator(&entry);
+    priorities->Insert(&entry);
   }
   ResourcePriorityEntry* first =
       static_cast<ResourcePriorityEntry*>(priorities->GetPtrListEntryByOneBasedIndex(1));
@@ -678,7 +678,7 @@ void TTextileForeignMinister::SetBuyPriorities() {
   ResourcePriorityEntry* second =
       static_cast<ResourcePriorityEntry*>(priorities->GetPtrListEntryByOneBasedIndex(2));
   preferredResourceSlots[3] = second->resourceCode;
-  priorities->ReleasePtrList();
+  priorities->FreeList();
   TForeignMinister::SetBuyPriorities();
 }
 
@@ -768,20 +768,20 @@ void TTraderForeignMinister::SetBuyPriorities() {
     } else {
       entry.priority = g_pTradeMgr->GetPrice(resourceCode);
     }
-    priorities->InsertCopiedRecordSortedByComparator(&entry);
+    priorities->Insert(&entry);
   }
   if (HasAdvancedTradeResource(this)) {
     ResourcePriorityEntry entry;
     entry.resourceCode = 6;
     entry.priority = static_cast<short>(g_pTradeMgr->GetPrice(6) - 15);
-    priorities->InsertCopiedRecordSortedByComparator(&entry);
+    priorities->Insert(&entry);
   }
   for (int i = 0; i < 4; ++i) {
     ResourcePriorityEntry* entry =
         static_cast<ResourcePriorityEntry*>(priorities->GetPtrListEntryByOneBasedIndex(i + 1));
     preferredResourceSlots[i] = entry->resourceCode;
   }
-  priorities->ReleasePtrList();
+  priorities->FreeList();
   TForeignMinister::SetBuyPriorities();
 }
 
@@ -805,7 +805,7 @@ void TTraderForeignMinister::SetTradeBids() {
     allocated = static_cast<short>(allocated + owner->GetStockpile(resourceCode));
     --selectedOrdinal;
   }
-  prices->ReleasePtrList();
+  prices->FreeList();
   if (g_pTradeMgr->GetPrice(0x10) > 1200 && owner->GetStockpile(kResourceArms) > 6 &&
       !g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(owner->nationSlot)) {
     owner->SetItemPotentials(kResourceArms, 2);
@@ -916,7 +916,7 @@ void TArmsForeignMinister::SetTradeBids() {
     allocated = static_cast<short>(allocated + amount);
     --selectedOrdinal;
   }
-  prices->ReleasePtrList();
+  prices->FreeList();
   if (owner->treasuryValue < 0 &&
       !g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(owner->nationSlot)) {
     short available = owner->GetStockpile(kResourceArms);

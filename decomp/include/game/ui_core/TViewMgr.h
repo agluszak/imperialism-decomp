@@ -118,7 +118,7 @@ public:
                                   int arg6);
   bool ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,
                                             int arg4);
-  void DispatchUiRuntimeMessage101AAndRefreshActiveView();
+  void ShowQueryWindow();
   char DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag);
   bool ModalMessage(long templateKind, CString titleSuffix, CString message,
                     const POINT& messagePosition, short overlayMode, unsigned char showCancel);

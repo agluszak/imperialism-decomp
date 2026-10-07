@@ -93,7 +93,7 @@ TAnimation* TAnimator::FindAni(int tag) {
 void TAnimator::Free() {
   g_pAmbitApplication->InstallCohandler(this, false);
   if (registryList != 0) {
-    registryList->FreePayloadsAndDestroy();
+    registryList->FreeList();
   }
   g_pDisplayMgr->RemoveGWorld(renderSurfaceContext);
   TEventHandler::Free();

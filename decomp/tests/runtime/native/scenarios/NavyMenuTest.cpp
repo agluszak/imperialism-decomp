@@ -66,8 +66,7 @@ private:
     if (g_pActiveMapOrderContext == 0 || g_pSimMgr == 0) {
       return 0;
     }
-    return g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
-        g_pSimMgr->GetPlayerCountry());
+    return g_pActiveMapOrderContext->GetPortZone(g_pSimMgr->GetPlayerCountry());
   }
 
   void SpawnTwoFrigates(TZone* zone) {

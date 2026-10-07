@@ -711,7 +711,7 @@ short TTechMgr::GetNextNewAdvance(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b0c70
-void TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex(int index, int value) {
+void TTechMgr::SetAdvanceDate(int index, int value) {
   prioritySlots[index] = static_cast<short>(value * 4);
 }
 

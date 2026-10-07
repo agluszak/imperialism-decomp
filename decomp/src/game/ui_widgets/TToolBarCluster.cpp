@@ -33,7 +33,7 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-void DispatchUiRuntimeMessage102CAndRefreshActiveView();
+void MakeFlagButtonDialog();
 
 IMPLEMENT_DYNCREATE(TToolBarCluster, TCluster)
 
@@ -42,9 +42,6 @@ TToolBarCluster::TToolBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00584e80
 TToolBarCluster::~TToolBarCluster() {}
-
-// Resolves the turn-event dialog node for message context 0x102c (the "capabilities" dialog),
-// computes its placement, and refreshes it. Standalone helper (no `this`) -- matches the
 
 // FUNCTION: IMPERIALISM 0x00584ea0
 void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -64,7 +61,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     g_pSimMgr->StartNextPhase();
     break;
   case kControlTagFlagCaps:
-    DispatchUiRuntimeMessage102CAndRefreshActiveView();
+    MakeFlagButtonDialog();
     break;
   case kControlTagRestartCaps:
     ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
@@ -105,7 +102,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
   case kControlTagQuer:
     if (g_pSimMgr->mode == kGamePhaseShowMap || g_pSimMgr->mode == kGamePhaseTurnStart ||
         g_pSimMgr->mode == kGamePhaseEndTurn) {
-      g_pViewMgr->DispatchUiRuntimeMessage101AAndRefreshActiveView();
+      g_pViewMgr->ShowQueryWindow();
     } else {
       g_pHelpMgr->ShowLatestHelp();
     }
@@ -330,12 +327,12 @@ void TToolBarCluster::SetReadouts(short nationId) {
 }
 
 // FUNCTION: IMPERIALISM 0x00585ee0
-void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg) {
+void TToolBarCluster::UpdateGrantDisplay(int grantTotal) {
   CString unused1;
   CString unused2;
 }
 // FUNCTION: IMPERIALISM 0x005dc560
-void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
+void MakeFlagButtonDialog() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton));
   if (node == NULL) {

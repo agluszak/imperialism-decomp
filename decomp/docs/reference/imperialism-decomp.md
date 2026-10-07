@@ -652,8 +652,8 @@ These all operate on the same queue-head field at:
 - `BuildPort @ 0x005635E0`
 - `NukePort @ 0x00564240`
 - `FindPortZoneByTile @ 0x00561BF0`
-- `GetFirstPortZone @ 0x00561C80`
-- `GetNextPortZone @ 0x00561D40`
+- `GetFirstPort @ 0x00561C80`
+- `GetNextPort @ 0x00561D40`
 - `FindPortZoneBySelectedTile @ 0x005634A0`
 - `DumpAndResetMapScriptState @ 0x00519140`
 
@@ -745,7 +745,7 @@ Newly mapped orchestration functions that call type-specific queue setters:
 
 Supporting helpers renamed:
 
-- `FindFirstPortZoneContextByNation @ 0x00563540`
+- `GetPortZone @ 0x00563540`
 - `RebuildMapOrderEntryChildrenForContext @ 0x00536D60`
 - `SetMapOrderEntryChildFlags @ 0x00536F70`
 

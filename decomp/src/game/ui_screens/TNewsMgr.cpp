@@ -49,14 +49,14 @@ void TNewsMgr::INewsMgr() {
 void TNewsMgr::Free() {
   for (int n = 0; n < 7; n++) {
     if (perNationEventBuckets[n] != 0) {
-      perNationEventBuckets[n]->ReleasePtrList();
+      perNationEventBuckets[n]->FreeList();
     }
     if (perNationStoryLastUsedTick[n] != 0) {
       delete[] perNationStoryLastUsedTick[n];
     }
   }
   if (sharedEventRecordQueue != 0) {
-    sharedEventRecordQueue->ReleasePtrList();
+    sharedEventRecordQueue->FreeList();
   }
   delete this;
 }
@@ -562,7 +562,7 @@ void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, bool isReplayBypass) {
     g_pGameFlowState->SendNewsEvent(nationSlot, event);
     return;
   }
-  perNationEventBuckets[nationSlot]->InsertCopiedRecordSortedByComparator(event);
+  perNationEventBuckets[nationSlot]->Insert(event);
 }
 
 // FUNCTION: IMPERIALISM 0x0055c9f0
@@ -607,7 +607,7 @@ void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int n
     recordA.eventKind = eventKind;
     recordA.payload.subjectNationOrAll = nationA;
     recordA.payload.nationMaskOrStoryCode = 1 << nationB;
-    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordA);
+    sharedEventRecordQueue->Insert(&recordA);
   }
   if (nationB < 7 && eventKind > kInterNationEventWarDeclaredAgainstSubject &&
       eventKind < kInterNationEventWarWithIndependentMinor) {
@@ -615,7 +615,7 @@ void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int n
     recordB.eventKind = eventKind;
     recordB.payload.subjectNationOrAll = nationB;
     recordB.payload.nationMaskOrStoryCode = 1 << nationA;
-    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordB);
+    sharedEventRecordQueue->Insert(&recordB);
   }
 }
 
@@ -650,7 +650,7 @@ void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relat
   record.payload.subjectNationOrAll = subjectNation;
   record.payload.nationMaskOrStoryCode = 1 << affectedNation;
   record.payload.relatedNation = relatedNation;
-  sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&record);
+  sharedEventRecordQueue->Insert(&record);
 }
 
 // FUNCTION: IMPERIALISM 0x0055cd00
@@ -670,7 +670,7 @@ void TNewsMgr::AddMiscEvent(int nationSlotOrAll, int storyCode, bool isReplayByp
     record.eventKind = kInterNationEventMiscellaneous;
     record.payload.subjectNationOrAll = nationSlotOrAll;
     record.payload.nationMaskOrStoryCode = storyCode;
-    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&record);
+    sharedEventRecordQueue->Insert(&record);
   }
 }
 
@@ -707,14 +707,14 @@ void TNewsMgr::ConcatenateTreaty(InterNationEventKind eventKind, int nationA, in
     recordA.eventKind = eventKind;
     recordA.payload.subjectNationOrAll = nationA;
     recordA.payload.nationMaskOrStoryCode = 1 << nationB;
-    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordA);
+    sharedEventRecordQueue->Insert(&recordA);
   }
   if (!nationBHandled) {
     InterNationNewsRecord recordB;
     recordB.eventKind = eventKind;
     recordB.payload.subjectNationOrAll = nationB;
     recordB.payload.nationMaskOrStoryCode = 1 << nationA;
-    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordB);
+    sharedEventRecordQueue->Insert(&recordB);
   }
 }
 // FUNCTION: IMPERIALISM 0x0055cf20

@@ -176,7 +176,7 @@ RuntimeActionResult TransportScreen::ClickCommodityArrow(short slot, int arrowTa
   arrow->GetExtent(&bounds);
   CPoint zone(bounds.left + bounds.Width() / 2, bounds.top + bounds.Height() / 2);
   CPoint windowPoint(zone); // RUNTIME_COORDINATE_EXPLAINED
-  arrow->TranslatePointToParentChain4D(&windowPoint);
+  arrow->LocalToWindow(&windowPoint);
 
   TWindow* window = arrow->GetWindow();
   if (window == 0) {

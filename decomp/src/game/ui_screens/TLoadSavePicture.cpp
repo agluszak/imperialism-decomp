@@ -132,7 +132,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056c740
-void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
+void TLoadSavePicture::LoadHeader(short slotMode) {
   CString path;
   BuildSavePathStringForMode(&path, slotMode, 0);
   if (!TryGetFileMetadataForPath(&path)) {
@@ -211,7 +211,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         newSlotControl->GetFrame(&newBounds);
         InvalidateCityDialogRectRegion(&newBounds, 1);
         selectedSlot = newSlot;
-        RefreshSlotPreviewFromSaveFile(newSlot);
+        LoadHeader(newSlot);
       } else if (selectedSlot == -1) {
         CString slotText;
         TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
@@ -255,7 +255,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         InvalidateCityDialogRectRegion(&oldBounds, 1);
       }
       selectedSlot = 0xa1;
-      RefreshSlotPreviewFromSaveFile(0xa1);
+      LoadHeader(0xa1);
     }
   } else if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
     HandleSaveGameSlotSelectionAndPromptFlow();

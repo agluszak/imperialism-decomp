@@ -44,7 +44,7 @@ public:
 
   void HandleTacticalCommandTag_skip();
 
-  void RetireUndeployedUnitsToReserveList();
+  void RemoveReserves();
 
   // Whether this side belongs to the local active nation. 0x0059b010, __thiscall.
   bool IsPlayer();

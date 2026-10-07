@@ -3355,7 +3355,7 @@ short TMapMgr::GetUnitOffset(TCivUnit* unit) {
   if (unit->militaryRegistrationFlag) {
     return GetUnitOffset(unit->orderType, true, 0);
   }
-  bool idle = unit->IsInIdleSelectionState();
+  bool idle = unit->CanBeOrdered();
   return GetUnitOffset(unit->orderType, false, idle);
 }
 

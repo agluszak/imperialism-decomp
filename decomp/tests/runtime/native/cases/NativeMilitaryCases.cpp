@@ -732,7 +732,7 @@ RuntimeActionResult RunMilitaryPhaseShipsWithoutOrders(NativeTransition& transit
   // Deterministic CRT seed for retail-vs-recomp rand() parity in DoMilitary.
   srand(0x1234);
   g_pSimMgr->economicTurn = 6;
-  TZone* zone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(ActiveNationSlot());
+  TZone* zone = g_pActiveMapOrderContext->GetPortZone(ActiveNationSlot());
   if (zone == 0) {
     return RuntimeActionResult::Failure("the fixture has no active-nation port zone");
   }

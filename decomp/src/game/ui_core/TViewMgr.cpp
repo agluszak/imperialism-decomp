@@ -1408,7 +1408,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
 
   if (topBar != NULL) {
     int grantSum = g_apNationStates[nationSlot]->SumDiplomacyGrantEntriesMaskedToValueBits();
-    topBar->SehCleanup_ReleaseTwoTempSharedStringRefs(grantSum);
+    topBar->UpdateGrantDisplay(grantSum);
   }
 
   diplomacyMap = activeDialog->FindSubView(kControlTagMain);

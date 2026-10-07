@@ -6,9 +6,9 @@ class TSimMgr;
 #include "compat.h"
 #include "game/stretch.h"
 
-char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const char* templateText,
-                                                          const char* token1, const char* token2,
-                                                          const char* token3, const char* token4);
+char* __cdecl AppendInterNationEventSummaryTextEntry(TSimMgr* sim, const char* templateText,
+                                                     const char* token1, const char* token2,
+                                                     const char* token3, const char* token4);
 
 void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...);
 

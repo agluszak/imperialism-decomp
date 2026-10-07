@@ -44,7 +44,7 @@ TLanguageMgr::~TLanguageMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00507e20
 void TLanguageMgr::Free() {
-  FreeTableRows();
+  FlushToilet();
   delete this;
 }
 
@@ -55,7 +55,7 @@ bool TLanguageMgr::ReadPrepLUT(const char* basePath, unsigned long languageTag) 
   newsTabPath = kNewsTabPath;
   newsTexPath = kNewsTexPath;
   delimiter = 0x20;
-  FreeTableRows();
+  FlushToilet();
 
   FILE* stream = fopen(tablePath, kReadTextMode);
   if (stream == 0) {
@@ -190,7 +190,7 @@ CString TLanguageMgr::Localize(const char* data, unsigned char formatChar) const
 
 // FUNCTION: IMPERIALISM 0x005086a0
 bool TLanguageMgr::SetLanguage(unsigned long languageTag) {
-  FreeTableRows();
+  FlushToilet();
 
   CString preplutPath(kPreplutPath);
   if (g_pImperialismApp != NULL) {
@@ -200,7 +200,7 @@ bool TLanguageMgr::SetLanguage(unsigned long languageTag) {
 }
 
 // FUNCTION: IMPERIALISM 0x00508760
-void TLanguageMgr::FreeTableRows() {
+void TLanguageMgr::FlushToilet() {
   if (rowTextTable == 0) {
     return;
   }
@@ -226,7 +226,7 @@ void TLanguageMgr::FreeTableRows() {
 void TLanguageMgr::Allocate(unsigned char firstColumnArg, unsigned char lastColumn,
                             unsigned char firstPrimaryRowArg, unsigned char lastPrimaryRow,
                             unsigned char firstExtraRowArg, unsigned char lastExtraRow) {
-  FreeTableRows();
+  FlushToilet();
   firstColumn = firstColumnArg;
   firstPrimaryRow = firstPrimaryRowArg;
   firstExtraRow = firstExtraRowArg;

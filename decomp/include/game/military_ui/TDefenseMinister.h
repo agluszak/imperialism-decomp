@@ -12,12 +12,6 @@ public:
   TDefenseMinister();
   void IDefenseMinister(TGreatPower* owner);
 
-  void InitializeOrderArrayPreset50_0_10_50(TGreatPower* owner);  // 0x4ed560
-  void InitializeOrderArrayPreset10_10_10_50(TGreatPower* owner); // 0x4ed890
-  void InitializeOrderArrayPreset15_20_50_75(TGreatPower* owner); // 0x4edb80
-  void InitializeOrderArrayPreset20_10_10_50(TGreatPower* owner); // 0x4ede60
-  void InitializeOrderArrayPreset25_10_20_50(TGreatPower* owner); // 0x4ee150
-
   DECLARE_DYNCREATE(TDefenseMinister)
   void WriteTo(TStream* stream) override;                    // 5 (0x4ec1d0)
   void ReadFrom(TStream* stream) override;                   // 6 (0x4ec2f0)

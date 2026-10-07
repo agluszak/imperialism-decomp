@@ -143,7 +143,7 @@ unsigned char* __cdecl WriteDwordBytesReversedToScratchBuffer(unsigned long valu
 }
 
 // FUNCTION: IMPERIALISM 0x00494950
-void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph) {
+void RenderTacticalBattleSelectionAndUnitOverlayPass(char glyph) {
   if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
     if (g_pQuickDrawCachedMeasureFont != 0) {
       delete g_pQuickDrawCachedMeasureFont;
@@ -246,8 +246,8 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
 }
 
 // FUNCTION: IMPERIALISM 0x00494bf0
-void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rect, short styleSel,
-                                                        int unused) {
+void __cdecl RenderTradeScreenCommoditySummaryRows(CString* text, RECT* rect, short styleSel,
+                                                   int unused) {
   int sel = styleSel; // compared as a sign-extended int in the original (movsx + cmp eax)
   int drawFormat = 0x920;
   if (sel != -2) {

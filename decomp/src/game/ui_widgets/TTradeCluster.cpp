@@ -417,7 +417,7 @@ void TTradeCluster::ShowOfferCard() {
 }
 
 // FUNCTION: IMPERIALISM 0x00588030
-void TTradeCluster::SetTradeOfferSecondaryBitmap() {
+void TTradeCluster::ShowOfferHandle() {
   TPicture* offerControl = static_cast<TPicture*>(this->FindSubView(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryOffr);

@@ -67,9 +67,9 @@ public:
   void EnterMapInteractionOverlayMode(TView* controlOverride);
   void SwitchToCivilianMode();
 
-  void CreateCivilianWorkOrderAndRegisterSelection(int orderContext);
+  void CivilianCheatClick(int orderContext);
 
-  void PromptAndQueueMilitaryProvincePurgeOrders(short provinceIndex);
+  void ArmyCheatClick(short provinceIndex);
   void UpdateRoster();
   void CycleMapInteractionSelectionAfterHandledClick();
   void NavalIntelligenceDialog(TZone* zone, short nation, TTaskForce* cachedTaskForce);

@@ -80,7 +80,7 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   }
 
   if (players[currentSide]->sideReadyFlag) {
-    FinalizeTacticalTurnStateAndQueueEvent232A();
+    FinishedDeploying();
     return;
   }
   players[currentSide]->StartBattle();

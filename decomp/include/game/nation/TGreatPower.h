@@ -281,7 +281,7 @@ public:
   // GetName moved to TCountry (its field's owner).
 
   int ComputeNationNavyOrderWeightedMovementScore();
-  int RecomputeNationComparativePowerMetrics_Impl();
+  int GetDiplomacyScore();
 
   void AddPurchasedItemAmount(short index, short delta);
 

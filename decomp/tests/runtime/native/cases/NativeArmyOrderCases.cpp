@@ -207,7 +207,7 @@ RuntimeActionResult RunArmySetOrderMode(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(3);
+  g_pMapContextActionManager->OrderSelectedArmies(3);
   JsonObject modeResult;
   modeResult.Set("pending_index",
                  static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
@@ -285,7 +285,7 @@ RuntimeActionResult RunArmyClickFriendly(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  g_pMapContextActionManager->SelectMovableUnitOnCurrentTileAndPlaySfx(dest);
+  g_pMapContextActionManager->MoveArmies(dest);
   JsonObject friendlyResult;
   friendlyResult.Set("pending_index",
                      static_cast<int>(g_pMapContextActionManager->pendingMapActionIndex));
@@ -336,7 +336,7 @@ RuntimeActionResult RunArmySelectionCycling(NativeTransition& transition) {
   }
   SpawnStationed(kMilitaryUnitRegulars, province);
   g_pMapContextActionManager->pendingMapActionIndex = province;
-  g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(2);
+  g_pMapContextActionManager->OrderSelectedArmies(2);
 
   args.Set("province", static_cast<int>(province));
   RuntimeActionResult started = transition.Begin(args.Release());

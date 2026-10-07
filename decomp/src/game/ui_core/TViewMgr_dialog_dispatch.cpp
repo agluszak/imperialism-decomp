@@ -223,7 +223,7 @@ void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused)
     node->Free();
     return;
   }
-  g_pHelpMgr->EnsureMapActionContextViewAndBuildDefaultTileMenu(nationSlot);
+  g_pHelpMgr->OpenTerrainHelpWindow(nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x005dd220
@@ -605,7 +605,7 @@ bool TViewMgr::MakeArmyInfoWindow(short cityRecordIndex, int* categoryCounts) {
 }
 
 // FUNCTION: IMPERIALISM 0x005de8f0
-void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
+void TViewMgr::ShowQueryWindow() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventQueryFloater));
   if (node == NULL) {

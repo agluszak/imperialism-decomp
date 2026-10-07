@@ -25,7 +25,7 @@ void TMinister::IMinister(TGreatPower* ownerContext) {
 // FUNCTION: IMPERIALISM 0x0052ec80
 void TMinister::Free() {
   if (this->ranking != 0) {
-    this->ranking->ReleasePtrList();
+    this->ranking->FreeList();
   }
   this->ranking = 0;
   delete this;
@@ -50,7 +50,7 @@ short TMinister::GetRankingCriterionForGP(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x0052ed50
 void TMinister::FigureOutRanking() {
-  this->ranking->ClearAndFreeAllPtrListRecords();
+  this->ranking->DeleteAll();
 
   int nationSlot = 0;
   TCountry** tableCursor = g_apTerrainTypeDescriptorTable;
@@ -59,7 +59,7 @@ void TMinister::FigureOutRanking() {
       IndexAndRankRecord entry;
       entry.index = static_cast<short>(nationSlot);
       entry.value = GetRankingCriterionForGP(static_cast<short>(nationSlot));
-      this->ranking->InsertCopiedRecordSortedByComparator(&entry);
+      this->ranking->Insert(&entry);
     }
     ++nationSlot;
     ++tableCursor;

@@ -158,7 +158,7 @@ void TArmyMgr::IArmyMgr() {
 // FUNCTION: IMPERIALISM 0x004a1a00
 void TArmyMgr::Free() {
   if (pendingUnitPool != 0) {
-    pendingUnitPool->FreePayloadsAndDestroy();
+    pendingUnitPool->FreeList();
   }
   pendingUnitPool = 0;
 
@@ -174,7 +174,7 @@ void TArmyMgr::Free() {
       record->sideChildRecords[0] = 0;
       --ordinal;
     }
-    mapContextActionRecordList->ClearAndFreeAllPtrListRecords();
+    mapContextActionRecordList->DeleteAll();
   }
   battlesToReport = false;
 
@@ -190,7 +190,7 @@ void TArmyMgr::Free() {
       record->sideChildRecords[0] = 0;
       --ordinal;
     }
-    mapContextActionRecordList->ReleasePtrList();
+    mapContextActionRecordList->FreeList();
   }
 
   if (ourStackBattle != 0) {
@@ -223,7 +223,7 @@ void TArmyMgr::ReadFrom(TStream* stream) {
       record->sideChildRecords[0] = 0;
       --ordinal;
     }
-    mapContextActionRecordList->ClearAndFreeAllPtrListRecords();
+    mapContextActionRecordList->DeleteAll();
   }
   battlesToReport = false;
   if (g_nSaveFormatVersion >= 0x25) {
@@ -875,11 +875,11 @@ void TArmyMgr::DoOwnershipChanges() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a3d90
-void TArmyMgr::DispatchTileActionByKind(int contextArg, short tileActionCode) {
+void TArmyMgr::OrderArmies(int contextArg, short tileActionCode) {
   if (tileActionCode == 1 || tileActionCode == 4) {
-    this->SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
+    this->MoveArmies(contextArg);
   } else if (tileActionCode == 7) {
-    this->CommitCityActionGateCostIfAffordable(contextArg);
+    this->DeploySelectedArmies(contextArg);
   }
 
   TMilitaryUnit* unit = NULL;
@@ -894,7 +894,7 @@ void TArmyMgr::DispatchTileActionByKind(int contextArg, short tileActionCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a3e50
-bool TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg) {
+bool TArmyMgr::MoveArmies(int contextArg) {
   TMilitaryUnit* unit = NULL;
   if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
     unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain;
@@ -915,7 +915,7 @@ bool TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a3f30
-bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
+bool TArmyMgr::DeploySelectedArmies(int contextArg) {
   TMilitaryUnit* unit = NULL;
   if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
     unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain;
@@ -935,7 +935,7 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
 
   TGreatPower* nation = g_apNationStates[nationSlot];
   if (totalCost <= nation->armyTransportRemaining) {
-    this->SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
+    this->MoveArmies(contextArg);
     nation->armyTransportRemaining -= totalCost;
     return true;
   }
@@ -970,7 +970,7 @@ int TArmyMgr::GetSelectedForceSize() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a4260
-void TArmyMgr::SetOrdersForIdleUnitsOnPendingTile(int mode) {
+void TArmyMgr::OrderSelectedArmies(int mode) {
   TMilitaryUnit* unit = NULL;
   if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < kProvinceCount) {
     unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain;
@@ -1237,9 +1237,9 @@ bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) 
     }
   }
   if (cityIsAdjacent) {
-    return this->SelectMovableUnitOnCurrentTileAndPlaySfx(cityRecordIndex);
+    return this->MoveArmies(cityRecordIndex);
   }
-  return this->CommitCityActionGateCostIfAffordable(cityRecordIndex);
+  return this->DeploySelectedArmies(cityRecordIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x004a4c80
@@ -1332,10 +1332,10 @@ void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
     } while (index < adjacentCount);
   }
   if (!isAdjacent) {
-    CommitCityActionGateCostIfAffordable(contextArg);
+    DeploySelectedArmies(contextArg);
     return;
   }
-  SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
+  MoveArmies(contextArg);
 }
 
 // FUNCTION: IMPERIALISM 0x004a5080
@@ -1503,7 +1503,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a5aa0
-int TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex(int nodeIndexArg) {
+int TArmyMgr::GetLandForceIn(int nodeIndexArg) {
   short nodeIndex = static_cast<short>(nodeIndexArg);
   TMilitaryUnit* chain;
   if (nodeIndex < 0 || nodeIndex >= kProvinceCount) {
@@ -1854,7 +1854,7 @@ void TArmyMgr::CleanUpStacks() {
       record->sideChildRecords[0] = 0;
       --ordinal;
     }
-    mapContextActionRecordList->ClearAndFreeAllPtrListRecords();
+    mapContextActionRecordList->DeleteAll();
   }
   battlesToReport = false;
 }

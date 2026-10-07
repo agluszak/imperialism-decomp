@@ -74,15 +74,15 @@ public:
   virtual bool IsRemote(void) const;
   virtual void PlopDownCity(short selectedRegion, const char* mapCellLabel);
 
-  int SumWeightedNeighborLinkScoreForLinkedNodes(void);
-  int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
+  int GetTotalLandForce(void);
+  int GetLandForceIn(int nodeIndex);
 
   void InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot);
   void GenerateEthnicName(CString* out) const; // 0x4d7eb0
   void FormatOverlayTerrainLabelText(CString* out);
   void GetName(CString* destString);
   void GetNameWithCode(CString* destString);
-  int ComputeSelectedMilitaryPowerScore();
+  int GetArmsInArmy();
   void AssignSharedStringFromDescriptorNameOrDefault(CString* out);
 
   void SetNationDisplayNameAndLocalizationSlotRef(const CString& name);
@@ -113,7 +113,7 @@ public:
 
 // g_apTerrainTypeDescriptorTable — see game/global_data_tables.h.
 
-// 0x004a5aa0 moved to TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex — both
+// 0x004a5aa0 moved to TArmyMgr::GetLandForceIn — both
 // original callsites load ecx = g_pMapContextActionManager (thiscall, this unused).
 
 ASSERT_SIZE(TCountry, 0x94);

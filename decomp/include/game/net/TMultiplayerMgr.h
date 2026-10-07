@@ -157,13 +157,13 @@ public:
   void ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot);
   void HandleTurnResumeStateTelemetry();
   void EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet);
-  void HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream);
+  void ReadMessageFrom(TStream* stream);
   void ReceiveStreamMessage(NetMessage* packet);
-  void CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream, short nationSlot);
-  void CreateCivilianWorkOrdersForSelectedNations(TStream* stream, short nationSlot);
+  void ReadArmyUnitsFrom(TStream* stream, short nationSlot);
+  void ReadCiviliansFrom(TStream* stream, short nationSlot);
   void DehumanizePlayer(int nationSlot);
   bool AttemptSave(int mode, char* label, bool showFailureDialog);
-  void RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot);
+  void RecalcPlayerName(int nationSlot);
 
   void SendBankStatement(bool broadcastFlag, int nationSlot);
 
@@ -173,8 +173,8 @@ public:
 
   void SendCityStateMessage(int nationSlot, int destinationSlot);
 
-  void PublishTerrainDescriptorAndNotifyOrderListeners(TStream* stream, int terrainSlot);
-  void PublishNationDescriptorAndNotifyOrderListeners(TStream* stream, int nationFilter);
+  void WriteArmyUnitsTo(TStream* stream, int terrainSlot);
+  void WriteCiviliansTo(TStream* stream, int nationFilter);
   void WriteMessageTo(TStream* stream, short eventTag, short destinationSlot, long payload);
   void SendStreamMessage(short eventTag, short destinationSlot, long payload); // 0x549ad0
   void SendTradeBook();

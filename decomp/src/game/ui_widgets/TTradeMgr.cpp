@@ -66,7 +66,7 @@ void TTradeMgr::Free() {
   TDealList** p = this->categoryRankLists;
   for (int i = 0; i < 0x11; ++i) {
     if (*p != 0) {
-      (*p)->ReleasePtrList();
+      (*p)->FreeList();
     }
     *p = 0;
     ++p;
@@ -100,7 +100,7 @@ void TTradeMgr::ReadFrom(TStream* stream) {
   }
   TDealList** p = this->categoryRankLists;
   for (int i = 0; i < 0x11; ++i) {
-    (*p)->ClearAndFreeAllPtrListRecords();
+    (*p)->DeleteAll();
     (*p)->ReadFrom(stream);
     ++p;
   }
@@ -151,21 +151,21 @@ void TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists() {
   TDealList** p = &this->categoryRankLists[0xd];
   int i = 4;
   do {
-    (*p)->ClearAndFreeAllPtrListRecords();
+    (*p)->DeleteAll();
     ++p;
     --i;
   } while (i != 0);
   p = &this->categoryRankLists[7];
   i = 6;
   do {
-    (*p)->ClearAndFreeAllPtrListRecords();
+    (*p)->DeleteAll();
     ++p;
     --i;
   } while (i != 0);
   p = &this->categoryRankLists[0];
   i = 7;
   do {
-    (*p)->ClearAndFreeAllPtrListRecords();
+    (*p)->DeleteAll();
     ++p;
     --i;
   } while (i != 0);
@@ -206,7 +206,7 @@ void TTradeMgr::CalculateDealOrder() {
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[row].price, categoryRows[row].basePrice);
               event.category = static_cast<short>(row);
-              this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
+              this->categoryRankLists[row]->Insert(&event);
             }
             ++source;
           } while (source < 7);
@@ -237,7 +237,7 @@ void TTradeMgr::CalculateDealOrder() {
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
                                      categoryRows[row].price, categoryRows[row].basePrice);
               event.category = static_cast<short>(row);
-              this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
+              this->categoryRankLists[row]->Insert(&event);
             }
             ++source;
           } while (source < 7);
@@ -274,7 +274,7 @@ void TTradeMgr::CalculateDealOrder() {
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[midRow].price, categoryRows[midRow].basePrice);
               event.category = static_cast<short>(midRow);
-              this->categoryRankLists[midRow]->InsertCopiedRecordSortedByComparator(&event);
+              this->categoryRankLists[midRow]->Insert(&event);
             }
             ++source;
           } while (source < 7);
@@ -305,7 +305,7 @@ void TTradeMgr::CalculateDealOrder() {
                     this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
                                        categoryRows[7].price, categoryRows[7].basePrice);
                 event.category = 7;
-                this->categoryRankLists[7]->InsertCopiedRecordSortedByComparator(&event);
+                this->categoryRankLists[7]->Insert(&event);
               }
               ++source;
             } while (source < 7);
@@ -344,7 +344,7 @@ void TTradeMgr::CalculateDealOrder() {
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
               event.category = static_cast<short>(lastRow);
-              this->categoryRankLists[lastRow]->InsertCopiedRecordSortedByComparator(&event);
+              this->categoryRankLists[lastRow]->Insert(&event);
             }
             ++source;
           } while (source < 7);
@@ -366,7 +366,7 @@ void TTradeMgr::CalculateDealOrder() {
                   static_cast<short>(secondarySource), static_cast<short>(target),
                   categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
               event.category = static_cast<short>(lastRow);
-              this->categoryRankLists[lastRow]->InsertCopiedRecordSortedByComparator(&event);
+              this->categoryRankLists[lastRow]->Insert(&event);
             }
             ++secondarySource;
           } while (secondarySource < 0x17);

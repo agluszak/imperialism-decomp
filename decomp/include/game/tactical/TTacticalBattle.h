@@ -114,7 +114,7 @@ public:
   void LaDeploy(TArmyTacUnit* unit, TacticalTileIndex tileIndex,
                 bool remoteFlag); // 0x5a4370
   void HandleTacticalCommandTag_retr();
-  void FinalizeTacticalTurnStateAndQueueEvent232A();
+  void FinishedDeploying();
 
   void HandleTacticalBattleCommandTag(int commandTag);
   void NextMove(); // 0x5a0e20
@@ -125,7 +125,7 @@ public:
   void GetNeighborList(TacticalTileIndex tileIndex,
                        TacticalTileIndex* outNeighborTiles6); // 0x5a0420
   bool ValidMove();                                           // 0x5a1b50
-  void StartTacticalPlayersThatAreNotReady();                 // 0x59fcd0
+  void BeginFighting();                                       // 0x59fcd0
   bool AreNeighbors(TacticalTileIndex tileIndex,
                     TacticalTileIndex candidateTileIndex); // 0x5a0550
   void DamageFort(TacticalTileIndex tileIndex,

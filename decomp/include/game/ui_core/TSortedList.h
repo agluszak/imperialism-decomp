@@ -19,7 +19,7 @@ public:
   void ReadFrom(TStream* stream) override;
   void Free() override;
 
-  int FindOneBasedOrdinalOf(void* item);
+  int GetIdentityItemNo(void* item);
 
   virtual POSITION AddHead(void* item);
   virtual POSITION AddHeadEx(void* item, int unused1 = 0, int unused2 = 0);
@@ -33,12 +33,12 @@ public:
   virtual void* GetEntryByOrdinal(int ordinal = 0);
   virtual void RemoveAtOrdinal(int ordinal);
   virtual void FreePayloads();
-  virtual void FreePayloadsAndDestroy();
+  virtual void FreeList();
   virtual void RemoveAll();
   virtual void SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag);
-  virtual void Sort(); // slot 0x64 0x487d90
+  virtual void Sort();                                                // slot 0x64 0x487d90
   virtual void SortBy(TSortedListCompareFunc compare, void* context); // slot 0x68 0x487dd0
-  virtual short Compare(void* a, void* b); // slot 0x6c 0x487b30
+  virtual short Compare(void* a, void* b);                            // slot 0x6c 0x487b30
   virtual void QuickSort(int lo, int hi, TSortedListCompareFunc compare,
                          void* context); // slot 0x70 0x487b60
   // Hoare partition core over ordinals [lo, hi]; pivot = payload at ordinal lo.

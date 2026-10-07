@@ -50,7 +50,7 @@ GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized()
 }
 
 // FUNCTION: IMPERIALISM 0x004972a0
-int InitializeTurnOrderNavigationDialogByViewportSize_Impl(int arg) {
+int InitializeTurnOrderNavigationDialogByViewportSize(int arg) {
   return 0;
 }
 
@@ -113,7 +113,7 @@ void TDisplayMgr::IDisplayMgr() {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0xb0);
   }
   activeDialog = dialogRoot;
-  gworldFlags = InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
+  gworldFlags = InitializeTurnOrderNavigationDialogByViewportSize(0x80);
   ExamineGWorld();
 }
 

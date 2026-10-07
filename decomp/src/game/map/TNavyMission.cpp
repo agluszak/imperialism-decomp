@@ -198,7 +198,7 @@ int TNavyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack)
 float TNavyMission::ComputeSeaZoneImportance(TZone* zone) {
   float importance = static_cast<float>(zone->GetStrategicValue());
 
-  for (TZone* port = TZone::GetFirstPortZone(); port != 0; port = port->GetNextPortZone()) {
+  for (TZone* port = TZone::GetFirstPort(); port != 0; port = port->GetNextPort()) {
     if (port->primaryNeighbors[0] == zone) {
       if (port->GetPortOwnerNation() == nationId) {
         importance *= 1.5f;
@@ -221,7 +221,7 @@ void TNavyMission::Reassess() {
   CalculateImportance();
   CalculateNeeds();
 
-  missionTargetZone->IsZoneMaskOrArrayEntryPresentForKey(nationId);
+  missionTargetZone->IsVisibleToCountry(nationId);
 
   if (orderList == NULL) {
     navyState = 0;

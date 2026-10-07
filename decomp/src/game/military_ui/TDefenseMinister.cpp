@@ -1,6 +1,7 @@
 #include "game/nation_domain_types.h"
 #include "game/map_domain_types.h"
 #include "game/military_ui/TDefenseMinister.h"
+#include "game/military_ui/TDefenseMinisterPersonalities.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -459,7 +460,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
 // seeds its own thresholdA-D quad and orderWeightTableB[2]/[4]/[7] prefix.
 
 // FUNCTION: IMPERIALISM 0x004ed560
-void TDefenseMinister::InitializeOrderArrayPreset50_0_10_50(TGreatPower* owner) {
+void TNapoleonMinister::INapoleonMinister(TGreatPower* owner) {
   this->IMinister(owner);
   field10 = 0;
   field12 = 0;
@@ -481,7 +482,7 @@ void TDefenseMinister::InitializeOrderArrayPreset50_0_10_50(TGreatPower* owner) 
 }
 
 // FUNCTION: IMPERIALISM 0x004ed890
-void TDefenseMinister::InitializeOrderArrayPreset10_10_10_50(TGreatPower* owner) {
+void TBismarckMinister::IBismarckMinister(TGreatPower* owner) {
   this->IMinister(owner);
   field10 = 0;
   field12 = 0;
@@ -503,7 +504,7 @@ void TDefenseMinister::InitializeOrderArrayPreset10_10_10_50(TGreatPower* owner)
 }
 
 // FUNCTION: IMPERIALISM 0x004edb80
-void TDefenseMinister::InitializeOrderArrayPreset15_20_50_75(TGreatPower* owner) {
+void TPirateMinister::IPirateMinister(TGreatPower* owner) {
   this->IMinister(owner);
   field10 = 0;
   field12 = 0;
@@ -525,7 +526,7 @@ void TDefenseMinister::InitializeOrderArrayPreset15_20_50_75(TGreatPower* owner)
 }
 
 // FUNCTION: IMPERIALISM 0x004ede60
-void TDefenseMinister::InitializeOrderArrayPreset20_10_10_50(TGreatPower* owner) {
+void TDefenderMinister::IDefenderMinister(TGreatPower* owner) {
   this->IMinister(owner);
   field10 = 0;
   field12 = 0;
@@ -547,7 +548,7 @@ void TDefenseMinister::InitializeOrderArrayPreset20_10_10_50(TGreatPower* owner)
 }
 
 // FUNCTION: IMPERIALISM 0x004ee150
-void TDefenseMinister::InitializeOrderArrayPreset25_10_20_50(TGreatPower* owner) {
+void TBullyMinister::IBullyMinister(TGreatPower* owner) {
   this->IMinister(owner);
   field10 = 0;
   field12 = 0;

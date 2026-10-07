@@ -329,7 +329,7 @@ RuntimeActionResult ClickArrowZone(TNumberedArrowButton* arrow, bool lowerHalf, 
   const int offsetY = lowerHalf ? arrow->frameHeight * 3 / 4 : arrow->frameHeight / 4;
   CPoint zone(bounds.left + 1, bounds.top + offsetY); // RUNTIME_COORDINATE_EXPLAINED
   CPoint windowPoint(zone);
-  arrow->TranslatePointToParentChain4D(&windowPoint);
+  arrow->LocalToWindow(&windowPoint);
 
   TWindow* window = arrow->GetWindow();
   if (window == 0) {

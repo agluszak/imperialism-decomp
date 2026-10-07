@@ -37,7 +37,7 @@ public:
 
   void NukePort(short nTileIndex);
 
-  TZone* FindFirstPortZoneContextByNation(short nationSlot);
+  TZone* GetPortZone(short nationSlot);
 
   TZone* GetSeaZoneAdjacentTo(int cityRecordIndex);
 

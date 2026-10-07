@@ -265,7 +265,7 @@ int TNewspaperView::AddTextView(int column, int y, int recordOffset, int recordL
   char* recordBuffer = new char[recordLength];
   g_pAssetMgr->SeekResourceStreamFromBeginning(newsTexStream, recordOffset);
   g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(newsTexStream, recordBuffer, &recordLength);
-  char* formatted = AppendInterNationEventSummaryTextEntry_Impl(
+  char* formatted = AppendInterNationEventSummaryTextEntry(
       g_pSimMgr, recordBuffer, static_cast<LPCSTR>(tokens[0]), static_cast<LPCSTR>(tokens[1]),
       static_cast<LPCSTR>(tokens[2]), static_cast<LPCSTR>(tokens[3]));
   delete[] recordBuffer;

@@ -200,8 +200,6 @@ void TGreatPower::TraceSupplyRoutes(char** outInfluenceMap) {
   delete[] influenceMap;
 }
 
-// --- Slots 0x35/0x37/0x50/0x51/0x55-0x57 ---
-
 // FUNCTION: IMPERIALISM 0x004dbac0
 void TGreatPower::TraceRail(char* regionMap, short regionId) {
   short nextRegion;
@@ -525,8 +523,7 @@ bool TGreatPower::IsCapitolThreatened(int mode) {
         TDefendProvinceMission::ComputeCrossNationSupportVectorScore(nodeContext);
     return localScore < crossNationScore;
   } else {
-    TZone* portZoneContext =
-        g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
+    TZone* portZoneContext = g_pActiveMapOrderContext->GetPortZone(this->nationSlot);
 
     TZone* firstEntry = portZoneContext->primaryNeighbors[0];
 
@@ -900,7 +897,7 @@ void TGreatPower::RecallTradeBids(void) {
 // FUNCTION: IMPERIALISM 0x004dd310
 void TGreatPower::InitializeDealBook(void) {
   for (int listIndex = 0; listIndex < kDiplomacyTrackedSlotCount; ++listIndex) {
-    this->diplomacyTrackedSlots[listIndex]->ClearAndFreeAllPtrListRecords();
+    this->diplomacyTrackedSlots[listIndex]->DeleteAll();
   }
 }
 
@@ -1015,7 +1012,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
     }
 
     if (relationshipList != 0) {
-      relationshipList->ReleasePtrList();
+      relationshipList->FreeList();
     }
   }
 
@@ -1255,7 +1252,7 @@ void TGreatPower::AddToDealBook(short kind, NationSlot targetNation, short value
   } else {
     packet.eligibility = 0;
   }
-  this->diplomacyTrackedSlots[slotIndex]->InsertCopiedRecordSortedByComparator(&packet);
+  this->diplomacyTrackedSlots[slotIndex]->Insert(&packet);
 }
 
 // FUNCTION: IMPERIALISM 0x004dde30
@@ -1676,10 +1673,10 @@ void TGreatPower::BecomeProtectorateOf(int targetNationSlot) {
   this->budgetPoolDelta = 0;
 
   if (this->proposalQueue != 0) {
-    this->proposalQueue->ClearAndFreeAllPtrListRecords();
+    this->proposalQueue->DeleteAll();
   }
   if (this->turnEventQueue != 0) {
-    this->turnEventQueue->ClearAndFreeAllPtrListRecords();
+    this->turnEventQueue->DeleteAll();
   }
 
   this->InitializeDealBook();
@@ -1770,7 +1767,7 @@ void TGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
   if (this->diplomacyEligibility != 0) {
     int packedCode = (static_cast<int>(static_cast<unsigned short>(sourceNation)) << 16) |
                      static_cast<unsigned short>(actionCode);
-    this->turnEventQueue->InsertCopiedRecordSortedByComparator(&packedCode);
+    this->turnEventQueue->Insert(&packedCode);
 
     NewsEvent payload;
     payload.marker0 = 1;
@@ -1839,7 +1836,7 @@ void TGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
   proposalRecord.proposalCode = proposalCode;
   proposalRecord.sourceNationSlot = sourceNationSlot;
 
-  this->proposalQueue->InsertCopiedRecordSortedByComparator(&proposalRecord);
+  this->proposalQueue->Insert(&proposalRecord);
 }
 
 // FUNCTION: IMPERIALISM 0x004df010
@@ -2003,12 +2000,12 @@ bool TGreatPower::IsDiplomacyProposalAllowedForRelationship(
 
 // FUNCTION: IMPERIALISM 0x004df580
 void TGreatPower::InitializeDiplomacyOffers(void) {
-  this->proposalQueue->ClearAndFreeAllPtrListRecords();
+  this->proposalQueue->DeleteAll();
 }
 
 // FUNCTION: IMPERIALISM 0x004df5a0
 void TGreatPower::InitializeDiplomacyNotices(void) {
-  this->turnEventQueue->ClearAndFreeAllPtrListRecords();
+  this->turnEventQueue->DeleteAll();
 }
 
 // FUNCTION: IMPERIALISM 0x004df5c0
@@ -2268,8 +2265,6 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* messag
   }
   g_pViewMgr->ModalMessage(*message, g_ptGreatPowerModalMessage, 0, 0);
 }
-
-// --- Slots 0x4c/0x65/0x6c/0x6f/0x78/0x7d/0x7f/0xac and trivial tail slots ---
 
 // FUNCTION: IMPERIALISM 0x004e0220
 void TGreatPower::ContinueCivilianOrders(void) {
@@ -3188,7 +3183,7 @@ void TGreatPower::AnnounceLater(short orderKind, short payload, short flags) {
 
   TPtrList* turnSummaryQueue = this->turnSummaryQueue;
   if (turnSummaryQueue != 0) {
-    turnSummaryQueue->InsertCopiedRecordSortedByComparator(&packet);
+    turnSummaryQueue->Insert(&packet);
   }
 }
 
@@ -3315,7 +3310,7 @@ int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
 
 // Average bilateral relation-standing score against every other live descriptor slot.
 // FUNCTION: IMPERIALISM 0x004e3220
-int TGreatPower::RecomputeNationComparativePowerMetrics_Impl() {
+int TGreatPower::GetDiplomacyScore() {
   TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
   int sum = 0;
   int count = 0;
@@ -3472,11 +3467,9 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     int ownedRegionCount =
         g_apTerrainTypeDescriptorTable[selectedNationSlot]->ownedRegionList->GetSize();
     result = static_cast<float>(
-        g_apTerrainTypeDescriptorTable[selectedNationSlot]->ComputeWeightedNeighborLinkScoreForNode(
-            cityIndex) *
+        g_apTerrainTypeDescriptorTable[selectedNationSlot]->GetLandForceIn(cityIndex) *
         ownedRegionCount);
-    return (g_apTerrainTypeDescriptorTable[selectedNationSlot]
-                ->SumWeightedNeighborLinkScoreForLinkedNodes() -
+    return (g_apTerrainTypeDescriptorTable[selectedNationSlot]->GetTotalLandForce() -
             g_Compute_Advisory_MinusHundred) /
            (result - g_Compute_Advisory_Map_Value);
   }
@@ -3604,7 +3597,7 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
     selectedCandidateIndex =
         *static_cast<short*>(relationshipList->GetPtrListEntryByOneBasedIndex(1));
     if (relationshipList != 0) {
-      relationshipList->ReleasePtrList();
+      relationshipList->FreeList();
     }
   } else if (activeCandidateCount == 1) {
     // The count guarantees that this scan finds a candidate before reaching the bound.

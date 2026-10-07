@@ -266,7 +266,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
 }
 
 // FUNCTION: IMPERIALISM 0x004eee60
-void TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl(NationSlot nationSlot) {
+void TDiplomacyMgr::RemoveNationSlotAndNotifyPeers(NationSlot nationSlot) {
   const int row = nationSlot;
   for (int i = 0; i < 7; ++i) {
     if (relationPropagationMatrix[row * kNationSlotCount + i] != kDiplomacyRelationshipWar ||
@@ -320,7 +320,7 @@ void TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot na
 // FUNCTION: IMPERIALISM 0x004ef040
 void TDiplomacyMgr::Free() {
   if (pendingWarTransitionQueue != 0) {
-    pendingWarTransitionQueue->ReleasePtrList();
+    pendingWarTransitionQueue->FreeList();
   }
   pendingWarTransitionQueue = 0;
   delete this;
@@ -985,8 +985,7 @@ void TDiplomacyMgr::AddDeclarationOfWar(NationSlot sourceNationSlot, NationSlot 
 void TDiplomacyMgr::IssueDeclarationsOfWar() {
   if (pendingWarTransitionQueue->GetSize() != 0) {
     bool propagatedTransition = false;
-    WarTransitionPair* pair =
-        static_cast<WarTransitionPair*>(pendingWarTransitionQueue->PeekFirstPtrListEntry());
+    WarTransitionPair* pair = static_cast<WarTransitionPair*>(pendingWarTransitionQueue->First());
     int targetNationSlot = pair->targetNationSlot;
     int sourceNationSlot = pair->sourceNationSlot;
     pendingWarTransitionQueue->RemovePtrListEntryByOneBasedIndexAndFree(1);
@@ -1312,7 +1311,7 @@ void TDiplomacyMgr::CalculateRatings() {
     if (army > maxArmy) {
       maxArmy = army;
     }
-    int relation = g_apNationStates[i]->RecomputeNationComparativePowerMetrics_Impl();
+    int relation = g_apNationStates[i]->GetDiplomacyScore();
     comparativePowerRows[i][1] = relation;
     if (relation > maxRelation) {
       maxRelation = relation;
@@ -1551,7 +1550,7 @@ void TDiplomacyMgr::BuildRelationshipList(NationSlot sourceNationSlot, short pri
         entry.nationSlot = candidateNationSlot;
         int source = sourceNationSlot;
         entry.standingScore = relationStandingScores[source * kNationSlotCount + candidateIndex];
-        list->InsertCopiedRecordSortedByComparator(&entry);
+        list->Insert(&entry);
       }
     }
     candidateNationSlot++;
@@ -1606,7 +1605,7 @@ int TDiplomacyMgr::GetFavorite(int sourceNationSlot, int primaryOnlyFlag) {
       static_cast<RelationshipRankEntry*>(list->GetPtrListEntryByOneBasedIndex(list->GetSize()));
   int nationSlot = entry->nationSlot;
   if (list != 0) {
-    list->ReleasePtrList();
+    list->FreeList();
   }
   return nationSlot;
 }
@@ -1639,7 +1638,7 @@ int TDiplomacyMgr::GetFavorite(int sourceNationSlot, int primaryOnlyFlag, int si
   }
 
   if (list != 0) {
-    list->ReleasePtrList();
+    list->FreeList();
   }
   return matchedNationSlot;
 }

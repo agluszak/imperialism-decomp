@@ -124,7 +124,7 @@ void RecomputeNationOrderPriorityMetrics() {
     }
     g_afNationCombinedUnitDivergence[nationIdx] = combinedUnitDivergence;
 
-    int militaryPower = nation->ComputeSelectedMilitaryPowerScore();
+    int militaryPower = nation->GetArmsInArmy();
     int navyOrderIndustrySum = nation->GetArmsInNavy();
     float powerRatio = 1.0f;
     if (static_cast<float>(navyOrderIndustrySum) < static_cast<float>(militaryPower)) {

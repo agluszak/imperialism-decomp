@@ -154,10 +154,10 @@ void TPageView::Clear() {
 // FUNCTION: IMPERIALISM 0x0056ffe0
 void TPageView::Free() {
   if (this->optionEntries != NULL) {
-    this->optionEntries->FreePayloadsAndDestroy();
+    this->optionEntries->FreeList();
   }
   if (this->orderedEntries != NULL) {
-    this->orderedEntries->FreePayloadsAndDestroy();
+    this->orderedEntries->FreeList();
   }
   if (this->pageStartIndices != NULL) {
     this->pageStartIndices->Free();

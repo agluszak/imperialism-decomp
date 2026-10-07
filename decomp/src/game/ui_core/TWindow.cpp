@@ -369,7 +369,7 @@ TView* TWindow::GetRootView() {
 void TWindow::TranslatePointToParentChain4E(CPoint* point) {}
 
 // FUNCTION: IMPERIALISM 0x00492d20
-void TWindow::TranslatePointToParentChain4D(CPoint* point) {}
+void TWindow::LocalToWindow(CPoint* point) {}
 
 // FUNCTION: IMPERIALISM 0x00492d40
 void TWindow::TranslateRectToWindow(CRect* rect) {}

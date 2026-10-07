@@ -1872,7 +1872,7 @@ void TSimMgr::EliminateGP(NationSlot nationSlot) {
   g_apTerrainTypeDescriptorTable[nationSlot] = 0;
   countryAvailable[nationSlot] = false;
   --numGreatPowers;
-  g_pDiplomacyTurnStateManager->RemoveNationSlotAndNotifyPeers_Impl(nationSlot);
+  g_pDiplomacyTurnStateManager->RemoveNationSlotAndNotifyPeers(nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x005813d0
@@ -2659,8 +2659,7 @@ void TSimMgr::ScSetTechDate(STurnInstructionCursor* instruction) {
   ++instruction->tokenCursor;
   DECODE_SCENARIO_DWORD_TOKEN(valueToken);
 
-  g_pTechMgr->SetCityOrderCapabilityTierScaledValueByIndex(static_cast<int>(indexToken),
-                                                           static_cast<int>(valueToken + 1));
+  g_pTechMgr->SetAdvanceDate(static_cast<int>(indexToken), static_cast<int>(valueToken + 1));
 }
 
 // FUNCTION: IMPERIALISM 0x00583510

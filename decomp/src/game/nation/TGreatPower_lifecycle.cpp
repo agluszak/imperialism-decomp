@@ -276,11 +276,11 @@ void TGreatPower::Free(void) {
   }
   this->city = 0;
   if (this->turnEventQueue != 0) {
-    this->turnEventQueue->ReleasePtrList();
+    this->turnEventQueue->FreeList();
   }
   this->turnEventQueue = 0;
   if (this->proposalQueue != 0) {
-    this->proposalQueue->ReleasePtrList();
+    this->proposalQueue->FreeList();
   }
   this->proposalQueue = 0;
   if (this->foreignMinister != 0) {
@@ -298,29 +298,29 @@ void TGreatPower::Free(void) {
   TPtrList** trackedSlots = this->diplomacyTrackedSlots;
   for (int trackedSlotCount = 0; trackedSlotCount < 0x11; ++trackedSlotCount) {
     if (*trackedSlots != 0) {
-      (*trackedSlots)->ReleasePtrList();
+      (*trackedSlots)->FreeList();
     }
     *trackedSlots = 0;
     ++trackedSlots;
   }
   if (this->townMarkerList != 0) {
-    this->townMarkerList->FreePayloadsAndDestroy();
+    this->townMarkerList->FreeList();
   }
   this->townMarkerList = 0;
   if (this->trackedObjectList != 0) {
-    this->trackedObjectList->FreePayloadsAndDestroy();
+    this->trackedObjectList->FreeList();
   }
   this->trackedObjectList = 0;
   if (this->turnSummaryQueue != 0) {
-    this->turnSummaryQueue->ReleasePtrList();
+    this->turnSummaryQueue->FreeList();
   }
   this->turnSummaryQueue = 0;
   if (this->turnStartEvents != 0) {
-    this->turnStartEvents->FreePayloadsAndDestroy();
+    this->turnStartEvents->FreeList();
   }
   this->turnStartEvents = 0;
   if (this->militaryUnitList != 0) {
-    this->militaryUnitList->FreePayloadsAndDestroy();
+    this->militaryUnitList->FreeList();
   }
   this->militaryUnitList = 0;
   if (this->ownedRegionList != 0) {
@@ -657,8 +657,6 @@ void TGreatPower::MultiReadFrom(TStream* stream, int unusedArg) {
   }
 }
 
-// --- Slot 0x0a/0x0b stream serialization pair and status-flag slots 0x2b-0x33 ---
-
 // FUNCTION: IMPERIALISM 0x004da500
 void TGreatPower::MultiWriteTo(TStream* stream) {
   TCountry::MultiWriteTo(stream);
@@ -834,7 +832,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Navy primary/secondary order (pending status 0 == '2').
   if (this->pendingActionStatus.byAction[0] == 0x32) {
     short zoneIndex = g_pTechMgr->activeZoneIndex;
-    TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationSlot);
+    TZone* portZone = g_pActiveMapOrderContext->GetPortZone(nationSlot);
     TShip* primaryOrder =
         CreateNavyPrimaryOrderNodeAndAssignDisplayName(zoneIndex, portZone, nationSlot, 0);
 

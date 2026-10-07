@@ -126,7 +126,7 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
   TCivUnit* clickedEntry = g_pGlobalMapState->GetMyFirstUnit(nTileIndex, nationId);
   if (clickedEntry != NULL) {
     clickedEntry = g_pGlobalMapState->GetMyFirstUnit(nTileIndex, g_pSimMgr->GetPlayerCountry());
-    if (clickedEntry->IsInIdleSelectionState()) {
+    if (clickedEntry->CanBeOrdered()) {
       if (nClickMode == 2 ||
           (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags & 0x20) == 0) {
         actionCode = 2;
@@ -175,7 +175,7 @@ unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTi
   TCivUnit* entry = g_pGlobalMapState->GetMyFirstUnit(nTileIndex, g_pSimMgr->GetPlayerCountry());
   if (entry != NULL) {
     entry = g_pGlobalMapState->GetMyFirstUnit(nTileIndex, g_pSimMgr->GetPlayerCountry());
-    if (!entry->IsInIdleSelectionState()) {
+    if (!entry->CanBeOrdered()) {
       actionCode = kCivilianTileActionShowOrderReport;
     } else if (nClickMode == 2 ||
                (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags >> 5 & 1) == 0) {
@@ -195,7 +195,7 @@ CivilianTileActionCodeStorage TCivMgr::GetTileAction(short tileIndex, short mode
   if (g_pGlobalMapState->GetMyFirstUnit(tileIndex, g_pSimMgr->GetPlayerCountry()) != 0) {
     // The original looks the unit up a second time rather than reusing the first result.
     TCivUnit* unit = g_pGlobalMapState->GetMyFirstUnit(tileIndex, g_pSimMgr->GetPlayerCountry());
-    if (!unit->IsInIdleSelectionState()) {
+    if (!unit->CanBeOrdered()) {
       actionCode = kCivilianTileActionShowOrderReport;
     } else if (mode == 2 ||
                ((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags >> 5) & 1) == 0) {
@@ -299,7 +299,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
       return kCivilianTileActionNone;
     }
     if (!g_pGlobalMapState->GetMyFirstUnit(nTileIndex, g_pSimMgr->GetPlayerCountry())
-             ->IsInIdleSelectionState()) {
+             ->CanBeOrdered()) {
       return kCivilianTileActionShowOrderReport;
     }
     if ((nInputHint != 2) &&
@@ -351,8 +351,8 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
   if (orderAtTile != NULL) {
     nationId = g_pSimMgr->GetPlayerCountry();
     if (orderAtTile->ownerNationSlot == nationId) {
-      return orderAtTile->IsInIdleSelectionState() ? kCivilianTileActionSelectUnit
-                                                   : kCivilianTileActionShowOrderReport;
+      return orderAtTile->CanBeOrdered() ? kCivilianTileActionSelectUnit
+                                         : kCivilianTileActionShowOrderReport;
     }
   }
   if (this->CanDeployUnit(nTileIndex)) {

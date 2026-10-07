@@ -114,7 +114,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
 // FUNCTION: IMPERIALISM 0x004d6ba0
 void TCountry::Free(void) {
   if (this->militaryUnitList != 0) {
-    this->militaryUnitList->FreePayloadsAndDestroy();
+    this->militaryUnitList->FreeList();
   }
   this->militaryUnitList = 0;
   if (this->ownedRegionList != 0) {
@@ -567,24 +567,23 @@ void TCountry::NameUnits(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d8390
-int TCountry::ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
-  return g_pMapContextActionManager->ComputeWeightedNeighborLinkScoreForNodeIndex(nodeIndex);
+int TCountry::GetLandForceIn(int nodeIndex) {
+  return g_pMapContextActionManager->GetLandForceIn(nodeIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x004d83c0
-int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
+int TCountry::GetTotalLandForce(void) {
   int sum = 0;
   int index = 1;
   while (index <= ownedRegionList->GetSize()) {
-    sum += g_pMapContextActionManager->ComputeWeightedNeighborLinkScoreForNodeIndex(
-        ownedRegionList->At(index));
+    sum += g_pMapContextActionManager->GetLandForceIn(ownedRegionList->At(index));
     ++index;
   }
   return sum;
 }
 
 // FUNCTION: IMPERIALISM 0x004d8430
-int TCountry::ComputeSelectedMilitaryPowerScore() {
+int TCountry::GetArmsInArmy() {
   int powerSum = 0;
   CIterator unitIter(this->militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();

@@ -77,7 +77,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
 
   switch (commandEvent->commandCode) {
   case 0x1b:
-    DispatchUiRuntimeMessage102CAndRefreshActiveView();
+    MakeFlagButtonDialog();
     return;
 
   case 'P':

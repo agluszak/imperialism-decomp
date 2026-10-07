@@ -64,7 +64,7 @@ public:
   void PurchaseTech(int slot, int nationIndex);
   void CancelPurchase(int slot, int nationIndex);
   // Stores value*4 into prioritySlots[index] (the "Tyer" turn-instruction handler). 0x5b0c70
-  void SetCityOrderCapabilityTierScaledValueByIndex(int index, int value);
+  void SetAdvanceDate(int index, int value);
   int GetBestFort(int nNationId);
   bool HavePreReqs(int techId, int nationSlot);
   void GetPreReqs(int techId, int nationSlot, int* missingPrimaryTechId,

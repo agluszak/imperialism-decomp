@@ -84,7 +84,7 @@ void TArmyMission::Free() {
     }
 
     orderList->RemoveAll();
-    orderList->FreePayloadsAndDestroy();
+    orderList->FreeList();
     orderList = NULL;
   }
 
@@ -106,7 +106,7 @@ void TArmyMission::WriteTo(TStream* stream) {
   void* currentUnit = iter.Reset();
   while (iter.More()) {
     stream->WriteInteger(
-        g_apNationStates[nationId]->militaryUnitList->FindOneBasedOrdinalOf(currentUnit));
+        g_apNationStates[nationId]->militaryUnitList->GetIdentityItemNo(currentUnit));
     currentUnit = iter.Advance();
   }
 }

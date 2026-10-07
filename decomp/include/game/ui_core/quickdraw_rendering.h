@@ -46,8 +46,8 @@ void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth);
 
 void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text);
 
-void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rect, short styleSel,
-                                                        int unused);
+void __cdecl RenderTradeScreenCommoditySummaryRows(CString* text, RECT* rect, short styleSel,
+                                                   int unused);
 
 void SetQuickDrawTextFont(short value); // 0x00495230 (txFont)
 void SetQuickDrawTextFace(short value); // 0x00495290 (txFace)
@@ -58,7 +58,7 @@ void __cdecl ConfigureWhiteQuickDrawPen(unsigned char widePen); // 0x0051e160
 
 void HiliteColor(const RGBQUAD* color);
 
-void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph);
+void RenderTacticalBattleSelectionAndUnitOverlayPass(char glyph);
 
 void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
                                                short destY, COLORREF colorKey);

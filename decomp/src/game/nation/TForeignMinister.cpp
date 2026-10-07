@@ -161,7 +161,7 @@ void TForeignMinister::SetBuyPriorities() {
       MinisterPriorityEntry entry;
       entry.resourceCode = resourceCode;
       entry.priority = static_cast<short>(purchasePriorityByResource[resourceCode] + 1);
-      priorities->InsertCopiedRecordSortedByComparator(&entry);
+      priorities->Insert(&entry);
     }
   }
 
@@ -179,7 +179,7 @@ void TForeignMinister::SetBuyPriorities() {
       MinisterPriorityEntry entry;
       entry.resourceCode = preferredResourceSlots[preferenceIndex];
       entry.priority = 1;
-      priorities->InsertCopiedRecordSortedByComparator(&entry);
+      priorities->Insert(&entry);
     }
   }
 
@@ -188,7 +188,7 @@ void TForeignMinister::SetBuyPriorities() {
         priorities->GetPtrListEntryByOneBasedIndex(selectedIndex + 1));
     preferredResourceSlots[selectedIndex] = entry->resourceCode;
   }
-  priorities->ReleasePtrList();
+  priorities->FreeList();
 }
 
 // FUNCTION: IMPERIALISM 0x0052f730
@@ -222,7 +222,7 @@ void TForeignMinister::ArrangeMaterialsOffers() {
         relationshipList->GetPtrListEntryByOneBasedIndex(relationshipList->GetSize()));
     g_apNationStates[*nationSlotPtr]->SetTradeOffersFor(interiorBidResource, owner->nationSlot);
     if (relationshipList != 0) {
-      relationshipList->ReleasePtrList();
+      relationshipList->FreeList();
     }
   }
 
@@ -480,7 +480,7 @@ void TForeignMinister::DoDevelopmentGrants() {
     }
   }
 
-  relationshipList->ReleasePtrList();
+  relationshipList->FreeList();
 }
 
 // FUNCTION: IMPERIALISM 0x00530200
@@ -577,7 +577,7 @@ void TForeignMinister::DoProposeTreaties() {
       greatPower->SetDiplomacyPolicyTo(static_cast<short>(selectedNation),
                                        kDiplomacyProposalAlliance);
     }
-    relationshipList->ReleasePtrList();
+    relationshipList->FreeList();
   }
 
   for (int policyTargetNation = 0; policyTargetNation < kMajorNationCount; ++policyTargetNation) {
@@ -649,7 +649,7 @@ bool TForeignMinister::DeservesToBeEnemy(int nationCode) {
       }
     }
   } else {
-    if (thresholdA < ownerGP->ComputeSelectedMilitaryPowerScore()) {
+    if (thresholdA < ownerGP->GetArmsInArmy()) {
       int scoreA = static_cast<int>(ownerGP->ComputeArmyScoreRatioVsNation(nationCode));
       int scoreB = static_cast<int>(ownerGP->ComputeArmyScoreStandingRatioVsNation(nationCode));
       int calendarYear = g_pSimMgr->finalCouncilYear;
@@ -701,7 +701,7 @@ void TForeignMinister::SetEmpirePolicies() {
       }
       --entryIndex;
     }
-    relationshipList->ReleasePtrList();
+    relationshipList->FreeList();
   }
 
   if (owner->GetMerchantCapacity() > 0) {
@@ -729,7 +729,7 @@ void TForeignMinister::SetEmpirePolicies() {
         }
         --entryIndex;
       }
-      relationshipList->ReleasePtrList();
+      relationshipList->FreeList();
 
       if (selectedMinor != -1) {
         short compatibility =

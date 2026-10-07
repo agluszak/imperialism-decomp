@@ -103,7 +103,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x15d1);
     }
     static_cast<TCivilianButton*>(stackButton)->SetButton(selectedTileEntry);
-    stackButton->ViewEnable(selectedTileEntry->IsInIdleSelectionState(), 1);
+    stackButton->ViewEnable(selectedTileEntry->CanBeOrdered(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;

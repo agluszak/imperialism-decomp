@@ -79,7 +79,7 @@ void TMapKey::Draw(RECT* rectBuffer) {
     RenderMapHintOverlayMode2();
     break;
   case 4:
-    RenderMapHintOverlayMode4();
+    DrawTreatyPanel();
     break;
   }
 }
@@ -120,7 +120,7 @@ void TMapKey::RenderMapHintOverlayMode0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004fd220
-void TMapKey::RenderMapHintOverlayMode4() {
+void TMapKey::DrawTreatyPanel() {
   TView* anchor = this->ownerContext;
   short baseX = (short)this->ownerLocalX + (short)anchor->ownerLocalX;
   short baseY = (short)this->ownerLocalY + (short)anchor->ownerLocalY;

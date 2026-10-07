@@ -113,9 +113,9 @@ void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, i
 }
 
 // FUNCTION: IMPERIALISM 0x00580280
-char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const char* templateText,
-                                                          const char* token1, const char* token2,
-                                                          const char* token3, const char* token4) {
+char* __cdecl AppendInterNationEventSummaryTextEntry(TSimMgr* sim, const char* templateText,
+                                                     const char* token1, const char* token2,
+                                                     const char* token3, const char* token4) {
   stretch<char> sink;
   stretch<char>* out = &sink;
   const char* const* args = &templateText;

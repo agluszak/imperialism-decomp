@@ -188,13 +188,13 @@ void TUnitOrder::Produce() {
         orderObject->experiencePercent = 100;
       }
 
-      ownerNation->ComputeSelectedMilitaryPowerScore();
+      ownerNation->GetArmsInArmy();
       if (ownerNation->pendingActionStatus.byAction[1] != 0x32) {
         int currentLevel = ownerNation->pendingActionStatus.byAction[1];
         if (currentLevel != 0) {
           currentLevel -= 0x33;
         }
-        int militaryPower = ownerNation->ComputeSelectedMilitaryPowerScore();
+        int militaryPower = ownerNation->GetArmsInArmy();
         if (militaryPower >= 0xf && militaryPower < 0x28 && currentLevel == 0) {
           ownerNation->SetNationPendingActionStateAndPayload(1, 1);
         } else if (militaryPower >= 0x28 && militaryPower < 0x46 && currentLevel < 2) {

@@ -90,7 +90,7 @@ void TInvadeMission::Free() {
 
   orderList->RemoveAll();
   if (orderList != NULL) {
-    orderList->FreePayloadsAndDestroy();
+    orderList->FreeList();
   }
   orderList = NULL;
 

@@ -46,10 +46,10 @@ void TTacticalPlayer::ITacticalPlayer(unsigned char isOurSide, unsigned char wat
 // FUNCTION: IMPERIALISM 0x0059aee0
 void TTacticalPlayer::Free() {
   if (unitList != 0) {
-    unitList->FreePayloadsAndDestroy();
+    unitList->FreeList();
   }
   if (secondaryList != 0) {
-    secondaryList->FreePayloadsAndDestroy();
+    secondaryList->FreeList();
   }
   delete this;
 }
@@ -105,7 +105,7 @@ void TTacticalPlayer::HandleTacticalCommandTag_skip() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059b740
-void TTacticalPlayer::RetireUndeployedUnitsToReserveList() {
+void TTacticalPlayer::RemoveReserves() {
   int ordinal;
   for (ordinal = unitList->GetCount(); ordinal > 0; --ordinal) {
     TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitList->GetEntryByOrdinal(ordinal));

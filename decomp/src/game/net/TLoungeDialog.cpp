@@ -82,7 +82,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
       g_pGameFlowState->EmitTurnEventEAnd9SessionContextPackets(NULL);
     }
   } else {
-    g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
+    g_pGameFlowState->RecalcPlayerName(-1);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(
         0x2742, g_pGameFlowState->GetPlayerStatus(-1) == kSessionTagBusy ? 0x12 : 0x11,
         kControlTagCncl);

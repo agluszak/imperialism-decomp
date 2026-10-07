@@ -49,7 +49,7 @@ void TBlockadePortMission::ReadFrom(TStream* stream) {
 void TBlockadePortMission::Initialize() {
   float score = static_cast<float>(missionTargetZone->GetStrategicValue());
 
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
+  for (TZone* zone = TZone::GetFirstPort(); zone != NULL; zone = zone->GetNextPort()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortOwnerNation() == nationId) ? g_PortZoneFriendlyMissionScoreMultiplier

@@ -124,7 +124,7 @@ public:
   short GetEmbassyStatus(int sourceNationSlot, int targetNationSlot);
   void IssueDeclarationsOfWar();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot);
-  void RemoveNationSlotAndNotifyPeers_Impl(NationSlot nationSlot);
+  void RemoveNationSlotAndNotifyPeers(NationSlot nationSlot);
   // ORACLE: Mac names TDiplomacyMgr::SetLastDiploEffort(). Mirrors the current turn.
   void SetLastDiploEffort(); // 0x4f0590
 

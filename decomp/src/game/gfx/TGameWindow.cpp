@@ -77,7 +77,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
       if (g_pHelpMgr != 0) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
         if (g_pViewMgr->currentTurnEventCode == kTurnEventStrategicMap) {
-          g_pViewMgr->DispatchUiRuntimeMessage101AAndRefreshActiveView();
+          g_pViewMgr->ShowQueryWindow();
           return;
         }
         g_pHelpMgr->ShowLatestHelp();

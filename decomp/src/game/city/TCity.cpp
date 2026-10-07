@@ -368,11 +368,11 @@ void TCity::Free() {
     ++orderSlot;
   }
   if (this->trackedOrderList != 0) {
-    this->trackedOrderList->FreePayloadsAndDestroy();
+    this->trackedOrderList->FreeList();
   }
   this->trackedOrderList = 0;
   if (this->eventQueue != 0) {
-    this->eventQueue->ReleasePtrList();
+    this->eventQueue->FreeList();
   }
   this->eventQueue = 0;
   delete this;
@@ -752,7 +752,7 @@ short* TCity::GetUnmetNeeds() {
 // FUNCTION: IMPERIALISM 0x004b4540
 void TCity::AddTransportRequest(short low, short high) {
   int packed = (static_cast<unsigned short>(high) << 16) | static_cast<unsigned short>(low);
-  this->eventQueue->InsertCopiedRecordSortedByComparator(&packed);
+  this->eventQueue->Insert(&packed);
 }
 
 // FUNCTION: IMPERIALISM 0x004b4580

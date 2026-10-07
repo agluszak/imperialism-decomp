@@ -92,7 +92,7 @@ void TSortedList::SortBy(TSortedListCompareFunc compare, void* context) {
 }
 
 // FUNCTION: IMPERIALISM 0x00487e10
-int TSortedList::FindOneBasedOrdinalOf(void* item) {
+int TSortedList::GetIdentityItemNo(void* item) {
   POSITION position = listState.GetHeadPosition();
   int ordinal = 1;
   while (position != NULL) {
@@ -177,7 +177,7 @@ void TSortedList::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004887b0
-void TSortedList::FreePayloadsAndDestroy() {
+void TSortedList::FreeList() {
   this->FreePayloads();
   this->Free();
 }

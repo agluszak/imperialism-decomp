@@ -186,7 +186,7 @@ void TCityInteriorMinister::Free() {
     cityPolicyFuzzySet->Free();
   }
   if (orderList != 0) {
-    orderList->FreePayloadsAndDestroy();
+    orderList->FreeList();
   }
   if (list190 != 0) {
     list190->Free();

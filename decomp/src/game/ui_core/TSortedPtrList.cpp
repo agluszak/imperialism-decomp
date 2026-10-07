@@ -9,7 +9,7 @@
 IMPLEMENT_DYNCREATE(TSortedPtrList, CPtrArray)
 
 // FUNCTION: IMPERIALISM 0x004880a0
-void TSortedPtrList::ClearAndFreeAllPtrListRecords() {
+void TSortedPtrList::DeleteAll() {
   int ordinal = 1;
   void* record = GetPtrListEntryByOneBasedIndex(1);
   while (record != 0) {
@@ -23,12 +23,12 @@ void TSortedPtrList::ClearAndFreeAllPtrListRecords() {
 // Virtual forwarder: the reset hook simply dispatches the clear-and-free slot.
 // FUNCTION: IMPERIALISM 0x004880f0
 void TSortedPtrList::InvokePtrListResetHook() {
-  ClearAndFreeAllPtrListRecords();
+  DeleteAll();
 }
 
 // FUNCTION: IMPERIALISM 0x00488110
-void TSortedPtrList::ReleasePtrList() {
-  ClearAndFreeAllPtrListRecords();
+void TSortedPtrList::FreeList() {
+  DeleteAll();
   SelfDelete();
 }
 
@@ -55,12 +55,12 @@ void TSortedPtrList::RemovePtrListEntryByOneBasedIndexAndFree(int oneBasedIndex)
 }
 
 // FUNCTION: IMPERIALISM 0x004881d0
-void* TSortedPtrList::PeekFirstPtrListEntry() {
+void* TSortedPtrList::First() {
   return GetPtrListEntryByOneBasedIndex(1);
 }
 
 // FUNCTION: IMPERIALISM 0x004881f0
-void TSortedPtrList::InsertCopiedRecordSortedByComparator(void* record) {
+void TSortedPtrList::Insert(void* record) {
   int ordinal = 1;
   void* entry = GetPtrListEntryByOneBasedIndex(1);
   if (entry != 0) {
@@ -113,7 +113,7 @@ void TSortedPtrList::ReadFrom(TStream* stream) {
   unsigned char* buffer = new unsigned char[recordSize];
   for (short i = 1; i <= count; i++) {
     stream->ReadBytes(buffer, recordSize);
-    InsertCopiedRecordSortedByComparator(buffer);
+    Insert(buffer);
   }
   delete[] buffer;
 }

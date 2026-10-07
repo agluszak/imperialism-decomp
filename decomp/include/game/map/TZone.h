@@ -48,11 +48,10 @@ public:
   virtual bool IsFriendlyWith(NationSlot nationSlot);                     // slot 0x10 0x55e880
   virtual bool IsEnemyOf(NationSlot nationSlot);                          // slot 0x11 0x55e8a0
   virtual bool CanBeTargetOf(TTaskForce* force);                          // slot 0x12 0x55e8c0
-  virtual short FindNearestActiveSeaContextTileFromOffset216();           // slot 0x13 0x55fe60
-  virtual short GetActiveNationSlotTile();                                // slot 0x14 0x55fef0
-  virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(
-      Province* contextProvince);                  // slot 0x15 0x560150
-  virtual void ShowFocusIngot(unsigned char show); // slot 0x16 0x560580
+  virtual short PickPennantIngotTile();                                   // slot 0x13 0x55fe60
+  virtual short PickIngotTile();                                          // slot 0x14 0x55fef0
+  virtual short PickInvasionIngotTile(Province* contextProvince);         // slot 0x15 0x560150
+  virtual void ShowFocusIngot(unsigned char show);                        // slot 0x16 0x560580
   // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
 
   short GetContextOrdinalOrInvalid();
@@ -66,7 +65,7 @@ public:
   void LightDistanceRecursive(short level); // 0x560f80
   short GetDistanceTo(TZone* other);        // 0x5610b0
   bool IsAdjacentToCountry(short nationTag);
-  int IsZoneMaskOrArrayEntryPresentForKey(short key);
+  int IsVisibleToCountry(short key);
   bool ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
   bool HasFreeShipsOfPlayer(int nation, bool skipField34Check);
   void LightUp(int remainingDepth,
@@ -99,8 +98,8 @@ public:
 
   void HandleKeyDown(int key_id);
 
-  static TZone* GetFirstPortZone();
-  TZone* GetNextPortZone();
+  static TZone* GetFirstPort();
+  TZone* GetNextPort();
   static TZone* FindPortZoneByTile(short nTileIndex);
 
   unsigned int GetPatrolMask();

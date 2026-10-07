@@ -123,7 +123,7 @@ void THelpMgr::IHelpMgr() {
   record.rank = entryRank;                                                                         \
   record.flagByte = 0;                                                                             \
   record.topicCount = topics;                                                                      \
-  indexList->InsertCopiedRecordSortedByComparator(&record)
+  indexList->Insert(&record)
 
     INSERT_HELP_SET(0x0bc2, 0x0000, 0x0bcc, 0x07dd, 0x0001, 0x0005);
     INSERT_HELP_SET(0x0bcc, 0x0bc2, 0x0c94, 0x07dd, 0x0002, 0x0005);
@@ -194,7 +194,7 @@ void THelpMgr::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00501070
 void THelpMgr::Free() {
   if (indexList != 0) {
-    indexList->ReleasePtrList();
+    indexList->FreeList();
   }
   indexList = 0;
   delete this;
@@ -577,13 +577,13 @@ bool THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   } break;
 
   case 1: {
-    int firstValue = g_apNationStates[activeNation]->ComputeSelectedMilitaryPowerScore();
+    int firstValue = g_apNationStates[activeNation]->GetArmsInArmy();
     int best = firstValue;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
       if (i != activeNation && g_pSimMgr->ReallyInTheGame(i) &&
-          g_apNationStates[i]->ComputeSelectedMilitaryPowerScore() > best) {
-        best = g_apNationStates[i]->ComputeSelectedMilitaryPowerScore();
+          g_apNationStates[i]->GetArmsInArmy() > best) {
+        best = g_apNationStates[i]->GetArmsInArmy();
         bestNation = i;
       }
     }
@@ -1025,7 +1025,7 @@ void THelpMgr::CheckUnitAdvice(TCivUnit* civilianOrderEntry) {
 }
 
 // FUNCTION: IMPERIALISM 0x00503ac0
-void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex) {
+void THelpMgr::OpenTerrainHelpWindow(int mapContextIndex) {
   if (pendingDialogViewC == 0) {
     pendingDialogViewC = static_cast<TWindow*>(
         g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainHelp));

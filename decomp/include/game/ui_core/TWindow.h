@@ -25,22 +25,22 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x0048dd50
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
-                           TEvent* event) override;                       // slot 0x10 0x48dd10
-  virtual TWindow* GetWindow() override;                                  // slot 0x16 0x492cc0
-  virtual CWnd* Open() override;                                          // slot 0x27 0x48de00
-  virtual void Close() override;                                          // slot 0x28 0x48e060
-  virtual TView* GetRootView() override;                                  // slot 0x3a 0x492ce0
-  virtual bool IsActionable() override;                                   // slot 0x3b 0x48d980
-  virtual void TranslateRectToWindow(CRect* rect) override;               // slot 0x4c 0x492d40
-  virtual void TranslatePointToParentChain4D(CPoint* point = 0) override; // slot 0x4d 0x492d20
-  virtual void TranslatePointToParentChain4E(CPoint* point) override;     // slot 0x4e 0x492d00
-  virtual short ContainsMouse(const CPoint& point) override;              // slot 0x5f 0x48e1c0
-  virtual void GoAwayByUser(const CPoint& point) override;                // slot 0x60 0x48e1e0
-  virtual void MoveByUser(const CPoint& point) override;                  // slot 0x61 0x48e210
-  virtual void ResizeByUser(const CPoint& point) override;                // slot 0x62 0x48e240
-  virtual void ZoomByUser(const CPoint& point, short partCode) override;  // slot 0x63 0x48e270
-  virtual void WindowToLocal(CPoint* point) override;                     // slot 0x67 0x492d60
-  virtual void SetModality(bool modal);                                   // slot 0x68 0x48da40
+                           TEvent* event) override;                      // slot 0x10 0x48dd10
+  virtual TWindow* GetWindow() override;                                 // slot 0x16 0x492cc0
+  virtual CWnd* Open() override;                                         // slot 0x27 0x48de00
+  virtual void Close() override;                                         // slot 0x28 0x48e060
+  virtual TView* GetRootView() override;                                 // slot 0x3a 0x492ce0
+  virtual bool IsActionable() override;                                  // slot 0x3b 0x48d980
+  virtual void TranslateRectToWindow(CRect* rect) override;              // slot 0x4c 0x492d40
+  virtual void LocalToWindow(CPoint* point = 0) override;                // slot 0x4d 0x492d20
+  virtual void TranslatePointToParentChain4E(CPoint* point) override;    // slot 0x4e 0x492d00
+  virtual short ContainsMouse(const CPoint& point) override;             // slot 0x5f 0x48e1c0
+  virtual void GoAwayByUser(const CPoint& point) override;               // slot 0x60 0x48e1e0
+  virtual void MoveByUser(const CPoint& point) override;                 // slot 0x61 0x48e210
+  virtual void ResizeByUser(const CPoint& point) override;               // slot 0x62 0x48e240
+  virtual void ZoomByUser(const CPoint& point, short partCode) override; // slot 0x63 0x48e270
+  virtual void WindowToLocal(CPoint* point) override;                    // slot 0x67 0x492d60
+  virtual void SetModality(bool modal);                                  // slot 0x68 0x48da40
   virtual void SetDialogItems(unsigned long defaultCommandCode,
                               unsigned long cancelCommandCode); // slot 0x69 0x48d8a0
   virtual bool IsModal();                                       // slot 0x6a 0x48da10

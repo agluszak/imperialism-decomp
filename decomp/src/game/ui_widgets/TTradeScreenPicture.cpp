@@ -91,7 +91,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
       }
       cellRect.top -= 5;
       cellRect.bottom -= 5;
-      RenderTradeScreenCommoditySummaryRows_Impl(&cellText, &cellRect, -1, 0);
+      RenderTradeScreenCommoditySummaryRows(&cellText, &cellRect, -1, 0);
 
       // Middle cell: the proposal weight for this commodity, formatted as an integer.
       cellRect.top = ctrl->ownerLocalY + 3;
@@ -102,7 +102,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
       g_pSimMgr->NumToCurrency(weight, &cellText);
       cellRect.top -= 5;
       cellRect.bottom -= 5;
-      RenderTradeScreenCommoditySummaryRows_Impl(&cellText, &cellRect, -1, 0);
+      RenderTradeScreenCommoditySummaryRows(&cellText, &cellRect, -1, 0);
     }
     ++i;
     ++tagPtr;

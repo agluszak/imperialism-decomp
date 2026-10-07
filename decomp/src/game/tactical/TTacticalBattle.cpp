@@ -202,7 +202,7 @@ void TTacticalBattle::StartBattle() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059fcd0
-void TTacticalBattle::StartTacticalPlayersThatAreNotReady() {
+void TTacticalBattle::BeginFighting() {
   if (!players[0]->sideReadyFlag) {
     players[0]->StartBattle();
   }
@@ -224,16 +224,16 @@ void TTacticalBattle::HandleTacticalCommandTag_retr() {
   }
   TTacticalPlayer* incomingPlayer = players[currentSide];
   if (incomingPlayer->sideReadyFlag) {
-    FinalizeTacticalTurnStateAndQueueEvent232A();
+    FinishedDeploying();
     return;
   }
   incomingPlayer->StartBattle();
 }
 
 // FUNCTION: IMPERIALISM 0x0059fdb0
-void TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A() {
-  players[0]->RetireUndeployedUnitsToReserveList();
-  players[1]->RetireUndeployedUnitsToReserveList();
+void TTacticalBattle::FinishedDeploying() {
+  players[0]->RemoveReserves();
+  players[1]->RemoveReserves();
   recordList->SortBy(&CompareTacticalUnitsForTurnOrder, this);
   battleLive = 1;
   if (battleView != 0) {

@@ -1836,21 +1836,20 @@ void TTaskForce::CreateIngot() {
   switch (shipOrders) {
   case 1:
     markerType = 4;
-    ingotTileIndex = static_cast<TZone*>(target)->FindNearestActiveSeaContextTileFromOffset216();
+    ingotTileIndex = static_cast<TZone*>(target)->PickPennantIngotTile();
     break;
   case 3:
     markerType = 5;
-    ingotTileIndex = location->FindNearestActiveSeaContextTileFromOffset216();
+    ingotTileIndex = location->PickPennantIngotTile();
     break;
   case 5:
     markerType = 6;
     ingotTileIndex =
-        static_cast<short>(location->FindBestCoastalTileForContextAndCityStateByHeuristic(
-            static_cast<Province*>(target)));
+        static_cast<short>(location->PickInvasionIngotTile(static_cast<Province*>(target)));
     break;
   case 6:
     markerType = 2;
-    ingotTileIndex = static_cast<TZone*>(target)->FindNearestActiveSeaContextTileFromOffset216();
+    ingotTileIndex = static_cast<TZone*>(target)->PickPennantIngotTile();
     break;
   default:
     break;

@@ -56,8 +56,8 @@ void TView::GetFrame(CRect* boundsOut) {
 }
 // FUNCTION: IMPERIALISM 0x004272d0
 void TView::TranslateRectToWindow(CRect* rect) {
-  TranslatePointToParentChain4D(&rect->TopLeft());
-  TranslatePointToParentChain4D(&rect->BottomRight());
+  LocalToWindow(&rect->TopLeft());
+  LocalToWindow(&rect->BottomRight());
 }
 
 // FUNCTION: IMPERIALISM 0x00427330
@@ -544,13 +544,13 @@ void TView::TranslatePointToParentChain4E(CPoint* point) {
   ownerContext->TranslatePointToParentChain4E(point);
 }
 // FUNCTION: IMPERIALISM 0x0048ba80
-void TView::TranslatePointToParentChain4D(CPoint* point) {
+void TView::LocalToWindow(CPoint* point) {
   int offY = ownerLocalY;
   point->x += ownerLocalX;
   point->y += offY;
-  ownerContext->TranslatePointToParentChain4D(point);
+  ownerContext->LocalToWindow(point);
 }
-// Mirror of TranslatePointToParentChain4D/4E above, but subtracts instead of adding.
+// Mirror of LocalToWindow/4E above, but subtracts instead of adding.
 // FUNCTION: IMPERIALISM 0x0048bac0
 void TView::WindowToLocal(CPoint* point) {
   int offY = ownerLocalY;

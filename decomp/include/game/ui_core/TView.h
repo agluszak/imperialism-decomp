@@ -118,15 +118,15 @@ public:
   virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event,
                              CPoint origin); // 0x48 0x48c590
   virtual void HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event,
-                                        CPoint origin);          // 0x49
-  virtual void GetExtent(CRect* boundsOut);                      // 0x4a 0x427260
-  virtual void GetFrame(CRect* boundsOut);                       // 0x4b 0x427290
-  virtual void TranslateRectToWindow(CRect* rect);               // 0x4c 0x4272d0
-  virtual void TranslatePointToParentChain4D(CPoint* point = 0); // 0x4d 0x48ba80
-  virtual void TranslatePointToParentChain4E(CPoint* point);     // 0x4e 0x48ba40
-  virtual void ForceRedraw();                                    // 0x4f 0x48b700
-  virtual void LocalToSuperVRect(CRect* rect);                   // 0x50 0x48bb00
-  virtual void SuperToLocal(CPoint* point);                      // 0x51
+                                        CPoint origin);      // 0x49
+  virtual void GetExtent(CRect* boundsOut);                  // 0x4a 0x427260
+  virtual void GetFrame(CRect* boundsOut);                   // 0x4b 0x427290
+  virtual void TranslateRectToWindow(CRect* rect);           // 0x4c 0x4272d0
+  virtual void LocalToWindow(CPoint* point = 0);             // 0x4d 0x48ba80
+  virtual void TranslatePointToParentChain4E(CPoint* point); // 0x4e 0x48ba40
+  virtual void ForceRedraw();                                // 0x4f 0x48b700
+  virtual void LocalToSuperVRect(CRect* rect);               // 0x50 0x48bb00
+  virtual void SuperToLocal(CPoint* point);                  // 0x51
   virtual CPoint ViewToQDPt(CPoint* inPoint);
   virtual CRect ViewToQDRect(CRect* inRect);
   virtual void AddControlPosToPoint(int x, int y, CPoint* outPoint);

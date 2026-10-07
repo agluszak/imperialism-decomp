@@ -75,31 +75,31 @@ void TAutoGreatPower::IAutoGreatPower(int nationSlot, int nationInitializationMo
   switch (defenseMinisterPolicyId) {
   case 0: {
     TNapoleonMinister* minister = new TNapoleonMinister();
-    minister->InitializeOrderArrayPreset50_0_10_50(this);
+    minister->INapoleonMinister(this);
     defenseMinister = minister;
     break;
   }
   case 1: {
     TBismarckMinister* minister = new TBismarckMinister();
-    minister->InitializeOrderArrayPreset10_10_10_50(this);
+    minister->IBismarckMinister(this);
     defenseMinister = minister;
     break;
   }
   case 2: {
     TPirateMinister* minister = new TPirateMinister();
-    minister->InitializeOrderArrayPreset15_20_50_75(this);
+    minister->IPirateMinister(this);
     defenseMinister = minister;
     break;
   }
   case 3: {
     TDefenderMinister* minister = new TDefenderMinister();
-    minister->InitializeOrderArrayPreset20_10_10_50(this);
+    minister->IDefenderMinister(this);
     defenseMinister = minister;
     break;
   }
   case 4: {
     TBullyMinister* minister = new TBullyMinister();
-    minister->InitializeOrderArrayPreset25_10_20_50(this);
+    minister->IBullyMinister(this);
     defenseMinister = minister;
     break;
   }
@@ -191,7 +191,7 @@ void TAutoGreatPower::Free(void) {
       entry->Free();
     }
     if (this->missionQueue != 0) {
-      this->missionQueue->FreePayloadsAndDestroy();
+      this->missionQueue->FreeList();
     }
     this->missionQueue = 0;
   }
@@ -651,16 +651,14 @@ void TAutoGreatPower::SetConquerLust(int nationSlot, char makeEnemy) {
       }
     }
     if (!isMinorNation) {
-      zoneStatus[g_pActiveMapOrderContext
-                     ->FindFirstPortZoneContextByNation(static_cast<short>(nationSlot))
+      zoneStatus[g_pActiveMapOrderContext->GetPortZone(static_cast<short>(nationSlot))
                      ->GetContextOrdinalOrInvalid()] = kMissionDesirabilityCandidate;
       return;
     }
     return;
   }
 
-  zoneStatus[g_pActiveMapOrderContext
-                 ->FindFirstPortZoneContextByNation(static_cast<short>(nationSlot))
+  zoneStatus[g_pActiveMapOrderContext->GetPortZone(static_cast<short>(nationSlot))
                  ->GetContextOrdinalOrInvalid()] = kMissionDesirabilityUnmarked;
 }
 
@@ -676,7 +674,7 @@ void TAutoGreatPower::CreateInitialMissions() {
     CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
   }
 
-  TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
+  TZone* portZone = g_pActiveMapOrderContext->GetPortZone(this->nationSlot);
 
   TZone* firstEntry = portZone->primaryNeighbors[0];
 
@@ -922,7 +920,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         if (owner < 7 && g_pSimMgr->ReallyInTheGame(owner)) {
           candidate.score = static_cast<short>(candidate.score + 0x14);
         }
-        candidates->InsertCopiedRecordSortedByComparator(&candidate);
+        candidates->Insert(&candidate);
       }
 
       // Flag the top one or two candidates.
@@ -951,7 +949,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         }
       }
       if (candidates != 0) {
-        candidates->ReleasePtrList();
+        candidates->FreeList();
       }
     }
   }
@@ -1168,8 +1166,7 @@ void TAutoGreatPower::SetEnemy(int targetNation) {
           (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->encodedNationSlot,
            ownerTag < 100) ||
           199 < ownerTag) {
-        TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
-            static_cast<short>(targetNation));
+        TZone* portZone = g_pActiveMapOrderContext->GetPortZone(static_cast<short>(targetNation));
         short portZoneId = portZone->GetContextOrdinalOrInvalid();
         this->zoneStatus[portZoneId] = kMissionDesirabilityCandidate;
       }
@@ -1182,8 +1179,7 @@ void TAutoGreatPower::StopBeingEnemiesWith(int targetNation) {
   this->enemyFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
     if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetSize() > 0) {
-      TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
-          static_cast<short>(targetNation));
+      TZone* portZone = g_pActiveMapOrderContext->GetPortZone(static_cast<short>(targetNation));
       short portZoneId = portZone->GetContextOrdinalOrInvalid();
       this->zoneStatus[portZoneId] = kMissionDesirabilityUnmarked;
     }
@@ -1251,8 +1247,7 @@ void TAutoGreatPower::AddColony(int targetNation) {
       ++ordinal;
     } while (ordinal <= regionList->GetSize());
   }
-  TZone* portZone =
-      g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+  TZone* portZone = g_pActiveMapOrderContext->GetPortZone(static_cast<short>(targetNation));
   TZone* firstOrder = portZone->primaryNeighbors[0];
   short portZoneId = firstOrder->GetContextOrdinalOrInvalid();
   this->zoneStatus[portZoneId] = kMissionDesirabilityCandidate;

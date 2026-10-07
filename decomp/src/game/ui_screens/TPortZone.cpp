@@ -152,9 +152,9 @@ bool TPortZone::CanBeTargetOf(TTaskForce* force) {
   return false;
 }
 
-// slot 0x13 — TZone::FindNearestActiveSeaContextTileFromOffset216 override.
+// slot 0x13 — TZone::PickPennantIngotTile override.
 // FUNCTION: IMPERIALISM 0x00561e40
-short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
+short TPortZone::PickPennantIngotTile() {
   short originTile = static_cast<short>(tileOrTerrainId);
   HexSpiralSearchState spiral;
   spiral.row = originTile / kStrategicMapColumns;
@@ -174,12 +174,12 @@ short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
       TZone* candidateContext = 0;
       if (candidateRecord.tileActionState == kMapTileActionStateAnchor ||
           candidateRecord.tileActionState == kMapTileActionStateDockedFleet) {
-        candidateContext = TZone::GetFirstPortZone();
+        candidateContext = TZone::GetFirstPort();
         while (candidateContext != 0 &&
                static_cast<short>(candidateContext->tileOrTerrainId) != candidateTile &&
                candidateContext->activeTileIndex != candidateTile &&
                static_cast<TPortZone*>(candidateContext)->portTileIndex != candidateTile) {
-          candidateContext = candidateContext->GetNextPortZone();
+          candidateContext = candidateContext->GetNextPort();
         }
       } else {
         short nationCode = static_cast<short>(candidateRecord.ownerNationTag);

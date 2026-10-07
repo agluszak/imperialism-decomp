@@ -858,7 +858,7 @@ void TMacViewMgr::ShowTradeCluster(TView* view, short orderSlot, short nationInd
     return;
   }
   if (g_apNationStates[effectiveNationIndex]->merchantCapacity != 0) {
-    row->SetTradeOfferSecondaryBitmap();
+    row->ShowOfferHandle();
   }
   sellControl->SetControlValue(0, 0);
   sellControl->Show(0, 1);

@@ -427,7 +427,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     syncPacket->toNetworkId = 0;
     g_pNetMgr->Send(syncPacket, false);
     delete[] static_cast<unsigned char*>(static_cast<void*>(syncPacket));
-    RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
+    RecalcPlayerName(-1);
 
     {
       TurnEventBNationDirectoryPacket packet;
@@ -451,8 +451,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         g_apTerrainTypeDescriptorTable[slot]->AssignSharedStringFromDescriptorNameOrDefault(
             &nationName);
         strncpy(packet.nationNameBySlot[slot], nationName, 0x21);
-        TZone* portZone =
-            g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(slot));
+        TZone* portZone = g_pActiveMapOrderContext->GetPortZone(static_cast<short>(slot));
         packet.portZoneOrdinalBySlot[slot] = portZone->GetContextOrdinalOrInvalid();
       }
       g_pNetMgr->Send(&packet, false);
@@ -536,7 +535,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       }
     }
 
-    RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
+    RecalcPlayerName(-1);
     EmitTurnEvent3Mode18WithActiveNation();
     break;
   }
@@ -727,11 +726,10 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
           g_pGlobalMapState->PlaceCity(directory->homeTileBySlot[dirSlot], (short)dirSlot);
         }
       }
-      TZone* portZone =
-          g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(dirSlot));
+      TZone* portZone = g_pActiveMapOrderContext->GetPortZone(static_cast<short>(dirSlot));
       portZone->contextOrdinal = directory->portZoneOrdinalBySlot[dirSlot];
     }
-    RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
+    RecalcPlayerName(-1);
     break;
   }
   case 8: {
@@ -1088,7 +1086,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       }
       g_pGameFlowState->lobbyDialogView = 0;
       g_pGameFlowState->sessionPhaseTag = kSessionTagGoin; // 'goin'
-      g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
+      g_pGameFlowState->RecalcPlayerName(-1);
       return true;
     } else if (scenarioSelectionTag == kControlTagRand) {
       g_pSimMgr->CreateSimObjects(true);
@@ -1548,7 +1546,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     GlobalUnlock(packetMemory);
     THandleStream* reader = new THandleStream();
     reader->IHandleStream(packetMemory, 0x10);
-    HandleTurnEventCodes28_2E_2F_30_31_32(reader);
+    ReadMessageFrom(reader);
     reader->Free();
     g_nSaveFormatVersion = -1;
     break;
@@ -1616,7 +1614,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       return true;
     }
     case kControlTagName: // 'name' - refresh the status board row (global manager receiver)
-      g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(gameState->controlValue);
+      g_pGameFlowState->RecalcPlayerName(gameState->controlValue);
       return true;
     case kControlTagLost: { // 'lost' - connection to a nation lost
       int lostCode = gameState->controlValue;
@@ -2207,10 +2205,10 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
     g_pNavyOrderManager->WriteToFilterously(stream, static_cast<short>(payloadValue.scalarValue));
     return;
   case 0x2f:
-    PublishTerrainDescriptorAndNotifyOrderListeners(stream, payloadValue.scalarValue);
+    WriteArmyUnitsTo(stream, payloadValue.scalarValue);
     return;
   case 0x30:
-    PublishNationDescriptorAndNotifyOrderListeners(stream, payloadValue.scalarValue);
+    WriteCiviliansTo(stream, payloadValue.scalarValue);
     return;
   case 0x31: {
     TaggedSerializablePayload* record = reinterpret_cast<TaggedSerializablePayload*>(payload);
@@ -2251,14 +2249,14 @@ void TMultiplayerMgr::ReceiveStreamMessage(NetMessage* packet) {
 
   THandleStream* stream = new THandleStream();
   stream->IHandleStream(packetBlock, 0x10);
-  HandleTurnEventCodes28_2E_2F_30_31_32(stream);
+  ReadMessageFrom(stream);
   stream->Free();
 
   g_nSaveFormatVersion = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x00549ff0
-void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
+void TMultiplayerMgr::ReadMessageFrom(TStream* stream) {
   TimelyNetMessagePrefix header;
   header.messageTag = kControlTagTime;
   header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
@@ -2276,10 +2274,10 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
     g_pActiveMapOrderContext->UpdateOccupants();
     break;
   case 0x2f:
-    CreateMilitaryRecruitOrdersForSelectedTerrain(stream, nation);
+    ReadArmyUnitsFrom(stream, nation);
     break;
   case 0x30:
-    CreateCivilianWorkOrdersForSelectedNations(stream, nation);
+    ReadCiviliansFrom(stream, nation);
     break;
   case 0x31: {
     int payloadTag = stream->ReadLong();
@@ -2368,8 +2366,7 @@ void TMultiplayerMgr::DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot
 }
 
 // FUNCTION: IMPERIALISM 0x0054a500
-void TMultiplayerMgr::PublishTerrainDescriptorAndNotifyOrderListeners(TStream* stream,
-                                                                      int terrainSlot) {
+void TMultiplayerMgr::WriteArmyUnitsTo(TStream* stream, int terrainSlot) {
   stream->WriteByte(static_cast<unsigned char>(terrainSlot + 'a'));
   TCountry* descriptor = g_apTerrainTypeDescriptorTable[terrainSlot];
   if (descriptor == 0) {
@@ -2386,8 +2383,7 @@ void TMultiplayerMgr::PublishTerrainDescriptorAndNotifyOrderListeners(TStream* s
 }
 
 // FUNCTION: IMPERIALISM 0x0054a5e0
-void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* stream,
-                                                                     int nationFilter) {
+void TMultiplayerMgr::WriteCiviliansTo(TStream* stream, int nationFilter) {
   for (int slot = 0; slot < 7; ++slot) {
     bool matches;
     if (nationFilter == -1 || nationFilter == slot) {
@@ -2410,8 +2406,7 @@ void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* st
 }
 
 // FUNCTION: IMPERIALISM 0x0054a6d0
-void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream,
-                                                                    short nationSlot) {
+void TMultiplayerMgr::ReadArmyUnitsFrom(TStream* stream, short nationSlot) {
   int terrainSlot = stream->ReadByte() - 0x61; // - 'a'
   const bool terrainSelected = nationSlot == -1 || nationSlot == terrainSlot;
   if (terrainSelected) {
@@ -2434,8 +2429,7 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
 }
 
 // FUNCTION: IMPERIALISM 0x0054a840
-void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream,
-                                                                 short nationSlot) {
+void TMultiplayerMgr::ReadCiviliansFrom(TStream* stream, short nationSlot) {
   for (int nationIdx = 0; nationIdx < kMajorNationCount; ++nationIdx) {
     const bool nationSelected = nationSlot == -1 || nationSlot == nationIdx;
     if (g_apNationStates[nationIdx] != 0 && nationSelected) {
@@ -2880,7 +2874,7 @@ void TMultiplayerMgr::DehumanizePlayer(int nationSlot) {
   }
   nationSessionIds[nationSlot] = 0;
   nationStatusTags[nationSlot] = kSessionTagUnas; // 'suna'
-  RefreshNationStatusLabelsAndCodesForSlotOrAll(nationSlot);
+  RecalcPlayerName(nationSlot);
   bool hostingMask = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (hostingMask) {
     pendingNationBitmask &= ~(1 << nationSlot);
@@ -3094,10 +3088,10 @@ bool TMultiplayerMgr::AreAllSessionSlotsOwnedByActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x0054cc00
-void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot) {
+void TMultiplayerMgr::RecalcPlayerName(int nationSlot) {
   if (nationSlot == -1) {
     for (int slot = 0; slot < 7; ++slot) {
-      RefreshNationStatusLabelsAndCodesForSlotOrAll(slot);
+      RecalcPlayerName(slot);
     }
   } else if (g_apNationStates[nationSlot] == 0) {
     {

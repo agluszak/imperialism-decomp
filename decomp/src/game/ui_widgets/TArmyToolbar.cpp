@@ -119,19 +119,19 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 
   if (controlTag == kControlTagDfnd) {
-    g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(2);
+    g_pMapContextActionManager->OrderSelectedArmies(2);
     g_pViewMgr->mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
     return;
   }
 
   if (controlTag == kControlTagLatr) {
-    g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(3);
+    g_pMapContextActionManager->OrderSelectedArmies(3);
     g_pViewMgr->mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
     return;
   }
 
   if (controlTag == kControlTagDone) {
-    g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(4);
+    g_pMapContextActionManager->OrderSelectedArmies(4);
     g_pViewMgr->mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
   }
 }

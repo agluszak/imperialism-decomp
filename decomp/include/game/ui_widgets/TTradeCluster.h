@@ -29,6 +29,6 @@ public:
   virtual void DoControlAction();
   virtual void ShowBidCard();
   virtual void ShowOfferCard();
-  virtual void SetTradeOfferSecondaryBitmap();
+  virtual void ShowOfferHandle();
 };
 ASSERT_SIZE(TTradeCluster, 0x8c);

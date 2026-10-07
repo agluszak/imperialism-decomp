@@ -653,7 +653,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       SetQuickDrawTextOriginWithContextOffset(
           static_cast<short>(tileScreenRect.left + tileWidthPx - 8),
           static_cast<short>(tileScreenRect.bottom - 2));
-      RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(
+      RenderTacticalBattleSelectionAndUnitOverlayPass(
           static_cast<char>(static_cast<short>(occupant->aiStateCode) + 0x61));
     }
   }

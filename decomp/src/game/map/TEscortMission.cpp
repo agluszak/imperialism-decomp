@@ -52,12 +52,12 @@ void TEscortMission::CalculateImportance() {
     needCap = 1;
   }
 
-  TZone* homePortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId);
+  TZone* homePortZone = g_pActiveMapOrderContext->GetPortZone(nationId);
   TZone** cachedOwnerSlot = &homePortZone->primaryNeighbors[0];
   TZone* cachedOwner = *cachedOwnerSlot;
   float score = static_cast<float>(cachedOwner->GetStrategicValue());
 
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
+  for (TZone* zone = TZone::GetFirstPort(); zone != NULL; zone = zone->GetNextPort()) {
     TZone** zoneOwnerSlot = &zone->primaryNeighbors[0];
     if (*zoneOwnerSlot == cachedOwner) {
       short ownerNationCode = zone->GetPortOwnerNation();
@@ -102,7 +102,7 @@ void TEscortMission::CalculateNeeds() {
       continue;
     }
 
-    TZone* homePortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(i);
+    TZone* homePortZone = g_pActiveMapOrderContext->GetPortZone(i);
     TZone* targetContext = homePortZone->primaryNeighbors[0];
 
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};

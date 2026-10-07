@@ -130,7 +130,7 @@ RuntimeActionResult RunNavyGrowthPending(NativeTransition& transition) {
     return RuntimeActionResult::Failure("the loaded fixture already has navy objects");
   }
   if (g_pActiveMapOrderContext == 0 ||
-      g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(ActiveNationSlot()) == 0) {
+      g_pActiveMapOrderContext->GetPortZone(ActiveNationSlot()) == 0) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no port zone for the active nation");
   }

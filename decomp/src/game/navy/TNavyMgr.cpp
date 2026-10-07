@@ -1021,8 +1021,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         short acceptNation = (entryKind == kTrackedSlotOfferEntry) ? entryTargetNation : nation;
 
         short contextNation = (mode == 1) ? nation : entryTargetNation;
-        TZone* portZoneContext =
-            g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(contextNation);
+        TZone* portZoneContext = g_pActiveMapOrderContext->GetPortZone(contextNation);
         TMapOrderInteractionSelection selection;
         bool eligible = TryMerchantInterception(&selection, portZoneContext, nation, entryValue);
         if (eligible == 0) {

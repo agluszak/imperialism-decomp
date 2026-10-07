@@ -19,7 +19,7 @@ private:
   void RenderMapHintOverlayMode0(); // 0x004fd000
   void RenderMapHintOverlayMode1(); // 0x004fd5c0
   void RenderMapHintOverlayMode2(); // 0x004fd910
-  void RenderMapHintOverlayMode4(); // 0x004fd220
+  void DrawTreatyPanel();           // 0x004fd220
 };
 
 ASSERT_SIZE(TMapKey, 0x94);

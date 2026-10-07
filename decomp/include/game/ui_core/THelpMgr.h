@@ -59,7 +59,7 @@ public:
   void ShowLatestHelp();
   void SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx);
   void SelectAndActivatePendingEventType1A0A();
-  void EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex);
+  void OpenTerrainHelpWindow(int mapContextIndex);
 
   TPtrList* indexList;
   TWindow* pendingDialogView8;

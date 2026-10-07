@@ -403,7 +403,7 @@ void TOcean::UpdateOccupants() {
         for (int slotsRemaining = 0; slotsRemaining < 6; ++slotsRemaining) {
           int slotWrapped = slotCursor % 7;
           if ((ctxZone->nationKeyMask & static_cast<unsigned char>(1 << slotWrapped)) != 0) {
-            short slotTile = ctxZone->GetActiveNationSlotTile();
+            short slotTile = ctxZone->PickIngotTile();
             g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
                 slotTile, slotWrapped + kMapTileActionStateNationOrderFirst);
             g_pGlobalMapState->terrainStateTable[slotTile].tileActionOrdinal = -1;
@@ -428,8 +428,8 @@ void TOcean::UpdateOccupants() {
         g_pSimMgr->GetPlayerCountry()) {
       continue;
     }
-    short coastalTile = rankEntry->location->FindBestCoastalTileForContextAndCityStateByHeuristic(
-        static_cast<Province*>(rankEntry->target));
+    short coastalTile =
+        rankEntry->location->PickInvasionIngotTile(static_cast<Province*>(rankEntry->target));
     if (coastalTile == -1) {
       continue;
     }
@@ -511,7 +511,7 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
 }
 
 // FUNCTION: IMPERIALISM 0x00563540
-TZone* TOcean::FindFirstPortZoneContextByNation(short nationSlot) {
+TZone* TOcean::GetPortZone(short nationSlot) {
   TZone* esi = static_cast<TZone*>(g_pMapActionContextListHead);
   if (esi != 0) {
     do {
@@ -562,11 +562,11 @@ void TOcean::BuildPort(short nTileIndex) {
   }
   signed char nationSeed = terrainTable[tileIndex].ownerNationTag;
 
-  TZone* existingZone = TZone::GetFirstPortZone();
+  TZone* existingZone = TZone::GetFirstPort();
   while (existingZone != 0 && static_cast<short>(existingZone->tileOrTerrainId) != nTileIndex &&
          existingZone->activeTileIndex != nTileIndex &&
          static_cast<TPortZone*>(existingZone)->portTileIndex != nTileIndex) {
-    existingZone = existingZone->GetNextPortZone();
+    existingZone = existingZone->GetNextPort();
   }
   if (existingZone != 0) {
     return;
@@ -619,12 +619,12 @@ void TOcean::BuildPort(short nTileIndex) {
   TZone* linkedContext;
   signed char seaTileClass = terrainTable[bestSeaTile].tileActionState;
   if (seaTileClass == kMapTileActionStateAnchor || seaTileClass == kMapTileActionStateDockedFleet) {
-    linkedContext = TZone::GetFirstPortZone();
+    linkedContext = TZone::GetFirstPort();
     while (linkedContext != 0 &&
            static_cast<short>(linkedContext->tileOrTerrainId) != bestSeaTile &&
            linkedContext->activeTileIndex != bestSeaTile &&
            static_cast<TPortZone*>(linkedContext)->portTileIndex != bestSeaTile) {
-      linkedContext = linkedContext->GetNextPortZone();
+      linkedContext = linkedContext->GetNextPort();
     }
   } else {
     signed char seaTileOwner = terrainTable[bestSeaTile].ownerNationTag;
@@ -655,7 +655,7 @@ void TOcean::BuildPort(short nTileIndex) {
 
   g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(bestSeaTile, kMapTileActionStateAnchor);
   portZone->tileOrTerrainId = static_cast<int>(bestSeaTile);
-  portZone->activeTileIndex = portZone->FindNearestActiveSeaContextTileFromOffset216();
+  portZone->activeTileIndex = portZone->PickPennantIngotTile();
 }
 
 // FUNCTION: IMPERIALISM 0x00564240

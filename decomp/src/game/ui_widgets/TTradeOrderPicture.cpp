@@ -38,7 +38,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
     g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
     tradeRow->HandleEvent(0x68, this, 0);
     tradeRow->ShowBidCard();
-    tradeRow->SetTradeOfferSecondaryBitmap();
+    tradeRow->ShowOfferHandle();
     tradeRow->HandleEvent(0x6a, this, 0);
     return;
   }
@@ -47,7 +47,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
     if (glyphBase == 0x841 || glyphBase == 0x84f) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
       tradeRow->HandleEvent(0x6a, this, 0);
-      tradeRow->SetTradeOfferSecondaryBitmap();
+      tradeRow->ShowOfferHandle();
       return;
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
@@ -73,7 +73,7 @@ void TTradeOrderPicture::ActivateOrderSemantically() {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
     tradeRow->HandleEvent(0x68, this, 0);
     tradeRow->ShowBidCard();
-    tradeRow->SetTradeOfferSecondaryBitmap();
+    tradeRow->ShowOfferHandle();
     tradeRow->HandleEvent(0x6a, this, 0);
     return;
   }
@@ -82,7 +82,7 @@ void TTradeOrderPicture::ActivateOrderSemantically() {
     if (glyphBase == 0x841 || glyphBase == 0x84f) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
       tradeRow->HandleEvent(0x6a, this, 0);
-      tradeRow->SetTradeOfferSecondaryBitmap();
+      tradeRow->ShowOfferHandle();
       return;
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);

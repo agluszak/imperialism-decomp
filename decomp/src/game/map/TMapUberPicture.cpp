@@ -651,7 +651,7 @@ void TMapUberPicture::NoticeTile(int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00598a50
-void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIndex) {
+void TMapUberPicture::ArmyCheatClick(short provinceIndex) {
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[provinceIndex].cityRecordIndex;
   if (cityRecordIndex == -1) {
     return;
@@ -700,7 +700,7 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
 }
 
 // FUNCTION: IMPERIALISM 0x00598d70
-void TMapUberPicture::CreateCivilianWorkOrderAndRegisterSelection(int orderContext) {
+void TMapUberPicture::CivilianCheatClick(int orderContext) {
   TCivUnit* unit = new TCivUnit();
   unit->ICivUnit(kCivilianUnitProspector, orderContext, 0);
   InvalidateTile(static_cast<short>(orderContext));

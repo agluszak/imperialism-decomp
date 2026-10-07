@@ -19,7 +19,7 @@ TZone* NationPortZone() {
   if (g_pActiveMapOrderContext == 0) {
     return 0;
   }
-  return g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(ActiveNationSlot());
+  return g_pActiveMapOrderContext->GetPortZone(ActiveNationSlot());
 }
 
 int ZoneIndex(TZone* zone) {

@@ -323,7 +323,7 @@ bool TZone::IsAdjacentToCountry(short nationTag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f540
-int TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
+int TZone::IsVisibleToCountry(short key) {
   unsigned char keyBit = static_cast<unsigned char>(1 << key);
   if ((keyBit & nationKeyMask) != 0) {
     return 1;
@@ -506,7 +506,7 @@ void TZone::HandleKeyDown(int key_id) {
         nSlotsRemaining = 6;
         do {
           if ((nationKeyMask & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
-            sVarSlotId = GetActiveNationSlotTile();
+            sVarSlotId = PickIngotTile();
             g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
                 sVarSlotId, key_id % 7 + kMapTileActionStateNationOrderFirst);
             g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal = -1;
@@ -515,7 +515,7 @@ void TZone::HandleKeyDown(int key_id) {
           --nSlotsRemaining;
         } while (nSlotsRemaining != 0);
       } else {
-        sVarSlotId = GetActiveNationSlotTile();
+        sVarSlotId = PickIngotTile();
         g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
             sVarSlotId, kMapTileActionStateNationOrderFirst);
         g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal = -1;
@@ -541,7 +541,7 @@ void TZone::HandleKeyDown(int key_id) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055fe60
-short TZone::FindNearestActiveSeaContextTileFromOffset216() {
+short TZone::PickPennantIngotTile() {
   short stepSign = 1;
   short tileIndex = static_cast<short>(tileOrTerrainId + 0xd8);
   short stepMagnitude = 1;
@@ -564,7 +564,7 @@ short TZone::FindNearestActiveSeaContextTileFromOffset216() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055fef0
-short TZone::GetActiveNationSlotTile() {
+short TZone::PickIngotTile() {
   short tileIndex = static_cast<short>(tileOrTerrainId);
   short stepSign = 1;
   short stepMagnitude = 1;
@@ -641,7 +641,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
 }
 
 // FUNCTION: IMPERIALISM 0x00560150
-short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* contextProvince) {
+short TZone::PickInvasionIngotTile(Province* contextProvince) {
   short tileCandidate = 0;
 
   for (;;) {
@@ -1093,7 +1093,7 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
 
 // FUNCTION: IMPERIALISM 0x005619e0
 void TZone::ResolvePortZoneOwnerContextAndDispatch() {
-  short tileIndex = FindNearestActiveSeaContextTileFromOffset216();
+  short tileIndex = PickPennantIngotTile();
   short ownerNation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   TZone* contextElement = &g_pActiveMapOrderContext->contextArray[ownerNation - 0x17];
   primaryNeighbors.Add(contextElement);
@@ -1129,7 +1129,7 @@ TZone* TZone::FindPortZoneByTile(short nTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00561c80
-TZone* TZone::GetFirstPortZone() {
+TZone* TZone::GetFirstPort() {
   TZone* cursor = g_pMapActionContextListHead;
   while (cursor != 0 && cursor->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
     cursor = cursor->prev18;
@@ -1138,7 +1138,7 @@ TZone* TZone::GetFirstPortZone() {
 }
 
 // FUNCTION: IMPERIALISM 0x00561d40
-TZone* TZone::GetNextPortZone() {
+TZone* TZone::GetNextPort() {
   TZone* cursor = this->prev18;
   while (cursor != 0 && cursor->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
     cursor = cursor->prev18;
@@ -1206,14 +1206,14 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
     short marker = tile.tileActionState;
     if (marker == kMapTileActionStateAnchor || marker == kMapTileActionStateDockedFleet) {
       // Inlined FindPortZoneByTile(tileIndex): match a port zone by any of its tile ids.
-      context = TZone::GetFirstPortZone();
+      context = TZone::GetFirstPort();
       while (context != 0) {
         short ti = static_cast<short>(tileIndex);
         if (static_cast<short>(context->tileOrTerrainId) == ti || context->activeTileIndex == ti ||
             static_cast<TPortZone*>(context)->portTileIndex == ti) {
           break;
         }
-        context = context->GetNextPortZone();
+        context = context->GetNextPort();
       }
     } else {
       short region = tile.ownerNationTag;
@@ -1309,14 +1309,14 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
         if (neighborRecord.tileActionState == kMapTileActionStateAnchor ||
             neighborRecord.tileActionState == kMapTileActionStateDockedFleet) {
           // Inlined FindPortZoneByTile(neighborTile): match a port zone by any of its tile ids.
-          candidateContext = TZone::GetFirstPortZone();
+          candidateContext = TZone::GetFirstPort();
           while (candidateContext != 0) {
             if (static_cast<short>(candidateContext->tileOrTerrainId) == neighborTile ||
                 candidateContext->activeTileIndex == neighborTile ||
                 static_cast<TPortZone*>(candidateContext)->portTileIndex == neighborTile) {
               break;
             }
-            candidateContext = candidateContext->GetNextPortZone();
+            candidateContext = candidateContext->GetNextPort();
           }
         } else if (neighborRecord.ownerNationTag >= kNationSlotCount) {
           candidateContext =

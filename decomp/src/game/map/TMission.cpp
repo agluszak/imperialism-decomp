@@ -159,8 +159,7 @@ TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionK
   case kMissionTypeDefendProvince:
     if (zoneContext == 0) {
       mission = new TDefendProvinceMission(nodeKey);
-    } else if (zoneContext ==
-               g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(sourceNation)) {
+    } else if (zoneContext == g_pActiveMapOrderContext->GetPortZone(sourceNation)) {
       mission = new TEscortMission(zoneContext);
     } else {
       mission = new TControlSeaZoneMission(zoneContext);
@@ -179,7 +178,6 @@ TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionK
   return mission;
 }
 
-// --- slot 0x05/0x06 serializers (TStream* fast-path; same vtable offsets as WriteTo/ReadFrom) ---
 // FUNCTION: IMPERIALISM 0x00535820
 void TMission::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
