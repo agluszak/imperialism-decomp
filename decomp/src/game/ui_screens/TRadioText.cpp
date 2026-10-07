@@ -29,7 +29,7 @@ void TRadioText::Draw(RECT* rectBuffer) {
     cluster->AssertValid();
 
     COLORREF savedColor = g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor;
-    short colorCode = controlState != 0 ? cluster->word8C : cluster->word8E;
+    short colorCode = controlState != 0 ? cluster->selectedColorCode : cluster->unselectedColorCode;
     g_pViewMgr->SetColor(colorCode, true);
 
     RECT fillRect = {0, 0, frameWidth, frameHeight};

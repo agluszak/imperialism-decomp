@@ -51,7 +51,7 @@ IMPLEMENT_DYNCREATE(TForeignMinister, TMinister)
 TForeignMinister::TForeignMinister() : TMinister() {
   memset(tradePartnerEnabled, 1, sizeof(tradePartnerEnabled));
   memset(developmentGrantByNation, 0, sizeof(developmentGrantByNation));
-  capabilityFlag16 = 0;
+  specialOfferQuota = 0;
   field48 = 0;
   tradeBidRefreshInterval = 5;
   interiorOrderKind = 2;
@@ -62,7 +62,7 @@ void TForeignMinister::IForeignMinister(TGreatPower* owner) {
   this->IMinister(owner);
   interiorBidResource = kNoInteriorBidResource;
   interiorBidAmount = 0;
-  capabilityFlag14 = 0;
+  priceCheckPending = 0;
   diplomacyPhaseCounter = 0;
   memset(purchasePriorityByResource, 0, sizeof(purchasePriorityByResource));
   for (int i = 0; i < 4; ++i) {
@@ -76,8 +76,8 @@ void TForeignMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&skillIndex, 2);
   stream->ReadBytes(&interiorBidResource, 2);
   stream->ReadBytes(&interiorBidAmount, 2);
-  stream->ReadBytes(&capabilityFlag14, 2);
-  stream->ReadBytes(&capabilityFlag16, 2);
+  stream->ReadBytes(&priceCheckPending, 2);
+  stream->ReadBytes(&specialOfferQuota, 2);
   stream->ReadBytes(&diplomacyPhaseCounter, 2);
   stream->ReadBytes(&tradeBidRefreshInterval, 2);
   stream->ReadBytes(&interiorOrderKind, 2);
@@ -99,8 +99,8 @@ void TForeignMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&skillIndex, 2);
   stream->WriteBytes(&interiorBidResource, 2);
   stream->WriteBytes(&interiorBidAmount, 2);
-  stream->WriteBytes(&capabilityFlag14, 2);
-  stream->WriteBytes(&capabilityFlag16, 2);
+  stream->WriteBytes(&priceCheckPending, 2);
+  stream->WriteBytes(&specialOfferQuota, 2);
   stream->WriteBytes(&diplomacyPhaseCounter, 2);
   stream->WriteBytes(&tradeBidRefreshInterval, 2);
   stream->WriteBytes(&interiorOrderKind, 2);
@@ -129,9 +129,9 @@ short TForeignMinister::GetRankingCriterionForGP(short nationSlot) {
 void TForeignMinister::InitializeTradeStatus() {
   memset(this->tradePartnerEnabled, 1, 7);
   TGreatPower* ownerGP = this->greatPower;
-  this->capabilityFlag16 = 0;
+  this->specialOfferQuota = 0;
   if (ownerGP->treasuryValue < 0) {
-    this->capabilityFlag14 = 1;
+    this->priceCheckPending = 1;
   }
 }
 
@@ -142,7 +142,7 @@ void TForeignMinister::PleaseBuy(short index, short delta) {
 
 // FUNCTION: IMPERIALISM 0x0052f520
 void TForeignMinister::PriceCheck() {
-  this->capabilityFlag14 = 1;
+  this->priceCheckPending = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0052f540
@@ -356,7 +356,7 @@ void TForeignMinister::ReplyToTradeOffer(short targetNation, short amount, short
 // FUNCTION: IMPERIALISM 0x0052fcc0
 void TForeignMinister::EndTradePhase() {
   interiorBidAmount = 0;
-  capabilityFlag14 = 0;
+  priceCheckPending = 0;
   interiorBidResource = kNoInteriorBidResource;
   TGreatPower* owner = this->greatPower;
   if (owner->GetMerchantCapacity() == 0) {

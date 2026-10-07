@@ -11,8 +11,8 @@ class TNumberedArrowButton : public TControl {
 public:
   // FUNCTION: IMPERIALISM 0x0058c310
   ~TNumberedArrowButton() override {}
-  short value84;
-  short value86;
+  short number;
+  short arrowState;
 
   TNumberedArrowButton();
   DECLARE_DYNCREATE(TNumberedArrowButton)

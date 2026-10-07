@@ -23,10 +23,10 @@ public:
                           bool commandFlag) override; // slot 0x68 0x574d10
 
   class TScrollView* ownerView;
-  short word88; // 0x88 — bounded-value component A (button span, seeded 0x12)
-  short word8a; // 0x8a — bounded-value component B (frameHeight - 0x24)
-  short word8c; // 0x8c — clamped current value (seeded 0x12)
-  short word8e; // 0x8e — allocation padding/unobserved so far
+  short minValue;     // 0x88 — bounded-value component A (button span, seeded 0x12)
+  short maxValue;     // 0x8a — bounded-value component B (frameHeight - 0x24)
+  short currentValue; // 0x8c — clamped current value (seeded 0x12)
+  short word8e;       // 0x8e — allocation padding/unobserved so far
   struct TQuickDrawSurfaceContext* surfaceContext;
 
   TScrollBarView() : surfaceContext(0) {}

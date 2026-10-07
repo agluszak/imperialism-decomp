@@ -380,7 +380,7 @@ short StrategicMapScreen::FirstActionableArmyCategory() const {
   // Category 0 is skipped: it is the aggregate placard, not a selectable garrison category.
   for (short category = 1; category < kArmyCategoryCount; ++category) {
     TNumberedArrowButton* arrow = ArmyRatioArrow(category);
-    if (arrow != 0 && arrow->IsActionable() && arrow->value84 > 0) {
+    if (arrow != 0 && arrow->IsActionable() && arrow->number > 0) {
       return category;
     }
   }
@@ -389,7 +389,7 @@ short StrategicMapScreen::FirstActionableArmyCategory() const {
 
 short StrategicMapScreen::ArmyIdleCount(short category) const {
   const TNumberedArrowButton* arrow = ArmyRatioArrow(category);
-  return arrow != 0 ? arrow->value84 : -1;
+  return arrow != 0 ? arrow->number : -1;
 }
 
 RuntimeActionResult StrategicMapScreen::MoveOneIdleUnitOut(short category) {

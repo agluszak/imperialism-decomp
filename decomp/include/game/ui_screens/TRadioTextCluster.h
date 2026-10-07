@@ -21,8 +21,8 @@ public:
   void SetSelectedTextOptionByTag(int tag, bool refreshOnChange);
 
   int selectedTag;           // 0x88 — DoPostCreate seeds 'nada'
-  short word8C;              // 0x8c — ctor 0x5796a0 seeds 0x4b
-  short word8E;              // 0x8e — ctor seeds 0x49
+  short selectedColorCode;   // 0x8c — ctor 0x5796a0 seeds 0x4b
+  short unselectedColorCode; // 0x8e — ctor seeds 0x49
   short frameThemeCode;      // 0x90 — Draw maps this theme and frames the cluster
   short itemInset;           // 0x92 — left/right inset for AddItem, ctor seeds 0
   short itemVerticalSpacing; // 0x94 — next-item spacing for AddItem, ctor seeds 2

@@ -96,12 +96,12 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x0047d470
 TRunOffTurnsDialog::TRunOffTurnsDialog(void* initParam)
-    : TModalDialogBase(0xdc, static_cast<CWnd*>(initParam)), value74(0) {}
+    : TModalDialogBase(0xdc, static_cast<CWnd*>(initParam)), turnCount(0) {}
 
 // FUNCTION: IMPERIALISM 0x0047d4e0
 void TRunOffTurnsDialog::DoDataExchange(CDataExchange* pDX) {
-  DDX_Text(pDX, 0x421, value74);
-  DDV_MinMaxUInt(pDX, value74, 0, 999);
+  DDX_Text(pDX, 0x421, turnCount);
+  DDV_MinMaxUInt(pDX, turnCount, 0, 999);
 }
 
 #ifndef IMPERIALISM_LINT

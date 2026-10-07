@@ -16,11 +16,11 @@
 IMPLEMENT_DYNCREATE(TNumberedArrowButton, TControl)
 
 // FUNCTION: IMPERIALISM 0x0058c2a0
-TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0) {}
+TNumberedArrowButton::TNumberedArrowButton() : TControl(), number(0), arrowState(0) {}
 
 // FUNCTION: IMPERIALISM 0x0058c330
 void TNumberedArrowButton::SetValue(short value84Arg, bool refreshFlag) {
-  value84 = value84Arg;
+  number = value84Arg;
   if (refreshFlag != '\0') {
     RefreshControl();
   }
@@ -29,12 +29,12 @@ void TNumberedArrowButton::SetValue(short value84Arg, bool refreshFlag) {
 // FUNCTION: IMPERIALISM 0x0058c360
 void TNumberedArrowButton::SetState(short value86Arg, unsigned char refreshFlag) {
   CRect bounds;
-  if (value86 != value86Arg) {
+  if (arrowState != value86Arg) {
     if (refreshFlag != '\0') {
       RefreshControl();
       QueryBounds(&bounds);
     }
-    value86 = value86Arg;
+    arrowState = value86Arg;
   }
 }
 
@@ -42,7 +42,7 @@ void TNumberedArrowButton::SetState(short value86Arg, unsigned char refreshFlag)
 void TNumberedArrowButton::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x10);
   RECT srcRect;
-  srcRect.left = (value86 != 2) ? 0xa : 0;
+  srcRect.left = (arrowState != 2) ? 0xa : 0;
   srcRect.top = 0;
   srcRect.right = srcRect.left + 0xb;
   srcRect.bottom = 0x10;
@@ -51,7 +51,7 @@ void TNumberedArrowButton::Draw(RECT* rectBuffer) {
   BlitRectWithOptionalTransparency(hintSource->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &dstRect, 0x24);
-  srcRect.left = (value86 != 1) ? 0x21 : 0x16;
+  srcRect.left = (arrowState != 1) ? 0x21 : 0x16;
   srcRect.right = srcRect.left + 0xb;
   dstRect.top = 0x19;
   dstRect.bottom = 0x29;
@@ -85,11 +85,11 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
     if (phase != kTrackPhaseEnd || visualState == 0) {
       return;
     }
-    if (value86 != 0) {
+    if (arrowState != 0) {
       RefreshControl();
       CRect bounds;
       QueryBounds(&bounds);
-      value86 = 0;
+      arrowState = 0;
     }
     if (visualState == 2) {
       ownerContext->HandleEvent(100, this, 0);
@@ -100,11 +100,11 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
     PaintOrInvalidateControl(0);
     return;
   } else {
-    if (value86 != visualState) {
+    if (arrowState != visualState) {
       RefreshControl();
       CRect bounds;
       QueryBounds(&bounds);
-      value86 = visualState;
+      arrowState = visualState;
     }
     PaintOrInvalidateControl(0);
     return;

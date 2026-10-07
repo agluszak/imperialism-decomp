@@ -302,7 +302,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
   reportPacket.messageLength = 0x20;
   reportPacket.DestinateTo(-1);
   reportPacket.statusTag = kControlTagRepo;
-  reportPacket.value1C = reportingNationSlot;
+  reportPacket.controlValue = reportingNationSlot;
   g_pNetMgr->Send(&reportPacket, false);
 
   if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
@@ -348,7 +348,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
     namePacket.toNetworkId = g_pGameFlowState->nationSessionIds[destinationNationSlot];
   }
   namePacket.statusTag = kControlTagName;
-  namePacket.value1C = -1;
+  namePacket.controlValue = -1;
   g_pNetMgr->Send(&namePacket, destinationNationSlot == -3);
 }
 

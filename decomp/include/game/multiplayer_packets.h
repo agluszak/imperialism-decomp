@@ -119,8 +119,8 @@ struct TurnEvent18DiplomacyArraysPacket : TimelyNetMessagePrefix {
 };
 
 struct TurnEvent1FStatusPacket : TimelyMessageHeader {
-  int statusTag; // +0x18 - 'aced'/'abdi'/'uhed'/'cgam'/'lose'/'foff'/...
-  int value1C;   // +0x1c, total 0x20
+  int statusTag;    // +0x18 - 'aced'/'abdi'/'uhed'/'cgam'/'lose'/'foff'/...
+  int controlValue; // +0x1c, total 0x20
 };
 
 // Turn-event-0x23 payload: one map tile's 0x24-byte terrain state record.

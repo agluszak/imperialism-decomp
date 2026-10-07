@@ -64,7 +64,7 @@ public:
   ~TRunOffTurnsDialog() override {}
   TRunOffTurnsDialog(void* initParam); // 0x0047d470
 
-  unsigned int value74; // +0x74 — DDX_Text edit value (validated 0..999)
+  unsigned int turnCount; // +0x74 — DDX_Text edit value (validated 0..999)
 
 protected:
   void DoDataExchange(CDataExchange* pDX) override; // 0x0047d4e0 (vtable index 35)

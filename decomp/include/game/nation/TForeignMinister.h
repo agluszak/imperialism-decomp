@@ -53,8 +53,8 @@ public:
 
   short interiorBidResource;              // +0x10 — SetInteriorMinisterBid resource code
   short interiorBidAmount;                // +0x12 — SetInteriorMinisterBid amount
-  short capabilityFlag14;                 // +0x14
-  short capabilityFlag16;                 // +0x16
+  short priceCheckPending;                // +0x14
+  short specialOfferQuota;                // +0x16
   short diplomacyPhaseCounter;            // +0x18 — reset after SetTradeBids
   short tradeBidRefreshInterval;          // +0x1a — turns before forced trade-bid refresh
   short interiorOrderKind;                // +0x1c — passed to TInteriorMinister slot 0x1a

@@ -94,18 +94,18 @@ void TScrollView::ScrollRelative(short horizontalDelta, short verticalDelta) {
 
   contentView->Locate(origin, true);
 
-  short trackRange = scrollBar->word8a - scrollBar->word88;
+  short trackRange = scrollBar->maxValue - scrollBar->minValue;
   short newValue =
-      static_cast<short>(scrollBar->word88 - origin.y * 1024 / heightDiff * trackRange / 1024);
-  if (newValue < scrollBar->word88) {
-    scrollBar->word8c = scrollBar->word88;
+      static_cast<short>(scrollBar->minValue - origin.y * 1024 / heightDiff * trackRange / 1024);
+  if (newValue < scrollBar->minValue) {
+    scrollBar->currentValue = scrollBar->minValue;
     scrollBar->RefreshCityDialogScrollableViewportWithQuickDrawContext();
     return;
   }
-  if (newValue > scrollBar->word8a) {
-    newValue = scrollBar->word8a;
+  if (newValue > scrollBar->maxValue) {
+    newValue = scrollBar->maxValue;
   }
-  scrollBar->word8c = newValue;
+  scrollBar->currentValue = newValue;
   scrollBar->RefreshCityDialogScrollableViewportWithQuickDrawContext();
 }
 
@@ -131,9 +131,9 @@ void TScrollView::Reset() {
   contentView->Locate(contentOrigin, true);
 
   TScrollBarView* bar = scrollBar;
-  bar->word8c = bar->word88;
-  if (bar->word88 > bar->word8a) {
-    bar->word8c = bar->word8a;
+  bar->currentValue = bar->minValue;
+  if (bar->minValue > bar->maxValue) {
+    bar->currentValue = bar->maxValue;
   }
 
   if (contentView->frameHeight - frameHeight > 0) {

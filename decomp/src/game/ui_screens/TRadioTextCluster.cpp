@@ -13,8 +13,8 @@ IMPLEMENT_DYNCREATE(TRadioTextCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x005796a0
 TRadioTextCluster::TRadioTextCluster() : TCluster() {
-  word8C = 0x4b;
-  word8E = 0x49;
+  selectedColorCode = 0x4b;
+  unselectedColorCode = 0x49;
   frameThemeCode = -1;
   itemInset = 0;
   itemVerticalSpacing = 2;

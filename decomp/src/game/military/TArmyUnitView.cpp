@@ -137,7 +137,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           kControlTagArmyRatioFirst + g_awTacticalUnitCategoryCodeBySlot[militaryUnit->orderType];
       TNumberedArrowButton* arrow =
           static_cast<TNumberedArrowButton*>(activeToolbar->ResolveControlByTag(arrowTag));
-      arrow->SetValue(static_cast<short>(arrow->value84 + availableCountDelta), true);
+      arrow->SetValue(static_cast<short>(arrow->number + availableCountDelta), true);
       g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     }
   } else if (sourceHandler->controlTag == kControlTagUpgr) {

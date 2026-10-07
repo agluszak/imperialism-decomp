@@ -11,7 +11,7 @@ public:
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,
                           bool commandFlag) override; // slot 0x68 0x5839f0
-  int timingDword90;
+  int nextRepeatTick;
 
   TArrowsControl();
 };

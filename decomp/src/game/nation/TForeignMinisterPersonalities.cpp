@@ -183,17 +183,17 @@ void TTedForeignMinister::ReplyToTradeOffer(short targetNation, short requestedA
   TGreatPower* owner = greatPower;
   if (resourceCode == kResourceCoal) {
     if (tradePartnerEnabled[3] != 0) {
-      capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacityForProposal(3) / 2);
+      specialOfferQuota = static_cast<short>(owner->GetMerchantCapacityForProposal(3) / 2);
       tradePartnerEnabled[3] = 0;
     }
-    if (capabilityFlag16 >= requestedAmount) {
+    if (specialOfferQuota >= requestedAmount) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, requestedAmount, maximumAmount,
                                   3, 0, false);
-      capabilityFlag16 = static_cast<short>(capabilityFlag16 - requestedAmount);
+      specialOfferQuota = static_cast<short>(specialOfferQuota - requestedAmount);
     } else {
-      g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, capabilityFlag16, maximumAmount,
+      g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, specialOfferQuota, maximumAmount,
                                   3, 1, false);
-      capabilityFlag16 = 0;
+      specialOfferQuota = 0;
     }
     return;
   }
@@ -361,25 +361,25 @@ void TBillForeignMinister::ReplyToTradeOffer(short targetNation, short requested
   if (resourceCode == kResourceTimber) {
     if (g_pTradeMgr->GetPrice(3) >= 105 && g_pTradeMgr->GetPrice(4) >= 105) {
       if (tradePartnerEnabled[2] != 0) {
-        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
-        if (capabilityFlag16 < 2) {
-          capabilityFlag16 = 2;
+        specialOfferQuota = static_cast<short>(owner->GetMerchantCapacity() / 3);
+        if (specialOfferQuota < 2) {
+          specialOfferQuota = 2;
         }
         tradePartnerEnabled[2] = 0;
       }
       available = owner->GetMerchantCapacity();
-      amount = MinShort(capabilityFlag16, available);
+      amount = MinShort(specialOfferQuota, available);
       if (amount >= requestedAmount) {
         g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, requestedAmount, maximumAmount,
                                     2, 0, false);
-        capabilityFlag16 = static_cast<short>(capabilityFlag16 - requestedAmount);
-        if (capabilityFlag16 < 0) {
-          capabilityFlag16 = 0;
+        specialOfferQuota = static_cast<short>(specialOfferQuota - requestedAmount);
+        if (specialOfferQuota < 0) {
+          specialOfferQuota = 0;
         }
       } else {
         g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, amount, maximumAmount, 2, 1,
                                     false);
-        capabilityFlag16 = 0;
+        specialOfferQuota = 0;
       }
     } else {
       available = owner->GetMerchantCapacity();
@@ -391,20 +391,20 @@ void TBillForeignMinister::ReplyToTradeOffer(short targetNation, short requested
   }
   if (resourceCode == kResourceCoal) {
     if (tradePartnerEnabled[3] != 0) {
-      capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 2);
+      specialOfferQuota = static_cast<short>(owner->GetMerchantCapacity() / 2);
       tradePartnerEnabled[3] = 0;
     }
-    amount = g_pTradeMgr->GetPrice(4) < 105 ? requestedAmount : capabilityFlag16;
+    amount = g_pTradeMgr->GetPrice(4) < 105 ? requestedAmount : specialOfferQuota;
     amount = MinShort(amount, requestedAmount);
     available = owner->GetMerchantCapacity();
     if (available >= amount) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, amount, maximumAmount, 3, 0,
                                   false);
-      capabilityFlag16 = static_cast<short>(capabilityFlag16 - amount);
+      specialOfferQuota = static_cast<short>(specialOfferQuota - amount);
     } else {
       g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, owner->GetMerchantCapacity(),
                                   maximumAmount, 3, 0, false);
-      capabilityFlag16 = 0;
+      specialOfferQuota = 0;
     }
     return;
   }
@@ -414,14 +414,14 @@ void TBillForeignMinister::ReplyToTradeOffer(short targetNation, short requested
       g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, requestedAmount, maximumAmount,
                                   resourceCode, 0, false);
       if (resourceCode == kResourceIron) {
-        capabilityFlag16 = static_cast<short>(capabilityFlag16 - requestedAmount);
+        specialOfferQuota = static_cast<short>(specialOfferQuota - requestedAmount);
       }
     } else {
       g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, owner->GetMerchantCapacity(),
                                   maximumAmount, resourceCode, resourceCode == kResourceIron,
                                   false);
       if (resourceCode == kResourceIron) {
-        capabilityFlag16 = 0;
+        specialOfferQuota = 0;
       }
     }
   }
@@ -946,38 +946,38 @@ void TArmsForeignMinister::ReplyToTradeOffer(short targetNation, short requested
   if (HasAdvancedTradeResource(this)) {
     if (resourceCode != kResourceTimber && resourceCode != kResourceCoal &&
         resourceCode != kResourceIron) {
-      capabilityFlag16 = owner->GetMerchantCapacity();
+      specialOfferQuota = owner->GetMerchantCapacity();
     } else if (tradePartnerEnabled[resourceCode] != 0) {
       if (g_nArmsAdvancedResourceOfferSplitCount == 0) {
-        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
+        specialOfferQuota = static_cast<short>(owner->GetMerchantCapacity() / 3);
       } else {
-        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 2);
+        specialOfferQuota = static_cast<short>(owner->GetMerchantCapacity() / 2);
       }
       ++g_nArmsAdvancedResourceOfferSplitCount;
     }
   } else {
     if (resourceCode != kResourceCotton && resourceCode != kResourceWool &&
         resourceCode != kResourceTimber && resourceCode != kResourceCoal) {
-      capabilityFlag16 = owner->GetMerchantCapacity();
+      specialOfferQuota = owner->GetMerchantCapacity();
     } else if (tradePartnerEnabled[resourceCode] != 0) {
       if (g_nArmsBasicResourceOfferSplitCount == 0) {
-        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
+        specialOfferQuota = static_cast<short>(owner->GetMerchantCapacity() / 3);
         ++g_nArmsBasicResourceOfferSplitCount;
       } else {
-        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 2);
+        specialOfferQuota = static_cast<short>(owner->GetMerchantCapacity() / 2);
         ++g_nArmsBasicResourceOfferSplitCount;
       }
     }
   }
   tradePartnerEnabled[resourceCode] = 0;
-  if (capabilityFlag16 >= requestedAmount) {
+  if (specialOfferQuota >= requestedAmount) {
     g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, requestedAmount, maximumAmount,
                                 resourceCode, 0, false);
-    capabilityFlag16 = static_cast<short>(capabilityFlag16 - requestedAmount);
+    specialOfferQuota = static_cast<short>(specialOfferQuota - requestedAmount);
   } else {
-    g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, capabilityFlag16, maximumAmount,
+    g_pTradeMgr->SetDealResults(owner->nationSlot, targetNation, specialOfferQuota, maximumAmount,
                                 resourceCode, 1, false);
-    capabilityFlag16 = 0;
+    specialOfferQuota = 0;
   }
 }
 

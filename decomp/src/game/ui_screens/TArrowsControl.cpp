@@ -5,7 +5,7 @@ IMPLEMENT_DYNCREATE(TArrowsControl, TPicture)
 #include "game/gfx/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583970
-TArrowsControl::TArrowsControl() : TPicture(), timingDword90(0) {}
+TArrowsControl::TArrowsControl() : TPicture(), nextRepeatTick(0) {}
 
 // FUNCTION: IMPERIALISM 0x005839d0
 TArrowsControl::~TArrowsControl() {}
@@ -18,14 +18,14 @@ void TArrowsControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
 
   unsigned int ticks = GetTickCountDiv16();
-  if (ticks < (unsigned int)(this->timingDword90 + 5)) {
+  if (ticks < (unsigned int)(this->nextRepeatTick + 5)) {
     return;
   }
 
   unsigned int now = GetTickCountDiv16();
-  this->timingDword90 = now;
+  this->nextRepeatTick = now;
   if (phase == kTrackPhaseBegin) {
-    this->timingDword90 = now + 10;
+    this->nextRepeatTick = now + 10;
   }
 
   CPoint* point = &currentPoint;

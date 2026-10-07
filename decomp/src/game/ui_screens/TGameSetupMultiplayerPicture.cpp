@@ -35,8 +35,8 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   TRadioTextCluster* protControl =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagProt));
   protControl->AssertValid();
-  protControl->word8C = 0x4c;
-  protControl->word8E = 0x4d;
+  protControl->selectedColorCode = 0x4c;
+  protControl->unselectedColorCode = 0x4d;
 
   if (g_pGameFlowState->InitializeProtocolOptionControlFromProvider(this)) {
     CSubViewIterator iter(protControl);

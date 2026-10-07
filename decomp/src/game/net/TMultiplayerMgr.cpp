@@ -1566,25 +1566,25 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       CString formattedAbdi;
       CString nationNameAbdi;
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&templateTextAbdi, 0x2737, 0x32);
-      g_apTerrainTypeDescriptorTable[gameState->value1C]->FormatOverlayTerrainLabelText(
+      g_apTerrainTypeDescriptorTable[gameState->controlValue]->FormatOverlayTerrainLabelText(
           &nationNameAbdi);
       scanBracketExpressions(g_pSimMgr, &formattedAbdi, static_cast<const char*>(templateTextAbdi),
                              static_cast<const char*>(nationNameAbdi));
       g_pViewMgr->PostModalMessage(&formattedAbdi, 0);
       bool hostingAbdi = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
       if (hostingAbdi) {
-        DehumanizePlayer(gameState->value1C);
+        DehumanizePlayer(gameState->controlValue);
       }
       return true;
     }
     case kSessionTagAced: { // 'aced' - accession notice; the affected local player posts 'gwen'
-      bool isLocalNationAced = g_pSimMgr->GetPlayerCountry() == gameState->value1C;
+      bool isLocalNationAced = g_pSimMgr->GetPlayerCountry() == gameState->controlValue;
       CString templateTextAced;
       CString formattedAced;
       CString nationNameAced;
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&templateTextAced, 0x2742,
                                                           isLocalNationAced ? 0x23 : 0x1c);
-      g_apTerrainTypeDescriptorTable[gameState->value1C]->FormatOverlayTerrainLabelText(
+      g_apTerrainTypeDescriptorTable[gameState->controlValue]->FormatOverlayTerrainLabelText(
           &nationNameAced);
       scanBracketExpressions(g_pSimMgr, &formattedAced, static_cast<const char*>(templateTextAced),
                              static_cast<const char*>(nationNameAced));
@@ -1595,7 +1595,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       return true;
     }
     case kSessionTagUhed: // 'uhed' - nation left unheaded: replace with AI locally
-      DehumanizePlayer(gameState->value1C);
+      DehumanizePlayer(gameState->controlValue);
       return true;
     case kControlTagCgam: { // 'cgam' - cancel game
       TCancelGameOptionsCommand* cancelCommandCgam = new TCancelGameOptionsCommand();
@@ -1607,11 +1607,12 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       return true;
     }
     case kControlTagLose: // 'lose' - the named nation lost
-      g_apNationStates[gameState->value1C]->SorryYouLose();
+      g_apNationStates[gameState->controlValue]->SorryYouLose();
       return true;
     case kSessionTagFoff: { // 'foff' - seat refused: show string[value1C], post the cancel command
       CString messageFoff;
-      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageFoff, 0x2742, gameState->value1C);
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageFoff, 0x2742,
+                                                          gameState->controlValue);
       g_pViewMgr->PostModalMessage(&messageFoff, 0);
       TCancelGameOptionsCommand* cancelCommandFoff = new TCancelGameOptionsCommand();
       cancelCommandFoff->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
@@ -1619,10 +1620,10 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       return true;
     }
     case kControlTagName: // 'name' - refresh the status board row (global manager receiver)
-      g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(gameState->value1C);
+      g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(gameState->controlValue);
       return true;
     case kControlTagLost: { // 'lost' - connection to a nation lost
-      int lostCode = gameState->value1C;
+      int lostCode = gameState->controlValue;
       bool droppedFlag = (lostCode & 0xff00) != 0;
       int lostNationSlot = lostCode & 0xff;
       bool isLocalNationLost = lostNationSlot == g_pSimMgr->GetPlayerCountry();
@@ -1646,7 +1647,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     }
     case kControlTagQuit:   // 'quit'
     case kControlTagNewg: { // 'newg' - session ending: optional notice, then close or restart
-      unsigned char restartFlag = static_cast<unsigned char>(gameState->value1C);
+      unsigned char restartFlag = static_cast<unsigned char>(gameState->controlValue);
       bool clientSessionQuit = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
       if (clientSessionQuit) {
         CString messageQuit;
@@ -1673,7 +1674,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       return true;
     }
     case kControlTagRepo: { // 'repo' - a session reports for a nation slot: seat it or refuse
-      int repoSlot = gameState->value1C & 7;
+      int repoSlot = gameState->controlValue & 7;
       bool hostCanSeatEmptySlot = false;
       if (g_apNationStates[repoSlot] == 0 &&
           packet->fromNetworkId == g_pNetMgr->GetSessionActiveNationId() &&
@@ -1736,17 +1737,17 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
         refuse.messageLength = 0x20;
         refuse.toNetworkId = packet->fromNetworkId;
         refuse.statusTag = kSessionTagFoff; // 'foff'
-        refuse.value1C = 0x29;
+        refuse.controlValue = 0x29;
         g_pNetMgr->Send(&refuse, false);
       }
       return true;
     }
     case kControlTagSave: // 'save' - latch the save flag and save with the network label
-      networkSavePending = static_cast<unsigned char>(gameState->value1C);
+      networkSavePending = static_cast<unsigned char>(gameState->controlValue);
       SaveGameWithModeAndOptionalLabel(queueSyncDword, (char*)g_pszClientSavePrefix);
       return true;
     case kControlTagTrad: { // 'trad' - reset diplomacy level: packed (nationSlot << 16 | level)
-      int tradeCode = gameState->value1C;
+      int tradeCode = gameState->controlValue;
       g_apNationStates[g_pSimMgr->GetPlayerCountry()]->SetTradePolicyTo(
           static_cast<short>(static_cast<unsigned int>(tradeCode) >> 0x10),
           static_cast<short>(tradeCode));
@@ -2343,7 +2344,7 @@ void TMultiplayerMgr::SendGameControl(int statusTag, int value, int nationSlotOr
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.statusTag = statusTag;
-  packet.value1C = value;
+  packet.controlValue = value;
   if ((nationSlotOrMode == -2) || (nationSlotOrMode == -3)) {
     packet.toNetworkId = 0;
   } else if (nationSlotOrMode == -1) {
@@ -2768,7 +2769,7 @@ void TMultiplayerMgr::DehumanizePlayer(int nationSlot) {
       packet.messageLength = 0x20;
       packet.DestinateTo(-2);
       packet.statusTag = kSessionTagDehu; // 'uhed'
-      packet.value1C = nationSlot;
+      packet.controlValue = nationSlot;
       g_pNetMgr->Send(&packet, false);
     }
     TGreatPower* oldNation = g_apNationStates[nationSlot];

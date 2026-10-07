@@ -20,7 +20,7 @@ TScrollBarView::~TScrollBarView() {}
 void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
   ScopedMapQuickDrawContext quickDrawContext(this);
   PrepareForDrawing();
-  RECT rect = {0, word88, frameWidth, static_cast<int>(word8a) + 0x12};
+  RECT rect = {0, minValue, frameWidth, static_cast<int>(maxValue) + 0x12};
   Draw(&rect);
 }
 
@@ -31,9 +31,9 @@ void TScrollBarView::IScrollBarView(TScrollView* panel, int* offsetLayout, int* 
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
   ownerView = static_cast<TScrollView*>(ownerContext);
   ownerView->AssertValid();
-  word88 = 0x12;
-  word8a = static_cast<short>(frameHeight) - 0x24;
-  word8c = 0x12;
+  minValue = 0x12;
+  maxValue = static_cast<short>(frameHeight) - 0x24;
+  currentValue = 0x12;
 
   {
     RECT surfaceRect;
@@ -86,14 +86,14 @@ void TScrollBarView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   ownerView = static_cast<TScrollView*>(ownerContext);
   ownerView->AssertValid();
-  word88 = 0x12;
-  word8c = 0x12;
+  minValue = 0x12;
+  currentValue = 0x12;
 
   RECT surfaceRect;
   surfaceRect.left = 0;
   surfaceRect.top = 0;
   surfaceRect.bottom = frameHeight;
-  word8a = static_cast<short>(frameHeight) - 0x24;
+  maxValue = static_cast<short>(frameHeight) - 0x24;
   surfaceRect.right = frameWidth;
   g_pDisplayMgr->MakeNewGWorld(surfaceContext, 8, surfaceRect);
 }
@@ -112,20 +112,20 @@ void TScrollBarView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 
 // FUNCTION: IMPERIALISM 0x00574830
 void TScrollBarView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  RECT thumbRect = {0, word8c, frameWidth, static_cast<int>(word8c) + 0x12};
+  RECT thumbRect = {0, currentValue, frameWidth, static_cast<int>(currentValue) + 0x12};
   if (PtInRect(&thumbRect, point)) {
     TControl::DoMouseCommand(point, event, origin);
     return;
   }
 
   int y = point.y;
-  if (y >= word88 && y < word8c) {
+  if (y >= minValue && y < currentValue) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
     ownerView->ScrollRelative(0, static_cast<short>(ownerView->frameHeight));
     return;
   }
 
-  if (y > word8a + 0x12 || y <= word8c + 0x12) {
+  if (y > maxValue + 0x12 || y <= currentValue + 0x12) {
     return;
   }
   g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
@@ -140,7 +140,7 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
 
   RECT srcRect;
   RECT dstRect;
-  srcRect.bottom = word8c;
+  srcRect.bottom = currentValue;
   srcRect.right = frameWidth;
   srcRect.left = 0;
   dstRect.left = 0;
@@ -161,7 +161,7 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
 
   srcRect.right = frameWidth;
   srcRect.left = 0;
-  dstRect.top = word8c;
+  dstRect.top = currentValue;
   srcRect.top = 0x12c;
   srcRect.bottom = 0x13e;
   dstRect.left = 0;
@@ -178,8 +178,8 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
   BlitRectWithOptionalTransparency(g_pMacViewMgr->tileOverlayStripWorlds[5]->GetBlitSurface(),
                                    surfaceContext->GetBlitSurface(), &srcRect, &dstRect, 0, NULL);
 
-  dstRect.top = word8c + 0x12;
-  srcRect.top = 299 - static_cast<short>(static_cast<short>(frameHeight) - word8c - 0x12);
+  dstRect.top = currentValue + 0x12;
+  srcRect.top = 299 - static_cast<short>(static_cast<short>(frameHeight) - currentValue - 0x12);
   srcRect.right = frameWidth;
   srcRect.bottom = 300;
   dstRect.bottom = frameHeight;
@@ -211,13 +211,13 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
     return;
   }
 
-  if (target > word8a) {
-    target = word8a;
-  } else if (target < word88) {
-    target = word88;
+  if (target > maxValue) {
+    target = maxValue;
+  } else if (target < minValue) {
+    target = minValue;
   }
-  if (target != word8c) {
-    word8c = target;
+  if (target != currentValue) {
+    currentValue = target;
     RefreshCityDialogScrollableViewportWithQuickDrawContext();
   }
 
@@ -225,7 +225,7 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
     return;
   }
 
-  int ratio = (word8c - word88) * 1024 / (word8a - word88);
+  int ratio = (currentValue - minValue) * 1024 / (maxValue - minValue);
   TView* content = ownerView->contentView;
   if (content == NULL) {
     return;
@@ -243,12 +243,13 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
 // FUNCTION: IMPERIALISM 0x00574e20
 void TScrollBarView::SetThumb(int percent, unsigned char refresh) {
   short value = static_cast<short>(
-      word88 + ((word8a - word88) * percent + ((word8a - word88) * percent >> 31 & 0x3ff)) / 0x400);
-  word8c = value;
-  if (word8c < word88) {
-    word8c = word88;
-  } else if (word8c > word8a) {
-    word8c = word8a;
+      minValue +
+      ((maxValue - minValue) * percent + ((maxValue - minValue) * percent >> 31 & 0x3ff)) / 0x400);
+  currentValue = value;
+  if (currentValue < minValue) {
+    currentValue = minValue;
+  } else if (currentValue > maxValue) {
+    currentValue = maxValue;
   }
   if (refresh != 0) {
     RefreshCityDialogScrollableViewportWithQuickDrawContext();
