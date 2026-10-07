@@ -24,6 +24,9 @@ public:
   void Free() override;
 
   virtual void SetRelationship(NationSlot sourceNation, NationSlot targetNation, short score);
+  short GetRelationship(int sourceNation, int targetNation) const {
+    return relationStandingScores[sourceNation * kNationSlotCount + targetNation];
+  }
   virtual void SetRelationshipsToMatch(NationSlot destinationNation, NationSlot sourceNation);
   virtual void ApplyDiplomacyInterNationStatesForTurn();
   virtual void PickMinorPriorities();

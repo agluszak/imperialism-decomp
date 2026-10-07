@@ -70,9 +70,7 @@ void TMinorRelationshipDialog::StuffValues() {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x258);
       }
       cell->SetControlValue(
-          g_pDiplomacyTurnStateManager
-              ->relationStandingScores[majorNation * kNationSlotCount + (minorIndex + 7)],
-          0);
+          g_pDiplomacyTurnStateManager->GetRelationship(majorNation, (minorIndex + 7)), 0);
       cell->ViewEnable(static_cast<signed char>(g_bRandomMapDeveloperCheatFlag), 0);
     }
   }

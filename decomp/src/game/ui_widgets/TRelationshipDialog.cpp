@@ -70,9 +70,7 @@ void TRelationshipDialog::StuffValues() {
       }
       if (sourceNation < targetNation) {
         cell->SetControlValue(
-            g_pDiplomacyTurnStateManager
-                ->relationStandingScores[sourceNation * kNationSlotCount + targetNation],
-            0);
+            g_pDiplomacyTurnStateManager->GetRelationship(sourceNation, targetNation), 0);
         cell->ViewEnable(static_cast<signed char>(g_bRandomMapDeveloperCheatFlag), 0);
       } else {
         cell->Show(0, 1);

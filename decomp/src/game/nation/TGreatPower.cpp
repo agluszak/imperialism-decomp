@@ -1442,8 +1442,7 @@ bool TGreatPower::SetGrantPolicyTo(int targetNationArg, int grantValue) {
       while (majorNation < kMajorNationCount) {
         if (majorNation != nationSlot) {
           short relationValue =
-              g_pDiplomacyTurnStateManager
-                  ->relationStandingScores[majorNation * kNationSlotCount + targetIndex];
+              g_pDiplomacyTurnStateManager->GetRelationship(majorNation, targetIndex);
           if (relationValue >= kInfluenceAlertThreshold) {
             shouldDispatchAlert = true;
             break;
@@ -1483,8 +1482,7 @@ void TGreatPower::GiveGrantTo(int targetNationSlot) {
 
   int sourceNation = nationSlot;
   int relationCode = static_cast<int>(
-      g_pDiplomacyTurnStateManager
-          ->relationStandingScores[(sourceNation)*kNationSlotCount + (targetNation)]);
+      g_pDiplomacyTurnStateManager->GetRelationship((sourceNation), (targetNation)));
   int relationDelta;
   switch (grantValue) {
   case 1000:
@@ -3264,7 +3262,7 @@ int TGreatPower::GetDiplomacyScore() {
     if (i == nationSlot) {
       continue;
     }
-    sum += diplomacy->relationStandingScores[nationSlot * kNationSlotCount + static_cast<short>(i)];
+    sum += diplomacy->GetRelationship(nationSlot, static_cast<short>(i));
     count++;
   }
   return sum / count;
@@ -3313,9 +3311,7 @@ void TGreatPower::GenerateGameScore() {
     if (otherSlot == nationSlot) {
       continue;
     }
-    relationSum +=
-        diplomacy
-            ->relationStandingScores[nationSlot * kNationSlotCount + static_cast<short>(otherSlot)];
+    relationSum += diplomacy->GetRelationship(nationSlot, static_cast<short>(otherSlot));
     relationCount++;
   }
   gameScoreRows[kGameScoreDiplomacy] = relationSum / relationCount;
@@ -3427,10 +3423,8 @@ float TGreatPower::ScoreProvinceFactor(int metricCase, int cityIndex, TZone* zon
            (result - g_Compute_Advisory_MinusSixFloat);
   }
   case 5:
-    return g_Compute_Advisory_Hundred /
-           g_pDiplomacyTurnStateManager
-               ->relationStandingScores[nationSlot * kNationSlotCount +
-                                        static_cast<short>(selectedNationSlot)];
+    return g_Compute_Advisory_Hundred / g_pDiplomacyTurnStateManager->GetRelationship(
+                                            nationSlot, static_cast<short>(selectedNationSlot));
   case 6: {
     const Province* record = &g_pGlobalMapState->cityScoreTable[cityIndex];
     result = static_cast<float>(record->cityScoreValue) / g_pGlobalMapState->cityScoreTotal;

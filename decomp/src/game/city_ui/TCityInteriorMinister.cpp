@@ -1351,19 +1351,15 @@ void TCityInteriorMinister::ProspectAndDevelop() {
     if (!g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(minorNation)) {
       float strongestStanding = 0.1f;
       for (short majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
-        if (majorNation != nationSlot &&
-            g_pDiplomacyTurnStateManager->relationStandingScores[majorNation * kNationSlotCount +
-                                                                 minorNation] > strongestStanding) {
+        if (majorNation != nationSlot && g_pDiplomacyTurnStateManager->GetRelationship(
+                                             majorNation, minorNation) > strongestStanding) {
           strongestStanding = static_cast<float>(
-              g_pDiplomacyTurnStateManager
-                  ->relationStandingScores[majorNation * kNationSlotCount + minorNation]);
+              g_pDiplomacyTurnStateManager->GetRelationship(majorNation, minorNation));
         }
       }
-      relationScale[minorNation] =
-          static_cast<float>(
-              g_pDiplomacyTurnStateManager
-                  ->relationStandingScores[nationSlot * kNationSlotCount + minorNation]) /
-          strongestStanding;
+      relationScale[minorNation] = static_cast<float>(g_pDiplomacyTurnStateManager->GetRelationship(
+                                       nationSlot, minorNation)) /
+                                   strongestStanding;
     }
   }
 

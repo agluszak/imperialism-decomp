@@ -951,16 +951,12 @@ void TCivMgr::ResolveCivilianDisputes() {
 
     int ownerNationSlot = tile.ownerNationTag;
     TCivUnit* winningOrder = competingOrders[0];
-    short winningStanding =
-        g_pDiplomacyTurnStateManager
-            ->relationStandingScores[winningOrder->ownerNationSlot * kNationSlotCount +
-                                     ownerNationSlot];
+    short winningStanding = g_pDiplomacyTurnStateManager->GetRelationship(
+        winningOrder->ownerNationSlot, ownerNationSlot);
     for (int candidateIndex = 1; candidateIndex < competingCount; ++candidateIndex) {
       TCivUnit* candidate = competingOrders[candidateIndex];
-      short candidateStanding =
-          g_pDiplomacyTurnStateManager
-              ->relationStandingScores[candidate->ownerNationSlot * kNationSlotCount +
-                                       ownerNationSlot];
+      short candidateStanding = g_pDiplomacyTurnStateManager->GetRelationship(
+          candidate->ownerNationSlot, ownerNationSlot);
       if (candidateStanding > winningStanding ||
           (candidateStanding == winningStanding && (rand() & 1) != 0)) {
         winningOrder = candidate;

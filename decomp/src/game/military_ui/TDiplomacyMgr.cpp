@@ -63,7 +63,7 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
     int score =
         (200 -
          g_apNationStates[majorNation]->tradePolicyByNation[static_cast<short>(minorNationSlot)]) *
-        relationStandingScores[minorNationSlot * kNationSlotCount + majorNation];
+        GetRelationship(minorNationSlot, majorNation);
     if (score > bestScore) {
       selectedNation = majorNation;
       bestScore = score;
@@ -698,7 +698,7 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
                                       unsigned char updateMode) {
   int source = sourceNationSlot;
   int target = targetNationSlot;
-  short sourceTargetStanding = relationStandingScores[source * kNationSlotCount + target];
+  short sourceTargetStanding = GetRelationship(source, target);
 
   if (updateMode == 1) {
     if (sourceTargetStanding - 0x32 < 0x31) {
@@ -731,10 +731,8 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
         divisorTier = IsGreatPower(candidateNationSlot) ? 4 : 8;
       }
 
-      short currentStanding =
-          relationStandingScores[source * kNationSlotCount + candidateNationSlot];
-      short targetCandidateStanding =
-          relationStandingScores[target * kNationSlotCount + candidateNationSlot];
+      short currentStanding = GetRelationship(source, candidateNationSlot);
+      short targetCandidateStanding = GetRelationship(target, candidateNationSlot);
       int candidateAdjustment =
           ((0x5a - targetCandidateStanding) * sourceTargetStanding) / (divisorTier * 50);
       if (static_cast<char>(sourceNationSlot) == 0) {
@@ -1083,13 +1081,9 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
     short encodedSlot = descriptor->encodedNationSlot;
     if (encodedSlot < 100 || encodedSlot > 199) {
       topSideScore[nationSlot] =
-          (relationStandingScores[topNationSlot * kNationSlotCount + nationSlot] * 100 / 255 +
-           topPower) /
-          2;
+          (GetRelationship(topNationSlot, nationSlot) * 100 / 255 + topPower) / 2;
       secondSideScore[nationSlot] =
-          (relationStandingScores[secondNationSlot * kNationSlotCount + nationSlot] * 100 / 255 +
-           secondPower) /
-          2;
+          (GetRelationship(secondNationSlot, nationSlot) * 100 / 255 + secondPower) / 2;
     } else {
       short homeTile = descriptor->homeTileIndex;
       int ownerNation = g_pGlobalMapState->terrainStateTable[homeTile].ownerNationTag;
@@ -1361,7 +1355,7 @@ DiplomacyRelationshipNotch TDiplomacyMgr::GetRelationshipNotch(NationSlot source
                                                                NationSlot targetNationSlot) {
   int source = sourceNationSlot;
   int target = targetNationSlot;
-  short standingScore = relationStandingScores[source * kNationSlotCount + target];
+  short standingScore = GetRelationship(source, target);
   if (standingScore <= 0x14) {
     return kDiplomacyRelationshipNotchThrough20;
   }
@@ -1541,7 +1535,7 @@ void TDiplomacyMgr::BuildRelationshipList(NationSlot sourceNationSlot, short pri
         RelationshipRankEntry entry;
         entry.nationSlot = candidateNationSlot;
         int source = sourceNationSlot;
-        entry.standingScore = relationStandingScores[source * kNationSlotCount + candidateIndex];
+        entry.standingScore = GetRelationship(source, candidateIndex);
         list->Insert(&entry);
       }
     }

@@ -830,8 +830,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     TCountry** minorEntry = &g_apTerrainTypeDescriptorTable[kMajorNationCount];
     short zoneCursor = 7;
     do {
-      if (g_pDiplomacyTurnStateManager
-              ->relationStandingScores[zoneCursor + nationSlot * kNationSlotCount] > 0xa9) {
+      if (g_pDiplomacyTurnStateManager->GetRelationship(nationSlot, zoneCursor) > 0xa9) {
         TCountry* minor = *minorEntry;
         bool ownProtectorate = false;
         if (minor != 0) {

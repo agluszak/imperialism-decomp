@@ -288,9 +288,7 @@ void TAutoGreatPower::PurchaseItem(short resourceKind, short amount, short price
 void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) {
   if (g_apNationStates[offerContext]->diplomacyEligibility != 0) {
     if (resourceKind != 5) {
-      short relationScore =
-          g_pDiplomacyTurnStateManager
-              ->relationStandingScores[nationSlot * kNationSlotCount + offerContext];
+      short relationScore = g_pDiplomacyTurnStateManager->GetRelationship(nationSlot, offerContext);
       double scaledScore = static_cast<double>(relationScore) * 0.00392156862745098;
       int roll = rand();
       if (static_cast<double>(roll) > scaledScore * 32767.0) {
@@ -612,8 +610,7 @@ bool TAutoGreatPower::IsStrongEnoughFor(int targetNation) {
     tickQuarter = 0x3c;
   }
   short relationScore =
-      g_pDiplomacyTurnStateManager->relationStandingScores[nationSlot * kNationSlotCount +
-                                                           static_cast<short>(targetNation)];
+      g_pDiplomacyTurnStateManager->GetRelationship(nationSlot, static_cast<short>(targetNation));
   float combinedStrength = ownStrengthScore + allyQuarterScore;
   float combinedScore = static_cast<float>(
       (strongestPeer / combinedStrength +
@@ -877,8 +874,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
           continue;
         }
 
-        short score = g_pDiplomacyTurnStateManager
-                          ->relationStandingScores[nationSlot * kNationSlotCount + owner];
+        short score = g_pDiplomacyTurnStateManager->GetRelationship(nationSlot, owner);
         int linkBonus;
         int nodeBuffer[12];
         if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(rec, nationSlot, true)) {
@@ -1407,8 +1403,7 @@ void TAutoGreatPower::AssessExpansion(void) {
     }
 
     float missionScore = g_afNationOrderQueueDivergenceMirror[peerNation];
-    if (g_pDiplomacyTurnStateManager
-            ->relationStandingScores[nationSlot * kNationSlotCount + peerNation] >= 100) {
+    if (g_pDiplomacyTurnStateManager->GetRelationship(nationSlot, peerNation) >= 100) {
       maximumAdjustedMilitaryScore = static_cast<float>(
           defenseMinister->GetStategicEscalationMultiplier(true) * militaryScore);
       missionScore = static_cast<float>(defenseMinister->GetStategicEscalationMultiplier(false) *

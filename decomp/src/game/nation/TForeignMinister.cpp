@@ -116,9 +116,7 @@ short TForeignMinister::GetRankingCriterionForGP(short nationSlot) {
   for (short otherNation = 0; otherNation < kNationSlotCount; ++otherNation) {
     if (otherNation != nationSlot && g_apTerrainTypeDescriptorTable[otherNation] != 0) {
       relationTotal = static_cast<short>(
-          relationTotal +
-          g_pDiplomacyTurnStateManager
-              ->relationStandingScores[nationSlot * kNationSlotCount + otherNation]);
+          relationTotal + g_pDiplomacyTurnStateManager->GetRelationship(nationSlot, otherNation));
     }
   }
   return relationTotal / (g_pSimMgr->GetNumCountries() - 1);
@@ -402,9 +400,7 @@ void TForeignMinister::GoodsMatchShipping() {
     if (static_cast<short>(nation) != owner->nationSlot) {
       if (g_pSimMgr->ReallyInTheGame(nation)) {
         if (matched &&
-            g_pDiplomacyTurnStateManager
-                    ->relationStandingScores[owner->nationSlot * kNationSlotCount + nation] <
-                0x96) {
+            g_pDiplomacyTurnStateManager->GetRelationship(owner->nationSlot, nation) < 0x96) {
           owner->TellColoniesToBoycott(nation, 1);
         } else {
           owner->TellColoniesToBoycott(nation, 0);

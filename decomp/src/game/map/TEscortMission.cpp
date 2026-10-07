@@ -83,8 +83,7 @@ void TEscortMission::CalculateNeeds() {
 
     bool eligible;
     if (nation->encodedNationSlot < 200) {
-      eligible = static_cast<float>(g_pDiplomacyTurnStateManager
-                                        ->relationStandingScores[i * kNationSlotCount + nationId]) >
+      eligible = static_cast<float>(g_pDiplomacyTurnStateManager->GetRelationship(i, nationId)) >
                  yearThreshold;
     } else {
       short encodedNationSlot = nation->encodedNationSlot;

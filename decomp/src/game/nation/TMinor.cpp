@@ -449,8 +449,7 @@ void TMinor::InitializeTradeStatus(void) {
               .amountByMajorNation[power];
       if (goldYieldControlledByPower != 0) {
         g_apNationStates[power]->AddOverseasProfitFrom(
-            g_pDiplomacyTurnStateManager
-                    ->relationStandingScores[nationSlot * kNationSlotCount + power] *
+            g_pDiplomacyTurnStateManager->GetRelationship(nationSlot, power) *
                 goldYieldControlledByPower * 200 / 255,
             kResourceGold, nationSlot);
       }
@@ -459,8 +458,7 @@ void TMinor::InitializeTradeStatus(void) {
               .amountByMajorNation[power];
       if (gemYieldControlledByPower != 0) {
         g_apNationStates[power]->AddOverseasProfitFrom(
-            g_pDiplomacyTurnStateManager
-                    ->relationStandingScores[nationSlot * kNationSlotCount + power] *
+            g_pDiplomacyTurnStateManager->GetRelationship(nationSlot, power) *
                 gemYieldControlledByPower * 500 / 255,
             kResourceGems, nationSlot);
       }
@@ -498,9 +496,7 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
         }
 
         short needCurrent = needCurrentByType[resourceSlot];
-        short standing =
-            g_pDiplomacyTurnStateManager
-                ->relationStandingScores[nationSlot * kNationSlotCount + majorNationSlot];
+        short standing = g_pDiplomacyTurnStateManager->GetRelationship(nationSlot, majorNationSlot);
         int negDelta = -static_cast<int>(deltaShort);
         int intFactor = negDelta;
         if (linkValue < negDelta) {
@@ -671,8 +667,7 @@ bool TMinor::WouldAcceptOffer(NationSlot targetNationSlot,
   }
 
   const int source = nationSlot;
-  short standing = g_pDiplomacyTurnStateManager
-                       ->relationStandingScores[source * kNationSlotCount + targetNationSlot];
+  short standing = g_pDiplomacyTurnStateManager->GetRelationship(source, targetNationSlot);
   if (standing <= 0xf9) {
     return false;
   }
