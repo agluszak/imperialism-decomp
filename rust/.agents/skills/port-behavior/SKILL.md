@@ -1,31 +1,17 @@
 ---
 name: port-behavior
-description: Port a bounded retail gameplay operation into Rust core and compare it through the existing C++ process oracle.
+description: Keep Rust gameplay behavior aligned with the reconstructed C++ oracle.
 ---
 
-# Port retail behavior
+# Port behavior
 
 Run from `rust/`.
 
-1. Identify the recovered C++ operation and its observable pre-state, input, post-state, result,
-   ordered effects, RNG behavior, and rejection behavior.
-2. Check whether the existing `NativeTransition` and runtime result already expose those semantics.
-   Extend the current transition/result only for a missing observable fact, updating every producer
-   and consumer together.
-3. Implement one direct typed operation in `imperialism-core` and connect it to its production caller.
-4. Add representative native transition cases and `compare_native` coverage beside the domain. Compare
-   complete relevant state, the semantic result, ordered effects, and RNG state. Use deliberately
-   constructed cases for rules and a small stable seed corpus for RNG-heavy behavior.
-5. Keep the evidence label accurate: reconstruction initialized from a retail-derived fixture is
-   `retail_fixture_oracle`, not a direct retail differential.
-6. Run:
-
-   ```sh
-   cargo fmt --all -- --check
-   cargo clippy --workspace --all-targets --all-features -- -D warnings
-   cargo test --workspace
-   ```
-
-7. If C++ oracle source or protocol output changed, run the `verify` procedure from `../decomp/`.
-
-A matching visible symptom with divergent state, result, effects, or RNG is still a failure.
+- Implement behavior in `imperialism-core` using semantic Rust types and connect it to the production
+  caller.
+- Use the existing `NativeTransition`/oracle path; extend it only when an observable semantic fact is
+  otherwise unavailable.
+- Compare relevant state, result, ordered effects, rejection behavior, and RNG state.
+- Keep fixture-derived evidence labeled `retail_fixture_oracle`; it is not direct retail execution.
+- Run `cargo fmt --all -- --check`, `cargo clippy --workspace --all-targets --all-features -- -D warnings`,
+  and `cargo test --workspace`.
