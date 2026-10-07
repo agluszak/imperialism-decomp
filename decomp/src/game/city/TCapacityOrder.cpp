@@ -31,8 +31,8 @@ void TCapacityOrder::Produce() {
   }
 
   if (slotIndex == 0xe) {
-    const short currentCap = static_cast<short>(city->GetOwnerNeedCapA6());
-    city->SetOwnerNeedCapA6(static_cast<short>(currentCap + this->quantity));
+    const short currentCap = static_cast<short>(city->GetRollingStock());
+    city->SetRollingStock(static_cast<short>(currentCap + this->quantity));
   } else {
     if (slotIndex == 0xf) {
       TGreatPower* owner = city->ownerNation;

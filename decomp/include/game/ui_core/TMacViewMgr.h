@@ -43,8 +43,8 @@ public:
                                   TView* hostView); // slot 0x11 0x50bea0
   virtual TView* MakeBookDialog(int dialogId);      // slot 0x12 0x50be30
   // RET 0x8 = 2 dwords; body waits on this->activeCityProductionView, args vestigial.
-  virtual void ShowCitySiteSelectorAndWaitForFlag(int unusedArg1,
-                                                  int unusedArg2); // slot 0x13 0x50d310
+  virtual void SelectCitySite(int unusedArg1,
+                              int unusedArg2); // slot 0x13 0x50d310
   virtual TBuildingView* RestoreBuildingWindowAtSavedPosition(short buildingSlot, TCity* city,
                                                               bool closeAfterOpen,
                                                               bool isEmbeddedPage,

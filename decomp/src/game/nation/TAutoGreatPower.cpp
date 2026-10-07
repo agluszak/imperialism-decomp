@@ -246,7 +246,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::SorryYouLose(void) {
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLost, this->nationSlot, -3);
+    g_pGameFlowState->SendGameControl(kControlTagLost, this->nationSlot, -3);
   }
 }
 
@@ -412,9 +412,8 @@ void TAutoGreatPower::SetDiplomacyPolicies() {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b20
-bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
-                                                                       short policyCode) {
-  return TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetClass, policyCode);
+bool TAutoGreatPower::SetDiplomacyPolicyTo(short targetClass, short policyCode) {
+  return TGreatPower::SetDiplomacyPolicyTo(targetClass, policyCode);
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b50
@@ -512,7 +511,7 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
   if (allBeatable) {
     for (int helperNation = 0; helperNation < kMajorNationCount; ++helperNation) {
       if (beatableByNation[helperNation]) {
-        this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(helperNation, 1, targetNation);
+        this->DeclareWarOn(helperNation, 1, targetNation);
       }
     }
     TMinor* minor = g_apSecondaryNationStateSlots[targetNation];
@@ -559,10 +558,10 @@ int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, c
     float combinedScore = standingScore + ratioScore;
     if (this->GetWarNumber() <= combinedScore) {
       if (swapRoles == 0) {
-        this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(sourceNation, 2, targetNation);
+        this->DeclareWarOn(sourceNation, 2, targetNation);
         return 1;
       }
-      this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNation, 2, sourceNation);
+      this->DeclareWarOn(targetNation, 2, sourceNation);
       return 1;
     }
     if (swapRoles == 0) {
@@ -1112,12 +1111,9 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e9ed0
-void TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot,
-                                                                    int transitionMode,
-                                                                    int sourceNationSlot) {
+void TAutoGreatPower::DeclareWarOn(int targetNationSlot, int transitionMode, int sourceNationSlot) {
   this->SetEnemy(targetNationSlot);
-  TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNationSlot, transitionMode,
-                                                             sourceNationSlot);
+  TGreatPower::DeclareWarOn(targetNationSlot, transitionMode, sourceNationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004e9f10

@@ -573,9 +573,9 @@ void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int n
   }
   if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
-      g_pGameFlowState->SendTreatyEvent(static_cast<short>(eventKind),
-                                        static_cast<unsigned char>(nationA),
-                                        static_cast<unsigned char>(nationB));
+      g_pGameFlowState->SendNewsTreatyEvent(static_cast<short>(eventKind),
+                                            static_cast<unsigned char>(nationA),
+                                            static_cast<unsigned char>(nationB));
     }
     return;
   }
@@ -626,9 +626,9 @@ void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relat
     return;
   }
   if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_pGameFlowState->SendShortageEvent(static_cast<unsigned char>(subjectNation),
-                                        static_cast<unsigned char>(affectedNation),
-                                        static_cast<unsigned char>(relatedNation));
+    g_pGameFlowState->SendNewsShortageEvent(static_cast<unsigned char>(subjectNation),
+                                            static_cast<unsigned char>(affectedNation),
+                                            static_cast<unsigned char>(relatedNation));
     return;
   }
 
@@ -660,8 +660,8 @@ void TNewsMgr::AddMiscEvent(int nationSlotOrAll, int storyCode, bool isReplayByp
     if (!isReplayBypass) {
       bool multiplayerActive = simMgr->multiplayerSessionRole != kSessionRoleStandalone;
       if (multiplayerActive) {
-        g_pGameFlowState->SendMiscEvent(static_cast<unsigned char>(nationSlotOrAll),
-                                        static_cast<short>(storyCode));
+        g_pGameFlowState->SendNewsMiscEvent(static_cast<unsigned char>(nationSlotOrAll),
+                                            static_cast<short>(storyCode));
         return;
       }
     }

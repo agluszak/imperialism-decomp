@@ -62,7 +62,7 @@ void THostGreatPower::ReplyToDiplomacyOffers(void) {
 // FUNCTION: IMPERIALISM 0x00541170
 void THostGreatPower::SorryYouLose(void) {
   if (nationLostEventDispatched == 0) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLost, nationSlot | 0xff00, -3);
+    g_pGameFlowState->SendGameControl(kControlTagLost, nationSlot | 0xff00, -3);
     nationLostEventDispatched = true;
   }
 

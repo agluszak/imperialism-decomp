@@ -193,7 +193,7 @@ void TCountry::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7070
-void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
+void TCountry::MultiReadFrom(TStream* stream, int unusedArg) {
   stream->ReadBytes(&this->encodedNationSlot, 2);
   stream->ReadBytes(&this->treasuryValue, 4);
   stream->ReadBytes(&this->homeTileIndex, 4);
@@ -371,8 +371,7 @@ bool TCountry::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, shor
 // FUNCTION: IMPERIALISM 0x004d7b20
 void TCountry::ChangeMaster(int targetNationSlot, int mode) {
   if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
-    g_pGameFlowState->DispatchJoinEmpireModeEventPacket24_27(this->nationSlot, targetNationSlot,
-                                                             mode);
+    g_pGameFlowState->SendChangeMaster(this->nationSlot, targetNationSlot, mode);
   }
 
   if (mode == 1) {

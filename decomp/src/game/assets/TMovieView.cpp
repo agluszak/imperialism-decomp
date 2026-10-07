@@ -72,14 +72,14 @@ bool TMovieView::OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e24e0
-void TMovieView::PlayMovieIfActive() {
+void TMovieView::PlayTheMovie() {
   if (movieWindowState != 0) {
     movieWindowState->Play();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005e2500
-void TMovieView::StopMovieIfActive() {
+void TMovieView::StopMovie() {
   if (movieWindowState != 0) {
     movieWindowState->Stop();
   }

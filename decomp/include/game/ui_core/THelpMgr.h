@@ -38,8 +38,8 @@ public:
   // Clears the per-help-set rank and pending flag at the start of a new game/turn flow.
   virtual void ResetHelpSetRanksAndFlags(); // slot 0x0b 0x500f10
 
-  void NoOpDiplomacyPolicyStateChangedHook(int policyOrGrant, int targetNation,
-                                           int acceptedFlag); // 0x5033e0
+  void DiplomacyMsg(int policyOrGrant, int targetNation,
+                    int acceptedFlag); // 0x5033e0
 
   void HandlePostDispatchTurnStateEventUpdates();
 

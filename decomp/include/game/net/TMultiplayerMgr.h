@@ -83,8 +83,8 @@ public:
   bool IsTimelyMessage(NetMessage* packet);
   void QueueTimelyMessage(TurnEventQueuePacket* node);
   void InstallCohandler(TEventHandler* nContext, bool fEnable);
-  void DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, int field1CValue,
-                                               const char* senderText, const char* messageText);
+  void SendGpSelection(int reasonCode, int field1CValue, const char* senderText,
+                       const char* messageText);
   bool ResetNationStatusSlotsAndInitializeNameControls(TView* panel);
   enum TurnEvent11MapOffsetBase { kTurnEvent11TerrainStateBase = 0, kTurnEvent11CityScoreBase = 1 };
   void DoGameDataHunk(TurnEvent2SyncPacket* packet);      // 0x5447e0
@@ -100,23 +100,24 @@ public:
                          int trackedPayload); // 0x5498d0
   void SendDealResults(bool broadcast, short sourceNation, short targetNation, short amount,
                        short maximumAmount, short commodityType, short shortfallFlag); // 0x5499b0
-  void SendMiscEvent(unsigned char nationSlotOrAll, short storyCode);                  // 0x549720
-  void SendTreatyEvent(short eventKind, unsigned char nationA, unsigned char nationB); // 0x5495e0
-  void SendShortageEvent(unsigned char subjectNation, unsigned char affectedNation,
-                         unsigned char relatedNation); // 0x549680
+  void SendNewsMiscEvent(unsigned char nationSlotOrAll, short storyCode);              // 0x549720
+  void SendNewsTreatyEvent(short eventKind, unsigned char nationA,
+                           unsigned char nationB); // 0x5495e0
+  void SendNewsShortageEvent(unsigned char subjectNation, unsigned char affectedNation,
+                             unsigned char relatedNation); // 0x549680
   void SendTradeOffer(short respondingNation, short offeringNation, short proposedAmount,
                       short maxAmount, short commodityType); // 0x5497b0
   void SendStreamObject(unsigned long payloadTag, TObject* payloadObject,
                         int destinationSlot); // 0x549a90
-  void DispatchTaggedGameStateEvent1F20(int statusTag, int value,
-                                        int nationSlotOrMode); // 0x54a340
+  void SendGameControl(int statusTag, int value,
+                       int nationSlotOrMode); // 0x54a340
   // Event-8 lobby text packet: source slot plus the manager's player-name pair.
   void DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot); // 0x54a410
-  void CreateAndSendTurnEvent0C_Text256AndTwoFlags(CString* text, unsigned char firstFlag,
-                                                   unsigned char secondFlag); // 0x54aa10
-  void DispatchCityRedrawInvalidateEvent(short cityId);                       // 0x54abf0
-  void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
-                                              int mode);               // 0x54c5a0
+  void SendVerbalMessage(CString* text, unsigned char firstFlag,
+                         unsigned char secondFlag);     // 0x54aa10
+  void DispatchCityRedrawInvalidateEvent(short cityId); // 0x54abf0
+  void SendChangeMaster(int sourceNation, int targetNation,
+                        int mode);                                     // 0x54c5a0
   bool ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
   bool ResetLocalUiStateAndShowMultiplayerSetup();                     // 0x545660
   bool ResetGameFlowStateAndShowMainMenu();                            // 0x544f30
@@ -132,20 +133,20 @@ public:
   bool InitializeProtocolOptionControlFromProvider(TView* provider);            // 0x544e70
   void SetDialogModeTagInitAndInvokeNoOpHook();                                 // 0x54c630
   void NoOpCallbackRet4(void* param);
-  void EmitTacticalCommandPacket(int commandTag, TTacticalUnit* unit, int arg3,
-                                 int arg4);         // 0x54c680
+  void SendTacLa(int commandTag, TTacticalUnit* unit, int arg3,
+                 int arg4);                         // 0x54c680
   void SendTacticalBattle(TTacticalBattle* battle); // 0x54c6c0
-  void EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
-                                     TTacticalUnit* targetUnit, int damageA, int damageB,
-                                     int effectCode); // 0x54c6a0
-  void DiscardPlayer(int nationId);                   // 0x54c7d0
-  bool WaitForClients();                              // 0x54cb80
-  void ResetNationStatusArraysAndTurnEventContext();  // 0x54c6e0
-  bool HandleActiveNationAwolTransitionOrRecovery();  // 0x54c800
-  void CreateAndQueueTurnEventPacketTagPOGC();        // 0x54cde0
-  void CreateAndSendTurnEvent2D_TableRowShortArray(short nationSlot,
-                                                   int destinationSlot); // 0x54d3d0
-  void RouteAndProcessDiplomacyTurnStateEventQueue();                    // 0x545730
+  void SendTacLaEx(int commandTag, TTacticalUnit* attackerUnit, TTacticalUnit* targetUnit,
+                   int damageA, int damageB,
+                   int effectCode);                  // 0x54c6a0
+  void DiscardPlayer(int nationId);                  // 0x54c7d0
+  bool WaitForClients();                             // 0x54cb80
+  void ResetNationStatusArraysAndTurnEventContext(); // 0x54c6e0
+  bool HandleActiveNationAwolTransitionOrRecovery(); // 0x54c800
+  void CreateAndQueueTurnEventPacketTagPOGC();       // 0x54cde0
+  void SendMinorStateMessage(short nationSlot,
+                             int destinationSlot);    // 0x54d3d0
+  void RouteAndProcessDiplomacyTurnStateEventQueue(); // 0x545730
 
   void EnsureGameFlowStateAndShowMultiplayerSetup();
 
@@ -160,27 +161,27 @@ public:
   void ReceiveStreamMessage(NetMessage* packet);
   void CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream, short nationSlot);
   void CreateCivilianWorkOrdersForSelectedNations(TStream* stream, short nationSlot);
-  void ReplaceNationStateForSlotAndRefreshStatus(int nationSlot);
+  void DehumanizePlayer(int nationSlot);
   bool AttemptSave(int mode, char* label, bool showFailureDialog);
   void RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot);
 
-  void EmitNationDiplomacyNeedStateSnapshotEvent15(bool broadcastFlag, int nationSlot);
+  void SendBankStatement(bool broadcastFlag, int nationSlot);
 
-  void SetNationStatusCodeAndEmitEvent25(int statusTag, int nationSlot);
+  void SetPlayerStatus(int statusTag, int nationSlot);
 
-  void EmitTurnEvent19NationStateArraysForSlot(short nationSlot, int destinationSlot);
+  void SendNationStateMessage(short nationSlot, int destinationSlot);
 
-  void EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot, int destinationSlot);
+  void SendCityStateMessage(int nationSlot, int destinationSlot);
 
   void PublishTerrainDescriptorAndNotifyOrderListeners(TStream* stream, int terrainSlot);
   void PublishNationDescriptorAndNotifyOrderListeners(TStream* stream, int nationFilter);
   void WriteMessageTo(TStream* stream, short eventTag, short destinationSlot, long payload);
   void SendStreamMessage(short eventTag, short destinationSlot, long payload); // 0x549ad0
   void SendTradeBook();
-  void SetNationStatusAwolByNationIdAndDispatchNotices(int networkId);
+  void WeLostAClient(int networkId);
   int IsSpecialNationDialogModeActive();
-  int GetNationStatusCodeForSlotOrActiveNation(int slot);
-  void RefreshPoseMessageDialogNationSelectionControls(int unused);
+  int GetPlayerStatus(int slot);
+  void PoseMessageDialog(int unused);
 };
 
 int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId);
@@ -190,4 +191,4 @@ bool ReturnTrueRuntimeCredentialInitStub();
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);
 
-extern "C" void __stdcall DispatchTileRedrawInvalidateEvent(short tileIndex);
+extern "C" void __stdcall SendTileNews(short tileIndex);

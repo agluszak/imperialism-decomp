@@ -227,7 +227,7 @@ void TMapUberPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
         // else: falls through with no further action in the original.
         return;
       }
-      g_pGameFlowState->RefreshPoseMessageDialogNationSelectionControls(-1);
+      g_pGameFlowState->PoseMessageDialog(-1);
       return;
     }
   } else if (commandId == 0xc) {

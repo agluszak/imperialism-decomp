@@ -50,7 +50,7 @@ public:
   void ReadFrom(TStream* stream) override; // body 0x004d92e0
   void Free() override;                    // body 0x004d9160
   void WriteCoreFieldsToStream(TStream* stream) override;
-  void ReadCoreFieldsFromStream(TStream* stream, int unusedArg) override;
+  void MultiReadFrom(TStream* stream, int unusedArg) override;
 
   // ---- diplomacy grants / policies / proposal queue ----
   void SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) override;
@@ -185,8 +185,8 @@ public:
   // ORACLE: Mac names TGreatPower::SetDiplomacyPolicies().
   virtual void SetDiplomacyPolicies();                                           // index 114
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void); // index 115
-  virtual bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
-                                                                short policyCode); // index 116
+  virtual bool SetDiplomacyPolicyTo(short targetClass,
+                                    short policyCode); // index 116
   virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int targetNation,
                                                                 int grantValue); // index 117
   // ORACLE: Mac names TGreatPower::GiveGrantTo(short).
@@ -259,9 +259,7 @@ public:
   virtual int ConsiderWarOfIntervention(int targetNation, int sourceNation); // slot 0x27c
   virtual int ConsiderWarOfAlliance(int targetNation, int sourceNation,
                                     char swapRoles); // slot 0x280
-  virtual void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot,
-                                                             int transitionMode,
-                                                             int sourceNationSlot);
+  virtual void DeclareWarOn(int targetNationSlot, int transitionMode, int sourceNationSlot);
   virtual void SelectAndQueueAdvisoryMapMissions(void); // body 0x004e1f20
   virtual float GetPeaceThreat(int targetNation);
   virtual void ReplaceObsoleteMissions(); // slot 0xa4 — body 0x004e2190

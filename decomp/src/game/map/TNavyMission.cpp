@@ -623,7 +623,7 @@ void TNavyMission::ProjectEquipage(float* vector, TZone* nearZone, short distanc
 }
 
 // FUNCTION: IMPERIALISM 0x00537b20
-void TNavyMission::AccumulateWeightedShipEquipage(TShip* ship, float* vector, char positive) {
+void TNavyMission::AccumulateShipEquipage(TShip* ship, float* vector, char positive) {
   short distanceIndex = 0;
   if (GetActiveTargetZone() != 0) {
     distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZone());

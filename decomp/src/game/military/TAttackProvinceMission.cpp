@@ -223,8 +223,8 @@ void TAttackProvinceMission::GiveOrders() {
             g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode;
         if (g_apNationStates[nationId]->diplomacyPolicyByNation[targetOwnerNation] !=
             kDiplomacyProposalDeclareWar) {
-          g_apNationStates[nationId]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-              targetOwnerNation, kDiplomacyProposalDeclareWar);
+          g_apNationStates[nationId]->SetDiplomacyPolicyTo(targetOwnerNation,
+                                                           kDiplomacyProposalDeclareWar);
         }
       }
     }

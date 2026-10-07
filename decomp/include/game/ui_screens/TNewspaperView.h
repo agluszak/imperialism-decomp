@@ -20,10 +20,10 @@ public:
 
   void StuffValues(int pageIndex);
   void CreateVariables(newsStory* story, CString* tokens);
-  void BuildLocalizedTokenListFromBitmaskWithConjunction(CString* out, int bitmask);
-  void BuildLocalizedNationListFromBitmaskWithConjunction(CString* out, int bitmask);
+  void ItemParmList(CString* out, int bitmask);
+  void CountryParmList(CString* out, int bitmask);
   void ProvinceParmList(CString& out, int cityRecordIndex);
-  int AppendInterNationEventSummaryTextEntry(int column, int y, int recordOffset, int recordLength,
-                                             TextStyle* style, int styleWord, CString* tokens);
+  int AddTextView(int column, int y, int recordOffset, int recordLength, TextStyle* style,
+                  int styleWord, CString* tokens);
 };
 ASSERT_SIZE(TNewspaperView, 0x98);

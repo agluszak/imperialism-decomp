@@ -15,7 +15,7 @@ TCheater::~TCheater() {}
 
 IMPLEMENT_DYNCREATE(TCheater, TView)
 // FUNCTION: IMPERIALISM 0x004b14a0
-void TCheater::ConstructTCheaterBaseState(TView* panel, int unusedArg) {
+void TCheater::ICheater(TView* panel, int unusedArg) {
   int frameOffset[2] = {0, 0};
   int frameSize[2] = {0x280, 0x1e0};
   int captionSize[2] = {0x80, 0x20};

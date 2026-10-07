@@ -47,7 +47,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
           if (g_pGameFlowState->networkSavePending != 0) {
             saveResult = g_pGameFlowState->AttemptSave(0xa1, NULL, false);
           }
-          g_pGameFlowState->DispatchTaggedGameStateEvent1F20(tag, saveResult, -3);
+          g_pGameFlowState->SendGameControl(tag, saveResult, -3);
         } else if (tag == kControlTagQuit) {
           g_pAmbitApplication->PostWmCloseToMainThreadWindow();
         } else {

@@ -507,11 +507,10 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
       barScale = (float)barRange / (float)barSteps;
     }
     int scaledMetricValue = (int)((float)tradeMetricValue * barScale);
-    barControl->UpdateBarValuesAndRefresh(static_cast<short>(scaledMetricValue),
-                                          static_cast<short>(barRange));
+    barControl->SetAmt(static_cast<short>(scaledMetricValue), static_cast<short>(barRange));
     return;
   }
 
-  barControl->UpdateBarValuesAndRefresh(0, static_cast<short>(barRange));
+  barControl->SetAmt(0, static_cast<short>(barRange));
   greenControl->Show(0, 1);
 }

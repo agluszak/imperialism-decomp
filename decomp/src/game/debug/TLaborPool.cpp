@@ -30,7 +30,7 @@ void TLaborPool::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b2270
-short TLaborPool::TransferToLowSkillFirst(TLaborPool* destination, short amount) {
+short TLaborPool::TransferWorst(TLaborPool* destination, short amount) {
   if (lowSkillCount >= amount) {
     lowSkillCount = static_cast<short>(lowSkillCount - amount);
     destination->lowSkillCount = static_cast<short>(destination->lowSkillCount + amount);

@@ -32,7 +32,7 @@ void TAmtBar::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00588630
-void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
+void TAmtBar::SetAmt(short valueAt60, short valueAt62) {
   this->rangeOrMaxValue = valueAt60;
   this->stepOrCurrentValue = valueAt62;
   this->RefreshControl();

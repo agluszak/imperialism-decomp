@@ -28,9 +28,8 @@ TIncludeView::TIncludeView()
 TIncludeView::~TIncludeView() {}
 
 // FUNCTION: IMPERIALISM 0x0048cf10
-void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* mainView,
-                                               short eventCode, const CPoint& anchorPoint,
-                                               CString* labelText, int flag) {
+void TIncludeView::IIncludeView(TView* resourceContext, TView* mainView, short eventCode,
+                                const CPoint& anchorPoint, CString* labelText, int flag) {
   if (mainView != NULL) {
     nativeWindow = mainView->nativeWindow;
   }

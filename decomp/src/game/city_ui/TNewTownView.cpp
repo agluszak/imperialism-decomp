@@ -80,7 +80,7 @@ void TNewTownView::StuffValues(TTown* town) {
   }
   name->BecomeTarget();
   name->GetCurrentText(&townName);
-  name->SetEditSelectionAndScrollCaret(0, static_cast<short>(townName.GetLength()), 1);
+  name->SetSelection(0, static_cast<short>(townName.GetLength()), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004bdc10

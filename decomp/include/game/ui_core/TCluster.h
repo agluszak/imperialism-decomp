@@ -14,7 +14,7 @@ public:
   virtual TObject* ShallowClone() override; // slot 0x08 0x4918a0
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override;             // slot 0x0f 0x00491650
-  virtual int GetSelectedChildTag();                        // slot 0x71 0x491770
+  virtual int GetCurrentChoice();                           // slot 0x71 0x491770
   virtual void SetSelectedChildTagAndRefresh(int childTag); // slot 0x72 0x491790 (1 arg; RET 4)
   int selectedChildTag;
 

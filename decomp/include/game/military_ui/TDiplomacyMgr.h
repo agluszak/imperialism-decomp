@@ -43,10 +43,8 @@ public:
                                                          NationSlot minorNationSlot); // 21 (0x54)
   virtual bool IsSpecialRelationTargetForMinorNationSlot(NationSlot nationSlot,
                                                          NationSlot minorNationSlot); // 22 (0x58)
-  virtual bool
-  ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(NationSlot sourceNation,
-                                                           NationSlot targetNation,
-                                                           eDipAction action); // 23 (0x5c)
+  virtual bool IsActionAllowed(NationSlot sourceNation, NationSlot targetNation,
+                               eDipAction action); // 23 (0x5c)
   virtual bool HasAllianceGuardForNationPair(NationSlot sourceNation,
                                              NationSlot targetNation); // 24 (0x60)
   virtual bool HasNationPairNeedLevel300(NationSlot sourceNation,

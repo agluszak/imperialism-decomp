@@ -85,7 +85,7 @@ public:
 
   void CombineForce(TZone* location, TTaskForce*& taskForce); // 0x536d60
 
-  void AccumulateWeightedShipEquipage(TShip* ship, float* vector, char positive);
+  void AccumulateShipEquipage(TShip* ship, float* vector, char positive);
 
   static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
                                                                            TZone* nodeContext);

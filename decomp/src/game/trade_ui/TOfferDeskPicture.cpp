@@ -291,8 +291,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   purchaseControl->SetControlValue(proposedAmount, 0);
   purchaseControl->BecomeTarget();
   purchaseControl->GetCurrentText(&proposedAmountText);
-  purchaseControl->SetEditSelectionAndScrollCaret(
-      0, static_cast<short>(proposedAmountText.GetLength()), 1);
+  purchaseControl->SetSelection(0, static_cast<short>(proposedAmountText.GetLength()), 1);
 
   SetGlobalBlitTransparentColorRaw(purchaseControl->stylePayload->packedColor);
   g_pDisplayMgr->SetHiliteColor(&hiliteColor);
@@ -604,8 +603,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
     }
     g_pDisplayMgr->ModalMessage(localizedMessage, g_ptControlStringModalMessage);
     purchaseControl->GetCurrentText(&errorMessage);
-    purchaseControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(errorMessage.GetLength()),
-                                                    1);
+    purchaseControl->SetSelection(0, static_cast<short>(errorMessage.GetLength()), 1);
   }
 }
 

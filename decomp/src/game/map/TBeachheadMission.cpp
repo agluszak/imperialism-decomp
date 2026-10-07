@@ -68,8 +68,7 @@ void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   ownerCode = g_pGlobalMapState->cityScoreTable[parentMission->targetProvince].ownerNationCode;
   if (g_apNationStates[nationId]->diplomacyPolicyByNation[ownerCode] !=
       kDiplomacyProposalDeclareWar) {
-    g_apNationStates[nationId]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-        ownerCode, kDiplomacyProposalDeclareWar);
+    g_apNationStates[nationId]->SetDiplomacyPolicyTo(ownerCode, kDiplomacyProposalDeclareWar);
   }
 }
 

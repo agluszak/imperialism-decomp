@@ -14,7 +14,7 @@ THandleStream::THandleStream() {
 }
 
 // FUNCTION: IMPERIALISM 0x00489660
-void THandleStream::AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int growthSize) {
+void THandleStream::IHandleStream(HGLOBAL memoryHandle, int growthSize) {
   this->growthSize = growthSize;
   this->streamPosition = 0;
   if (memoryHandle != 0) {

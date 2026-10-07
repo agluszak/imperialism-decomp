@@ -790,7 +790,7 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
 // FUNCTION: IMPERIALISM 0x0050bad0
 void TMacViewMgr::RegenerateCountryRegions() {
   if (g_pSimMgr->numGreatPowers == 1) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagRege, 0, 0xfffffffd);
+    g_pGameFlowState->SendGameControl(kControlTagRege, 0, 0xfffffffd);
   }
   if (tileStateSlots[0] != 0) {
     RgnHandle regionWrapper = NewRgn();
@@ -1226,7 +1226,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
 }
 
 // FUNCTION: IMPERIALISM 0x0050d310
-void TMacViewMgr::ShowCitySiteSelectorAndWaitForFlag(int unusedArg1, int unusedArg2) {
+void TMacViewMgr::SelectCitySite(int unusedArg1, int unusedArg2) {
   TView* dialog = activeCityProductionView;
   g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), 0);
   short completionFlag = static_cast<short>(dialog->lastIdleTick);

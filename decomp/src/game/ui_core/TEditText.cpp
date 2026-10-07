@@ -132,7 +132,7 @@ CWnd* TEditText::Open() {
 }
 
 // FUNCTION: IMPERIALISM 0x00490a50
-void TEditText::SetEditSelectionAndScrollCaret(short selStart, short selEnd, int unusedFlag) {
+void TEditText::SetSelection(short selStart, short selEnd, int unusedFlag) {
   if (editWindow != NULL) {
     editWindow->SendMessage(0xb1, selStart, selEnd);
     editWindow->SendMessage(0xb7, 0, 0);
@@ -181,7 +181,7 @@ void TEditText::SelectOwner(unsigned char select) {
   if (editWindow != NULL) {
     editWindow->SetFocus();
   }
-  SetEditSelectionAndScrollCaret(0, 0x7fff, select);
+  SetSelection(0, 0x7fff, select);
 }
 
 // FUNCTION: IMPERIALISM 0x00490c70

@@ -25,7 +25,7 @@ public:
   void Free() override;                    // body 0x004d6ba0
 
   virtual void WriteCoreFieldsToStream(TStream* stream);
-  virtual void ReadCoreFieldsFromStream(TStream* stream, int unusedArg);
+  virtual void MultiReadFrom(TStream* stream, int unusedArg);
   virtual void InitialMilitia(void);
   virtual void AddMilitia(int nodeContext);
   virtual void AddToTreasury(int amount);

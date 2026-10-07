@@ -20,7 +20,7 @@ public:
   TCountingStream();
 
   int GetPosition() override;
-  void PrepareForUse();
+  void ICountingStream();
   void SetPosition(int position) override;
   int GetLength() override;
   void SetLength(int length) override;

@@ -747,7 +747,7 @@ void TTacticalBattle::LaSelect(TTacticalUnit* unit, bool remoteFlag) {
   if (!remoteFlag) {
     bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
-      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagSele, unit, 0, 0);
+      g_pGameFlowState->SendTacLa(kControlTagSele, unit, 0, 0);
     }
   }
   if (unit->side != currentSide) {
@@ -1020,8 +1020,7 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit,
   if (!remoteFlag) {
     bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
-      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMove, unit, fromTileIndex,
-                                                  toTileIndex);
+      g_pGameFlowState->SendTacLa(kControlTagMove, unit, fromTileIndex, toTileIndex);
     }
   }
   if (battleView != 0) {
@@ -1351,8 +1350,8 @@ void TTacticalBattle::LaFireOn(TTacticalUnit* attackerUnit, TTacticalUnit* targe
   if (!remoteFlag) {
     bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
-      g_pGameFlowState->EmitTacticalFireCommandPacket(kControlTagFire, attackerUnit, targetUnit,
-                                                      damageA, damageB, effectCode2C);
+      g_pGameFlowState->SendTacLaEx(kControlTagFire, attackerUnit, targetUnit, damageA, damageB,
+                                    effectCode2C);
     }
   }
   targetUnit->ApplyDamage(damageA, damageB);
@@ -1704,7 +1703,7 @@ void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* uni
   int amount = static_cast<int>(rand()) % 400 + unitType * 250 - 5600;
   bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (multiplayerActive) {
-    g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMine, 0, tileIndex, amount);
+    g_pGameFlowState->SendTacLa(kControlTagMine, 0, tileIndex, amount);
   }
   ConsumeFortStrengthPointsAndInvalidateIfDepleted(tileIndex, amount);
   if (battleView != 0) {
@@ -1720,7 +1719,7 @@ void TTacticalBattle::HandleTacticalCommandTag_mine(TacticalTileIndex tileIndex,
   if (!remoteFlag) {
     bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
-      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMine, 0, tileIndex, amount);
+      g_pGameFlowState->SendTacLa(kControlTagMine, 0, tileIndex, amount);
     }
   }
   ConsumeFortStrengthPointsAndInvalidateIfDepleted(tileIndex, amount);
@@ -1753,7 +1752,7 @@ void TTacticalBattle::HandleTacticalCommandTag_digg(TTacticalUnit* unit,
   if (!remoteFlag) {
     bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
-      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagDigg, unit, targetTileIndex, 0);
+      g_pGameFlowState->SendTacLa(kControlTagDigg, unit, targetTileIndex, 0);
     }
   }
   TacticalTileIndex unitTileIndex = unit->tileIndex;
@@ -1810,7 +1809,7 @@ void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newM
   if (!remoteFlag) {
     bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
-      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagRaly, unit, newMorale, newState);
+      g_pGameFlowState->SendTacLa(kControlTagRaly, unit, newMorale, newState);
     }
   }
   int strength = unit->strength;
@@ -2129,7 +2128,7 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, Tactical
   if (!remoteFlag) {
     bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
-      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagDepl, unit, tileIndex, 0);
+      g_pGameFlowState->SendTacLa(kControlTagDepl, unit, tileIndex, 0);
     }
   }
   unit->tileIndex = tileIndex;

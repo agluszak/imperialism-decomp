@@ -273,8 +273,8 @@ private:
   short FirstValidWarTarget() const {
     for (short nation = 0; nation < kMajorNationCount; ++nation) {
       if (nation != ActiveNation() && g_apTerrainTypeDescriptorTable[nation] != 0 &&
-          g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-              ActiveNation(), nation, kDipActionDeclareWar)) {
+          g_pDiplomacyTurnStateManager->IsActionAllowed(ActiveNation(), nation,
+                                                        kDipActionDeclareWar)) {
         return nation;
       }
     }

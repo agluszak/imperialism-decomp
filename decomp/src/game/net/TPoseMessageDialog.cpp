@@ -9,7 +9,7 @@
 
 // FUNCTION: IMPERIALISM 0x0054aff0
 void TPoseMessageDialog::DoIt() {
-  g_pGameFlowState->RefreshPoseMessageDialogNationSelectionControls(kickedByNationSlot);
+  g_pGameFlowState->PoseMessageDialog(kickedByNationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x0054b040

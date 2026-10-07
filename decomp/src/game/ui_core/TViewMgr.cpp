@@ -1182,7 +1182,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 
   TIncludeView* packet = ::new TIncludeView();
   CString emptyText(g_szEmptyString);
-  packet->BuildTurnEventFactoryPacket(NULL, mainView, newCode, anchorPoint, &emptyText, 1);
+  packet->IIncludeView(NULL, mainView, newCode, anchorPoint, &emptyText, 1);
   packet->DoPostCreate(0);
   packet->controlTag = kControlTagIncl; // 'Incl'
   packet->RefreshControl();

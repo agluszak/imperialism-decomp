@@ -630,12 +630,11 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   case kDipActionJoinEmpire: {
     if (g_apNationStates[selectedTerrainIndex]->diplomacyPolicyByNation[activeNation] ==
         kDiplomacyProposalJoinEmpire) {
-      g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-          activeNation, -1);
+      g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation, -1);
       break;
     }
-    if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-            selectedTerrainIndex, activeNation, action)) {
+    if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                       action)) {
       rejectAction = true;
       break;
     }
@@ -643,19 +642,18 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
       clearAction = true;
       break;
     }
-    g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-        activeNation, kDiplomacyProposalJoinEmpire);
+    g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation,
+                                                                 kDiplomacyProposalJoinEmpire);
     break;
   }
   case kDipActionAlliance: {
     if (g_apNationStates[selectedTerrainIndex]->diplomacyPolicyByNation[activeNation] ==
         kDiplomacyProposalAlliance) {
-      g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-          activeNation, -1);
+      g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation, -1);
       break;
     }
-    if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-            selectedTerrainIndex, activeNation, action)) {
+    if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                       action)) {
       rejectAction = true;
       break;
     }
@@ -663,56 +661,53 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
       clearAction = true;
       break;
     }
-    g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-        activeNation, kDiplomacyProposalAlliance);
+    g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation,
+                                                                 kDiplomacyProposalAlliance);
     break;
   }
   case kDipActionNonAggressionPact: {
     if (g_apNationStates[selectedTerrainIndex]->diplomacyPolicyByNation[activeNation] ==
         kDiplomacyProposalNonAggressionPact) {
-      g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-          activeNation, -1);
+      g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation, -1);
       break;
     }
-    if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-            selectedTerrainIndex, activeNation, action)) {
+    if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                       action)) {
       rejectAction = true;
       break;
     }
-    g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+    g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(
         activeNation, kDiplomacyProposalNonAggressionPact);
     break;
   }
   case kDipActionPeaceTreaty: {
     if (g_apNationStates[selectedTerrainIndex]->diplomacyPolicyByNation[activeNation] ==
         kDiplomacyProposalPeaceTreaty) {
-      g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-          activeNation, -1);
+      g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation, -1);
       break;
     }
-    if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-            selectedTerrainIndex, activeNation, action)) {
+    if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                       action)) {
       rejectAction = true;
       break;
     }
-    g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-        activeNation, kDiplomacyProposalPeaceTreaty);
+    g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation,
+                                                                 kDiplomacyProposalPeaceTreaty);
     break;
   }
   case kDipActionDeclareWar: {
     if (g_apNationStates[selectedTerrainIndex]->diplomacyPolicyByNation[activeNation] ==
         kDiplomacyProposalDeclareWar) {
-      g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-          activeNation, -1);
+      g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation, -1);
       break;
     }
-    if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-            selectedTerrainIndex, activeNation, action)) {
+    if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                       action)) {
       rejectAction = true;
       break;
     }
-    g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-        activeNation, kDiplomacyProposalDeclareWar);
+    g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation,
+                                                                 kDiplomacyProposalDeclareWar);
     break;
   }
   case kDipActionOneTimeGrant: {
@@ -722,8 +717,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
           g_apNationStates[selectedTerrainIndex]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
               activeNation, -1);
     } else {
-      if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-              selectedTerrainIndex, activeNation, action)) {
+      if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                         action)) {
         rejectAction = true;
         break;
       }
@@ -755,8 +750,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
           g_apNationStates[selectedTerrainIndex]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
               activeNation, -1);
     } else {
-      if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-              selectedTerrainIndex, activeNation, action)) {
+      if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                         action)) {
         rejectAction = true;
         break;
       }
@@ -783,8 +778,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   case kDipActionTradeSubsidy:
   case kDipActionTradePolicy:
   case kDipActionBoycott: {
-    if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-            selectedTerrainIndex, activeNation, action)) {
+    if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                       action)) {
       rejectAction = true;
       break;
     }
@@ -823,17 +818,15 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     if (g_apNationStates[selectedTerrainIndex]->diplomacyPolicyByNation[activeNation] ==
         kDiplomacyProposalBuildEmbassy) {
       policyUpdated =
-          g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-              activeNation, -1);
+          g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation, -1);
     } else {
-      if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-              selectedTerrainIndex, activeNation, action)) {
+      if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                         action)) {
         rejectAction = true;
         break;
       }
-      policyUpdated =
-          g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-              activeNation, kDiplomacyProposalBuildEmbassy);
+      policyUpdated = g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(
+          activeNation, kDiplomacyProposalBuildEmbassy);
     }
     refreshToolbar = policyUpdated;
     break;
@@ -842,17 +835,15 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     if (g_apNationStates[selectedTerrainIndex]->diplomacyPolicyByNation[activeNation] ==
         kDiplomacyProposalBuildConsulate) {
       policyUpdated =
-          g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-              activeNation, -1);
+          g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(activeNation, -1);
     } else {
-      if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-              selectedTerrainIndex, activeNation, action)) {
+      if (!g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation,
+                                                         action)) {
         rejectAction = true;
         break;
       }
-      policyUpdated =
-          g_apNationStates[selectedTerrainIndex]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-              activeNation, kDiplomacyProposalBuildConsulate);
+      policyUpdated = g_apNationStates[selectedTerrainIndex]->SetDiplomacyPolicyTo(
+          activeNation, kDiplomacyProposalBuildConsulate);
     }
     refreshToolbar = policyUpdated;
     break;
@@ -996,8 +987,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   if (hit) {
     eDipAction action = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
     bool valid =
-        g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-            selectedTerrainIndex, activeNation, action);
+        g_pDiplomacyTurnStateManager->IsActionAllowed(selectedTerrainIndex, activeNation, action);
 
     short cursorId;
     if (!valid) {

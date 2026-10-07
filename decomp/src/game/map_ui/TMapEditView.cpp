@@ -364,7 +364,7 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
 
   TCluster* typeControl = static_cast<TCluster*>(dialog->ResolveControlByTag(kControlTagType));
   typeControl->AssertValid();
-  if (typeControl->GetSelectedChildTag() == static_cast<int>(kControlTagCity)) {
+  if (typeControl->GetCurrentChoice() == static_cast<int>(kControlTagCity)) {
     tile.activeFlags |= 1;
   }
   dialog->Close();

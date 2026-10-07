@@ -450,8 +450,8 @@ bool TDiplomacyMgr::IsSpecialRelationTargetForMinorNationSlot(NationSlot nationS
 }
 
 // FUNCTION: IMPERIALISM 0x004ef700
-bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-    NationSlot sourceNationSlot, NationSlot targetNationSlot, eDipAction action) {
+bool TDiplomacyMgr::IsActionAllowed(NationSlot sourceNationSlot, NationSlot targetNationSlot,
+                                    eDipAction action) {
   bool isValid = false;
   if (targetNationSlot == sourceNationSlot) {
     ReadGlobalTDiplomacyTurnStateManager()->proposalArrayMode = 0xe;
@@ -840,7 +840,7 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
                 g_pNewsMgr->AddTreatyEvent(kInterNationEventEmbassyEstablished, row, col, false);
               } else if (relationCode == kDiplomacyProposalDeclareWar) {
                 if (!IsNationPairAtWar(row, col)) {
-                  g_apNationStates[row]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(col, 4, -1);
+                  g_apNationStates[row]->DeclareWarOn(col, 4, -1);
                 }
               } else {
                 g_apTerrainTypeDescriptorTable[col]->AddOfferFrom(

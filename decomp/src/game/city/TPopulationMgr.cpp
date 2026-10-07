@@ -199,7 +199,7 @@ void TPopulationMgr::Eat() {
     lostPopulation->mediumSkillCount = 0;
     lostPopulation->lowSkillCount = 0;
     lostPopulation->highSkillCount = 0;
-    baselineSlots->TransferToLowSkillFirst(lostPopulation, unmetFoodNeed);
+    baselineSlots->TransferWorst(lostPopulation, unmetFoodNeed);
     lostPopulation->Free();
     populationCount = static_cast<short>(populationCount - unmetFoodNeed);
     populationCountFloat -= static_cast<float>(unmetFoodNeed);
@@ -208,8 +208,7 @@ void TPopulationMgr::Eat() {
 
   Copy(baselineSlots, productionSlots);
   if (substitutedFoodCount != 0) {
-    productionSlots->TransferToLowSkillFirst(pendingDeltaSlots,
-                                             static_cast<short>(substitutedFoodCount));
+    productionSlots->TransferWorst(pendingDeltaSlots, static_cast<short>(substitutedFoodCount));
   }
   city->foodSubstitutionCount = static_cast<short>(substitutedFoodCount);
   city->starvationPopulationLoss = static_cast<short>(starvationLoss);

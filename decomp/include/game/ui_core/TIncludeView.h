@@ -17,8 +17,8 @@ public:
   short padding72;
 
   // Turn-event factory packet builder (thiscall on the freshly-constructed entry).
-  void BuildTurnEventFactoryPacket(TView* resourceContext, TView* mainView, short eventCode,
-                                   const CPoint& anchorPoint, CString* labelText, int flag);
+  void IIncludeView(TView* resourceContext, TView* mainView, short eventCode,
+                    const CPoint& anchorPoint, CString* labelText, int flag);
 
   TIncludeView();
 };

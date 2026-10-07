@@ -641,8 +641,8 @@ void TGreatPower::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004da3e0
-void TGreatPower::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
-  TCountry::ReadCoreFieldsFromStream(stream, unusedArg);
+void TGreatPower::MultiReadFrom(TStream* stream, int unusedArg) {
+  TCountry::MultiReadFrom(stream, unusedArg);
 
   if (this->trackedObjectList->GetCount() != 0) {
     this->trackedObjectList->FreePayloads();

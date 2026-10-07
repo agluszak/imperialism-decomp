@@ -248,7 +248,7 @@ void TTedForeignMinister::DoFirstTurnDiplomacy() {
                                                                 candidate) &&
         g_apTerrainTypeDescriptorTable[candidate] != 0) {
       selectedNations[selectedCount] = candidate;
-      greatPower->ApplyDiplomacyPolicyStateForTargetWithCostChecks(candidate, 0x133);
+      greatPower->SetDiplomacyPolicyTo(candidate, 0x133);
       ++selectedCount;
     }
   }
@@ -443,7 +443,7 @@ void TBillForeignMinister::DoFirstTurnDiplomacy() {
                                                                 candidate) &&
         g_apTerrainTypeDescriptorTable[candidate] != 0) {
       selectedNations[selectedCount] = candidate;
-      greatPower->ApplyDiplomacyPolicyStateForTargetWithCostChecks(candidate, 0x133);
+      greatPower->SetDiplomacyPolicyTo(candidate, 0x133);
       ++selectedCount;
     }
   }
@@ -471,7 +471,7 @@ void TBillForeignMinister::MakeNewCity(TCity* city) {
   city->productionAccum[4] =
       static_cast<short>(city->productionAccum[4] + nextLevel - city->productionOrderTable[4]);
   city->productionOrderTable[4] = nextLevel;
-  city->SetOwnerNeedCapA6(static_cast<short>(city->GetOwnerNeedCapA6() + 2));
+  city->SetRollingStock(static_cast<short>(city->GetRollingStock() + 2));
 }
 
 // ===================== TDiplomatForeignMinister (0x659f48) =====================
@@ -497,7 +497,7 @@ void TDiplomatForeignMinister::DoFirstTurnDiplomacy() {
     firstNation = 19;
   }
   for (short nation = firstNation; nation < firstNation + 4; ++nation) {
-    greatPower->ApplyDiplomacyPolicyStateForTargetWithCostChecks(nation, 0x133);
+    greatPower->SetDiplomacyPolicyTo(nation, 0x133);
   }
 }
 
@@ -854,7 +854,7 @@ void TTraderForeignMinister::DoFirstTurnDiplomacy() {
     }
     if (!duplicate && g_apTerrainTypeDescriptorTable[candidate] != 0) {
       selectedNations[selectedCount] = candidate;
-      greatPower->ApplyDiplomacyPolicyStateForTargetWithCostChecks(candidate, 0x133);
+      greatPower->SetDiplomacyPolicyTo(candidate, 0x133);
       ++selectedCount;
     }
   }

@@ -599,7 +599,7 @@ void TSimMgr::CreateCountries(int activate) {
       g_apNationStates[i] = NULL;
       g_apTerrainTypeDescriptorTable[i] = NULL;
     } else {
-      RebuildPrimaryNationStateForSlot(i, activate);
+      CreateGreatPower(i, activate);
     }
   }
 
@@ -608,7 +608,7 @@ void TSimMgr::CreateCountries(int activate) {
       g_apSecondaryNationStateSlots[i] = NULL;
       g_apTerrainTypeDescriptorTable[i] = NULL;
     } else {
-      RebuildSecondaryNationStateForSlot(i);
+      CreateMinor(i);
     }
   }
 
@@ -633,7 +633,7 @@ void TSimMgr::CreateCountries(int activate) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057cda0
-void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
+void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
   short nationSlot = static_cast<short>(slotIndex);
   int nationIndex = nationSlot;
 
@@ -770,7 +770,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057d520
-void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
+void TSimMgr::CreateMinor(int slotIndex) {
   short nationSlot = static_cast<short>(slotIndex);
   if (nationSlot < kMajorNationCount) {
     g_apSecondaryNationStateSlots[nationSlot] = NULL;

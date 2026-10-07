@@ -227,7 +227,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         editControl->InitDialogWindowAndSyncTitleIfChanged(&slotText, 0);
         editControl->PrepareForDrawing();
         editControl->BecomeTarget();
-        editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()), 0);
+        editControl->SetSelection(0, static_cast<short>(slotText.GetLength()), 0);
         editControl->controlTag = kControlTagSlot; // 'slot'
         g_pViewMgr->SetBackColor(0x10);
       }
@@ -468,7 +468,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
   if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(savePath)) {
     if (IsMultiplayerFlowHosting()) {
       g_pGameFlowState->networkSavePending = markSaved;
-      g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagSave, markSaved, -2);
+      g_pGameFlowState->SendGameControl(kControlTagSave, markSaved, -2);
     }
     if (IsMultiplayerFlowHosting() && mode != 0xa1) {
       const char* autosavePrefix = g_pszMultiplayerSavePrefix;

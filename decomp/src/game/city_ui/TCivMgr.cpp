@@ -433,7 +433,7 @@ void TCivMgr::DisbandSelected() {
   if (entry->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
     g_pNewsMgr->AddMiscEvent(g_pSimMgr->GetPlayerCountry(), 0, false);
   }
-  entry->ResetCivWorkOrderAndRefreshCounters();
+  entry->ClearOrders();
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
   if (mapUberPicture != NULL) {
@@ -906,11 +906,11 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
 
   switch (order->unitOrder - kUnitOrderLayRail) {
   case 0:
-    DispatchTileRedrawInvalidateEvent(order->orderTargetIndex);
+    SendTileNews(order->orderTargetIndex);
   case 3:
   case 5:
   case 8:
-    DispatchTileRedrawInvalidateEvent(order->tileIndex);
+    SendTileNews(order->tileIndex);
     return;
   case 1:
   case 2: {
@@ -924,7 +924,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
       if (t == -1) {
         continue;
       }
-      DispatchTileRedrawInvalidateEvent(t);
+      SendTileNews(t);
       short cityIdx = g_pGlobalMapState->terrainStateTable[t].cityRecordIndex;
       if ((centerTile.activeFlags & 3) != 0 && centerTile.gateFlag != 0 && cityIdx != -1) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
@@ -935,7 +935,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   case 7: {
     short cityIdx = g_pGlobalMapState->terrainStateTable[order->tileIndex].cityRecordIndex;
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
-    DispatchTileRedrawInvalidateEvent(g_pGlobalMapState->cityScoreTable[cityIdx].cityTileIndex);
+    SendTileNews(g_pGlobalMapState->cityScoreTable[cityIdx].cityTileIndex);
     return;
   }
   default:

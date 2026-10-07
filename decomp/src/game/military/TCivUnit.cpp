@@ -121,7 +121,7 @@ void TCivUnit::Vaporize() {
 }
 
 // FUNCTION: IMPERIALISM 0x005c2c60
-void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {
+void TCivUnit::ClearOrders() {
   Vaporize();
   if (orderType != kCivilianUnitDeveloper) {
     TGreatPower* nation = g_apNationStates[ownerNationSlot];

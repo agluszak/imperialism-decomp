@@ -29,7 +29,7 @@ IMPLEMENT_DYNCREATE(TGPCheater, TCheater)
 
 // FUNCTION: IMPERIALISM 0x004b1a90
 void TGPCheater::IGPCheater(TView* panel) {
-  ConstructTCheaterBaseState(panel, 0x2728);
+  ICheater(panel, 0x2728);
 
   int nameOffset[2] = {0, 0};
   int nameSize[2] = {4, 0x20};

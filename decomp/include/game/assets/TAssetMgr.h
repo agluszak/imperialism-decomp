@@ -47,9 +47,9 @@ public:
   bool OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
   void SetPreferenceString(CString* value, const char* key);
   void LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue);
-  void WriteIntegerSettingByValueAndKey(int value, LPCSTR key); // 0x005e02c0
-  bool HasPendingClientSaveFile();
-  int DeleteLegacyCliSaveImpFiles();
+  void SetPreferenceInt(int value, LPCSTR key); // 0x005e02c0
+  bool AreThereStrayClientSaves();
+  int DeleteStrayClientSaves();
   void ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback, UINT interval, int slot);
   CString FormatVersionStringFromVersionResource();
 };

@@ -46,14 +46,14 @@ public:
   void Free() override;                    // slot 0x1c  0x0057bd20  (manager teardown)
 
   // --- TSimMgr-introduced virtuals, in exact slot order (byte = index * 4) ---
-  virtual void RebuildNationStateSlotsNoOp();                                  // 0x28  0x0057c390
-  virtual void RebuildPrimaryNationStateForSlot(int slotIndex, char activate); // 0x2c 0x0057cda0
-  virtual void RebuildSecondaryNationStateForSlot(int slotIndex);              // 0x30  0x0057d520
-  virtual void GetSeason(CString* destString);                                 // 0x34  0x0057d830
-  virtual void SetGameSetupValues(GameSetup* setup);                           // 0x38  0x0057d8d0
-  virtual short GetEconomicTurn();                                             // 0x3c  0x0057d8b0
-  virtual void AdvanceSeason();                                                // 0x40  0x0057d950
-  virtual void StartNextPhase();                                               // 0x44  0x0057d970
+  virtual void RebuildNationStateSlotsNoOp();                    // 0x28  0x0057c390
+  virtual void CreateGreatPower(int slotIndex, char activate);   // 0x2c 0x0057cda0
+  virtual void CreateMinor(int slotIndex);                       // 0x30  0x0057d520
+  virtual void GetSeason(CString* destString);                   // 0x34  0x0057d830
+  virtual void SetGameSetupValues(GameSetup* setup);             // 0x38  0x0057d8d0
+  virtual short GetEconomicTurn();                               // 0x3c  0x0057d8b0
+  virtual void AdvanceSeason();                                  // 0x40  0x0057d950
+  virtual void StartNextPhase();                                 // 0x44  0x0057d970
   virtual void EnterOptionalPhase(eGamePhaseNewStyle gamePhase); // 0x48  0x0057d990, Mac oracle
   virtual void AdvanceGlobalTurnStateMachine();                  // 0x4c  0x0057da70
   virtual bool InLinearPhase();                                  // 0x50  0x0057f110

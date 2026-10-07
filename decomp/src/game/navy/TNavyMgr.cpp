@@ -881,10 +881,8 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
     short activeChildRating =
         static_cast<short>(CalculateActiveChildAverageDescriptorWeightX10(entry->shipList));
     TCity* nationCity = nationState != NULL ? nationState->city : NULL;
-    short cityWeight1 =
-        static_cast<short>(nationCity->ComputeAverageWeightWord1TimesTenFromResourceCounts());
-    short cityWeight0 =
-        static_cast<short>(nationCity->ComputeAverageWeightWord0TimesTenFromResourceCounts());
+    short cityWeight1 = static_cast<short>(nationCity->GetMerchantMarineDeciSpeed());
+    short cityWeight0 = static_cast<short>(nationCity->GetMerchantMarineAverageCargoHold());
     short offerPerCityWeight = cityWeight0;
     if (offerPerCityWeight > 0) {
       offerPerCityWeight = static_cast<short>(offerAmount / offerPerCityWeight);
@@ -1095,8 +1093,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         int strengthDelta = entryValue;
         if ((directionFlags & 3) != 0) {
           short drawnCounts[0x0e] = {0};
-          transferredWeight = static_cast<short>(
-              city->AllocateRandomResourceCountsWithinWeightBudget(entryValue, drawnCounts));
+          transferredWeight =
+              static_cast<short>(city->PickRandomMerchantVictims(entryValue, drawnCounts));
           if (transferredWeight != 0) {
             strengthDelta = static_cast<int>(transferredWeight) * 3 + entryValue;
 

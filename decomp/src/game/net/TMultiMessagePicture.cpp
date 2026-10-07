@@ -49,7 +49,7 @@ void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, 
         recipientMask |= 1 << nationSlot;
       }
     }
-    g_pGameFlowState->CreateAndSendTurnEvent0C_Text256AndTwoFlags(
+    g_pGameFlowState->SendVerbalMessage(
         &message, static_cast<unsigned char>(recipientMask),
         static_cast<unsigned char>(FindActiveNationSlotIndexInGameFlowList()));
   }

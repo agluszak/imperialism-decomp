@@ -63,9 +63,9 @@ public:
   virtual void SetBuildingWindowState(short productionSlot, bool flag, short current, short accum);
   virtual char GetBuildingWindowState(short productionSlot, short* outCurrent, short* outAccum);
   // slot 0x1b — body 0x004b4230: owner transportCapacity (0 when unowned).
-  virtual int GetOwnerNeedCapA6();
+  virtual int GetRollingStock();
   // slot 0x1c — body 0x004b4260: set owner transportCapacity.
-  virtual void SetOwnerNeedCapA6(short value);
+  virtual void SetRollingStock(short value);
   virtual short* GetUnmetNeeds();
   // slot 0x1e — body 0x004b4d00: true for the basic resource slots 0..6 and 0xb.
   virtual short IsCapacityCenter(short resourceSlot);
@@ -73,10 +73,10 @@ public:
   virtual void MouseTrap();
   virtual void VerifyStocks();
 
-  int AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short* outCounts);
+  int PickRandomMerchantVictims(short maxWeight, short* outCounts);
 
-  int ComputeAverageWeightWord1TimesTenFromResourceCounts();
-  int ComputeAverageWeightWord0TimesTenFromResourceCounts();
+  int GetMerchantMarineDeciSpeed();
+  int GetMerchantMarineAverageCargoHold();
 
   bool powerPlantUpgradeQueuedFlag; // +0x04 — BuildPowerPlant queue flag
   unsigned char pad05;

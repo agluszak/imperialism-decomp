@@ -66,7 +66,7 @@ void TShipyardCluster::SetMoveAmount(short amount) {
   } else {
     barControl->auxValueB = 0x3a;
   }
-  barControl->UpdateBarValuesAndRefresh(0, 0);
+  barControl->SetAmt(0, 0);
 
   CPoint moveControlPosition;
   moveControlPosition.x = barControl->ownerLocalX - 2;

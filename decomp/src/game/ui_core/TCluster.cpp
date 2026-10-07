@@ -89,7 +89,7 @@ void TCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* even
 }
 
 // FUNCTION: IMPERIALISM 0x00491770
-int TCluster::GetSelectedChildTag() {
+int TCluster::GetCurrentChoice() {
   return this->selectedChildTag;
 }
 

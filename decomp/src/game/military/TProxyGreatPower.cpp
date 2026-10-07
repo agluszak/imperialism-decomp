@@ -91,8 +91,7 @@ bool TProxyGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amou
 // FUNCTION: IMPERIALISM 0x00540c20
 void TProxyGreatPower::SetTradePolicyTo(NationSlot targetNation, short tradePolicy) {
   int packedPolicy = static_cast<int>(targetNation) << 16 | static_cast<int>(tradePolicy);
-  g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagTrad, packedPolicy,
-                                                     this->nationSlot);
+  g_pGameFlowState->SendGameControl(kControlTagTrad, packedPolicy, this->nationSlot);
   TGreatPower::SetTradePolicyTo(targetNation, tradePolicy);
 }
 
@@ -104,8 +103,8 @@ void TProxyGreatPower::AddTurnStartEvent(TTurnStartEvent* event) {
 
 // FUNCTION: IMPERIALISM 0x00540cb0
 void TProxyGreatPower::SorryYouLose() {
-  g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLost, this->nationSlot, -3);
-  g_pGameFlowState->ReplaceNationStateForSlotAndRefreshStatus(this->nationSlot);
+  g_pGameFlowState->SendGameControl(kControlTagLost, this->nationSlot, -3);
+  g_pGameFlowState->DehumanizePlayer(this->nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x00540cf0

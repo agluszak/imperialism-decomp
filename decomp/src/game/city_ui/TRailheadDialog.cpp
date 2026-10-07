@@ -65,7 +65,7 @@ void TRailheadDialog::DoClosingAction(unsigned long dialogActionTag) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x75e);
     }
 
-    int selectedTag = choice->GetSelectedChildTag();
+    int selectedTag = choice->GetCurrentChoice();
     short selectedResourceType = 0;
     while (selectedResourceType < kResourceKindCount &&
            g_pTradeSummarySelectionMap[selectedResourceType] != selectedTag) {

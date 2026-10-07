@@ -43,13 +43,11 @@ public:
   // slot 0x61 — 0x004e7990: foreign-minister slots 0x90/0x94.
   void SetTradeBids(void) override;
   // slot 0x74 — 0x004e7b20: forward to base policy apply with cost checks.
-  bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
-                                                        short policyCode) override;
+  bool SetDiplomacyPolicyTo(short targetClass, short policyCode) override;
   // slot 0x81 — 0x004e7be0: replay proposal rows then reset policy state.
   void ReplyToDiplomacyOffers(void) override;
   // slot 0xa1 — 0x004e9ed0: war-transition propagation from advisory action.
-  void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot, int transitionMode,
-                                                     int sourceNationSlot) override;
+  void DeclareWarOn(int targetNationSlot, int transitionMode, int sourceNationSlot) override;
   // slot 0xa2 — 0x004e9a50: select and queue advisory map missions (case 16).
   void SelectAndQueueAdvisoryMapMissions(void) override;
   // slot 0xa4 — 0x004eb0d0: prune invalid missionQueue entries.

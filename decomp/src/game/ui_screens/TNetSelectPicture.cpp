@@ -30,7 +30,7 @@ void TNetSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     } else if (sourceHandler->controlTag == kControlTagOkay) {
       TCluster* protControl = static_cast<TCluster*>(ResolveControlByTag(kControlTagProt));
       protControl->AssertValid();
-      int selectedProtocolTag = protControl->GetSelectedChildTag();
+      int selectedProtocolTag = protControl->GetCurrentChoice();
       TView* protocolOption = ResolveControlByTag(selectedProtocolTag);
       g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolOption->controlValue, 1);
     }

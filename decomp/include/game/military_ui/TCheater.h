@@ -17,7 +17,7 @@ public:
 
   void ResizeWindow(const CPoint* size); // 0x004b1670
 
-  void ConstructTCheaterBaseState(TView* panel, int unusedArg);
+  void ICheater(TView* panel, int unusedArg);
 
   int captionStringResourceGroup;
 };

@@ -110,7 +110,7 @@ void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(const CString& movieNa
 
   g_pSfxPlaybackSystem->ClearDirectSoundInitPendingAndResetState();
   g_pViewMgr->HandleTurnStateExitAndPostFollowupEventCode(2);
-  movieView->PlayMovieIfActive();
+  movieView->PlayTheMovie();
 }
 
 // FUNCTION: IMPERIALISM 0x005dfd70
@@ -188,12 +188,12 @@ void TAssetMgr::LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultVa
 }
 
 // FUNCTION: IMPERIALISM 0x005e02c0
-void TAssetMgr::WriteIntegerSettingByValueAndKey(int value, LPCSTR key) {
+void TAssetMgr::SetPreferenceInt(int value, LPCSTR key) {
   g_pImperialismApp->WriteSettingValueToSettingsSection(key, value);
 }
 
 // FUNCTION: IMPERIALISM 0x005e02f0
-bool TAssetMgr::HasPendingClientSaveFile() {
+bool TAssetMgr::AreThereStrayClientSaves() {
   _finddata_t fileInfo;
   long findHandle = _findfirst("save/cli_*.imp", &fileInfo);
   _findclose(findHandle);
@@ -201,7 +201,7 @@ bool TAssetMgr::HasPendingClientSaveFile() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e0340
-int TAssetMgr::DeleteLegacyCliSaveImpFiles() {
+int TAssetMgr::DeleteStrayClientSaves() {
   int deletedCount = 0;
   _finddata_t fileInfo;
   long findHandle = _findfirst("save/cli_*.imp", &fileInfo);

@@ -654,7 +654,7 @@ void TCity::VerifyStocks() {
 void TCity::MouseTrap() {}
 
 // FUNCTION: IMPERIALISM 0x004b4230
-int TCity::GetOwnerNeedCapA6() {
+int TCity::GetRollingStock() {
   if (this->ownerNation != 0) {
     return this->ownerNation->transportCapacity;
   }
@@ -662,12 +662,12 @@ int TCity::GetOwnerNeedCapA6() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b4260
-void TCity::SetOwnerNeedCapA6(short value) {
+void TCity::SetRollingStock(short value) {
   this->ownerNation->transportCapacity = value;
 }
 
 // FUNCTION: IMPERIALISM 0x004b4290
-int TCity::ComputeAverageWeightWord1TimesTenFromResourceCounts() {
+int TCity::GetMerchantMarineDeciSpeed() {
   int weightedSum = 0;
   int totalCount = 0;
   for (int type = 0; type < 0xe; ++type) {
@@ -682,7 +682,7 @@ int TCity::ComputeAverageWeightWord1TimesTenFromResourceCounts() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b4310
-int TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts() {
+int TCity::GetMerchantMarineAverageCargoHold() {
   int weightedSum = 0;
   int totalCount = 0;
   for (int type = 0; type < 0xe; ++type) {
@@ -697,7 +697,7 @@ int TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b4390
-int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short* outCounts) {
+int TCity::PickRandomMerchantVictims(short maxWeight, short* outCounts) {
   int allocatedWeight = 0;
   short remaining = 0;
   for (int type = 0; type < 0xe; ++type) {

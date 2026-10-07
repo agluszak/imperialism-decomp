@@ -12,7 +12,7 @@ TCountingStream::TCountingStream() {
 }
 
 // FUNCTION: IMPERIALISM 0x00489490
-void TCountingStream::PrepareForUse() {}
+void TCountingStream::ICountingStream() {}
 
 // FUNCTION: IMPERIALISM 0x004894b0
 int TCountingStream::GetPosition() {

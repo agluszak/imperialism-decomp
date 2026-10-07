@@ -470,7 +470,7 @@ short StrategicMapScreen::NavySelectedAggression() const {
   if (toolbar == 0) {
     return -1;
   }
-  const int tag = toolbar->GetSelectedChildTag();
+  const int tag = toolbar->GetCurrentChoice();
   if (tag < kControlTagAgr0 || tag > kControlTagAgr2) {
     return -1;
   }
@@ -572,11 +572,9 @@ int StrategicMapScreen::OceanCenterTile() const {
 }
 
 int StrategicMapScreen::MiniMapMarkerWidth() const {
-  return mapView != 0 && mapView->miniMapView != 0 ? mapView->miniMapView->markerBoxWidth
-                                                     : -1;
+  return mapView != 0 && mapView->miniMapView != 0 ? mapView->miniMapView->markerBoxWidth : -1;
 }
 
 int StrategicMapScreen::MiniMapMarkerHeight() const {
-  return mapView != 0 && mapView->miniMapView != 0 ? mapView->miniMapView->markerBoxHeight
-                                                     : -1;
+  return mapView != 0 && mapView->miniMapView != 0 ? mapView->miniMapView->markerBoxHeight : -1;
 }

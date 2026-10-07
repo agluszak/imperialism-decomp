@@ -77,16 +77,14 @@ void TLoungeDialog::DoPostCreate(int arg) {
     if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
       g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
       YouHaveNewGameData();
-      g_pGameFlowState->DispatchTurnEventCode9WithTwoTextTokens(
-          -0xd, 0, g_pLoungeLocalPlayerNameSharedText, g_pLoungeLocalPlayerNameSharedText);
+      g_pGameFlowState->SendGpSelection(-0xd, 0, g_pLoungeLocalPlayerNameSharedText,
+                                        g_pLoungeLocalPlayerNameSharedText);
       g_pGameFlowState->EmitTurnEventEAnd9SessionContextPackets(NULL);
     }
   } else {
     g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(
-        0x2742,
-        g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy ? 0x12
-                                                                                          : 0x11,
+        0x2742, g_pGameFlowState->GetPlayerStatus(-1) == kSessionTagBusy ? 0x12 : 0x11,
         kControlTagCncl);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xc, kSessionTagMess);
 
@@ -94,7 +92,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
     coatControl->AssertValid();
     coatControl->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x120a), 0);
     coatControl->Show(1, 0);
-    if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) != kSessionTagBusy) {
+    if (g_pGameFlowState->GetPlayerStatus(-1) != kSessionTagBusy) {
       SetPictureRsrcID(0x11f9, 0);
     }
     YouHaveNewGameData();
@@ -105,9 +103,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
 
   short messageStringIndex;
   if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
-    messageStringIndex =
-        g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy ? 0x24
-                                                                                          : 0x10;
+    messageStringIndex = g_pGameFlowState->GetPlayerStatus(-1) == kSessionTagBusy ? 0x24 : 0x10;
   } else {
     messageStringIndex = static_cast<short>(g_pSimMgr->mode == kGamePhaseStartup ? 0x10 : 0x18);
   }
@@ -129,7 +125,7 @@ bool TLoungeDialog::DoIdle(int action) {
     } else if (sessionId == -2) {
       statusIndex = 3;
     } else {
-      switch (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(nationSlot)) {
+      switch (g_pGameFlowState->GetPlayerStatus(nationSlot)) {
       case kSessionTagBusy: // 'busy'
         statusIndex = 0;
         break;
@@ -187,7 +183,7 @@ bool TLoungeDialog::DoIdle(int action) {
 
   short messageStringIndex;
   if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
-    if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy &&
+    if (g_pGameFlowState->GetPlayerStatus(-1) == kSessionTagBusy &&
         g_pGameFlowState->networkSavePending != 0) {
       messageStringIndex = 0x24;
       if (glyphBase != 0x11f8) {
@@ -241,8 +237,8 @@ void TLoungeDialog::NationalClick(int nationSlot) {
   scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(nationName));
   if (g_pViewMgr->ModalMessage(formattedText, g_ptLoungeNationReplacementModalMessage, 0, 1)) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kSessionTagAced, nationSlot, -2); // 'deca'
-    g_pGameFlowState->ReplaceNationStateForSlotAndRefreshStatus(nationSlot);
+    g_pGameFlowState->SendGameControl(kSessionTagAced, nationSlot, -2); // 'deca'
+    g_pGameFlowState->DehumanizePlayer(nationSlot);
   }
 }
 
@@ -264,7 +260,7 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     unsigned int controlTag = sourceHandler->controlTag;
     if (controlTag == kControlTagCncl || controlTag == kControlTagCanc) { // 'cncl' / 'canc'
       if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
-        if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy) {
+        if (g_pGameFlowState->GetPlayerStatus(-1) == kSessionTagBusy) {
           g_pSimMgr->StartNextPhase(); // 'busy'
         } else if (g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(
                        kControlTagNewg)) { // 'gwen'
@@ -282,7 +278,7 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
             g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(
                 kControlTagCgam)) { // 'magc'
           if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
-            g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagCgam, -1, -2);
+            g_pGameFlowState->SendGameControl(kControlTagCgam, -1, -2);
           }
           g_pGameFlowState->ResetLocalUiStateAndShowMultiplayerSetup();
         }

@@ -109,7 +109,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
       if (activeMovieView == 0) {
         return;
       }
-      activeMovieView->StopMovieIfActive();
+      activeMovieView->StopMovie();
       return;
     }
     mainControl->DoKeyEvent(event);

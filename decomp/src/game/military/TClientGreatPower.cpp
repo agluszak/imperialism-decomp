@@ -135,5 +135,5 @@ int TClientGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNat
 
 // FUNCTION: IMPERIALISM 0x00541790
 void TClientGreatPower::SorryYouLose(void) {
-  g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLose, this->nationSlot, -1);
+  g_pGameFlowState->SendGameControl(kControlTagLose, this->nationSlot, -1);
 }

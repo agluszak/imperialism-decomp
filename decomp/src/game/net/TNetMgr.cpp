@@ -343,7 +343,7 @@ TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecord
       break;
     case 5:
       if (packet->fromNetworkId == 1) {
-        g_pGameFlowState->SetNationStatusAwolByNationIdAndDispatchNotices(packet->toNetworkId);
+        g_pGameFlowState->WeLostAClient(packet->toNetworkId);
       }
       break;
     case 0x31:
@@ -417,7 +417,7 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
         if (g_NetworkSessionManager006a5f60.TrySendNetworkPacket(destination, &probe,
                                                                  probe.messageLength) == 0) {
           awolBitmask += 1 << slot;
-          g_pGameFlowState->SetNationStatusAwolByNationIdAndDispatchNotices(slot);
+          g_pGameFlowState->WeLostAClient(slot);
         }
       }
     }

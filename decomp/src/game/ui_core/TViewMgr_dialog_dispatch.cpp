@@ -506,7 +506,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   planetEdit->InstallTextStyle(editStyle, 0);
   planetEdit->InitDialogWindowAndSyncTitleIfChanged(&editText, 0);
   planetEdit->BecomeTarget();
-  planetEdit->SetEditSelectionAndScrollCaret(0, static_cast<short>(editText.GetLength()), 1);
+  planetEdit->SetSelection(0, static_cast<short>(editText.GetLength()), 1);
   dialog->SetWindowTarget(planetEdit);
 
   COLORREF mappedThemeValue = 0;
@@ -670,8 +670,7 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   if (accepted != 0) {
     bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (isClientSession) {
-      g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagAbdi,
-                                                         g_pSimMgr->GetPlayerCountry(), -2);
+      g_pGameFlowState->SendGameControl(kControlTagAbdi, g_pSimMgr->GetPlayerCountry(), -2);
     }
   }
   return accepted;

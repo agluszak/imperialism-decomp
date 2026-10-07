@@ -33,7 +33,7 @@ public:
   char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   void UpdateCoordinates() override;
   void SetJustification(short alignmentCode, bool refreshFlag) override;
-  virtual void SetEditSelectionAndScrollCaret(short selStart, short selEnd, int unusedFlag);
+  virtual void SetSelection(short selStart, short selEnd, int unusedFlag);
   virtual void GetCurrentText(CString* out);
   virtual void InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag);
 

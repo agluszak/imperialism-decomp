@@ -172,8 +172,8 @@ private:
   short FirstValidAllianceTarget() const {
     for (short nation = 0; nation < kMajorNationCount; ++nation) {
       if (nation != ActiveNation() && g_apTerrainTypeDescriptorTable[nation] != 0 &&
-          g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-              ActiveNation(), nation, kDipActionAlliance)) {
+          g_pDiplomacyTurnStateManager->IsActionAllowed(ActiveNation(), nation,
+                                                        kDipActionAlliance)) {
         return nation;
       }
     }

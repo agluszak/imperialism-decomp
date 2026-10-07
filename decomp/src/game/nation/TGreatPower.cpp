@@ -821,7 +821,7 @@ void TGreatPower::SetTradePolicyTo(NationSlot targetNationSlot, short tradePolic
     this->needLevelByNation[nation] = tradePolicy;
   }
   if (this->diplomacyEligibility != 0) {
-    g_pHelpMgr->NoOpDiplomacyPolicyStateChangedHook(-1, targetNationSlot, 1);
+    g_pHelpMgr->DiplomacyMsg(-1, targetNationSlot, 1);
   }
   if (tradePolicy == 300) {
     this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, -1);
@@ -1321,8 +1321,7 @@ void TGreatPower::ClearTradeOffers(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ddfc0
-bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
-                                                                   short policyCode) {
+bool TGreatPower::SetDiplomacyPolicyTo(short targetClass, short policyCode) {
   const short kPolicyClear = -1;
   const short kPolicyRequiresCompatibilityStart = kDiplomacyProposalJoinEmpire;
   const short kPolicyTreasurySmall = 0x133;
@@ -1355,7 +1354,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
     case 3: {
       TSimMgr* simMgr = g_pSimMgr;
       if (simMgr != 0 && simMgr->mode == kGamePhaseDiplomacy) {
-        this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetClass, 4, -1);
+        this->DeclareWarOn(targetClass, 4, -1);
       }
 
       TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
@@ -1390,8 +1389,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
           } else {
             resolvedNationSlot = terrainDescriptor->nationSlot;
           }
-          this->ApplyDiplomacyPolicyStateForTargetWithCostChecks(resolvedNationSlot,
-                                                                 kDiplomacyProposalDeclareWar);
+          this->SetDiplomacyPolicyTo(resolvedNationSlot, kDiplomacyProposalDeclareWar);
         }
       }
 
@@ -1425,8 +1423,8 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
     this->diplomacyPolicyByNation[targetClass] = policyCode;
   }
   if (this->diplomacyEligibility != 0) {
-    g_pHelpMgr->NoOpDiplomacyPolicyStateChangedHook(static_cast<int>(policyCode),
-                                                    static_cast<int>(targetClass), shouldApply);
+    g_pHelpMgr->DiplomacyMsg(static_cast<int>(policyCode), static_cast<int>(targetClass),
+                             shouldApply);
   }
   return shouldApply;
 }
@@ -1490,8 +1488,8 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int targetNat
   }
 
   if (this->diplomacyEligibility != 0) {
-    g_pHelpMgr->NoOpDiplomacyPolicyStateChangedHook(
-        static_cast<short>(newGrantRaw), static_cast<int>(targetNation), accepted ? 1 : 0);
+    g_pHelpMgr->DiplomacyMsg(static_cast<short>(newGrantRaw), static_cast<int>(targetNation),
+                             accepted ? 1 : 0);
 
     if (accepted && newGrantRaw != kGrantClear && targetNation > 6) {
       bool shouldDispatchAlert = false;
@@ -1750,8 +1748,7 @@ void TGreatPower::BecomeProtectorateOf(int targetNationSlot) {
   g_pGlobalMapState->ApplyJoinEmpireMode0GlobalDiplomacyReset(this->nationSlot);
 
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagName, this->nationSlot,
-                                                       0xfffffffd);
+    g_pGameFlowState->SendGameControl(kControlTagName, this->nationSlot, 0xfffffffd);
   }
 }
 
@@ -1835,8 +1832,7 @@ void TGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
     }
 
     if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, nationSlot)) {
-      this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(slot, 2,
-                                                          static_cast<short>(sourceNation));
+      this->DeclareWarOn(slot, 2, static_cast<short>(sourceNation));
     }
   }
 }
@@ -1886,9 +1882,8 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(
               nationSlot, static_cast<int>(proposal->sourceNationSlot)) &&
           !g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nationSlot)) {
-        this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
-            nationSlot, kDiplomacyRelationshipAlliance,
-            static_cast<int>(proposal->sourceNationSlot));
+        this->DeclareWarOn(nationSlot, kDiplomacyRelationshipAlliance,
+                           static_cast<int>(proposal->sourceNationSlot));
       }
     }
     break;
@@ -2078,8 +2073,8 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
           do {
             if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNation, checkNation) &&
                 !g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, checkNation)) {
-              this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
-                  checkNation, kDiplomacyProposalJoinEmpireWithWarEntanglements, targetNation);
+              this->DeclareWarOn(checkNation, kDiplomacyProposalJoinEmpireWithWarEntanglements,
+                                 targetNation);
             }
             ++checkNation;
           } while (checkNation < kMajorNationCount);
@@ -2821,7 +2816,7 @@ int TGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNation) {
     result = uiRuntimeContext->PoseWarOfferIfTurnFlowReady(this->nationSlot, targetNation,
                                                            sourceNation, 0x0A);
     if (result != 0) {
-      this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(sourceNation, 1, targetNation);
+      this->DeclareWarOn(sourceNation, 1, targetNation);
       return true;
     }
   } else {
@@ -2850,9 +2845,9 @@ int TGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, char 
     }
     g_pDiplomacyTurnStateManager->TerminateAlliance(this->nationSlot, sourceNation, swapRoles == 0);
   } else if (swapRoles != 0) {
-    this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNation, 2, sourceNation);
+    this->DeclareWarOn(targetNation, 2, sourceNation);
   } else {
-    this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(sourceNation, 2, targetNation);
+    this->DeclareWarOn(sourceNation, 2, targetNation);
   }
   return accepted != 0;
 }
@@ -3109,9 +3104,7 @@ void TGreatPower::DispatchNationDiplomacySlotActionByMode(int targetNationSlot,
 }
 
 // FUNCTION: IMPERIALISM 0x004e27f0
-void TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot,
-                                                                int transitionMode,
-                                                                int sourceNationSlot) {
+void TGreatPower::DeclareWarOn(int targetNationSlot, int transitionMode, int sourceNationSlot) {
   g_pDiplomacyTurnStateManager->QueueNationPairWarTransition(this->nationSlot, targetNationSlot);
 
   short proposalCode = static_cast<short>(transitionMode);

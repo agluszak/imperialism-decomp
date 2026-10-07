@@ -2427,7 +2427,7 @@ void TMapMgr::FloodFillTileRegionMarker(StrategicTileIndex nTileIndex, short nOw
       }
       if (!skipRedraw && g_nSaveFormatVersion != -3 &&
           g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
-        DispatchTileRedrawInvalidateEvent(neighborTile);
+        SendTileNews(neighborTile);
       }
     }
   }
@@ -2465,7 +2465,7 @@ int TMapMgr::QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nN
     g_pGameFlowState->SendStreamObject(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
-    DispatchTileRedrawInvalidateEvent(nTileIndex);
+    SendTileNews(nTileIndex);
   }
   return 1;
 }
@@ -2500,7 +2500,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
     g_pGameFlowState->SendStreamObject(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
-    DispatchTileRedrawInvalidateEvent(nTileIndex);
+    SendTileNews(nTileIndex);
   }
 }
 

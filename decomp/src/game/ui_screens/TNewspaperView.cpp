@@ -114,17 +114,14 @@ void TNewspaperView::StuffValues(int pageNation) {
       }
       CreateVariables(story, tokens);
       if (story->feature) {
-        y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.headlineTextOffset,
-                                                    story->entry.headlineTextLength, &plainStyle, 1,
-                                                    tokens);
+        y += AddTextView(col, y, story->entry.headlineTextOffset, story->entry.headlineTextLength,
+                         &plainStyle, 1, tokens);
       } else {
-        y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.headlineTextOffset,
-                                                    story->entry.headlineTextLength, &featureStyle,
-                                                    1, tokens);
+        y += AddTextView(col, y, story->entry.headlineTextOffset, story->entry.headlineTextLength,
+                         &featureStyle, 1, tokens);
       }
-      y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.storyTextOffset,
-                                                  story->entry.storyTextLength, &titleStyle, -2,
-                                                  tokens);
+      y += AddTextView(col, y, story->entry.storyTextOffset, story->entry.storyTextLength,
+                       &titleStyle, -2, tokens);
     }
   }
   g_pAssetMgr->ReleaseResourceStreamIfNotNull(newsTexStream);
@@ -136,10 +133,10 @@ void TNewspaperView::CreateVariables(newsStory* story, CString* tokens) {
     int kind = story->parmKind[k];
     switch (kind) {
     case 1:
-      BuildLocalizedTokenListFromBitmaskWithConjunction(&tokens[k], story->parmValue[k]);
+      ItemParmList(&tokens[k], story->parmValue[k]);
       break;
     case 2:
-      BuildLocalizedNationListFromBitmaskWithConjunction(&tokens[k], story->parmValue[k]);
+      CountryParmList(&tokens[k], story->parmValue[k]);
       break;
     case 3: {
       CString cityName;
@@ -162,7 +159,7 @@ void TNewspaperView::CreateVariables(newsStory* story, CString* tokens) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055da80
-void TNewspaperView::BuildLocalizedTokenListFromBitmaskWithConjunction(CString* out, int bitmask) {
+void TNewspaperView::ItemParmList(CString* out, int bitmask) {
   CString itemText;
   int emitted = 0;
   *out = CString(g_szEmptyString);
@@ -199,7 +196,7 @@ void TNewspaperView::BuildLocalizedTokenListFromBitmaskWithConjunction(CString* 
 }
 
 // FUNCTION: IMPERIALISM 0x0055dcd0
-void TNewspaperView::BuildLocalizedNationListFromBitmaskWithConjunction(CString* out, int bitmask) {
+void TNewspaperView::CountryParmList(CString* out, int bitmask) {
   CString itemText;
   int emitted = 0;
   *out = CString(g_szEmptyString);
@@ -242,9 +239,8 @@ void __stdcall LookupZoneDisplayNameByNodeId(CString* out, short nodeId) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055df50
-int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, int recordOffset,
-                                                           int recordLength, TextStyle* style,
-                                                           int styleWord, CString* tokens) {
+int TNewspaperView::AddTextView(int column, int y, int recordOffset, int recordLength,
+                                TextStyle* style, int styleWord, CString* tokens) {
   TDeluxeText* text;
   int offsetPair[2];
   int sizePair[2];

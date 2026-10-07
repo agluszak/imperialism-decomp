@@ -37,7 +37,7 @@ void TTownNameDialog::DoPostCreate(int arg) {
   UpdatePaletteIndexWithDefaultFallback(0x50);
   nameControl->BecomeTarget();
   nameControl->GetCurrentText(&text);
-  nameControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(text.GetLength()), 1);
+  nameControl->SetSelection(0, static_cast<short>(text.GetLength()), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051bcc0

@@ -40,10 +40,10 @@ int TogglePlayerDiplomacyPolicyResult(TGreatPower* nation, short targetNationSlo
     return 3;
   }
   if (nation->diplomacyPolicyByNation[targetNationSlot] == policyCode) {
-    return nation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetNationSlot, -1) ? 1 : 0;
+    return nation->SetDiplomacyPolicyTo(targetNationSlot, -1) ? 1 : 0;
   }
-  if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-          nation->nationSlot, targetNationSlot, action)) {
+  if (!g_pDiplomacyTurnStateManager->IsActionAllowed(nation->nationSlot, targetNationSlot,
+                                                     action)) {
     return -g_pDiplomacyTurnStateManager->proposalArrayMode;
   }
   if (!confirmEntanglements && (action == kDipActionJoinEmpire || action == kDipActionAlliance) &&
@@ -51,8 +51,7 @@ int TogglePlayerDiplomacyPolicyResult(TGreatPower* nation, short targetNationSlo
                                                                   nation->nationSlot)) {
     return 2;
   }
-  return nation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetNationSlot, policyCode) ? 1
-                                                                                                : 0;
+  return nation->SetDiplomacyPolicyTo(targetNationSlot, policyCode) ? 1 : 0;
 }
 
 RuntimeActionResult RunConfiguredPlayerPolicy(NativeTransition& transition, short targetNationSlot,
@@ -101,8 +100,8 @@ int TogglePlayerTradePolicyResult(TGreatPower* nation, short targetNationSlot, s
   if (nation->nationSlot == targetNationSlot) {
     return 3;
   }
-  if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-          nation->nationSlot, targetNationSlot, action)) {
+  if (!g_pDiplomacyTurnStateManager->IsActionAllowed(nation->nationSlot, targetNationSlot,
+                                                     action)) {
     return -g_pDiplomacyTurnStateManager->proposalArrayMode;
   }
   nation->SetTradePolicyTo(
@@ -290,13 +289,13 @@ RuntimeActionResult RunSecondTurnDiplomacyPhase(NativeTransition& transition) {
 bool TogglePlayerDiplomacyPolicy(TGreatPower* nation, short targetNationSlot, short policyCode,
                                  eDipAction action) {
   if (nation->diplomacyPolicyByNation[targetNationSlot] == policyCode) {
-    return nation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetNationSlot, -1);
+    return nation->SetDiplomacyPolicyTo(targetNationSlot, -1);
   }
-  if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-          nation->nationSlot, targetNationSlot, action)) {
+  if (!g_pDiplomacyTurnStateManager->IsActionAllowed(nation->nationSlot, targetNationSlot,
+                                                     action)) {
     return false;
   }
-  return nation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetNationSlot, policyCode);
+  return nation->SetDiplomacyPolicyTo(targetNationSlot, policyCode);
 }
 
 RuntimeActionResult RunPlayerDiplomacyPolicyPostJoinEmpire(NativeTransition& transition) {
