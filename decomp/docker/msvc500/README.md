@@ -1,43 +1,13 @@
-# MSVC 5.0 Docker Build
+# MSVC 5.0 build image
 
-This image provides a reproducible Linux-hosted build path for old MSVC via Wine.
+Build the pinned VC5/Clang 21 image from `decomp/` with
+`just docker-build` (or directly with
+`docker build -t imperialism-msvc500 -f docker/msvc500/Dockerfile docker/msvc500`).
 
-## Build Image
+The image compiles the historical game with MSVC 5.0 under Wine and
+provides the LLVM 21 source-index and clang-tidy tooling.
+Use `just build`, `just source-index`, and `just lint` rather than
+maintaining separate container invocations.
 
-```bash
-docker build -t imperialism-msvc500 -f docker/msvc500/Dockerfile docker/msvc500
-```
-
-Rebuild this image after updating its Dockerfile. The native reccmp source collector requires the
-LLVM 21 development libraries installed by the image; older images cannot run `just source-index`.
-
-The image also builds the [whole-program scalar facts](clang-tidy-plugin/README.md) clang-tidy
-plugin against LLVM 21 and runs its fixtures. `just scalar-facts` collects every translation unit of
-the production Clang profile and writes reports and reviewable patches under
-`build-msvc500/scalar-campaigns/`.
-
-`just build` collects Clang source facts after building the VC5 executable and recording its PDB.
-The collector reads the production sources and generated factories through the existing Clang CMake
-profile, without compiling a replacement executable. Its cached output lives under
-`build-msvc500/reccmp-source/`, and `reccmp-build.yml` points comparison tools at that source index.
-
-## Configure + Build
-
-```bash
-mkdir -p build-msvc500
-docker run --rm \
-  -e CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo" \
-  -v "$PWD":/imperialism \
-  -v "$PWD/build-msvc500":/build \
-  imperialism-msvc500
-```
-
-Defaults:
-
-- Generator: `NMake Makefiles`
-- Source: `/imperialism` (mounted to `Z:\imperialism` in Wine)
-- Build: `/build` (mounted to `Z:\build` in Wine)
-
-Optional environment variable:
-
-- `CMAKE_GENERATOR` (for advanced experiments)
+The [scalar analysis plugin](clang-tidy-plugin/README.md) is compiled
+into the image. Rebuild the image after changing its Dockerfile or plugin.
