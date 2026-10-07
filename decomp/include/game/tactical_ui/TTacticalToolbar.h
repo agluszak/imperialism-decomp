@@ -29,7 +29,7 @@ public:
 
   void SetActionMode(int mode);
 
-  // NOOP: verified empty in original 0x005ac7b7 (no standalone TTacticalToolbar::TTacticalToolbar body exists: CreateObject 0x005ac780 inlines this default ctor, calling the TCluster base ctor directly at that site)
+  // NOOP: verified empty in original 0x005ac7b7
   TTacticalToolbar() {}
 };
 ASSERT_SIZE(TTacticalToolbar, 0x98);

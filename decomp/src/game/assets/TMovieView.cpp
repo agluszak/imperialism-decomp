@@ -23,10 +23,6 @@ TMovieView::TMovieView() : TPicture() {
   mainFrame->SetBackgroundColorAndInvalidate(PALETTEINDEX(0));
 }
 
-// The scalar deleting destructor is compiler-generated from the virtual dtor; it is a
-// thin wrapper that calls the real destructor body below (verified at 0x5e22f0: a
-// 30-byte thunk that calls 0x4058df -> 0x5e2320) then conditionally frees.
-
 // FUNCTION: IMPERIALISM 0x005e2320
 TMovieView::~TMovieView() {
   if (movieWindowState != 0) {

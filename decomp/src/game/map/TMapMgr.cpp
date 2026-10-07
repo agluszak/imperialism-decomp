@@ -50,7 +50,6 @@
 #include "game/net/TMultiplayerMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex);
 char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex tileIndex);
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
 

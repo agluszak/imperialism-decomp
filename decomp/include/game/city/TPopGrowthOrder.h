@@ -19,7 +19,7 @@ public:
                               short quantity) override; // slot 0x10 0x4b8440
   virtual void IPopGrowthOrder(TCity* city); // slot 0x11 0x4b8160, Mac-style second-phase init
 
-  // NOOP: verified empty in original 0x004b8112 (no standalone TPopGrowthOrder::TPopGrowthOrder body exists: construction is fully inlined into CreateObject 0x004b8110; that address is its operator-new call site)
+  // NOOP: verified empty in original 0x004b8112
   TPopGrowthOrder() {}
 };
 ASSERT_SIZE(TPopGrowthOrder, 0x4c);

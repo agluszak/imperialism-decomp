@@ -17,7 +17,7 @@ public:
                               CPoint origin) override; // slot 0x47 0x56a330
   virtual void Hilite();                               // slot 0x71 0x569d50
 
-  // NOOP: verified empty in original 0x00569df6 (no standalone TMiniShipView::TMiniShipView body exists: CreateObject 0x00569dc0 inlines this default ctor, calling the TControl base ctor directly at that site)
+  // NOOP: verified empty in original 0x00569df6
   TMiniShipView() {}
 
   TShip* shipNode;

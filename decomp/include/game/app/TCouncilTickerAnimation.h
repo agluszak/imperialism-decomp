@@ -17,7 +17,7 @@ public:
 
   void InitializeCouncilTicker(TCouncilView* hostPanel, int tickInterval);
 
-  // NOOP: verified empty in original 0x0049fef2 (no standalone TCouncilTickerAnimation::TCouncilTickerAnimation body exists: construction is fully inlined into CreateObject 0x0049fef0; that address is its operator-new call site)
+  // NOOP: verified empty in original 0x0049fef2
   TCouncilTickerAnimation() {}
 };
 ASSERT_SIZE(TCouncilTickerAnimation, 0x2c);

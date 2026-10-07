@@ -56,22 +56,20 @@ public:
   virtual void GiveOrders();                                  // 0x11 0x534cf0
   virtual TMission* GetReplacement();                         // 0x12 0x534d10
   virtual bool Matches(eMissionType missionType, int key,
-                       TZone* zoneContext) const; // 0x13 0x534d30
-  virtual bool IsArmyMission() const;             // 0x14 0x534d50
-  virtual bool IsNavyMission() const;             // 0x15 0x534d70
-  virtual TMission* GetArmyMission();             // 0x16 0x534d90
-  virtual TMission* GetNavyMission();             // 0x17 0x534db0
-  virtual bool IsDefensiveSeaZoneMission() const; // 0x18 0x534dd0
-  virtual bool IsHospitalMission() const;         // 0x19 0x534df0
-  virtual float GetWeightedSatisfaction();        // 0x1a 0x534e10
-  virtual float IndustrialCostOfNeeds();          // 0x1b 0x534e30
-  virtual float ValueOf(TShip* candidate);        // 0x1d 0x534e50
-  virtual float
-  ValueOf(TMilitaryUnit* candidateUnit); // 0x1c 0x534e70 (ret 4 -- verified against base stub)
+                       TZone* zoneContext) const;                  // 0x13 0x534d30
+  virtual bool IsArmyMission() const;                              // 0x14 0x534d50
+  virtual bool IsNavyMission() const;                              // 0x15 0x534d70
+  virtual TMission* GetArmyMission();                              // 0x16 0x534d90
+  virtual TMission* GetNavyMission();                              // 0x17 0x534db0
+  virtual bool IsDefensiveSeaZoneMission() const;                  // 0x18 0x534dd0
+  virtual bool IsHospitalMission() const;                          // 0x19 0x534df0
+  virtual float GetWeightedSatisfaction();                         // 0x1a 0x534e10
+  virtual float IndustrialCostOfNeeds();                           // 0x1b 0x534e30
+  virtual float ValueOf(TShip* candidate);                         // 0x1d 0x534e50
+  virtual float ValueOf(TMilitaryUnit* candidateUnit);             // 0x1c 0x534e70
   virtual float FitnessOf(TShip* candidate, float* targetProfile); // 0x1f 0x534e90
-  virtual float
-  FitnessOf(TMilitaryUnit* candidateUnit,
-            float* referenceVector); // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
+  virtual float FitnessOf(TMilitaryUnit* candidateUnit,
+                          float* referenceVector);            // 0x1e 0x534eb0
   virtual void AcceptReenforcement(TShip* ship, bool notify); // 0x21 0x534ed0
   virtual void AcceptReenforcement(TMilitaryUnit* unit,
                                    bool notify);            // 0x20 0x534ef0

@@ -1,5 +1,3 @@
-// UI wrapper class quads extracted from trade_screen.
-
 #include "game/ui_widgets/TNumberedArrowButton.h"
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"

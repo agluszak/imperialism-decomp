@@ -11,7 +11,7 @@ class TObject : public CObject {
 public:
   DECLARE_SERIAL(TObject)
   // FUNCTION: IMPERIALISM 0x00484970
-  TObject() {} // NOOP: verified empty in original 0x00484970; VC5 emits the vptr store.
+  TObject() {} // NOOP: verified empty in original 0x00484970
   // FUNCTION: IMPERIALISM 0x00485f50
   virtual ~TObject() override {}
 

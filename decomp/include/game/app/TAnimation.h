@@ -26,7 +26,7 @@ public:
   int registryTag;           // +0x18 animator-registry tag (0x2711 = selection marker)
   RECT screenRect;           // +0x1c on-screen rect invalidated per flip
 
-  // NOOP: verified empty in original 0x0049f022 (no standalone TAnimation::TAnimation body exists: construction is fully inlined into CreateObject 0x0049f020; that address is its operator-new call site)
+  // NOOP: verified empty in original 0x0049f022
   TAnimation() {}
 
   void IAnimation(class TView* ownerViewArg, RECT* rect, short frameCountArg,

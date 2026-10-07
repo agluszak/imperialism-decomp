@@ -15,7 +15,7 @@ public:
   virtual ~TMiniShipLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x569c80
 
-  // NOOP: verified empty in original 0x00569be3 (no standalone TMiniShipLine::TMiniShipLine body exists: CreateObject 0x00569bb0 inlines this default ctor, calling the TLineData base ctor directly at that site)
+  // NOOP: verified empty in original 0x00569be3
   TMiniShipLine() {}
 
   void IMiniShipLine(short rowArg, short colArg, int* bounds, TShip* item);

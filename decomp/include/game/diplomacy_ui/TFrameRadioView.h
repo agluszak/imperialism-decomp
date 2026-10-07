@@ -16,7 +16,7 @@ public:
   virtual void HiliteState(unsigned char fEnabledState,
                            bool fRefreshNow) override; // slot 0x70 0x4fe190
 
-  // NOOP: verified empty in original 0x004fdf06 (no standalone TFrameRadioView::TFrameRadioView body exists: CreateObject 0x004fded0 inlines this default ctor, calling the TControl base ctor directly at that site)
+  // NOOP: verified empty in original 0x004fdf06
   TFrameRadioView() {}
 };
 ASSERT_SIZE(TFrameRadioView, 0x84);

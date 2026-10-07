@@ -272,8 +272,6 @@ struct TacticalCommandPacket : TimelyMessageHeader {
   int arg2C;      // +0x2c ('fire' only), total 0x30
 };
 
-void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
-
 // FUNCTION: IMPERIALISM 0x00543280
 void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
   bool hosting = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;

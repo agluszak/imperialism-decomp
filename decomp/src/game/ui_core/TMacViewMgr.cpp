@@ -90,14 +90,6 @@ static void ScanBracketExpressionsInto(CString* dest, const CString& templateTex
                          static_cast<LPCSTR>(token3));
 }
 
-static unsigned char QueryPointInsideHitRegion(CPoint* point, RgnHandle region) {
-  return PtInRgn(point, region);
-}
-
-static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
-  BuildHexNeighborHighlightPolygonForTile(tileId, tileIndex);
-}
-
 // The loader's original vtable has no destructor slot; every caller owns this exact type.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
@@ -300,7 +292,6 @@ void TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
   markerWorld = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
 }
 
-// Listing 0x0050a470 inlines the loaders' exact-type non-virtual destructors.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x0050a470
 void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
@@ -385,7 +376,6 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
       LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
 }
 
-// Listing 0x0050a820 inlines the loader's exact-type non-virtual destructor.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x0050a820
 void TMacViewMgr::CreateIndexedGWorlds() {
@@ -774,7 +764,7 @@ void TMacViewMgr::GenerateRegions() {
       if (neighborCount > 0) {
         StrategicTileIndex* neighborCursor = cityRecord.linkedTileIndices;
         while (neighborIndex < neighborCount) {
-          InvokeBuildHexNeighborHighlightPolygonForTile(neighborCursor[0], cityRecordIndex);
+          BuildHexNeighborHighlightPolygonForTile(neighborCursor[0], cityRecordIndex);
           ++neighborIndex;
           ++neighborCursor;
         }
@@ -1313,7 +1303,7 @@ void TMacViewMgr::SetCountryRgn(RgnHandle sourceRegion, short slotIndex) {
 // FUNCTION: IMPERIALISM 0x0050d6c0
 unsigned char TMacViewMgr::PtInCountry(CPoint* point, short regionIndex) {
   if (countryRegions[regionIndex] != 0) {
-    return QueryPointInsideHitRegion(point, countryRegions[regionIndex]);
+    return PtInRgn(point, countryRegions[regionIndex]);
   }
   return false;
 }

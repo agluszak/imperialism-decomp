@@ -21,8 +21,6 @@ void TStaticText::CopyTextTo(CString* out) {
 }
 
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x649678).
-// 0x48f710 is the IMPLEMENT_DYNCREATE-generated CreateObject (was previously modeled as
-// a banned free-function factory; retired in favor of the macro's real static).
 
 IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
@@ -45,13 +43,6 @@ TStaticText::TStaticText(const TStaticText& source)
   text = new CString();
   *text = *source.text;
 }
-
-// Destructors are compiler-generated (implicit) from real inheritance; the
-// `text` CString member's real destructor makes this non-trivial, so MSVC
-// emits it as its own out-of-line complete-object destructor (0x48fc30, 146
-// bytes) in addition to the vtable-slot scalar deleting destructor (0x48f9a0)
-// — same pattern as heuristic #39 (TFuzzySet/TFuzzyVar dtor split). It was
-// still being served by a dummy autogen stub before this claim.
 
 TStaticText::~TStaticText() {
   delete text;

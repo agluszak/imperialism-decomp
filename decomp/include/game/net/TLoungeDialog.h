@@ -18,7 +18,7 @@ public:
   virtual bool DoIdle(int action) override;     // slot 0x13 0x54db40
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x54d730
 
-  // NOOP: verified empty in original 0x0054d686 (no standalone TLoungeDialog::TLoungeDialog body exists: CreateObject 0x0054d650 inlines this default ctor, calling the TNoHilitePicture base ctor directly at that site)
+  // NOOP: verified empty in original 0x0054d686
   TLoungeDialog() {}
 
   void YouHaveNewGameData();

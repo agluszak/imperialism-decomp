@@ -26,7 +26,7 @@ public:
   // Simply re-resolves the navy order manager's map-order chains; sideWonFlag is unused.
   virtual void EndBattle(unsigned char sideWonFlag) override; // slot 0x12 0x5a5b70, Mac oracle
 
-  // NOOP: verified empty in original 0x005a5485 (no standalone TNavyBattle::TNavyBattle body exists: construction is fully inlined into CreateObject 0x005a5480; that address is its operator-new call site)
+  // NOOP: verified empty in original 0x005a5485
   TNavyBattle() {}
 
   void InitTacticalBattle(TTacticalPlayer* ourPlayer,

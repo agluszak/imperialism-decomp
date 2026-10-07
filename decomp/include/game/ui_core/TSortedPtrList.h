@@ -16,7 +16,7 @@ public:
   short recordSize; // +0x14
   short pad16;      // +0x16
 
-  // NOOP: verified empty in original 0x00488063 (no standalone TSortedPtrList::TSortedPtrList body exists: CreateObject 0x00488030 inlines this default ctor, calling the CPtrArray base ctor directly at that site)
+  // NOOP: verified empty in original 0x00488063
   TSortedPtrList() {}
 
   virtual ~TSortedPtrList() override;

@@ -52,7 +52,6 @@ public:
   virtual short PickIngotTile();                                          // slot 0x14 0x55fef0
   virtual short PickInvasionIngotTile(Province* contextProvince);         // slot 0x15 0x560150
   virtual void ShowFocusIngot(unsigned char show);                        // slot 0x16 0x560580
-  // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
 
   short GetContextOrdinalOrInvalid();
   void GenerateZoneStatusCodeIfUnset(); // 0x55f5c0

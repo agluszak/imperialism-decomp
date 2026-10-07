@@ -13,7 +13,7 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x005b2970
 
-  // NOOP: verified empty in original 0x005b28b6 (no standalone TMapEditCluster::TMapEditCluster body exists: CreateObject 0x005b2880 inlines this default ctor, calling the TCluster base ctor directly at that site)
+  // NOOP: verified empty in original 0x005b28b6
   TMapEditCluster() {}
 };
 ASSERT_SIZE(TMapEditCluster, 0x88);

@@ -33,8 +33,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-void MakeFlagButtonDialog();
-
 IMPLEMENT_DYNCREATE(TToolBarCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x00584e20

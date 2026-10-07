@@ -11,7 +11,7 @@ class TPtrList : public TSortedPtrList {
 public:
   // FUNCTION: IMPERIALISM 0x004884f0
   ~TPtrList() override {}
-  // NOOP: verified empty in original 0x00488433 (no standalone TPtrList::TPtrList body exists: CreateObject 0x00488400 inlines this default ctor, calling the CPtrArray base ctor directly at that site)
+  // NOOP: verified empty in original 0x00488433
   TPtrList() {}
   DECLARE_DYNCREATE(TPtrList)
 

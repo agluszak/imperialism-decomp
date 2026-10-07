@@ -1,6 +1,4 @@
 #include "game/ui_core/TWindow.h"
-// UI wrapper class quads extracted from trade_screen.
-
 #include "game/ui_widgets/THQButton.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/quickdraw_guards.h"

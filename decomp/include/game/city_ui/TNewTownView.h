@@ -15,7 +15,7 @@ public:
   virtual void Close() override;         // slot 0x28 0x4bdc10
   virtual void StuffValues(TTown* town); // slot 0x68 0x4bd880
 
-  // NOOP: verified empty in original 0x004bd7d3 (no standalone TNewTownView::TNewTownView body exists: CreateObject 0x004bd7a0 inlines this default ctor, calling the TView base ctor directly at that site)
+  // NOOP: verified empty in original 0x004bd7d3
   TNewTownView() {}
 
   TTown* town;

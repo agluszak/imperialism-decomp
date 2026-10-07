@@ -175,9 +175,8 @@ const int kControlTagPlan = IMPERIALISM_FOURCC(
     'p', 'l', 'a', 'n'); // TSetupRandomMapPicture.cpp, TViewMgr.cpp; 1 Mac screen(s)
 const int kControlTagPlus = IMPERIALISM_FOURCC(
     'p', 'l', 'u', 's'); // TArmoryView.cpp, TArmyPlacard.cpp, TShipyardView.cpp...; 3 Mac screen(s)
-const int kControlTagPreviewMap = IMPERIALISM_FOURCC(
-    'p', 'm', 'a',
-    'p'); // Turn-event trade-board builder tags (previously raw MISSING-TAG literals)
+const int kControlTagPreviewMap = IMPERIALISM_FOURCC('p', 'm', 'a',
+                                                     'p'); // Turn-event trade-board builder tags
 const int kControlTagPort =
     IMPERIALISM_FOURCC('p', 'o', 'r', 't'); // TCivMgr.cpp, global_data_tables.cpp; 1 Mac screen(s)
 const int kSummaryTagPowe = IMPERIALISM_FOURCC(

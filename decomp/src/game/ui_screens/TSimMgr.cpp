@@ -65,8 +65,6 @@ ASSERT_OFFSET(TSimMgr, numGreatPowers, 0x30);
 ASSERT_OFFSET(TSimMgr, numMinorCountries, 0x34);
 ASSERT_OFFSET(TSimMgr, turnFlowStatusFlags, 0x3c);
 
-void RegenerateAllMapActionContextStatusCodes();
-
 #define DECODE_SCENARIO_DWORD_TOKEN(token)                                                         \
   unsigned char* token##Bytes = static_cast<unsigned char*>(static_cast<void*>(&token));           \
   unsigned char token##SwapByte = token##Bytes[0];                                                 \

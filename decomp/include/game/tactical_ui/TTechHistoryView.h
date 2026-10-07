@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TTechHistoryView)
   virtual ~TTechHistoryView() override; // slot 0x01 (scalar deleting destructor)
 
-  // NOOP: verified empty in original 0x005b2263 (no standalone TTechHistoryView::TTechHistoryView body exists: CreateObject 0x005b2230 inlines this default ctor, calling the TView base ctor directly at that site)
+  // NOOP: verified empty in original 0x005b2263
   TTechHistoryView() {}
 
   // Non-virtual (real address 0x5b22c0, called directly, not through the vtable).

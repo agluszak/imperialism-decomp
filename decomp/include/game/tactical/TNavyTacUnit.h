@@ -27,7 +27,7 @@ public:
   int secondaryCombatStrength; // +0x38
   int baseActionPoints;        // +0x3c
 
-  // NOOP: verified empty in original 0x005a6242 (no standalone TNavyTacUnit::TNavyTacUnit body exists: construction is fully inlined into CreateObject 0x005a6240; that address is its operator-new call site)
+  // NOOP: verified empty in original 0x005a6242
   TNavyTacUnit() {}
 
   void InitializeFromSourceShip(TShip* sourceShip); // 0x5a6290

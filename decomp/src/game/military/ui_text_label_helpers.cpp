@@ -11,9 +11,6 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-void SetControlHoverHelpText(CString sharedString, TView* control);
-void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
-
 // FUNCTION: IMPERIALISM 0x005c3d20
 void ResolveUiThemeColor(short themeCode, COLORREF* outColor) {
   switch (themeCode) {

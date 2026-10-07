@@ -15,7 +15,7 @@ public:
   short categorySlot; // 0x10
   short nationSlot;   // 0x12
 
-  // NOOP: verified empty in original 0x005bd983 (no standalone TTradeBidNationLine::TTradeBidNationLine body exists: CreateObject 0x005bd950 inlines this default ctor, calling the TLineData base ctor directly at that site)
+  // NOOP: verified empty in original 0x005bd983
   TTradeBidNationLine() {}
 
   void ITradeBidNationLine(short categorySlot, short nationSlot, short rowArg, short colArg,

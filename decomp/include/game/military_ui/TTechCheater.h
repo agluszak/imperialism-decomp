@@ -14,7 +14,7 @@ public:
 
   void ITechCheater(TView* panel);
 
-  // NOOP: verified empty in original 0x004b18b3 (no standalone TTechCheater::TTechCheater body exists: CreateObject 0x004b1880 inlines this default ctor, calling the TView base ctor directly at that site)
+  // NOOP: verified empty in original 0x004b18b3
   TTechCheater() {}
 };
 ASSERT_SIZE(TTechCheater, 0x64);

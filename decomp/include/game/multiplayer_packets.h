@@ -3,12 +3,7 @@
 #include "game/map_domain_types.h"
 // Shared multiplayer turn-event wire layouts.
 //
-// These packet shapes are read and written from more than one translation unit
-// (TMultiplayerMgr.cpp emit/receive paths, the HandleDiplomacyTurnEventPacketByCode
-// dispatcher TU, and TNetMgr's reachability probe). Each layout is protocol ground
-// truth: it used to be declared once per TU under suffixed names, which is exactly
-// the silent-drift hazard the type-modeling guardrail warns about, so the single
-// definition lives here. Packets used by only one TU stay local to that TU.
+// Layouts shared by more than one translation unit; single-TU packets stay local.
 //
 // Wire framing: every packet derives from the 0x10-byte NetMessage header (see
 // NetMessage.h); 'timely' packets prefix the 'time' four-cc tag, the active-nation

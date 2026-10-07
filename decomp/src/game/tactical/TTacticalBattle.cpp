@@ -1354,7 +1354,7 @@ void TTacticalBattle::LaFireOn(TTacticalUnit* attackerUnit, TTacticalUnit* targe
     short categoryCode = g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitType];
     if (categoryCode == 6 || categoryCode == 7 || attackerUnit->unitType == 0x15) {
       if (battleView != 0) {
-        // effect-id + frame-count pair: 0xf6e/6 here, 0xf78/3 in the else branch (verified).
+        // effect-id + frame-count pair: 0xf6e/6 here, 0xf78/3 in the else branch.
         battleView->PlayAni(targetTileIndex, 0xf6e, 6);
       }
     } else {

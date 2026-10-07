@@ -15,7 +15,7 @@ public:
   virtual void StuffValues(TCity* city); // slot 0x68 0x4bd040
   virtual void DoClosingAction(unsigned long dialogActionTag); // slot 0x69 0x4bd260
 
-  // NOOP: verified empty in original 0x004bcf73 (no standalone TRailheadDialog::TRailheadDialog body exists: CreateObject 0x004bcf40 inlines this default ctor, calling the TView base ctor directly at that site)
+  // NOOP: verified empty in original 0x004bcf73
   TRailheadDialog() {}
 
   TCity* city;

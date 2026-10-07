@@ -14,7 +14,7 @@ public:
   int nationSlot; // +0x10 — forwarded to ITechItemView
   int techId;     // +0x14 — forwarded to ITechItemView
 
-  // NOOP: verified empty in original 0x005b10c3 (no standalone TTechItemLine::TTechItemLine body exists: CreateObject 0x005b1090 inlines this default ctor, calling the TLineData base ctor directly at that site)
+  // NOOP: verified empty in original 0x005b10c3
   TTechItemLine() {}
 
   void ITechItemLine(short rowArg, short colArg, int* bounds, int nationSlot, int techId);

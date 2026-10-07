@@ -1227,9 +1227,6 @@ void TTacticalBattleView::PlayAni(TacticalTileIndex tileIndex, int effectId, int
   PlayAni(&effectRect, effectId, frameCount, tileIndex, 2);
 }
 
-// 1-byte no-op pair bracketing the modal animation wait (possible Mac
-// HideCursor/ShowCursor shims, like QDLoadResource); autogen-stub-owned.
-
 // Spawns a TOneTimeAnimation over `rect` (effect sprite `effectId`, `frameCount`
 // frames, `mode` ticks per frame, registry tag = tileIndex), registers it with the
 // UI animator, then pumps UI messages modally until the animation completes; finally

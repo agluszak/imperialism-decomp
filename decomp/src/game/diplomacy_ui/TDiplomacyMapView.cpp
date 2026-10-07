@@ -1655,10 +1655,3 @@ short TDiplomacyMapView::RuntimeDrawPolicyIconForNation(short nationSlot) {
   return g_runtimePolicyIconOffsetByNation[nationSlot];
 }
 #endif
-
-// 0x005DA040 and 0x005DA180 moved to TViewMgr::RefreshMainDialogAndCursorHelp
-// / ShowDealBookScreen (src/game/ui_core/TViewMgr.cpp): the vtable
-// evidence (`just vtable TViewMgr`) shows both are TViewMgr's own vtable slots 0x60/0x64, not
-// TDiplomacyMapView methods -- neither body ever reads `this`, and this class's prior
-// attribution called TView::SetHoverHelpText with an implicit (wrong) `this` receiver
-// instead of the real disassembly's explicitly-resolved 'main' control.

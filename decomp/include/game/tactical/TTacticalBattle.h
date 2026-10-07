@@ -154,7 +154,7 @@ public:
   // Deployment-zone queries. 0x5a4240 / 0x5a41c0 / 0x5a4330.
   int CountDeploymentTiles();
   bool ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex);
-  // True when there is no fort or a wall section is breached (curated name kept).
+  // True when there is no fort or a wall section is breached.
   bool IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
   bool HasFortWallGarrison(TacticalTileIndex tileIndex);
 };

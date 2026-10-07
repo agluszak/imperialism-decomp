@@ -17,7 +17,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x005658d0
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5654e0
 
-  // NOOP: verified empty in original 0x00565433 (no standalone TShipView::TShipView body exists: CreateObject 0x00565400 inlines this default ctor, calling the TView base ctor directly at that site)
+  // NOOP: verified empty in original 0x00565433
   TShipView() {}
 
   TShip* shipNode;

@@ -25,9 +25,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
-void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
-
 IMPLEMENT_DYNCREATE(TDealBookPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005babc0

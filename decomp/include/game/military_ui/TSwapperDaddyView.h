@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TSwapperDaddyView)
   virtual ~TSwapperDaddyView() override; // slot 0x01 (scalar deleting destructor)
 
-  // NOOP: verified empty in original 0x004ac5f5 (no standalone TSwapperDaddyView::TSwapperDaddyView body exists: CreateObject 0x004ac5c0 inlines this default ctor, calling the TView base ctor directly at that site)
+  // NOOP: verified empty in original 0x004ac5f5
   TSwapperDaddyView() {}
 
   TView* SelectSwapperItemByTag(int tag); // 0x004ac6c0

@@ -13,7 +13,7 @@ public:
   virtual ~TNavyBoyView() override;             // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4af0b0
 
-  // NOOP: verified empty in original 0x004af003 (no standalone TNavyBoyView::TNavyBoyView body exists: CreateObject 0x004aefd0 inlines this default ctor, calling the TView base ctor directly at that site)
+  // NOOP: verified empty in original 0x004af003
   TNavyBoyView() {}
 
   BattleReportDetailRecord* battleDetail; // +0x60

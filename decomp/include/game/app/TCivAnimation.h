@@ -13,7 +13,7 @@ public:
   virtual ~TCivAnimation() override {} // slot 0x01 (scalar deleting destructor)
   virtual void Tick() override;        // slot 0x0a 0x49f580
 
-  // NOOP: verified empty in original 0x0049f452 (no standalone TCivAnimation::TCivAnimation body exists: construction is fully inlined into CreateObject 0x0049f450; that address is its operator-new call site)
+  // NOOP: verified empty in original 0x0049f452
   TCivAnimation() {}
 
   short randomResetFrame;     // +0x2c frame that may restart the cycle early

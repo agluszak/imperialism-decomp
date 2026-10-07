@@ -359,16 +359,7 @@ public:
   };
   int gameScoreRows[kGameScoreRowCount];
   int militaryExpenses;
-  // Object ends here at 0x964 (== CRuntimeClass::m_nObjectSize for TGreatPower and
-  // for TProxyGreatPower/TClientGreatPower/TRemoteGreatPower; THostGreatPower adds one
-  // more dword). The AI-only tail block (actionMetricByQuarter/provinceStatus/
-  // zoneStatus/missionQueue/floatB64/floatB68) that used to be declared here
-  // moved to TAutoGreatPower (RTTI size 0xb70) -- see TSimMgr::RebuildPrimaryNationState
-  // ForSlot (0x57cda0): every non-Auto concrete subclass allocates exactly its own
-  // RTTI-reported size with no room for that block, and the one "bare TGreatPower"-
-  // looking construction (TSimMgr.cpp, scenario mode 2) is proven by its
-  // operator_new(0xb70) + TAutoGreatPower::TAutoGreatPower() ctor call (thunk 0x407a31
-  // -> 0x4e6b50) to actually construct a TAutoGreatPower, not a bare TGreatPower.
+  // Object ends here at 0x964; TAutoGreatPower's AI tail follows in that subclass.
 
   short ComputeNationRuntimeAdvisoryMetricCase6();
 

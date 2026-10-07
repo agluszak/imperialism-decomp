@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TGPCheater)
   virtual ~TGPCheater() override; // slot 0x01 (scalar deleting destructor)
 
-  // NOOP: verified empty in original 0x004b19e3 (no standalone TGPCheater::TGPCheater body exists: CreateObject 0x004b19b0 inlines this default ctor, calling the TView base ctor directly at that site)
+  // NOOP: verified empty in original 0x004b19e3
   TGPCheater() {}
 
   void ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout, int fieldIndex, short value,

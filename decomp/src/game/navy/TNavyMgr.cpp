@@ -34,8 +34,6 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/map_order_battle_snapshot.h"
 
-Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
-
 namespace {
 
 static inline void CopyCStringIntoFixedBuffer(char* dest, int destSize, const char* src) {

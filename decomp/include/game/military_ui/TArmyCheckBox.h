@@ -29,7 +29,7 @@ public:
   int checkedFrameOffsetApplied;
   TQuickDrawSurfaceContext* surfaceContext;
 
-  // NOOP: verified empty in original 0x004a9f57 (no standalone TArmyCheckBox::TArmyCheckBox body exists: CreateObject 0x004a9f20 inlines this default ctor, calling the TControl base ctor directly at that site)
+  // NOOP: verified empty in original 0x004a9f57
   TArmyCheckBox() {}
 
   TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, int unused1, int unused2,
