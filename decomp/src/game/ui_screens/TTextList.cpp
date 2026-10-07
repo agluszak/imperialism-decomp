@@ -12,7 +12,7 @@
 IMPLEMENT_DYNCREATE(TTextList, TView)
 
 // FUNCTION: IMPERIALISM 0x0045aee0
-TTextList::TTextList() {
+TTextList::TTextList() : TView() {
   itemHeight = 0x10;
   totalItems = 0;
   scrollOffset = 0;

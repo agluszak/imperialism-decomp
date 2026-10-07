@@ -9,7 +9,7 @@ void TClickZone::Hilite() {}
 IMPLEMENT_DYNCREATE(TClickZone, TControl)
 
 // FUNCTION: IMPERIALISM 0x00572410
-TClickZone::TClickZone() : clickSoundId(0x1b58) {}
+TClickZone::TClickZone() : TControl(), clickSoundId(0x1b58) {}
 
 // FUNCTION: IMPERIALISM 0x00572470
 TClickZone::~TClickZone() {}

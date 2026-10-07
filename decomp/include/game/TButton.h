@@ -10,7 +10,7 @@ class TButton : public TCtlMgr {
 public:
   DECLARE_DYNCREATE(TButton)
   virtual ~TButton() override;
-  TButton() {
+  TButton() : TCtlMgr() {
     ReportAssertionFailure();
   }
 

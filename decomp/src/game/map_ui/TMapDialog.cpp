@@ -161,10 +161,15 @@ static inline void Blit64x64StrategicMapAtlasTile(TQuickDrawSurfaceContext* atla
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
+// GLOBAL: IMPERIALISM 0x006a3360
 double g_mapCellRowScale = DefaultMapCellScale();
+// GLOBAL: IMPERIALISM 0x006a3388
 double g_mapCellColumnScale = DefaultMapCellScale();
+// GLOBAL: IMPERIALISM 0x006a32f8
 double g_mapProjectionColumnScale = DefaultMapCellScale();
+// GLOBAL: IMPERIALISM 0x006a3320
 double g_mapProjectionRowScale = DefaultMapCellScale();
+// GLOBAL: IMPERIALISM 0x006a3348
 short g_mapProjectionSeamColumn = static_cast<short>(g_mapProjectionColumnScale * 512.0 + 1.0);
 
 // FUNCTION: IMPERIALISM 0x00512440
@@ -293,7 +298,7 @@ static int g_mapDialogViewportTileSpanInitializer = (InitializeMapDialogViewport
 IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
 // FUNCTION: IMPERIALISM 0x00519b50
-TMapDialog::TMapDialog() {
+TMapDialog::TMapDialog() : TWorldView() {
   int row;
   int col;
   viewportOrigin.x = 0;

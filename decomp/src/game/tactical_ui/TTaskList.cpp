@@ -4,7 +4,7 @@
 IMPLEMENT_DYNCREATE(TTaskList, TList)
 
 // FUNCTION: IMPERIALISM 0x005aeb90
-TTaskList::TTaskList() {}
+TTaskList::TTaskList() : TList() {}
 
 // FUNCTION: IMPERIALISM 0x005aec30
 TTaskList::~TTaskList() {}

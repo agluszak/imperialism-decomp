@@ -10,7 +10,7 @@ public:
   virtual ~TDefendProvinceMission() override; // slot 0x01 dtor 0x00535800 / ??_G
 public:
   // Default constructor
-  TDefendProvinceMission() {}
+  TDefendProvinceMission() : TArmyMission() {}
 
   TDefendProvinceMission(int nodeKey) : TArmyMission(nodeKey) {}
 

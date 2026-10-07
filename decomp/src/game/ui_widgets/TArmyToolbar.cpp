@@ -21,7 +21,7 @@
 IMPLEMENT_DYNCREATE(TArmyToolbar, TUnitToolbarCluster)
 
 // FUNCTION: IMPERIALISM 0x0058dee0
-TArmyToolbar::TArmyToolbar() {}
+TArmyToolbar::TArmyToolbar() : TUnitToolbarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x0058df40
 TArmyToolbar::~TArmyToolbar() {}

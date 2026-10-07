@@ -10,7 +10,7 @@
 IMPLEMENT_DYNCREATE(TStatusButton, TButton)
 
 // FUNCTION: IMPERIALISM 0x00586330
-TStatusButton::TStatusButton() {}
+TStatusButton::TStatusButton() : TButton() {}
 
 // FUNCTION: IMPERIALISM 0x00586400
 void TStatusButton::DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {

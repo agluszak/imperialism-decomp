@@ -15,7 +15,7 @@
 IMPLEMENT_DYNCREATE(TLonelyTileView, TView)
 
 // FUNCTION: IMPERIALISM 0x00505ae0
-TLonelyTileView::TLonelyTileView() {}
+TLonelyTileView::TLonelyTileView() : TView() {}
 
 // FUNCTION: IMPERIALISM 0x00505b40
 TLonelyTileView::~TLonelyTileView() {}

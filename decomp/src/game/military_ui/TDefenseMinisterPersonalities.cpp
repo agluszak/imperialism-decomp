@@ -17,7 +17,7 @@ double TNapoleonMinister::GetStategicEscalationMultiplier(bool flag) {
 IMPLEMENT_DYNCREATE(TNapoleonMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ed4e0
-TNapoleonMinister::TNapoleonMinister() {}
+TNapoleonMinister::TNapoleonMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ed620
 void TNapoleonMinister::MakeNewCity(TCity* city) {
@@ -45,7 +45,7 @@ double TBismarckMinister::GetStategicEscalationMultiplier(bool flag) {
 IMPLEMENT_DYNCREATE(TBismarckMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ed810
-TBismarckMinister::TBismarckMinister() {}
+TBismarckMinister::TBismarckMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ed950
 void TBismarckMinister::MakeNewCity(TCity* city) {
@@ -70,7 +70,7 @@ double TPirateMinister::GetStategicEscalationMultiplier(bool flag) {
 IMPLEMENT_DYNCREATE(TPirateMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004edb00
-TPirateMinister::TPirateMinister() {}
+TPirateMinister::TPirateMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004edc40
 void TPirateMinister::MakeNewCity(TCity* city) {
@@ -95,7 +95,7 @@ double TDefenderMinister::GetStategicEscalationMultiplier(bool) {
 IMPLEMENT_DYNCREATE(TDefenderMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004edde0
-TDefenderMinister::TDefenderMinister() {}
+TDefenderMinister::TDefenderMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004edf20
 void TDefenderMinister::MakeNewCity(TCity* city) {
@@ -120,7 +120,7 @@ double TBullyMinister::GetStategicEscalationMultiplier(bool flag) {
 IMPLEMENT_DYNCREATE(TBullyMinister, TDefenseMinister)
 
 // FUNCTION: IMPERIALISM 0x004ee0d0
-TBullyMinister::TBullyMinister() {}
+TBullyMinister::TBullyMinister() : TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ee210
 void TBullyMinister::MakeNewCity(TCity* city) {

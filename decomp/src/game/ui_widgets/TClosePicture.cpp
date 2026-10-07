@@ -7,7 +7,7 @@
 IMPLEMENT_DYNCREATE(TClosePicture, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00586b70
-TClosePicture::TClosePicture() {}
+TClosePicture::TClosePicture() : TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00586bd0
 TClosePicture::~TClosePicture() {}

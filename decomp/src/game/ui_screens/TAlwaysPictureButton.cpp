@@ -4,7 +4,7 @@
 IMPLEMENT_DYNCREATE(TAlwaysPictureButton, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005709f0
-TAlwaysPictureButton::TAlwaysPictureButton() {}
+TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570a50
 TAlwaysPictureButton::~TAlwaysPictureButton() {}

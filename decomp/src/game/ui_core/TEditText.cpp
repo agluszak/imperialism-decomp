@@ -12,7 +12,7 @@
 IMPLEMENT_DYNCREATE(TEditText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x004903a0
-TEditText::TEditText() {
+TEditText::TEditText() : TStaticText() {
   this->eventNumber = 13;
   this->editWindow = NULL;
   this->editFont = NULL;

@@ -8,7 +8,7 @@
 IMPLEMENT_DYNCREATE(THelpWindow, TFloatWindow)
 
 // FUNCTION: IMPERIALISM 0x00504bf0
-THelpWindow::THelpWindow() {}
+THelpWindow::THelpWindow() : TFloatWindow() {}
 
 // FUNCTION: IMPERIALISM 0x00504c50
 THelpWindow::~THelpWindow() {}

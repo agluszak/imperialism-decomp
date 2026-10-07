@@ -5,7 +5,7 @@
 IMPLEMENT_DYNCREATE(TTradeTotalsLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x005c1900
-TTradeTotalsLine::TTradeTotalsLine() {}
+TTradeTotalsLine::TTradeTotalsLine() : TLineData() {}
 
 // FUNCTION: IMPERIALISM 0x005c1980
 void TTradeTotalsLine::ITradeTotalsLine(short rowArg, short colArg, int* bounds, short value) {

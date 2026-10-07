@@ -9,7 +9,7 @@
 IMPLEMENT_DYNCREATE(TIconBar, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00505ff0
-TIconBar::TIconBar() {}
+TIconBar::TIconBar() : TNoHilitePicture() {}
 
 // FUNCTION: IMPERIALISM 0x00506050
 TIconBar::~TIconBar() {}

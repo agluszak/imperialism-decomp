@@ -40,7 +40,7 @@ const int kRegionIdBias = kNationSlotCount; // tile[4] holds region id + kNation
 IMPLEMENT_DYNCREATE(TMapMaker, TControl)
 
 // FUNCTION: IMPERIALISM 0x00525970
-TMapMaker::TMapMaker() {}
+TMapMaker::TMapMaker() : TObject() {}
 
 // FUNCTION: IMPERIALISM 0x005259c0
 TMapMaker::~TMapMaker() {}

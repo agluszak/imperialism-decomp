@@ -16,7 +16,7 @@ public:
   virtual ~TControlSeaZoneMission() override {}
 
 public:
-  TControlSeaZoneMission() {}
+  TControlSeaZoneMission() : TNavyMission() {}
 
   TControlSeaZoneMission(TZone* targetZone) : TNavyMission(targetZone) {}
 

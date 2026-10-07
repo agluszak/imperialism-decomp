@@ -24,7 +24,7 @@ public:
   int navyState; // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
   float requiredShipEquipageByCategory[4];
 
-  TNavyMission() {
+  TNavyMission() : TMission() {
     missionTargetZone = NULL;
     resolvedPortZone = NULL;
     selectedOrder = NULL;

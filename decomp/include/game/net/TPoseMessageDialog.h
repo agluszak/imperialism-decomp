@@ -15,7 +15,7 @@ public:
 
   int kickedByNationSlot;
 
-  TPoseMessageDialog() {}
+  TPoseMessageDialog() : TCommand() {}
 };
 ASSERT_SIZE(TPoseMessageDialog, 0x1c);
 

@@ -18,7 +18,7 @@
 IMPLEMENT_DYNCREATE(THelpPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00503c90
-THelpPicture::THelpPicture() : currentHelpSet(0), topicListText(0) {}
+THelpPicture::THelpPicture() : TPicture(), currentHelpSet(0), topicListText(0) {}
 
 // FUNCTION: IMPERIALISM 0x00503cf0
 THelpPicture::~THelpPicture() {}

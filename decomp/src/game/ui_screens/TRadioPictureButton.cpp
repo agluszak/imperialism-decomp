@@ -4,7 +4,7 @@
 IMPLEMENT_DYNCREATE(TRadioPictureButton, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005717c0
-TRadioPictureButton::TRadioPictureButton() {
+TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
   this->eventNumber = 0xc;
   this->reserved94 = 0;
 }

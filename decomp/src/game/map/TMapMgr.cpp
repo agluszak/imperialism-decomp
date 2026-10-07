@@ -67,7 +67,7 @@ TMilitaryUnit* TMapMgr::GetMilitaryMaster(short provinceIndex) {
 IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0050e3d0
-TMapMgr::TMapMgr() : cityScoreTable(0) {
+TMapMgr::TMapMgr() : TObject(), cityScoreTable(0) {
   mapDataReady = 0;
   strategicMapPalettePreviewReady = false;
   terrainStateTable = 0;

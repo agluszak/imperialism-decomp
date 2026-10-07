@@ -12,6 +12,6 @@ public:
   virtual ~TCancelGameOptionsCommand() override;
   virtual void DoIt() override;
 
-  TCancelGameOptionsCommand() {}
+  TCancelGameOptionsCommand() : TCommand() {}
 };
 ASSERT_SIZE(TCancelGameOptionsCommand, 0x18);

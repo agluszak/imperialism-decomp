@@ -16,7 +16,7 @@ const WORD kBitmapFileSignature = 0x4d42;
 IMPLEMENT_SERIAL(CDib, CObject, 0)
 
 // FUNCTION: IMPERIALISM 0x00479f40
-CDib::CDib() {
+CDib::CDib() : CObject() {
   m_hBitmap = NULL;
   m_infoOwnMode = kDibInfoNotOwned;
   m_dibBitsOwned = 0;

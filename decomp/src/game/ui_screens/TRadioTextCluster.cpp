@@ -12,7 +12,7 @@
 IMPLEMENT_DYNCREATE(TRadioTextCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x005796a0
-TRadioTextCluster::TRadioTextCluster() {
+TRadioTextCluster::TRadioTextCluster() : TCluster() {
   selectedColorCode = 0x4b;
   unselectedColorCode = 0x49;
   frameThemeCode = -1;

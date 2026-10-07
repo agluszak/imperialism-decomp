@@ -27,6 +27,6 @@ public:
   virtual void SorryYouLose() override;
   virtual bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage() override;
 
-  TProxyGreatPower() {}
+  TProxyGreatPower() : TGreatPower() {}
 };
 ASSERT_SIZE(TProxyGreatPower, 0x964);

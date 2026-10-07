@@ -26,7 +26,7 @@
 IMPLEMENT_DYNCREATE(TRailAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x00589f90
-TRailAmtBar::TRailAmtBar() {}
+TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058a020
 void TRailAmtBar::DoPostCreate(int arg) {

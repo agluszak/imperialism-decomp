@@ -23,7 +23,7 @@
 IMPLEMENT_DYNCREATE(TOffersPanelView, TPanelView)
 
 // FUNCTION: IMPERIALISM 0x004f8f70
-TOffersPanelView::TOffersPanelView() : acceptButton(0), rejectButton(0) {}
+TOffersPanelView::TOffersPanelView() : TPanelView(), acceptButton(0), rejectButton(0) {}
 
 // FUNCTION: IMPERIALISM 0x004f8fd0
 TOffersPanelView::~TOffersPanelView() {}

@@ -44,7 +44,7 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0044a770
-TCivDescription::TCivDescription() {
+TCivDescription::TCivDescription() : TView() {
   selectedCivilianClass = -1;
   targetTileCountsBySlot[4] = 0;
 }

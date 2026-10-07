@@ -15,7 +15,7 @@ public:
   short clickSoundId;
 
   // FUNCTION: IMPERIALISM 0x005715a0
-  TUpDownPictureButton() : clickSoundId(7000) {}
+  TUpDownPictureButton() : TPicture(), clickSoundId(7000) {}
 };
 
 ASSERT_SIZE(TUpDownPictureButton, 0x94);

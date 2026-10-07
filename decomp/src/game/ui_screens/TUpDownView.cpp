@@ -5,7 +5,7 @@ IMPLEMENT_DYNCREATE(TUpDownView, TControl)
 #include "game/gfx/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583d50
-TUpDownView::TUpDownView() : repeatTick(0) {}
+TUpDownView::TUpDownView() : TControl(), repeatTick(0) {}
 
 // FUNCTION: IMPERIALISM 0x00583db0
 TUpDownView::~TUpDownView() {}

@@ -88,7 +88,7 @@ void SetTurnAlertObservationOnlyForRuntimeTest(bool enabled) {
 IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005005e0
-THelpMgr::THelpMgr() {
+THelpMgr::THelpMgr() : TObject() {
   pendingDialogView8 = 0;
   pendingDialogViewC = 0;
   tradeAdviceDetailLevel = 0;

@@ -25,7 +25,7 @@ const int kAssertLineTradeSummaryProf = 0x687;
 IMPLEMENT_DYNCREATE(TCityBarCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586630
-TCityBarCluster::TCityBarCluster() {}
+TCityBarCluster::TCityBarCluster() : TUberCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00586690
 TCityBarCluster::~TCityBarCluster() {}

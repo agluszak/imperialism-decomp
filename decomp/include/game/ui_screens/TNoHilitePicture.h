@@ -14,7 +14,7 @@ public:
   bool hiliteState;
 
   // FUNCTION: IMPERIALISM 0x00572b30
-  TNoHilitePicture() {
+  TNoHilitePicture() : TPicture() {
     hiliteState = false;
   }
 };

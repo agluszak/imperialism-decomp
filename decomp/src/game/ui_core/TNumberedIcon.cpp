@@ -5,7 +5,7 @@
 IMPLEMENT_DYNCREATE(TNumberedIcon, TMegaPicture)
 
 // FUNCTION: IMPERIALISM 0x005073a0
-TNumberedIcon::TNumberedIcon() : numberText(0) {}
+TNumberedIcon::TNumberedIcon() : TMegaPicture(), numberText(0) {}
 
 // FUNCTION: IMPERIALISM 0x00507400
 TNumberedIcon::~TNumberedIcon() {}

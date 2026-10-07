@@ -11,7 +11,7 @@
 IMPLEMENT_DYNCREATE(TInteriorMinisterView, TMinisterView)
 
 // FUNCTION: IMPERIALISM 0x004f3690
-TInteriorMinisterView::TInteriorMinisterView() {}
+TInteriorMinisterView::TInteriorMinisterView() : TMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f36f0
 TInteriorMinisterView::~TInteriorMinisterView() {}

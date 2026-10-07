@@ -15,6 +15,6 @@ public:
   virtual ~TCommandHandler() override {}
   virtual void PerformCommand(TCommand* command);
 
-  TCommandHandler() {}
+  TCommandHandler() : TEventHandler() {}
 };
 ASSERT_SIZE(TCommandHandler, 0x20);

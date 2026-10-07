@@ -13,7 +13,7 @@ unsigned int GetTickCountDiv16();
 // VTABLE: IMPERIALISM 0x0063e398
 class TAmbitApplication : public TApplication {
 public:
-  TAmbitApplication() {
+  TAmbitApplication() : TApplication() {
     edgeScrollTarget = 0;
     dispatchBusyFlag = false;
     languagePackId = 0;

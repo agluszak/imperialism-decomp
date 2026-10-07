@@ -47,7 +47,7 @@ enum { kFirstMapRegionNationTag = 0x17 };
 IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055e700
-TZone::TZone() : primaryNeighbors(), secondaryNeighbors() {
+TZone::TZone() : displayName(), primaryNeighbors(), secondaryNeighbors() {
   seedNationId = -1;
   contextOrdinal = static_cast<short>(g_nMapActionContextCount);
   ++g_nMapActionContextCount;

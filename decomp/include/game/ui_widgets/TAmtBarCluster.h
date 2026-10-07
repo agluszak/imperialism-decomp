@@ -13,7 +13,7 @@ public:
   virtual void DoPostCreate(int styleSeed) override;
   virtual void SetMoveAmount(short amount);
 
-  TAmtBarCluster() {}
+  TAmtBarCluster() : TUberCluster() {}
   DECLARE_DYNCREATE(TAmtBarCluster)
 };
 ASSERT_SIZE(TAmtBarCluster, 0x88);

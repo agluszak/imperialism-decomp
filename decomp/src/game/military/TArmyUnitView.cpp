@@ -27,7 +27,7 @@
 IMPLEMENT_DYNCREATE(TArmyUnitView, TView)
 
 // FUNCTION: IMPERIALISM 0x004a94e0
-TArmyUnitView::TArmyUnitView() {}
+TArmyUnitView::TArmyUnitView() : TView() {}
 
 // FUNCTION: IMPERIALISM 0x004a9540
 TArmyUnitView::~TArmyUnitView() {}

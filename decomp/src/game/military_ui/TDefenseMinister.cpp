@@ -37,7 +37,7 @@ double TDefenseMinister::GetStategicEscalationMultiplier(bool) {
 IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x004ec0e0
-TDefenseMinister::TDefenseMinister() {}
+TDefenseMinister::TDefenseMinister() : TMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::IDefenseMinister(TGreatPower* owner) {

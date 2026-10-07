@@ -15,7 +15,7 @@ public:
   virtual void Setup();
   TDiplomacyMapView* diplomacyMapView;
 
-  TPanelView() : diplomacyMapView(0) {}
+  TPanelView() : TView(), diplomacyMapView(0) {}
 };
 
 ASSERT_SIZE(TPanelView, 0x64);

@@ -9,7 +9,7 @@
 IMPLEMENT_DYNCREATE(TInfoBarBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x004b0d30
-TInfoBarBehavior::TInfoBarBehavior() {}
+TInfoBarBehavior::TInfoBarBehavior() : TBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0dd0
 TInfoBarBehavior::~TInfoBarBehavior() {}

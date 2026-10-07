@@ -18,7 +18,7 @@ END_MESSAGE_MAP()
 IMPLEMENT_DYNCREATE(CAmbitDocument, CDocument)
 
 // FUNCTION: IMPERIALISM 0x00479480
-CAmbitDocument::CAmbitDocument() {
+CAmbitDocument::CAmbitDocument() : CDocument() {
   fileBasedDocument = new TAmbitFileBasedDocument();
   g_pTurnEventDialogFactoryRegistry = new TTurnEventDialogFactoryRegistry();
   RegisterStartupDialogFactoryCallbacks(g_pTurnEventDialogFactoryRegistry);

@@ -44,7 +44,7 @@ public:
 
   // The base order has no initialized fields until IProductionOrder is called.
   // FUNCTION: IMPERIALISM 0x004b4f00
-  TProductionOrder() {}
+  TProductionOrder() : TObject() {}
 };
 
 ASSERT_SIZE(TProductionOrder, 0x4c);

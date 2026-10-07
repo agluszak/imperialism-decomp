@@ -15,7 +15,7 @@
 IMPLEMENT_DYNCREATE(TMinisterView, TView)
 
 // FUNCTION: IMPERIALISM 0x004f2c60
-TMinisterView::TMinisterView() : field60(0) {}
+TMinisterView::TMinisterView() : TView(), field60(0) {}
 
 // FUNCTION: IMPERIALISM 0x004f2cc0
 TMinisterView::~TMinisterView() {}

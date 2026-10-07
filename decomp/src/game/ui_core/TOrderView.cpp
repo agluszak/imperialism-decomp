@@ -13,7 +13,7 @@
 IMPLEMENT_DYNCREATE(TOrderView, TView)
 
 // FUNCTION: IMPERIALISM 0x00506a80
-TOrderView::TOrderView() : city(0) {}
+TOrderView::TOrderView() : TView(), city(0) {}
 
 // FUNCTION: IMPERIALISM 0x00506ae0
 TOrderView::~TOrderView() {}

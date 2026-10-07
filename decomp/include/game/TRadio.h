@@ -7,7 +7,7 @@ class TRadio : public TCtlMgr {
 public:
   DECLARE_DYNCREATE(TRadio)
 
-  TRadio() {}
+  TRadio() : TCtlMgr() {}
 
   virtual ~TRadio() override;
 };

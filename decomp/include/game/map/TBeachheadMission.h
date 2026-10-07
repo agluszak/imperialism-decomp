@@ -10,7 +10,7 @@ class TBeachheadMission : public TControlSeaZoneMission {
 public:
   TInvadeMission* parentMission; // +0x3c owning composite invade mission
 
-  TBeachheadMission() : parentMission(NULL) {}
+  TBeachheadMission() : TControlSeaZoneMission(), parentMission(NULL) {}
 
   TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission);
   virtual ~TBeachheadMission() override;

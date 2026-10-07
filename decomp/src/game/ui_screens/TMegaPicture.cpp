@@ -12,7 +12,7 @@
 IMPLEMENT_DYNCREATE(TMegaPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00573190
-TMegaPicture::TMegaPicture() {
+TMegaPicture::TMegaPicture() : TNoHilitePicture() {
   surfaceContext = 0;
   modeFlags = 0;
 }

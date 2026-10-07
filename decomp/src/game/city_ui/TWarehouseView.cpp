@@ -17,7 +17,7 @@
 IMPLEMENT_DYNCREATE(TWarehouseView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004c72b0
-TWarehouseView::TWarehouseView() {}
+TWarehouseView::TWarehouseView() : TBuildingView() {}
 
 // FUNCTION: IMPERIALISM 0x004c7310
 TWarehouseView::~TWarehouseView() {}

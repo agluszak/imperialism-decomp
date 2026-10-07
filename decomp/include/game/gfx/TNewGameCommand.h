@@ -12,6 +12,6 @@ public:
   virtual ~TNewGameCommand() override;
   virtual void DoIt() override;
 
-  TNewGameCommand() {}
+  TNewGameCommand() : TCommand() {}
 };
 ASSERT_SIZE(TNewGameCommand, 0x18);

@@ -33,6 +33,6 @@ public:
   // Remote-only vtable slot 0x2c8; Mac symbol oracle: DoMovePhase().
   virtual void DoMovePhase(void);
 
-  TRemoteGreatPower() {}
+  TRemoteGreatPower() : TGreatPower() {}
 };
 ASSERT_SIZE(TRemoteGreatPower, 0x964);

@@ -57,7 +57,7 @@ bool TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(
 IMPLEMENT_DYNCREATE(TAutoGreatPower, TGreatPower)
 
 // FUNCTION: IMPERIALISM 0x004e6b50
-TAutoGreatPower::TAutoGreatPower() {
+TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
   missionQueue = 0;
 }
 

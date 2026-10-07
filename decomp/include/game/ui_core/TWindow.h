@@ -78,7 +78,7 @@ extern CList<TWindow*, TWindow*> g_LiveViewRegistry;
 extern CList<TWindow*, TWindow*> g_ModalViewStack;
 
 // FUNCTION: IMPERIALISM 0x0048d500
-inline TWindow::TWindow() : busyFlag(0) {
+inline TWindow::TWindow() : TView(), busyFlag(0) {
   g_LiveViewRegistry.AddHead(this);
   dialogBehavior.IDialogBehavior(true, kControlTagSpSpSpSp, kControlTagSpSpSpSp);
   activeLinkedWindow = this;

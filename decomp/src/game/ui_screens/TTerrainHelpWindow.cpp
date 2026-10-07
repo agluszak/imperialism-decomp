@@ -8,7 +8,7 @@
 IMPLEMENT_DYNCREATE(TTerrainHelpWindow, TFloatWindow)
 
 // FUNCTION: IMPERIALISM 0x00504d40
-TTerrainHelpWindow::TTerrainHelpWindow() {}
+TTerrainHelpWindow::TTerrainHelpWindow() : TFloatWindow() {}
 
 // FUNCTION: IMPERIALISM 0x00504da0
 TTerrainHelpWindow::~TTerrainHelpWindow() {}

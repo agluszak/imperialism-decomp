@@ -6,7 +6,7 @@
 IMPLEMENT_DYNCREATE(TFloatWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x00491fb0
-TFloatWindow::TFloatWindow() {}
+TFloatWindow::TFloatWindow() : TWindow() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // FUNCTION: IMPERIALISM 0x00492140

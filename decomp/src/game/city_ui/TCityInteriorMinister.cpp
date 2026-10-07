@@ -109,7 +109,7 @@ void TCityInteriorMinister::ResetHistoricalNeedFor(int arg) {
 IMPLEMENT_DYNCREATE(TCityInteriorMinister, TInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004be840
-TCityInteriorMinister::TCityInteriorMinister() : orderList(0) {}
+TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister(), orderList(0) {}
 
 // FUNCTION: IMPERIALISM 0x004be8d0
 void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {

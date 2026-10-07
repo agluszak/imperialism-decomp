@@ -15,7 +15,7 @@
 IMPLEMENT_DYNCREATE(TDefenseMinisterView, TMinisterView)
 
 // FUNCTION: IMPERIALISM 0x004f32f0
-TDefenseMinisterView::TDefenseMinisterView() {}
+TDefenseMinisterView::TDefenseMinisterView() : TMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3350
 TDefenseMinisterView::~TDefenseMinisterView() {}

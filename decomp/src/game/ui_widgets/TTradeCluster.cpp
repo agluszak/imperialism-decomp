@@ -80,7 +80,7 @@ static short QueryNationTradeCapacity(TGreatPower* nationState) {
 IMPLEMENT_DYNCREATE(TTradeCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x005870b0
-TTradeCluster::TTradeCluster() {}
+TTradeCluster::TTradeCluster() : TAmtBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00587130
 void TTradeCluster::DoPostCreate(int styleSeed) {

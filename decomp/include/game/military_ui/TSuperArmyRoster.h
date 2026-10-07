@@ -13,7 +13,7 @@ public:
   short selectedCityRecordIndex;
   short pad86;
 
-  TSuperArmyRoster() {
+  TSuperArmyRoster() : TPageView() {
     selectedCityRecordIndex = -1;
   }
 };

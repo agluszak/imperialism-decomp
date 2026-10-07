@@ -6,7 +6,7 @@
 IMPLEMENT_DYNCREATE(TSteelCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c59e0
-TSteelCityMinister::TSteelCityMinister() {
+TSteelCityMinister::TSteelCityMinister() : TCityInteriorMinister() {
   capabilityFlag14 = 1;
   capabilityFlag16 = 1;
 }
@@ -52,7 +52,7 @@ void TSteelCityMinister::FillLists() {
 IMPLEMENT_DYNCREATE(TShipBuilderCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c5ce0
-TShipBuilderCityMinister::TShipBuilderCityMinister() {
+TShipBuilderCityMinister::TShipBuilderCityMinister() : TCityInteriorMinister() {
   capabilityFlag14 = 1;
   capabilityFlag16 = 1;
 }
@@ -98,7 +98,7 @@ void TShipBuilderCityMinister::FillLists() {
 IMPLEMENT_DYNCREATE(TEvenCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c5fe0
-TEvenCityMinister::TEvenCityMinister() {
+TEvenCityMinister::TEvenCityMinister() : TCityInteriorMinister() {
   capabilityFlag14 = 1;
   capabilityFlag16 = 1;
 }
@@ -145,7 +145,7 @@ void TEvenCityMinister::FillLists() {
 IMPLEMENT_DYNCREATE(TRailCityMinister, TCityInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004c62f0
-TRailCityMinister::TRailCityMinister() {
+TRailCityMinister::TRailCityMinister() : TCityInteriorMinister() {
   capabilityFlag14 = 1;
   capabilityFlag16 = 1;
 }

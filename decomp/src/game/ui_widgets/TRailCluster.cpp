@@ -30,7 +30,7 @@ const int kAssertLineRatioA = 0xd1d;
 IMPLEMENT_DYNCREATE(TRailCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x00589720
-TRailCluster::TRailCluster() {
+TRailCluster::TRailCluster() : TAmtBarCluster() {
   this->selectedMetricOrder = 0;
   this->selectedMetricStep = 0;
 }

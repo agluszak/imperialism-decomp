@@ -41,7 +41,7 @@ static inline short GetCombatLossDescriptionIndex(int percentage) {
 IMPLEMENT_DYNCREATE(TCombatReportView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058c8d0
-TCombatReportView::TCombatReportView() {}
+TCombatReportView::TCombatReportView() : TPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0058c930
 TCombatReportView::~TCombatReportView() {}

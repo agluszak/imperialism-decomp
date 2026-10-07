@@ -16,7 +16,7 @@
 IMPLEMENT_DYNCREATE(TCivilianButton, TRadioPictureButton)
 
 // FUNCTION: IMPERIALISM 0x0058b3e0
-TCivilianButton::TCivilianButton() {
+TCivilianButton::TCivilianButton() : TRadioPictureButton() {
   this->eventNumber = 0xc;
 }
 

@@ -19,7 +19,7 @@
 IMPLEMENT_DYNCREATE(TBuildingConstructionView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004c9e30
-TBuildingConstructionView::TBuildingConstructionView() : city(0), productionView(0) {}
+TBuildingConstructionView::TBuildingConstructionView() : TPicture(), city(0), productionView(0) {}
 
 // FUNCTION: IMPERIALISM 0x004c9eb0
 void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,

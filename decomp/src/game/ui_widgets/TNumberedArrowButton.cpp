@@ -14,7 +14,7 @@
 IMPLEMENT_DYNCREATE(TNumberedArrowButton, TControl)
 
 // FUNCTION: IMPERIALISM 0x0058c2a0
-TNumberedArrowButton::TNumberedArrowButton() : number(0), arrowState(0) {}
+TNumberedArrowButton::TNumberedArrowButton() : TControl(), number(0), arrowState(0) {}
 
 // FUNCTION: IMPERIALISM 0x0058c330
 void TNumberedArrowButton::SetValue(short value84Arg, bool refreshFlag) {

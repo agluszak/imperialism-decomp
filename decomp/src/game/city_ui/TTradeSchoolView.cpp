@@ -17,7 +17,7 @@
 IMPLEMENT_DYNCREATE(TTradeSchoolView, TIndustryView)
 
 // FUNCTION: IMPERIALISM 0x004cd840
-TTradeSchoolView::TTradeSchoolView() {}
+TTradeSchoolView::TTradeSchoolView() : TIndustryView() {}
 
 // FUNCTION: IMPERIALISM 0x004cd8b0
 TTradeSchoolView::~TTradeSchoolView() {}

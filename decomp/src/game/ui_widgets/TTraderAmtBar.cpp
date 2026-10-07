@@ -36,7 +36,7 @@ const int kScenarioRecordTags[] = {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0058aef0
-TTraderAmtBar::TTraderAmtBar() {}
+TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 
 IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 

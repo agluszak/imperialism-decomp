@@ -3,7 +3,7 @@
 IMPLEMENT_DYNCREATE(TPictureText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x005b5300
-TPictureText::TPictureText() {}
+TPictureText::TPictureText() : TStaticText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5360
 TPictureText::~TPictureText() {}

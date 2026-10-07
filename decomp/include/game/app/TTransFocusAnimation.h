@@ -12,7 +12,7 @@ class TTransFocusAnimation : public TFocusAnimation {
 
 public:
   // Default constructor for MFC dynamic creation
-  TTransFocusAnimation() : transientSurfaceContext(0), insetBitmapSurface(0) {}
+  TTransFocusAnimation() : TFocusAnimation(), transientSurfaceContext(0), insetBitmapSurface(0) {}
 
   void ITransFocusAnimation(TView* target, RECT* bounds, short frameCount,
                             short frameResourceBaseId, int ticksPerFrame, int registryTag);

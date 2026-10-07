@@ -530,4 +530,4 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
 }
 
 // FUNCTION: IMPERIALISM 0x005e3310
-TWNetSessionManager::TWNetSessionManager() {}
+TWNetSessionManager::TWNetSessionManager() : TDirectPlaySessionManagerBase() {}

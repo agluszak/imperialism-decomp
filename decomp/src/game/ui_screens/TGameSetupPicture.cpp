@@ -17,7 +17,7 @@
 IMPLEMENT_DYNCREATE(TGameSetupPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00575860
-TGameSetupPicture::TGameSetupPicture() {}
+TGameSetupPicture::TGameSetupPicture() : TNoHilitePicture() {}
 
 // FUNCTION: IMPERIALISM 0x005758c0
 TGameSetupPicture::~TGameSetupPicture() {}

@@ -15,7 +15,7 @@
 IMPLEMENT_DYNCREATE(TShipAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x0058ab60
-TShipAmtBar::TShipAmtBar() {
+TShipAmtBar::TShipAmtBar() : TAmtBar() {
   rangeOrMaxValue = 0;
   stepOrCurrentValue = 0;
   auxValueA = 0;

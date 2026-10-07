@@ -7,7 +7,7 @@
 IMPLEMENT_DYNCREATE(TUnitsView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004c7fd0
-TUnitsView::TUnitsView() {}
+TUnitsView::TUnitsView() : TBuildingView() {}
 
 // FUNCTION: IMPERIALISM 0x004c8030
 TUnitsView::~TUnitsView() {}

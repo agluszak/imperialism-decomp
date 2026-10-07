@@ -5,7 +5,7 @@
 // VTABLE: IMPERIALISM 0x0064afd8
 class CMcEditWindow : public CEdit {
 public:
-  CMcEditWindow() {} // inlined into TEditText::Open in the original
+  CMcEditWindow() : CEdit() {} // inlined into TEditText::Open in the original
   // FUNCTION: IMPERIALISM 0x00490a30
   ~CMcEditWindow() override {}
 

@@ -10,7 +10,7 @@ class TInteriorMinister : public TMinister {
 public:
   // FUNCTION: IMPERIALISM 0x004be230
   ~TInteriorMinister() override {}
-  TInteriorMinister() : capabilityFlag14(1), capabilityFlag16(1) {}
+  TInteriorMinister() : TMinister(), capabilityFlag14(1), capabilityFlag16(1) {}
 
   DECLARE_DYNCREATE(TInteriorMinister)
   void IInteriorMinister(TGreatPower* owner);

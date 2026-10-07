@@ -8,7 +8,7 @@
 IMPLEMENT_DYNCREATE(THQButton, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058b660
-THQButton::THQButton() {}
+THQButton::THQButton() : TPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0058b6c0
 THQButton::~THQButton() {}

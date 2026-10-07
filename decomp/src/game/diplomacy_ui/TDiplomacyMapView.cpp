@@ -126,7 +126,7 @@ void __cdecl ClampRectWithinBoundsPreservingSize(RECT* rect, RECT* bounds) {
 IMPLEMENT_DYNCREATE(TDiplomacyMapView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004f3b80
-TDiplomacyMapView::TDiplomacyMapView() {
+TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
   interactionMode = 0;
   frameRegionSelector = 0;
   selectedTerrainIndex = 0;

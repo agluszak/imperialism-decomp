@@ -22,7 +22,7 @@ public:
   virtual int UpdateControlCachedIntFromWindowText();
 
   // FUNCTION: IMPERIALISM 0x00429500
-  TNumberText() {
+  TNumberText() : TEditText() {
     value = 0;
   }
   void INumberText(TView* panel, int* offsetLayout, int* sizeLayout, int value, int minimumValue,

@@ -14,7 +14,7 @@
 IMPLEMENT_DYNCREATE(TShipBuildingTask, TCityTask)
 
 // FUNCTION: IMPERIALISM 0x005ae6a0
-TShipBuildingTask::TShipBuildingTask() {}
+TShipBuildingTask::TShipBuildingTask() : TCityTask() {}
 
 // FUNCTION: IMPERIALISM 0x005ae710
 void TShipBuildingTask::IShipBuildingTask(short citySlotType, TCity* owner,

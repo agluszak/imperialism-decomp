@@ -13,7 +13,7 @@
 IMPLEMENT_DYNCREATE(TWarningView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00592900
-TWarningView::TWarningView() {}
+TWarningView::TWarningView() : TPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00592960
 TWarningView::~TWarningView() {}

@@ -7,7 +7,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 
 // FUNCTION: IMPERIALISM 0x0045b000
-TGWorldPartView::TGWorldPartView() {
+TGWorldPartView::TGWorldPartView() : TView() {
   sourceSurface = 0;
 }
 

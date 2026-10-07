@@ -6,7 +6,7 @@
 IMPLEMENT_DYNCREATE(TSortedByRelationshipList, TSortedPtrList)
 
 // FUNCTION: IMPERIALISM 0x004ee540
-TSortedByRelationshipList::TSortedByRelationshipList() {}
+TSortedByRelationshipList::TSortedByRelationshipList() : TSortedPtrList() {}
 
 // FUNCTION: IMPERIALISM 0x004ee5c0
 void TSortedByRelationshipList::ISortedByRelationshipList() {

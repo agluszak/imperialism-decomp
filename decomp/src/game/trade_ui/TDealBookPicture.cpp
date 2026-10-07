@@ -28,7 +28,7 @@
 IMPLEMENT_DYNCREATE(TDealBookPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005babc0
-TDealBookPicture::TDealBookPicture() : selectedNationSlot(8), deadByteB2(0) {}
+TDealBookPicture::TDealBookPicture() : TPicture(), selectedNationSlot(8), deadByteB2(0) {}
 
 // FUNCTION: IMPERIALISM 0x005bac30
 TDealBookPicture::~TDealBookPicture() {}

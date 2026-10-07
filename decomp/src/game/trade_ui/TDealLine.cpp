@@ -14,7 +14,7 @@
 IMPLEMENT_DYNCREATE(TDealLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x005c0d80
-TDealLine::TDealLine() {}
+TDealLine::TDealLine() : TLineData() {}
 
 // FUNCTION: IMPERIALISM 0x005c0e00
 void TDealLine::IDealLine(short rowArg, short colArg, int* bounds, short commoditySlot,

@@ -24,7 +24,7 @@
 IMPLEMENT_DYNCREATE(TNetMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005e33e0
-TNetMgr::TNetMgr() {}
+TNetMgr::TNetMgr() : TObject() {}
 
 // FUNCTION: IMPERIALISM 0x005e3430
 TNetMgr::~TNetMgr() {}

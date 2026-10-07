@@ -48,7 +48,7 @@ static int SelectDevelopmentGrantAmount(int availableBudget) {
 IMPLEMENT_DYNCREATE(TForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x0052f070
-TForeignMinister::TForeignMinister() {
+TForeignMinister::TForeignMinister() : TMinister() {
   memset(tradePartnerEnabled, 1, sizeof(tradePartnerEnabled));
   memset(developmentGrantByNation, 0, sizeof(developmentGrantByNation));
   specialOfferQuota = 0;

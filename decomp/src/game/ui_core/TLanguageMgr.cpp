@@ -27,7 +27,7 @@ const char kReadTextMode[] = "rt";
 IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00507c60
-TLanguageMgr::TLanguageMgr() {
+TLanguageMgr::TLanguageMgr() : TObject() {
   columnCount = 0;
   primaryRowCount = 0;
   rowTextTable = 0;

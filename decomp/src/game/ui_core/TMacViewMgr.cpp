@@ -118,7 +118,7 @@ static void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstR
 IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0
-TMacViewMgr::TMacViewMgr() {
+TMacViewMgr::TMacViewMgr() : TObject() {
   activeCityProductionView = 0;
   int index = 0;
   while (index < 0x17) {

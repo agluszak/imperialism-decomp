@@ -116,7 +116,7 @@ HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId);
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005d5060
-TViewMgr::TViewMgr() {
+TViewMgr::TViewMgr() : TObject() {
   this->pendingTurnOverlayCode = 0;
   this->currentTurnEventCode = 0;
   this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;

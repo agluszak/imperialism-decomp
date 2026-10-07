@@ -11,7 +11,7 @@ void ParseIntFromControlText(CString text, int* outValue);
 IMPLEMENT_DYNCREATE(TMyNumberText, TNumberText)
 
 // FUNCTION: IMPERIALISM 0x005b4fd0
-TMyNumberText::TMyNumberText() {}
+TMyNumberText::TMyNumberText() : TNumberText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5050
 int TMyNumberText::UpdateControlCachedIntFromWindowText() {

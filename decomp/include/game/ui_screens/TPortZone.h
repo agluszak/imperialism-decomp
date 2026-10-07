@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x0065c758
 class TPortZone : public TZone {
 public:
-  TPortZone() {
+  TPortZone() : TZone() {
     portTileIndex = -1;
   }
   ~TPortZone() override;

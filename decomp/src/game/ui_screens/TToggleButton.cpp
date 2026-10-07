@@ -8,7 +8,7 @@
 IMPLEMENT_DYNCREATE(TToggleButton, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005710f0
-TToggleButton::TToggleButton() {}
+TToggleButton::TToggleButton() : TPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00571150
 TToggleButton::~TToggleButton() {}
