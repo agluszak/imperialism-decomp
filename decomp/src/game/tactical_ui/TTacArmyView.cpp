@@ -240,7 +240,7 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
     CTemporaryRegion savedClip;
     GetClip(savedClip.tempRgn);
     TacticalTileIndex tileIndex;
-    for (tileIndex = 0; tileIndex < 0x1b3; tileIndex++) {
+    for (tileIndex = 0; tileIndex < 435; tileIndex++) {
       DrawTile(tileIndex, &clipRect);
     }
     SetClip(savedClip.tempRgn);
@@ -291,9 +291,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   int paintRight = corners->right;
   int paintBottom = corners->bottom;
 
-  int hexRow = tileIndex / 0x1d;
+  int hexRow = tileIndex / 29;
   int rowParity = hexRow & 1;
-  int sideSlot = rowParity + (tileIndex % 0x1d) * 2;
+  int sideSlot = rowParity + (tileIndex % 29) * 2;
 
   TacticalTileRecord* grid = tacticalBattle->tileGrid;
   short edgeKind = kFortWallEdgeNone;
@@ -619,10 +619,10 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     barRect.bottom -= 1;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
     g_pViewMgr->SetForeColor(6);
-    barRect.right = barRect.left + (occupant->strength + 0x18) / 0x19;
+    barRect.right = barRect.left + (occupant->strength + 0x18) / 25;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
     g_pViewMgr->SetForeColor(0x34);
-    barRect.right = barRect.left + (static_cast<TArmyTacUnit*>(occupant)->morale + 0x18) / 0x19;
+    barRect.right = barRect.left + (static_cast<TArmyTacUnit*>(occupant)->morale + 0x18) / 25;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
 
     short tierOffset = g_pGlobalMapState->GetFortFlagOffset(0);

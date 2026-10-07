@@ -148,7 +148,7 @@ public:
   char pad_1a5[0x1a8 - 0x1a5];
   int groupMemberLists[7][3];
   int cityRegionNextId;
-  int cityRegionIds[0x17];
+  int cityRegionIds[23];
   char unusedHole25c[0x29c - 0x25c];
   int lastMinorSeedCandidate;
   char pad_2a0[0x2a1 - 0x2a0];

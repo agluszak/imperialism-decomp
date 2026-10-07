@@ -62,7 +62,7 @@ bool TLanguageMgr::ReadPrepLUT(const char* basePath, unsigned long languageTag) 
     return false;
   }
 
-  char line[0x100];
+  char line[256];
   while (fgets(line, 0xff, stream) != 0) {
     char* entry = line;
     if (line[0] == '>') {

@@ -106,12 +106,12 @@ void TStream::ReadRect(void* out) {
 
 // FUNCTION: IMPERIALISM 0x00488d40
 void TStream::ReadVRect(void* out) {
-  ReadBytes(out, 0x10);
+  ReadBytes(out, 16);
 }
 
 // FUNCTION: IMPERIALISM 0x00488d60
 void TStream::ReadUnclassified16ByteRecord(void* out) {
-  ReadBytes(out, 0x10);
+  ReadBytes(out, 16);
 }
 
 // FUNCTION: IMPERIALISM 0x00488d80
@@ -192,12 +192,12 @@ void TStream::WriteRect(void* data) {
 
 // FUNCTION: IMPERIALISM 0x00488f70
 void TStream::WriteVRect(void* data) {
-  WriteBytes(data, 0x10);
+  WriteBytes(data, 16);
 }
 
 // FUNCTION: IMPERIALISM 0x00488f90
 void TStream::WriteUnclassified16ByteRecord(void* data) {
-  WriteBytes(data, 0x10);
+  WriteBytes(data, 16);
 }
 
 // FUNCTION: IMPERIALISM 0x00488fb0

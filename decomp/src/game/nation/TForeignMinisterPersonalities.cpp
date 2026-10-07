@@ -23,8 +23,7 @@ struct ResourcePriorityEntry {
 };
 
 static bool HasAdvancedTradeResource(const TForeignMinister* minister) {
-  return g_pTechMgr->orderCapRows277[minister->greatPower->nationSlot].techStatusByTechId[0x13] ==
-         2;
+  return g_pTechMgr->orderCapRows277[minister->greatPower->nationSlot].techStatusByTechId[19] == 2;
 }
 
 static inline short MinShort(short a, short b) {
@@ -236,7 +235,7 @@ void TTedForeignMinister::DoFirstTurnDiplomacy() {
       return;
     }
     ++attempts;
-    short candidate = abs(rand()) % 0x10 + 7;
+    short candidate = abs(rand()) % 16 + 7;
     bool duplicate = false;
     for (int index = 0; index < selectedCount; ++index) {
       if (selectedNations[index] == candidate) {
@@ -324,7 +323,7 @@ void TBillForeignMinister::SetTradeBids() {
   AddSortedResourcePrice(prices, 0x0d);
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
-  short amounts[0x11] = {0};
+  short amounts[17] = {0};
   int selectedOrdinal = 3;
   int iteration = 0;
   while (targetAmount > 0 && iteration < targetAmount * 3) {
@@ -435,7 +434,7 @@ void TBillForeignMinister::DoFirstTurnDiplomacy() {
       return;
     }
     ++attempts;
-    short candidate = abs(rand()) % 0x10 + 7;
+    short candidate = abs(rand()) % 16 + 7;
     if ((selectedCount == 0 || selectedNations[0] != candidate) &&
         !g_pGlobalMapState->IsSameContinent(greatPower->nationSlot, candidate) &&
         g_apTerrainTypeDescriptorTable[candidate] != 0) {
@@ -449,7 +448,7 @@ void TBillForeignMinister::DoFirstTurnDiplomacy() {
 // FUNCTION: IMPERIALISM 0x005325e0
 void TBillForeignMinister::DoSecondTurnDiplomacy() {
   short selectedCount = 0;
-  for (short candidate = 7; candidate < 0x17 && selectedCount < 2; ++candidate) {
+  for (short candidate = 7; candidate < 23 && selectedCount < 2; ++candidate) {
     if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(greatPower->nationSlot, candidate) >= 1) {
       greatPower->SetTradePolicyTo(static_cast<NationSlot>(candidate), 0x5a);
       ++selectedCount;
@@ -530,7 +529,7 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
   }
 
   bool hasTradeCandidate = false;
-  for (short nationSlot = 7; nationSlot <= 0x16 && !hasTradeCandidate; ++nationSlot) {
+  for (short nationSlot = 7; nationSlot <= 22 && !hasTradeCandidate; ++nationSlot) {
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 &&
         (g_pTradeMgr->categoryRows[3].tradeOfferCells[nationSlot + 0x2e] != 0 ||
          g_pTradeMgr->categoryRows[4].tradeOfferCells[nationSlot + 0x2e] != 0)) {
@@ -594,7 +593,7 @@ void TDiplomatForeignMinister::SetTradeBids() {
   AddSortedResourcePrice(prices, 0x0d);
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
-  short amounts[0x11] = {0};
+  short amounts[17] = {0};
   int selectedOrdinal = 3;
   int iteration = 0;
   while (targetAmount > 0 && iteration < targetAmount * 3) {
@@ -842,7 +841,7 @@ void TTraderForeignMinister::DoFirstTurnDiplomacy() {
       return;
     }
     ++attempts;
-    short candidate = abs(rand()) % 0x10 + 7;
+    short candidate = abs(rand()) % 16 + 7;
     bool duplicate = false;
     for (int index = 0; index < selectedCount; ++index) {
       if (selectedNations[index] == candidate) {

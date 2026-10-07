@@ -202,7 +202,7 @@ unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TVie
 
 // FUNCTION: IMPERIALISM 0x005e3a60
 bool TNetMgr::SelectProtocol(int index, int flag, const char* seed) {
-  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seed, 0x20);
+  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seed, 32);
   const GUID* sessionGuid = &g_WNetSerializedPtrArrayA[index]->providerGuid;
   bool result =
       g_NetworkSessionManager006a5f60.InitializeDirectPlayForProviderGuidOrEnumerate(sessionGuid);
@@ -215,8 +215,8 @@ bool TNetMgr::SelectProtocol(int index, int flag, const char* seed) {
 // FUNCTION: IMPERIALISM 0x005e3ad0
 unsigned char TNetMgr::Host(const char* seedPath, const char* localPlayerName,
                             const char* emptyOrSeed) {
-  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed, emptyOrSeed, 0x20);
-  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seedPath, 0x20);
+  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed, emptyOrSeed, 32);
+  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seedPath, 32);
 
   int result = g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceFromCurrentContext();
   if (result) {
@@ -247,7 +247,7 @@ bool TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() {
 
 // FUNCTION: IMPERIALISM 0x005e3c20
 unsigned char TNetMgr::SelectGame(int selectionTag, CString* outGameName, const char* seed) {
-  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed, seed, 0x20);
+  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed, seed, 32);
   g_NetworkSessionManager006a5f60.joinGamePlayerName = *outGameName;
 
   int result = g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithUserChoice();

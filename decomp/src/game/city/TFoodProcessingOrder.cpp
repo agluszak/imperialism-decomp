@@ -83,8 +83,8 @@ void TFoodProcessingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity
     ++quantity;
   }
   ResetOrderSheet(orderSheet);
-  orderSheet->slotByResourceCode[0x11] = quantity;
-  orderSheet->slotByResourceCode[0x12] = static_cast<short>(quantity / 2);
-  orderSheet->slotByResourceCode[0x14] = static_cast<short>(quantity / 2);
-  orderSheet->slotByResourceCode[0x3d] = quantity;
+  orderSheet->slotByResourceCode[17] = quantity;
+  orderSheet->slotByResourceCode[18] = static_cast<short>(quantity / 2);
+  orderSheet->slotByResourceCode[20] = static_cast<short>(quantity / 2);
+  orderSheet->slotByResourceCode[61] = quantity;
 }

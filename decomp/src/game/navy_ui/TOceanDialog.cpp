@@ -103,8 +103,8 @@ CRect TOceanDialog::BoundingRect(TZone* zone) {
     if (static_cast<short>(
             g_pGlobalMapState->terrainStateTable[static_cast<short>(i)].ownerNationTag) ==
         zone->seedNationId) {
-      int row = i / 0x6c;
-      int col = (row & 1) + 1 + (i % 0x6c) * 2;
+      int row = i / 108;
+      int col = (row & 1) + 1 + (i % 108) * 2;
       if (col < minLeft) {
         minLeft = col;
         bounds.left = col;
@@ -140,13 +140,13 @@ CRect TOceanDialog::BoundingRect(TZone* zone) {
 // FUNCTION: IMPERIALISM 0x005661d0
 void TOceanDialog::ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
                                 short& outRegionBand) {
-  outRow = static_cast<short>(scrollRowOffset + point.y / 0x10);
+  outRow = static_cast<short>(scrollRowOffset + point.y / 16);
 
   int adjustedX = point.x;
   if ((outRow & 1) == 0) {
     adjustedX += 8;
   }
-  outColumn = static_cast<short>(scrollColOffset + adjustedX / 0x10);
+  outColumn = static_cast<short>(scrollColOffset + adjustedX / 16);
   NormalizeWrappedMapCoord108x60(&outColumn, &outRow);
 
   outRegionBand = 2;
@@ -329,10 +329,10 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
 
   int row;
   CRect tileRect;
-  for (row = 0; row < 0x1c; ++row) {
+  for (row = 0; row < 28; ++row) {
     int screenY = row << 4;
     int column;
-    for (column = 0; column <= 0x20; ++column) {
+    for (column = 0; column <= 32; ++column) {
       int screenX = column << 4;
       if (viewportRowParity == 0) {
         screenX -= 8;
@@ -761,8 +761,8 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
     if (g_pActiveMapOrderContext->routeNodeCount > 0) {
       do {
         CRect& route = g_pActiveMapOrderContext->routeSegments[routeIndex];
-        short endX = (route.right - viewportColumnX2 + 0xd8) % 0xd8;
-        short startX = (route.left - viewportColumnX2 + 0xd8) % 0xd8;
+        short endX = (route.right - viewportColumnX2 + 0xd8) % 216;
+        short startX = (route.left - viewportColumnX2 + 0xd8) % 216;
         int span = abs(static_cast<int>(startX) - static_cast<int>(endX));
         if (span > 0x6c) {
           if (startX > 0x6c) {
@@ -771,9 +771,9 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
             endX -= 0xd8;
           }
         }
-        SetQuickDrawTextOriginWithContextOffset(static_cast<short>((startX * 0x10) / 2),
+        SetQuickDrawTextOriginWithContextOffset(static_cast<short>((startX * 16) / 2),
                                                 static_cast<short>((route.top - viewportRow) << 4));
-        DrawCenteredGuideLineOnMapDc(static_cast<short>((endX * 0x10) / 2),
+        DrawCenteredGuideLineOnMapDc(static_cast<short>((endX * 16) / 2),
                                      static_cast<short>((route.bottom - viewportRow) << 4));
         ++routeIndex;
       } while (routeIndex < g_pActiveMapOrderContext->routeNodeCount);
@@ -790,9 +790,9 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       short viewportRow = scrollRowOffset;
       short viewportColumn = scrollColOffset;
       int tileRow = tileIndex / kStrategicMapColumns;
-      int labelY = (tileRow - viewportRow) * 0x10 + 8;
+      int labelY = (tileRow - viewportRow) * 16 + 8;
       int labelX =
-          ((tileIndex - viewportColumn + kStrategicMapColumns) % kStrategicMapColumns) * 0x10 +
+          ((tileIndex - viewportColumn + kStrategicMapColumns) % kStrategicMapColumns) * 16 +
           ((static_cast<signed char>(tileRow) & 1) << 3);
       if (labelX < rectBuffer->left || labelX > rectBuffer->right || labelY < rectBuffer->top ||
           labelY > rectBuffer->bottom) {
@@ -826,9 +826,9 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
         short viewportRow = scrollRowOffset;
         short viewportColumn = scrollColOffset;
         int tileRow = tileIndex / kStrategicMapColumns;
-        int labelY = (tileRow - viewportRow) * 0x10 + 8;
+        int labelY = (tileRow - viewportRow) * 16 + 8;
         int labelX =
-            ((tileIndex - viewportColumn + kStrategicMapColumns) % kStrategicMapColumns) * 0x10 +
+            ((tileIndex - viewportColumn + kStrategicMapColumns) % kStrategicMapColumns) * 16 +
             ((static_cast<signed char>(tileRow) & 1) << 3);
         if (labelX >= rectBuffer->left && labelX <= rectBuffer->right &&
             labelY >= rectBuffer->top && labelY <= rectBuffer->bottom) {
@@ -873,9 +873,9 @@ void DrawOceanRouteSegment(short sourceColumn, int sourceRow, short destinationC
       sourceColumn -= 0xd8;
     }
   }
-  SetQuickDrawTextOriginWithContextOffset(static_cast<short>((sourceColumn * 0x10) / 2),
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>((sourceColumn * 16) / 2),
                                           static_cast<short>(sourceRow << 4));
-  DrawCenteredGuideLineOnMapDc(static_cast<short>((destinationColumn * 0x10) / 2),
+  DrawCenteredGuideLineOnMapDc(static_cast<short>((destinationColumn * 16) / 2),
                                static_cast<short>(destinationRow << 4));
 }
 
@@ -950,7 +950,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
     return;
   }
 
-  short spriteX = tileActionClass * 0x10;
+  short spriteX = tileActionClass * 16;
   if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pViewMgr->SetForeColor(0x32);
@@ -1011,7 +1011,7 @@ void TOceanDialog::TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigi
   int row = mapTileIndex / kStrategicMapColumns;
   *outVerticalOffset = static_cast<short>((row - scrollRowOffset) << 4);
   *outHorizontalOffset =
-      static_cast<short>(((((mapTileIndex - scrollColOffset) + kStrategicMapColumns) % 0x6c) << 4) -
+      static_cast<short>(((((mapTileIndex - scrollColOffset) + kStrategicMapColumns) % 108) << 4) -
                          (((~row) & 1) * 8));
 }
 

@@ -32,7 +32,7 @@ void TTradeMgr::ITradeMgr() {
   const short* presetCursor = g_aTradeItemBasePriceByCategory;
   TDealList** rankListCursor = categoryRankLists;
   NationMetricCategoryRow* row = categoryRows;
-  for (int rowCount = 0; rowCount < 0x11; ++rowCount) {
+  for (int rowCount = 0; rowCount < 17; ++rowCount) {
     row->numRequests = 0;
     row->numOffers = 0;
     row->amountOffered = 0;
@@ -48,7 +48,7 @@ void TTradeMgr::ITradeMgr() {
     *rankListCursor = list;
 
     short* cellCursor = &row->tradeOfferCells[46];
-    for (int cellCount = 0; cellCount < 0x17; ++cellCount) {
+    for (int cellCount = 0; cellCount < 23; ++cellCount) {
       cellCursor[-0x2e] = 0;
       *cellCursor = 0;
       cellCursor[-0x17] = 0;
@@ -64,7 +64,7 @@ void TTradeMgr::ITradeMgr() {
 // FUNCTION: IMPERIALISM 0x005b7bc0
 void TTradeMgr::Free() {
   TDealList** p = categoryRankLists;
-  for (int i = 0; i < 0x11; ++i) {
+  for (int i = 0; i < 17; ++i) {
     if (*p != 0) {
       (*p)->FreeList();
     }
@@ -79,7 +79,7 @@ void TTradeMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   if (g_nSaveFormatVersion >= 0x27) {
     NationMetricCategoryRow* row = categoryRows;
-    for (int rows = 0; rows < 0x11; ++rows) {
+    for (int rows = 0; rows < 17; ++rows) {
       stream->ReadBytes(&row->previousPrice, 2);
       stream->ReadBytes(&row->price, 2);
       stream->ReadBytes(&row->numRequests, 2);
@@ -87,19 +87,19 @@ void TTradeMgr::ReadFrom(TStream* stream) {
       stream->ReadBytes(&row->adjustedNumOffers, 8);
       stream->ReadBytes(&row->amountOffered, 2);
       stream->ReadBytes(&row->basePrice, 2);
-      stream->ReadBytes(&row->tradeOfferCells[0], 0x2e);
-      SwapShortArrayBytes(&row->tradeOfferCells[0], 0x17);
-      stream->ReadBytes(&row->tradeOfferCells[23], 0x2e);
-      SwapShortArrayBytes(&row->tradeOfferCells[23], 0x17);
-      stream->ReadBytes(&row->tradeOfferCells[46], 0x2e);
-      SwapShortArrayBytes(&row->tradeOfferCells[46], 0x17);
+      stream->ReadBytes(&row->tradeOfferCells[0], 46);
+      SwapShortArrayBytes(&row->tradeOfferCells[0], 23);
+      stream->ReadBytes(&row->tradeOfferCells[23], 46);
+      SwapShortArrayBytes(&row->tradeOfferCells[23], 23);
+      stream->ReadBytes(&row->tradeOfferCells[46], 46);
+      SwapShortArrayBytes(&row->tradeOfferCells[46], 23);
       ++row;
     }
   } else {
-    stream->ReadBytes(&categoryRows[0].previousPrice, 0xaa0);
+    stream->ReadBytes(&categoryRows[0].previousPrice, 2720);
   }
   TDealList** p = categoryRankLists;
-  for (int i = 0; i < 0x11; ++i) {
+  for (int i = 0; i < 17; ++i) {
     (*p)->DeleteAll();
     (*p)->ReadFrom(stream);
     ++p;
@@ -110,7 +110,7 @@ void TTradeMgr::ReadFrom(TStream* stream) {
 void TTradeMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   NationMetricCategoryRow* row = categoryRows;
-  for (int rows = 0; rows < 0x11; ++rows) {
+  for (int rows = 0; rows < 17; ++rows) {
     stream->WriteBytes(&row->previousPrice, 2);
     stream->WriteBytes(&row->price, 2);
     stream->WriteBytes(&row->numRequests, 2);
@@ -118,14 +118,14 @@ void TTradeMgr::WriteTo(TStream* stream) {
     stream->WriteBytes(&row->adjustedNumOffers, 8);
     stream->WriteBytes(&row->amountOffered, 2);
     stream->WriteBytes(&row->basePrice, 2);
-    WriteShortArrayElems(stream, &row->tradeOfferCells[0], 0x17);
-    WriteShortArrayElems(stream, &row->tradeOfferCells[23], 0x17);
-    WriteShortArrayElems(stream, &row->tradeOfferCells[46], 0x17);
+    WriteShortArrayElems(stream, &row->tradeOfferCells[0], 23);
+    WriteShortArrayElems(stream, &row->tradeOfferCells[23], 23);
+    WriteShortArrayElems(stream, &row->tradeOfferCells[46], 23);
     ++row;
   }
 
   TDealList** p = categoryRankLists;
-  for (int i = 0; i < 0x11; ++i) {
+  for (int i = 0; i < 17; ++i) {
     (*p)->WriteTo(stream);
     ++p;
   }
@@ -134,22 +134,22 @@ void TTradeMgr::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005b7fc0
 void TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists() {
   int i;
-  for (i = 0; i < 0x11; ++i) {
+  for (i = 0; i < 17; ++i) {
     NationMetricCategoryRow* row = &categoryRows[i];
     row->numRequests = 0;
     row->numOffers = 0;
     row->amountOffered = 0;
     row->adjustedNumOffers = 0.0;
-    for (int c = 0; c < 0x17; ++c) {
+    for (int c = 0; c < 23; ++c) {
       row->tradeOfferCells[c] = 0;
       row->tradeOfferCells[23 + c] = 0;
     }
   }
 
-  for (i = 0xd; i < 0x11; ++i) {
+  for (i = 0xd; i < 17; ++i) {
     categoryRankLists[i]->DeleteAll();
   }
-  for (i = 7; i < 0xd; ++i) {
+  for (i = 7; i < 13; ++i) {
     categoryRankLists[i]->DeleteAll();
   }
   for (i = 0; i < 7; ++i) {
@@ -173,12 +173,12 @@ void TTradeMgr::CalculateDealOrder() {
     int target;
     for (target = 0; target < 7; ++target) {
       if (g_apTerrainTypeDescriptorTable[target] != 0) {
-        short cell = cells[row * 0x50 + target];
+        short cell = cells[row * 80 + target];
         if (cell > 0) {
-          accum[row * 0x50 + target] = static_cast<short>(accum[row * 0x50 + target] + cell);
+          accum[row * 80 + target] = static_cast<short>(accum[row * 80 + target] + cell);
           int source = 0;
           do {
-            if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
+            if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 80 + source] < 0) &&
                 (!g_pDiplomacyTurnStateManager->IsBoycott(source, target)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(source, target))) {
               TradeDealEntry event;
@@ -201,14 +201,14 @@ void TTradeMgr::CalculateDealOrder() {
 
     // Rows 0..6: secondary-nation targets (slots 7..0x16).
     int secTarget;
-    for (secTarget = 7; secTarget < 0x17; ++secTarget) {
+    for (secTarget = 7; secTarget < 23; ++secTarget) {
       if (g_apTerrainTypeDescriptorTable[secTarget] != 0) {
-        short cell = cells[row * 0x50 + secTarget];
+        short cell = cells[row * 80 + secTarget];
         if (cell > 0) {
-          accum[row * 0x50 + secTarget] = static_cast<short>(accum[row * 0x50 + secTarget] + cell);
+          accum[row * 80 + secTarget] = static_cast<short>(accum[row * 80 + secTarget] + cell);
           int source = 0;
           do {
-            if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
+            if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 80 + source] < 0) &&
                 (!g_pDiplomacyTurnStateManager->IsBoycott(source, secTarget)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(source, secTarget))) {
               TradeDealEntry event;
@@ -231,17 +231,17 @@ void TTradeMgr::CalculateDealOrder() {
   }
 
   // Rows 7..0xc: only the primary target range (0..6) gets generic processing.
-  for (int midRow = 7; midRow < 0xd; ++midRow) {
+  for (int midRow = 7; midRow < 13; ++midRow) {
     int target;
     for (target = 0; target < 7; ++target) {
       if (g_apTerrainTypeDescriptorTable[target] != 0) {
-        short cell = cells[midRow * 0x50 + target];
+        short cell = cells[midRow * 80 + target];
         if (cell > 0) {
-          accum[midRow * 0x50 + target] = static_cast<short>(accum[midRow * 0x50 + target] + cell);
+          accum[midRow * 80 + target] = static_cast<short>(accum[midRow * 80 + target] + cell);
           int source = 0;
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
-                (cells[midRow * 0x50 + source] < 0) &&
+                (cells[midRow * 80 + source] < 0) &&
                 (!g_pDiplomacyTurnStateManager->IsBoycott(source, target)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(source, target))) {
               TradeDealEntry event;
@@ -263,14 +263,14 @@ void TTradeMgr::CalculateDealOrder() {
     }
 
     if (midRow == 7) {
-      for (int secTarget = 7; secTarget < 0x17; ++secTarget) {
+      for (int secTarget = 7; secTarget < 23; ++secTarget) {
         if (g_apTerrainTypeDescriptorTable[secTarget] != 0) {
-          short cell = cells[7 * 0x50 + secTarget];
+          short cell = cells[7 * 80 + secTarget];
           if (cell > 0) {
-            accum[7 * 0x50 + secTarget] = static_cast<short>(accum[7 * 0x50 + secTarget] + cell);
+            accum[7 * 80 + secTarget] = static_cast<short>(accum[7 * 80 + secTarget] + cell);
             int source = 0;
             do {
-              if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[7 * 0x50 + source] < 0) &&
+              if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[7 * 80 + source] < 0) &&
                   (!g_pDiplomacyTurnStateManager->IsBoycott(source, secTarget)) &&
                   (!g_pDiplomacyTurnStateManager->AreAtWar(source, secTarget))) {
                 TradeDealEntry event;
@@ -294,17 +294,16 @@ void TTradeMgr::CalculateDealOrder() {
   }
 
   // Rows 0xd..0x10 pair each primary target with both primary and secondary sources.
-  for (int lastRow = 0xd; lastRow < 0x11; ++lastRow) {
+  for (int lastRow = 0xd; lastRow < 17; ++lastRow) {
     for (int target = 0; target < 7; ++target) {
       if (g_apTerrainTypeDescriptorTable[target] != 0) {
-        short cell = cells[lastRow * 0x50 + target];
+        short cell = cells[lastRow * 80 + target];
         if (cell > 0) {
-          accum[lastRow * 0x50 + target] =
-              static_cast<short>(accum[lastRow * 0x50 + target] + cell);
+          accum[lastRow * 80 + target] = static_cast<short>(accum[lastRow * 80 + target] + cell);
           int source = 0;
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
-                (cells[lastRow * 0x50 + source] < 0) &&
+                (cells[lastRow * 80 + source] < 0) &&
                 (!g_pDiplomacyTurnStateManager->IsBoycott(source, target)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(source, target))) {
               TradeDealEntry event;
@@ -325,7 +324,7 @@ void TTradeMgr::CalculateDealOrder() {
           int secondarySource = 7;
           do {
             if ((g_apTerrainTypeDescriptorTable[secondarySource] != 0) &&
-                (cells[lastRow * 0x50 + secondarySource] < 0) &&
+                (cells[lastRow * 80 + secondarySource] < 0) &&
                 (!g_pDiplomacyTurnStateManager->IsBoycott(secondarySource, target)) &&
                 (!g_pDiplomacyTurnStateManager->AreAtWar(secondarySource, target))) {
               TradeDealEntry event;
@@ -596,9 +595,9 @@ void TTradeMgr::EndTradeOffers() {
   }
 
   short* rowCursor = &categoryRows[0].tradeOfferCells[46];
-  for (int rowCount = 0; rowCount < 0x11; ++rowCount) {
+  for (int rowCount = 0; rowCount < 17; ++rowCount) {
     short* cellCursor = rowCursor;
-    for (int cellCount = 0; cellCount < 0x17; ++cellCount) {
+    for (int cellCount = 0; cellCount < 23; ++cellCount) {
       short priorValue = cellCursor[-0x17];
       if (priorValue > *cellCursor) {
         *cellCursor = priorValue;
@@ -619,10 +618,10 @@ void TTradeMgr::EndTradeOffers() {
 // FUNCTION: IMPERIALISM 0x005b9410
 void TTradeMgr::OfferTradeDeals() {
   short slot;
-  for (slot = 0xd; slot <= 0x10; ++slot) {
+  for (slot = 0xd; slot <= 16; ++slot) {
     OfferItemDeals(slot);
   }
-  for (slot = 7; slot <= 0xc; ++slot) {
+  for (slot = 7; slot <= 12; ++slot) {
     OfferItemDeals(slot);
   }
   for (slot = 0; slot <= 6; ++slot) {
@@ -638,9 +637,9 @@ void TTradeMgr::OfferTradeDeals() {
   }
 
   short* base = &categoryRows[0].tradeOfferCells[46];
-  for (int rows = 0; rows < 0x11; ++rows) {
+  for (int rows = 0; rows < 17; ++rows) {
     short* q = base;
-    for (int c = 0; c < 0x17; ++c) {
+    for (int c = 0; c < 23; ++c) {
       if (q[-0x17] > *q) {
         *q = q[-0x17];
       }
@@ -719,7 +718,7 @@ void TTradeMgr::StartTradePhase() {
   } while (static_cast<short>(slot) < 7);
 
   TMinor** mp = g_apNationAuxRuntimeStateSlots;
-  for (int i = 0; i < 0x10; ++i) {
+  for (int i = 0; i < 16; ++i) {
     if (*mp != 0) {
       (*mp)->InitializeTradeStatus();
     }
@@ -743,7 +742,7 @@ void TTradeMgr::StartTradePhase() {
 // FUNCTION: IMPERIALISM 0x005b9890
 void TTradeMgr::SetMinorsTradeBids() {
   TMinor** p = g_apNationAuxRuntimeStateSlots;
-  for (int i = 0; i < 0x10; ++i) {
+  for (int i = 0; i < 16; ++i) {
     if (*p != 0) {
       (*p)->SetTradeBids();
     }
@@ -793,7 +792,7 @@ void TTradeMgr::TallyTradeBids() {
     do {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot))) {
         short metric = (*np)->GetTradeOffersFor(static_cast<short>(metricRow));
-        cells[metricRow * 0x50 + col] = metric;
+        cells[metricRow * 80 + col] = metric;
         if (metric < 0) {
           ++row->numRequests;
         } else if (metric > 0) {
@@ -853,7 +852,7 @@ void TTradeMgr::TallyMinorsTradeBids() {
   do {
     short* cellCursor = &row->tradeOfferCells[7];
     TMinor** mp = g_apNationAuxRuntimeStateSlots;
-    for (int remaining = 0; remaining < 0x10; ++remaining) {
+    for (int remaining = 0; remaining < 16; ++remaining) {
       short metric = (*mp)->GetTradeOffersFor(static_cast<short>(metricRow));
       *cellCursor = metric;
       if (metric > 0) {
@@ -885,7 +884,7 @@ void TTradeMgr::TallyMinorsTradeBids() {
   TMinor** mp = g_apNationAuxRuntimeStateSlots;
   NationMetricCategoryRow* aggregateRow = &categoryRows[kMajorNationCount];
   short* aggCursor = &aggregateRow->tradeOfferCells[7];
-  for (int count = 0; count < 0x10; ++count) {
+  for (int count = 0; count < 16; ++count) {
     short metric = (*mp)->GetTradeOffersFor(kResourceFood);
     *aggCursor = metric;
     if (metric > 0) {
@@ -905,12 +904,12 @@ void TTradeMgr::TallyMinorsTradeBids() {
     ++mp;
   }
 
-  row = &categoryRows[0xd];
+  row = &categoryRows[13];
   int metricSlot = 0xd;
   do {
     int col = 7;
     mp = g_apNationAuxRuntimeStateSlots;
-    for (int rem = 0; rem < 0x10; ++rem) {
+    for (int rem = 0; rem < 16; ++rem) {
       if (*mp != 0) {
         short metric = (*mp)->GetTradeOffersFor(static_cast<short>(metricSlot));
         row->tradeOfferCells[col] = metric;
@@ -942,13 +941,13 @@ double TTradeMgr::Power(double base, short exponent) {
 // FUNCTION: IMPERIALISM 0x005b9f70
 bool TTradeMgr::DidBidOn(int item, int nationSlot) {
   short* cells = &categoryRows[0].tradeOfferCells[0];
-  return cells[item * 0x50 + nationSlot] < 0;
+  return cells[item * 80 + nationSlot] < 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9fa0
 bool TTradeMgr::DidOffer(int item, int nationSlot) {
   short* cells = &categoryRows[0].tradeOfferCells[0];
-  return 0 < cells[item * 0x50 + nationSlot];
+  return 0 < cells[item * 80 + nationSlot];
 }
 
 // FUNCTION: IMPERIALISM 0x005b9fd0
@@ -983,15 +982,15 @@ short TTradeMgr::WhoTradesFirst(short proposalCode, short category) {
       return category;
     }
     ++lookupCursor;
-  } while (lookupCursor < &g_aTradeDealCategoryOrder[0x11]);
+  } while (lookupCursor < &g_aTradeDealCategoryOrder[17]);
   return proposalCode;
 }
 
 // FUNCTION: IMPERIALISM 0x005ba0e0
 int TTradeMgr::GetMarketChange() {
   int sum = 0;
-  for (int category = 0; category < 0x11; ++category) {
+  for (int category = 0; category < 17; ++category) {
     sum += categoryRows[category].price - categoryRows[category].previousPrice;
   }
-  return sum / 0x11;
+  return sum / 17;
 }

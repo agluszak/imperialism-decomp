@@ -1080,7 +1080,7 @@ void TTacticalBattleView::MakeTileVisible(TacticalTileIndex tileIndex) {
   int firstVisibleColumn = viewOriginX / tileWidthPx;
   int visibleColumnCount = frameWidth / tileWidthPx;
   int lastVisibleColumn = firstVisibleColumn + visibleColumnCount;
-  int screenColumn = ((tileIndex % 0x1d) * 2 + ((tileIndex / 0x1d) & 1)) / 2;
+  int screenColumn = ((tileIndex % 29) * 2 + ((tileIndex / 29) & 1)) / 2;
   if (screenColumn >= firstVisibleColumn + 2 && screenColumn <= lastVisibleColumn - 2) {
     return;
   }
@@ -1289,8 +1289,8 @@ void TTacticalBattleView::GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromT
   moveAnimUnitOffsetX = fromX - animRect.left;
 
   int spriteLeft = unit->unitType * unitSpriteCellWidth;
-  int fromHalfColumn = (fromTileIndex % 0x1d) * 2 + ((fromTileIndex / 0x1d) & 1);
-  int toHalfColumn = (toTileIndex % 0x1d) * 2 + ((toTileIndex / 0x1d) & 1);
+  int fromHalfColumn = (fromTileIndex % 29) * 2 + ((fromTileIndex / 29) & 1);
+  int toHalfColumn = (toTileIndex % 29) * 2 + ((toTileIndex / 29) & 1);
   int spriteTop = (fromHalfColumn < toHalfColumn) ? 0 : unitSpriteCellHeight;
   moveAnimSpriteSrcRect.left = spriteLeft;
   moveAnimSpriteSrcRect.top = spriteTop;

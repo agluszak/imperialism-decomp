@@ -64,7 +64,7 @@ bool TPopGrowthOrder::SetQuantity(short quantity) {
   ownerCity->stockByType[kResourceFood] =
       static_cast<short>(ownerCity->stockByType[kResourceFood] - delta);
   ownerCity->VerifyStocks();
-  ownerCity->productionAccum[0x0f] = static_cast<short>(ownerCity->productionAccum[0x0f] - delta);
+  ownerCity->productionAccum[15] = static_cast<short>(ownerCity->productionAccum[0x0f] - delta);
   g_pViewMgr->UpdateCityScreen();
   return true;
 }
@@ -82,16 +82,16 @@ void TPopGrowthOrder::Produce() {
   if (owner->pendingActionStatus.byAction[9] >= '3') {
     int regionCount = owner->ownedRegionList->GetSize();
     if (regionCount / 3 > 1) {
-      city->productionAccum[0x0f] = static_cast<short>(owner->ownedRegionList->GetSize() / 3);
+      city->productionAccum[15] = static_cast<short>(owner->ownedRegionList->GetSize() / 3);
     } else {
-      city->productionAccum[0x0f] = 1;
+      city->productionAccum[15] = 1;
     }
   } else {
     int regionCount = owner->ownedRegionList->GetSize();
     if (regionCount / 4 > 1) {
-      city->productionAccum[0x0f] = static_cast<short>(owner->ownedRegionList->GetSize() / 4);
+      city->productionAccum[15] = static_cast<short>(owner->ownedRegionList->GetSize() / 4);
     } else {
-      city->productionAccum[0x0f] = 1;
+      city->productionAccum[15] = 1;
     }
   }
   this->quantity = 0;
@@ -103,7 +103,7 @@ void TPopGrowthOrder::Restock() {}
 // FUNCTION: IMPERIALISM 0x004b8440
 void TPopGrowthOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   ResetOrderSheet(orderSheet);
-  orderSheet->slotByResourceCode[0x0d] = quantity;
-  orderSheet->slotByResourceCode[0x0e] = quantity;
-  orderSheet->slotByResourceCode[0x07] = quantity;
+  orderSheet->slotByResourceCode[13] = quantity;
+  orderSheet->slotByResourceCode[14] = quantity;
+  orderSheet->slotByResourceCode[7] = quantity;
 }

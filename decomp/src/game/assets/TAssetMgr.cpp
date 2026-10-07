@@ -230,7 +230,7 @@ void TAssetMgr::ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback
 
 namespace {
 struct LoadedVersionResourceBlock {
-  unsigned char prefix00[0x30];
+  unsigned char prefix00[48];
   VS_FIXEDFILEINFO fixedInfo;
 };
 } // namespace

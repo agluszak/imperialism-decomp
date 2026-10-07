@@ -282,7 +282,7 @@ void TDefendProvinceMission::CalculateNeeds() {
 
   if (!compat) {
     unsigned char unitTier;
-    if (g_pTechMgr->abilityActiveRows[nationId].abilityActiveById[0x10] == 0) {
+    if (g_pTechMgr->abilityActiveRows[nationId].abilityActiveById[16] == 0) {
       unitTier = (g_pTechMgr->abilityActiveRows[nationId].abilityActiveById[8] != 0) ? 8 : 0;
     } else {
       unitTier = 0x10;

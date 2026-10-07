@@ -53,7 +53,7 @@ void TItemBoyView::ActuallyDraw(CString* header) {
   if (battleDetail->stockOrRequired > 0) {
     do {
       short kindIdx = battleDetail->resourceType;
-      RECT srcRect = {kindIdx * 0x20, 0, (kindIdx + 1) * 0x20, 0x17};
+      RECT srcRect = {kindIdx * 32, 0, (kindIdx + 1) * 32, 0x17};
       RECT dstRect = {y - 0x20, 0x19, y, 0x30};
       UpdatePaletteIndexWithDefaultFallback(0x10);
       TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->commodityIconWorld->GetBlitSurface();

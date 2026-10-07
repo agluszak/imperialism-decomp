@@ -25,7 +25,7 @@ void TGameInfoPicture::DoPostCreate(int arg) {
     RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagHdr0 + i, 0, 0xc, 0x2b67, 1, text);
   }
 
-  for (int j = 0; j < 0xe; ++j) {
+  for (int j = 0; j < 14; ++j) {
     TView* control = FindSubView(kControlTagTxta + j);
     control->AssertValid();
     g_pSimMgr->GetString(0x2757, static_cast<short>(j), &text);

@@ -66,11 +66,11 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
   for (int side = 0; side < 2; ++side) {
     stream->ReadBytes(&nationIds[side], 1);
     if (g_nSaveFormatVersion < 0x2c) {
-      stream->ReadString(nameBuffer[side].data, 0x20);
-      stream->ReadString(overlayLabel[side].data, 0xff);
+      stream->ReadString(nameBuffer[side].data, 32);
+      stream->ReadString(overlayLabel[side].data, 255);
     } else {
-      stream->ReadBytes(nameBuffer[side].data, 0x20);
-      stream->ReadBytes(overlayLabel[side].data, 0xff);
+      stream->ReadBytes(nameBuffer[side].data, 32);
+      stream->ReadBytes(overlayLabel[side].data, 255);
     }
     stream->ReadBytes(&childCount[side], 2);
 
@@ -84,9 +84,9 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
       stream->ReadBytes(&elem.resourceType, 2);
       stream->ReadBytes(&elem.stockOrRequired, 2);
       if (g_nSaveFormatVersion < 0x2c) {
-        stream->ReadString(&elem.nameBuffer, 0x20);
+        stream->ReadString(&elem.nameBuffer, 32);
       } else {
-        stream->ReadBytes(&elem.nameBuffer, 0x20);
+        stream->ReadBytes(&elem.nameBuffer, 32);
       }
       stream->ReadBytes(&elem.strengthBucket, 2);
       stream->ReadBytes(&elem.detailIdentity, 4);
@@ -112,14 +112,14 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
 
   for (int side = 0; side < 2; ++side) {
     stream->WriteBytes(&nationIds[side], 1);
-    stream->WriteBytes(nameBuffer[side].data, 0x20);
-    stream->WriteBytes(overlayLabel[side].data, 0xff);
+    stream->WriteBytes(nameBuffer[side].data, 32);
+    stream->WriteBytes(overlayLabel[side].data, 255);
     stream->WriteBytes(&childCount[side], 2);
     for (int i = 0; i < childCount[side]; ++i) {
       MapOrderBattleSideChildRecord& child = sideChildRecords[side][i];
       stream->WriteBytes(&child.resourceType, 2);
       stream->WriteBytes(&child.stockOrRequired, 2);
-      stream->WriteBytes(child.nameBuffer, 0x20);
+      stream->WriteBytes(child.nameBuffer, 32);
       stream->WriteBytes(&child.strengthBucket, 2);
       stream->WriteBytes(&child.detailIdentity, 4);
     }
@@ -724,7 +724,7 @@ void TArmyMgr::RetreatDefender(TArmyStack* stack, short tileIndex) {
   const Province& record = g_pGlobalMapState->cityScoreTable[tileIndex];
   short candidateRegions[12];
   int candidateCount = 0;
-  for (int i = 0; i < 0x18; ++i) {
+  for (int i = 0; i < 24; ++i) {
     short regionId = record.adjacentRegionIds[i];
     if (regionId == -1) {
       break;
@@ -1926,7 +1926,7 @@ void TArmyMgr::CheckForDrownedUnits(char nationId, int cityIndex,
             rec.nameBuffer[0] = 0;
             CString unitName = unit->name;
             LPCSTR unitNameChars = static_cast<LPCSTR>(unitName);
-            for (int c = 0; c < 0x20; ++c) {
+            for (int c = 0; c < 32; ++c) {
               char ch = unitNameChars[c];
               rec.nameBuffer[c] = ch;
               if (ch == '\0') {

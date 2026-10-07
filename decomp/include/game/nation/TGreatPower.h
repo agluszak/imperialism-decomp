@@ -27,7 +27,7 @@ enum eTrackedSlotEntryKind { kTrackedSlotAcceptEntry = 0, kTrackedSlotOfferEntry
 
 // The 13 pending-action status bytes at TGreatPower+0x8c8 are one indexed table.
 struct PendingActionStatusBlock {
-  signed char byAction[0x0d];
+  signed char byAction[13];
 
   short GetSerializedPrefixWord(int wordIndex) const {
     int byteIndex = wordIndex * 2;
@@ -254,12 +254,12 @@ public:
   short unfilledTradeTurnCountsByResource[kResourceKindCount];
   short transportedItemsByResource[kResourceKindCount];
   short rememberedTradeOffersByResource[kResourceKindCount];
-  int aidAllocationMatrix[0x170];
+  int aidAllocationMatrix[368];
   int budgetPoolBase;
   int budgetPoolDelta;
   TPtrList* turnEventQueue;
   TPtrList* proposalQueue;
-  TPtrList* diplomacyTrackedSlots[0x11];
+  TPtrList* diplomacyTrackedSlots[17];
   TCity* city;
   TSortedList* townMarkerList;
   TSortedList* trackedObjectList;
@@ -268,7 +268,7 @@ public:
   unsigned char pad_8b8[0x8c8 - 0x8b8];
   PendingActionStatusBlock pendingActionStatus;
   unsigned char field8d5;
-  short field8d6[0x0d];
+  short field8d6[13];
   int diplomacyBudgetBase;
   signed char escalationCounter;
   unsigned char pad_8f5[3];

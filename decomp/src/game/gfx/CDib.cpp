@@ -422,7 +422,7 @@ int CDib::StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, in
 BOOL CDib::StretchDibitsWithCopiedPaletteTable(CDC* dc, int paletteIndex, int xDest, int yDest,
                                                int destWidth, int destHeight, int xSrc, int ySrc,
                                                int srcWidth, int srcHeight) {
-  unsigned char* savedTable = new unsigned char[0x400];
+  unsigned char* savedTable = new unsigned char[1024];
   memcpy(savedTable, m_colorTablePixels, m_paletteCount * 4);
   memset(m_colorTablePixels, 0, m_paletteCount * 4);
 
@@ -1144,7 +1144,7 @@ POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
     int height = m_pInfoHeader->bmiHeader.biHeight;
     int absHeight = height < 1 ? -height : height;
     int dwordsPerRow = (width + 0x1f) / 32;
-    int sampleStep = dwordsPerRow * 0x20; // eight rows of bytes
+    int sampleStep = dwordsPerRow * 32; // eight rows of bytes
     int rowBytes = width / 8;
     byte* bits = static_cast<byte*>(m_dibBits);
 
@@ -1254,14 +1254,14 @@ POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
 
 // FUNCTION: IMPERIALISM 0x0047c850
 BOOL CDib::MapColorTableAndPixelsToPalette(CPalette* palette) {
-  unsigned char translation[0x100];
+  unsigned char translation[256];
   RGBQUAD* sourceColors = static_cast<RGBQUAD*>(m_colorTablePixels);
   HPALETTE paletteHandle = static_cast<HPALETTE>(palette->m_hObject);
-  for (int i = 0; i < 0x100; i++) {
+  for (int i = 0; i < 256; i++) {
     COLORREF color = RGB(sourceColors[i].rgbRed, sourceColors[i].rgbGreen, sourceColors[i].rgbBlue);
     translation[i] = static_cast<unsigned char>(::GetNearestPaletteIndex(paletteHandle, color));
   }
-  translation[0x10] = 0x10;
+  translation[16] = 0x10;
 
   int rows = m_pInfoHeader->bmiHeader.biHeight;
   if (rows < 1) {
@@ -1274,10 +1274,10 @@ BOOL CDib::MapColorTableAndPixelsToPalette(CPalette* palette) {
     pixels++;
   }
 
-  PALETTEENTRY entries[0x100];
+  PALETTEENTRY entries[256];
   ::GetPaletteEntries(paletteHandle, 0, 0x100, entries);
   RGBQUAD* destination = static_cast<RGBQUAD*>(m_colorTablePixels);
-  for (int j = 0; j < 0x100; j++) {
+  for (int j = 0; j < 256; j++) {
     destination[j].rgbRed = entries[j].peRed;
     destination[j].rgbGreen = entries[j].peGreen;
     destination[j].rgbBlue = entries[j].peBlue;

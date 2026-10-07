@@ -29,7 +29,7 @@ Province& Province::operator=(const Province& source) {
   byte3C = source.byte3C;
   secondaryNeighborTileIndex = source.secondaryNeighborTileIndex;
   primaryNeighborTileIndex = source.primaryNeighborTileIndex;
-  for (int c = 0; c < 0x20; ++c) {
+  for (int c = 0; c < 32; ++c) {
     linkedTileIndices[c] = source.linkedTileIndices[c];
   }
   for (int d = 0; d < 10; ++d) {

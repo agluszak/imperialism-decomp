@@ -211,9 +211,9 @@ void TMapPreviewView::EnhancePhoto() {
   int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface))->stride) & 0x3fff;
 
   unsigned char* rowStart = pixels + stride + 1;
-  for (int row = 0; row < 0xb2; ++row) {
+  for (int row = 0; row < 178; ++row) {
     unsigned char* pixel = rowStart;
-    for (int column = 0; column < 0x142; ++column, ++pixel) {
+    for (int column = 0; column < 322; ++column, ++pixel) {
       unsigned char value = *pixel;
       bool maskable = value == 0 || value == 0x13;
       for (int i = 0; i < 7 && !maskable; ++i) {

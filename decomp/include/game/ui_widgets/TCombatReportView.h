@@ -5,7 +5,7 @@
 struct CRuntimeClass;
 
 struct CombatReportUnitRecord {
-  char name[0x14];               // +0x00 unit/rank display name
+  char name[20];                 // +0x00 unit/rank display name
   signed char statusStringIndex; // +0x14 GetString(0x2717, idx) index for the "(...)" suffix
   unsigned char flagAt15;        // +0x15 gates the fixed 5x5 marker-icon overlay blit
   unsigned char pad16;

@@ -73,9 +73,9 @@ public:
   };
 #pragma pack(pop)
 
-  NationMetricCategoryRow categoryRows[0x11];
+  NationMetricCategoryRow categoryRows[17];
   unsigned char paddingAA4[0xaa8 - 0xaa4];
-  TDealList* categoryRankLists[0x11]; // 0xaa8 .. 0xaeb
+  TDealList* categoryRankLists[17]; // 0xaa8 .. 0xaeb
   unsigned char paddingAEC[0xaf0 - 0xaec];
 };
 

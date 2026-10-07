@@ -77,7 +77,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
         slotControl->SetTextWithStrListID(0x2737, 0xd, true);
       }
     } else {
-      char saveHeader[0x2c];
+      char saveHeader[44];
       FILE* slotFile = fopen(slotPath, g_szLiteralRb);
       fread(saveHeader, 1, sizeof(saveHeader), slotFile);
       fclose(slotFile);
@@ -141,9 +141,9 @@ void TLoadSavePicture::LoadHeader(short slotMode) {
 
   char* tileOwnerTagTable = new char[kStrategicTileCount];
   FILE* file = fopen(path, g_szLiteralRb);
-  char headerSkip[0xc];
+  char headerSkip[12];
   fread(headerSkip, 1, 0xc, file);
-  unsigned char slotMetadata[0x20];
+  unsigned char slotMetadata[32];
   fread(slotMetadata, 1, 0x20, file);
   fread(tileOwnerTagTable, 1, kStrategicTileCount, file);
   short turnNumber;
@@ -152,7 +152,7 @@ void TLoadSavePicture::LoadHeader(short slotMode) {
   fread(&oneByteFieldA, 1, 1, file);
   unsigned char pendingNationByte;
   fread(&pendingNationByte, 1, 1, file);
-  unsigned char trailingRecord[0x20];
+  unsigned char trailingRecord[32];
   fread(trailingRecord, 1, 0x20, file);
   fclose(file);
 

@@ -98,7 +98,7 @@ public:
   short tradePolicyByNation[kNationSlotCount];
   short field42;
   TSortedList* militaryUnitList;
-  short unitNameOrdinalByType[0x1e];
+  short unitNameOrdinalByType[30];
   short unitNameCounter; // monotonically increasing name tag (stored at +0x1a)
   int homeTileIndex;
   int overlayAnchorTileCache;

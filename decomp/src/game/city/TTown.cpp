@@ -244,7 +244,7 @@ void TTown::Grow() {
     }
 
     if (resourceYieldByType[kResourceOil] != 0 &&
-        g_pTechMgr->orderCapRows277[ownerNation].techStatusByTechId[0x14] == 2) {
+        g_pTechMgr->orderCapRows277[ownerNation].techStatusByTechId[20] == 2) {
       short& fuel = resourceYieldByType[kResourceFuel];
       if (fuel < resourceYieldByType[kResourceOil] / 2) {
         ++fuel;
@@ -254,8 +254,7 @@ void TTown::Grow() {
 
   if (age > 9 && (age & 1) != 0) {
     short* citySummary = city->GetUnmetNeeds();
-    short finishedGoods =
-        static_cast<short>(citySummary[0xd] + citySummary[0xe] + citySummary[0xf]);
+    short finishedGoods = static_cast<short>(citySummary[0xd] + citySummary[0xe] + citySummary[15]);
     const short sourceResources[3] = {kResourceFabric, kResourceLumber, kResourceSteel};
     const short finishedResources[3] = {kResourceClothing, kResourceFurniture, kResourceHardware};
     for (int index = 0; index < 3; ++index) {

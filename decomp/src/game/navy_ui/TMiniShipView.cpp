@@ -75,7 +75,7 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   if (shipNode->admiral != 0) {
     TQuickDrawBlitSurface* badgeStripSurface = g_pMacViewMgr->nationFleetWorld->GetBlitSurface();
     short nationId = g_pSimMgr->GetPlayerCountry();
-    short badgeRow = (nationId + 7) * 0x10;
+    short badgeRow = (nationId + 7) * 16;
     RECT badgeSrcRect = {0, badgeRow, 0x10, badgeRow + 0x10};
     RECT badgeDstRect = {0x64, 0, 0x74, 0x10};
     UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -91,7 +91,7 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
     short badgeRow = orderTypeBadgeRowTable[orderKind];
     if (badgeRow != 0) {
       TQuickDrawBlitSurface* badgeStripSurface = g_pMacViewMgr->nationFleetWorld->GetBlitSurface();
-      short badgeTop = badgeRow * 0x10;
+      short badgeTop = badgeRow * 16;
       RECT badgeSrcRect = {0, badgeTop, 0x10, badgeTop + 0x10};
       RECT badgeDstRect = {0x78, 0, 0x88, 0x10};
       UpdatePaletteIndexWithDefaultFallback(0x10);

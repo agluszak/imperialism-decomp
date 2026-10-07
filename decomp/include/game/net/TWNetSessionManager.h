@@ -56,8 +56,8 @@ public:
   DPSESSIONDESC2 sessionDescription;
   int localPlayerId;
   int broadcastPlayerId;
-  char joinGameSeed[0x20];
-  char runtimeSelectionSeed[0x20];
+  char joinGameSeed[32];
+  char runtimeSelectionSeed[32];
 };
 ASSERT_SIZE(TDirectPlaySessionManagerBase, 0xa8);
 

@@ -201,11 +201,11 @@ void TAutoGreatPower::Free(void) {
 // FUNCTION: IMPERIALISM 0x004e72c0
 void TAutoGreatPower::ReadFrom(TStream* stream) {
   TGreatPower::ReadFrom(stream);
-  stream->ReadBytes(actionMetricByQuarter, 0x0C);
+  stream->ReadBytes(actionMetricByQuarter, 12);
   SwapShortArrayBytes(actionMetricByQuarter, 6);
 
   stream->ReadBytes(provinceStatus, sizeof(provinceStatus));
-  stream->ReadBytes(zoneStatus, 0x70);
+  stream->ReadBytes(zoneStatus, 112);
 
   if (missionQueue->GetCount() != 0) {
     missionQueue->FreePayloads();
@@ -233,7 +233,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, actionMetricByQuarter, 6);
 
   stream->WriteBytes(provinceStatus, sizeof(provinceStatus));
-  stream->WriteBytes(zoneStatus, 0x70);
+  stream->WriteBytes(zoneStatus, 112);
 
   missionQueue->WriteTo(stream);
   int missionQueueCount = missionQueue->GetCount();
@@ -387,7 +387,7 @@ void TAutoGreatPower::ClearTradeOffers(void) {
   if (city != 0) {
     foreignMinister->EndTradePhase();
     short* pendingMetric = actionMetricByQuarter;
-    for (short needSlot = 7; needSlot <= 0x0c; ++needSlot) {
+    for (short needSlot = 7; needSlot <= 12; ++needSlot) {
       short pending = *pendingMetric;
       if (pending > 0) {
         short current = GetStockpile(needSlot);
@@ -1253,9 +1253,10 @@ void TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {}
 // FUNCTION: IMPERIALISM 0x004ea470
 void TAutoGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) {
   TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets();
-  short carryValue = needCurrentByType[0x13];
-  needCurrentByType[0x13] = 0;
-  needCurrentByType[0x14] = static_cast<short>(needCurrentByType[0x14] + carryValue);
+  short carryValue = needCurrentByType[kResourceFish];
+  needCurrentByType[kResourceFish] = 0;
+  needCurrentByType[kResourceLivestock] =
+      static_cast<short>(needCurrentByType[kResourceLivestock] + carryValue);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea610
@@ -1273,7 +1274,7 @@ float TAutoGreatPower::ComputeAiIndustryActionCostFromSlot(short industrySlot) {
 float TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode(short actionSlot,
                                                               bool skipContextBias) {
   AiCityActionCostProfile& profile = g_aiCityActionCostProfiles[actionSlot];
-  short capabilityLevel = needCurrentByType[5];
+  short capabilityLevel = needCurrentByType[kResourceHorses];
   float cost = static_cast<float>(profile.baseCost);
 
   if (profile.primaryMetricCode != -1 &&

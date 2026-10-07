@@ -46,7 +46,7 @@ TCity::TCity() {
   homeTownMarker = 0;
   trackedOrderList = 0;
   eventQueue = 0;
-  for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
+  for (int productionSlot = 0; productionSlot < 16; ++productionSlot) {
     productionOrderTable[productionSlot] = 0;
     productionAccum[productionSlot] = 0;
     productionFlags[productionSlot] = 0;
@@ -68,7 +68,7 @@ void TCity::ICity(TGreatPower* ownerNation) {
   memset(unmetResourceRetryCount, 0,
          sizeof(unmetResourceRetryCount) + sizeof(consumedProductionInputByType));
 
-  for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
+  for (int productionSlot = 0; productionSlot < 16; ++productionSlot) {
     productionAccum[productionSlot] =
         static_cast<short>(productionAccum[productionSlot] - productionOrderTable[productionSlot]);
     productionOrderTable[productionSlot] = 0;
@@ -80,7 +80,7 @@ void TCity::ICity(TGreatPower* ownerNation) {
   int regionCount = ownerNation->ownedRegionList->GetSize();
   int regionsPerCapacity = ownerNation->pendingActionStatus.byAction[9] >= '3' ? 3 : 4;
   short capacity = regionCount / regionsPerCapacity;
-  productionAccum[0x0f] = capacity > 1 ? capacity : 1;
+  productionAccum[15] = capacity > 1 ? capacity : 1;
 
   if (g_pSimMgr->difficultyLevel < kDifficultyNormal && ownerNation->diplomacyEligibility != 0) {
     static const short kInitialProductionBySlot[6] = {2, 1, 2, 1, 2, 1};
@@ -100,19 +100,19 @@ void TCity::ICity(TGreatPower* ownerNation) {
 
   productionSummary = new TPopulationMgr();
   productionSummary->IPopulationMgr(this);
-  memset(orderSlots, 0, 0xf4);
+  memset(orderSlots, 0, 244);
 
   TItemOrder* itemOrder = new TItemOrder();
   itemOrder->IItemOrder(this, 0x0b, 4, 3, 2);
-  orderSlots[0x0b] = itemOrder;
+  orderSlots[11] = itemOrder;
 
   itemOrder = new TItemOrder();
   itemOrder->IItemOrder(this, 0x0f, 0x0b, -1, 3);
-  orderSlots[0x0f] = itemOrder;
+  orderSlots[15] = itemOrder;
 
   itemOrder = new TItemOrder();
   itemOrder->IItemOrder(this, 0x10, 0x0b, -1, 3);
-  orderSlots[0x10] = itemOrder;
+  orderSlots[16] = itemOrder;
 
   itemOrder = new TItemOrder();
   itemOrder->IItemOrder(this, 9, 2, -1, 4);
@@ -124,15 +124,15 @@ void TCity::ICity(TGreatPower* ownerNation) {
 
   itemOrder = new TItemOrder();
   itemOrder->IItemOrder(this, 0x0c, 6, -1, 6);
-  orderSlots[0x0c] = itemOrder;
+  orderSlots[12] = itemOrder;
 
   itemOrder = new TItemOrder();
   itemOrder->IItemOrder(this, 0x0d, 8, -1, 1);
-  orderSlots[0x0d] = itemOrder;
+  orderSlots[13] = itemOrder;
 
   itemOrder = new TItemOrder();
   itemOrder->IItemOrder(this, 0x0e, 9, -1, 5);
-  orderSlots[0x0e] = itemOrder;
+  orderSlots[14] = itemOrder;
 
   TOrItemOrder* orItemOrder = new TOrItemOrder();
   orItemOrder->IOrItemOrder(this, 8, 1, 0, 0);
@@ -169,11 +169,11 @@ void TCity::ICity(TGreatPower* ownerNation) {
 
   TTrainingOrder* trainingOrder = new TTrainingOrder();
   trainingOrder->ITrainingOrder(this, 1);
-  orderSlots[0x17] = trainingOrder;
+  orderSlots[23] = trainingOrder;
 
   trainingOrder = new TTrainingOrder();
   trainingOrder->ITrainingOrder(this, 2);
-  orderSlots[0x18] = trainingOrder;
+  orderSlots[24] = trainingOrder;
 
   for (int shipSlot = 0; shipSlot < 8; ++shipSlot) {
     TShipOrder* shipOrder = new TShipOrder();
@@ -235,7 +235,7 @@ void TCity::ReadFrom(TStream* stream) {
   stream->ReadBytes(civilianRecruitCountByKind, sizeof(civilianRecruitCountByKind));
   SwapShortArrayBytes(civilianRecruitCountByKind, kCivilianUnitKindCount);
   stream->ReadBytes(orderCountByType, sizeof(orderCountByType));
-  SwapShortArrayBytes(orderCountByType, 0x0e);
+  SwapShortArrayBytes(orderCountByType, 14);
   stream->ReadBytes(stockByType, sizeof(stockByType));
   SwapShortArrayBytes(stockByType, kResourceKindCount);
   stream->ReadBytes(productionOrderTable, productionSlotCount * 2);
@@ -243,15 +243,15 @@ void TCity::ReadFrom(TStream* stream) {
   stream->ReadBytes(productionAccum, productionSlotCount * 2);
   SwapShortArrayBytes(productionAccum, productionSlotCount);
   stream->ReadBytes(unmetResourceRetryCount, sizeof(unmetResourceRetryCount));
-  SwapShortArrayBytes(unmetResourceRetryCount, 0x17);
+  SwapShortArrayBytes(unmetResourceRetryCount, 23);
   stream->ReadBytes(reservedByType, sizeof(reservedByType));
-  SwapShortArrayBytes(reservedByType, 0x17);
+  SwapShortArrayBytes(reservedByType, 23);
   stream->ReadBytes(production22c, productionSlotCount * 2);
   SwapShortArrayBytes(production22c, productionSlotCount);
   stream->ReadBytes(production24c, productionSlotCount * 2);
   SwapShortArrayBytes(production24c, productionSlotCount);
   stream->ReadBytes(consumedProductionInputByType, sizeof(consumedProductionInputByType));
-  SwapShortArrayBytes(consumedProductionInputByType, 0x17);
+  SwapShortArrayBytes(consumedProductionInputByType, 23);
 
   if (g_nSaveFormatVersion > 0x27) {
     stream->ReadBytes(&rollingItemProductionScore, 4);
@@ -313,19 +313,19 @@ void TCity::WriteTo(TStream* stream) {
   stream->WriteBytes(&powerAvailable, 2);
   WriteShortArrayElems(stream, militaryRecruitCountByKind, kMilitaryUnitKindCount);
   WriteShortArrayElems(stream, civilianRecruitCountByKind, kCivilianUnitKindCount);
-  WriteShortArrayElems(stream, orderCountByType, 0x0e);
+  WriteShortArrayElems(stream, orderCountByType, 14);
   WriteShortArrayElems(stream, stockByType, kResourceKindCount);
-  WriteShortArrayElems(stream, productionOrderTable, 0x10);
-  WriteShortArrayElems(stream, productionAccum, 0x10);
-  WriteShortArrayElems(stream, unmetResourceRetryCount, 0x17);
-  WriteShortArrayElems(stream, reservedByType, 0x17);
+  WriteShortArrayElems(stream, productionOrderTable, 16);
+  WriteShortArrayElems(stream, productionAccum, 16);
+  WriteShortArrayElems(stream, unmetResourceRetryCount, 23);
+  WriteShortArrayElems(stream, reservedByType, 23);
 
-  for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
+  for (int productionSlot = 0; productionSlot < 16; ++productionSlot) {
     short value = production22c[productionSlot];
     SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
   }
-  for (int accumulatedProductionSlot = 0; accumulatedProductionSlot < 0x10;
+  for (int accumulatedProductionSlot = 0; accumulatedProductionSlot < 16;
        ++accumulatedProductionSlot) {
     short value = production24c[accumulatedProductionSlot];
     SwapFirstTwoBytesInBuffer(&value);
@@ -336,7 +336,7 @@ void TCity::WriteTo(TStream* stream) {
   stream->WriteBytes(&rollingItemProductionScore, 4);
   productionSummary->WriteTo(stream);
   TProductionOrder** orderCursor = orderSlots;
-  for (int orderSlot = 0; orderSlot < 0x3d; ++orderSlot) {
+  for (int orderSlot = 0; orderSlot < 61; ++orderSlot) {
     if (*orderCursor != 0) {
       (*orderCursor)->WriteTo(stream);
     }
@@ -360,7 +360,7 @@ void TCity::Free() {
   }
   productionSummary = 0;
   TProductionOrder** orderSlot = orderSlots;
-  for (int remaining = 0; remaining < 0x3d; ++remaining) {
+  for (int remaining = 0; remaining < 61; ++remaining) {
     if (*orderSlot != 0) {
       (*orderSlot)->Free();
     }
@@ -403,14 +403,14 @@ void TCity::EndCityPhase() {
 
   int previousProductionScore = rollingItemProductionScore;
   rollingItemProductionScore = 0;
-  for (i = 0; i < 0x19; ++i) {
+  for (i = 0; i < 25; ++i) {
     if (orderSlots[i] != 0) {
       orderSlots[i]->Produce();
     }
   }
   rollingItemProductionScore = (previousProductionScore * 9) / 10 + rollingItemProductionScore * 10;
 
-  for (i = 9; i < 0x12; ++i) {
+  for (i = 9; i < 18; ++i) {
     if (buildOrderSlots[i] != 0) {
       buildOrderSlots[i]->Produce();
     }
@@ -424,9 +424,9 @@ void TCity::EndCityPhase() {
 
   if (powerPlantUpgradeQueuedFlag) {
     powerPlantUpgradeQueuedFlag = false;
-    productionAccum[0x0b] =
-        static_cast<short>(productionAccum[0x0b] + (999 - productionOrderTable[0x0b]));
-    productionOrderTable[0x0b] = 999;
+    productionAccum[11] =
+        static_cast<short>(productionAccum[0x0b] + (999 - productionOrderTable[11]));
+    productionOrderTable[11] = 999;
   }
 
   for (i = 0; i < kResourceKindCount; ++i) {
@@ -439,7 +439,7 @@ void TCity::EndCityPhase() {
   productionSummary->StartProductionPhase();
   trailingOrderSlots[1]->Restock();
 
-  for (i = 8; i < 0x11; ++i) {
+  for (i = 8; i < 17; ++i) {
     orderSlots[i]->Restock();
   }
 
@@ -459,8 +459,8 @@ void TCity::EndCityPhase() {
       capacity = 1;
     }
   }
-  productionAccum[0x0f] = capacity;
-  productionAccum[0x0e] = productionOrderTable[0x0e];
+  productionAccum[15] = capacity;
+  productionAccum[14] = productionOrderTable[14];
   g_pViewMgr->UpdateCityScreen();
 }
 
@@ -499,7 +499,7 @@ void TCity::ProduceUnits() {
     }
   }
 
-  for (i = 0; i < 0x12; ++i) {
+  for (i = 0; i < 18; ++i) {
     if (buildOrderSlots[i] != 0) {
       buildOrderSlots[i]->Produce();
     }
@@ -595,7 +595,7 @@ void TCity::SetRollingStock(short value) {
 int TCity::GetMerchantMarineDeciSpeed() {
   int weightedSum = 0;
   int totalCount = 0;
-  for (int type = 0; type < 0xe; ++type) {
+  for (int type = 0; type < 14; ++type) {
     short count = orderCountByType[type];
     weightedSum += TShip::GetTypeSailingSpeed(type) * count;
     totalCount += count;
@@ -610,7 +610,7 @@ int TCity::GetMerchantMarineDeciSpeed() {
 int TCity::GetMerchantMarineAverageCargoHold() {
   int weightedSum = 0;
   int totalCount = 0;
-  for (int type = 0; type < 0xe; ++type) {
+  for (int type = 0; type < 14; ++type) {
     short count = orderCountByType[type];
     weightedSum += TShip::GetTypeCargoHold(type) * count;
     totalCount += count;
@@ -625,7 +625,7 @@ int TCity::GetMerchantMarineAverageCargoHold() {
 int TCity::PickRandomMerchantVictims(short maxWeight, short* outCounts) {
   int allocatedWeight = 0;
   short remaining = 0;
-  for (int type = 0; type < 0xe; ++type) {
+  for (int type = 0; type < 14; ++type) {
     if (TShip::GetTypeFirepower(static_cast<short>(type)) == 0) {
       remaining += orderCountByType[type];
     }
@@ -664,7 +664,7 @@ short* TCity::GetUnmetNeeds() {
       remaining -= reservedByType[resourceType];
       summary[resourceType] = remaining;
       if (resourceType == kResourceLivestock) {
-        summary[0x14] = static_cast<short>(remaining - reservedByType[0x13]);
+        summary[20] = static_cast<short>(remaining - reservedByType[kResourceFish]);
       }
       if (summary[resourceType] < 0) {
         summary[resourceType] = 0;
@@ -830,7 +830,7 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   case 7: {
     short nationSlot = g_pSimMgr->GetPlayerCountry();
     result = static_cast<short>(
-        (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) + 1);
+        (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) + 1);
     return result;
   }
 

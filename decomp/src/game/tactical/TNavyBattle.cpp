@@ -150,8 +150,8 @@ void TNavyBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targetTi
 // FUNCTION: IMPERIALISM 0x005a59a0
 void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(TacticalTileIndex tileIndex,
                                                        unsigned int* outRow, int* outCol2X) {
-  *outRow = tileIndex / 0x1d;
-  *outCol2X = (tileIndex / 0x1d & 1) + (tileIndex % 0x1d) * 2;
+  *outRow = tileIndex / 29;
+  *outCol2X = (tileIndex / 29 & 1) + (tileIndex % 29) * 2;
 }
 
 // FUNCTION: IMPERIALISM 0x005a59f0

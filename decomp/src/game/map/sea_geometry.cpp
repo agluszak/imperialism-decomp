@@ -43,7 +43,7 @@ void LoadRegionBorderLinkTableFromCoordsFile() {
     if (coord1 >= 0xd8) {
       coord1 -= 0xd8;
     }
-    coord1 = coord1 + clampedRow1 * 0xd8;
+    coord1 = coord1 + clampedRow1 * 216;
 
     int clampedRow0 = row0;
     if (clampedRow0 < 0) {
@@ -56,16 +56,16 @@ void LoadRegionBorderLinkTableFromCoordsFile() {
     if (coord0 >= 0xd8) {
       coord0 -= 0xd8;
     }
-    coord0 = coord0 + clampedRow0 * 0xd8;
+    coord0 = coord0 + clampedRow0 * 216;
 
     SeaSegment segment;
     segment.angle = 0;
     segment.coord1 = coord1;
     segment.coord0 = coord0;
-    segment.x0 = static_cast<short>(coord0 % 0xd8);
-    segment.y0 = static_cast<short>(coord0 / 0xd8);
-    segment.x1 = static_cast<short>(coord1 % 0xd8);
-    segment.y1 = static_cast<short>(coord1 / 0xd8);
+    segment.x0 = static_cast<short>(coord0 % 216);
+    segment.y0 = static_cast<short>(coord0 / 216);
+    segment.x1 = static_cast<short>(coord1 % 216);
+    segment.y1 = static_cast<short>(coord1 / 216);
     segment.attrBySide[0] = -1;
     segment.attrBySide[1] = -1;
     segment.RecomputeEndpointsAndAngle();
@@ -86,8 +86,8 @@ void SeaSegment::RecomputeEndpointsAndAngle() {
     y0 = ny0;
     x1 = nx1;
     y1 = ny1;
-    coord0 = x0 + y0 * 0xd8;
-    coord1 = x1 + y1 * 0xd8;
+    coord0 = x0 + y0 * 216;
+    coord1 = x1 + y1 * 216;
   }
   int adx = x0 - x1;
   wrap = (adx < 0 ? -adx : adx) > 0x6c;
@@ -119,7 +119,7 @@ void RebuildRegionBorderLinkLattice() {
       // Every other lattice row is staggered the other way, in both axes at once.
       int rowStagger;
       int columnStagger;
-      if ((((row + 6) / 0xc) & 1) == 0) {
+      if ((((row + 6) / 12) & 1) == 0) {
         columnStagger = 6;
         rowStagger = 2;
       } else {
@@ -139,7 +139,7 @@ void RebuildRegionBorderLinkLattice() {
       if (coordAhead >= 0xd8) {
         coordAhead -= 0xd8;
       }
-      coordAhead = coordAhead + clampedAhead * 0xd8;
+      coordAhead = coordAhead + clampedAhead * 216;
 
       int rowBehind = row - rowStagger;
       int clampedBehind = rowBehind;
@@ -153,16 +153,16 @@ void RebuildRegionBorderLinkLattice() {
       if (coordBehind >= 0xd8) {
         coordBehind -= 0xd8;
       }
-      coordBehind = coordBehind + clampedBehind * 0xd8;
+      coordBehind = coordBehind + clampedBehind * 216;
 
       SeaSegment cellSegment;
       cellSegment.angle = 0;
       cellSegment.coord1 = coordAhead;
       cellSegment.coord0 = coordBehind;
-      cellSegment.x0 = static_cast<short>(coordBehind % 0xd8);
-      cellSegment.y0 = static_cast<short>(coordBehind / 0xd8);
-      cellSegment.x1 = static_cast<short>(coordAhead % 0xd8);
-      cellSegment.y1 = static_cast<short>(coordAhead / 0xd8);
+      cellSegment.x0 = static_cast<short>(coordBehind % 216);
+      cellSegment.y0 = static_cast<short>(coordBehind / 216);
+      cellSegment.x1 = static_cast<short>(coordAhead % 216);
+      cellSegment.y1 = static_cast<short>(coordAhead / 216);
       cellSegment.attrBySide[0] = -1;
       cellSegment.attrBySide[1] = -1;
       cellSegment.RecomputeEndpointsAndAngle();
@@ -182,7 +182,7 @@ void RebuildRegionBorderLinkLattice() {
       if (edgeCoord >= 0xd8) {
         edgeCoord -= 0xd8;
       }
-      edgePoint.coord00 = edgeCoord + clampedEdgeRow * 0xd8;
+      edgePoint.coord00 = edgeCoord + clampedEdgeRow * 216;
       edgePoint.lo04 = -1;
       edgePoint.hi08 = -1;
 
@@ -198,7 +198,7 @@ void RebuildRegionBorderLinkLattice() {
         spanCoord -= 0xd8;
       }
       Seapoint spanPoint;
-      spanPoint.InitSorted(spanCoord + clampedSpanRow * 0xd8, -1, -1, 1);
+      spanPoint.InitSorted(spanCoord + clampedSpanRow * 216, -1, -1, 1);
       SeaSegment spanSegment;
       spanSegment.InitFromPoints(&spanPoint, &edgePoint);
       g_regionBorderLinkTable[index] = spanSegment;
@@ -266,7 +266,7 @@ int OverlayCoordFromTileColumnRowAndSide(int column, int row, char side) {
   } else if (overlayX >= 0xd8) {
     overlayX -= 0xd8;
   }
-  return overlayX + row * 0xd8;
+  return overlayX + row * 216;
 }
 
 // FUNCTION: IMPERIALISM 0x0052b1e0
@@ -288,10 +288,10 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
   coord0 = c0;
   coord1 = p1->coord00;
   int c1 = coord1;
-  x0 = static_cast<short>(c0 % 0xd8);
-  y0 = static_cast<short>(c0 / 0xd8);
-  x1 = static_cast<short>(c1 % 0xd8);
-  y1 = static_cast<short>(c1 / 0xd8);
+  x0 = static_cast<short>(c0 % 216);
+  y0 = static_cast<short>(c0 / 216);
+  x1 = static_cast<short>(c1 % 216);
+  y1 = static_cast<short>(c1 / 216);
   attrBySide[0] = static_cast<short>(p0->lo04);
   attrBySide[1] = static_cast<short>(p0->hi08);
   if (y1 < y0 || (y0 == y1 && x1 < x0)) {
@@ -303,8 +303,8 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
     y0 = ny0;
     x1 = nx1;
     y1 = ny1;
-    coord0 = x0 + y0 * 0xd8;
-    coord1 = x1 + y1 * 0xd8;
+    coord0 = x0 + y0 * 216;
+    coord1 = x1 + y1 * 216;
   }
   int adx = x0 - x1;
   wrap = (adx < 0 ? -adx : adx) > 0x6c;
@@ -456,7 +456,7 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
       overlayX -= 0xd8;
     }
   }
-  int coord = overlayX + row * 0xd8;
+  int coord = overlayX + row * 216;
   int lo = a;
   int hi = b;
   if (a > b) {
@@ -476,11 +476,11 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
 double Seapoint::WrappedDeltaMetric(const Seapoint* other) const {
   int thisCoordinate = coord00;
   int otherCoordinate = other->coord00;
-  int rowDelta = thisCoordinate / 0xd8 - otherCoordinate / 0xd8;
+  int rowDelta = thisCoordinate / 216 - otherCoordinate / 216;
   if (rowDelta < 0) {
     rowDelta = -rowDelta;
   }
-  int colDelta = ((thisCoordinate % 0xd8 - otherCoordinate % 0xd8) + 0xd8) % 0xd8;
+  int colDelta = ((thisCoordinate % 216 - otherCoordinate % 216) + 0xd8) % 216;
   if (colDelta > 0x6c) {
     colDelta = 0xd7 - colDelta;
   }

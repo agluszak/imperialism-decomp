@@ -79,7 +79,7 @@ extern char g_szCountryNameProfileKey[];
 
 extern "C" const double g_TradePowerIdentity;
 
-extern "C" const short g_aTradeItemBasePriceByCategory[0x11];
+extern "C" const short g_aTradeItemBasePriceByCategory[17];
 
 extern "C" short g_infoPanelLabelXByRow[4];
 

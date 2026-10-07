@@ -1427,7 +1427,7 @@ int TArmyPlayer::SelectTarget(TTacticalUnit* unit, int flag) {
     if (cachedFortBombardmentTargetTile == -1) {
       TacticalTileIndex rolledTileIndex;
       do {
-        rolledTileIndex = (rand() % 0xd) * 29 + battle->battlefieldColumnCount + 0x17;
+        rolledTileIndex = (rand() % 13) * 29 + battle->battlefieldColumnCount + 0x17;
         cachedFortBombardmentTargetTile = rolledTileIndex;
       } while (battle->IsTacticalTileAtFortWallSectionSlot(rolledTileIndex));
     }

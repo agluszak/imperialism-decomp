@@ -100,7 +100,7 @@ void TMinor::IMinor(NationSlot nationSlot) {
     }
   }
 
-  needCurrentByType[7] = 5;
+  needCurrentByType[kResourceFood] = 5;
   switch (nationSlot) {
   case 7:
     primaryManufacturedPriceThreshold = 0x44c;
@@ -317,11 +317,11 @@ void TMinor::IMinor(NationSlot nationSlot) {
 void TMinor::ReadFrom(TStream* stream) {
   TCountry::ReadFrom(stream);
   stream->ReadBytes(needCurrentByType, sizeof(needCurrentByType));
-  SwapShortArrayBytes(needCurrentByType, 0x17);
+  SwapShortArrayBytes(needCurrentByType, 23);
   stream->ReadBytes(tradeOffersByResource, sizeof(tradeOffersByResource));
-  SwapShortArrayBytes(tradeOffersByResource, 0x17);
+  SwapShortArrayBytes(tradeOffersByResource, 23);
   stream->ReadBytes(grantAmountsByResource, sizeof(grantAmountsByResource));
-  SwapShortArrayBytes(grantAmountsByResource, 0x17);
+  SwapShortArrayBytes(grantAmountsByResource, 23);
   stream->ReadBytes(&primaryManufacturedPriceThreshold, 2);
   stream->ReadBytes(&secondaryManufacturedPriceThreshold, 2);
   stream->ReadBytes(&generalOfferPriceThreshold, 2);
@@ -336,17 +336,17 @@ void TMinor::ReadFrom(TStream* stream) {
   stream->ReadBytes(consortiumMembers, 8);
   SwapShortArrayBytes(consortiumMembers, 4);
   if (g_nSaveFormatVersion >= 0x3a) {
-    stream->ReadBytes(independentResourceCountByType, 0x2e);
-    SwapShortArrayBytes(independentResourceCountByType, 0x17);
+    stream->ReadBytes(independentResourceCountByType, 46);
+    SwapShortArrayBytes(independentResourceCountByType, 23);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e4390
 void TMinor::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
-  WriteShortArrayElems(stream, needCurrentByType, 0x17);
-  WriteShortArrayElems(stream, tradeOffersByResource, 0x17);
-  WriteShortArrayElems(stream, grantAmountsByResource, 0x17);
+  WriteShortArrayElems(stream, needCurrentByType, 23);
+  WriteShortArrayElems(stream, tradeOffersByResource, 23);
+  WriteShortArrayElems(stream, grantAmountsByResource, 23);
   stream->WriteBytes(&primaryManufacturedPriceThreshold, 2);
   stream->WriteBytes(&secondaryManufacturedPriceThreshold, 2);
   stream->WriteBytes(&generalOfferPriceThreshold, 2);
@@ -359,7 +359,7 @@ void TMinor::WriteTo(TStream* stream) {
   stream->WriteBytes(&primaryManufacturedRequestFulfilledAmount, 2);
   stream->WriteBytes(&secondaryManufacturedRequestFulfilledAmount, 2);
   WriteShortArrayElems(stream, consortiumMembers, 4);
-  WriteShortArrayElems(stream, independentResourceCountByType, 0x17);
+  WriteShortArrayElems(stream, independentResourceCountByType, 23);
 }
 
 // True when `policyCode` matches one of the four saved diplomacy nation slots.
@@ -408,7 +408,7 @@ void TMinor::InitializeTradeStatus(void) {
     memset(&foreignControlledResourceYieldByTypeAndMajorNation[i], 0,
            sizeof(TMinorForeignResourceYieldByMajorNation));
   }
-  needCurrentByType[7] = 2;
+  needCurrentByType[kResourceFood] = 2;
 
   int tileIndex;
   for (tileIndex = 0; static_cast<short>(tileIndex) < kStrategicTileCount; ++tileIndex) {
@@ -555,21 +555,21 @@ void TMinor::SetTradeBids(void) {
 
     proposalWeight = g_pTradeMgr->GetPrice(3);
     if (coalOfferPriceThreshold < proposalWeight) {
-      tradeOffersByResource[3] = needCurrentByType[3];
+      tradeOffersByResource[3] = needCurrentByType[kResourceCoal];
     } else if (foreignControlledResourceYieldByType[3] != 0) {
       tradeOffersByResource[3] = foreignControlledResourceYieldByType[3];
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(4);
     if (ironOfferPriceThreshold < proposalWeight) {
-      tradeOffersByResource[4] = needCurrentByType[4];
+      tradeOffersByResource[4] = needCurrentByType[kResourceIron];
     } else if (foreignControlledResourceYieldByType[4] != 0) {
       tradeOffersByResource[4] = foreignControlledResourceYieldByType[4];
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(6);
     if (oilOfferPriceThreshold < proposalWeight) {
-      tradeOffersByResource[6] = needCurrentByType[6];
+      tradeOffersByResource[6] = needCurrentByType[kResourceOil];
     } else if (foreignControlledResourceYieldByType[6] != 0) {
       tradeOffersByResource[6] = foreignControlledResourceYieldByType[6];
     }

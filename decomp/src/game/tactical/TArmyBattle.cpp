@@ -234,8 +234,8 @@ void TArmyBattle::LoadMap(int compositionClass, int fortLevel) {
 
   TacticalTileRecord* record = tileGrid;
   char* src = tabData;
-  for (int row = 0; row < 0xf; ++row) {
-    for (int col = 0; col < 0x1d; ++col) {
+  for (int row = 0; row < 15; ++row) {
+    for (int col = 0; col < 29; ++col) {
       if (col < 0x1d - battlefieldColumnCount) {
         ++src; // margin char: no grid cell consumed
         continue;
@@ -259,7 +259,7 @@ void TArmyBattle::LoadMap(int compositionClass, int fortLevel) {
   delete[] tabData;
 
   if (fortLevel != 0) {
-    for (int tile = battlefieldColumnCount - 6; tile < 0x1b3; tile += 0x1d) {
+    for (int tile = battlefieldColumnCount - 6; tile < 435; tile += 0x1d) {
       tileGrid[tile].deployMark = fortLevel;
     }
     for (int slot = 0; slot < 8; ++slot) {

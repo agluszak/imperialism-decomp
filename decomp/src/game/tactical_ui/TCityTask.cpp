@@ -48,7 +48,7 @@ bool TCityTask::Execute(TTaskList* taskList) {
     if (headroom < requestedAmount && order->limitingConstraint == kProductionOrderLimitResources) {
       OrderSheet sheet;
       order->FillOrderSheet(&sheet, requestedAmount);
-      for (short i = 0; i < 0x17; ++i) {
+      for (short i = 0; i < 23; ++i) {
         short amount = sheet.slotByResourceCode[i];
         if (amount != 0) {
           ownerCity->DirectTransport(i, amount);
@@ -215,7 +215,7 @@ void TCityTask::IncompleteMaterials() {
   OrderSheet sheet;
   order->FillOrderSheet(&sheet, requestedAmount);
 
-  for (short i = 0; i < 0x17; ++i) {
+  for (short i = 0; i < 23; ++i) {
     short amount = sheet.slotByResourceCode[i];
     if (amount != 0) {
       foreignMinister->PleaseBuy(i, amount);

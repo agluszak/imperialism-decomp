@@ -38,7 +38,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   }
 
   int extraHeight =
-      static_cast<short>(((visibleResourceCount * 0x2c) / (frameWidth - 0x20) + 1) * 0x20);
+      static_cast<short>(((visibleResourceCount * 44) / (frameWidth - 0x20) + 1) * 32);
 
   TView* owner = GetWindow();
   if (owner == 0) {

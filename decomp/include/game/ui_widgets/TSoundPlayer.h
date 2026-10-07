@@ -14,7 +14,7 @@ class TSoundPlayer : public TEventHandler {
 public:
   unsigned char directSoundInitOk; // set by InitializeSoundSubsystem
   bool directSoundInitPending;     // set by RequestDirectSoundInitIfAllowed
-  char pad22[0x4a];
+  char pad22[74];
   TLongintList* audioCuePool;
   TLongintList* remainingRandomAudioCues;
   unsigned short activeAudioCueId;
@@ -24,7 +24,7 @@ public:
   unsigned char unused7A; // ctor-only write; field-xrefs show no reader
   unsigned int fadeStartTick;
   bool clearCuePoolsAfterFade;
-  char pad81[0x03];
+  char pad81[3];
 
   TSoundPlayer();
   // FUNCTION: IMPERIALISM 0x005933e0

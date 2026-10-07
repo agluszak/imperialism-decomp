@@ -26,7 +26,7 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&nameString);
   SetQuickDrawFillColor(0);
 
-  short barLength = level / 0x19 + 1;
+  short barLength = level / 25 + 1;
   if (barLength > 0x14) {
     barLength = 0x14;
   }
@@ -59,7 +59,7 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
   DrawCenteredGuideLineOnMapDc(0x93, 0x21);
 
   short xpPercent = battleDetail->strengthBucket;
-  short barWidth = xpPercent * 0xb;
+  short barWidth = xpPercent * 11;
   if (xpPercent % 100 > 0x31) {
     barWidth += 5;
   }

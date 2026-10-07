@@ -125,8 +125,8 @@ protected:
   short currentCursorResourceId;
   bool tileHasOwnerFlags[kProvinceCount];
   CRect tileMarkerRects[kProvinceCount];
-  DiplomacyMaskBufferRun maskRuns[0x17];
-  StrategicMapCallbackRecord packedColorRuns[0x17];
+  DiplomacyMaskBufferRun maskRuns[23];
+  StrategicMapCallbackRecord packedColorRuns[23];
 };
 
 ASSERT_SIZE(TDiplomacyMapView, 0x24c8);

@@ -66,11 +66,11 @@ void TProductionOrder::Produce() {}
 
 // FUNCTION: IMPERIALISM 0x004b5180
 void TProductionOrder::ResetOrderSheet(OrderSheet* orderSheet) {
-  for (int resource = 0; resource < 0x3d; ++resource) {
+  for (int resource = 0; resource < 61; ++resource) {
     orderSheet->slotByResourceCode[resource] = 0;
   }
-  orderSheet->slotByResourceCode[0x3d] = 0;
-  orderSheet->slotByResourceCode[0x3e] = 0;
+  orderSheet->slotByResourceCode[61] = 0;
+  orderSheet->slotByResourceCode[62] = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b51b0

@@ -672,7 +672,7 @@ void TMacViewMgr::GenerateMiniMap() {
   }
   unsigned char* surfaceBase = GetPixBaseAddr(surfaceObject);
   unsigned char* smoothingBase = surfaceBase + strideBytes * 2;
-  scratchBuffer = new unsigned char[0x6540];
+  scratchBuffer = new unsigned char[25920];
   if (scratchBuffer == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0x7e3);
   }
@@ -924,8 +924,10 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
 
   switch (resourceSlot) {
   case 0:
-    needTarget = static_cast<short>(nation->needTargetByType[0] + nation->needTargetByType[1]);
-    needCurrent = static_cast<short>(nation->needCurrentByType[0] + nation->needCurrentByType[1]);
+    needTarget = static_cast<short>(nation->needTargetByType[kResourceCotton] +
+                                    nation->needTargetByType[kResourceWool]);
+    needCurrent = static_cast<short>(nation->needCurrentByType[kResourceCotton] +
+                                     nation->needCurrentByType[kResourceWool]);
     g_pSimMgr->GetString(0x2735, 2, &itemName);
     {
       int production = city->GetBuildingType(0);
@@ -939,8 +941,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     }
     break;
   case 2:
-    needTarget = nation->needTargetByType[2];
-    needCurrent = nation->needCurrentByType[2];
+    needTarget = nation->needTargetByType[kResourceTimber];
+    needCurrent = nation->needCurrentByType[kResourceTimber];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(4);
@@ -970,8 +972,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     }
     break;
   case 5:
-    needTarget = nation->needTargetByType[5];
-    needCurrent = nation->needCurrentByType[5];
+    needTarget = nation->needTargetByType[kResourceHorses];
+    needCurrent = nation->needCurrentByType[kResourceHorses];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     formatCurrent.Format(g_szDecimalFormat, static_cast<int>(needCurrent));
     formatTarget.Format(g_szDecimalFormat, static_cast<int>(needTarget));
@@ -979,8 +981,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     useBracketOnlyPath = true;
     break;
   case 6:
-    needTarget = nation->needTargetByType[6];
-    needCurrent = nation->needCurrentByType[6];
+    needTarget = nation->needTargetByType[kResourceOil];
+    needCurrent = nation->needCurrentByType[kResourceOil];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(6);
@@ -994,8 +996,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     }
     break;
   case 8:
-    needTarget = nation->needTargetByType[8];
-    needCurrent = nation->needCurrentByType[8];
+    needTarget = nation->needTargetByType[kResourceFabric];
+    needCurrent = nation->needCurrentByType[kResourceFabric];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(1);
@@ -1009,8 +1011,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     }
     break;
   case 9:
-    needTarget = nation->needTargetByType[9];
-    needCurrent = nation->needCurrentByType[9];
+    needTarget = nation->needTargetByType[kResourceLumber];
+    needCurrent = nation->needCurrentByType[kResourceLumber];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(5);
@@ -1024,8 +1026,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     }
     break;
   case 0xb:
-    needTarget = nation->needTargetByType[0xb];
-    needCurrent = nation->needCurrentByType[0xb];
+    needTarget = nation->needTargetByType[kResourceSteel];
+    needCurrent = nation->needCurrentByType[kResourceSteel];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(3);
@@ -1039,8 +1041,8 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     }
     break;
   case 0xc:
-    needTarget = nation->needTargetByType[0xc];
-    needCurrent = nation->needCurrentByType[0xc];
+    needTarget = nation->needTargetByType[kResourceFuel];
+    needCurrent = nation->needCurrentByType[kResourceFuel];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(0xb);
@@ -1080,14 +1082,14 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     }
     break;
   case 0x13:
-    needTarget =
-        static_cast<short>(nation->needTargetByType[0x13] + nation->needTargetByType[0x14]);
-    needCurrent =
-        static_cast<short>(nation->needCurrentByType[0x13] + nation->needCurrentByType[0x14]);
+    needTarget = static_cast<short>(nation->needTargetByType[kResourceFish] +
+                                    nation->needTargetByType[kResourceLivestock]);
+    needCurrent = static_cast<short>(nation->needCurrentByType[kResourceFish] +
+                                     nation->needCurrentByType[kResourceLivestock]);
     g_pSimMgr->GetString(0x2735, 3, &itemName);
     {
       short* summary = city->GetUnmetNeeds();
-      short summaryValue = summary[0x14];
+      short summaryValue = summary[20];
       formatTarget.Format(g_szDecimalFormat, static_cast<int>(summaryValue));
       deficitCount = static_cast<short>(summaryValue - city->stockByType[kResourceFish] -
                                         city->stockByType[kResourceLivestock]);
@@ -1099,15 +1101,15 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     }
     break;
   case 0x15:
-    needTarget = nation->needTargetByType[0x15];
-    needCurrent = nation->needCurrentByType[0x15];
+    needTarget = nation->needTargetByType[kResourceGems];
+    needCurrent = nation->needCurrentByType[kResourceGems];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     g_pSimMgr->NumToCurrency(500, &formatCurrent);
     useBracketOnlyPath = true;
     break;
   case 0x16:
-    needTarget = nation->needTargetByType[0x16];
-    needCurrent = nation->needCurrentByType[0x16];
+    needTarget = nation->needTargetByType[kResourceGold];
+    needCurrent = nation->needCurrentByType[kResourceGold];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     g_pSimMgr->NumToCurrency(200, &formatCurrent);
     useBracketOnlyPath = true;
@@ -1401,7 +1403,7 @@ void TMacViewMgr::CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, 
     srcRowOffset = static_cast<short>(iconIndex << 5);
   } else {
     atlasSurface = GetGWorldPixMap(flagWorld);
-    srcRowOffset = static_cast<short>((iconIndex - 100) * 0x20);
+    srcRowOffset = static_cast<short>((iconIndex - 100) * 32);
   }
   ushort dstStrideRaw = static_cast<ushort>((*dstSurface)->stride);
   LockPixels(atlasSurface);
@@ -1436,47 +1438,47 @@ void TMacViewMgr::CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, 
     if (srcRow[10] != '\x10')
       dstRow[10] = srcRow[10];
     if (srcRow[0x0b] != '\x10')
-      dstRow[0x0b] = srcRow[0x0b];
+      dstRow[11] = srcRow[11];
     if (srcRow[0x0c] != '\x10')
-      dstRow[0x0c] = srcRow[0x0c];
+      dstRow[12] = srcRow[12];
     if (srcRow[0x0d] != '\x10')
-      dstRow[0x0d] = srcRow[0x0d];
+      dstRow[13] = srcRow[13];
     if (srcRow[0x0e] != '\x10')
-      dstRow[0x0e] = srcRow[0x0e];
+      dstRow[14] = srcRow[14];
     if (srcRow[0x0f] != '\x10')
-      dstRow[0x0f] = srcRow[0x0f];
+      dstRow[15] = srcRow[15];
     if (srcRow[0x10] != '\x10')
-      dstRow[0x10] = srcRow[0x10];
+      dstRow[16] = srcRow[16];
     if (srcRow[0x11] != '\x10')
-      dstRow[0x11] = srcRow[0x11];
+      dstRow[17] = srcRow[17];
     if (srcRow[0x12] != '\x10')
-      dstRow[0x12] = srcRow[0x12];
+      dstRow[18] = srcRow[18];
     if (srcRow[0x13] != '\x10')
-      dstRow[0x13] = srcRow[0x13];
+      dstRow[19] = srcRow[19];
     if (srcRow[0x14] != '\x10')
-      dstRow[0x14] = srcRow[0x14];
+      dstRow[20] = srcRow[20];
     if (srcRow[0x15] != '\x10')
-      dstRow[0x15] = srcRow[0x15];
+      dstRow[21] = srcRow[21];
     if (srcRow[0x16] != '\x10')
-      dstRow[0x16] = srcRow[0x16];
+      dstRow[22] = srcRow[22];
     if (srcRow[0x17] != '\x10')
-      dstRow[0x17] = srcRow[0x17];
+      dstRow[23] = srcRow[23];
     if (srcRow[0x18] != '\x10')
-      dstRow[0x18] = srcRow[0x18];
+      dstRow[24] = srcRow[24];
     if (srcRow[0x19] != '\x10')
-      dstRow[0x19] = srcRow[0x19];
+      dstRow[25] = srcRow[25];
     if (srcRow[0x1a] != '\x10')
-      dstRow[0x1a] = srcRow[0x1a];
+      dstRow[26] = srcRow[26];
     if (srcRow[0x1b] != '\x10')
-      dstRow[0x1b] = srcRow[0x1b];
+      dstRow[27] = srcRow[27];
     if (srcRow[0x1c] != '\x10')
-      dstRow[0x1c] = srcRow[0x1c];
+      dstRow[28] = srcRow[28];
     if (srcRow[0x1d] != '\x10')
-      dstRow[0x1d] = srcRow[0x1d];
+      dstRow[29] = srcRow[29];
     if (srcRow[0x1e] != '\x10')
-      dstRow[0x1e] = srcRow[0x1e];
+      dstRow[30] = srcRow[30];
     if (srcRow[0x1f] != '\x10')
-      dstRow[0x1f] = srcRow[0x1f];
+      dstRow[31] = srcRow[31];
     --rowsRemaining;
     dstRow += dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
@@ -1493,7 +1495,7 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, sho
   ushort srcStrideRaw = static_cast<ushort>((*atlasSurface)->stride);
   unsigned char* dstPixels = GetPixBaseAddr(pDstSurface);
   int dstStrideBytes = static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff);
-  unsigned char* srcRow = srcPixels + static_cast<short>(nIconVariant * 0x14);
+  unsigned char* srcRow = srcPixels + static_cast<short>(nIconVariant * 20);
   unsigned char* dstRow = dstPixels + (0x28 - nYShift) * dstStrideBytes + static_cast<int>(nDstX);
   int rowsRemaining = 0x18;
   do {
@@ -1518,25 +1520,25 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, sho
     if (srcRow[9] != '\x10')
       dstRow[9] = srcRow[9];
     if (srcRow[0x0a] != '\x10')
-      dstRow[0x0a] = srcRow[0x0a];
+      dstRow[10] = srcRow[10];
     if (srcRow[0x0b] != '\x10')
-      dstRow[0x0b] = srcRow[0x0b];
+      dstRow[11] = srcRow[11];
     if (srcRow[0x0c] != '\x10')
-      dstRow[0x0c] = srcRow[0x0c];
+      dstRow[12] = srcRow[12];
     if (srcRow[0x0d] != '\x10')
-      dstRow[0x0d] = srcRow[0x0d];
+      dstRow[13] = srcRow[13];
     if (srcRow[0x0e] != '\x10')
-      dstRow[0x0e] = srcRow[0x0e];
+      dstRow[14] = srcRow[14];
     if (srcRow[0x0f] != '\x10')
-      dstRow[0x0f] = srcRow[0x0f];
+      dstRow[15] = srcRow[15];
     if (srcRow[0x10] != '\x10')
-      dstRow[0x10] = srcRow[0x10];
+      dstRow[16] = srcRow[16];
     if (srcRow[0x11] != '\x10')
-      dstRow[0x11] = srcRow[0x11];
+      dstRow[17] = srcRow[17];
     if (srcRow[0x12] != '\x10')
-      dstRow[0x12] = srcRow[0x12];
+      dstRow[18] = srcRow[18];
     if (srcRow[0x13] != '\x10')
-      dstRow[0x13] = srcRow[0x13];
+      dstRow[19] = srcRow[19];
     --rowsRemaining;
     dstRow += dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
@@ -1561,13 +1563,13 @@ void TMacViewMgr::CopyDevelopmentIcon(TBitmapSurfaceNode** pDstSurface, ushort w
   unsigned char* dstPixels = GetPixBaseAddr(pDstSurface);
   int dstStrideBytes = static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff);
   unsigned char* srcRow =
-      srcPixels + static_cast<short>(overlaySourceOffset - 0x26 + nVariantRow * 0x26);
+      srcPixels + static_cast<short>(overlaySourceOffset - 0x26 + nVariantRow * 38);
   unsigned char* dstRow = dstPixels + (0x26 - nYShift) * dstStrideBytes + static_cast<int>(nDstX);
   int rowsRemaining = 0x1a;
   do {
     unsigned char* dstPixel = dstRow;
     unsigned char* srcPixel = srcRow;
-    for (int i = 0; i < 0x26; ++i) {
+    for (int i = 0; i < 38; ++i) {
       if (*srcPixel != '\x10') {
         *dstPixel = *srcPixel;
       }
@@ -1594,11 +1596,11 @@ void TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame(TBitmapSurfaceNode** 
   unsigned short sourceStride = static_cast<unsigned short>((*atlasSurface)->stride) & 0x3fff;
   unsigned char* destinationPixels = GetPixBaseAddr(destinationSurface);
 
-  unsigned char* sourceRow = sourcePixels + static_cast<short>((overlayFrameIndex + 0x1b) * 0x26);
+  unsigned char* sourceRow = sourcePixels + static_cast<short>((overlayFrameIndex + 0x1b) * 38);
   unsigned char* destinationRow =
       destinationPixels + (0x26 - destinationYFromBottom) * destinationStride + destinationX;
-  for (int rowsRemaining = 0; rowsRemaining < 0x1a; ++rowsRemaining) {
-    for (int columnsRemaining = 0; columnsRemaining < 0x26; ++columnsRemaining) {
+  for (int rowsRemaining = 0; rowsRemaining < 26; ++rowsRemaining) {
+    for (int columnsRemaining = 0; columnsRemaining < 38; ++columnsRemaining) {
       if (*sourceRow != 0x10) {
         *destinationRow = *sourceRow;
       }

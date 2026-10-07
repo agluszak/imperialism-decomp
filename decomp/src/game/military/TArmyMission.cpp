@@ -114,10 +114,10 @@ void TArmyMission::ReadFrom(TStream* stream) {
   TMission::ReadFrom(stream);
   stream->ReadBytes(&presentLocation, 2);
   if (g_nSaveFormatVersion < 0xb) {
-    stream->ReadBytes(&requiredEquipageByClass[0], 0x10);
+    stream->ReadBytes(&requiredEquipageByClass[0], 16);
     requiredEquipageByClass[4] = 0.0f;
   } else {
-    stream->ReadBytes(&requiredEquipageByClass[0], 0x14);
+    stream->ReadBytes(&requiredEquipageByClass[0], 20);
     ReverseDwordArrayBytes(requiredEquipageByClass, 5);
   }
 

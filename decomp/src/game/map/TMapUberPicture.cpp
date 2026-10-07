@@ -673,7 +673,7 @@ void TMapUberPicture::ArmyCheatClick(short provinceIndex) {
   short ownerNation = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode;
 
   // Label the 30 army-name slots from the localized army-name string group.
-  for (int slot = 0; slot < 0x1e; ++slot) {
+  for (int slot = 0; slot < 30; ++slot) {
     TStaticText* nameLabel = static_cast<TStaticText*>(
         dialog->FindSubView(IMPERIALISM_FOURCC('n', 'a', 'm', 'a') + slot));
     nameLabel->AssertValid();
@@ -682,7 +682,7 @@ void TMapUberPicture::ArmyCheatClick(short provinceIndex) {
   dialog->PoseModally();
 
   // Read the per-slot unit counts the player entered and spawn that many units each.
-  for (int countSlot = 0; countSlot < 0x1e; ++countSlot) {
+  for (int countSlot = 0; countSlot < 30; ++countSlot) {
     TNumberText* countField = static_cast<TNumberText*>(
         dialog->FindSubView(IMPERIALISM_FOURCC('n', 'u', 'm', 'a') + countSlot));
     countField->AssertValid();

@@ -46,7 +46,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
   scenarioList->AssertValid();
 
   // Scenario slots 9..15 are single-player only, so a multiplayer session skips them.
-  for (int scenarioIndex = 0; scenarioIndex < 0x40; ++scenarioIndex) {
+  for (int scenarioIndex = 0; scenarioIndex < 64; ++scenarioIndex) {
     CString unusedScratch;
     CString scenarioPath;
     if (scenarioIndex > 8 && scenarioIndex < 0x10 &&
@@ -58,7 +58,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
       continue;
     }
     FILE* metadataStream = fopen(scenarioPath, "r");
-    char titleLine[0x40];
+    char titleLine[64];
     ReadLineFromBufferedStreamUntilTerminator(titleLine, 0x40, metadataStream);
     fclose(metadataStream);
 
@@ -113,7 +113,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
   nationDescription->SetTextStyle(bodyStyle, false);
 
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-    nationDescriptionTextByNation[nationSlot] = new char[0x400];
+    nationDescriptionTextByNation[nationSlot] = new char[1024];
   }
   selectedScenarioIndex = -1;
 

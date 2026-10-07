@@ -63,11 +63,11 @@ void TTechMgr::ITechMgr(void) {
   perTechUnlockFlag[1] = 1;
   perTechUnlockFlag[2] = 1;
   // One flat 0x1a-byte clear covering perTechUnlockFlag[3..0x1c].
-  memset(&perTechUnlockFlag[3], 0, 0x1a);
+  memset(&perTechUnlockFlag[3], 0, 26);
   memset(resourceTypeEnabled, 1, 4);
   resourceTypeEnabled[4] = 1;
   memset(&resourceTypeEnabled[5], 0, 8);
-  resourceTypeEnabled[0xd] = 0;
+  resourceTypeEnabled[13] = 0;
   techSelectorShort = 3;
   activeZoneIndex = 4;
   memset(initFlags1c9, 0, sizeof(initFlags1c9));
@@ -88,7 +88,7 @@ void TTechMgr::ITechMgr(void) {
     orderCapRows277[n].techStatusByTechId[0] = 2;
     orderCapRows277[n].techStatusByTechId[1] = 2;
     orderCapRows277[n].techStatusByTechId[2] = 2;
-    memset(&orderCapRows277[n].techStatusByTechId[3], 0, 0x1a);
+    memset(&orderCapRows277[n].techStatusByTechId[3], 0, 26);
     memset(&capRowsE4a6[n], 0, sizeof(CapRowE));
     memset(&capRowsB333[n], 0, sizeof(CapRowB));
     memset(&abilityActiveRows[n], 0, sizeof(MilitaryCapRow));
@@ -119,8 +119,8 @@ void TTechMgr::ITechMgr(void) {
     universityRecruitmentAvailabilityByNation[n].availableByCategory[kMajorNationCount] = 1;
 
     memset(abilityActiveRows[n].abilityActiveById, 1, 8);
-    abilityActiveRows[n].abilityActiveById[0x18] = 1;
-    abilityActiveRows[n].abilityActiveById[0x1b] = 1;
+    abilityActiveRows[n].abilityActiveById[24] = 1;
+    abilityActiveRows[n].abilityActiveById[27] = 1;
 
     // capRowsB: first five resource types selected by default, rest cleared.
     memset(capRowsB333[n].selectedByResourceType, 1, 5);
@@ -187,33 +187,33 @@ void TTechMgr::ReadFrom(TStream* stream) {
 
   if (g_nSaveFormatVersion >= 0x27) {
     stream->ReadBytes(prioritySlots, sizeof(prioritySlots));
-    SwapShortArrayBytes(prioritySlots, 0x1d);
+    SwapShortArrayBytes(prioritySlots, 29);
     stream->ReadBytes(capabilityValueByNationAndResource,
                       sizeof(capabilityValueByNationAndResource));
-    SwapShortArrayBytes(capabilityValueByNationAndResource, 0xa1);
+    SwapShortArrayBytes(capabilityValueByNationAndResource, 161);
     stream->ReadBytes(&techSelectorShort, 2);
     stream->ReadBytes(&activeZoneIndex, 2);
-    stream->ReadBytes(perTechUnlockFlag, 0x1d);
+    stream->ReadBytes(perTechUnlockFlag, 29);
     stream->ReadBytes(resourceTypeEnabled, sizeof(resourceTypeEnabled));
-    stream->ReadBytes(initFlags1ab, 0x1e);
+    stream->ReadBytes(initFlags1ab, 30);
     stream->ReadBytes(initFlags1c9, sizeof(initFlags1c9));
     if (g_nSaveFormatVersion > 0x34) {
       stream->ReadBytes(&activePrerequisitePair, sizeof(activePrerequisitePair));
     }
   } else {
     stream->ReadBytes(prioritySlots, sizeof(prioritySlots));
-    stream->ReadBytes(capabilityValueByNationAndResource, 0x2e);
+    stream->ReadBytes(capabilityValueByNationAndResource, 46);
     stream->ReadBytes(&techSelectorShort, 2);
     stream->ReadBytes(&activeZoneIndex, 2);
-    stream->ReadBytes(perTechUnlockFlag, 0x1d);
+    stream->ReadBytes(perTechUnlockFlag, 29);
     stream->ReadBytes(resourceTypeEnabled, sizeof(resourceTypeEnabled));
-    stream->ReadBytes(initFlags1ab, 0x1e);
+    stream->ReadBytes(initFlags1ab, 30);
     stream->ReadBytes(initFlags1c9, sizeof(initFlags1c9));
   }
 
   if (g_nSaveFormatVersion > 0xf) {
     stream->ReadBytes(nationCapRows1e8, sizeof(nationCapRows1e8));
-    SwapShortArrayBytes(nationCapRows1e8, 0x46);
+    SwapShortArrayBytes(nationCapRows1e8, 70);
   }
   if (g_nSaveFormatVersion > 0x17) {
     stream->ReadBytes(orderCapRows277, sizeof(orderCapRows277));
@@ -222,12 +222,12 @@ void TTechMgr::ReadFrom(TStream* stream) {
     stream->ReadBytes(universityRecruitmentAvailabilityByNation,
                       sizeof(universityRecruitmentAvailabilityByNation));
     stream->ReadBytes(capRowsE4a6, sizeof(capRowsE4a6));
-    SwapShortArrayBytes(capRowsE4a6, 0xcb);
+    SwapShortArrayBytes(capRowsE4a6, 203);
   }
   if (g_nSaveFormatVersion > 0x18) {
     stream->ReadBytes(capabilityValueByNationAndResource,
                       sizeof(capabilityValueByNationAndResource));
-    SwapShortArrayBytes(capabilityValueByNationAndResource, 0xa1);
+    SwapShortArrayBytes(capabilityValueByNationAndResource, 161);
   }
   if (g_nSaveFormatVersion > 0x1e) {
     stream->ReadBytes(&marker262, sizeof(marker262));
@@ -238,30 +238,30 @@ void TTechMgr::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005af710
 void TTechMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  WriteShortArrayElems(stream, prioritySlots, 0x1d);
-  WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 0xa1);
+  WriteShortArrayElems(stream, prioritySlots, 29);
+  WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 161);
   stream->WriteBytes(&techSelectorShort, 2);
   stream->WriteBytes(&activeZoneIndex, 2);
-  stream->WriteBytes(perTechUnlockFlag, 0x1d);
+  stream->WriteBytes(perTechUnlockFlag, 29);
   stream->WriteBytes(resourceTypeEnabled, sizeof(resourceTypeEnabled));
-  stream->WriteBytes(initFlags1ab, 0x1e);
+  stream->WriteBytes(initFlags1ab, 30);
   stream->WriteBytes(initFlags1c9, sizeof(initFlags1c9));
   stream->WriteBytes(&activePrerequisitePair, sizeof(activePrerequisitePair));
-  WriteShortArrayElems(stream, nationCapRows1e8[0].slots, 0x46);
+  WriteShortArrayElems(stream, nationCapRows1e8[0].slots, 70);
   stream->WriteBytes(orderCapRows277, sizeof(orderCapRows277));
   stream->WriteBytes(capRowsB333, sizeof(capRowsB333));
   stream->WriteBytes(abilityActiveRows, sizeof(abilityActiveRows));
   stream->WriteBytes(universityRecruitmentAvailabilityByNation,
                      sizeof(universityRecruitmentAvailabilityByNation));
-  WriteShortArrayElems(stream, capRowsE4a6[0].completionYearOffsetByTechId, 0xcb);
-  WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 0xa1);
+  WriteShortArrayElems(stream, capRowsE4a6[0].completionYearOffsetByTechId, 203);
+  WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 161);
   stream->WriteBytes(&marker262, sizeof(marker262));
 }
 
 // FUNCTION: IMPERIALISM 0x005af980
 void TTechMgr::CheckForAdvances() {
   const short economicTurn = g_pSimMgr->GetEconomicTurn();
-  for (int techId = 3; techId < 0x1d; ++techId) {
+  for (int techId = 3; techId < 29; ++techId) {
     if (perTechUnlockFlag[techId] == 0) {
       if (prioritySlots[techId] == economicTurn) {
         UniversalActivation(techId);
@@ -322,14 +322,14 @@ void TTechMgr::UniversalActivation(int nTechId) {
     activeZoneIndex = 9;
     return;
   case 0x18:
-    resourceTypeEnabled[0xb] = 1;
+    resourceTypeEnabled[11] = 1;
     techSelectorShort = 0xb;
-    resourceTypeEnabled[0xa] = 1;
+    resourceTypeEnabled[10] = 1;
     return;
   case 0x1b:
-    resourceTypeEnabled[0xc] = 1;
+    resourceTypeEnabled[12] = 1;
     activeZoneIndex = 0xc;
-    resourceTypeEnabled[0xd] = 1;
+    resourceTypeEnabled[13] = 1;
     techSelectorShort = 0xd;
     return;
   case 0x16:
@@ -571,7 +571,7 @@ void TTechMgr::ActivateShip(int resourceType, int nationSlot) {
 
   int selectedGroup = TShip::GetTypeToolbarSlot(static_cast<short>(resourceType));
   int i;
-  for (i = 0; i < 0xe; ++i) {
+  for (i = 0; i < 14; ++i) {
     if (TShip::GetTypeToolbarSlot(static_cast<short>(i)) == selectedGroup && i != resourceType) {
       capRowsB333[nationSlot].selectedByResourceType[i] = 0;
     }
@@ -705,7 +705,7 @@ void TTechMgr::CancelPurchase(int slot, int nationIndex) {
 
 // FUNCTION: IMPERIALISM 0x005b0c20
 short TTechMgr::GetNextNewAdvance(short nationSlot) {
-  for (int techId = 0; techId < 0x1d; ++techId) {
+  for (int techId = 0; techId < 29; ++techId) {
     if (orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
       GeneralActivation(techId, nationSlot);
       return techId;

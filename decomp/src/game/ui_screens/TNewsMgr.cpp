@@ -258,7 +258,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
         if (rec->eventKind >= kInterNationEventNonAggressionPactAccepted &&
             rec->eventKind <= 0x15) {
           short bits = 0;
-          for (int b = 0; b < 0x17; b++) {
+          for (int b = 0; b < 23; b++) {
             if (rec->payload.nationMaskOrStoryCode & (1 << b)) {
               bits++;
             }
@@ -373,7 +373,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
     int wantId = -0x14;
     if (rec->eventKind >= kInterNationEventNonAggressionPactAccepted && rec->eventKind <= 0x15) {
       short bits = 0;
-      for (int b = 0; b < 0x17; b++) {
+      for (int b = 0; b < 23; b++) {
         if (rec->payload.nationMaskOrStoryCode & (1 << b)) {
           bits++;
         }

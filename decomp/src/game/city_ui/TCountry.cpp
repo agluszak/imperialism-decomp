@@ -96,7 +96,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
 
   militaryUnitList = new TList();
 
-  for (int unitType = 0; unitType < 0x1e; ++unitType) {
+  for (int unitType = 0; unitType < 30; ++unitType) {
     unitNameOrdinalByType[unitType] = 1;
   }
   unitNameCounter = 1;
@@ -133,15 +133,15 @@ void TCountry::ReadFrom(TStream* stream) {
 
   stream->ReadBytes(&nationSlot, 2);
   stream->ReadBytes(&encodedNationSlot, 2);
-  stream->ReadBytes(unitNameOrdinalByType, 0x3c);
-  SwapShortArrayBytes(unitNameOrdinalByType, 0x1e);
+  stream->ReadBytes(unitNameOrdinalByType, 60);
+  SwapShortArrayBytes(unitNameOrdinalByType, 30);
 
   stream->ReadBytes(&unitNameCounter, 2);
   stream->ReadBytes(&treasuryValue, 4);
   stream->ReadBytes(&homeTileIndex, 4);
   stream->ReadBytes(&overlayAnchorTileCache, 4);
-  stream->ReadBytes(tradePolicyByNation, 0x2e);
-  SwapShortArrayBytes(tradePolicyByNation, 0x17);
+  stream->ReadBytes(tradePolicyByNation, 46);
+  SwapShortArrayBytes(tradePolicyByNation, 23);
 
   if (militaryUnitList->GetCount() != 0) {
     militaryUnitList->FreePayloads();
@@ -179,7 +179,7 @@ void TCountry::WriteTo(TStream* stream) {
 
   stream->WriteBytes(&nationSlot, 2);
   stream->WriteBytes(&encodedNationSlot, 2);
-  WriteShortArrayElems(stream, unitNameOrdinalByType, 0x1e);
+  WriteShortArrayElems(stream, unitNameOrdinalByType, 30);
   stream->WriteBytes(&unitNameCounter, 2);
   stream->WriteBytes(&treasuryValue, 4);
   stream->WriteBytes(&homeTileIndex, 4);

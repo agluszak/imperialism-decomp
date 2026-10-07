@@ -438,7 +438,8 @@ void TOfferDeskPicture::ShowAdvice() {
           static_cast<short>(gp->purchasedItemsByResource[1] + gp->purchasedItemsByResource[0]);
       stock =
           static_cast<short>(city->stockByType[kResourceCotton] + city->stockByType[kResourceWool]);
-      needTgt = static_cast<short>(gp->needTargetByType[1] + gp->needTargetByType[0]);
+      needTgt = static_cast<short>(gp->needTargetByType[kResourceWool] +
+                                   gp->needTargetByType[kResourceCotton]);
     }
     if (avail > stock + relDelta + needTgt) {
       hasSurplus = true;
@@ -480,7 +481,8 @@ void TOfferDeskPicture::ShowAdvice() {
           static_cast<short>(gp->purchasedItemsByResource[1] + gp->purchasedItemsByResource[0]);
       stock =
           static_cast<short>(city->stockByType[kResourceCotton] + city->stockByType[kResourceWool]);
-      needTgt = static_cast<short>(gp->needTargetByType[1] + gp->needTargetByType[0]);
+      needTgt = static_cast<short>(gp->needTargetByType[kResourceWool] +
+                                   gp->needTargetByType[kResourceCotton]);
     }
     strCityStock.Format(g_szDecimalFormat, static_cast<int>(stock));
     strNeedTarget.Format(g_szDecimalFormat, static_cast<int>(needTgt));
@@ -638,7 +640,7 @@ void TOfferDeskPicture::SwitchToBook(unsigned char activate) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
     TDealTabControl* tabsControl = static_cast<TDealTabControl*>(FindSubView(kControlTagTabs));
     tabsControl->AssertValid();
-    tabsControl->Setup(0x2266, g_pTechMgr->perTechUnlockFlag[0x13]);
+    tabsControl->Setup(0x2266, g_pTechMgr->perTechUnlockFlag[19]);
     tabsControl->RefreshControl();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
     TView* listControl = FindSubView(kControlTagList);
@@ -652,7 +654,7 @@ void TOfferDeskPicture::SwitchToBook(unsigned char activate) {
     static_cast<TTradeBookView*>(bookControl)->SetItem(-1);
     TDealTabControl* tabsControl = static_cast<TDealTabControl*>(FindSubView(kControlTagTabs));
     tabsControl->AssertValid();
-    tabsControl->Setup(0x2264, g_pTechMgr->perTechUnlockFlag[0x13]);
+    tabsControl->Setup(0x2264, g_pTechMgr->perTechUnlockFlag[19]);
     tabsControl->selectedRow = -1;
     tabsControl->RefreshControl();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 2, tabsControl);

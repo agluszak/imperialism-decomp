@@ -97,7 +97,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
   short secondaryZoneId = stream->ReadInteger();
   resolvedPortZone = FindMapActionContextByNodeId(secondaryZoneId);
 
-  stream->ReadBytes(&requiredShipEquipageByCategory[0], 0x10);
+  stream->ReadBytes(&requiredShipEquipageByCategory[0], 16);
   // In-place four-byte reverse over the array (0x53669e), not a per-element temporary.
   ReverseDwordArrayBytes(requiredShipEquipageByCategory, 4);
 

@@ -10,7 +10,7 @@ class TCivUnit;
 class TMilitaryUnit;
 
 struct GlobalMapTileRecord {
-  char pad_00_to_1f[0x20];
+  char pad_00_to_1f[32];
   TCivUnit* firstCivilianOrder;
 };
 
@@ -93,15 +93,15 @@ struct Province {
   short lastTurnTick;
   signed char adjacentRegionCount;
   unsigned char pad09;
-  ProvinceIndexStorage adjacentRegionIds[0xc]; // -1-terminated, up to 12
+  ProvinceIndexStorage adjacentRegionIds[12]; // -1-terminated, up to 12
   // Parallel representative tiles for each adjacent province.
-  StrategicTileIndex adjacentRegionAnchorTiles[0xc];
+  StrategicTileIndex adjacentRegionAnchorTiles[12];
   signed char linkedRegionCount;
   unsigned char byte3B;
   unsigned char byte3C;
   StrategicTileIndex secondaryNeighborTileIndex;
   StrategicTileIndex primaryNeighborTileIndex;
-  StrategicTileIndex linkedTileIndices[0x20];
+  StrategicTileIndex linkedTileIndices[32];
   short resourceDevelopmentCounts[10]; // resource types 7..0x10
   unsigned char pad96[2];
   TMilitaryUnit* stationedUnitChain;

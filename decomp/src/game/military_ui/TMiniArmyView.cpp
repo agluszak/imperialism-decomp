@@ -53,7 +53,7 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&displayName);
 
   short level = militaryUnit->strength;
-  short barLength = level / 0x19 + 1;
+  short barLength = level / 25 + 1;
   if (barLength > 0x14) {
     barLength = 0x14;
   }

@@ -82,14 +82,14 @@ void TForeignMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&tradeBidRefreshInterval, 2);
   stream->ReadBytes(&interiorOrderKind, 2);
   stream->ReadBytes(purchasePriorityByResource, sizeof(purchasePriorityByResource));
-  SwapShortArrayBytes(purchasePriorityByResource, 0x11);
+  SwapShortArrayBytes(purchasePriorityByResource, 17);
   stream->ReadBytes(preferredResourceSlots, sizeof(preferredResourceSlots));
   SwapShortArrayBytes(preferredResourceSlots, 4);
   stream->ReadBytes(&field48, 1);
   stream->ReadBytes(tradePartnerEnabled, sizeof(tradePartnerEnabled));
   if (g_nSaveFormatVersion >= 0x15) {
     stream->ReadBytes(developmentGrantByNation, sizeof(developmentGrantByNation));
-    SwapShortArrayBytes(developmentGrantByNation, 0x17);
+    SwapShortArrayBytes(developmentGrantByNation, 23);
   }
 }
 
@@ -104,11 +104,11 @@ void TForeignMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&diplomacyPhaseCounter, 2);
   stream->WriteBytes(&tradeBidRefreshInterval, 2);
   stream->WriteBytes(&interiorOrderKind, 2);
-  WriteShortArrayElems(stream, purchasePriorityByResource, 0x11);
+  WriteShortArrayElems(stream, purchasePriorityByResource, 17);
   WriteShortArrayElems(stream, preferredResourceSlots, 4);
   stream->WriteBytes(&field48, 1);
   stream->WriteBytes(tradePartnerEnabled, sizeof(tradePartnerEnabled));
-  WriteShortArrayElems(stream, developmentGrantByNation, 0x17);
+  WriteShortArrayElems(stream, developmentGrantByNation, 23);
 }
 
 // FUNCTION: IMPERIALISM 0x0052f430
@@ -275,7 +275,7 @@ void TForeignMinister::DoUsualSubsidyRule() {
   TGreatPower* owner = greatPower;
   short nationSlot = owner->nationSlot;
   const short kOrderKinds[] = {0, 1, 2, 3, 4, 5, 6};
-  int loopCount = (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x13] == 2) + 5;
+  int loopCount = (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2) + 5;
   if (loopCount != 0) {
     const short* orderKindCursor = kOrderKinds;
     do {

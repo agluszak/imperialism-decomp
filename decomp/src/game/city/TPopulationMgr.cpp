@@ -223,10 +223,10 @@ void TPopulationMgr::PretendToEat(short& substitutionCount, short& starvationCou
   starvationCount = 0;
 
   TGreatPower* owner = city->ownerNation;
-  short grainRemaining = owner->needTargetByType[0x11];
-  short fruitRemaining = owner->needTargetByType[0x12];
-  short animalFoodRemaining =
-      static_cast<short>(owner->needTargetByType[0x13] + owner->needTargetByType[0x14]);
+  short grainRemaining = owner->needTargetByType[kResourceGrain];
+  short fruitRemaining = owner->needTargetByType[kResourceFruit];
+  short animalFoodRemaining = static_cast<short>(owner->needTargetByType[kResourceFish] +
+                                                 owner->needTargetByType[kResourceLivestock]);
   short unmetFoodNeed = 0;
 
   short grainNeed = (population + 1) / 2;

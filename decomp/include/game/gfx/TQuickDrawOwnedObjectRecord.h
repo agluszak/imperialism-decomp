@@ -6,7 +6,7 @@ class TQuickDrawOwnedObjectRecord {
 public:
   ~TQuickDrawOwnedObjectRecord();
 
-  unsigned char m_unknown[0x1c];
+  unsigned char m_unknown[28];
   CObject* m_ownedObject;
 };
 

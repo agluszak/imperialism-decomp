@@ -1,7 +1,7 @@
 #pragma once
 #include "game/globals/global_types.h"
 
-extern "C" short g_aTradeDealCategoryOrder[0x11];
+extern "C" short g_aTradeDealCategoryOrder[17];
 
 extern POINT g_ptControlStringModalMessage;
 

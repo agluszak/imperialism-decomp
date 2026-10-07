@@ -126,7 +126,7 @@ extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 TArmyMgr* g_pMapContextActionManager = 0;
 
 // GLOBAL: IMPERIALISM 0x00695428
-extern const unsigned char g_MapContextStaticTable_00695428[0x20] = {
+extern const unsigned char g_MapContextStaticTable_00695428[32] = {
     0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x0064dc30
 char* g_pBattleReportSharedText = g_szEmptyString;
@@ -145,7 +145,7 @@ char* g_pLoungeLocalPlayerNameSharedText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00668b88
 char* g_pStatusPictureMainSharedText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00695448
-extern const signed char g_MapContextStaticTable_00695448[0x20] = {
+extern const signed char g_MapContextStaticTable_00695448[32] = {
     1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x006a21c0
 int g_lastEdgeAutoScrollTick16 = 0;
@@ -1681,8 +1681,8 @@ extern const double g_ArmyMissionEligibleUnitStrengthScale = 0.002;
 // GLOBAL: IMPERIALISM 0x00697870
 short g_awTacticalCompositionReferenceProfiles[20] = {40, 27, 0,  17, 16, 27, 36, 0, 17, 20,
                                                       26, 31, 20, 23, 0,  40, 22, 0, 38, 0};
-short g_Populate_Beachhead_Mission_LookupTable[0x10] = {40, 40, 20, 0,  40, 30, 30, 0,
-                                                        35, 35, 0,  30, 0,  20, 80, 0};
+short g_Populate_Beachhead_Mission_LookupTable[16] = {40, 40, 20, 0,  40, 30, 30, 0,
+                                                      35, 35, 0,  30, 0,  20, 80, 0};
 const short g_NavyOrderDistributionCategoryWeights[4] = {40, 30, 30, 0};
 // GLOBAL: IMPERIALISM 0x006978c8
 extern const float g_MissionOrderDistanceDecayWeightTable[6] = {1.0f,   0.8f,    0.64f,
@@ -1785,7 +1785,7 @@ short g_aInitialCityRecruitmentOrderProfiles[9][7] = {
     {3, 10, 2, -1, 0, 1000, 4}, {4, 10, 2, -1, 0, 2000, 4}, {5, 10, 2, -1, 0, 1000, 4},
     {6, 10, 2, -1, 0, 1000, 4}, {7, 10, 2, -1, 0, 2000, 4}, {8, 10, 2, -1, 0, 5000, 4}};
 // GLOBAL: IMPERIALISM 0x00695cd0
-short g_aUnitOrderCostProfileByAbilityId[0x1e][7] = {
+short g_aUnitOrderCostProfileByAbilityId[30][7] = {
     {0, -1, 0, -1, 0, 0, 1},      {1, 16, 1, -1, 0, 200, 1},   {2, 16, 1, -1, 0, 500, 1},
     {3, 16, 1, -1, 0, 1000, 2},   {4, 16, 1, 5, 1, 100, 1},    {5, 16, 1, 5, 1, 500, 2},
     {6, 16, 2, 5, 1, 1000, 2},    {7, 16, 2, -1, 0, 1000, 2},  {8, -1, 0, -1, 0, 0, 1},
@@ -1835,14 +1835,14 @@ POINT g_ptTurnTransitionModalMessage = {0, 0};
 char g_szConanCheatFileName[] = "Conan";
 
 // GLOBAL: IMPERIALISM 0x0066d810
-short g_aTradeDealCategoryOrder[0x11] = {13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6};
+short g_aTradeDealCategoryOrder[17] = {13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6};
 // Multiplicative identity used by TTradeMgr::Power.
 // GLOBAL: IMPERIALISM 0x0066d8e0
 extern const double g_TradePowerIdentity = 1.0;
 
 // Initial price for each of the 17 trade-item categories.
 // GLOBAL: IMPERIALISM 0x0069a910
-extern const short g_aTradeItemBasePriceByCategory[0x11] = {
+extern const short g_aTradeItemBasePriceByCategory[17] = {
     100, 100, 100, 100, 100, 300, 100, 100, 300, 300, 300, 300, 300, 900, 900, 900, 900};
 
 // GLOBAL: IMPERIALISM 0x0066dad0
@@ -2478,7 +2478,7 @@ char g_szClientSavePrefix[] = "cli_";
 // GLOBAL: IMPERIALISM 0x0065bf5c
 const char* const g_pszClientSavePrefix = g_szClientSavePrefix;
 // GLOBAL: IMPERIALISM 0x006a2178
-char g_ScenarioSaveNameBuffer[0x30];
+char g_ScenarioSaveNameBuffer[48];
 // Modal placement used for invalid/cross-session save-file warnings.
 // GLOBAL: IMPERIALISM 0x006a2128
 POINT g_ptSaveLoadErrorModalMessage = {0, 0};
@@ -2512,7 +2512,7 @@ int g_nUiInvalidationAssertFlagLine495 = 0;
 // GLOBAL: IMPERIALISM 0x006a3478
 SeapointStretch g_seapointQuadTable;
 // GLOBAL: IMPERIALISM 0x006a3498
-int g_cityRegionIdRemapTable[0x100];
+int g_cityRegionIdRemapTable[256];
 // GLOBAL: IMPERIALISM 0x006a3900
 SeaSegmentStretch g_regionBorderLinkTable;
 

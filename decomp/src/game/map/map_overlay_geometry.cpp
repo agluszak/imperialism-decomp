@@ -271,7 +271,7 @@ int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side) {
       result -= 0xd8;
     }
   }
-  return result + row * 0xd8;
+  return result + row * 216;
 }
 
 // FUNCTION: IMPERIALISM 0x0052e990
@@ -393,5 +393,5 @@ void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY
   int halfTileXOffset = (row & 1) == 0 ? tileScale / 2 : 0;
   outScreenXY[1] = (row - originRow) * tileScale;
   outScreenXY[0] =
-      (((tileIndex - originCol) + kStrategicMapColumns) % 0x6c) * tileScale - halfTileXOffset;
+      (((tileIndex - originCol) + kStrategicMapColumns) % 108) * tileScale - halfTileXOffset;
 }

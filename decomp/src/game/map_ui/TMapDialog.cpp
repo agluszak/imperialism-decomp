@@ -176,7 +176,7 @@ short g_mapProjectionSeamColumn = static_cast<short>(g_mapProjectionColumnScale 
 void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
                                                   short* outY, short* outX, short scale) {
   unsigned int row = tileIndex / kStrategicMapColumns;
-  *outY = static_cast<short>(row) * 0x40 - static_cast<short>(viewportOrigin->y);
+  *outY = static_cast<short>(row) * 64 - static_cast<short>(viewportOrigin->y);
   short projectedX = static_cast<short>((tileIndex % kStrategicMapColumns) << 6) -
                      static_cast<short>(viewportOrigin->x);
   *outX = projectedX;
@@ -226,7 +226,7 @@ void ProjectMapCoordinatesToScaledViewport(short row, short column, short* outRo
   } else if (*outRow >= kStrategicMapRows) {
     *outRow = 0x3b;
   }
-  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn) * 0x40 &&
+  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn) * 64 &&
       *outColumn < g_mapProjectionSeamColumn) {
     *outColumn = static_cast<short>(*outColumn + kStrategicMapColumns);
   }
@@ -251,7 +251,7 @@ void ProjectTileIndexToScaledViewport(short tileIndex, short* outRow, short* out
   } else if (*outRow >= kStrategicMapRows) {
     *outRow = 0x3b;
   }
-  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn) * 0x40 &&
+  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn) * 64 &&
       *outColumn < g_mapProjectionSeamColumn) {
     *outColumn = static_cast<short>(*outColumn + kStrategicMapColumns);
   }
@@ -574,15 +574,15 @@ void TMapDialog::ConvertPoint(const CPoint& point, short& outRow, short& outCol,
   NormalizeWrappedMapCoord108x60(&outRow, &outCol);
 
   int wrappedY = viewportOrigin.y + point.y;
-  short bandRow = wrappedY % 0x40;
+  short bandRow = wrappedY % 64;
 
   short bandCol = 0;
   if ((outCol & 1) != 0) {
     int wrappedX = point.x + 0x20 + viewportOrigin.x;
-    bandCol = static_cast<short>(wrappedX % 0x40 - 1);
+    bandCol = static_cast<short>(wrappedX % 64 - 1);
   } else {
     int wrappedX = point.x + viewportOrigin.x;
-    bandCol = static_cast<short>(wrappedX % 0x40);
+    bandCol = static_cast<short>(wrappedX % 64);
   }
 
   if (bandCol < 0x20) {
@@ -639,8 +639,8 @@ void TMapDialog::CenterOn(int tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0051ace0
 int TMapDialog::GetCenterTile() const {
-  int col = viewportOrigin.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
-  int row = viewportOrigin.y / 0x40 + 4;
+  int col = viewportOrigin.x / 64 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
+  int row = viewportOrigin.y / 64 + 4;
   NormalizeWrappedMapCoord108x60(reinterpret_cast<short*>(&col), reinterpret_cast<short*>(&row));
   return col + row * kStrategicMapColumns;
 }
@@ -2158,10 +2158,10 @@ void TMapDialog::DrawRatLine(short col1, int row1, short col2, int row2) {
     return;
   }
 
-  const int firstX = (col1 * 0x40) / 2 + 0x40;
-  const int firstY = (row1 + 1) * 0x40;
-  const int secondX = (col2 * 0x40) / 2 + 0x40;
-  const int secondY = (row2 + 1) * 0x40;
+  const int firstX = (col1 * 64) / 2 + 0x40;
+  const int firstY = (row1 + 1) * 64;
+  const int secondX = (col2 * 64) / 2 + 0x40;
+  const int secondY = (row2 + 1) * 64;
   const int dx = secondX - firstX;
   const int dy = secondY - firstY;
   int span = abs(dx);
@@ -2291,10 +2291,10 @@ void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
 
   for (int i = 0; i < g_pActiveMapOrderContext->routeNodeCount; ++i) {
     const CRect& segment = g_pActiveMapOrderContext->routeSegments[i];
-    short firstColumn = (segment.left - viewportHalfColumn + 0xd8) % 0xd8;
+    short firstColumn = (segment.left - viewportHalfColumn + 0xd8) % 216;
     short firstRow = static_cast<short>(segment.top);
     firstRow -= viewportRow;
-    short secondColumn = (segment.right - viewportHalfColumn + 0xd8) % 0xd8;
+    short secondColumn = (segment.right - viewportHalfColumn + 0xd8) % 216;
     short secondRow = static_cast<short>(segment.bottom);
     secondRow -= viewportRow;
     DrawRatLine(firstColumn, firstRow, secondColumn, secondRow);
@@ -2575,7 +2575,7 @@ static inline void CopyMapTilePixelSpan(unsigned char* src, unsigned char* dest,
 // FUNCTION: IMPERIALISM 0x005241b0
 void TMapDialog::QuickWedgeSE(unsigned char* src, unsigned char* dest, short srcStride,
                               short destStride) {
-  for (int rowDirection2 = 0; rowDirection2 < 0x20; ++rowDirection2) {
+  for (int rowDirection2 = 0; rowDirection2 < 32; ++rowDirection2) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirection2, 0x20,
                          0x20 - rowDirection2);
   }
@@ -2584,11 +2584,11 @@ void TMapDialog::QuickWedgeSE(unsigned char* src, unsigned char* dest, short src
 // FUNCTION: IMPERIALISM 0x005242f0
 void TMapDialog::QuickWedgeE(unsigned char* src, unsigned char* dest, short srcStride,
                              short destStride) {
-  for (int upperRowDirection1 = 1; upperRowDirection1 < 0x20; ++upperRowDirection1) {
+  for (int upperRowDirection1 = 1; upperRowDirection1 < 32; ++upperRowDirection1) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, upperRowDirection1,
                          0x40 - upperRowDirection1, upperRowDirection1);
   }
-  for (int lowerRowDirection1 = 0x20; lowerRowDirection1 < 0x3f; ++lowerRowDirection1) {
+  for (int lowerRowDirection1 = 0x20; lowerRowDirection1 < 63; ++lowerRowDirection1) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, lowerRowDirection1,
                          lowerRowDirection1 + 1, 0x3f - lowerRowDirection1);
   }
@@ -2597,7 +2597,7 @@ void TMapDialog::QuickWedgeE(unsigned char* src, unsigned char* dest, short srcS
 // FUNCTION: IMPERIALISM 0x00524540
 void TMapDialog::QuickWedgeNE(unsigned char* src, unsigned char* dest, short srcStride,
                               short destStride) {
-  for (int rowDirection0 = 0x20; rowDirection0 < 0x40; ++rowDirection0) {
+  for (int rowDirection0 = 0x20; rowDirection0 < 64; ++rowDirection0) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirection0, 0x20,
                          rowDirection0 - 0x1f);
   }
@@ -2606,7 +2606,7 @@ void TMapDialog::QuickWedgeNE(unsigned char* src, unsigned char* dest, short src
 // FUNCTION: IMPERIALISM 0x00524670
 void TMapDialog::QuickWedgeNW(unsigned char* src, unsigned char* dest, short srcStride,
                               short destStride) {
-  for (int rowDirection5 = 0x21; rowDirection5 < 0x40; ++rowDirection5) {
+  for (int rowDirection5 = 0x21; rowDirection5 < 64; ++rowDirection5) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirection5, 0x40 - rowDirection5,
                          rowDirection5 - 0x20);
   }
@@ -2615,11 +2615,11 @@ void TMapDialog::QuickWedgeNW(unsigned char* src, unsigned char* dest, short src
 // FUNCTION: IMPERIALISM 0x005247a0
 void TMapDialog::QuickWedgeW(unsigned char* src, unsigned char* dest, short srcStride,
                              short destStride) {
-  for (int upperRowDirection4 = 0; upperRowDirection4 < 0x20; ++upperRowDirection4) {
+  for (int upperRowDirection4 = 0; upperRowDirection4 < 32; ++upperRowDirection4) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, upperRowDirection4, 0,
                          upperRowDirection4 + 1);
   }
-  for (int lowerRowDirection4 = 0x20; lowerRowDirection4 < 0x40; ++lowerRowDirection4) {
+  for (int lowerRowDirection4 = 0x20; lowerRowDirection4 < 64; ++lowerRowDirection4) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, lowerRowDirection4, 0,
                          0x40 - lowerRowDirection4);
   }
@@ -2628,7 +2628,7 @@ void TMapDialog::QuickWedgeW(unsigned char* src, unsigned char* dest, short srcS
 // FUNCTION: IMPERIALISM 0x005249f0
 void TMapDialog::QuickWedgeSW(unsigned char* src, unsigned char* dest, short srcStride,
                               short destStride) {
-  for (int rowDirection3 = 0; rowDirection3 < 0x20; ++rowDirection3) {
+  for (int rowDirection3 = 0; rowDirection3 < 32; ++rowDirection3) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirection3, rowDirection3,
                          0x20 - rowDirection3);
   }
@@ -2637,7 +2637,7 @@ void TMapDialog::QuickWedgeSW(unsigned char* src, unsigned char* dest, short src
 // FUNCTION: IMPERIALISM 0x00524b30
 void TMapDialog::CoastWedgeSE(unsigned char* src, unsigned char* dest, short srcStride,
                               short destStride) {
-  for (int rowDirections1And2 = 0; rowDirections1And2 < 0x20; ++rowDirections1And2) {
+  for (int rowDirections1And2 = 0; rowDirections1And2 < 32; ++rowDirections1And2) {
     int firstColumn = 0x30 - (rowDirections1And2 / 8) * 4;
     if ((rowDirections1And2 & 2) != 0) {
       --firstColumn;
@@ -2650,7 +2650,7 @@ void TMapDialog::CoastWedgeSE(unsigned char* src, unsigned char* dest, short src
 // FUNCTION: IMPERIALISM 0x00524c60
 void TMapDialog::CoastWedgeNE(unsigned char* src, unsigned char* dest, short srcStride,
                               short destStride) {
-  for (int rowDirections0And1 = 0x20; rowDirections0And1 < 0x40; ++rowDirections0And1) {
+  for (int rowDirections0And1 = 0x20; rowDirections0And1 < 64; ++rowDirections0And1) {
     int firstColumn = 0x20 + (rowDirections0And1 - 0x20) / 2;
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirections0And1, firstColumn,
                          0x40 - firstColumn);
@@ -2660,7 +2660,7 @@ void TMapDialog::CoastWedgeNE(unsigned char* src, unsigned char* dest, short src
 // FUNCTION: IMPERIALISM 0x00524e70
 void TMapDialog::CoastWedgeS(unsigned char* src, unsigned char* dest, short srcStride,
                              short destStride) {
-  for (int rowDirections2And3 = 0; rowDirections2And3 < 0x20; ++rowDirections2And3) {
+  for (int rowDirections2And3 = 0; rowDirections2And3 < 32; ++rowDirections2And3) {
     int firstColumn = 0x10 + rowDirections2And3 / 2;
     int pairInGroup = (rowDirections2And3 / 2) & 3;
     int endColumn = 0x30 + ((4 - pairInGroup) & 3);
@@ -2672,7 +2672,7 @@ void TMapDialog::CoastWedgeS(unsigned char* src, unsigned char* dest, short srcS
 // FUNCTION: IMPERIALISM 0x005250a0
 void TMapDialog::CoastWedgeN(unsigned char* src, unsigned char* dest, short srcStride,
                              short destStride) {
-  for (int rowDirections5And0 = 0x20; rowDirections5And0 < 0x40; ++rowDirections5And0) {
+  for (int rowDirections5And0 = 0x20; rowDirections5And0 < 64; ++rowDirections5And0) {
     int halfRow = (rowDirections5And0 - 0x20) / 2;
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirections5And0, 0x1f - halfRow,
                          2 + halfRow * 2);
@@ -2682,7 +2682,7 @@ void TMapDialog::CoastWedgeN(unsigned char* src, unsigned char* dest, short srcS
 // FUNCTION: IMPERIALISM 0x005252d0
 void TMapDialog::CoastWedgeNW(unsigned char* src, unsigned char* dest, short srcStride,
                               short destStride) {
-  for (int rowDirections4And5 = 0x20; rowDirections4And5 < 0x40; ++rowDirections4And5) {
+  for (int rowDirections4And5 = 0x20; rowDirections4And5 < 64; ++rowDirections4And5) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirections4And5, 0,
                          0x20 - (rowDirections4And5 - 0x20) / 2);
   }
@@ -2691,7 +2691,7 @@ void TMapDialog::CoastWedgeNW(unsigned char* src, unsigned char* dest, short src
 // FUNCTION: IMPERIALISM 0x005254a0
 void TMapDialog::CoastWedgeSW(unsigned char* src, unsigned char* dest, short srcStride,
                               short destStride) {
-  for (int rowDirections3And4 = 0; rowDirections3And4 < 0x20; ++rowDirections3And4) {
+  for (int rowDirections3And4 = 0; rowDirections3And4 < 32; ++rowDirections3And4) {
     CopyMapTilePixelSpan(src, dest, srcStride, destStride, rowDirections3And4, 0,
                          0x10 + rowDirections3And4 / 2);
   }

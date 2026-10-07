@@ -29,7 +29,7 @@ void TNewTownView::StuffValues(TTown* town) {
       ++visibleResourceCount;
     }
   }
-  int extraHeight = visibleResourceCount * 0x20;
+  int extraHeight = visibleResourceCount * 32;
 
   TView* owner = GetWindow();
   if (owner == 0) {

@@ -6,7 +6,7 @@ extern int g_wMapDialogViewportTileSpan;
 // Most recently clicked strategic-map tile.
 extern int g_lastClickedMapTileIndex;
 
-extern int g_cityRegionIdRemapTable[0x100];
+extern int g_cityRegionIdRemapTable[256];
 
 extern const int g_coarseHexColOffsetEvenRow[6];
 

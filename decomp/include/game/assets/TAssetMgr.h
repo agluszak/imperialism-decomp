@@ -32,7 +32,7 @@ public:
   int GetResourceStreamSize(CFile* stream);
 
   int unusedRegion[7];
-  CString sharedTextSlots[0xd];
+  CString sharedTextSlots[13];
   int deadStore54;
 
   TAssetMgr();

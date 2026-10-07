@@ -130,7 +130,7 @@ TViewMgr::~TViewMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005d5100
 void TViewMgr::LoadTurnEventCursorTable() {
-  for (int i = 0; i < 0x36; i++) {
+  for (int i = 0; i < 54; i++) {
     turnEventCursors[i] = LoadTurnEventCursorByResourceIdOffset1000(i + 1000);
   }
 }
@@ -601,7 +601,7 @@ static void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
     destination[-7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][0];
     destination[0] = g_aDefaultNationSetupPolicyProfiles[nationSlot][1];
     destination[kMajorNationCount] = g_aDefaultNationSetupPolicyProfiles[nationSlot][2];
-    destination[0xe] = g_aDefaultNationSetupPolicyProfiles[nationSlot][3];
+    destination[14] = g_aDefaultNationSetupPolicyProfiles[nationSlot][3];
     ++destination;
   }
 }
@@ -774,7 +774,7 @@ short TViewMgr::GetPendingTurnOverlayCode() {
 // FUNCTION: IMPERIALISM 0x005d6c30
 void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
   TView* mainView = g_pDisplayMgr->activeDialog;
-  for (short iconIndex = 0; iconIndex <= 0x11; ++iconIndex) {
+  for (short iconIndex = 0; iconIndex <= 17; ++iconIndex) {
     TView* control = mainView->FindSubView(g_strategicMapStatusIconTagTable[iconIndex]);
     if (control != NULL) {
       control->AssertValid();
@@ -1395,7 +1395,7 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   rightTitle->SetTextAndMaybeRefresh(&text, false);
 
   g_pMacViewMgr->ShowTransportEntry(-1, nationSlot, hostView);
-  for (short row = 0; row < 0x17; ++row) {
+  for (short row = 0; row < 23; ++row) {
     g_pMacViewMgr->ShowTransportEntry(row, nationSlot, hostView);
   }
 }
@@ -1555,7 +1555,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   short nationSlot = nationIndex;
   g_apNationStates[nationSlot]->RecallTradeBids();
   pendingTurnOverlayCode = 0;
-  for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
+  for (short metricSlot = 0; metricSlot < 17; ++metricSlot) {
     if (g_apNationStates[nationSlot]->GetTradeOffersFor(metricSlot) == -1) {
       pendingTurnOverlayCode = static_cast<short>(pendingTurnOverlayCode + 1);
     }
@@ -1777,7 +1777,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     pendingTurnOverlayCode = 5;
   }
 
-  for (short commodity = 0; commodity < 0x11; ++commodity) {
+  for (short commodity = 0; commodity < 17; ++commodity) {
     TView* row = mainView->FindSubView(g_strategicMapStatusIconTagTable[commodity]);
     if (row == NULL) {
       continue;

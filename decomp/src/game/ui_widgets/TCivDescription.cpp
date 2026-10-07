@@ -32,11 +32,11 @@ const unsigned int kAddrCivilianLegendSelectionCountsBySlot = 0x006A4490;
 
 struct CivilianClassCacheContext {
   void* vftable;
-  unsigned char pad_04_to_83[0x80];
+  unsigned char pad_04_to_83[128];
   CivilianUnitKindStorage selectedCivilianClass;
   NationSlot ownerNationId;
   short targetTileCountsBySlot[5];
-  unsigned char pad_6e_to_6f[0x02];
+  unsigned char pad_6e_to_6f[2];
 };
 
 typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextRef);

@@ -107,7 +107,7 @@ void TMapMgr::ReadFrom(TStream* stream) {
   int i;
   Province* record = cityScoreTable;
   for (i = 0; i < kProvinceCount; ++i, ++record) {
-    stream->ReadBytes(record, 0xa4);
+    stream->ReadBytes(record, 164);
     stream->ReadSharedString(&record->cityName, 0x20);
   }
   for (i = 0; i < kStrategicTileCount; ++i) {
@@ -141,7 +141,7 @@ void TMapMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(terrainStateTable, 0x38f40);
   Province* record = cityScoreTable;
   for (int i = 0; i < kProvinceCount; ++i, ++record) {
-    stream->WriteBytes(record, 0xa4);
+    stream->WriteBytes(record, 164);
     stream->WriteSharedString(&record->cityName);
   }
   stream->WriteBytes(&pendingRiverMouthTile, 2);
@@ -201,10 +201,10 @@ void TMapMgr::InitializeMap() {
     record->cityTileIndex = -1;
     record->lastTurnTick = 999;
     record->adjacentRegionCount = 0;
-    for (j = 0; j < 0xc; ++j) {
+    for (j = 0; j < 12; ++j) {
       record->adjacentRegionIds[j] = -1;
     }
-    for (j = 0; j < 0xc; ++j) {
+    for (j = 0; j < 12; ++j) {
       record->adjacentRegionAnchorTiles[j] = -1;
     }
     record->linkedRegionCount = 0;
@@ -212,7 +212,7 @@ void TMapMgr::InitializeMap() {
     record->byte3C = 0;
     record->secondaryNeighborTileIndex = -1;
     record->primaryNeighborTileIndex = -1;
-    for (j = 0; j < 0x20; ++j) {
+    for (j = 0; j < 32; ++j) {
       record->linkedTileIndices[j] = -1;
     }
     record->resourceDevelopmentCounts[0] = 0;
@@ -425,7 +425,7 @@ void TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
 
 // FUNCTION: IMPERIALISM 0x0050f3c0
 void TMapMgr::VerifyMapDataAndWriteReport() {
-  SetCursor(g_pViewMgr->turnEventCursors[0x1a]);
+  SetCursor(g_pViewMgr->turnEventCursors[26]);
 
   short* provinceTileCounts = new short[kProvinceCount];
   short* pCount = provinceTileCounts;
@@ -558,7 +558,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
       record->formerOwnerNationCode = owner;
       record->ownerNationCode = owner;
 
-      short interiorTiles[0x20];
+      short interiorTiles[32];
       short interiorCount = 0;
       if (record->linkedRegionCount > 0) {
         int i = 0;
@@ -581,7 +581,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
                   if (*slot == -1) {
                     *slot = neighborRec;
                     inserted = true;
-                    slot[0xc] = neighborTile;
+                    slot[12] = neighborTile;
                   } else if (*slot == neighborRec) {
                     inserted = true;
                   }
@@ -620,7 +620,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
                                                  record->linkedRegionCount];
         } else {
           // Prefer plains and farmland among the interior tiles.
-          short flatTiles[0x18];
+          short flatTiles[24];
           short flatCount = 0;
           int j = interiorCount;
           if (j > 0) {
@@ -2782,7 +2782,7 @@ void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
   unsigned char eligibleGateFlags[24] = {0};
   eligibleGateFlags[8] = 1;
   eligibleGateFlags[9] = 1;
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[19] == 2) {
     eligibleGateFlags[10] = 1;
     eligibleGateFlags[11] = 1;
     eligibleGateFlags[12] = 1;
@@ -2815,8 +2815,7 @@ void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x00515460
 void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
-  bool recruitTierFlagIsTwo =
-      (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2);
+  bool recruitTierFlagIsTwo = (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[19] == 2);
   recruitSearchActive = 1;
   unsigned char nationBit = 1 << nationTag;
   for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
@@ -2992,13 +2991,13 @@ void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
   StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex;
 
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[6] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainSwamp] = 1;
   }
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[12] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainHills] = 1;
   }
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[23] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainMountain] = 1;
   }
 
@@ -3024,19 +3023,19 @@ void TMapMgr::DimByEngineering(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
 
   unsigned char terrainKindGate[kStrategicTerrainCount] = {1, 1, 0, 0, 0, 0, 1, 1};
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[6] == 2) {
     terrainKindGate[kStrategicTerrainSwamp] = 1;
     terrainKindGate[kStrategicTerrainWater] = 0;
     terrainKindGate[kStrategicTerrainDesert] = 1;
     terrainKindGate[kStrategicTerrainFarmland] = 1;
   }
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[12] == 2) {
     terrainKindGate[kStrategicTerrainPlains] = 1;
     terrainKindGate[kStrategicTerrainForest] = 1;
     terrainKindGate[kStrategicTerrainHills] = 1;
     terrainKindGate[kStrategicTerrainMountain] = 0;
   }
-  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[23] == 2) {
     terrainKindGate[kStrategicTerrainMountain] = 1;
   }
 
@@ -3454,13 +3453,13 @@ short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationS
         ++tileCount;
       }
     } else if (wrapBias) {
-      colSum = colSum + static_cast<unsigned int>(westCount * 0x6c);
+      colSum = colSum + static_cast<unsigned int>(westCount * 108);
     }
   }
 
   if (tileCount != 0) {
-    return static_cast<short>(((static_cast<int>(colSum) / static_cast<int>(tileCount)) % 0x6c) +
-                              (rowSum / static_cast<int>(tileCount)) * 0x6c);
+    return static_cast<short>(((static_cast<int>(colSum) / static_cast<int>(tileCount)) % 108) +
+                              (rowSum / static_cast<int>(tileCount)) * 108);
   }
 
   short fallbackTile = -1;
@@ -3753,7 +3752,7 @@ bool TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
   Province* record = cityScoreTable;
   do {
     int nameLengthBytes;
-    char nameText[0x20];
+    char nameText[32];
     g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, record, &byteCount);
     nameLengthBytes = 2;
     g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, nameText, &nameLengthBytes);
@@ -3821,7 +3820,7 @@ void ByteSwapCityScoreTableShortFields(Province* table) {
     short* idSlot = record->adjacentRegionIds;
     do {
       SwapShortBytes(&idSlot[0]);
-      SwapShortBytes(&idSlot[0xc]);
+      SwapShortBytes(&idSlot[12]);
       ++idSlot;
       --k;
     } while (k != 0);
@@ -3835,7 +3834,7 @@ void ByteSwapCityScoreTableShortFields(Province* table) {
       --k;
     } while (k != 0);
     short* devSlot = record->resourceDevelopmentCounts;
-    for (int i = 0; i < 0xa; ++i) {
+    for (int i = 0; i < 10; ++i) {
       SwapShortBytes(devSlot);
       ++devSlot;
     }
@@ -3894,7 +3893,7 @@ int TMapMgr::LandPrice(StrategicTileIndex nTileIndex) {
     short resourceType = terrainStateTable[nTileIndex].resourceTypeByEdge[edge];
     if (resourceType != -1) {
       if (resourceType < kResourceManufacturedEnd) {
-        total = total + g_pTradeMgr->GetPrice(resourceType) * 0x14;
+        total = total + g_pTradeMgr->GetPrice(resourceType) * 20;
       } else if (resourceType == kResourceGems) {
         total += 10000;
       } else if (resourceType == kResourceGold) {
@@ -3936,7 +3935,7 @@ void TMapMgr::ActivateMarchingArrow(int tileIndex, int contextArg, bool flag) {
     hexAreaY = 0x3b;
   }
 
-  short finalTileIndex = hexAreaX / 2 + hexAreaY * 0x6c;
+  short finalTileIndex = hexAreaX / 2 + hexAreaY * 108;
   if (finalTileIndex < 0 || finalTileIndex >= kStrategicTileCount) {
     finalTileIndex = -1;
   }

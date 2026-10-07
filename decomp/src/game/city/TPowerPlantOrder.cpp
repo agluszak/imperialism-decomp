@@ -65,7 +65,7 @@ void TPowerPlantOrder::Restock() {
 // FUNCTION: IMPERIALISM 0x004b7c90
 void TPowerPlantOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   ResetOrderSheet(orderSheet);
-  orderSheet->slotByResourceCode[0x0c] = static_cast<short>(quantity * 6);
+  orderSheet->slotByResourceCode[12] = static_cast<short>(quantity * 6);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7cc0

@@ -73,7 +73,7 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
     short merchantAtlasSlots[14] = {0, 0, 1, 0, 0, 2, 3, 0, 0, 0, 4, 0, 0, 0};
     int checkboxOffset[2] = {0, 0};
     int checkboxSize[2] = {0x50, 0x2d};
-    int atlasOffset = merchantAtlasSlots[battleDetail->resourceType] * 0x50;
+    int atlasOffset = merchantAtlasSlots[battleDetail->resourceType] * 80;
     TArmyCheckBox* checkbox = new TArmyCheckBox(merchantView, checkboxOffset, checkboxSize, 5, 5,
                                                 battleUnitsView->primaryUnitAtlas, atlasOffset);
     static_cast<TView*>(checkbox)->ViewEnable(0, 0);

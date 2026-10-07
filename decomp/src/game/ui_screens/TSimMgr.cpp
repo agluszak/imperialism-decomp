@@ -136,7 +136,7 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   previousMode = kGamePhaseStartup;
   field14 = 0;
 
-  for (int i = 0; i < 0x17; ++i) {
+  for (int i = 0; i < 23; ++i) {
     countryAvailable[i] = true;
     CString empty(g_szEmptyString);
     sharedTextSlots[i] = empty;
@@ -248,7 +248,7 @@ void TSimMgr::Free() {
     g_pNavyOrderManager = NULL;
   }
 
-  for (i = 0; i < 0x17; ++i) {
+  for (i = 0; i < 23; ++i) {
     if (g_apTerrainTypeDescriptorTable[i] != NULL) {
       g_apTerrainTypeDescriptorTable[i]->Free();
       g_apTerrainTypeDescriptorTable[i] = NULL;
@@ -259,7 +259,7 @@ void TSimMgr::Free() {
     g_apNationStates[i] = NULL;
   }
 
-  for (i = 0; i < 0x10; ++i) {
+  for (i = 0; i < 16; ++i) {
     g_apNationAuxRuntimeStateSlots[i] = NULL;
   }
 
@@ -298,10 +298,10 @@ void TSimMgr::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion < 0x2d) {
-    stream->ReadBytes(&multiplayerGameActive, 0x3c);
+    stream->ReadBytes(&multiplayerGameActive, 60);
     scenarioMapIndexPlusOne = 0;
   } else {
-    stream->ReadBytes(&multiplayerGameActive, 0x3e);
+    stream->ReadBytes(&multiplayerGameActive, 62);
   }
 
   if (g_nSaveFormatVersion < 0x2e) {
@@ -348,13 +348,13 @@ void TSimMgr::ReadFrom(TStream* stream) {
     stream->ReadBytes(councilByDecade, sizeof(councilByDecade));
   }
 
-  for (i = 0; i < 0x17; ++i) {
+  for (i = 0; i < 23; ++i) {
     CString emptyString(g_szEmptyString);
     sharedTextSlots[i] = emptyString;
   }
 
   if (g_nSaveFormatVersion >= 0x3c) {
-    for (i = 0; i < 0x17; ++i) {
+    for (i = 0; i < 23; ++i) {
       stream->ReadSharedString(&sharedTextSlots[i], 0x20);
     }
   }
@@ -384,7 +384,7 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&numMinorCountries, 4);
   stream->WriteBytes(&turnFlowStatusFlags, 4);
   stream->WriteByte(static_cast<unsigned char>(difficultyLevel));
-  stream->WriteBytes(&multiplayerGameActive, 0x3e);
+  stream->WriteBytes(&multiplayerGameActive, 62);
   stream->WriteBytes(&lastPersistentUnitId, 4);
   stream->WriteBytes(countryAvailable, sizeof(countryAvailable));
   stream->WriteBytes(&multiplayerSessionRole, 4);
@@ -399,7 +399,7 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&finalCouncilYear, 2);
   stream->WriteBytes(councilByDecade, sizeof(councilByDecade));
 
-  for (i = 0; i < 0x17; ++i) {
+  for (i = 0; i < 23; ++i) {
     stream->WriteSharedString(&sharedTextSlots[i]);
   }
 }
@@ -432,7 +432,7 @@ void TSimMgr::CreateSimObjects(bool flag) {
     }
 
     numMinorCountries = 0;
-    for (i = 7; i < 0x17; ++i) {
+    for (i = 7; i < 23; ++i) {
       if (countryAvailable[i]) {
         numMinorCountries++;
       }
@@ -506,7 +506,7 @@ void TSimMgr::CreatePlanet(int rebuild, const char* mapName, int wrapHorizontall
   int i;
   if (!g_bMultiplayerScenarioSetupActive) {
     CString flavorName;
-    for (i = 0; i < 0x17; ++i) {
+    for (i = 0; i < 23; ++i) {
       SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, i);
       sharedTextSlots[i] = flavorName;
     }
@@ -601,7 +601,7 @@ void TSimMgr::CreateCountries(int activate) {
     }
   }
 
-  for (i = 0; i < 0x17; ++i) {
+  for (i = 0; i < 23; ++i) {
     if (!countryAvailable[i]) {
       g_apSecondaryNationStateSlots[i] = NULL;
       g_apTerrainTypeDescriptorTable[i] = NULL;
@@ -1164,7 +1164,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     const short tickA = GetEconomicTurn();
     const short tickB = GetEconomicTurn();
-    if (tickB % 0x28 != 0 || councilByDecade[tickA / 0x28] == 0) {
+    if (tickB % 40 != 0 || councilByDecade[tickA / 40] == 0) {
       StartNextPhase();
     } else {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic),
@@ -1323,9 +1323,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     const short tickA = GetEconomicTurn();
     const short tickB = GetEconomicTurn();
-    if (((tickB % 0x28) == 0) && (councilByDecade[tickA / 0x28] != 0) &&
+    if (((tickB % 40) == 0) && (councilByDecade[tickA / 40] != 0) &&
         multiplayerSessionRole != kSessionRoleClient) {
-      g_pDiplomacyTurnStateManager->ConveneCouncil(councilByDecade[tickA / 0x28]);
+      g_pDiplomacyTurnStateManager->ConveneCouncil(councilByDecade[tickA / 40]);
     }
     if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
@@ -1363,7 +1363,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         EliminateGP(static_cast<short>(removeNationSlot));
       }
     }
-    for (int secondaryIndex = 7; secondaryIndex < 0x17; ++secondaryIndex) {
+    for (int secondaryIndex = 7; secondaryIndex < 23; ++secondaryIndex) {
       TMinor* secondaryNation = g_apSecondaryNationStateSlots[secondaryIndex];
       if (secondaryNation != NULL && secondaryNation->ownedRegionList->GetSize() == 0) {
         for (short percentNationSlot = 0; percentNationSlot < kMajorNationCount;
@@ -2441,8 +2441,8 @@ void TSimMgr::ScSetEmbassy(STurnInstructionCursor* instruction) {
   int nationB = nationBToken;
   short value = valueToken;
   TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
-  diplomacy->relationSideEffectMatrix[nationA * 0x17 + nationB] = value;
-  diplomacy->relationSideEffectMatrix[nationB * 0x17 + nationA] = value;
+  diplomacy->relationSideEffectMatrix[nationA * 23 + nationB] = value;
+  diplomacy->relationSideEffectMatrix[nationB * 23 + nationA] = value;
 }
 
 // FUNCTION: IMPERIALISM 0x00582ce0
@@ -2707,7 +2707,7 @@ void TSimMgr::ScClearTransport(STurnInstructionCursor* instruction) {
   int nation = nationToken;
 
   g_apNationStates[nation]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-  for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
+  for (int needIndex = 0; needIndex < 23; ++needIndex) {
     g_apNationStates[nation]->UpdateNeedTargetAndAccumulateOverCap(static_cast<short>(needIndex),
                                                                    0);
   }

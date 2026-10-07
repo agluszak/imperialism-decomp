@@ -207,7 +207,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
     }
   }
 
-  for (sourceNation = 0; sourceNation < 0x10; ++sourceNation) {
+  for (sourceNation = 0; sourceNation < 16; ++sourceNation) {
     specialRelationSourceSlots[sourceNation] = -1;
     specialRelationTargetSlots[sourceNation] = -1;
   }
@@ -235,7 +235,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
   if (g_pSimMgr->difficultyLevel > kDifficultyNormal) {
     for (sourceNation = 0; sourceNation < kMajorNationCount; ++sourceNation) {
       if (g_apNationStates[sourceNation]->diplomacyEligibility == 0) {
-        targetNation = abs(rand()) % 0x10 + 7;
+        targetNation = abs(rand()) % 16 + 7;
         int forwardIndex = sourceNation * kNationSlotCount + targetNation;
         int reverseIndex = targetNation * kNationSlotCount + sourceNation;
         relationSideEffectMatrix[forwardIndex] = 1;
@@ -358,7 +358,7 @@ void TDiplomacyMgr::ReadFrom(TStream* stream) {
 
   if (g_nSaveFormatVersion > 0x1a) {
     stream->ReadBytes(specialRelationSourceSlots, sizeof(specialRelationSourceSlots));
-    for (int i = 0; i < 0x10; ++i) {
+    for (int i = 0; i < 16; ++i) {
       ByteSwapShortInPlace(&specialRelationSourceSlots[i]);
     }
   }
@@ -384,7 +384,7 @@ void TDiplomacyMgr::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, &congressLeadership.chairmanNationSlot, 2);
   WriteShortArrayElems(stream, &congressSupport.chairmanSupportCount, 3);
 
-  for (int i = 0; i < 0x10; ++i) {
+  for (int i = 0; i < 16; ++i) {
     short value = specialRelationSourceSlots[i];
     SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
@@ -739,7 +739,7 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
       short targetCandidateStanding =
           relationStandingScores[target * kNationSlotCount + candidateNationSlot];
       int candidateAdjustment =
-          ((0x5a - targetCandidateStanding) * sourceTargetStanding) / (divisorTier * 0x32);
+          ((0x5a - targetCandidateStanding) * sourceTargetStanding) / (divisorTier * 50);
       if (static_cast<char>(sourceNationSlot) == 0) {
         candidateAdjustment = static_cast<short>(candidateAdjustment) / 2;
       }
@@ -1712,7 +1712,7 @@ TDiplomacyMgr::BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy() 
   packet->flag20 = false;
   if (relationMatrixBaselineCopy == 0) {
     relationMatrixBaselineSize = 0x1138;
-    relationMatrixBaselineCopy = new short[0x89c];
+    relationMatrixBaselineCopy = new short[2204];
   }
   memcpy(relationMatrixBaselineCopy, relationStandingScores, relationMatrixBaselineSize);
   return packet;

@@ -94,7 +94,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   musicSlider->AssertValid();
   musicSlider->SetPicture(0x1036);
   short musicSpan = musicSlider->frameHeight - 0xc;
-  short musicSplit = g_pSimMgr->preferenceValues[3] * musicSpan / 0xff;
+  short musicSplit = g_pSimMgr->preferenceValues[3] * musicSpan / 255;
   musicSlider->splitPosition = static_cast<short>((musicSplit == 0) ? 0 : musicSplit + 0xc);
   musicSlider->mode = 1;
   LoadUiStringByGroupAndIndexToControlObject(0x2743, 0x27, musicSlider);
@@ -182,7 +182,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
         musicPosition -= 0xc;
       }
       g_pSimMgr->preferenceValues[3] = static_cast<short>(
-          (musicPosition * 0xff) / static_cast<short>(musicSlider->frameHeight - 0xc));
+          (musicPosition * 255) / static_cast<short>(musicSlider->frameHeight - 0xc));
 
       TTwoPicSlider* soundSlider = static_cast<TTwoPicSlider*>(FindSubView(kControlTagSoun));
       soundSlider->AssertValid();

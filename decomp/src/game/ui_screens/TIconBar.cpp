@@ -52,7 +52,7 @@ void TIconBar::Draw(RECT* rectBuffer) {
   }
   iconSpacing = slotWidth;
 
-  RECT srcRect = {iconAtlasFrame * 0x20, 0, iconAtlasFrame * 0x20 + 0x20, 0x18};
+  RECT srcRect = {iconAtlasFrame * 32, 0, iconAtlasFrame * 32 + 0x20, 0x18};
   RECT dstRect = {contentRect.left, contentRect.top, contentRect.left + 0x20,
                   contentRect.top + 0x18};
 

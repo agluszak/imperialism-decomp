@@ -9,7 +9,7 @@ class TWarningView : public TPicture {
 public:
   virtual ~TWarningView() override;
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  char pad_90_to_93[0x04];
+  char pad_90_to_93[4];
 
   TWarningView();
   DECLARE_DYNCREATE(TWarningView)

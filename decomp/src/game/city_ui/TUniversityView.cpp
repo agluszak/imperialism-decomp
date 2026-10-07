@@ -335,12 +335,12 @@ void TUniversityView::Draw(RECT* rectBuffer) {
   if (SectRect(&gridRegion, rectBuffer, &scratchClip)) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6b);
     int row = 0;
-    for (int rowBottomY = 0x12e; rowBottomY < 0x192; rowBottomY += 0x19, ++row) {
+    for (int rowBottomY = 0x12e; rowBottomY < 402; rowBottomY += 0x19, ++row) {
       CString text;
       short nCommoditySpriteId = static_cast<short>(
           g_anUniversityRequirementIdByRecruitRow[selectedRecruitmentCategory][row]);
       if (nCommoditySpriteId != -1) {
-        RECT reqSrcRect = {nCommoditySpriteId * 0x14, 0, (nCommoditySpriteId + 1) * 0x14, 0x18};
+        RECT reqSrcRect = {nCommoditySpriteId * 20, 0, (nCommoditySpriteId + 1) * 20, 0x18};
         RECT reqDstRect = {0x19, rowBottomY - 0x1c, 0x2d, rowBottomY};
         BlitRectWithOptionalTransparency(g_pMacViewMgr->unitIconAtlas->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
@@ -356,8 +356,8 @@ void TUniversityView::Draw(RECT* rectBuffer) {
           text.Format(g_szDecimalFormat,
                       static_cast<int>(static_cast<signed char>(
                           g_abUniversityRequirementLevelById[nCommoditySpriteId][level])));
-          SetQuickDrawTextOriginWithContextOffset(static_cast<short>(level * 0x28 + 0x27),
-                                                  static_cast<short>(row * 0x19 + 0x121));
+          SetQuickDrawTextOriginWithContextOffset(static_cast<short>(level * 40 + 0x27),
+                                                  static_cast<short>(row * 25 + 0x121));
           DrawTextWithCachedQuickDrawStyleState(&text);
         }
       }

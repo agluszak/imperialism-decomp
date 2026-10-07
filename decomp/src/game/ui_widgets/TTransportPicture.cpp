@@ -21,7 +21,7 @@ IMPLEMENT_DYNCREATE(TTransportPicture, TPicture)
 // FUNCTION: IMPERIALISM 0x00591e70
 TTransportPicture::TTransportPicture()
     : gaugeMetricId(0x3a), splitValue94(0), splitValue96(0),
-      splitLimit(static_cast<short>(0xffff)) {}
+      splitLimit(-1) {}
 
 // FUNCTION: IMPERIALISM 0x00591ef0
 TTransportPicture::~TTransportPicture() {}
@@ -35,11 +35,15 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     short targetAmount;
     short currentAmount;
     if (metricSlot == 0) {
-      targetAmount = nation->needTargetByType[1] + nation->needTargetByType[0];
-      currentAmount = nation->needCurrentByType[1] + nation->needCurrentByType[0];
+      targetAmount =
+          nation->needTargetByType[kResourceWool] + nation->needTargetByType[kResourceCotton];
+      currentAmount =
+          nation->needCurrentByType[kResourceWool] + nation->needCurrentByType[kResourceCotton];
     } else if (metricSlot == 0x13) {
-      targetAmount = nation->needTargetByType[0x14] + nation->needTargetByType[0x13];
-      currentAmount = nation->needCurrentByType[0x14] + nation->needCurrentByType[0x13];
+      targetAmount =
+          nation->needTargetByType[kResourceLivestock] + nation->needTargetByType[kResourceFish];
+      currentAmount =
+          nation->needCurrentByType[kResourceLivestock] + nation->needCurrentByType[kResourceFish];
     } else {
       targetAmount = nation->needTargetByType[metricSlot];
       currentAmount = nation->needCurrentByType[metricSlot];
@@ -82,7 +86,7 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
           nation->UpdateNeedTargetAndAccumulateOverCap(secondaryNeedIndex, 0);
         }
       } else if (selectedMetricSlot == 0x13) {
-        short primaryCurrentAmount = nation->needCurrentByType[0x13];
+        short primaryCurrentAmount = nation->needCurrentByType[kResourceFish];
         if (primaryCurrentAmount < splitValue94) {
           nation->UpdateNeedTargetAndAccumulateOverCap(0x13, primaryCurrentAmount);
           nation->UpdateNeedTargetAndAccumulateOverCap(

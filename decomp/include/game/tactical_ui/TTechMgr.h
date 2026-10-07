@@ -16,10 +16,10 @@ public:
   TTechMgr();
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
-  short prioritySlots[0x1d];
+  short prioritySlots[29];
   short capabilityValueByNationAndResource[7][23];
-  unsigned char perTechUnlockFlag[0x1d];
-  unsigned char resourceTypeEnabled[0xe];
+  unsigned char perTechUnlockFlag[29];
+  unsigned char resourceTypeEnabled[14];
   unsigned char initFlags1ab[4]; // defaults initializer sets all four to 1
   unsigned char initFlags1af[4]; // set to 1
   unsigned char pad1b3[0x1c3 - 0x1b3];
@@ -36,15 +36,15 @@ public:
   short marker262;
   TechPrerequisitePair activePrerequisitePair;
   struct OrderCapRow {
-    unsigned char techStatusByTechId[0x1d];
+    unsigned char techStatusByTechId[29];
   };
   OrderCapRow orderCapRows277[7];
   struct CapRowB {
-    unsigned char selectedByResourceType[0xe];
+    unsigned char selectedByResourceType[14];
   };
   CapRowB capRowsB333[7];
   struct MilitaryCapRow {
-    unsigned char abilityActiveById[0x1e];
+    unsigned char abilityActiveById[30];
   };
   MilitaryCapRow abilityActiveRows[7];
   struct UniversityRecruitmentAvailabilityRow {
@@ -52,7 +52,7 @@ public:
   };
   UniversityRecruitmentAvailabilityRow universityRecruitmentAvailabilityByNation[kMajorNationCount];
   struct CapRowE {
-    short completionYearOffsetByTechId[0x1d];
+    short completionYearOffsetByTechId[29];
   };
   CapRowE capRowsE4a6[7];
 

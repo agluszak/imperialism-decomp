@@ -48,11 +48,11 @@ public:
   short interiorBidAmount;   // SetInteriorMinisterBid amount
   short priceCheckPending;
   short specialOfferQuota;
-  short diplomacyPhaseCounter;            // reset after SetTradeBids
-  short tradeBidRefreshInterval;          // turns before forced trade-bid refresh
-  short interiorOrderKind;                // passed to TInteriorMinister slot 0x1a
-  short purchasePriorityByResource[0x11]; // per-resource demand
-  short preferredResourceSlots[4];        // top four resource codes
+  short diplomacyPhaseCounter;          // reset after SetTradeBids
+  short tradeBidRefreshInterval;        // turns before forced trade-bid refresh
+  short interiorOrderKind;              // passed to TInteriorMinister slot 0x1a
+  short purchasePriorityByResource[17]; // per-resource demand
+  short preferredResourceSlots[4];      // top four resource codes
 
   unsigned char field48;                            // cleared by the constructor
   unsigned char tradePartnerEnabled[7];             // per-major-nation trade status

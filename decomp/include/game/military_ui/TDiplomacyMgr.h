@@ -88,8 +88,8 @@ public:
   void CalculateRatings();
 
   int comparativePowerRows[7][4];
-  NationSlot specialRelationSourceSlots[0x10];
-  NationSlot specialRelationTargetSlots[0x10];
+  NationSlot specialRelationSourceSlots[16];
+  NationSlot specialRelationTargetSlots[16];
   TSortedPtrList* pendingWarTransitionQueue;
   short proposalArrayMode;
 

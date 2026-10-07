@@ -175,10 +175,10 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileInd
     city.stationedUnitChain = 0;
     city.linkedRegionCount = 0;
     int entry;
-    for (entry = 0; entry < 0x20; ++entry) {
+    for (entry = 0; entry < 32; ++entry) {
       city.linkedTileIndices[entry] = -1;
     }
-    for (entry = 0; entry < 0x0c; ++entry) {
+    for (entry = 0; entry < 12; ++entry) {
       city.adjacentRegionIds[entry] = -1;
       city.adjacentRegionAnchorTiles[entry] = -1;
     }

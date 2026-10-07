@@ -47,18 +47,18 @@ bool TShipBuildingTask::Execute(TTaskList* taskList) {
       return false;
     }
 
-    short deficits[0x17];
+    short deficits[23];
     memset(deficits, 0, sizeof(deficits));
     deficits[8] = static_cast<short>(g_industryActionCostWeightResCode08[requestedShipType] -
                                      shipOrder->trackingSlots[8]);
     deficits[9] = static_cast<short>(g_industryActionCostWeightResCode09[requestedShipType] -
                                      shipOrder->trackingSlots[9]);
-    deficits[0xb] = static_cast<short>(g_industryActionCostWeightResCode0B[requestedShipType] -
-                                       shipOrder->trackingSlots[0xb]);
-    deficits[0x10] = static_cast<short>(g_industryActionCostWeightResCode10[requestedShipType] -
-                                        shipOrder->trackingSlots[0x10]);
-    deficits[0xc] = static_cast<short>(g_industryActionCostWeightResCode0C[requestedShipType] -
-                                       shipOrder->trackingSlots[0xc]);
+    deficits[11] = static_cast<short>(g_industryActionCostWeightResCode0B[requestedShipType] -
+                                      shipOrder->trackingSlots[11]);
+    deficits[16] = static_cast<short>(g_industryActionCostWeightResCode10[requestedShipType] -
+                                      shipOrder->trackingSlots[16]);
+    deficits[12] = static_cast<short>(g_industryActionCostWeightResCode0C[requestedShipType] -
+                                      shipOrder->trackingSlots[12]);
     deficits[3] = static_cast<short>(g_industryActionCostWeightResCode03[requestedShipType] -
                                      shipOrder->trackingSlots[3]);
 

@@ -19,7 +19,7 @@ public:
   virtual void Grow();
   virtual void SetName(const char* townName);
 
-  char name[0x10]; // strcpy'd marker name
+  char name[16]; // strcpy'd marker name
   short tileIndex;
   short field16;
   short field18;

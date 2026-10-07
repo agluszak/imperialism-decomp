@@ -28,8 +28,8 @@ public:
 
   short field10;
   short field12;
-  short recruitOrderCountByType[0x1e];
-  short orderWeightTableB[0x1e];
+  short recruitOrderCountByType[30];
+  short orderWeightTableB[30];
   short thresholdA;
   short thresholdB;
   short thresholdC;

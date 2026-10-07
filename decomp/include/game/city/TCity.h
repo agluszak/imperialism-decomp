@@ -83,18 +83,18 @@ public:
   TTown* homeTownMarker;
   short powerAvailable;
   short stockByType[kResourceKindCount];
-  TProductionOrder* orderSlots[0x19];
-  TUnitOrder* buildOrderSlots[0x12];
+  TProductionOrder* orderSlots[25];
+  TUnitOrder* buildOrderSlots[18];
   TShipOrder* shipOrderSlots[8];
-  TProductionOrder* trailingOrderSlots[0x0a];
+  TProductionOrder* trailingOrderSlots[10];
   TPopulationMgr* productionSummary; // city population / summary
-  short productionOrderTable[0x10];
-  short productionAccum[0x10];         // ctor-cleared
-  unsigned char productionFlags[0x10]; // ctor-cleared
-  short production22c[0x10];           // GetBuildingWindowState outCurrent
-  short production24c[0x10];           // GetBuildingWindowState outAccum
-  short populationGrowthPenaltyTicks;  // GrowthRate penalty counter
-  TTaskList* trackedOrderList;         // released via FreeList
+  short productionOrderTable[16];
+  short productionAccum[16];          // ctor-cleared
+  unsigned char productionFlags[16];  // ctor-cleared
+  short production22c[16];            // GetBuildingWindowState outCurrent
+  short production24c[16];            // GetBuildingWindowState outAccum
+  short populationGrowthPenaltyTicks; // GrowthRate penalty counter
+  TTaskList* trackedOrderList;        // released via FreeList
   class TPtrList* eventQueue;
   short unmetResourceRetryCount[kResourceKindCount];
   short consumedProductionInputByType[kResourceKindCount];

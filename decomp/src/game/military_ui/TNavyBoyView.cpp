@@ -51,7 +51,7 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
 
   short levelDivisor = TShip::GetTypeHullPoints(battleDetail->resourceType);
   short level = battleDetail->stockOrRequired;
-  short barLength = (level * 0x14) / levelDivisor + 1;
+  short barLength = (level * 20) / levelDivisor + 1;
   if (barLength > 0x14) {
     barLength = 0x14;
   }

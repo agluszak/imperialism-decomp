@@ -257,10 +257,10 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   const int kMapRegionSlotCount = kStrategicTileCount;
 
   short* currentNeedByType = needCurrentByType;
-  short* developmentByType = &needCurrentByType[7]; // +0x11c overlays this runtime array.
+  short* developmentByType = &needCurrentByType[kResourceFood];
   short* targetNeedByType = needTargetByType;
-  short& controlledRegionCount = needCurrentByType[0x13];
-  for (int i = 0; i < kNationSlotCount; ++i) {
+  short& fishYield = needCurrentByType[kResourceFish];
+  for (int i = 0; i < kResourceKindCount; ++i) {
     currentNeedByType[i] = 0;
   }
 
@@ -276,7 +276,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
       TTerrainStateRecord* terrainRecord = &terrainTable[regionIndex];
       if (terrainRecord->gateFlag == 0) {
         if (influence == 2) {
-          ++controlledRegionCount;
+          ++fishYield;
         }
       } else {
         for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
@@ -289,7 +289,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
         }
 
         if (terrainRecord->riverSpriteCode != kRiverSpriteCodeNone && influence == 2) {
-          ++controlledRegionCount;
+          ++fishYield;
         }
 
         int cityIndex = terrainRecord->cityRecordIndex;
@@ -482,7 +482,7 @@ bool TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
   if (tradeCity->productionSummary->strength <= 1) {
     return false;
   }
-  for (int recordIndex = 8; recordIndex < 0xd; ++recordIndex) {
+  for (int recordIndex = 8; recordIndex < 13; ++recordIndex) {
     TProductionOrder* record = city->orderSlots[static_cast<short>(recordIndex)];
     short controlValue = record->quantity;
     if (record->MaxOrder() > controlValue) {
@@ -709,13 +709,13 @@ void TGreatPower::AddPurchasedItems(void) {
 
 // FUNCTION: IMPERIALISM 0x004dcd10
 void TGreatPower::AddCreatedItems(void) {
-  AddToTreasury(static_cast<int>(needTargetByType[0x15]) * 500);
+  AddToTreasury(static_cast<int>(needTargetByType[kResourceGems]) * 500);
 
   TCity* cityPtr = city;
   cityPtr->stockByType[kResourceGems] = 0;
   cityPtr->VerifyStocks();
 
-  AddToTreasury(static_cast<int>(needTargetByType[0x16]) * 200);
+  AddToTreasury(static_cast<int>(needTargetByType[kResourceGold]) * 200);
 
   cityPtr->stockByType[kResourceGold] = 0;
   cityPtr->VerifyStocks();
@@ -1086,7 +1086,7 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
     short* summary = this->city->GetUnmetNeeds();
     TCity* city = this->city;
     short available = static_cast<short>(
-        ((((summary[0x14] + summary[0x12] + summary[0x11]) - city->stockByType[kResourceFood]) -
+        ((((summary[0x14] + summary[0x12] + summary[17]) - city->stockByType[kResourceFood]) -
           city->stockByType[kResourceLivestock]) -
          city->stockByType[kResourceGrain]) -
         city->stockByType[kResourceFruit]);
@@ -2067,7 +2067,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
     presetLevel = g_pSimMgr->difficultyLevel;
   }
   const short* presetRow = g_Rebuild_Primary_Nation_Value[presetLevel];
-  for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
+  for (int needIndex = 0; needIndex < 23; ++needIndex) {
     mgr->stockByType[static_cast<short>(needIndex)] = presetRow[needIndex];
     mgr->VerifyStocks();
   }
@@ -3389,7 +3389,7 @@ void TGreatPower::PayForMilitary() {
 // FUNCTION: IMPERIALISM 0x004e3620
 int TGreatPower::SumDiplomacyGrantEntriesMaskedToValueBits() {
   int total = 0;
-  for (int i = 0; i < 0x17; ++i) {
+  for (int i = 0; i < 23; ++i) {
     unsigned short entry = diplomacyGrantByNation[i];
     if (entry != 0xffff) {
       total += entry & 0x3fff;
@@ -3559,7 +3559,7 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
   float compositeScore = 0.0f;
   int i;
 
-  for (i = 0; i < 0x17; ++i) {
+  for (i = 0; i < 23; ++i) {
     if (candidateFlags[i] != 0) {
       ++activeCandidateCount;
     }

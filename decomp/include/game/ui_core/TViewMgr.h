@@ -139,7 +139,7 @@ public:
   POINT dialogPlacement; // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
   bool waitOverlayPending;
   unsigned char pad11[3];
-  HCURSOR turnEventCursors[0x36];
+  HCURSOR turnEventCursors[54];
   short pendingTurnOverlayCode;
   class TMapUberPicture* mapUberPicture;
   TMovieView* activeMovieView;

@@ -51,7 +51,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   stream->ReadBytes(&fileMagic, 4);
   stream->ReadBytes(&g_nSaveFormatVersion, 4);
   stream->ReadBytes(&savedSessionSlot, 4);
-  stream->ReadBytes(g_ScenarioSaveNameBuffer, 0x20);
+  stream->ReadBytes(g_ScenarioSaveNameBuffer, 32);
 
   bool invalidSaveFile = false;
   if (fileMagic != kControlTagAMBI) {
@@ -80,7 +80,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
       FailNilPointerWithAssert(g_szUAmbitSourcePath, 0x482);
     }
     stream->ReadBytes(discardedMapMetadata, kStrategicTileCount);
-    stream->ReadBytes(discardedMapMetadata, 0x24);
+    stream->ReadBytes(discardedMapMetadata, 36);
     delete[] discardedMapMetadata;
 
     g_pAmbitApplication->ReadFrom(stream);
@@ -126,7 +126,7 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   stream->WriteBytes(const_cast<int*>(&g_nCurrentAmbitSaveFormatVersion), 4);
   int savedSessionSlot = g_pGameFlowState->queueSyncDword;
   stream->WriteBytes(&savedSessionSlot, 4);
-  stream->WriteBytes(g_ScenarioSaveNameBuffer, 0x20);
+  stream->WriteBytes(g_ScenarioSaveNameBuffer, 32);
 
   char* tileOwnerTags = new char[kStrategicTileCount];
   if (tileOwnerTags == 0) {
@@ -150,7 +150,7 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   g_apTerrainTypeDescriptorTable[static_cast<signed char>(activeNationSlot)]
       ->FormatOverlayTerrainLabelText(&activeNationName);
   char* activeNationNameBuffer = activeNationName.GetBuffer(0x21);
-  stream->WriteBytes(activeNationNameBuffer, 0x20);
+  stream->WriteBytes(activeNationNameBuffer, 32);
   activeNationName.ReleaseBuffer(-1);
 
   g_pAmbitApplication->WriteTo(stream);

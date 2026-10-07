@@ -96,11 +96,11 @@ bool TTrainingOrder::SetQuantity(short quantity) {
 void TTrainingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   ResetOrderSheet(orderSheet);
   if (resourceTypeIndex == 1) {
-    orderSheet->slotByResourceCode[0x0a] = quantity;
+    orderSheet->slotByResourceCode[10] = quantity;
     return;
   }
-  orderSheet->slotByResourceCode[0x17] = quantity;
-  orderSheet->slotByResourceCode[0x0a] = static_cast<short>(quantity * 2);
+  orderSheet->slotByResourceCode[23] = quantity;
+  orderSheet->slotByResourceCode[10] = static_cast<short>(quantity * 2);
 }
 
 // FUNCTION: IMPERIALISM 0x004b6e30

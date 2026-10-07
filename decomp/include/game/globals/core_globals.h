@@ -22,4 +22,4 @@ extern int g_streamLine596AssertGuard;
 extern char g_szImpSaveExtension[];
 extern char g_szMultiplayerSavePrefix[];
 extern char g_szSingleSlotSavePrefix[];
-extern char g_ScenarioSaveNameBuffer[0x30];
+extern char g_ScenarioSaveNameBuffer[48];

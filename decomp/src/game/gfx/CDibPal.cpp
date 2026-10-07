@@ -55,10 +55,10 @@ void CDibPal::DrawPalettePreviewGridRectangles(CDC* dc, RECT* bounds, BOOL bForc
   ::RealizePalette(dc->m_hDC);
 
   int prevBottom = 0;
-  for (int row = 0; row < 0x10 && remaining != 0; row++) {
+  for (int row = 0; row < 16 && remaining != 0; row++) {
     int bottom = bounds->bottom * (row + 1) / 16 + 1;
     int prevRight = 0;
-    for (int col = 0; col < 0x10 && remaining != 0; col++) {
+    for (int col = 0; col < 16 && remaining != 0; col++) {
       int right = bounds->right * (col + 1) / 16 + 1;
       CBrush brush(PALETTEINDEX(row * 16 + col));
       CBrush* oldBrush = dc->SelectObject(&brush);
@@ -89,7 +89,7 @@ BOOL CDibPal::CreateIdentityPalette() {
       ::RealizePalette(hdc);
       ::SelectPalette(hdc, oldPalette, FALSE);
 
-      PALETTEENTRY entries[0x100];
+      PALETTEENTRY entries[256];
       ::GetSystemPaletteEntries(hdc, 0, paletteSize, entries);
       int halfReserved = reservedCount / 2;
       int i = 0;

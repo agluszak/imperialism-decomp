@@ -322,9 +322,9 @@ void TShipyardView::Draw(RECT* rectBuffer) {
     for (int slot = 0; slot < 4; ++slot) {
       short spriteId = commoditySpriteIds[slot];
       if (spriteId != -1) {
-        sourceRect.left = spriteId * 0x20;
+        sourceRect.left = spriteId * 32;
         sourceRect.top = 0;
-        sourceRect.right = (spriteId + 1) * 0x20;
+        sourceRect.right = (spriteId + 1) * 32;
         sourceRect.bottom = 0x18;
         drawRect.left = x - 0x20;
         drawRect.top = 0x98;

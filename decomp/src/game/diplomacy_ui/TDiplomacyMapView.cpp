@@ -190,7 +190,7 @@ void TDiplomacyMapView::CreateDrawGeometries() {
   memset(labelYs, 0, sizeof(labelYs));
 
   region = NewRgn();
-  for (short terrain = 0; terrain < 0x17; ++terrain) {
+  for (short terrain = 0; terrain < 23; ++terrain) {
     if (g_apTerrainTypeDescriptorTable[terrain] != 0) {
       UnionRgn(region, g_pMacViewMgr->GetCountryRegion(terrain), region);
     }
@@ -216,7 +216,7 @@ void TDiplomacyMapView::CreateDrawGeometries() {
     for (int y = run->bounds.top; y < run->bounds.bottom; ++y) {
       for (int x = run->bounds.left; x < run->bounds.right;) {
         *mask = 0;
-        for (int bit = 1; bit < 0x100; bit *= 2) {
+        for (int bit = 1; bit < 256; bit *= 2) {
           CPoint probe;
           probe.x = x;
           probe.y = y;
@@ -497,7 +497,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
   }
 
   RECT presentRectCopy = *presentRect;
-  for (short terrainIndex = 0; terrainIndex < 0x17; ++terrainIndex) {
+  for (short terrainIndex = 0; terrainIndex < 23; ++terrainIndex) {
     if (g_apTerrainTypeDescriptorTable[terrainIndex] == 0) {
       continue;
     }
@@ -515,7 +515,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
     short compatValue =
         g_pDiplomacyTurnStateManager->GetEmbassyStatus(frameRegionSelector, terrainIndex);
     if (compatValue != 0) {
-      short compatIconX = (compatValue + 0x16) * 0x10;
+      short compatIconX = (compatValue + 0x16) * 16;
       RECT compatSrcRect = {compatIconX, 0, static_cast<int>(compatIconX + 0x10), 0x10};
       UpdatePaletteIndexWithDefaultFallback(0x10);
       SetQuickDrawFillColor(0);
@@ -545,7 +545,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       if (relation != 100) {
         for (short tier = 0; tier < 7; ++tier) {
           if (g_awDiplomacyTradePolicyIconValueTable[tier] == relation) {
-            iconOffset = static_cast<short>((tier + 5) * 0x10);
+            iconOffset = static_cast<short>((tier + 5) * 16);
           }
         }
         if (boycottFlag) {

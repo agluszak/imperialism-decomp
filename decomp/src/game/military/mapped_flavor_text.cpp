@@ -306,7 +306,7 @@ void GenerateMappedFlavorTextByCurrentContextNation(CString* dest) {
 void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex) {
   bool retry;
   do {
-    switch (static_cast<int>(variantIndex) % 0x12) {
+    switch (static_cast<int>(variantIndex) % 18) {
     case 0:
       AppendRandomMapContextStatusSuffixWithProbability(dest);
       break;

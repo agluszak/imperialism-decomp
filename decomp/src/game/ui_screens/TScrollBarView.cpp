@@ -244,7 +244,7 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
 void TScrollBarView::SetThumb(int percent, unsigned char refresh) {
   short value = static_cast<short>(
       minValue +
-      ((maxValue - minValue) * percent + ((maxValue - minValue) * percent >> 31 & 0x3ff)) / 0x400);
+      ((maxValue - minValue) * percent + ((maxValue - minValue) * percent >> 31 & 0x3ff)) / 1024);
   currentValue = value;
   if (currentValue < minValue) {
     currentValue = minValue;

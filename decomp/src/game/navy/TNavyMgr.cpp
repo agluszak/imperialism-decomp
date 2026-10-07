@@ -992,7 +992,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
     if (city == NULL) {
       continue;
     }
-    for (short slot = 0; slot < 0x11; ++slot) {
+    for (short slot = 0; slot < 17; ++slot) {
       short entryCount = state->GetNumDealsIn(slot);
       for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
         short entryKind = 0;
@@ -1072,7 +1072,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         short transferredWeight = 0;
         int strengthDelta = entryValue;
         if ((directionFlags & 3) != 0) {
-          short drawnCounts[0x0e] = {0};
+          short drawnCounts[14] = {0};
           transferredWeight =
               static_cast<short>(city->PickRandomMerchantVictims(entryValue, drawnCounts));
           if (transferredWeight != 0) {

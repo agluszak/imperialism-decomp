@@ -90,7 +90,7 @@ public:
   short actionMetricByQuarter[6];
   // eMissionDesirability bytes.
   unsigned char provinceStatus[kProvinceCount];
-  unsigned char zoneStatus[0x70];
+  unsigned char zoneStatus[112];
   TSortedList* missionQueue;
   float expansionPressurePerCompatibleRegion;
   float averageUnitDivergencePerOwnedRegion;

@@ -284,7 +284,7 @@ bool TBattleReportView::DoIdle(int action) {
       }
 
       RECT spriteRect;
-      spriteRect.left = (record->markerSpriteCode + (!g_bBattleReportMarkerBlinkPhase)) * 0x12;
+      spriteRect.left = (record->markerSpriteCode + (!g_bBattleReportMarkerBlinkPhase)) * 18;
       spriteRect.top = 0;
       spriteRect.right = spriteRect.left + 0x12;
       spriteRect.bottom = 0x12;
@@ -490,7 +490,7 @@ void TBattleReportView::DrawBattleNuggets(RECT* rectBuffer) {
           OffsetRect(&destRect, 0, (surfaceHeight - destRect.top) - destRect.bottom);
         }
 
-        int spriteX = (record->markerSpriteCode + (ordinal == 0 ? 1 : 0)) * 0x12;
+        int spriteX = (record->markerSpriteCode + (ordinal == 0 ? 1 : 0)) * 18;
         RECT srcRect;
         srcRect.left = spriteX;
         srcRect.top = 0;

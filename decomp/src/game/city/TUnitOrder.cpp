@@ -128,14 +128,14 @@ void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
         static_cast<short>(secondaryInputPerUnit * quantity);
   }
   if (workforceMode == kMediumSkillWorkforceMode) {
-    orderSheet->slotByResourceCode[0x17] = quantity;
+    orderSheet->slotByResourceCode[23] = quantity;
     return;
   }
   if (workforceMode == kHighSkillWorkforceMode) {
-    orderSheet->slotByResourceCode[0x18] = quantity;
+    orderSheet->slotByResourceCode[24] = quantity;
     return;
   }
-  orderSheet->slotByResourceCode[0x3c] = quantity;
+  orderSheet->slotByResourceCode[60] = quantity;
 }
 
 // FUNCTION: IMPERIALISM 0x004b73b0

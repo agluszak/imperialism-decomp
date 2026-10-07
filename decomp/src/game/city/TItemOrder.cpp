@@ -96,10 +96,10 @@ void TItemOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   if (secondaryInputResourceId >= 0) {
     orderSheet->ForResourceCode(primaryInputResourceId) = quantity;
     orderSheet->ForResourceCode(secondaryInputResourceId) = quantity;
-    orderSheet->slotByResourceCode[0x3d] = static_cast<short>(quantity * 2);
+    orderSheet->slotByResourceCode[61] = static_cast<short>(quantity * 2);
   } else {
     orderSheet->ForResourceCode(primaryInputResourceId) = static_cast<short>(quantity * 2);
-    orderSheet->slotByResourceCode[0x3d] = static_cast<short>(quantity * 2);
+    orderSheet->slotByResourceCode[61] = static_cast<short>(quantity * 2);
   }
 }
 

@@ -159,12 +159,12 @@ TGreatPower::TGreatPower()
     this->transportedItemsByResource[nationIndex] = 0;
     this->rememberedTradeOffersByResource[nationIndex] = 0;
     this->colonyBoycottFlags[nationIndex] = 0;
-    for (int matrixRow = 0; matrixRow < 0x10; ++matrixRow) {
+    for (int matrixRow = 0; matrixRow < 16; ++matrixRow) {
       this->aidAllocationMatrix[nationIndex + matrixRow * kNationSlotCount] = 0;
     }
   }
 
-  for (int pendingIndex = 0; pendingIndex < 0x0D; ++pendingIndex) {
+  for (int pendingIndex = 0; pendingIndex < 13; ++pendingIndex) {
     this->pendingActionStatus.byAction[pendingIndex] = 0;
     this->field8d6[pendingIndex] = -1;
   }
@@ -289,7 +289,7 @@ void TGreatPower::Free(void) {
   }
   defenseMinister = 0;
   TPtrList** trackedSlots = diplomacyTrackedSlots;
-  for (int trackedSlotCount = 0; trackedSlotCount < 0x11; ++trackedSlotCount) {
+  for (int trackedSlotCount = 0; trackedSlotCount < 17; ++trackedSlotCount) {
     if (*trackedSlots != 0) {
       (*trackedSlots)->FreeList();
     }
@@ -337,9 +337,9 @@ void TGreatPower::ReadFrom(TStream* stream) {
     stream->ReadBytes(&grantTotalCost, 4);
   }
   stream->ReadBytes(&unfilledTradeOfferCount, 2);
-  stream->ReadBytes(diplomacyPolicyByNation, 0x2E);
+  stream->ReadBytes(diplomacyPolicyByNation, 46);
   SwapShortArrayBytes(diplomacyPolicyByNation, kNationSlotCount);
-  stream->ReadBytes(diplomacyGrantByNation, 0x2E);
+  stream->ReadBytes(diplomacyGrantByNation, 46);
   SwapShortArrayBytes(diplomacyGrantByNation, kNationSlotCount);
   stream->ReadBytes(needCurrentByType, sizeof(needCurrentByType));
   SwapShortArrayBytes(needCurrentByType, kResourceKindCount);
@@ -364,12 +364,12 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   stream->ReadBytes(&budgetPoolBase, 4);
   stream->ReadBytes(&budgetPoolDelta, 4);
-  stream->ReadBytes(aidAllocationMatrix, 0x5C0);
+  stream->ReadBytes(aidAllocationMatrix, 1472);
   ReverseDwordArrayBytes(aidAllocationMatrix, 0x170);
 
   stream->ReadBytes(&pendingActionStatus, sizeof(pendingActionStatus));
-  stream->ReadBytes(field8d6, 0x1A);
-  SwapShortArrayBytes(field8d6, 0x0D);
+  stream->ReadBytes(field8d6, 26);
+  SwapShortArrayBytes(field8d6, 13);
 
   turnEventQueue->ReadFrom(stream);
   proposalQueue->ReadFrom(stream);
@@ -491,7 +491,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
     civOrderObj->ReadFrom(stream);
   }
 
-  stream->ReadBytes(enemyFlags, 0x17);
+  stream->ReadBytes(enemyFlags, 23);
 
   stream->ReadBytes(&diplomacyBudgetBase, 4);
   stream->ReadBytes(&escalationCounter, 1);
@@ -537,8 +537,8 @@ void TGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytes(&grantTotalCost, 4);
   stream->WriteBytes(&unfilledTradeOfferCount, 2);
 
-  WriteShortArrayElems(stream, diplomacyPolicyByNation, 0x17);
-  WriteShortArrayElems(stream, diplomacyGrantByNation, 0x17);
+  WriteShortArrayElems(stream, diplomacyPolicyByNation, 23);
+  WriteShortArrayElems(stream, diplomacyGrantByNation, 23);
   WriteShortArrayElems(stream, needCurrentByType, kResourceKindCount);
   WriteShortArrayElems(stream, needTargetByType, kResourceKindCount);
   WriteShortArrayElems(stream, relationDeltaCurrent, kResourceKindCount);
@@ -607,7 +607,7 @@ void TGreatPower::WriteTo(TStream* stream) {
     }
   }
 
-  stream->WriteBytes(enemyFlags, 0x17);
+  stream->WriteBytes(enemyFlags, 23);
   stream->WriteBytes(&diplomacyBudgetBase, 4);
   stream->WriteBytes(&escalationCounter, 1);
   stream->WriteBytes(&pendingCommitmentCost, 4);
@@ -626,7 +626,7 @@ void TGreatPower::WriteTo(TStream* stream) {
 
   stream->WriteBytes(&specialResourceTradeBalance, 4);
   stream->WriteBytes(&aidAllocationTotal, 4);
-  stream->WriteBytes(colonyBoycottFlags, 0x17);
+  stream->WriteBytes(colonyBoycottFlags, 23);
   stream->WriteBytes(&militaryExpenses, 4);
 }
 
@@ -667,7 +667,7 @@ void TGreatPower::NoOpNationPendingActionHook(void) {}
 void TGreatPower::DispatchPendingStatusPrompts(void) {
   signed char* flags = pendingActionStatus.byAction;
   bool flag5Handled = (flags[5]) >= 0x33;
-  if (!flag5Handled && g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) {
+  if (!flag5Handled && g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) {
     g_pViewMgr->BuildAndShowTurnOverlayByMode(5, field8d6[5]);
   }
   if (flags[6] == 0x32) {
@@ -720,7 +720,7 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
 
 // FUNCTION: IMPERIALISM 0x004da860
 void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
-  if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) {
     pendingActionStatus.byAction[5] = 0x33;
   }
 }
@@ -729,7 +729,7 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
   signed char* flags = pendingActionStatus.byAction;
   bool flag5Handled = (flags[5]) >= 0x33;
-  if (!flag5Handled && g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) {
+  if (!flag5Handled && g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) {
     flags[5] = 0x33;
   }
   if (flags[6] == 0x32) {
@@ -911,7 +911,7 @@ void TGreatPower::SellStockToCoverDebt(void) {
   }
 
   int soldAmountByResource[kResourceKindCount];
-  for (int idx = 0; idx < 0x17; ++idx) {
+  for (int idx = 0; idx < 23; ++idx) {
     soldAmountByResource[idx] = 0;
   }
 
@@ -986,7 +986,7 @@ bool TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
     basePressure = pressureFloor;
   }
 
-  int smoothedPressure = (diplomacyBudgetBase * 0x5A + basePressure * 1000) / 100;
+  int smoothedPressure = (diplomacyBudgetBase * 90 + basePressure * 1000) / 100;
   diplomacyBudgetBase = smoothedPressure;
   int pressureBand = smoothedPressure / 100;
 

@@ -3,7 +3,7 @@
 #include "compat.h"
 
 struct OrderSheet {
-  short slotByResourceCode[0x3f];
+  short slotByResourceCode[63];
 
   short& ForResourceCode(int resourceCode) {
     return slotByResourceCode[resourceCode];

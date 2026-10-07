@@ -29,8 +29,8 @@ struct StreamMessagePayload32 {
 
 struct TurnEvent8NameAnnouncePacket : TimelyMessageHeader {
   char nationSlot;
-  char senderName[0x21];
-  char messageText[0x2a];
+  char senderName[33];
+  char messageText[42];
 };
 
 // Event-9 lobby chat/seat-state packet.
@@ -38,21 +38,21 @@ struct LobbyChatEvent9Packet : TimelyMessageHeader {
   unsigned char nationSlot;
   unsigned char pad19[3];
   int sessionId; // zeroed by seat-state messages
-  char senderName[0x21];
-  char messageText[0x23];
+  char senderName[33];
+  char messageText[35];
 };
 
 struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
   unsigned char sourceNationSlot;
-  char playerName[0x21];
-  char playerNameMirror[0x22];
+  char playerName[33];
+  char playerNameMirror[34];
 };
 
 // Event-0xE host session-init record.
 struct TurnEventESessionInitPacket : TimelyMessageHeader {
-  char mapSeedText[0x21];       // passed to CreatePlanet
+  char mapSeedText[33];         // passed to CreatePlanet
   unsigned char mapParamByte39; // third Rebuild arg
-  char hostGameName[0x22];
+  char hostGameName[34];
   int saveSlotDword5C; // > queueSyncDword
   int scenarioTag;     // > scenarioSelectionTag
   signed char difficultyLevel;
@@ -75,7 +75,7 @@ struct TurnEvent26DiplomacyMatrixPacket : TimelyMessageHeader {
   CongressLeadership congressLeadership;
   CongressSupportTally congressSupport;
   unsigned char pad7a2[2];
-  unsigned char relationTailBlock[0x70];
+  unsigned char relationTailBlock[112];
 };
 
 // Turn-event-1 payload: the remaining turn-resume pending-nation bitmask.
@@ -88,15 +88,15 @@ struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
   unsigned char nationId;
   unsigned char pad1d;
   short homeTile;
-  char cityName[0x24]; // total 0x44
+  char cityName[36]; // total 0x44
 };
 
 struct TurnEventBNationDirectoryPacket : TimelyNetMessagePrefix {
   short homeTileBySlot[kNationSlotCount];
   char cityNameBySlot[kNationSlotCount][0x17];
-  unsigned char pad25b[0xe6]; // reserve to 0x17 * 0x21
+  unsigned char pad25b[230]; // reserve to 0x17 * 0x21
   char nationNameBySlot[kNationSlotCount][0x17];
-  unsigned char pad552[0xe6]; // reserve to 0x17 * 0x21
+  unsigned char pad552[230]; // reserve to 0x17 * 0x21
   short portZoneOrdinalBySlot[kNationSlotCount];
   unsigned char pad666[2];
 };

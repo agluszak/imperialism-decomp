@@ -29,7 +29,7 @@ void TNumberedItem::INumberedItem(TView* panel, int* position, int* size, short 
 // FUNCTION: IMPERIALISM 0x005078a0
 void TNumberedItem::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  RECT srcRect = {iconRowIndex * 0x20, 0, iconRowIndex * 0x20 + 0x1f, 0x17};
+  RECT srcRect = {iconRowIndex * 32, 0, iconRowIndex * 32 + 0x1f, 0x17};
   RECT dstRect = {0, 0, 0x1f, 0x17};
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);

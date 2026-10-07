@@ -304,9 +304,9 @@ void TTacticalBattle::CalculateMoveMap(TTacticalUnit* unit) {
           if (neighborIndex < tacticalTileStride) {
             continue;
           }
-          if (record->deployMark > 1 && fortStrengthPoints[neighborIndex / 0x1d / 2] > 0) {
-            int wallRow = neighborIndex / 0x1d;
-            int wallColumn = neighborIndex % 0x1d;
+          if (record->deployMark > 1 && fortStrengthPoints[neighborIndex / 29 / 2] > 0) {
+            int wallRow = neighborIndex / 29;
+            int wallColumn = neighborIndex % 29;
             if (wallRow != 5 && wallRow != 7 && wallRow != 9) {
               continue;
             }
@@ -348,7 +348,7 @@ void TTacticalBattle::CalculateMoveMap(TTacticalUnit* unit) {
           if (blockedByAdjacentEnemy) {
             continue;
           }
-          if (neighborIndex % 0x1d == edgeColumn) {
+          if (neighborIndex % 29 == edgeColumn) {
             continue;
           }
           moveCosts[neighborIndex] = newCost;
@@ -475,7 +475,7 @@ int TTacticalBattle::GetTileCursor(TacticalTileIndex tileIndex) {
       return 0xc;
     }
 
-    int column = tileIndex % 0x1d;
+    int column = tileIndex % 29;
     if (tileIndex >= 0x1d && tile->terrainType != 4 && occupant == 0) {
       if (currentSide == 0) {
         if (column > 2 && column < 6) {
@@ -2066,7 +2066,7 @@ int TTacticalBattle::CountDeploymentTiles() {
 
 // FUNCTION: IMPERIALISM 0x005a42e0
 bool TTacticalBattle::HasFortWallGarrison(TacticalTileIndex tileIndex) {
-  return tileGrid[tileIndex].deployMark > 1 && fortStrengthPoints[tileIndex / 0x3a] > 0;
+  return tileGrid[tileIndex].deployMark > 1 && fortStrengthPoints[tileIndex / 58] > 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005a4330
@@ -2120,7 +2120,7 @@ void TTacticalBattle::MakeRetreatMap(char ourSideFlag) {
   if (ourSideFlag != 0) {
     // Seed column 0 of each of the 15 grid rows.
     int rowStartA;
-    for (rowStartA = 0; rowStartA < 0x1b3; rowStartA += 0x1d) {
+    for (rowStartA = 0; rowStartA < 435; rowStartA += 0x1d) {
       if (tileGrid[rowStartA].terrainType != 4) {
         tileIntArray[rowStartA] = 0;
       }
@@ -2128,7 +2128,7 @@ void TTacticalBattle::MakeRetreatMap(char ourSideFlag) {
   } else {
     // Seed the last playable column (battlefieldColumnCount - 1) of each row.
     int rowStartB;
-    for (rowStartB = 0; rowStartB < 0x1b3; rowStartB += 0x1d) {
+    for (rowStartB = 0; rowStartB < 435; rowStartB += 0x1d) {
       TacticalTileIndex edgeTile = battlefieldColumnCount + rowStartB;
       if (tileGrid[edgeTile - 1].terrainType != 4) {
         tileIntArray[edgeTile - 1] = 0;
@@ -2162,9 +2162,9 @@ void TTacticalBattle::MakeRetreatMap(char ourSideFlag) {
           continue;
         }
         if (record->deployMark >= 2 && record->deployMark > 1) {
-          int wallRow = neighborTile / 0x1d;
+          int wallRow = neighborTile / 29;
           if (fortStrengthPoints[wallRow / 2] > 0) {
-            int doubledColumn = (wallRow & 1) + (neighborTile % 0x1d) * 2;
+            int doubledColumn = (wallRow & 1) + (neighborTile % 29) * 2;
             if (wallRow != 5 && wallRow != 7 && wallRow != 9) {
               continue;
             }
@@ -2189,8 +2189,8 @@ void TTacticalBattle::MakeRetreatMap(char ourSideFlag) {
 
 // FUNCTION: IMPERIALISM 0x005a4690
 bool TTacticalBattle::IsTacticalTileAtFortWallSectionSlot(TacticalTileIndex tileIndex) {
-  int row = tileIndex / 0x1d;
-  int doubledColumn = (row & 1) + (tileIndex % 0x1d) * 2;
+  int row = tileIndex / 29;
+  int doubledColumn = (row & 1) + (tileIndex % 29) * 2;
   if (row == 5 || row == 7 || row == 9) {
     if (doubledColumn / 2 == battlefieldColumnCount - 6) {
       return true;

@@ -90,7 +90,7 @@ void TCityProductionView::DoPostCreate(int arg) {
     TCity* city = (nation != 0) ? nation->city : 0;
     short level = city->GetNextBuildingType(slot);
     CDib* bitmap = g_pResourceMgr->LoadBmpResourceByIdCached(
-        static_cast<unsigned short>(level * 0x10 + 0x1bbc + slot));
+        static_cast<unsigned short>(level * 16 + 0x1bbc + slot));
     POINT* outlinePolygon = bitmap->BuildNonTransparentOutlinePolygon(0xffffffff);
     (*buildingClipRegions[slot])->rgn.DeleteObject();
     HRGN polygonRegion = ::CreatePolygonRgn(outlinePolygon + 1, outlinePolygon[0].x, WINDING);
@@ -108,7 +108,7 @@ void TCityProductionView::DoPostCreate(int arg) {
 
   // Build eight groups of three action-focus animations from the layout/resource tables.
   int tableOffset = 0;
-  for (int buildingSlot = 0; tableOffset < 0x18; ++buildingSlot, tableOffset += 3) {
+  for (int buildingSlot = 0; tableOffset < 24; ++buildingSlot, tableOffset += 3) {
     short actionCount;
     if (tableOffset < 0x15) {
       actionCount = actionCity->GetNextBuildingType(static_cast<short>(buildingSlot));
@@ -213,9 +213,9 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     } else if (level == 0 || slot < 0 || slot > 5 ||
                city->trailingOrderSlots[slot + 2]->quantity < 1 ||
                city->IsCapacityCenter(slot) == 0) {
-      pictureId = static_cast<short>(slot + level * 0x10 + 0x1b58);
+      pictureId = static_cast<short>(slot + level * 16 + 0x1b58);
     } else {
-      pictureId = static_cast<short>(slot + level * 0x10 + 0x1c84);
+      pictureId = static_cast<short>(slot + level * 16 + 0x1c84);
     }
 
     short drawX = g_anCityBuildingSlotCoords[g_nCityBuildingDrawXOffsetIndex + slot * 2];
@@ -490,7 +490,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   }
   g_pSimMgr->GetString(0x2734, 0x1e, &templateText);
   g_pSimMgr->GetString(0x2734, 0x1f, &value3);
-  value1.Format(g_szDecimalFormat, summary[0x14]);
+  value1.Format(g_szDecimalFormat, summary[20]);
   int needTotal = nation->GetNeedTargetByType(0x14);
   needTotal += nation->GetNeedTargetByType(0x13);
   value2.Format(g_szDecimalFormat, needTotal);
@@ -504,7 +504,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   if (control == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x44e);
   }
-  value1.Format(g_szDecimalFormat, summary[0x12]);
+  value1.Format(g_szDecimalFormat, summary[18]);
   value2.Format(g_szDecimalFormat, nation->GetNeedTargetByType(0x12));
   g_pSimMgr->GetCommodityName(0x12, &value3);
   scanBracketExpressions(g_pSimMgr, &assembled, static_cast<LPCSTR>(templateText),
@@ -517,7 +517,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   if (control == NULL) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x459);
   }
-  value1.Format(g_szDecimalFormat, summary[0x11]);
+  value1.Format(g_szDecimalFormat, summary[17]);
   value2.Format(g_szDecimalFormat, nation->GetNeedTargetByType(0x11));
   g_pSimMgr->GetCommodityName(0x11, &value3);
   scanBracketExpressions(g_pSimMgr, &assembled, static_cast<LPCSTR>(templateText),

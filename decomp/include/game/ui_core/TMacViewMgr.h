@@ -89,7 +89,7 @@ public:
   TQuickDrawSurfaceContext* tileOverlayStripWorlds[8];
   TQuickDrawSurfaceContext* stackBadgeWorld;
   TQuickDrawSurfaceContext* mapArtWorld;
-  StrategicMapCallbackRecord strategicTileMasks[0x24];
+  StrategicMapCallbackRecord strategicTileMasks[36];
   int fieldD7c;
   int fieldD80;
 

@@ -48,7 +48,7 @@ void TDefenseMinister::IDefenseMinister(TGreatPower* owner) {
   thresholdB = 0;
   thresholdC = 0;
   thresholdD = 0;
-  for (int i = 0; i < 0x1e; ++i) {
+  for (int i = 0; i < 30; ++i) {
     orderWeightTableB[i] = 0;
     recruitOrderCountByType[i] = 0;
   }
@@ -59,8 +59,8 @@ void TDefenseMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
   stream->WriteBytes(&field10, 2);
   stream->WriteBytes(&field12, 2);
-  WriteShortArrayElems(stream, recruitOrderCountByType, 0x1e);
-  WriteShortArrayElems(stream, orderWeightTableB, 0x1e);
+  WriteShortArrayElems(stream, recruitOrderCountByType, 30);
+  WriteShortArrayElems(stream, orderWeightTableB, 30);
   stream->WriteBytes(&thresholdA, 2);
   stream->WriteBytes(&thresholdB, 2);
   stream->WriteBytes(&thresholdC, 2);
@@ -72,10 +72,10 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
   TMinister::ReadFrom(stream);
   stream->ReadBytes(&field10, 2);
   stream->ReadBytes(&field12, 2);
-  stream->ReadBytes(recruitOrderCountByType, 0x3c);
-  SwapShortArrayBytes(recruitOrderCountByType, 0x1e);
-  stream->ReadBytes(orderWeightTableB, 0x3c);
-  SwapShortArrayBytes(orderWeightTableB, 0x1e);
+  stream->ReadBytes(recruitOrderCountByType, 60);
+  SwapShortArrayBytes(recruitOrderCountByType, 30);
+  stream->ReadBytes(orderWeightTableB, 60);
+  SwapShortArrayBytes(orderWeightTableB, 30);
   stream->ReadBytes(&thresholdA, 2);
   stream->ReadBytes(&thresholdB, 2);
   stream->ReadBytes(&thresholdC, 2);
@@ -451,7 +451,7 @@ void TNapoleonMinister::INapoleonMinister(TGreatPower* owner) {
   thresholdB = 0;
   thresholdC = 0;
   thresholdD = 0;
-  for (int i = 0; i < 0x1e; ++i) {
+  for (int i = 0; i < 30; ++i) {
     orderWeightTableB[i] = 0;
     recruitOrderCountByType[i] = 0;
   }
@@ -473,7 +473,7 @@ void TBismarckMinister::IBismarckMinister(TGreatPower* owner) {
   thresholdB = 0;
   thresholdC = 0;
   thresholdD = 0;
-  for (int i = 0; i < 0x1e; ++i) {
+  for (int i = 0; i < 30; ++i) {
     orderWeightTableB[i] = 0;
     recruitOrderCountByType[i] = 0;
   }
@@ -495,7 +495,7 @@ void TPirateMinister::IPirateMinister(TGreatPower* owner) {
   thresholdB = 0;
   thresholdC = 0;
   thresholdD = 0;
-  for (int i = 0; i < 0x1e; ++i) {
+  for (int i = 0; i < 30; ++i) {
     orderWeightTableB[i] = 0;
     recruitOrderCountByType[i] = 0;
   }
@@ -517,7 +517,7 @@ void TDefenderMinister::IDefenderMinister(TGreatPower* owner) {
   thresholdB = 0;
   thresholdC = 0;
   thresholdD = 0;
-  for (int i = 0; i < 0x1e; ++i) {
+  for (int i = 0; i < 30; ++i) {
     orderWeightTableB[i] = 0;
     recruitOrderCountByType[i] = 0;
   }
@@ -539,7 +539,7 @@ void TBullyMinister::IBullyMinister(TGreatPower* owner) {
   thresholdB = 0;
   thresholdC = 0;
   thresholdD = 0;
-  for (int i = 0; i < 0x1e; ++i) {
+  for (int i = 0; i < 30; ++i) {
     orderWeightTableB[i] = 0;
     recruitOrderCountByType[i] = 0;
   }

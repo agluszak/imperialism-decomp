@@ -5,7 +5,7 @@
 #include "game/ui_tags_military.h"
 
 struct CStr32 {
-  char data[0x20];
+  char data[32];
 
   // FUNCTION: IMPERIALISM 0x004a31c0
   CStr32() {
@@ -15,7 +15,7 @@ struct CStr32 {
 ASSERT_SIZE(CStr32, 0x20);
 
 struct CStr255 {
-  char data[0xff];
+  char data[255];
 
   // In-class for the same reason as CStr32 above (stride-0xff loop at 0x4a1c58).
   // FUNCTION: IMPERIALISM 0x004a31e0
@@ -37,7 +37,7 @@ typedef int MapContextReportKindStorage;
 struct MapOrderBattleSideChildRecord {
   short resourceType;    // child TShip::type
   short stockOrRequired; // child TShip::strength
-  char nameBuffer[0x20]; // copy of child TShip::name
+  char nameBuffer[32];   // copy of child TShip::name
   short strengthBucket;  // child TShip::experience / 100
   char pad26[2];
   unsigned int detailIdentity;

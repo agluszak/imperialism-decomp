@@ -12,7 +12,7 @@ struct MappedFlavorTextNationVariantEntry {
 extern POINT g_ptArmyOrderModalMessage;
 extern POINT g_ptArmyValidationModalMessage;
 
-extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
+extern short g_aUnitOrderCostProfileByAbilityId[30][7];
 
 extern short g_MapOrderResourceRollWeightTable[6][6];
 
@@ -46,9 +46,9 @@ extern float g_afRandomizedMeterDecayByOrderType[kMilitaryUnitKindCount];
 
 extern int g_anCountWeightByOrderType[kMilitaryUnitKindCount];
 
-extern const signed char g_MapContextStaticTable_00695448[0x20];
+extern const signed char g_MapContextStaticTable_00695448[32];
 
-extern const unsigned char g_MapContextStaticTable_00695428[0x20];
+extern const unsigned char g_MapContextStaticTable_00695428[32];
 
 extern char* g_pMiniCivSharedText;
 

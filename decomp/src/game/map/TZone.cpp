@@ -409,7 +409,7 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
         if (g_mapActionContextDisplayNameCacheId == -1) {
           unsigned int randomValue = g_zoneStatusCodePrngSeed * 0x15a4e35U + 1;
           int nameIndex = (randomValue >> 0xc) & 0x7fff;
-          g_mapActionContextDisplayNameCacheId = nameIndex % 0x25;
+          g_mapActionContextDisplayNameCacheId = nameIndex % 37;
           unsigned int nextRandomValue = randomValue * 0x15a4e35U + 1;
           g_zoneStatusCodePrngSeed = nextRandomValue;
           int strides[4] = {1, 7, 0xb, 0x17};

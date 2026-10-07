@@ -158,9 +158,9 @@ void TNewspaperView::ItemParmList(CString* out, int bitmask) {
   CString itemText;
   int emitted = 0;
   *out = CString(g_szEmptyString);
-  char flags[0x17];
+  char flags[23];
   int setCount = 0;
-  for (int c = 0; c < 0x17; c++) {
+  for (int c = 0; c < 23; c++) {
     if (bitmask & (1 << c)) {
       flags[c] = 1;
       setCount++;
@@ -168,7 +168,7 @@ void TNewspaperView::ItemParmList(CString* out, int bitmask) {
       flags[c] = 0;
     }
   }
-  for (int i = 0; i < 0x17; i++) {
+  for (int i = 0; i < 23; i++) {
     if (flags[i] == 0) {
       continue;
     }
@@ -195,9 +195,9 @@ void TNewspaperView::CountryParmList(CString* out, int bitmask) {
   CString itemText;
   int emitted = 0;
   *out = CString(g_szEmptyString);
-  char flags[0x17];
+  char flags[23];
   int setCount = 0;
-  for (int c = 0; c < 0x17; c++) {
+  for (int c = 0; c < 23; c++) {
     if (bitmask & (1 << c)) {
       flags[c] = 1;
       setCount++;
@@ -205,7 +205,7 @@ void TNewspaperView::CountryParmList(CString* out, int bitmask) {
       flags[c] = 0;
     }
   }
-  for (int i = 0; i < 0x17; i++) {
+  for (int i = 0; i < 23; i++) {
     if (flags[i] == 0) {
       continue;
     }

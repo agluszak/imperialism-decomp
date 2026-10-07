@@ -47,11 +47,11 @@ struct TurnEvent2CPacket : TimelyNetMessagePrefix {
   int cityRollingItemProductionScore;
   short cityFieldB4;
   short cityStock[kResourceKindCount];
-  short productionOrderTable[0x10];
-  short productionAccum[0x10];
+  short productionOrderTable[16];
+  short productionAccum[16];
   short populationGrowthPenaltyTicks;
   unsigned char pad10e[2];
-  int orderAccumulatedValues[0x17];
+  int orderAccumulatedValues[23];
   short popFieldAt8;
   unsigned char pad16e[2];
   float popFieldAtC; // mirrors TPopulationMgr::populationCountFloat
@@ -65,8 +65,8 @@ struct TurnEvent19Packet : TimelyNetMessagePrefix {
   short nationSlot;
   short transportCapacity;
   short orderCountByType[kIndustryActionSlotCount];
-  short externalStateByTarget[0x17];
-  short metricBySlot7C[0x11];
+  short externalStateByTarget[23];
+  short metricBySlot7C[17];
   short diplomacyPolicyByNation[kNationSlotCount];
   short diplomacyGrantByNation[kNationSlotCount];
   short tradePolicyByNation[kNationSlotCount];
@@ -81,11 +81,11 @@ struct TurnEvent15Packet : TimelyMessageHeader {
   int grantTotalCost;
   short needCurrentByType[kResourceKindCount];
   short needTargetByType[kResourceKindCount];
-  short relationDeltaCurrent[0x17];
+  short relationDeltaCurrent[23];
   short purchasedItemsByResource[kResourceKindCount];
   short itemPotentials[kResourceKindCount];
   unsigned char pad10a[2];
-  int aidAllocationMatrix[0x170];
+  int aidAllocationMatrix[368];
   int budgetPoolBase;
   int budgetPoolDelta;
   int diplomacyBudgetBase;
@@ -163,7 +163,7 @@ struct TurnEvent12Packet : TimelyMessageHeader {
 };
 
 struct TurnEventCKickMessagePacket : TimelyMessageHeader {
-  char messageText[0x100];
+  char messageText[256];
   unsigned char targetNationBitmask; // 1 << slot per addressed nation
   signed char kickerNationId;        // +0x119 + 1 = no specific kicker
   unsigned char pad11a[2];
@@ -318,7 +318,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.homeTile = static_cast<short>(g_apTerrainTypeDescriptorTable[nationId]->homeTileIndex);
       int cityRecordIndex = g_apTerrainTypeDescriptorTable[nationId]->GetCapitolProvince();
       g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
-      strncpy(packet.cityName, cityName, 0x21);
+      strncpy(packet.cityName, cityName, 33);
       g_pNetMgr->Send(&packet, false);
       break;
     }
@@ -441,11 +441,11 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         int cityRecordIndex = g_apTerrainTypeDescriptorTable[slot]->GetCapitolProvince();
         CString cityName;
         g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
-        strncpy(packet.cityNameBySlot[slot], cityName, 0x21);
+        strncpy(packet.cityNameBySlot[slot], cityName, 33);
         CString nationName;
         g_apTerrainTypeDescriptorTable[slot]->AssignSharedStringFromDescriptorNameOrDefault(
             &nationName);
-        strncpy(packet.nationNameBySlot[slot], nationName, 0x21);
+        strncpy(packet.nationNameBySlot[slot], nationName, 33);
         TZone* portZone = g_pActiveMapOrderContext->GetPortZone(static_cast<short>(slot));
         packet.portZoneOrdinalBySlot[slot] = portZone->GetContextOrdinalOrInvalid();
       }
@@ -522,7 +522,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
         packet.DestinateTo(-2);
         packet.nationSlot = minorSlot;
-        for (short j = 0; j < 0x17; ++j) {
+        for (short j = 0; j < 23; ++j) {
           packet.tradePolicyByNation[j] =
               g_apSecondaryNationStateSlots[minorSlot]->tradePolicyByNation[j];
         }
@@ -554,7 +554,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     for (int slot = 0; slot < 7; ++slot) {
       TGreatPower* nation = g_apNationStates[slot];
       if (nation != 0) {
-        for (int j = 0; j < 0x17; ++j) {
+        for (int j = 0; j < 23; ++j) {
           packet.diplomacyPolicyByNation[slot][j] = nation->diplomacyPolicyByNation[j];
           packet.diplomacyGrantByNation[slot][j] = nation->diplomacyGrantByNation[j];
           packet.tradePolicyByNation[slot][j] = nation->tradePolicyByNation[j];
@@ -594,7 +594,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
         packet.toNetworkId = 0;
         packet.nationSlot = minorSlot;
-        for (short j = 0; j < 0x17; ++j) {
+        for (short j = 0; j < 23; ++j) {
           packet.tradePolicyByNation[j] =
               g_apSecondaryNationStateSlots[minorSlot]->tradePolicyByNation[j];
         }
@@ -1361,9 +1361,9 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
       nation15->relationDeltaCurrent[needType] = needState->relationDeltaCurrent[needType];
       nation15->purchasedItemsByResource[needType] = needState->purchasedItemsByResource[needType];
       nation15->itemPotentials[needType] = needState->itemPotentials[needType];
-      for (int aidRow = 0; aidRow < 0x10; ++aidRow) {
-        nation15->aidAllocationMatrix[aidRow * 0x17 + needType] =
-            needState->aidAllocationMatrix[aidRow * 0x17 + needType];
+      for (int aidRow = 0; aidRow < 16; ++aidRow) {
+        nation15->aidAllocationMatrix[aidRow * 23 + needType] =
+            needState->aidAllocationMatrix[aidRow * 23 + needType];
       }
     }
     nation15->budgetPoolBase = needState->budgetPoolBase;
@@ -1389,17 +1389,17 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
           stateArrays->orderCountByType[industryActionSlot19];
     }
     nation19->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
-    for (int stockSlot19 = 0; stockSlot19 < 0x17; ++stockSlot19) {
+    for (int stockSlot19 = 0; stockSlot19 < 23; ++stockSlot19) {
       nation19->SetStockpile(static_cast<short>(stockSlot19),
                              stateArrays->externalStateByTarget[stockSlot19]);
     }
     nation19->InitializeTradeStatus();
-    for (int metricSlot19 = 0; metricSlot19 < 0x11; ++metricSlot19) {
+    for (int metricSlot19 = 0; metricSlot19 < 17; ++metricSlot19) {
       nation19->SetItemPotentials(static_cast<short>(metricSlot19),
                                   stateArrays->metricBySlot7C[metricSlot19]);
     }
     nation19->RememberTradeBids();
-    for (int target19 = 0; target19 < 0x17; ++target19) {
+    for (int target19 = 0; target19 < 23; ++target19) {
       nation19->diplomacyPolicyByNation[target19] = stateArrays->diplomacyPolicyByNation[target19];
       nation19->diplomacyGrantByNation[target19] = stateArrays->diplomacyGrantByNation[target19];
       nation19->tradePolicyByNation[target19] = stateArrays->tradePolicyByNation[target19];
@@ -1442,10 +1442,10 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       stock2C[stockType] = composite->cityStock[stockType];
     }
-    for (int orderSlot2C = 0; orderSlot2C < 0x10; ++orderSlot2C) {
+    for (int orderSlot2C = 0; orderSlot2C < 16; ++orderSlot2C) {
       city2C->productionOrderTable[orderSlot2C] = composite->productionOrderTable[orderSlot2C];
     }
-    for (int accumSlot = 0; accumSlot < 0x10; ++accumSlot) {
+    for (int accumSlot = 0; accumSlot < 16; ++accumSlot) {
       city2C->productionAccum[accumSlot] = composite->productionAccum[accumSlot];
     }
     city2C->populationGrowthPenaltyTicks = composite->populationGrowthPenaltyTicks;
@@ -1453,7 +1453,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     for (int stockType2 = 0; stockType2 < kResourceKindCount; ++stockType2) {
       stock2C[stockType2] = composite->cityStock[stockType2];
     }
-    for (int record2C = 0; record2C < 0x17; ++record2C) {
+    for (int record2C = 0; record2C < 23; ++record2C) {
       TProductionOrder* order2C = city2C->orderSlots[record2C];
       if (order2C != 0) {
         order2C->accumulatedValue = composite->orderAccumulatedValues[record2C];
@@ -1511,7 +1511,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     for (int arraySlot = 0; arraySlot < 7; ++arraySlot) {
       TGreatPower* arrayNation = g_apNationStates[arraySlot];
       if (arrayNation != 0) {
-        for (int arrayTarget = 0; arrayTarget < 0x17; ++arrayTarget) {
+        for (int arrayTarget = 0; arrayTarget < 23; ++arrayTarget) {
           arrayNation->diplomacyPolicyByNation[arrayTarget] =
               arrays->diplomacyPolicyByNation[arraySlot][arrayTarget];
           arrayNation->diplomacyGrantByNation[arrayTarget] =
@@ -2186,7 +2186,7 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
   } else {
     header.toNetworkId = g_pGameFlowState->nationSessionIds[dest];
   }
-  stream->WriteBytes(&header, 0x1c);
+  stream->WriteBytes(&header, 28);
   StreamMessagePayload32 payloadValue;
   payloadValue.scalarValue = payload;
   switch (tag) {
@@ -2248,7 +2248,7 @@ void TMultiplayerMgr::ReadMessageFrom(TStream* stream) {
   TimelyNetMessagePrefix header;
   header.messageTag = kControlTagTime;
   header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  stream->ReadBytes(&header, 0x1c);
+  stream->ReadBytes(&header, 28);
   bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
   short nation;
   if (isClientSession) {
@@ -2587,14 +2587,14 @@ void TMultiplayerMgr::SendBankStatement(bool broadcastFlag, int nationSlot) {
   TGreatPower* nation = g_apNationStates[nationSlot];
   packet.treasuryValue = nation->treasuryValue;
   packet.grantTotalCost = nation->grantTotalCost;
-  for (int i = 0; i < 0x17; ++i) {
+  for (int i = 0; i < 23; ++i) {
     packet.needCurrentByType[i] = nation->needCurrentByType[i];
     packet.needTargetByType[i] = nation->needTargetByType[i];
     packet.relationDeltaCurrent[i] = nation->relationDeltaCurrent[i];
     packet.purchasedItemsByResource[i] = nation->purchasedItemsByResource[i];
     packet.itemPotentials[i] = nation->itemPotentials[i];
-    for (int j = 0; j < 0x10; ++j) {
-      packet.aidAllocationMatrix[j * 0x17 + i] = nation->aidAllocationMatrix[j * 0x17 + i];
+    for (int j = 0; j < 16; ++j) {
+      packet.aidAllocationMatrix[j * 23 + i] = nation->aidAllocationMatrix[j * 23 + i];
     }
   }
   packet.budgetPoolBase = nation->budgetPoolBase;
@@ -2808,7 +2808,7 @@ void TMultiplayerMgr::DehumanizePlayer(int nationSlot) {
       TPtrList* proposals = newNation->proposalQueue;
       newNation->proposalQueue = oldNation->proposalQueue;
       oldNation->proposalQueue = proposals;
-      for (int trackedSlot = 0; trackedSlot < 0x11; ++trackedSlot) {
+      for (int trackedSlot = 0; trackedSlot < 17; ++trackedSlot) {
         TPtrList* tracked = newNation->diplomacyTrackedSlots[trackedSlot];
         newNation->diplomacyTrackedSlots[trackedSlot] =
             oldNation->diplomacyTrackedSlots[trackedSlot];
@@ -3154,14 +3154,14 @@ void TMultiplayerMgr::SendCityStateMessage(int nationSlot, int destinationSlot) 
     for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       packet.cityStock[stockType] = stock[stockType];
     }
-    for (int slot = 0; slot < 0x10; ++slot) {
+    for (int slot = 0; slot < 16; ++slot) {
       packet.productionOrderTable[slot] = city->productionOrderTable[slot];
     }
-    for (int slot2 = 0; slot2 < 0x10; ++slot2) {
+    for (int slot2 = 0; slot2 < 16; ++slot2) {
       packet.productionAccum[slot2] = city->productionAccum[slot2];
     }
     packet.populationGrowthPenaltyTicks = city->populationGrowthPenaltyTicks;
-    for (int record = 0; record < 0x17; ++record) {
+    for (int record = 0; record < 23; ++record) {
       TProductionOrder* order = city->orderSlots[record];
       if (order == 0) {
         packet.orderAccumulatedValues[record] = 0;
@@ -3217,13 +3217,13 @@ void TMultiplayerMgr::SendNationStateMessage(short nationSlot, int destinationSl
     packet.orderCountByType[industryActionSlot] =
         nation->city->orderCountByType[industryActionSlot];
   }
-  for (int i = 0; i < 0x17; ++i) {
+  for (int i = 0; i < 23; ++i) {
     packet.externalStateByTarget[i] = nation->GetStockpile(static_cast<short>(i));
   }
-  for (int metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
+  for (int metricSlot = 0; metricSlot < 17; ++metricSlot) {
     packet.metricBySlot7C[metricSlot] = nation->GetTradeOffersFor(static_cast<short>(metricSlot));
   }
-  for (short target = 0; target < 0x17; ++target) {
+  for (short target = 0; target < 23; ++target) {
     packet.diplomacyPolicyByNation[target] = nation->diplomacyPolicyByNation[target];
     packet.diplomacyGrantByNation[target] = nation->diplomacyGrantByNation[target];
     packet.tradePolicyByNation[target] = nation->tradePolicyByNation[target];
