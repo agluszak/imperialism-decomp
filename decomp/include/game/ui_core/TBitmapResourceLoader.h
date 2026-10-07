@@ -14,7 +14,7 @@ struct TBitmapResourceLoaderState {
   short pad1e;
 
   explicit TBitmapResourceLoaderState(unsigned short resourceId)
-      : flags(0), bitmapResource(nullptr), bitmapResourceId(static_cast<short>(resourceId)) {}
+      : flags(0), bitmapResource(NULL), bitmapResourceId(static_cast<short>(resourceId)) {}
 };
 
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR

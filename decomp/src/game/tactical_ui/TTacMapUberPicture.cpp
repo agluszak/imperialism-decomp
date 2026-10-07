@@ -6,7 +6,7 @@
 
 // FUNCTION: IMPERIALISM 0x0045d3b0
 void TTacMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
-  if (tacticalBattleView != nullptr) {
+  if (tacticalBattleView != NULL) {
     tacticalBattleView->Scroll(edgeMask);
   }
 }

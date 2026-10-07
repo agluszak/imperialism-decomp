@@ -14,21 +14,21 @@ IMPLEMENT_DYNCREATE(TEditText, TStaticText)
 // FUNCTION: IMPERIALISM 0x004903a0
 TEditText::TEditText() : TStaticText() {
   this->eventNumber = 13;
-  this->editWindow = nullptr;
-  this->editFont = nullptr;
+  this->editWindow = NULL;
+  this->editFont = NULL;
   this->maxCharacterCount = 0xff;
   this->childHitTestFlag = false;
 }
 
 // FUNCTION: IMPERIALISM 0x004904d0
 TEditText::~TEditText() {
-  if (this->editWindow != nullptr) {
+  if (this->editWindow != NULL) {
     delete this->editWindow;
-    this->editWindow = nullptr;
+    this->editWindow = NULL;
   }
-  if (this->editFont != nullptr) {
+  if (this->editFont != NULL) {
     delete this->editFont;
-    this->editFont = nullptr;
+    this->editFont = NULL;
   }
 }
 
@@ -43,19 +43,19 @@ void TEditText::IEditText(TView* panel, int* offsetLayout, int* sizeLayout,
 // Releases the live edit CWnd and cached font in that order — shared by Free() below.
 // FUNCTION: IMPERIALISM 0x00490650
 void TEditText::Close() {
-  if (editWindow != nullptr) {
+  if (editWindow != NULL) {
     delete editWindow;
-    editWindow = nullptr;
-    if (editFont != nullptr) {
+    editWindow = NULL;
+    if (editFont != NULL) {
       delete editFont;
     }
-    editFont = nullptr;
+    editFont = NULL;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004906a0
 void TEditText::Draw(RECT* rectBuffer) {
-  if (TEditText::Open() == nullptr) {
+  if (TEditText::Open() == NULL) {
     TStaticText::Draw(rectBuffer);
   }
 }
@@ -68,7 +68,7 @@ char TEditText::IsEnabled() {
 // FUNCTION: IMPERIALISM 0x004906f0
 void TEditText::SetEnable(char enabled) {
   this->enabled = enabled;
-  if (editWindow != nullptr) {
+  if (editWindow != NULL) {
     editWindow->EnableWindow(enabled);
     return;
   }
@@ -82,7 +82,7 @@ void TEditText::Show(int enabledState, int refreshFlag) {
     if (refreshFlag != 0) {
       RefreshControl();
     }
-    if (editWindow != nullptr) {
+    if (editWindow != NULL) {
       editWindow->ShowWindow(viewEnabled != 0 ? 5 : 0);
       return;
     }
@@ -133,7 +133,7 @@ CWnd* TEditText::Open() {
 
 // FUNCTION: IMPERIALISM 0x00490a50
 void TEditText::SetEditSelectionAndScrollCaret(short selStart, short selEnd, int unusedFlag) {
-  if (editWindow != nullptr) {
+  if (editWindow != NULL) {
     editWindow->SendMessage(0xb1, selStart, selEnd);
     editWindow->SendMessage(0xb7, 0, 0);
   }
@@ -141,7 +141,7 @@ void TEditText::SetEditSelectionAndScrollCaret(short selStart, short selEnd, int
 
 // FUNCTION: IMPERIALISM 0x00490aa0
 bool TEditText::BecomeTarget() {
-  if (editWindow != nullptr) {
+  if (editWindow != NULL) {
     editWindow->SetFocus();
   }
   return true;
@@ -149,13 +149,13 @@ bool TEditText::BecomeTarget() {
 
 // FUNCTION: IMPERIALISM 0x00490ad0
 void TEditText::Free() {
-  if (editWindow != nullptr) {
+  if (editWindow != NULL) {
     delete editWindow;
-    editWindow = nullptr;
-    if (editFont != nullptr) {
+    editWindow = NULL;
+    if (editFont != NULL) {
       delete editFont;
     }
-    editFont = nullptr;
+    editFont = NULL;
   }
   TView::Free();
 }
@@ -171,14 +171,14 @@ char TEditText::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoin
 
 // FUNCTION: IMPERIALISM 0x00490c10
 void TEditText::TargetValidationSucceeded() {
-  if (editWindow != nullptr) {
+  if (editWindow != NULL) {
     editWindow->SetFocus();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00490c30
 void TEditText::SelectOwner(unsigned char select) {
-  if (editWindow != nullptr) {
+  if (editWindow != NULL) {
     editWindow->SetFocus();
   }
   SetEditSelectionAndScrollCaret(0, 0x7fff, select);
@@ -186,7 +186,7 @@ void TEditText::SelectOwner(unsigned char select) {
 
 // FUNCTION: IMPERIALISM 0x00490c70
 void TEditText::GetCurrentText(CString* out) {
-  if (editWindow != nullptr) {
+  if (editWindow != NULL) {
     editWindow->GetWindowText(*out);
     return;
   }
@@ -222,7 +222,7 @@ void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refr
 // FUNCTION: IMPERIALISM 0x00490e50
 void TEditText::UpdateCoordinates() {
   TView::UpdateCoordinates();
-  if (editWindow != nullptr) {
+  if (editWindow != NULL) {
     RECT clientRect;
     GetClientRect(editWindow->m_hWnd, &clientRect);
     if (clientRect.left != absoluteX || clientRect.top != absoluteY) {

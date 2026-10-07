@@ -79,7 +79,7 @@ void CMainFrame::ConfigureTopLevelWindowStyleAndPlacement(int width, int height)
   field_CC = 0;
   ModifyStyle(0x00C00000, 0, 0);
   ModifyStyleEx(0x200, 0, 0);
-  if (GetActiveView() != nullptr) {
+  if (GetActiveView() != NULL) {
     GetActiveView()->ModifyStyleEx(0x200, 0, 0);
     GetActiveView()->ModifyStyleEx(0x300, 0, 0);
   }
@@ -126,7 +126,7 @@ BOOL CMainFrame::OnQueryNewPalette() {
     return 0;
   }
   const MSG* msg = GetCurrentMessage();
-  const BOOL background = (msg != nullptr && msg->message == 0x311) ? TRUE : FALSE;
+  const BOOL background = (msg != NULL && msg->message == 0x311) ? TRUE : FALSE;
   CClientDC dc(this);
   CPalette* priorPalette = dc.SelectPalette(m_pDibPalette, background);
   const UINT realized = dc.RealizePalette();

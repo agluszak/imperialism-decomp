@@ -154,7 +154,7 @@ void TIndustryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     bool wasDisabled = ownerWindow->nativeWindow->EnableWindow(0) == 0;
 
     TView* mainControl = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
-    if (mainControl == nullptr) {
+    if (mainControl == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x84c);
     }
 

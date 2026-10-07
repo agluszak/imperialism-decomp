@@ -34,7 +34,7 @@ void TBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) 
   if (commandId == 10) {
     for (int tag = kControlTagPage; tag <= kControlTagPagf; ++tag) {
       TPageView* pageControl = static_cast<TPageView*>(ResolveControlByTag(tag));
-      if (pageControl != nullptr) {
+      if (pageControl != NULL) {
         pageControl->AssertValid();
         short currentPage = pageControl->currentPage;
         short visibleCount = pageControl->visibleColumnCount;

@@ -95,7 +95,7 @@ void TSortedList::SortBy(TSortedListCompareFunc compare, void* context) {
 int TSortedList::FindOneBasedOrdinalOf(void* item) {
   POSITION position = listState.GetHeadPosition();
   int ordinal = 1;
-  while (position != nullptr) {
+  while (position != NULL) {
     if (listState.GetNext(position) == item) {
       return ordinal;
     }

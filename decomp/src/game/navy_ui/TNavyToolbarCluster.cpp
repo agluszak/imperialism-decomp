@@ -29,7 +29,7 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
       TView* main = GetWindow()->ResolveControlByTag(kControlTagMain);
       main->AssertValid();
       TTaskForce* order = GetActiveMapOrderEntry();
-      if (order != nullptr) {
+      if (order != NULL) {
         order->SetAggression(idx);
       }
     }
@@ -39,7 +39,7 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
     case kControlTagDfnd:
     case kControlTagDone: {
       TTaskForce* order = GetActiveMapOrderEntry();
-      if (order != nullptr) {
+      if (order != NULL) {
         order->DropShips(tag == kControlTagDone);
       }
       g_pViewMgr->mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();

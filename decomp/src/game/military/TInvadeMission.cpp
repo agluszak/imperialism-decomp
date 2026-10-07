@@ -29,21 +29,21 @@ bool TInvadeMission::IsNavyMission() const {
 
 // FUNCTION: IMPERIALISM 0x0053f160
 void TInvadeMission::ForgetTaskForce(TTaskForce* taskForce) {
-  if (beachhead != nullptr) {
+  if (beachhead != NULL) {
     beachhead->ForgetTaskForce(taskForce);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f190
 void TInvadeMission::AcceptReenforcement(TShip* ship, bool notify) {
-  if (beachhead != nullptr) {
+  if (beachhead != NULL) {
     beachhead->AcceptReenforcement(ship, notify);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f1c0
 void TInvadeMission::RejectConstituent(TShip* ship, bool notify) {
-  if (beachhead != nullptr) {
+  if (beachhead != NULL) {
     beachhead->RejectConstituent(ship, notify);
   }
 }
@@ -64,8 +64,8 @@ bool TInvadeMission::IsHospitalMission() const {
 
 // FUNCTION: IMPERIALISM 0x0053f2d0
 TInvadeMission::TInvadeMission(TZone* beachheadZone, short targetProvince)
-    : TAttackProvinceMission(targetProvince, -1), beachhead(nullptr) {
-  if (beachheadZone != nullptr) {
+    : TAttackProvinceMission(targetProvince, -1), beachhead(NULL) {
+  if (beachheadZone != NULL) {
     beachhead = new TBeachheadMission(beachheadZone, this);
   }
 }
@@ -84,17 +84,17 @@ void TInvadeMission::Free() {
   CIterator iter(orderList);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset());
   while (iter.More()) {
-    unit->ownerMission = nullptr;
+    unit->ownerMission = NULL;
     unit = static_cast<TMilitaryUnit*>(iter.Advance());
   }
 
   orderList->RemoveAll();
-  if (orderList != nullptr) {
+  if (orderList != NULL) {
     orderList->FreePayloadsAndDestroy();
   }
-  orderList = nullptr;
+  orderList = NULL;
 
-  if (this != nullptr) {
+  if (this != NULL) {
     delete this;
   }
 }
@@ -134,7 +134,7 @@ void TInvadeMission::SetStateByte8To2() {
 // FUNCTION: IMPERIALISM 0x0053f610
 void TInvadeMission::CalculateNeeds() {
   TAttackProvinceMission::CalculateNeeds();
-  if (beachhead != nullptr) {
+  if (beachhead != NULL) {
     beachhead->CalculateNeeds();
   }
 }
@@ -152,7 +152,7 @@ void TInvadeMission::ReadFrom(TStream* stream) {
   TArmyMission::ReadFrom(stream);
   stream->ReadBytes(&targetProvince, 2);
   stream->ReadBytes(&amassingProvince, 2);
-  if (beachhead != nullptr) {
+  if (beachhead != NULL) {
     beachhead->Free();
   }
   beachhead = new TBeachheadMission();
@@ -162,7 +162,7 @@ void TInvadeMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053f780
 void TInvadeMission::GiveOrders() {
-  if (beachhead != nullptr) {
+  if (beachhead != NULL) {
     beachhead->GiveOrders();
   }
   // Per-region, per-nation dispatch-dirty bitmask gate.
@@ -268,15 +268,15 @@ float TInvadeMission::ValueOf(TShip* candidate) {
 // FUNCTION: IMPERIALISM 0x0053fb90
 void TInvadeMission::Hold(bool value) {
   flag10 = value;
-  if (beachhead != nullptr) {
+  if (beachhead != NULL) {
     beachhead->Hold(value);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053fbc0
 bool TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
-  return missionType == kMissionTypeInvadeProvince && key == targetProvince &&
-         beachhead != nullptr && beachhead->Matches(kMissionTypeInvadeProvince, key, zoneContext);
+  return missionType == kMissionTypeInvadeProvince && key == targetProvince && beachhead != NULL &&
+         beachhead->Matches(kMissionTypeInvadeProvince, key, zoneContext);
 }
 
 // FUNCTION: IMPERIALISM 0x0053fc10

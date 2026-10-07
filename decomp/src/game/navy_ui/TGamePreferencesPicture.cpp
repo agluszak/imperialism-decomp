@@ -169,7 +169,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
     } else if (tag == kControlTagOkay) {
       for (int i = 0; i < 5; ++i) {
         TCzechBox* checkbox = static_cast<TCzechBox*>(ResolveControlByTag(kControlTagOpta + i));
-        if (checkbox != nullptr) {
+        if (checkbox != NULL) {
           checkbox->AssertValid();
           g_pSimMgr->preferenceValues[i] = checkbox->IsOn();
         }

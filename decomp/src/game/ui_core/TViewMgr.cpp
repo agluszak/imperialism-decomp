@@ -359,15 +359,15 @@ void TViewMgr::VerifyEndTurn() {
   }
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x223);
   }
   node->SetModality(true);
-  if (node->ResolveControlByTag(kControlTagDialog) == nullptr) { // 'GOLD'
+  if (node->ResolveControlByTag(kControlTagDialog) == NULL) { // 'GOLD'
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x227);
   }
   TDialogBehavior* content = node->GetDialogBehavior();
-  if (content != nullptr) {
+  if (content != NULL) {
     content->defaultCommandCode = kControlTagPic5; // 'cip5'
   }
 
@@ -764,7 +764,7 @@ void TViewMgr::GetTopLeftFor(TView* dialogView, POINT* outPlacement) {
 // FUNCTION: IMPERIALISM 0x005d6b70
 void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   TView* mainView = g_pDisplayMgr->activeDialog;
-  if (mainView == nullptr) {
+  if (mainView == NULL) {
     return;
   }
   // Turn-event 0x7DD targets the 'trb1' toolbar tag; everything else the 'tool' tag.
@@ -774,7 +774,7 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   } else {
     control = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagTool));
   }
-  if (control != nullptr) {
+  if (control != NULL) {
     static_cast<TToolBarCluster*>(control)->UpdateControlTagTreaTextFromNationAndMapContext(
         g_pSimMgr->GetPlayerCountry());
   }
@@ -796,7 +796,7 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
   TView* mainView = g_pDisplayMgr->activeDialog;
   for (short iconIndex = 0; iconIndex <= 0x11; ++iconIndex) {
     TView* control = mainView->ResolveControlByTag(g_strategicMapStatusIconTagTable[iconIndex]);
-    if (control != nullptr) {
+    if (control != NULL) {
       control->AssertValid();
       g_pMacViewMgr->ApplySellOrderRowToNationState(static_cast<TTradeCluster*>(control), iconIndex,
                                                     currentTurnEventNationSlot);
@@ -810,13 +810,13 @@ void TViewMgr::MakeRelationshipDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x4ff);
   }
   TRelationshipDialog* dialog = static_cast<TRelationshipDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
   dialog->AssertValid();
-  if (dialog != nullptr) {
+  if (dialog != NULL) {
     dialog->StuffValues();
   }
   node->Open();
@@ -827,13 +827,13 @@ void TViewMgr::MakeMinorsTradeBidsDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x514);
   }
   TMinorTradeBidsDialog* dialog = static_cast<TMinorTradeBidsDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
   dialog->AssertValid();
-  if (dialog != nullptr) {
+  if (dialog != NULL) {
     dialog->StuffValues();
   }
   node->SetModality(true);
@@ -850,13 +850,13 @@ void TViewMgr::MakeMinorRelationshipDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x535);
   }
   TMinorRelationshipDialog* dialog = static_cast<TMinorRelationshipDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
   dialog->AssertValid();
-  if (dialog != nullptr) {
+  if (dialog != NULL) {
     dialog->StuffValues();
   }
   node->SetModality(true);
@@ -870,13 +870,13 @@ void TViewMgr::MakeGPTreatyDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x54e);
   }
   TGPTreatyDialog* dialog = static_cast<TGPTreatyDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
   dialog->AssertValid();
-  if (dialog != nullptr) {
+  if (dialog != NULL) {
     dialog->StuffValues();
   }
   node->SetModality(true);
@@ -890,13 +890,13 @@ void TViewMgr::MakeMinorTreatyDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x566);
   }
   TMinorTreatyDialog* dialog = static_cast<TMinorTreatyDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
   dialog->AssertValid();
-  if (dialog != nullptr) {
+  if (dialog != NULL) {
     dialog->StuffValues();
   }
   node->SetModality(true);
@@ -937,7 +937,7 @@ char TViewMgr::PoseWarOfferIfTurnFlowReady(int sourceNation, int minorNationSlot
 void TViewMgr::NoOpTurnEventStateVtableSlotD4(int arg) {}
 
 static void ClearMainViewChildWindowStyle(TView* mainView) {
-  if (mainView->nativeWindow != nullptr) {
+  if (mainView->nativeWindow != NULL) {
     mainView->nativeWindow->ModifyStyle(0, 0x02000000);
   }
 }
@@ -950,8 +950,8 @@ inline TView* ActiveMainView() {
 
 inline TControl* ResolveMainTaggedControl(unsigned int controlTag) {
   TView* mainView = ActiveMainView();
-  if (mainView == nullptr) {
-    return nullptr;
+  if (mainView == NULL) {
+    return NULL;
   }
   return static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
 }
@@ -959,7 +959,7 @@ inline TControl* ResolveMainTaggedControl(unsigned int controlTag) {
 inline void BindCursorPanelAndSetTurnEventCodeRange() {
   TControl* cursor = ResolveMainTaggedControl(kControlTagCurs);
   g_pCursorControlPanel = static_cast<TInfoBarText*>(cursor);
-  if (cursor != nullptr) {
+  if (cursor != NULL) {
     cursor->AssertValid();
     static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
   }
@@ -969,7 +969,7 @@ inline void BindCursorPanelAndStampDiplomacyMapTerrain(TView* mainView, short te
 
 inline void RefreshMainPanelControl() {
   TControl* mainPanel = ResolveMainTaggedControl(kControlTagMain);
-  if (mainPanel != nullptr) {
+  if (mainPanel != NULL) {
     mainPanel->AssertValid();
     mainPanel->RefreshControl();
   }
@@ -977,7 +977,7 @@ inline void RefreshMainPanelControl() {
 
 inline void RefreshToolBarClusterByTag(unsigned int controlTag) {
   TControl* control = ResolveMainTaggedControl(controlTag);
-  if (control == nullptr) {
+  if (control == NULL) {
     return;
   }
   control->AssertValid();
@@ -988,7 +988,7 @@ inline void RefreshToolBarClusterByTag(unsigned int controlTag) {
 
 inline void RefreshTradClusterPictureAndHintText() {
   TControl* tradControl = ResolveMainTaggedControl(kControlTagTrad);
-  if (tradControl == nullptr) {
+  if (tradControl == NULL) {
     return;
   }
   tradControl->AssertValid();
@@ -1005,7 +1005,7 @@ inline void RefreshTradClusterPictureAndHintText() {
 inline void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stringCode,
                                                     short stringIndex) {
   TControl* control = ResolveMainTaggedControl(controlTag);
-  if (control == nullptr) {
+  if (control == NULL) {
     return;
   }
   control->AssertValid();
@@ -1017,7 +1017,7 @@ inline void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, sho
 inline void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int stylePrimary,
                                           int styleSecondary) {
   TControl* control = ResolveMainTaggedControl(controlTag);
-  if (control == nullptr) {
+  if (control == NULL) {
     return;
   }
   control->AssertValid();
@@ -1033,7 +1033,7 @@ inline void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidt
 } // namespace turn_event_ui_refresh
 
 static void DispatchPostTurnStateUpdatesTail(TurnEventCodeStorage eventCode) {
-  if (g_pHelpMgr != nullptr && !IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (g_pHelpMgr != NULL && !IsTurnFlowCooldownActiveAndResetExpiredState()) {
     g_pHelpMgr->HandlePostDispatchTurnStateEventUpdates();
     g_pHelpMgr->HandlePendingEventActivationByCode(eventCode);
     g_pHelpMgr->HandlePostPendingEventActivationNoOp(eventCode);
@@ -1171,7 +1171,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   }
   TControl* inclControl =
       static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagIncl)); // 'Incl'
-  if (inclControl != nullptr) {
+  if (inclControl != NULL) {
     inclControl->AssertValid();
     inclControl->RefreshControl();
     inclControl->Free();
@@ -1182,7 +1182,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 
   TIncludeView* packet = ::new TIncludeView();
   CString emptyText(g_szEmptyString);
-  packet->BuildTurnEventFactoryPacket(nullptr, mainView, newCode, anchorPoint, &emptyText, 1);
+  packet->BuildTurnEventFactoryPacket(NULL, mainView, newCode, anchorPoint, &emptyText, 1);
   packet->DoPostCreate(0);
   packet->controlTag = kControlTagIncl; // 'Incl'
   packet->RefreshControl();
@@ -1309,7 +1309,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   cursor->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
   TControl* cityControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCity));
-  if (cityControl != nullptr) {
+  if (cityControl != NULL) {
     TPicture* cityPicture = static_cast<TPicture*>(cityControl);
     cityPicture->SetPictureRsrcID(cityPicture->glyphBase + 1, 0);
     cityControl->ViewEnable(0, 0);
@@ -1329,7 +1329,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   toolbar->AddInfoBehaviors();
 
   TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
-  if (querControl != nullptr) {
+  if (querControl != NULL) {
     g_pSimMgr->GetString(0x2730, 2, &hoverText);
     SetControlHoverHelpText(hoverText, querControl);
   }
@@ -1346,7 +1346,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   g_pMacViewMgr->activeCityProductionView = productionView;
 
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
-  TCity* city = nation != nullptr ? nation->city : nullptr;
+  TCity* city = nation != NULL ? nation->city : NULL;
   productionView->InitializeCityProductionDialog(city, mainView);
 }
 
@@ -1386,7 +1386,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
 
   TControl* diplControl =
       static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagDipl));
-  if (diplControl != nullptr) {
+  if (diplControl != NULL) {
     diplControl->AssertValid();
     TPicture* diplPicture = static_cast<TPicture*>(diplControl);
     diplPicture->SetPictureRsrcID(static_cast<short>(diplPicture->glyphBase + 1), 0);
@@ -1397,7 +1397,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
 
   TToolBarCluster* topBar =
       static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTopB));
-  if (topBar != nullptr) {
+  if (topBar != NULL) {
     topBar->AddInfoBehaviors();
   }
 
@@ -1409,7 +1409,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
 
   TControl* querControl =
       static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagQuer));
-  if (querControl != nullptr) {
+  if (querControl != NULL) {
     g_pSimMgr->GetString(0x2730, 2, &text);
     SetControlHoverHelpText(text, querControl);
   }
@@ -1418,13 +1418,13 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
   diplomacyMap->AssertValid();
   SetControlHoverHelpText(CString(g_szEmptyString), diplomacyMap);
 
-  if (topBar != nullptr) {
+  if (topBar != NULL) {
     int grantSum = g_apNationStates[nationSlot]->SumDiplomacyGrantEntriesMaskedToValueBits();
     topBar->SehCleanup_ReleaseTwoTempSharedStringRefs(grantSum);
   }
 
   diplomacyMap = activeDialog->ResolveControlByTag(kControlTagMain);
-  if (diplomacyMap != nullptr && diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
+  if (diplomacyMap != NULL && diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
     static_cast<TDiplomacyMapView*>(diplomacyMap)->SetSelectedTerrainIndexForTurnEvent(nationSlot);
   }
 }
@@ -1438,7 +1438,7 @@ inline void turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(TV
 
   TView* diplomacyMap = mainView->ResolveControlByTag(kControlTagMain);
   diplomacyMap->AssertValid();
-  if (diplomacyMap != nullptr && diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
+  if (diplomacyMap != NULL && diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
     static_cast<TDiplomacyMapView*>(diplomacyMap)
         ->SetSelectedTerrainIndexForTurnEvent(terrainIndex);
   }
@@ -1463,7 +1463,7 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
 
   TUpDownPictureButton* transportButton =
       static_cast<TUpDownPictureButton*>(activeDialog->ResolveControlByTag(kControlTagTran));
-  if (transportButton != nullptr) {
+  if (transportButton != NULL) {
     transportButton->SetPictureRsrcID(static_cast<short>(transportButton->glyphBase + 1), 0);
     transportButton->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1e, &text);
@@ -1482,7 +1482,7 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   toolBar->AddInfoBehaviors();
 
   TView* queryControl = activeDialog->ResolveControlByTag(kControlTagQuer);
-  if (queryControl != nullptr) {
+  if (queryControl != NULL) {
     g_pSimMgr->GetString(0x2730, 2, &text);
     SetControlHoverHelpText(text, queryControl);
   }
@@ -1745,7 +1745,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
 
   TDropShadowNumberText* capacity =
       static_cast<TDropShadowNumberText*>(mainView->ResolveControlByTag(kControlTagMCap));
-  if (capacity == nullptr) {
+  if (capacity == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xa52);
   }
   ApplyUiNumberTextStyleAndThemeColor(capacity, 0, 0xa, 0x2b6c, 0x2b67);
@@ -1753,7 +1753,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   capacity->SetControlValue(g_apNationStates[nationSlot]->merchantCapacity, 0);
 
   TCity* city = g_apNationStates[nationSlot] == 0 ? 0 : g_apNationStates[nationSlot]->city;
-  if (city == nullptr) {
+  if (city == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xa5a);
   }
   short* citySummary = city->GetUnmetNeeds();
@@ -1770,7 +1770,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   const unsigned int kTagSteel = IMPERIALISM_FOURCC('s', 't', 'e', 'e');
 
   TView* food = mainView->ResolveControlByTag(kTagFood);
-  if (food == nullptr) {
+  if (food == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xa60);
   }
   const short foodOnHand = static_cast<short>(
@@ -1904,7 +1904,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
 
   for (short commodity = 0; commodity < 0x11; ++commodity) {
     TView* row = mainView->ResolveControlByTag(g_strategicMapStatusIconTagTable[commodity]);
-    if (row == nullptr) {
+    if (row == NULL) {
       continue;
     }
     g_pMacViewMgr->SyncSellTaggedChildControlWithNationState(row, commodity,
@@ -2305,7 +2305,7 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
 static void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag, short codeGroup,
                                        short stringIndex, int assertLine, CString* label) {
   TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
-  if (control == nullptr) {
+  if (control == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, assertLine);
   }
   g_pSimMgr->GetString(codeGroup, stringIndex, label);
@@ -2320,7 +2320,7 @@ void TViewMgr::SetUpMainMenuScreen() {
   g_pSfxPlaybackSystem->AddToPlayList(6);
   g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
 
-  g_pCursorControlPanel = nullptr;
+  g_pCursorControlPanel = NULL;
   g_pCursorControlPanel =
       static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel->AssertValid();
@@ -2413,7 +2413,7 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
   citySiteView->AssertValid();
   g_pGlobalMapState->SeedValidCitySiteCandidateTilesForNation(static_cast<short>(nationSlot));
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
-  TCity* city = nation != nullptr ? nation->city : nullptr;
+  TCity* city = nation != NULL ? nation->city : NULL;
   citySiteView->pendingTown = city->homeTownMarker;
   citySiteView->SetMapViewTileIndex(
       g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(nationSlot));
@@ -2443,14 +2443,14 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
                                            TCityProductionView* productionView) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf50);
   }
   node->SetModality(true);
   TBuildingExpansionView* expansionView =
       static_cast<TBuildingExpansionView*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   expansionView->AssertValid();
-  if (expansionView == nullptr) {
+  if (expansionView == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf54);
   }
   expansionView->StuffValues(buildingSlotId, city, productionView);

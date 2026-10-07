@@ -163,20 +163,20 @@ bool TViewMgr::ShowNewCityDialog(TTown* town) {
 void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
   TWorldView* activeMapDialog = static_cast<TWorldView*>(
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog)));
-  if (activeMapDialog == nullptr) {
+  if (activeMapDialog == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0xe2);
   }
   activeMapDialog->CenterOn(reportContext->mapTileIndex);
 
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCombatReport));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0xe5);
   }
   // MapView.rsrc view 1350's 'DLOG' pict is a TCombatReportView (Mac resource oracle).
   TCombatReportView* report = static_cast<TCombatReportView*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
-  if (report == nullptr) {
+  if (report == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0xe6);
   }
   report->StuffValues(reportContext);
@@ -230,7 +230,7 @@ void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused)
 void TViewMgr::ShowTownNameDialog(int stringCode) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTownNamesStringList));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x14a);
   }
   TControl* gold = static_cast<TControl*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
@@ -240,7 +240,7 @@ void TViewMgr::ShowTownNameDialog(int stringCode) {
   node->PoseModally();
   TDeluxeText* nameText =
       static_cast<TDeluxeText*>(static_cast<TView*>(gold->ResolveControlByTag(kControlTagName)));
-  if (nameText == nullptr) {
+  if (nameText == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x156);
   }
   nameText->LoadTextResource(static_cast<short>(stringCode));
@@ -252,12 +252,12 @@ void TViewMgr::ShowTownNameDialog(int stringCode) {
 TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyRoster));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x167);
   }
   TNavyRoster* page =
       static_cast<TNavyRoster*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
-  if (page == nullptr) {
+  if (page == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x169);
   }
   page->StuffValues(activeMapOrderEntry);
@@ -359,11 +359,11 @@ void TViewMgr::ShowUnreachableCityDialog(void* selection) {
 void TViewMgr::MakeGarrisonWindow(int tileIndex) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1e2);
   }
   TView* page = node->ResolveControlByTag(kControlTagPage); // 'page'
-  if (page == nullptr) {
+  if (page == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x1e3);
   }
   static_cast<TGarrisonView*>(page)->StuffValues(static_cast<short>(tileIndex));
@@ -385,11 +385,11 @@ void TViewMgr::MakeGarrisonWindow(int tileIndex) {
 void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x202);
   }
   TControl* page = static_cast<TControl*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
-  if (page == nullptr) {
+  if (page == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x203);
   }
   TView* pageOwner = page->ownerContext;
@@ -428,11 +428,11 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
 void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x232);
   }
   TControl* page = static_cast<TControl*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
-  if (page == nullptr) {
+  if (page == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x233);
   }
   TView* pageOwner = page->ownerContext;
@@ -570,7 +570,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
 bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrderEntry) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCivilianInfo));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x2c1);
   }
   node->SetModality(true);
@@ -592,7 +592,7 @@ bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
                                                          int* categoryCounts) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyArmyReport));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x2e1);
   }
   node->SetModality(true);
@@ -613,7 +613,7 @@ bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
 void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventQueryFloater));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x33f);
   }
   CPoint placement;

@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(TPopGrowthOrder, TProductionOrder)
 // FUNCTION: IMPERIALISM 0x004b8160
 void TPopGrowthOrder::IPopGrowthOrder(TCity* city) {
   ownerCity = city;
-  productionSummary = city != nullptr ? city->productionSummary : nullptr;
+  productionSummary = city != NULL ? city->productionSummary : NULL;
   resourceTypeIndex = 1;
   quantity = 0;
   for (int resource = 0; resource < kResourceKindCount; ++resource) {

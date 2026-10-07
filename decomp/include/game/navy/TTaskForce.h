@@ -47,9 +47,8 @@ public:
   char pad_32[0x02];
 
   TTaskForce()
-      : aggression(1), shipOrders(0), target(nullptr), shipList(nullptr), flagship(nullptr),
-        location(nullptr), nation(-1), previousForce(nullptr), nextForce(nullptr),
-        ingotTileIndex(-1) {
+      : aggression(1), shipOrders(0), target(NULL), shipList(NULL), flagship(NULL), location(NULL),
+        nation(-1), previousForce(NULL), nextForce(NULL), ingotTileIndex(-1) {
     memset(shipCountsByToolbarSlot, 0, sizeof(shipCountsByToolbarSlot));
   }
 

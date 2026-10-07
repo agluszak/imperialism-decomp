@@ -6,8 +6,8 @@
 // VTABLE: IMPERIALISM 0x00646958
 class TAutoResolutionDialog : public TModalDialogBase {
 public:
-  explicit TAutoResolutionDialog(void* initParam = nullptr); // 0x0047dfd0
-  ~TAutoResolutionDialog() override;                         // 0x004152e0
+  explicit TAutoResolutionDialog(void* initParam = NULL); // 0x0047dfd0
+  ~TAutoResolutionDialog() override;                      // 0x004152e0
 
   int DialogResult() const {
     return m_nModalResult;

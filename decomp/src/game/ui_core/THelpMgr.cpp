@@ -101,7 +101,7 @@ THelpMgr::THelpMgr() : TObject() {
   for (int i = 0; i < 5; ++i) {
     civilianCompletionCounts[i] = 0;
   }
-  indexList = nullptr;
+  indexList = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00500660
@@ -202,10 +202,10 @@ void THelpMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x005010b0
 void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
-  HelpSetRecord* best = nullptr;             // lowest-rank unflagged match
-  HelpSetRecord* flaggedCandidate = nullptr; // context match with flagByte set
+  HelpSetRecord* best = NULL;             // lowest-rank unflagged match
+  HelpSetRecord* flaggedCandidate = NULL; // context match with flagByte set
   HelpSetRecord* zeroIdCandidate =
-      nullptr; // context match, rank>=threshold, previousHelpResourceBaseId==0
+      NULL; // context match, rank>=threshold, previousHelpResourceBaseId==0
   short threshold = g_pSimMgr->GetEconomicTurn();
   short contextId = g_pViewMgr->currentTurnEventCode;
   for (int index = 1; index <= indexList->GetSize(); ++index) {
@@ -224,15 +224,15 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
       }
     }
   }
-  if (best != nullptr) {
+  if (best != NULL) {
     ShowHelpSet(best);
     return;
   }
   HelpSetRecord* fallback = flaggedCandidate;
-  if (fallback == nullptr) {
+  if (fallback == NULL) {
     fallback = zeroIdCandidate;
   }
-  if (fallback != nullptr) {
+  if (fallback != NULL) {
     ShowHelpSet(fallback);
   }
 }

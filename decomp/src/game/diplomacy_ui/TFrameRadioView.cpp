@@ -24,7 +24,7 @@ void TFrameRadioView::Draw(RECT* rectBuffer) {
 void TFrameRadioView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   switch (commandId) {
   case 0xa:
-    HandleEvent(kControlCommandHiliteOn, this, nullptr);
+    HandleEvent(kControlCommandHiliteOn, this, NULL);
     return;
   case 0xc:
     if (controlState == 0) {

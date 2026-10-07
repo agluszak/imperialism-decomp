@@ -66,11 +66,11 @@ bool TMission::IsNavyMission() const {
 }
 // FUNCTION: IMPERIALISM 0x00534d90
 TMission* TMission::GetArmyMission() {
-  return nullptr;
+  return NULL;
 }
 // FUNCTION: IMPERIALISM 0x00534db0
 TMission* TMission::GetNavyMission() {
-  return nullptr;
+  return NULL;
 }
 // FUNCTION: IMPERIALISM 0x00534dd0
 bool TMission::IsDefensiveSeaZoneMission() const {
@@ -136,7 +136,7 @@ void TMission::InitializeMissionWithNationIdAndResetPathMarker(NationSlot nation
 // FUNCTION: IMPERIALISM 0x005350d0
 TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionKind, int nodeKey,
                                   TZone* zoneContext, int relatedNodeKey) {
-  TMission* mission = nullptr;
+  TMission* mission = NULL;
   switch (missionKind) {
   case kMissionTypeAttackProvince:
     if (zoneContext == 0) {
@@ -221,7 +221,7 @@ TMission* TMission::Find(TSortedList* missions, eMissionType missionType, short 
       return entry;
     }
   }
-  return nullptr;
+  return NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00535f80
@@ -232,8 +232,8 @@ short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, v
   missionA->AssertValid();
   missionB->AssertValid();
 
-  short greaterResult = (reverseOrder != nullptr) ? 1 : -1;
-  short lesserResult = (reverseOrder != nullptr) ? -1 : 1;
+  short greaterResult = (reverseOrder != NULL) ? 1 : -1;
+  short lesserResult = (reverseOrder != NULL) ? -1 : 1;
   if (static_cast<char>(missionB->state08) < static_cast<char>(missionA->state08)) {
     return greaterResult;
   }

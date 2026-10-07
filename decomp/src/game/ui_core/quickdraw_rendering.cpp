@@ -153,38 +153,38 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph) {
     g_bQuickDrawMeasureFontDirty = false;
   }
   CDC* dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   CFont* prevFont = static_cast<CFont*>(dc->SelectObject(g_pQuickDrawCachedMeasureFont));
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.textColor));
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SetBkMode(TRANSPARENT);
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   UINT prevAlign = dc->SetTextAlign(0x18);
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   char ch = glyph;
   dc->TextOut(g_nQuickDrawResolvedTextOriginX, g_nQuickDrawResolvedTextOriginY, &ch, 1);
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SetTextAlign(prevAlign);
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SelectObject(prevFont);
@@ -202,44 +202,44 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   }
 
   CDC* dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   CFont* oldFont = dc->SelectObject(g_pQuickDrawCachedMeasureFont);
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.textColor));
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SetBkMode(TRANSPARENT);
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   UINT oldTextAlign = dc->SetTextAlign(TA_BASELINE | TA_NOUPDATECP);
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->TextOut(g_nQuickDrawResolvedTextOriginX, g_nQuickDrawResolvedTextOriginY, (LPCSTR)*text,
               text->GetLength());
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SetTextAlign(oldTextAlign);
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SelectObject(oldFont);
@@ -268,31 +268,31 @@ void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rec
   }
 
   CDC* dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   CFont* oldFont = dc->SelectObject(g_pQuickDrawCachedMeasureFont);
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.textColor));
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SetBkMode(TRANSPARENT);
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->DrawText((LPCSTR)*text, text->GetLength(), rect, drawFormat);
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SelectObject(oldFont);
@@ -327,10 +327,10 @@ short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short o
 // FUNCTION: IMPERIALISM 0x00494e00
 short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
   CDC* activeDc = g_pQuickDrawMemoryDc;
-  if (activeDc == nullptr) {
+  if (activeDc == NULL) {
     activeDc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  if (activeDc != nullptr) {
+  if (activeDc != NULL) {
     if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
       if (g_pQuickDrawCachedMeasureFont != 0) {
         delete g_pQuickDrawCachedMeasureFont;
@@ -402,7 +402,7 @@ void SetGlobalBlitTransparentColorRaw(COLORREF transparentColor) {
 
 // FUNCTION: IMPERIALISM 0x004950f0
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex) {
-  if (g_pQuickDrawMemoryDc != nullptr) {
+  if (g_pQuickDrawMemoryDc != NULL) {
     CDibPal* palette = g_pResourceMgr->EnsureDefaultDibPalette();
     PALETTEENTRY entries[2];
     palette->GetPaletteEntries(static_cast<short>(paletteIndex), 1, entries);
@@ -515,8 +515,8 @@ void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap,
   HDC hdcResult = CreateCompatibleDC(destDc);
   HDC hdcSave = CreateCompatibleDC(destDc);
 
-  HBITMAP bmpInverse = CreateBitmap(size.x, size.y, 1, 1, nullptr);
-  HBITMAP bmpMask = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpInverse = CreateBitmap(size.x, size.y, 1, 1, NULL);
+  HBITMAP bmpMask = CreateBitmap(size.x, size.y, 1, 1, NULL);
   HBITMAP bmpResult = CreateCompatibleBitmap(destDc, size.x, size.y);
   HBITMAP bmpSave = CreateCompatibleBitmap(destDc, size.x, size.y);
 
@@ -569,8 +569,8 @@ void TransparentBlitBitmapRegionUsingMaskedRasterOps(HDC destDc, HBITMAP sourceB
   HDC hdcResult = CreateCompatibleDC(destDc);
   HDC hdcSave = CreateCompatibleDC(destDc);
 
-  HBITMAP bmpInverse = CreateBitmap(size.x, size.y, 1, 1, nullptr);
-  HBITMAP bmpMask = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpInverse = CreateBitmap(size.x, size.y, 1, 1, NULL);
+  HBITMAP bmpMask = CreateBitmap(size.x, size.y, 1, 1, NULL);
   HBITMAP bmpResult = CreateCompatibleBitmap(destDc, size.x, size.y);
   HBITMAP bmpSave = CreateCompatibleBitmap(destDc, size.x, size.y);
 
@@ -698,7 +698,7 @@ void SetQuickDrawTextOriginWithContextOffset(short x, short y) {
   g_nQuickDrawResolvedTextOriginX = resolvedX;
   g_nQuickDrawResolvedTextOriginY = resolvedY;
   CDC* dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->MoveTo(resolvedX, resolvedY);
@@ -716,13 +716,13 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
   CPen pen(PS_SOLID, penWidth, g_QuickDrawForegroundColor);
 
   CDC* dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   CPen* oldPen = dc->SelectObject(&pen);
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->MoveTo(g_nQuickDrawPenHorizontalSize / 2 + g_nQuickDrawResolvedTextOriginX,
@@ -738,14 +738,14 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
   g_nQuickDrawResolvedTextOriginY = resolvedY;
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->LineTo(g_nQuickDrawPenHorizontalSize / 2 + resolvedX,
              g_nQuickDrawPenVerticalSize / 2 + resolvedY);
 
   dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   dc->SelectObject(oldPen);
@@ -769,7 +769,7 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   }
 
   CDC* dc = g_pQuickDrawMemoryDc;
-  if (dc == nullptr) {
+  if (dc == NULL) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
   FillRect(dc->m_hDC, &brushBounds.paintRect, static_cast<HBRUSH>(brush));

@@ -15,7 +15,7 @@ TBitmapSurfaceNode::TBitmapSurfaceNode(int width, int height, int bitDepth) {
   dib = new CDib(width, height, bitDepth);
   dib->CopyRgbQuadTableFrom(g_pResourceMgr->ResolveDefaultLogPalette());
   dib->BuildPaletteFromRgbQuadBuffer();
-  dib->EnsureDibSectionCreated(nullptr);
+  dib->EnsureDibSectionCreated(NULL);
   pixelBits = static_cast<unsigned char*>(dib->m_dibBits);
   stride = static_cast<short>((dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
   CPoint dims;

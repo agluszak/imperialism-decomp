@@ -143,7 +143,7 @@ void TOrderView::UpdateFields() {
 void TOrderView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x6c) {
     TIconSlider* slider = static_cast<TIconSlider*>(ResolveControlByTag(kControlTagSlid));
-    if (slider == nullptr) {
+    if (slider == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x285);
     }
     order->SetQuantity(slider->value);

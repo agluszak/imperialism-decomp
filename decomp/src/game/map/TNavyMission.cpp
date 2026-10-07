@@ -18,8 +18,8 @@
 
 // FUNCTION: IMPERIALISM 0x00535470
 TNavyMission::TNavyMission(TZone* targetZone)
-    : TMission(), missionTargetZone(targetZone), resolvedPortZone(nullptr), selectedOrder(nullptr),
-      taskForce(nullptr), orderList(nullptr), navyState(0) {
+    : TMission(), missionTargetZone(targetZone), resolvedPortZone(NULL), selectedOrder(NULL),
+      taskForce(NULL), orderList(NULL), navyState(0) {
   for (int i = 0; i < 4; ++i) {
     requiredShipEquipageByCategory[i] = 0.0f;
   }
@@ -40,7 +40,7 @@ bool TNavyMission::IsANoBrainer() const {
 
 // FUNCTION: IMPERIALISM 0x00535520
 TMission* TNavyMission::GetArmyMission() {
-  return nullptr;
+  return NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00535540
@@ -52,17 +52,17 @@ IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x005364c0
 void TNavyMission::Free() {
-  if (taskForce != nullptr) {
+  if (taskForce != NULL) {
     taskForce->Free();
   }
-  taskForce = nullptr;
+  taskForce = NULL;
 
-  while (orderList != nullptr) {
-    orderList->payload->mission = nullptr;
+  while (orderList != NULL) {
+    orderList->payload->mission = NULL;
     orderList = orderList->DeleteMapOrderChildLinkAndReturnNext();
   }
 
-  if (this != nullptr) {
+  if (this != NULL) {
     delete this;
   }
 }
@@ -71,17 +71,16 @@ void TNavyMission::Free() {
 void TNavyMission::WriteTo(TStream* stream) {
   TMission::WriteTo(stream);
 
-  int nodeIdx1 =
-      missionTargetZone != nullptr ? missionTargetZone->GetContextOrdinalOrInvalid() : -1;
+  int nodeIdx1 = missionTargetZone != NULL ? missionTargetZone->GetContextOrdinalOrInvalid() : -1;
   stream->WriteInteger(nodeIdx1);
 
-  int nodeIdx2 = resolvedPortZone != nullptr ? resolvedPortZone->GetContextOrdinalOrInvalid() : -1;
+  int nodeIdx2 = resolvedPortZone != NULL ? resolvedPortZone->GetContextOrdinalOrInvalid() : -1;
   stream->WriteInteger(nodeIdx2);
 
   WriteFloatArrayElems(stream, requiredShipEquipageByCategory, 4);
 
   // orderList payloads are TShip primary-order nodes (serialized by roster index).
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     int idx = node->payload->GetIndex();
     stream->WriteInteger(idx);
   }
@@ -114,17 +113,17 @@ void TNavyMission::ReadFrom(TStream* stream) {
   }
 
   stream->ReadBytes(&navyState, 4);
-  selectedOrder = nullptr;
-  if (taskForce != nullptr) {
+  selectedOrder = NULL;
+  if (taskForce != NULL) {
     taskForce->Free();
   }
-  taskForce = nullptr;
+  taskForce = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00536740
 bool TNavyMission::SmokeEmIfYouGotEm() {
-  while (orderList != nullptr) {
-    orderList->payload->mission = nullptr;
+  while (orderList != NULL) {
+    orderList->payload->mission = NULL;
     orderList = orderList->DeleteMapOrderChildLinkAndReturnNext();
   }
   return true;
@@ -132,7 +131,7 @@ bool TNavyMission::SmokeEmIfYouGotEm() {
 
 // FUNCTION: IMPERIALISM 0x00536780
 void TNavyMission::AcceptReenforcement(TShip* item, bool notify) {
-  if (item->mission != nullptr) {
+  if (item->mission != NULL) {
     item->mission->RejectConstituent(item, notify);
   }
   item->mission = this;
@@ -146,25 +145,25 @@ void TNavyMission::AcceptReenforcement(TShip* item, bool notify) {
 // FUNCTION: IMPERIALISM 0x005367d0
 void TNavyMission::RejectConstituent(TShip* item, bool notify) {
   orderList = orderList->RemoveLinkedOrderNodeByValueRecursive(item);
-  item->mission = nullptr;
+  item->mission = NULL;
   if (selectedOrder == item) {
-    selectedOrder = nullptr;
+    selectedOrder = NULL;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00536810
 void TNavyMission::ForgetTaskForce(TTaskForce* taskForce) {
   if (this->taskForce == taskForce) {
-    this->taskForce = nullptr;
+    this->taskForce = NULL;
   }
 }
 // FUNCTION: IMPERIALISM 0x00536840
 int TNavyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack) const {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     short distance = 0;
-    if (GetActiveTargetZone() != nullptr) {
+    if (GetActiveTargetZone() != NULL) {
       distance = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distance > 5) {
@@ -224,7 +223,7 @@ void TNavyMission::Reassess() {
 
   missionTargetZone->IsZoneMaskOrArrayEntryPresentForKey(nationId);
 
-  if (orderList == nullptr) {
+  if (orderList == NULL) {
     navyState = 0;
     return;
   }
@@ -267,17 +266,17 @@ void TNavyMission::Reassess() {
 
 // FUNCTION: IMPERIALISM 0x00536d60
 void TNavyMission::CombineForce(TZone* location, TTaskForce*& taskForce) {
-  if (taskForce != nullptr && taskForce->location != location) {
+  if (taskForce != NULL && taskForce->location != location) {
     taskForce->Free();
-    taskForce = nullptr;
+    taskForce = NULL;
   }
 
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     if (ship->location != location) {
       continue;
     }
-    if (taskForce == nullptr) {
+    if (taskForce == NULL) {
       taskForce = new TTaskForce(location, nationId);
       taskForce->ITaskForce();
     }
@@ -287,7 +286,7 @@ void TNavyMission::CombineForce(TZone* location, TTaskForce*& taskForce) {
 
 // FUNCTION: IMPERIALISM 0x00536e40
 void TNavyMission::GiveOrders() {
-  if (orderList != nullptr) {
+  if (orderList != NULL) {
     orderList->active = 0;
     orderList->next->SetChainActiveFlag(0);
   }
@@ -295,7 +294,7 @@ void TNavyMission::GiveOrders() {
   if (navyState == 2) {
     ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
     CombineForce(missionTargetZone, taskForce);
-    if (taskForce != nullptr) {
+    if (taskForce != NULL) {
       GiveActionOrders(taskForce);
     }
     return;
@@ -304,20 +303,20 @@ void TNavyMission::GiveOrders() {
   if (navyState == 1) {
     ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
     CombineForce(missionTargetZone, taskForce);
-    if (taskForce != nullptr) {
+    if (taskForce != NULL) {
       taskForce->OrderEvade();
     }
     return;
   }
 
   if (navyState == 0) {
-    if (resolvedPortZone == nullptr) {
+    if (resolvedPortZone == NULL) {
       resolvedPortZone = RefreshMissionPortZoneContextForNation();
     }
     GiveReconOrders(missionTargetZone, &selectedOrder);
     ConsolidateMissionOrderEntriesByTargetAndQueue(resolvedPortZone);
     CombineForce(resolvedPortZone, taskForce);
-    if (taskForce != nullptr) {
+    if (taskForce != NULL) {
       taskForce->SetAggression(0);
       taskForce->OrderPatrol(false);
     }
@@ -331,21 +330,21 @@ TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
 
 // FUNCTION: IMPERIALISM 0x00536fc0
 TMission* TNavyMission::GetReplacement() {
-  if (resolvedPortZone != nullptr) {
+  if (resolvedPortZone != NULL) {
     if (resolvedPortZone->QueryPortZoneCapability()) {
       if (!resolvedPortZone->QueryZoneCapabilityFlagD(nationId)) {
         resolvedPortZone = RefreshMissionPortZoneContextForNation();
       }
     }
   }
-  return (resolvedPortZone != nullptr) ? this : nullptr;
+  return (resolvedPortZone != NULL) ? this : NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00537010
 TShip* TNavyMission::PickBestShipForMissionType(int missionType) const {
-  TShip* best = nullptr;
+  TShip* best = NULL;
   int bestValue = -1;
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     // The payload is reloaded rather than cached, as the original does.
     int value = node->payload->ComputeValueForMission(missionType);
     if (value > bestValue) {
@@ -370,14 +369,14 @@ TZone* TNavyMission::GetActiveTargetZone() const {
 
 // FUNCTION: IMPERIALISM 0x00537090
 void TNavyMission::GiveReconOrders(TZone* location, TShip** selectedOrder) {
-  if (*selectedOrder != nullptr && orderList->FindNodeMatching(*selectedOrder) == nullptr) {
-    *selectedOrder = nullptr;
+  if (*selectedOrder != NULL && orderList->FindNodeMatching(*selectedOrder) == NULL) {
+    *selectedOrder = NULL;
   }
 
   int maxScore = -1;
-  TShip* topOrder = nullptr;
+  TShip* topOrder = NULL;
 
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     int score = node->payload->ComputeValueForMission(3);
     if (maxScore < score) {
       topOrder = node->payload;
@@ -385,25 +384,25 @@ void TNavyMission::GiveReconOrders(TZone* location, TShip** selectedOrder) {
     }
   }
 
-  if (topOrder != nullptr) {
+  if (topOrder != NULL) {
     if (topOrder == *selectedOrder) {
-      topOrder = nullptr;
+      topOrder = NULL;
     } else {
       bool keepSelected = false;
-      if (*selectedOrder != nullptr) {
+      if (*selectedOrder != NULL) {
         short target1 = (*selectedOrder)->GetTurnDistanceTo(missionTargetZone);
         short target2 = topOrder->GetTurnDistanceTo(missionTargetZone);
         keepSelected = target1 < target2;
       }
       if (!keepSelected) {
         *selectedOrder = topOrder;
-        topOrder = nullptr;
+        topOrder = NULL;
       }
     }
   }
 
   TShip* startOrder = *selectedOrder;
-  for (TShip* order = startOrder; (order == startOrder || order == topOrder) && order != nullptr;
+  for (TShip* order = startOrder; (order == startOrder || order == topOrder) && order != NULL;
        order += topOrder - startOrder) {
     TMapOrderChildLinkNode* node = orderList->FindNodeMatching(order);
     node->active = 1;
@@ -419,11 +418,11 @@ void TNavyMission::GiveReconOrders(TZone* location, TShip** selectedOrder) {
 
 // FUNCTION: IMPERIALISM 0x005371d0
 void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* location) {
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     if (node->active == 0) {
       node->active = 1;
       TTaskForce* entry = node->payload->DemandExclusiveTaskForce();
-      for (TMapOrderChildLinkNode* other = orderList; other != nullptr; other = other->next) {
+      for (TMapOrderChildLinkNode* other = orderList; other != NULL; other = other->next) {
         if (other->active == 0 && other->payload->location == entry->location) {
           other->payload->ReassignToForce(entry);
           other->active = 1;
@@ -611,13 +610,13 @@ void TNavyMission::ProjectEquipage(float* vector, TZone* nearZone, short distanc
   vector[2] = 0.0f;
   vector[3] = 0.0f;
   if (farZone == nearZone) {
-    farZone = nullptr;
+    farZone = NULL;
   }
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
-    if (nearZone == nullptr || ship->GetTurnDistanceTo(nearZone) <= distanceThreshold) {
+    if (nearZone == NULL || ship->GetTurnDistanceTo(nearZone) <= distanceThreshold) {
       AccumulateNavyOrderCategoryVectorWithScale(ship, vector, 1.0f);
-    } else if (farZone != nullptr && ship->GetTurnDistanceTo(farZone) <= distanceThreshold) {
+    } else if (farZone != NULL && ship->GetTurnDistanceTo(farZone) <= distanceThreshold) {
       AccumulateNavyOrderCategoryVectorWithScale(ship, vector, 1.0f);
     }
   }
@@ -678,11 +677,11 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
   vector[1] = 0.0f;
   vector[2] = 0.0f;
   vector[3] = 0.0f;
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     TZone* targetZone = GetActiveTargetZone();
     short distanceIndex = 0;
-    if (targetZone != nullptr) {
+    if (targetZone != NULL) {
       distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distanceIndex > 5) {
@@ -709,10 +708,10 @@ float TNavyMission::ProjectSatisfaction(short distanceThreshold) {
 // FUNCTION: IMPERIALISM 0x00537f40
 float TNavyMission::GetWeightedSatisfaction() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     short distance = 0;
-    if (GetActiveTargetZone() != nullptr) {
+    if (GetActiveTargetZone() != NULL) {
       distance = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distance > 5) {
@@ -746,11 +745,11 @@ float TNavyMission::GetWeightedSatisfaction() {
 // FUNCTION: IMPERIALISM 0x00538120
 float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     TZone* targetZone = GetActiveTargetZone();
     short distanceIndex = 0;
-    if (targetZone != nullptr) {
+    if (targetZone != NULL) {
       distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distanceIndex > 5) {
@@ -770,7 +769,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
 
   TZone* targetZone = GetActiveTargetZone();
   short distanceIndex = 0;
-  if (targetZone != nullptr) {
+  if (targetZone != NULL) {
     distanceIndex = candidateOrder->GetTurnDistanceTo(GetActiveTargetZone());
   }
   if (distanceIndex > 5) {
@@ -804,11 +803,11 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
 float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
     TShip* candidateOrder) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     TZone* targetZone = GetActiveTargetZone();
     short distanceIndex = 0;
-    if (targetZone != nullptr) {
+    if (targetZone != NULL) {
       distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZone());
     }
     if (distanceIndex > 5) {
@@ -828,7 +827,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
 
   TZone* targetZone = GetActiveTargetZone();
   short distanceIndex = 0;
-  if (targetZone != nullptr) {
+  if (targetZone != NULL) {
     distanceIndex = candidateOrder->GetTurnDistanceTo(GetActiveTargetZone());
   }
   if (distanceIndex > 5) {
@@ -1040,7 +1039,7 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
   if (ownerNation < 7) {
     short scoreNation = portZone->GetPortOwnerNation();
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-    for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+    for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
       if (ship->nation == scoreNation && ship->IsInHomePort() &&
           ship->GetMaxStrength() <= ship->strength) {
         float stockRatio = static_cast<float>(ship->strength / ship->GetMaxStrength());
@@ -1086,11 +1085,11 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
   }
 
   for (short allyIdx = 0; allyIdx < 7; ++allyIdx) {
-    if (g_apNationStates[allyIdx] != nullptr &&
+    if (g_apNationStates[allyIdx] != NULL &&
         g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, allyIdx)) {
       short scoreNation = portZone->GetPortOwnerNation();
       float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-      for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+      for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
         if (ship->nation == scoreNation && ship->IsInHomePort() &&
             ship->GetMaxStrength() <= ship->strength) {
           float stockRatio = static_cast<float>(ship->strength / ship->GetMaxStrength());

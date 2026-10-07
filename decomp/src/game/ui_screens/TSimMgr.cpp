@@ -85,7 +85,7 @@ static bool IsNationEligibleForOptionalPhase(short nationSlot) {
     return false;
   }
   TCountry* country = g_apTerrainTypeDescriptorTable[nationSlot];
-  if (country == nullptr) {
+  if (country == NULL) {
     return false;
   }
   if (nationSlot >= 7) {
@@ -208,63 +208,63 @@ void TSimMgr::ResetTurnFlowStateAndRandomSeed() {
 // FUNCTION: IMPERIALISM 0x0057bd20
 void TSimMgr::Free() {
   int i;
-  if (g_pTradeMgr != nullptr) {
+  if (g_pTradeMgr != NULL) {
     g_pTradeMgr->Free();
-    g_pTradeMgr = nullptr;
+    g_pTradeMgr = NULL;
   }
-  if (g_pDiplomacyTurnStateManager != nullptr) {
+  if (g_pDiplomacyTurnStateManager != NULL) {
     g_pDiplomacyTurnStateManager->Free();
-    g_pDiplomacyTurnStateManager = nullptr;
+    g_pDiplomacyTurnStateManager = NULL;
   }
-  if (g_pMapContextActionManager != nullptr) {
+  if (g_pMapContextActionManager != NULL) {
     g_pMapContextActionManager->Free();
-    g_pMapContextActionManager = nullptr;
+    g_pMapContextActionManager = NULL;
   }
-  if (g_pActiveMapOrderContext != nullptr) {
+  if (g_pActiveMapOrderContext != NULL) {
     g_pActiveMapOrderContext->Free();
-    g_pActiveMapOrderContext = nullptr;
+    g_pActiveMapOrderContext = NULL;
   }
-  if (g_pGlobalMapState != nullptr) {
+  if (g_pGlobalMapState != NULL) {
     g_pGlobalMapState->Free();
-    g_pGlobalMapState = nullptr;
+    g_pGlobalMapState = NULL;
   }
-  if (g_pTechMgr != nullptr) {
+  if (g_pTechMgr != NULL) {
     g_pTechMgr->Free();
-    g_pTechMgr = nullptr;
+    g_pTechMgr = NULL;
   }
-  if (g_pNewsMgr != nullptr) {
+  if (g_pNewsMgr != NULL) {
     g_pNewsMgr->Free();
-    g_pNewsMgr = nullptr;
+    g_pNewsMgr = NULL;
   }
-  if (g_pSelectedCivilianOrderState != nullptr) {
+  if (g_pSelectedCivilianOrderState != NULL) {
     g_pSelectedCivilianOrderState->Free();
-    g_pSelectedCivilianOrderState = nullptr;
+    g_pSelectedCivilianOrderState = NULL;
   }
-  if (g_pUiAnimator != nullptr) {
+  if (g_pUiAnimator != NULL) {
     g_pUiAnimator->Free();
-    g_pUiAnimator = nullptr;
+    g_pUiAnimator = NULL;
   }
-  if (g_pNavyOrderManager != nullptr) {
+  if (g_pNavyOrderManager != NULL) {
     g_pNavyOrderManager->Free();
-    g_pNavyOrderManager = nullptr;
+    g_pNavyOrderManager = NULL;
   }
 
   for (i = 0; i < 0x17; ++i) {
-    if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
+    if (g_apTerrainTypeDescriptorTable[i] != NULL) {
       g_apTerrainTypeDescriptorTable[i]->Free();
-      g_apTerrainTypeDescriptorTable[i] = nullptr;
+      g_apTerrainTypeDescriptorTable[i] = NULL;
     }
   }
 
   for (i = 0; i < 7; ++i) {
-    g_apNationStates[i] = nullptr;
+    g_apNationStates[i] = NULL;
   }
 
   for (i = 0; i < 0x10; ++i) {
-    g_apNationAuxRuntimeStateSlots[i] = nullptr;
+    g_apNationAuxRuntimeStateSlots[i] = NULL;
   }
 
-  if (this != nullptr) {
+  if (this != NULL) {
     delete this;
   }
 }
@@ -362,7 +362,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
 
   g_pAssetMgr->OpenFilesFor(1);
   CreateSimObjects(false);
-  CreatePlanet(0, nullptr, 0);
+  CreatePlanet(0, NULL, 0);
   CreateCountries(0);
 
   turnStateCode = kGamePhaseShowMap;
@@ -439,62 +439,62 @@ void TSimMgr::CreateSimObjects(bool flag) {
       }
     }
 
-    if (g_pUiAnimator != nullptr) {
+    if (g_pUiAnimator != NULL) {
       g_pUiAnimator->Free();
-      g_pUiAnimator = nullptr;
+      g_pUiAnimator = NULL;
     }
     TAnimator* animator = new TAnimator();
     animator->IAnimator(0x7fffffff);
     animator->Install();
     g_pUiAnimator = animator;
 
-    if (g_pDiplomacyTurnStateManager != nullptr) {
+    if (g_pDiplomacyTurnStateManager != NULL) {
       g_pDiplomacyTurnStateManager->Free();
-      g_pDiplomacyTurnStateManager = nullptr;
+      g_pDiplomacyTurnStateManager = NULL;
     }
     TDiplomacyMgr* diplomacyManager = new TDiplomacyMgr();
     diplomacyManager->InitializeTDiplomacyTurnStateManagerDefaults();
     g_pDiplomacyTurnStateManager = diplomacyManager;
 
-    if (g_pTradeMgr != nullptr) {
+    if (g_pTradeMgr != NULL) {
       g_pTradeMgr->Free();
-      g_pTradeMgr = nullptr;
+      g_pTradeMgr = NULL;
     }
     TTradeMgr* tradeManager = new TTradeMgr();
     tradeManager->ITradeMgr();
     g_pTradeMgr = tradeManager;
 
-    if (g_pNewsMgr != nullptr) {
+    if (g_pNewsMgr != NULL) {
       g_pNewsMgr->Free();
-      g_pNewsMgr = nullptr;
+      g_pNewsMgr = NULL;
     }
     TNewsMgr* newsManager = new TNewsMgr();
     newsManager->INewsMgr();
     g_pNewsMgr = newsManager;
 
-    if (g_pMapContextActionManager != nullptr) {
+    if (g_pMapContextActionManager != NULL) {
       g_pMapContextActionManager->Free();
-      g_pMapContextActionManager = nullptr;
+      g_pMapContextActionManager = NULL;
     }
     TArmyMgr* armyManager = new TArmyMgr();
     armyManager->IArmyMgr();
     g_pMapContextActionManager = armyManager;
 
-    if (g_pSelectedCivilianOrderState != nullptr) {
+    if (g_pSelectedCivilianOrderState != NULL) {
       g_pSelectedCivilianOrderState->Free();
-      g_pSelectedCivilianOrderState = nullptr;
+      g_pSelectedCivilianOrderState = NULL;
     }
     TCivMgr* civilianManager = new TCivMgr();
     civilianManager->ICivMgr();
     g_pSelectedCivilianOrderState = civilianManager;
 
-    if (g_pNavyOrderManager != nullptr) {
+    if (g_pNavyOrderManager != NULL) {
       g_pNavyOrderManager->Free();
     }
     g_pNavyOrderManager = new TNavyMgr();
     g_pNavyOrderManager->INavyMgr();
 
-    if (g_pTechMgr != nullptr) {
+    if (g_pTechMgr != NULL) {
       g_pTechMgr->Free();
     }
     g_pTechMgr = new TTechMgr();
@@ -516,18 +516,18 @@ void TSimMgr::CreatePlanet(int rebuild, const char* mapName, int wrapHorizontall
   char rebuildFlag = static_cast<char>(rebuild);
   if (((rebuildFlag != 0) && (!g_bMultiplayerScenarioSetupActive)) ||
       ((rebuildFlag == 0) && (g_bMultiplayerScenarioSetupActive))) {
-    if (g_pActiveMapOrderContext != nullptr) {
+    if (g_pActiveMapOrderContext != NULL) {
       g_pActiveMapOrderContext->Free();
-      g_pActiveMapOrderContext = nullptr;
+      g_pActiveMapOrderContext = NULL;
     }
 
     g_pActiveMapOrderContext = new TOcean();
 
     ResetPortZoneGlobalContextCounters();
 
-    if (g_pGlobalMapState != nullptr) {
+    if (g_pGlobalMapState != NULL) {
       g_pGlobalMapState->Free();
-      g_pGlobalMapState = nullptr;
+      g_pGlobalMapState = NULL;
     }
 
     g_pGlobalMapState = new TMapMgr();
@@ -535,7 +535,7 @@ void TSimMgr::CreatePlanet(int rebuild, const char* mapName, int wrapHorizontall
 
     if (!g_bMultiplayerScenarioSetupActive) {
       g_pGlobalMapState->hexNeighborWrapHorizontally = static_cast<char>(wrapHorizontally);
-      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(mapName));
+      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(NULL, const_cast<char*>(mapName));
     } else {
       g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
     }
@@ -546,16 +546,16 @@ void TSimMgr::CreatePlanet(int rebuild, const char* mapName, int wrapHorizontall
 unsigned char TSimMgr::LoadScenario(int scenarioIndex) {
   scenarioMapIndexPlusOne = static_cast<short>(scenarioIndex + 1);
 
-  if (g_pActiveMapOrderContext != nullptr) {
+  if (g_pActiveMapOrderContext != NULL) {
     g_pActiveMapOrderContext->Free();
-    g_pActiveMapOrderContext = nullptr;
+    g_pActiveMapOrderContext = NULL;
   }
   g_pActiveMapOrderContext = new TOcean();
   ResetPortZoneGlobalContextCounters();
 
-  if (g_pGlobalMapState != nullptr) {
+  if (g_pGlobalMapState != NULL) {
     g_pGlobalMapState->Free();
-    g_pGlobalMapState = nullptr;
+    g_pGlobalMapState = NULL;
   }
   g_pGlobalMapState = new TMapMgr();
   g_pGlobalMapState->IMapMgr();
@@ -595,8 +595,8 @@ void TSimMgr::CreateCountries(int activate) {
 
   for (i = 6; i >= 0; --i) {
     if (!countryAvailable[i]) {
-      g_apNationStates[i] = nullptr;
-      g_apTerrainTypeDescriptorTable[i] = nullptr;
+      g_apNationStates[i] = NULL;
+      g_apTerrainTypeDescriptorTable[i] = NULL;
     } else {
       RebuildPrimaryNationStateForSlot(i, activate);
     }
@@ -604,8 +604,8 @@ void TSimMgr::CreateCountries(int activate) {
 
   for (i = 0; i < 0x17; ++i) {
     if (!countryAvailable[i]) {
-      g_apSecondaryNationStateSlots[i] = nullptr;
-      g_apTerrainTypeDescriptorTable[i] = nullptr;
+      g_apSecondaryNationStateSlots[i] = NULL;
+      g_apTerrainTypeDescriptorTable[i] = NULL;
     } else {
       RebuildSecondaryNationStateForSlot(i);
     }
@@ -636,11 +636,11 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
   short nationSlot = static_cast<short>(slotIndex);
   int nationIndex = nationSlot;
 
-  if (g_apNationStates[nationIndex] != nullptr) {
+  if (g_apNationStates[nationIndex] != NULL) {
     g_apNationStates[nationIndex]->Free();
   }
-  g_apNationStates[nationIndex] = nullptr;
-  g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
+  g_apNationStates[nationIndex] = NULL;
+  g_apTerrainTypeDescriptorTable[nationIndex] = NULL;
 
   short setupMode = nationControlModes[nationIndex];
   if (setupMode == 1) {
@@ -671,7 +671,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       }
       if (activate != 0) {
         TGreatPower* nationState = g_apNationStates[nationIndex];
-        TCity* city = nationState != nullptr ? nationState->city : nullptr;
+        TCity* city = nationState != NULL ? nationState->city : NULL;
         nationState->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
       bool resumePrimaryEventQueue = multiplayerSessionRole != kSessionRoleStandalone;
@@ -696,7 +696,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     }
 
     if (activate != 0 && scenarioMapIndexPlusOne != 0) {
-      TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
+      TCity* city = pTVar5 != NULL ? pTVar5->city : NULL;
       pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
     }
   } else if (setupMode == 3) {
@@ -707,7 +707,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
     if (!g_bMultiplayerScenarioSetupActive) {
       if (activate != 0) {
-        TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
+        TCity* city = pTVar5 != NULL ? pTVar5->city : NULL;
         pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
       g_pDiplomacyTurnStateManager->SetRelationship(slotIndex, slotIndex, 0x100);
@@ -731,15 +731,15 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
     if (!g_bMultiplayerScenarioSetupActive) {
       if (activate != 0) {
-        TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
+        TCity* city = pTVar5 != NULL ? pTVar5->city : NULL;
         pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
       pTVar5->CreateInitialMissions();
       pTVar5->NameUnits();
     }
   } else {
-    g_apNationStates[nationIndex] = nullptr;
-    g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
+    g_apNationStates[nationIndex] = NULL;
+    g_apTerrainTypeDescriptorTable[nationIndex] = NULL;
   }
 
   if (nationSlot == activeNationSlot) {
@@ -772,26 +772,26 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
   short nationSlot = static_cast<short>(slotIndex);
   if (nationSlot < 7) {
-    g_apSecondaryNationStateSlots[nationSlot] = nullptr;
+    g_apSecondaryNationStateSlots[nationSlot] = NULL;
     return;
   }
 
   int nationIndex = nationSlot;
-  TMinor* minor = nullptr;
+  TMinor* minor = NULL;
   if (nationIndex < numMinorCountries + 7 && multiplayerSessionRole == kSessionRoleClient) {
-    if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
+    if (g_apSecondaryNationStateSlots[nationIndex] != NULL) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
     }
-    g_apSecondaryNationStateSlots[nationIndex] = nullptr;
-    g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
+    g_apSecondaryNationStateSlots[nationIndex] = NULL;
+    g_apTerrainTypeDescriptorTable[nationIndex] = NULL;
     minor = new TRemoteMinor();
     minor->IMinor(static_cast<NationSlot>(slotIndex));
   } else if (nationIndex < numMinorCountries + 7) {
-    if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
+    if (g_apSecondaryNationStateSlots[nationIndex] != NULL) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
     }
-    g_apSecondaryNationStateSlots[nationIndex] = nullptr;
-    g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
+    g_apSecondaryNationStateSlots[nationIndex] = NULL;
+    g_apTerrainTypeDescriptorTable[nationIndex] = NULL;
 
     minor = new TMinor();
     minor->IMinor(static_cast<NationSlot>(slotIndex));
@@ -815,7 +815,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     }
     return;
   } else {
-    if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
+    if (g_apSecondaryNationStateSlots[nationIndex] != NULL) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
     }
   }
@@ -834,8 +834,8 @@ void TSimMgr::DoPerTurnMissionAIStuff(int replanMode) {
   do {
     if (nationSlot != -1) {
       TCountry* country = g_apTerrainTypeDescriptorTable[nationSlot];
-      if (country != nullptr && (nationSlot >= 7 || country->encodedNationSlot < 100 ||
-                                 country->encodedNationSlot >= 200)) {
+      if (country != NULL && (nationSlot >= 7 || country->encodedNationSlot < 100 ||
+                              country->encodedNationSlot >= 200)) {
         (*nation)->RefreshTrackedEntriesAndReplanAiDevelopment(replanMode);
       }
     }
@@ -992,7 +992,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap),
                                   g_pSimMgr->activeNationSlot);
     if (multiplayerSessionRole != kSessionRoleStandalone) {
-      if (activeNationSlot == -1 || g_apTerrainTypeDescriptorTable[activeNationSlot] == nullptr ||
+      if (activeNationSlot == -1 || g_apTerrainTypeDescriptorTable[activeNationSlot] == NULL ||
           (activeNationSlot <= 6 &&
            g_apTerrainTypeDescriptorTable[activeNationSlot]->encodedNationSlot >= 100 &&
            g_apTerrainTypeDescriptorTable[activeNationSlot]->encodedNationSlot <= 199)) {
@@ -1039,7 +1039,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (multiplayerSessionRole == kSessionRoleStandalone) {
       for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
         TGreatPower* nation = g_apNationStates[nationSlot];
-        if (nation != nullptr && nation->diplomacyEligibility != 0 &&
+        if (nation != NULL && nation->diplomacyEligibility != 0 &&
             nation->proposalQueue->GetSize() > 0) {
           g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
           g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap),
@@ -1052,7 +1052,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
-      if (nation != nullptr) {
+      if (nation != NULL) {
         nation->ReplyToDiplomacyOffers();
       }
     }
@@ -1116,7 +1116,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     bool actionNeeded = false;
     for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
-      if (nation == nullptr) {
+      if (nation == NULL) {
         continue;
       }
       if (!nation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage()) {
@@ -1223,9 +1223,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseTechnology: {
     turnStateCode = kGamePhaseNews;
     bool actionNeeded = true;
-    const short capabilityBefore = g_pTechMgr != nullptr ? g_pTechMgr->marker262 : 0;
+    const short capabilityBefore = g_pTechMgr != NULL ? g_pTechMgr->marker262 : 0;
     g_pTechMgr->CheckForAdvances();
-    if (capabilityBefore == (g_pTechMgr != nullptr ? g_pTechMgr->marker262 : 0)) {
+    if (capabilityBefore == (g_pTechMgr != NULL ? g_pTechMgr->marker262 : 0)) {
       turnFlowStatusFlags |= 0x40;
     }
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
@@ -1260,7 +1260,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
-      if (nation == nullptr || nationSlot == -1) {
+      if (nation == NULL || nationSlot == -1) {
         continue;
       }
       if (!IsNationEligibleForOptionalPhase(nationSlot)) {
@@ -1304,7 +1304,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
       RecomputeNationOrderPriorityMetrics();
       for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
-        if (nationSlot == -1 || g_apTerrainTypeDescriptorTable[nationSlot] == nullptr) {
+        if (nationSlot == -1 || g_apTerrainTypeDescriptorTable[nationSlot] == NULL) {
           continue;
         }
         if (nationSlot < 7 &&
@@ -1312,7 +1312,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           continue;
         }
         TGreatPower* nation = g_apNationStates[nationSlot];
-        if (nation != nullptr) {
+        if (nation != NULL) {
           nation->RefreshTrackedEntriesAndReplanAiDevelopment(0);
         }
       }
@@ -1347,7 +1347,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     {
       const short localizationNation = g_pSimMgr->activeNationSlot;
       TGreatPower* localizationNationState = g_apNationStates[localizationNation];
-      if (localizationNationState != nullptr) {
+      if (localizationNationState != NULL) {
         const short encoded = localizationNationState->encodedNationSlot;
         if (encoded > 99 && encoded < 200) {
           TGreatPower* activeNation = g_apNationStates[activeNationSlot];
@@ -1357,8 +1357,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
     }
     for (int removeNationSlot = 0; removeNationSlot < 7; ++removeNationSlot) {
-      if (g_apTerrainTypeDescriptorTable[removeNationSlot] == nullptr ||
-          g_apNationStates[removeNationSlot] == nullptr) {
+      if (g_apTerrainTypeDescriptorTable[removeNationSlot] == NULL ||
+          g_apNationStates[removeNationSlot] == NULL) {
         continue;
       }
       if (g_apNationStates[removeNationSlot]->ownedRegionList->GetSize() == 0) {
@@ -1367,7 +1367,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     for (int secondaryIndex = 7; secondaryIndex < 0x17; ++secondaryIndex) {
       TMinor* secondaryNation = g_apSecondaryNationStateSlots[secondaryIndex];
-      if (secondaryNation != nullptr && secondaryNation->ownedRegionList->GetSize() == 0) {
+      if (secondaryNation != NULL && secondaryNation->ownedRegionList->GetSize() == 0) {
         for (short percentNationSlot = 0; percentNationSlot < 7; ++percentNationSlot) {
           if (!IsNationEligibleForOptionalPhase(percentNationSlot)) {
             continue;
@@ -2132,13 +2132,13 @@ void TSimMgr::ScSetLabor(STurnInstructionCursor* instruction) {
   DECODE_SCENARIO_SHORT_TOKEN(tierCToken);
 
   TGreatPower* nation = g_apNationStates[ownerToken];
-  TCity* city = (nation != nullptr) ? nation->city : nullptr;
+  TCity* city = (nation != NULL) ? nation->city : NULL;
   city->productionSummary->SetPopulation(static_cast<int>(tierAToken), static_cast<int>(tierBToken),
                                          static_cast<int>(tierCToken));
 
   g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
 
-  if (g_apNationStates[ownerToken]->interiorMinister != nullptr) {
+  if (g_apNationStates[ownerToken]->interiorMinister != NULL) {
     g_apNationStates[ownerToken]->interiorMinister->SetCityPolicies();
   }
 }
@@ -2166,8 +2166,8 @@ void TSimMgr::ScSetCapacity(STurnInstructionCursor* instruction) {
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
   TCity* city;
-  if (g_apNationStates[static_cast<int>(nationToken)] == nullptr) {
-    city = nullptr;
+  if (g_apNationStates[static_cast<int>(nationToken)] == NULL) {
+    city = NULL;
   } else {
     city = g_apNationStates[static_cast<int>(nationToken)]->city;
   }
@@ -2201,8 +2201,8 @@ void TSimMgr::ScSetWarehouse(STurnInstructionCursor* instruction) {
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
   TCity* city;
-  if (g_apNationStates[static_cast<int>(nationToken)] == nullptr) {
-    city = nullptr;
+  if (g_apNationStates[static_cast<int>(nationToken)] == NULL) {
+    city = NULL;
   } else {
     city = g_apNationStates[static_cast<int>(nationToken)]->city;
   }

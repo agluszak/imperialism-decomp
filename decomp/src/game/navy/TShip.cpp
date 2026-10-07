@@ -28,7 +28,7 @@ static short SignedDiv10(int value) {
 // FUNCTION: IMPERIALISM 0x0053b800
 float ComputeNavyOrderDistributionScoreForNation(short nation) {
   float categoryVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+  for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
     if (ship->nation == nation && ship->IsInHomePort() &&
         ship->GetMaxStrength() <= ship->strength) {
       float stockRatio = static_cast<float>(ship->strength / ship->GetMaxStrength());
@@ -418,25 +418,25 @@ void TShip::Victory(short experienceGain) {
 // FUNCTION: IMPERIALISM 0x005503a0
 TTaskForce* TShip::DemandExclusiveTaskForce() {
   TTaskForce* owner_ctx = taskForce;
-  if (owner_ctx != nullptr) {
+  if (owner_ctx != NULL) {
     owner_ctx->AssertValid();
 
     short childCount = 0;
     TMapOrderChildLinkNode* head = owner_ctx->shipList;
-    for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
+    for (TMapOrderChildLinkNode* node = head; node != NULL; node = node->next) {
       ++childCount;
     }
 
     if (childCount > 1) {
       TMapOrderChildLinkNode* found;
-      if (head == nullptr) {
-        found = nullptr;
+      if (head == NULL) {
+        found = NULL;
       } else if (head->payload == this) {
         found = head;
       } else {
         found = head->next->FindNodeMatching(this);
       }
-      if (found != nullptr) {
+      if (found != NULL) {
         owner_ctx->shipList = head->RemoveLinkedOrderNodeByValueRecursive(this);
 
         short bucketIndex =
@@ -446,18 +446,18 @@ TTaskForce* TShip::DemandExclusiveTaskForce() {
       if (this == owner_ctx->flagship) {
         owner_ctx->ElectFlagship();
       }
-      SetTaskForce(nullptr);
-      owner_ctx = nullptr;
+      SetTaskForce(NULL);
+      owner_ctx = NULL;
     }
 
-    if (owner_ctx != nullptr) {
+    if (owner_ctx != NULL) {
       return owner_ctx;
     }
   }
 
   // The new entry's zone context comes from this ship's port zone.
   TTaskForce* entry = new TTaskForce(location, nation);
-  if (entry == nullptr) {
+  if (entry == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UNavy.cpp", 0x306);
   }
   entry->Add(this);
@@ -512,7 +512,7 @@ int TShip::GetIndex() const {
 // FUNCTION: IMPERIALISM 0x00550640
 TShip* TShip::GetNth(short index) {
   TShip* node = g_pNavyPrimaryOrderListHead;
-  while (node != nullptr && index != 0) {
+  while (node != NULL && index != 0) {
     node = node->next;
     --index;
   }
@@ -522,26 +522,26 @@ TShip* TShip::GetNth(short index) {
 // FUNCTION: IMPERIALISM 0x00550670
 TShip* TShip::Finest(TShip* candidate, bool preferUnassigned) {
   if (preferUnassigned) {
-    if (admiral != nullptr) {
+    if (admiral != NULL) {
       return candidate;
     }
-    if (candidate == nullptr) {
+    if (candidate == NULL) {
       return this;
     }
-    if (candidate->admiral != nullptr) {
+    if (candidate->admiral != NULL) {
       return this;
     }
   }
-  if (candidate == nullptr) {
+  if (candidate == NULL) {
     return this;
   }
-  if (this != nullptr) {
+  if (this != NULL) {
     TAdmiral* selfAdmiral = admiral;
     TAdmiral* candidateAdmiral = candidate->admiral;
     bool preferSelf = false;
-    if (selfAdmiral == nullptr) {
+    if (selfAdmiral == NULL) {
       preferSelf = false;
-    } else if (candidateAdmiral == nullptr) {
+    } else if (candidateAdmiral == NULL) {
       preferSelf = true;
     } else {
       preferSelf = candidateAdmiral->experiencePoints < selfAdmiral->experiencePoints;
@@ -551,9 +551,9 @@ TShip* TShip::Finest(TShip* candidate, bool preferUnassigned) {
     }
 
     bool preferCandidate = false;
-    if (candidateAdmiral == nullptr) {
+    if (candidateAdmiral == NULL) {
       preferCandidate = false;
-    } else if (selfAdmiral == nullptr) {
+    } else if (selfAdmiral == NULL) {
       preferCandidate = true;
     } else {
       preferCandidate = selfAdmiral->experiencePoints < candidateAdmiral->experiencePoints;
@@ -809,7 +809,7 @@ void TShip::Capture(short nation) {
 // FUNCTION: IMPERIALISM 0x00551220
 void TShip::SetTaskForce(TTaskForce* newEntry) {
   taskForce = newEntry;
-  if (newEntry == nullptr) {
+  if (newEntry == NULL) {
     return;
   }
   newEntry->AssertValid();

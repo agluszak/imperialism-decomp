@@ -106,7 +106,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 
     TMapUberPicture* mapUber = g_pViewMgr->mapUberPicture;
     TView* categoryControl = mapUber->categoryPages[mapUber->activeUnitCategoryIndex];
-    if (categoryControl != nullptr) {
+    if (categoryControl != NULL) {
       short resourceType = shipNode->GetToolbarSlot();
       TShipFractionCluster* shipFraction = static_cast<TShipFractionCluster*>(
           categoryControl->ResolveControlByTag(kControlTagCls0 + resourceType));
@@ -132,7 +132,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 void TShipView::RenameShip() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUOceanViews, 0x203);
   }
 

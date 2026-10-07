@@ -49,7 +49,7 @@ ASSERT_SIZE(TControlSeaZoneMission, 0x3c);
 // FUNCTION: IMPERIALISM 0x005393a0
 inline void TControlSeaZoneMission::CalculateNeeds() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+  for (TShip* node = TShip::GetFirst(); node != NULL; node = node->next) {
     if (node->location != missionTargetZone) {
       continue;
     }

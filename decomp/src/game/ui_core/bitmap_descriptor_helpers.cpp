@@ -45,27 +45,27 @@ void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bo
 
 // FUNCTION: IMPERIALISM 0x00496090
 void BindGWorldSurfaceToMemoryDC(CDib* dibSurface, HDC referenceDc) {
-  if (g_pQuickDrawMemoryDc != nullptr) {
+  if (g_pQuickDrawMemoryDc != NULL) {
     delete g_pQuickDrawMemoryDc;
-    g_pQuickDrawMemoryDc = nullptr;
+    g_pQuickDrawMemoryDc = NULL;
   }
 
   g_pQuickDrawMemoryDc = new CDC();
   HDC memoryDc = CreateCompatibleDC(referenceDc);
   g_pQuickDrawMemoryDc->Attach(memoryDc);
-  if (dibSurface != nullptr && dibSurface->m_hBitmap != nullptr) {
+  if (dibSurface != NULL && dibSurface->m_hBitmap != NULL) {
     SelectObject(memoryDc, dibSurface->m_hBitmap);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00496160
 void DisposeQuickDrawMemoryDC(void) {
-  if (g_hQuickDrawSavedBitmap != nullptr) {
+  if (g_hQuickDrawSavedBitmap != NULL) {
     ::SelectObject(g_pQuickDrawMemoryDc->m_hDC, g_hQuickDrawSavedBitmap);
   }
-  g_hQuickDrawSavedBitmap = nullptr;
+  g_hQuickDrawSavedBitmap = NULL;
   delete g_pQuickDrawMemoryDc;
-  g_pQuickDrawMemoryDc = nullptr;
+  g_pQuickDrawMemoryDc = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x004961b0
@@ -74,15 +74,15 @@ void SetGWorld(TQuickDrawSurfaceContext* contextPtr, int flags) {
     return;
   }
 
-  if (g_pActiveQuickDrawSurfaceContextHead != nullptr &&
+  if (g_pActiveQuickDrawSurfaceContextHead != NULL &&
       g_pActiveQuickDrawSurfaceContextHead != &g_defaultQuickDrawSurfaceSentinel) {
-    if (g_hQuickDrawSavedBitmap != nullptr && g_pQuickDrawMemoryDc != nullptr) {
+    if (g_hQuickDrawSavedBitmap != NULL && g_pQuickDrawMemoryDc != NULL) {
       SelectObject(g_pQuickDrawMemoryDc->GetSafeHdc(), g_hQuickDrawSavedBitmap);
     }
-    g_hQuickDrawSavedBitmap = nullptr;
-    if (g_pQuickDrawMemoryDc != nullptr) {
+    g_hQuickDrawSavedBitmap = NULL;
+    if (g_pQuickDrawMemoryDc != NULL) {
       delete g_pQuickDrawMemoryDc;
-      g_pQuickDrawMemoryDc = nullptr;
+      g_pQuickDrawMemoryDc = NULL;
     }
   }
 
@@ -90,7 +90,7 @@ void SetGWorld(TQuickDrawSurfaceContext* contextPtr, int flags) {
     TBitmapSurfaceContextDescriptor* descriptor =
         static_cast<TBitmapSurfaceContextDescriptor*>(contextPtr);
     TBitmapSurfaceNode* node = descriptor->GetPixMap();
-    BindGWorldSurfaceToMemoryDC(node != nullptr ? node->dib : nullptr, nullptr);
+    BindGWorldSurfaceToMemoryDC(node != NULL ? node->dib : NULL, NULL);
   }
 
   g_pActiveQuickDrawSurfaceContextHead = contextPtr;
@@ -150,8 +150,8 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
 
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
   QDLoadResource(loaderHandle);
-  TBitmapResourceLoader* loader = loaderHandle != nullptr ? *loaderHandle : nullptr;
-  if (loader == nullptr) {
+  TBitmapResourceLoader* loader = loaderHandle != NULL ? *loaderHandle : NULL;
+  if (loader == NULL) {
     delete loaderHandle;
     return 0;
   }
@@ -159,7 +159,7 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
   RECT bitmapRect;
   CopyRect(&bitmapRect, &loader->bitmapRect);
   TQuickDrawSurfaceContext* outContext = 0;
-  if (g_pDisplayMgr != nullptr) {
+  if (g_pDisplayMgr != NULL) {
     g_pDisplayMgr->MakeNewGWorld(outContext, 8, bitmapRect);
   }
   if (outContext == 0) {

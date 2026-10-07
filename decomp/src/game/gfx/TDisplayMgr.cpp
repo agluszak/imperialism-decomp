@@ -35,7 +35,7 @@ void PlayDefaultMessageBeep(...) {
 
 // FUNCTION: IMPERIALISM 0x00497230
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized() {
-  if (g_pGlobalViewportRectDefaultsRecord == nullptr) {
+  if (g_pGlobalViewportRectDefaultsRecord == NULL) {
     register int viewportHeight = 0x1e0;
     register int zero = 0;
     register int viewportWidth = 0x280;

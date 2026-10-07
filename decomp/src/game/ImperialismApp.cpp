@@ -59,21 +59,21 @@ __inline void CloseCrtFindHandleIfOpen(long& findHandle) {
 
 // FUNCTION: IMPERIALISM 0x00412640
 HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product) {
-  HKEY hSoftware = nullptr;
-  HKEY hCompany = nullptr;
-  HKEY hProduct = nullptr;
+  HKEY hSoftware = NULL;
+  HKEY hCompany = NULL;
+  HKEY hProduct = NULL;
   DWORD disposition = 0;
 
   if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, 0x2001f, &hSoftware) == ERROR_SUCCESS) {
-    if (RegCreateKeyExA(hSoftware, company, 0, nullptr, 0, 0x2001f, nullptr, &hCompany,
-                        &disposition) == ERROR_SUCCESS) {
-      RegCreateKeyExA(hCompany, product, 0, nullptr, 0, 0x2001f, nullptr, &hProduct, &disposition);
+    if (RegCreateKeyExA(hSoftware, company, 0, NULL, 0, 0x2001f, NULL, &hCompany, &disposition) ==
+        ERROR_SUCCESS) {
+      RegCreateKeyExA(hCompany, product, 0, NULL, 0, 0x2001f, NULL, &hProduct, &disposition);
     }
   }
-  if (hSoftware != nullptr) {
+  if (hSoftware != NULL) {
     RegCloseKey(hSoftware);
   }
-  if (hCompany != nullptr) {
+  if (hCompany != NULL) {
     RegCloseKey(hCompany);
   }
   return hProduct;
@@ -81,28 +81,28 @@ HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product) {
 
 // FUNCTION: IMPERIALISM 0x00412720
 HKEY OpenOrCreateProfileSectionKey(LPCSTR company, LPCSTR product, LPCSTR section) {
-  HKEY hSoftware = nullptr;
-  HKEY hCompany = nullptr;
-  HKEY hProduct = nullptr;
-  HKEY hSection = nullptr;
+  HKEY hSoftware = NULL;
+  HKEY hCompany = NULL;
+  HKEY hProduct = NULL;
+  HKEY hSection = NULL;
   DWORD disposition = 0;
 
   if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, 0x2001f, &hSoftware) == ERROR_SUCCESS) {
-    if (RegCreateKeyExA(hSoftware, company, 0, nullptr, 0, 0x2001f, nullptr, &hCompany,
-                        &disposition) == ERROR_SUCCESS) {
-      RegCreateKeyExA(hCompany, product, 0, nullptr, 0, 0x2001f, nullptr, &hProduct, &disposition);
+    if (RegCreateKeyExA(hSoftware, company, 0, NULL, 0, 0x2001f, NULL, &hCompany, &disposition) ==
+        ERROR_SUCCESS) {
+      RegCreateKeyExA(hCompany, product, 0, NULL, 0, 0x2001f, NULL, &hProduct, &disposition);
     }
   }
-  if (hSoftware != nullptr) {
+  if (hSoftware != NULL) {
     RegCloseKey(hSoftware);
   }
-  if (hCompany != nullptr) {
+  if (hCompany != NULL) {
     RegCloseKey(hCompany);
   }
-  if (hProduct == nullptr) {
-    return nullptr;
+  if (hProduct == NULL) {
+    return NULL;
   }
-  RegCreateKeyExA(hProduct, section, 0, nullptr, 0, 0x2001f, nullptr, &hSection, &disposition);
+  RegCreateKeyExA(hProduct, section, 0, NULL, 0, 0x2001f, NULL, &hSection, &disposition);
   RegCloseKey(hProduct);
   return hSection;
 }
@@ -110,44 +110,44 @@ HKEY OpenOrCreateProfileSectionKey(LPCSTR company, LPCSTR product, LPCSTR sectio
 // FUNCTION: IMPERIALISM 0x00412840
 CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section,
                                                     LPCSTR valueName, LPCSTR defaultValue) {
-  HKEY hSoftware = nullptr;
-  HKEY hCompany = nullptr;
-  HKEY hProduct = nullptr;
-  HKEY hSection = nullptr;
+  HKEY hSoftware = NULL;
+  HKEY hCompany = NULL;
+  HKEY hProduct = NULL;
+  HKEY hSection = NULL;
   DWORD disposition = 0;
 
   if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, 0x2001f, &hSoftware) == ERROR_SUCCESS &&
-      RegCreateKeyExA(hSoftware, company, 0, nullptr, 0, 0x2001f, nullptr, &hCompany,
-                      &disposition) == ERROR_SUCCESS) {
-    RegCreateKeyExA(hCompany, product, 0, nullptr, 0, 0x2001f, nullptr, &hProduct, &disposition);
+      RegCreateKeyExA(hSoftware, company, 0, NULL, 0, 0x2001f, NULL, &hCompany, &disposition) ==
+          ERROR_SUCCESS) {
+    RegCreateKeyExA(hCompany, product, 0, NULL, 0, 0x2001f, NULL, &hProduct, &disposition);
   }
-  if (hSoftware != nullptr) {
+  if (hSoftware != NULL) {
     RegCloseKey(hSoftware);
   }
-  if (hCompany != nullptr) {
+  if (hCompany != NULL) {
     RegCloseKey(hCompany);
   }
 
   HKEY hFinal = hProduct;
-  if (hProduct == nullptr) {
-    hFinal = nullptr;
+  if (hProduct == NULL) {
+    hFinal = NULL;
   } else {
-    RegCreateKeyExA(hProduct, section, 0, nullptr, 0, 0x2001f, nullptr, &hSection, &disposition);
+    RegCreateKeyExA(hProduct, section, 0, NULL, 0, 0x2001f, NULL, &hSection, &disposition);
     RegCloseKey(hProduct);
     hFinal = hSection;
   }
 
-  if (hFinal == nullptr) {
+  if (hFinal == NULL) {
     return CString(defaultValue);
   }
 
   CString value;
   DWORD dataType = 0;
   DWORD dataSize = 0;
-  LONG status = RegQueryValueExA(hFinal, valueName, nullptr, &dataType, nullptr, &dataSize);
+  LONG status = RegQueryValueExA(hFinal, valueName, NULL, &dataType, NULL, &dataSize);
   if (status == ERROR_SUCCESS) {
     LPBYTE buffer = static_cast<LPBYTE>(static_cast<void*>(value.GetBuffer(dataSize)));
-    status = RegQueryValueExA(hFinal, valueName, nullptr, &dataType, buffer, &dataSize);
+    status = RegQueryValueExA(hFinal, valueName, NULL, &dataType, buffer, &dataSize);
     value.ReleaseBuffer(-1);
   }
   RegCloseKey(hFinal);
@@ -160,10 +160,10 @@ CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR produ
 // FUNCTION: IMPERIALISM 0x00412a70
 CIncludeView* GetMainViewHostFromActiveThread() {
   CFrameWnd* mainFrame;
-  if (AfxGetThread() != nullptr) {
+  if (AfxGetThread() != NULL) {
     mainFrame = static_cast<CFrameWnd*>(AfxGetThread()->GetMainWnd());
   } else {
-    mainFrame = nullptr;
+    mainFrame = NULL;
   }
   return static_cast<CIncludeView*>(mainFrame->GetActiveView());
 }
@@ -241,8 +241,8 @@ BOOL ImperialismApp::InitInstance() {
     }
 
     LPCSTR* ppFontFiles = g_apFontFiles;
-    if (ppFontFiles != nullptr && *ppFontFiles != nullptr) {
-      while (*ppFontFiles != nullptr) {
+    if (ppFontFiles != NULL && *ppFontFiles != NULL) {
+      while (*ppFontFiles != NULL) {
         AddFontResourceA(*ppFontFiles);
         ppFontFiles++;
       }
@@ -277,7 +277,7 @@ BOOL ImperialismApp::InitInstance() {
 
     if (cmdInfo.m_strMainWindowTitle.Compare(g_szEmptyString) != 0) {
       CIncludeView* uiWindow = GetMainViewHostFromActiveThread();
-      if (uiWindow != nullptr) {
+      if (uiWindow != NULL) {
         uiWindow->SetWindowText(static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle));
       }
     }
@@ -306,38 +306,38 @@ BOOL ImperialismApp::InitInstance() {
 // FUNCTION: IMPERIALISM 0x00413780
 int ImperialismApp::ExitInstance() {
   if (appliedAutoResMode) {
-    ChangeDisplaySettingsA(nullptr, 0);
+    ChangeDisplaySettingsA(NULL, 0);
   }
 
-  if (g_pDisplayMgr != nullptr) {
+  if (g_pDisplayMgr != NULL) {
     g_pDisplayMgr->Free();
-    g_pDisplayMgr = nullptr;
+    g_pDisplayMgr = NULL;
   }
-  if (g_pResourceMgr != nullptr) {
+  if (g_pResourceMgr != NULL) {
     delete g_pResourceMgr;
-    g_pResourceMgr = nullptr;
+    g_pResourceMgr = NULL;
   }
-  if (g_pMacViewMgr != nullptr) {
+  if (g_pMacViewMgr != NULL) {
     g_pMacViewMgr->Free();
-    g_pMacViewMgr = nullptr;
+    g_pMacViewMgr = NULL;
   }
-  if (g_pAssetMgr != nullptr) {
+  if (g_pAssetMgr != NULL) {
     g_pAssetMgr->Free();
-    g_pAssetMgr = nullptr;
+    g_pAssetMgr = NULL;
   }
-  if (g_pSfxPlaybackSystem != nullptr) {
+  if (g_pSfxPlaybackSystem != NULL) {
     g_pSfxPlaybackSystem->Free();
-    g_pSfxPlaybackSystem = nullptr;
+    g_pSfxPlaybackSystem = NULL;
   }
-  if (g_pAmbitApplication != nullptr) {
+  if (g_pAmbitApplication != NULL) {
     g_pAmbitApplication->Free();
-    g_pAmbitApplication = nullptr;
+    g_pAmbitApplication = NULL;
   }
   DisposeTemporaryRegionCache();
 
   LPCSTR* ppFontFiles = g_apFontFiles;
-  if (ppFontFiles != nullptr && *ppFontFiles != nullptr) {
-    while (*ppFontFiles != nullptr) {
+  if (ppFontFiles != NULL && *ppFontFiles != NULL) {
+    while (*ppFontFiles != NULL) {
       RemoveFontResourceA(*ppFontFiles);
       ppFontFiles++;
     }
@@ -357,7 +357,7 @@ void ImperialismApp::HandleStartupCommand100() {
   int waitCursorAnchor;
   AfxGetApp()->BeginWaitCursor();
   this->waitCursorAnchor = &waitCursorAnchor;
-  if (g_pSimMgr != nullptr) {
+  if (g_pSimMgr != NULL) {
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
   }
   this->waitCursorAnchor = 0;
@@ -656,7 +656,7 @@ int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
   }
 
   if (cmdInfo.m_bShowSetupDialog || autoResMode == kAutoResPromptSentinel) {
-    TAutoResolutionDialog dialog(nullptr);
+    TAutoResolutionDialog dialog(NULL);
     dialog.PrepareAndCreateModalFromTemplate();
     dialog.autoResolutionCheckState = autoResMode;
     dialog.UpdateData(FALSE);
@@ -688,7 +688,7 @@ BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
   if (appliedAutoResMode != mode) {
     appliedAutoResMode = mode;
     if (mode == 0) {
-      ChangeDisplaySettingsA(nullptr, 0);
+      ChangeDisplaySettingsA(NULL, 0);
     } else {
       DEVMODEA devMode;
       memset(&devMode, 0, sizeof(devMode));
@@ -699,7 +699,7 @@ BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
       devMode.dmPelsHeight = 0x1e0;
       devMode.dmFields = 0x180000;
 
-      if (EnumDisplaySettingsA(nullptr, modeIndex, &devMode)) {
+      if (EnumDisplaySettingsA(NULL, modeIndex, &devMode)) {
         do {
           if (devMode.dmPelsWidth == 0x280 && devMode.dmBitsPerPel > 7 &&
               devMode.dmPelsHeight == 0x1e0) {
@@ -708,7 +708,7 @@ BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
             break;
           }
           ++modeIndex;
-        } while (EnumDisplaySettingsA(nullptr, modeIndex, &devMode));
+        } while (EnumDisplaySettingsA(NULL, modeIndex, &devMode));
       }
 
       if (changeResult != 0) {
@@ -727,7 +727,7 @@ BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
 
 // FUNCTION: IMPERIALISM 0x00415760
 BOOL WarnLowDiskSpaceAndConfirmContinue() {
-  const UINT dirSize = GetWindowsDirectoryA(nullptr, 0);
+  const UINT dirSize = GetWindowsDirectoryA(NULL, 0);
   if (dirSize == 0) {
     return TRUE;
   }
@@ -779,14 +779,14 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   CString templateText;
   CString formattedText;
   CString scratch;
-  if (g_pResourceMgr != nullptr) {
+  if (g_pResourceMgr != NULL) {
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2763, 0x19);
   }
   scratch.Format(g_szDecimalFormat, freeMegabytes);
   scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(scratch));
 
-  TLowDiskWarningDialog dialog(nullptr);
+  TLowDiskWarningDialog dialog(NULL);
   dialog.promptText = formattedText;
   if (!dialog.PrepareAndCreateModalFromTemplate()) {
     return FALSE;
@@ -799,7 +799,7 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
 void ImperialismApp::OnMissionSnooper() {
   TWindow* window =
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x3a99));
-  if (window == nullptr) {
+  if (window == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x327);
   }
 

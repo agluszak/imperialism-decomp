@@ -296,13 +296,13 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
     g_pSimMgr->NumToCurrency(g_apNationStates[nationId]->treasuryValue, &treaText);
   }
   TView* treaControl = this->ResolveControlByTag(kControlTagTrea); // 'trea'
-  if (treaControl != nullptr) {
+  if (treaControl != NULL) {
     static_cast<TStaticText*>(treaControl)->SetTextAndMaybeRefresh(&treaText, true);
   }
 
   // 'seas' tag: "<season>, <year>" turn-status text (present on the main map toolbar).
   TView* seasControl = this->ResolveControlByTag(kControlTagSeas); // 'seas'
-  if (seasControl != nullptr) {
+  if (seasControl != NULL) {
     CString seasonText;
     g_pSimMgr->GetSeason(&seasonText);
     int year = 1815 + g_pSimMgr->economicTurn / 4;
@@ -314,7 +314,7 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
   }
 
   TView* forcControl = this->ResolveControlByTag(kControlTagForc); // 'forc'
-  if (forcControl == nullptr) {
+  if (forcControl == NULL) {
     return;
   }
   CString countText;
@@ -341,7 +341,7 @@ void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg) {
 void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf6c);
   }
   CPoint placement;
@@ -357,7 +357,7 @@ void PoseGamePreferencesDialogModally() {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           kTurnEventGamePreferences, 0));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf90);
   }
   node->SetModality(true);

@@ -851,7 +851,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
   }
   unsigned char nationBit = static_cast<unsigned char>(1 << static_cast<short>(resolvedNation));
   if ((nationKeyMask & nationBit) != 0) {
-    for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+    for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
       if (ship->location == this && ship->nation == resolvedNation && ship->taskForce == 0) {
         TTaskForce* taskForce = new TTaskForce(this, nation);
         taskForce->ITaskForce();
@@ -861,7 +861,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
       }
     }
   }
-  return nullptr;
+  return NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00560b00

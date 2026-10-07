@@ -28,7 +28,7 @@ void TDealTabControl::Setup(short bitmapResourceId, unsigned char useAlternatePa
 // FUNCTION: IMPERIALISM 0x005bc7f0
 void TDealTabControl::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  if (filledRowStrip == nullptr) {
+  if (filledRowStrip == NULL) {
     return;
   }
   ResetQuickDrawStrokeState();

@@ -290,7 +290,7 @@ public:
   void ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot);
 
   // ORACLE: Mac TMapMgr::GetMilitaryMaster(long). Returns the province's stationed-unit
-  // chain when provinceIndex is in [0, 0x180), otherwise nullptr. Windows takes a short.
+  // chain when provinceIndex is in [0, 0x180), otherwise NULL. Windows takes a short.
   // 0x004a4190, __thiscall, one stack argument.
   TMilitaryUnit* GetMilitaryMaster(short provinceIndex);
 

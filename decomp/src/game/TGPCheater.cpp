@@ -62,7 +62,7 @@ void TGPCheater::DisplayGP(int nationSlot) {
 
   TStaticText* name =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
-  if (name == nullptr) {
+  if (name == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xec);
   }
   nation->FormatOverlayTerrainLabelText(&nameText);
@@ -70,35 +70,35 @@ void TGPCheater::DisplayGP(int nationSlot) {
 
   TNumberText* treasury =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'r', 'e', 'a')));
-  if (treasury == nullptr) {
+  if (treasury == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf2);
   }
   treasury->SetControlValue(nation->treasuryValue, 1);
 
   TNumberText* mercenaries =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('m', 'e', 'r', 'c')));
-  if (mercenaries == nullptr) {
+  if (mercenaries == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf5);
   }
   mercenaries->SetControlValue(nation->merchantCapacity, 1);
 
   TNumberText* tradeCap =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'c', 'a', 'p')));
-  if (tradeCap == nullptr) {
+  if (tradeCap == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf8);
   }
-  tradeCap->SetControlValue(nation != nullptr ? nation->transportCapacity : 0, 1);
+  tradeCap->SetControlValue(nation != NULL ? nation->transportCapacity : 0, 1);
 
   TNumberText* sale =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'a', 'l', 'e')));
-  if (sale == nullptr) {
+  if (sale == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xfb);
   }
   sale->SetControlValue(nation->budgetPoolBase, 1);
 
   TNumberText* purchase =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'u', 'r', 'c')));
-  if (purchase == nullptr) {
+  if (purchase == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xfe);
   }
   purchase->SetControlValue(nation->budgetPoolDelta, 1);

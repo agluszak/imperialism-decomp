@@ -40,13 +40,13 @@ void TToggleButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       }
     }
     if (match) {
-      this->ownerContext->HandleEvent(kControlCommandHiliteOff, nullptr, nullptr);
+      this->ownerContext->HandleEvent(kControlCommandHiliteOff, NULL, NULL);
     }
   }
 
   this->Select(false, true);
 
-  if (this->ownerContext != nullptr && this->ownerContext->controlTag == kControlTagUClu) {
+  if (this->ownerContext != NULL && this->ownerContext->controlTag == kControlTagUClu) {
     unsigned int tag = this->controlTag;
     bool match2 = false;
     if (tag < kControlTagDonf) {
@@ -79,9 +79,9 @@ char TToggleButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, C
   }
   this->Select(!isFieldWithinLimit, true);
   if (isFieldWithinLimit) {
-    this->ownerContext->HandleEvent(0x67, this, nullptr);
+    this->ownerContext->HandleEvent(0x67, this, NULL);
   } else {
-    this->ownerContext->HandleEvent(0x68, this, nullptr);
+    this->ownerContext->HandleEvent(0x68, this, NULL);
   }
   return 1;
 }

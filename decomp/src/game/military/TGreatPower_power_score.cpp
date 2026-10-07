@@ -24,7 +24,7 @@ void RecomputeNationOrderPriorityMetrics() {
     TGreatPower* nation = g_apNationStates[nationIdx];
 
     float categoryVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-    for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+    for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
       if (ship->nation == nationIdx) {
         int strengthRatio = ship->strength / ship->GetMaxStrength();
         categoryVector[0] +=

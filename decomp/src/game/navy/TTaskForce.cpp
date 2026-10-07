@@ -33,8 +33,8 @@
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 // FUNCTION: IMPERIALISM 0x00552800
 TTaskForce::TTaskForce(TZone* locationArg, short nationArg)
-    : aggression(1), shipOrders(0), target(nullptr), shipList(nullptr), flagship(nullptr),
-      location(locationArg), nation(nationArg), previousForce(nullptr), nextForce(nullptr),
+    : aggression(1), shipOrders(0), target(NULL), shipList(NULL), flagship(NULL),
+      location(locationArg), nation(nationArg), previousForce(NULL), nextForce(NULL),
       ingotTileIndex(-1) {
   memset(shipCountsByToolbarSlot, 0, sizeof(shipCountsByToolbarSlot));
 }
@@ -70,8 +70,8 @@ void TTaskForce::LinkTo(TTaskForce* prev_node, TTaskForce* next_node) {
 
 // FUNCTION: IMPERIALISM 0x00552930
 void TTaskForce::Free() {
-  while (shipList != nullptr) {
-    shipList->payload->taskForce = nullptr;
+  while (shipList != NULL) {
+    shipList->payload->taskForce = NULL;
     shipList = shipList->DeleteMapOrderChildLinkAndReturnNext();
   }
 
@@ -79,19 +79,19 @@ void TTaskForce::Free() {
   if (g_pNavyOrderManager->orderQueueHead == this) {
     g_pNavyOrderManager->orderQueueHead = nextForce;
   }
-  if (previousForce != nullptr) {
+  if (previousForce != NULL) {
     previousForce->nextForce = nextForce;
   }
-  if (nextForce != nullptr) {
+  if (nextForce != NULL) {
     nextForce->previousForce = previousForce;
   }
-  previousForce = nullptr;
-  nextForce = nullptr;
+  previousForce = NULL;
+  nextForce = NULL;
 
   g_pActiveMapOrderContext->ForgetForce(this);
 
   TGreatPower* nationState = g_apNationStates[nation];
-  if (nationState != nullptr && nationState->IsKindOf(RUNTIME_CLASS(TAutoGreatPower))) {
+  if (nationState != NULL && nationState->IsKindOf(RUNTIME_CLASS(TAutoGreatPower))) {
     TAutoGreatPower* autoNation = static_cast<TAutoGreatPower*>(nationState);
     CIterator missionIter(autoNation->missionQueue);
     for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
@@ -257,8 +257,7 @@ void TTaskForce::OrderEvade() {
 
   TTaskForce* head = g_pNavyOrderManager->orderQueueHead;
   bool alreadyQueued = false;
-  for (TTaskForce* queuedEntry = head; queuedEntry != nullptr;
-       queuedEntry = queuedEntry->nextForce) {
+  for (TTaskForce* queuedEntry = head; queuedEntry != NULL; queuedEntry = queuedEntry->nextForce) {
     if (queuedEntry == this) {
       alreadyQueued = true;
       break;
@@ -267,7 +266,7 @@ void TTaskForce::OrderEvade() {
 
   if (!alreadyQueued) {
     int childCount = 0;
-    for (TMapOrderChildLinkNode* countNode = shipList; countNode != nullptr;
+    for (TMapOrderChildLinkNode* countNode = shipList; countNode != NULL;
          countNode = countNode->next) {
       ++childCount;
     }
@@ -277,15 +276,15 @@ void TTaskForce::OrderEvade() {
       return;
     }
 
-    if (previousForce != nullptr) {
+    if (previousForce != NULL) {
       previousForce->nextForce = nextForce;
     }
-    if (nextForce != nullptr) {
+    if (nextForce != NULL) {
       nextForce->previousForce = previousForce;
     }
-    previousForce = nullptr;
+    previousForce = NULL;
     nextForce = head;
-    if (head != nullptr) {
+    if (head != NULL) {
       head->previousForce = this;
     }
     g_pNavyOrderManager->orderQueueHead = this;
@@ -304,8 +303,7 @@ void TTaskForce::OrderPatrol(bool useType4) {
 
   TTaskForce* head = g_pNavyOrderManager->orderQueueHead;
   bool alreadyQueued = false;
-  for (TTaskForce* queuedEntry = head; queuedEntry != nullptr;
-       queuedEntry = queuedEntry->nextForce) {
+  for (TTaskForce* queuedEntry = head; queuedEntry != NULL; queuedEntry = queuedEntry->nextForce) {
     if (queuedEntry == this) {
       alreadyQueued = true;
       break;
@@ -314,7 +312,7 @@ void TTaskForce::OrderPatrol(bool useType4) {
 
   if (!alreadyQueued) {
     int childCount = 0;
-    for (TMapOrderChildLinkNode* countNode = shipList; countNode != nullptr;
+    for (TMapOrderChildLinkNode* countNode = shipList; countNode != NULL;
          countNode = countNode->next) {
       ++childCount;
     }
@@ -324,15 +322,15 @@ void TTaskForce::OrderPatrol(bool useType4) {
       return;
     }
 
-    if (previousForce != nullptr) {
+    if (previousForce != NULL) {
       previousForce->nextForce = nextForce;
     }
-    if (nextForce != nullptr) {
+    if (nextForce != NULL) {
       nextForce->previousForce = previousForce;
     }
-    previousForce = nullptr;
+    previousForce = NULL;
     nextForce = head;
-    if (head != nullptr) {
+    if (head != NULL) {
       head->previousForce = this;
     }
     g_pNavyOrderManager->orderQueueHead = this;
@@ -351,8 +349,7 @@ void TTaskForce::OrderSail(TZone* orderTarget) {
 
   TTaskForce* head = g_pNavyOrderManager->orderQueueHead;
   bool alreadyQueued = false;
-  for (TTaskForce* queuedEntry = head; queuedEntry != nullptr;
-       queuedEntry = queuedEntry->nextForce) {
+  for (TTaskForce* queuedEntry = head; queuedEntry != NULL; queuedEntry = queuedEntry->nextForce) {
     if (queuedEntry == this) {
       alreadyQueued = true;
       break;
@@ -361,7 +358,7 @@ void TTaskForce::OrderSail(TZone* orderTarget) {
 
   if (!alreadyQueued) {
     int childCount = 0;
-    for (TMapOrderChildLinkNode* countNode = shipList; countNode != nullptr;
+    for (TMapOrderChildLinkNode* countNode = shipList; countNode != NULL;
          countNode = countNode->next) {
       ++childCount;
     }
@@ -371,15 +368,15 @@ void TTaskForce::OrderSail(TZone* orderTarget) {
       return;
     }
 
-    if (previousForce != nullptr) {
+    if (previousForce != NULL) {
       previousForce->nextForce = nextForce;
     }
-    if (nextForce != nullptr) {
+    if (nextForce != NULL) {
       nextForce->previousForce = previousForce;
     }
-    previousForce = nullptr;
+    previousForce = NULL;
     nextForce = head;
-    if (head != nullptr) {
+    if (head != NULL) {
       head->previousForce = this;
     }
     g_pNavyOrderManager->orderQueueHead = this;
@@ -393,7 +390,7 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
   pContextAnchor->PropagateMapActionContextDistanceLevelsRecursive(-1);
 
   int minPriority = 10000;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (node->active != 0) {
       short priority = g_NavyOrderResourceDescriptorTable[node->payload->type].SailingSpeed();
       if (priority < minPriority) {
@@ -415,7 +412,7 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
         if (candidate->distanceLevel < current->distanceLevel) {
           TZone* better = (index < static_cast<unsigned int>(current->primaryNeighbors.Count()))
                               ? current->primaryNeighbors[index]
-                              : nullptr;
+                              : NULL;
           target = better;
           break;
         }
@@ -425,16 +422,16 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
   }
 
   shipOrders = 1;
-  flagship = nullptr;
+  flagship = NULL;
 
-  for (TMapOrderChildLinkNode* pruneNode = shipList; pruneNode != nullptr;) {
+  for (TMapOrderChildLinkNode* pruneNode = shipList; pruneNode != NULL;) {
     if (pruneNode->active != 0) {
       pruneNode = pruneNode->next;
       continue;
     }
 
     TShip* child = pruneNode->payload;
-    child->SetTaskForce(nullptr);
+    child->SetTaskForce(NULL);
 
     short bucketIndex =
         static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].ToolbarSlot());
@@ -467,8 +464,7 @@ void TTaskForce::OrderBlockade(TZone* orderTarget) {
 
   TTaskForce* head = g_pNavyOrderManager->orderQueueHead;
   bool alreadyQueued = false;
-  for (TTaskForce* queuedEntry = head; queuedEntry != nullptr;
-       queuedEntry = queuedEntry->nextForce) {
+  for (TTaskForce* queuedEntry = head; queuedEntry != NULL; queuedEntry = queuedEntry->nextForce) {
     if (queuedEntry == this) {
       alreadyQueued = true;
       break;
@@ -477,7 +473,7 @@ void TTaskForce::OrderBlockade(TZone* orderTarget) {
 
   if (!alreadyQueued) {
     int childCount = 0;
-    for (TMapOrderChildLinkNode* countNode = shipList; countNode != nullptr;
+    for (TMapOrderChildLinkNode* countNode = shipList; countNode != NULL;
          countNode = countNode->next) {
       ++childCount;
     }
@@ -487,15 +483,15 @@ void TTaskForce::OrderBlockade(TZone* orderTarget) {
       return;
     }
 
-    if (previousForce != nullptr) {
+    if (previousForce != NULL) {
       previousForce->nextForce = nextForce;
     }
-    if (nextForce != nullptr) {
+    if (nextForce != NULL) {
       nextForce->previousForce = previousForce;
     }
-    previousForce = nullptr;
+    previousForce = NULL;
     nextForce = head;
-    if (head != nullptr) {
+    if (head != NULL) {
       head->previousForce = this;
     }
     g_pNavyOrderManager->orderQueueHead = this;
@@ -515,8 +511,7 @@ void TTaskForce::OrderSendInTheMarines(Province* orderTarget) {
 
   TTaskForce* head = g_pNavyOrderManager->orderQueueHead;
   bool alreadyQueued = false;
-  for (TTaskForce* queuedEntry = head; queuedEntry != nullptr;
-       queuedEntry = queuedEntry->nextForce) {
+  for (TTaskForce* queuedEntry = head; queuedEntry != NULL; queuedEntry = queuedEntry->nextForce) {
     if (queuedEntry == this) {
       alreadyQueued = true;
       break;
@@ -525,7 +520,7 @@ void TTaskForce::OrderSendInTheMarines(Province* orderTarget) {
 
   if (!alreadyQueued) {
     int childCount = 0;
-    for (TMapOrderChildLinkNode* countNode = shipList; countNode != nullptr;
+    for (TMapOrderChildLinkNode* countNode = shipList; countNode != NULL;
          countNode = countNode->next) {
       ++childCount;
     }
@@ -535,15 +530,15 @@ void TTaskForce::OrderSendInTheMarines(Province* orderTarget) {
       return;
     }
 
-    if (previousForce != nullptr) {
+    if (previousForce != NULL) {
       previousForce->nextForce = nextForce;
     }
-    if (nextForce != nullptr) {
+    if (nextForce != NULL) {
       nextForce->previousForce = previousForce;
     }
-    previousForce = nullptr;
+    previousForce = NULL;
     nextForce = head;
-    if (head != nullptr) {
+    if (head != NULL) {
       head->previousForce = this;
     }
     g_pNavyOrderManager->orderQueueHead = this;
@@ -554,13 +549,13 @@ void TTaskForce::OrderSendInTheMarines(Province* orderTarget) {
 
 // FUNCTION: IMPERIALISM 0x005539c0
 void TTaskForce::MaxOut(unsigned char mode) {
-  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->next) {
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != NULL; ship = ship->next) {
     if (ship->location == location && ship->nation == nation && ship->taskForce == 0) {
       Add(ship);
     }
   }
 
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     // Same node+0x34 overrun documented on Add.
     node->active = !(mode == 0 && node->payload->selection != 0);
   }
@@ -568,20 +563,20 @@ void TTaskForce::MaxOut(unsigned char mode) {
 
 // FUNCTION: IMPERIALISM 0x00553a50
 void TTaskForce::DropShips(bool reserveExtraSlot) {
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (node->active != 0) {
       // Same node+0x34 overrun documented on Add.
       node->payload->selection = reserveExtraSlot ? 1u : 2u;
     }
   }
 
-  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->next) {
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != NULL; ship = ship->next) {
     if (ship->location == location && ship->nation == nation && ship->taskForce == 0) {
       Add(ship);
     }
   }
 
-  for (TMapOrderChildLinkNode* recheckNode = shipList; recheckNode != nullptr;
+  for (TMapOrderChildLinkNode* recheckNode = shipList; recheckNode != NULL;
        recheckNode = recheckNode->next) {
     recheckNode->active = recheckNode->payload->selection == 0;
   }
@@ -589,7 +584,7 @@ void TTaskForce::DropShips(bool reserveExtraSlot) {
 
 // FUNCTION: IMPERIALISM 0x00553b10
 bool TTaskForce::IsEmpty() const {
-  if (this == nullptr) {
+  if (this == NULL) {
     return true;
   }
   return shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[1] + shipCountsByToolbarSlot[2] +
@@ -599,12 +594,12 @@ bool TTaskForce::IsEmpty() const {
 
 // FUNCTION: IMPERIALISM 0x00553b50
 bool TTaskForce::NoSelection() const {
-  if (this == nullptr || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[1] +
-                                 shipCountsByToolbarSlot[2] + shipCountsByToolbarSlot[3] ==
-                             0) {
+  if (this == NULL || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[1] +
+                              shipCountsByToolbarSlot[2] + shipCountsByToolbarSlot[3] ==
+                          0) {
     return true;
   }
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (node->active != 0) {
       return false;
     }
@@ -671,7 +666,7 @@ void TTaskForce::Add(TShip* node) {
 
   node->taskForce = this;
 
-  if (this != nullptr) {
+  if (this != NULL) {
     AssertValid();
 
     node->aggression = aggression;
@@ -715,8 +710,8 @@ void TTaskForce::Remove(TShip* ship) {
 
 // FUNCTION: IMPERIALISM 0x00553e30
 void TTaskForce::ElectFlagship() {
-  flagship = nullptr;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  flagship = NULL;
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     flagship = node->payload->Finest(flagship, false);
   }
 }
@@ -724,34 +719,34 @@ void TTaskForce::ElectFlagship() {
 // FUNCTION: IMPERIALISM 0x00553e70
 void TTaskForce::Victory(int experienceGain) {
   short shipCount = 0;
-  if (this != nullptr) {
-    for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  if (this != NULL) {
+    for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
       ++shipCount;
     }
   }
   int perShipGain = experienceGain * 3 / shipCount;
 
-  TAdmiral* admiral = nullptr;
-  if (this != nullptr && flagship != nullptr) {
+  TAdmiral* admiral = NULL;
+  if (this != NULL && flagship != NULL) {
     admiral = flagship->admiral;
   }
-  if (admiral != nullptr) {
+  if (admiral != NULL) {
     admiral->Victory(static_cast<short>(experienceGain));
   }
 
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     node->payload->Victory(static_cast<short>(perShipGain));
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00553f10
 void TTaskForce::FreeAvailables() {
-  flagship = nullptr;
+  flagship = NULL;
   TMapOrderChildLinkNode* node = shipList;
-  while (node != nullptr) {
+  while (node != NULL) {
     if (node->active == 0) {
       TShip* entry = node->payload;
-      entry->taskForce = nullptr;
+      entry->taskForce = NULL;
 
       short bucketIndex =
           static_cast<short>(g_NavyOrderResourceDescriptorTable[entry->type].ToolbarSlot());
@@ -767,8 +762,8 @@ void TTaskForce::FreeAvailables() {
     }
   }
 
-  flagship = nullptr;
-  for (node = shipList; node != nullptr; node = node->next) {
+  flagship = NULL;
+  for (node = shipList; node != NULL; node = node->next) {
     flagship = node->payload->Finest(flagship, false);
   }
 }
@@ -908,7 +903,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
 // FUNCTION: IMPERIALISM 0x00554300
 int TTaskForce::MouseCodeForTarget(TZone* candidate) const {
   TZone* activeContext = location;
-  if (candidate == nullptr || activeContext == candidate) {
+  if (candidate == NULL || activeContext == candidate) {
     return activeContext->QueryPortZoneCapability() ? 0x0c : 1;
   }
   if (!candidate->QueryPortZoneCapability()) {
@@ -934,18 +929,18 @@ char TTaskForce::MouseCodeForTarget(Province* province) const {
 
 // FUNCTION: IMPERIALISM 0x005544a0
 bool TTaskForce::IsValidTarget(TZone* candidate) {
-  if (candidate == nullptr) {
+  if (candidate == NULL) {
     return false;
   }
 
-  bool noSelection = (this == nullptr) || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[3] +
-                                                  shipCountsByToolbarSlot[1] +
-                                                  shipCountsByToolbarSlot[2] ==
-                                              0;
+  bool noSelection = (this == NULL) || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[3] +
+                                               shipCountsByToolbarSlot[1] +
+                                               shipCountsByToolbarSlot[2] ==
+                                           0;
   if (!noSelection) {
     noSelection = true;
     TMapOrderChildLinkNode* node = shipList;
-    while (node != nullptr) {
+    while (node != NULL) {
       if (node->active != 0) {
         noSelection = false;
         break;
@@ -958,7 +953,7 @@ bool TTaskForce::IsValidTarget(TZone* candidate) {
   }
 
   unsigned short worstSpeed = 10000;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (node->active != 0) {
       short speed = g_NavyOrderResourceDescriptorTable[node->payload->type].SailingSpeed();
       if (speed < static_cast<short>(worstSpeed)) {
@@ -974,15 +969,15 @@ bool TTaskForce::IsValidTarget(TZone* candidate) {
 
 // FUNCTION: IMPERIALISM 0x00554590
 unsigned int TTaskForce::IsValidTarget(Province* province) {
-  if (province == nullptr) {
+  if (province == NULL) {
     return 0;
   }
-  bool noneQueued = (this == nullptr) || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[1] +
-                                                 shipCountsByToolbarSlot[2] +
-                                                 shipCountsByToolbarSlot[3] ==
-                                             0;
+  bool noneQueued = (this == NULL) || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[1] +
+                                              shipCountsByToolbarSlot[2] +
+                                              shipCountsByToolbarSlot[3] ==
+                                          0;
   if (!noneQueued) {
-    for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+    for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
       if (node->active != 0) {
         return province->navyOrderReachable;
       }
@@ -1080,7 +1075,7 @@ void TTaskForce::CancelOrders(unsigned char cancellationMode) {
 void TTaskForce::DemocraticallyDetermineAggressionLevel() {
   int sum = 0;
   int count = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     sum += node->payload->aggression;
     ++count;
   }
@@ -1094,7 +1089,7 @@ void TTaskForce::DemocraticallyDetermineAggressionLevel() {
 // FUNCTION: IMPERIALISM 0x00554930
 void TTaskForce::Select(short toolbarSlot, unsigned char activeFlag) {
   TMapOrderChildLinkNode* node = shipList;
-  if (node == nullptr) {
+  if (node == NULL) {
     return;
   }
   while (
@@ -1102,7 +1097,7 @@ void TTaskForce::Select(short toolbarSlot, unsigned char activeFlag) {
           toolbarSlot ||
       node->active == activeFlag) {
     node = node->next;
-    if (node == nullptr) {
+    if (node == NULL) {
       return;
     }
   }
@@ -1115,14 +1110,14 @@ void TTaskForce::Select(short toolbarSlot, unsigned char activeFlag) {
 // FUNCTION: IMPERIALISM 0x005549a0
 void TTaskForce::Select(TShip* ship, bool activeFlag) {
   TMapOrderChildLinkNode* node;
-  if (shipList == nullptr) {
-    node = nullptr;
+  if (shipList == NULL) {
+    node = NULL;
   } else if (shipList->payload == ship) {
     node = shipList;
   } else {
     node = shipList->next->FindNodeMatching(ship);
   }
-  if (node != nullptr) {
+  if (node != NULL) {
     node->active = activeFlag;
     if (activeFlag) {
       ship->selection = 0;
@@ -1143,7 +1138,7 @@ int TTaskForce::GetInvasionCapacity() const {
 // FUNCTION: IMPERIALISM 0x00554a30
 int TTaskForce::GetSelected(short nationClass) const {
   int count = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (static_cast<short>(g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot()) ==
             nationClass &&
         node->active != 0) {
@@ -1156,7 +1151,7 @@ int TTaskForce::GetSelected(short nationClass) const {
 // FUNCTION: IMPERIALISM 0x00554a80
 unsigned int TTaskForce::GetWorstSpeed() const {
   unsigned int minWeight = 10000;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (node->active != 0 &&
         g_NavyOrderResourceDescriptorTable[node->payload->type].SailingSpeed() <
             static_cast<int>(minWeight)) {
@@ -1170,7 +1165,7 @@ unsigned int TTaskForce::GetWorstSpeed() const {
 int TTaskForce::GetDeciSpeed() const {
   int sum = 0;
   int count = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (node->active != 0) {
       sum += g_NavyOrderResourceDescriptorTable[node->payload->type].SailingSpeed();
       ++count;
@@ -1212,7 +1207,7 @@ void TTaskForce::GetCompositionDescription(CString* out) const {
 // FUNCTION: IMPERIALISM 0x00554c90
 void TTaskForce::GetSnooperDescription(CString* out) const {
   int childCount = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     ++childCount;
   }
 
@@ -1284,12 +1279,12 @@ void TTaskForce::GetGeneralDescription(CString* out) const {
 
 // FUNCTION: IMPERIALISM 0x00555090
 TTaskForce* TTaskForce::RemoveStragglers() {
-  if (this == nullptr) {
-    return nullptr;
+  if (this == NULL) {
+    return NULL;
   }
 
   short childCount = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     ++childCount;
   }
 
@@ -1366,7 +1361,7 @@ bool TTaskForce::Encounter(TTaskForce* other) {
   if (CountShips() == 0) {
     return false;
   }
-  if (other == nullptr || other->CountShips() == 0) {
+  if (other == NULL || other->CountShips() == 0) {
     return false;
   }
 
@@ -1376,7 +1371,7 @@ bool TTaskForce::Encounter(TTaskForce* other) {
   } else {
     int sum = 0;
     int count = 0;
-    for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+    for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
       if (node->active != 0) {
         sum += g_NavyOrderResourceDescriptorTable[node->payload->type].SailingSpeed();
         ++count;
@@ -1436,18 +1431,18 @@ bool TTaskForce::Encounter(TTaskForce* other) {
 // FUNCTION: IMPERIALISM 0x00555720
 bool TTaskForce::TryToSpot(const TTaskForce* other) const {
   short thisShipCount = 0;
-  for (TMapOrderChildLinkNode* countNode = shipList; countNode != nullptr;
+  for (TMapOrderChildLinkNode* countNode = shipList; countNode != NULL;
        countNode = countNode->next) {
     ++thisShipCount;
   }
   if (thisShipCount == 0) {
     return false;
   }
-  if (other == nullptr) {
+  if (other == NULL) {
     return false;
   }
   short otherShipCount = 0;
-  for (TMapOrderChildLinkNode* otherCountNode = other->shipList; otherCountNode != nullptr;
+  for (TMapOrderChildLinkNode* otherCountNode = other->shipList; otherCountNode != NULL;
        otherCountNode = otherCountNode->next) {
     ++otherShipCount;
   }
@@ -1460,7 +1455,7 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
 
   int sum = 0;
   int count = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (node->active != 0) {
       sum += g_NavyOrderResourceDescriptorTable[node->payload->type].SailingSpeed();
       ++count;
@@ -1469,7 +1464,7 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
   short thisAverage = (count == 0) ? 0 : static_cast<short>((sum * 10) / count);
   int otherSum = 0;
   int otherCount = 0;
-  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != nullptr;
+  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != NULL;
        otherNode = otherNode->next) {
     if (otherNode->active != 0) {
       otherSum += g_NavyOrderResourceDescriptorTable[otherNode->payload->type].SailingSpeed();
@@ -1479,12 +1474,12 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
   short otherAverage = (otherCount == 0) ? 0 : static_cast<short>((otherSum * 10) / otherCount);
   short threshold = static_cast<short>(thisAverage - otherAverage + 0x32);
   thisShipCount = 0;
-  for (TMapOrderChildLinkNode* recountNode = shipList; recountNode != nullptr;
+  for (TMapOrderChildLinkNode* recountNode = shipList; recountNode != NULL;
        recountNode = recountNode->next) {
     ++thisShipCount;
   }
   otherShipCount = 0;
-  for (TMapOrderChildLinkNode* otherRecountNode = other->shipList; otherRecountNode != nullptr;
+  for (TMapOrderChildLinkNode* otherRecountNode = other->shipList; otherRecountNode != NULL;
        otherRecountNode = otherRecountNode->next) {
     ++otherShipCount;
   }
@@ -1500,11 +1495,11 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
 bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
   const int priorityWeight[3] = {200, 100, 50};
   int thisTotal = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     thisTotal += node->payload->GetBattleStrengthRating();
   }
   int otherTotal = 0;
-  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != nullptr;
+  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != NULL;
        otherNode = otherNode->next) {
     otherTotal += otherNode->payload->GetBattleStrengthRating();
   }
@@ -1512,8 +1507,8 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
   if (static_cast<int>(static_cast<short>(thisTotal)) * 100 <
       priorityWeight[aggression] * static_cast<int>(static_cast<short>(otherTotal))) {
     int refreshedOtherTotal = 0;
-    for (TMapOrderChildLinkNode* refreshedOtherNodeA = other->shipList;
-         refreshedOtherNodeA != nullptr; refreshedOtherNodeA = refreshedOtherNodeA->next) {
+    for (TMapOrderChildLinkNode* refreshedOtherNodeA = other->shipList; refreshedOtherNodeA != NULL;
+         refreshedOtherNodeA = refreshedOtherNodeA->next) {
       refreshedOtherTotal += refreshedOtherNodeA->payload->GetBattleStrengthRating();
     }
     int thisAggregateScore = GetBattleStrengthRating();
@@ -1525,7 +1520,7 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
     }
 
     unsigned int minWeight = 10000;
-    for (TMapOrderChildLinkNode* speedNode = shipList; speedNode != nullptr;
+    for (TMapOrderChildLinkNode* speedNode = shipList; speedNode != NULL;
          speedNode = speedNode->next) {
       if (speedNode->active != 0 &&
           g_NavyOrderResourceDescriptorTable[speedNode->payload->type].SailingSpeed() <
@@ -1545,12 +1540,12 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
   }
 
   int refreshedOtherTotal = 0;
-  for (TMapOrderChildLinkNode* refreshedOtherNodeB = other->shipList;
-       refreshedOtherNodeB != nullptr; refreshedOtherNodeB = refreshedOtherNodeB->next) {
+  for (TMapOrderChildLinkNode* refreshedOtherNodeB = other->shipList; refreshedOtherNodeB != NULL;
+       refreshedOtherNodeB = refreshedOtherNodeB->next) {
     refreshedOtherTotal += refreshedOtherNodeB->payload->GetBattleStrengthRating();
   }
   int refreshedThisTotal = 0;
-  for (TMapOrderChildLinkNode* refreshedThisNode = shipList; refreshedThisNode != nullptr;
+  for (TMapOrderChildLinkNode* refreshedThisNode = shipList; refreshedThisNode != NULL;
        refreshedThisNode = refreshedThisNode->next) {
     refreshedThisTotal += refreshedThisNode->payload->GetBattleStrengthRating();
   }
@@ -1571,7 +1566,7 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
 // FUNCTION: IMPERIALISM 0x00555c20
 bool TTaskForce::AttemptToEvade(const TTaskForce* other) {
   unsigned short minDescriptorWeight = 10000;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     if (node->active != 0) {
       short weight = static_cast<short>(
           g_NavyOrderResourceDescriptorTable[node->payload->type].SailingSpeed());
@@ -1583,7 +1578,7 @@ bool TTaskForce::AttemptToEvade(const TTaskForce* other) {
 
   int sum = 0;
   int count = 0;
-  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != nullptr;
+  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != NULL;
        otherNode = otherNode->next) {
     if (otherNode->active != 0) {
       sum += g_NavyOrderResourceDescriptorTable[otherNode->payload->type].SailingSpeed();
@@ -1605,15 +1600,15 @@ bool TTaskForce::AttemptToEvade(const TTaskForce* other) {
 // FUNCTION: IMPERIALISM 0x00555d10
 bool TTaskForce::BattleWith(TTaskForce* other, TTaskForce*& unresolvedForce) {
   short thisShipCount = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     ++thisShipCount;
   }
   if (thisShipCount == 0) {
     return false;
   }
   short otherShipCount = 0;
-  if (other != nullptr) {
-    for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != nullptr;
+  if (other != NULL) {
+    for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != NULL;
          otherNode = otherNode->next) {
       ++otherShipCount;
     }
@@ -1635,7 +1630,7 @@ bool TTaskForce::BattleWith(TTaskForce* other, TTaskForce*& unresolvedForce) {
 bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
   const int priorityWeight[3] = {200, 100, 50};
   int thisSum = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     short resourceType = ship->type;
     short strengthBucket = static_cast<short>(ship->experience / 100);
@@ -1651,7 +1646,7 @@ bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
   }
 
   int otherSum = 0;
-  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != nullptr;
+  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != NULL;
        otherNode = otherNode->next) {
     TShip* ship = otherNode->payload;
     short resourceType = ship->type;
@@ -1673,7 +1668,7 @@ bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
 // FUNCTION: IMPERIALISM 0x00556010
 int TTaskForce::GetBattleStrengthRating() const {
   int total = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     short resourceType = ship->type;
     short strengthBucket = static_cast<short>(ship->experience / 100);
@@ -1697,7 +1692,7 @@ void TTaskForce::CarryOutOrders() {
   }
   switch (shipOrders) {
   case 1: {
-    for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+    for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
       node->payload->location = static_cast<TZone*>(target);
     }
     return;
@@ -1712,7 +1707,7 @@ void TTaskForce::CarryOutOrders() {
     break;
   }
   case 8: {
-    for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+    for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
       TShip* child = node->payload;
       child->strength = static_cast<s16>(
           child->strength + g_NavyOrderResourceDescriptorTable[child->type].HullPoints() / 4);
@@ -1762,11 +1757,11 @@ bool TTaskForce::AllShipsSelected() const {
 
 // FUNCTION: IMPERIALISM 0x005562c0
 short TTaskForce::CountShips() const {
-  if (this == nullptr) {
+  if (this == NULL) {
     return 0;
   }
   int count = 0;
-  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = shipList; node != NULL; node = node->next) {
     ++count;
   }
   return count;
@@ -1802,11 +1797,11 @@ TTaskForce* TTaskForce::GetNth(short index) {
 // FUNCTION: IMPERIALISM 0x00556380
 TTaskForce* TTaskForce::GetNationalNth(short nth, short nation) {
   if (nth == -1) {
-    return nullptr;
+    return NULL;
   }
 
   int nationalIndex = 0;
-  for (TTaskForce* force = g_pNavyOrderManager->orderQueueHead; force != nullptr;
+  for (TTaskForce* force = g_pNavyOrderManager->orderQueueHead; force != NULL;
        force = force->nextForce) {
     if (force->nation == nation) {
       if (nationalIndex == nth) {
@@ -1815,16 +1810,16 @@ TTaskForce* TTaskForce::GetNationalNth(short nth, short nation) {
       ++nationalIndex;
     }
   }
-  return nullptr;
+  return NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x005563d0
 int TTaskForce::GetNationalIndex() const {
-  if (this == nullptr) {
+  if (this == NULL) {
     return -1;
   }
   int rank = 0;
-  for (TTaskForce* node = g_pNavyOrderManager->orderQueueHead; node != nullptr;
+  for (TTaskForce* node = g_pNavyOrderManager->orderQueueHead; node != NULL;
        node = node->nextForce) {
     if (this == node) {
       return rank;
@@ -1877,7 +1872,7 @@ void TTaskForce::DestroyIngot() {
 
 // FUNCTION: IMPERIALISM 0x00556820
 void TTaskForce::FreeAll() {
-  if (this == nullptr) {
+  if (this == NULL) {
     return;
   }
   nextForce->FreeAll();
@@ -1886,7 +1881,7 @@ void TTaskForce::FreeAll() {
 
 // FUNCTION: IMPERIALISM 0x00557870
 void TTaskForce::RechargeAll() {
-  for (TTaskForce* node = this; node != nullptr; node = node->nextForce) {
+  for (TTaskForce* node = this; node != NULL; node = node->nextForce) {
     node->defeated = 0;
   }
 }

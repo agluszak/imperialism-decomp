@@ -76,14 +76,14 @@ void TScatteredShipsMission::CalculateNeeds() {
 
 // FUNCTION: IMPERIALISM 0x0053bcc0
 bool TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
-  return missionType == kMissionTypeScatteredShips && zoneContext == nullptr && key == -1;
+  return missionType == kMissionTypeScatteredShips && zoneContext == NULL && key == -1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053bd00
 TZone* AdvanceZoneCursorToPrevOrWrapToHead(TZone** cursor) {
   TZone* next = (*cursor)->prev18;
   *cursor = next;
-  if (next == nullptr) {
+  if (next == NULL) {
     *cursor = g_pMapActionContextListHead;
   }
   return next;
@@ -92,14 +92,14 @@ TZone* AdvanceZoneCursorToPrevOrWrapToHead(TZone** cursor) {
 // FUNCTION: IMPERIALISM 0x0053bd30
 TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNode* head) {
   TMapOrderChildLinkNode* best = head;
-  while (best != nullptr && best->active != 0) {
+  while (best != NULL && best->active != 0) {
     best = best->next;
   }
-  if (best == nullptr) {
-    return nullptr;
+  if (best == NULL) {
+    return NULL;
   }
 
-  for (TMapOrderChildLinkNode* candidate = best->next; candidate != nullptr;
+  for (TMapOrderChildLinkNode* candidate = best->next; candidate != NULL;
        candidate = candidate->next) {
     if (candidate->active == 0) {
       TShip* bestShip = best->payload;
@@ -120,7 +120,7 @@ TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNod
 
 // FUNCTION: IMPERIALISM 0x0053bdd0
 void TScatteredShipsMission::GiveOrders() {
-  if (orderList != nullptr) {
+  if (orderList != NULL) {
     orderList->active = 0;
     orderList->next->SetChainActiveFlag(0);
   }
@@ -128,34 +128,34 @@ void TScatteredShipsMission::GiveOrders() {
   int stepCount = static_cast<int>(g_pSimMgr->GetEconomicTurn()) % 50;
 
   TZone* zone = g_pMapActionContextListHead;
-  while (zone != nullptr) {
+  while (zone != NULL) {
     if (!zone->QueryPortZoneCapability() && zone->HasSecondaryNeighborWithNationTag(nationId)) {
       break;
     }
     zone = zone->prev18;
   }
-  if (zone == nullptr) {
+  if (zone == NULL) {
     return;
   }
 
   TZone* current = g_pMapActionContextListHead;
   while (stepCount-- != 0) {
     TZone* nextZone = current->prev18;
-    current = (nextZone != nullptr) ? nextZone : g_pMapActionContextListHead;
+    current = (nextZone != NULL) ? nextZone : g_pMapActionContextListHead;
   }
 
   while (true) {
     if (!current->QueryPortZoneCapability() &&
         current->HasSecondaryNeighborWithNationTag(nationId)) {
       TMapOrderChildLinkNode* best = orderList;
-      while (best != nullptr && best->active != 0) {
+      while (best != NULL && best->active != 0) {
         best = best->next;
       }
-      if (best == nullptr) {
+      if (best == NULL) {
         return;
       }
 
-      for (TMapOrderChildLinkNode* candidate = best->next; candidate != nullptr;
+      for (TMapOrderChildLinkNode* candidate = best->next; candidate != NULL;
            candidate = candidate->next) {
         if (candidate->active == 0) {
           TZone* candidateZone = candidate->payload->location;
@@ -171,7 +171,7 @@ void TScatteredShipsMission::GiveOrders() {
 
       best->active = 1;
       TShip* target = best->payload;
-      if (target == nullptr) {
+      if (target == NULL) {
         return;
       }
       if (target->location != current) {
@@ -180,11 +180,11 @@ void TScatteredShipsMission::GiveOrders() {
     }
 
     TZone* nextZone = current->prev18;
-    current = (nextZone != nullptr) ? nextZone : g_pMapActionContextListHead;
+    current = (nextZone != NULL) ? nextZone : g_pMapActionContextListHead;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053bf90
 TZone* TScatteredShipsMission::RefreshMissionPortZoneContextForNation() {
-  return nullptr;
+  return NULL;
 }

@@ -54,17 +54,17 @@ void TAttackProvinceMission::Free() {
   CIterator iter(orderList);
   void* current = iter.Reset();
   while (iter.More()) {
-    static_cast<TMilitaryUnit*>(current)->ownerMission = nullptr;
+    static_cast<TMilitaryUnit*>(current)->ownerMission = NULL;
     current = iter.Advance();
   }
 
   orderList->RemoveAll();
-  if (orderList != nullptr) {
+  if (orderList != NULL) {
     orderList->FreePayloadsAndDestroy();
   }
-  orderList = nullptr;
+  orderList = NULL;
 
-  if (this != nullptr) {
+  if (this != NULL) {
     delete this;
   }
 }
@@ -246,7 +246,7 @@ TMission* TAttackProvinceMission::GetReplacement() {
     TryResolveTargetTerrainClass();
   }
   if (presentLocation == -1) {
-    return nullptr;
+    return NULL;
   }
 
   short targetOwnerNation = g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode;
@@ -274,12 +274,12 @@ TMission* TAttackProvinceMission::GetReplacement() {
   }
 
   if (!retarget) {
-    return nullptr;
+    return NULL;
   }
 
   if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId) &&
       !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, targetOwnerNation)) {
-    return nullptr;
+    return NULL;
   }
   return this;
 }
@@ -327,7 +327,7 @@ void TAttackProvinceMission::CalculateNeeds() {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   if (targetProvince >= 0 && targetProvince <= 0x17f) {
     for (TMilitaryUnit* unit = g_pGlobalMapState->cityScoreTable[targetProvince].stationedUnitChain;
-         unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
+         unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
       AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
                                                     static_cast<float>(unitOrderWeight));
     }

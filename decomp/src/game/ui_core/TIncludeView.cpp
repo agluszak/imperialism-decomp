@@ -31,7 +31,7 @@ TIncludeView::~TIncludeView() {}
 void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* mainView,
                                                short eventCode, const CPoint& anchorPoint,
                                                CString* labelText, int flag) {
-  if (mainView != nullptr) {
+  if (mainView != NULL) {
     nativeWindow = mainView->nativeWindow;
   }
   controlTag = kControlTagSpSpSpSp;
@@ -42,7 +42,7 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
   ownerLocalY = g_turnEventDialogAnchorPoint.y;
   frameWidth = mainView->frameWidth;
   frameHeight = mainView->frameHeight;
-  if (mainView != nullptr) {
+  if (mainView != NULL) {
     mainView->AttachChildControl(this, 0);
   }
   this->resourceContext = resourceContext;
@@ -55,21 +55,21 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
 
 // FUNCTION: IMPERIALISM 0x0048cfd0
 void TIncludeView::DoPostCreate(int arg) {
-  if (turnEventCode != -1 && g_pTurnEventDialogFactoryRegistry != nullptr) {
+  if (turnEventCode != -1 && g_pTurnEventDialogFactoryRegistry != NULL) {
     TurnEventId eventCode = DecodeTurnEventCode(turnEventCode);
-    if (ownerContext != nullptr) {
+    if (ownerContext != NULL) {
       Locate(g_turnEventDialogAnchorPoint, false);
       CPoint ownerSize(ownerContext->frameWidth, ownerContext->frameHeight);
       Resize(ownerSize, false);
     }
     TView* dialog = g_pTurnEventDialogFactoryRegistry->InvokeDialogFactoryFromPacket(
         0, this, eventCode, g_turnEventDialogAnchorPoint);
-    if (dialog == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, MB_ICONEXCLAMATION);
+    if (dialog == NULL) {
+      MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, MB_ICONEXCLAMATION);
       TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x846);
     }
   }
-  if (nativeWindow != nullptr && nativeWindow->m_hWnd != nullptr) {
+  if (nativeWindow != NULL && nativeWindow->m_hWnd != NULL) {
     SendMessageA(nativeWindow->m_hWnd, 0x4ef, 1, 0);
   }
 }

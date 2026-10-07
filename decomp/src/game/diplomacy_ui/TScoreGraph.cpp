@@ -40,7 +40,7 @@ void TScoreGraph::Draw(RECT* rectBuffer) {
 
   int rowY = 0;
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
-    if (g_apTerrainTypeDescriptorTable[nationIndex] == nullptr) {
+    if (g_apTerrainTypeDescriptorTable[nationIndex] == NULL) {
       continue;
     }
 

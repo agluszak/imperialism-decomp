@@ -67,7 +67,7 @@ void TScrollView::ScrollPage(int direction) {
 
 // FUNCTION: IMPERIALISM 0x00573f60
 void TScrollView::ScrollRelative(short horizontalDelta, short verticalDelta) {
-  if (contentView == nullptr) {
+  if (contentView == NULL) {
     return;
   }
   short heightDiff = static_cast<short>(contentView->frameHeight) - static_cast<short>(frameHeight);

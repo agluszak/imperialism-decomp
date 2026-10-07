@@ -11,8 +11,8 @@ IMPLEMENT_DYNCREATE(TPageView, TView)
 
 // FUNCTION: IMPERIALISM 0x0056f9c0
 TPageView::TPageView() {
-  this->orderedEntries = nullptr;
-  this->pageStartIndices = nullptr;
+  this->orderedEntries = NULL;
+  this->pageStartIndices = NULL;
   this->currentPage = -1;
   this->visibleColumnCount = 1;
 }
@@ -153,13 +153,13 @@ void TPageView::ResetPageLayout() {
 
 // FUNCTION: IMPERIALISM 0x0056ffe0
 void TPageView::Free() {
-  if (this->optionEntries != nullptr) {
+  if (this->optionEntries != NULL) {
     this->optionEntries->FreePayloadsAndDestroy();
   }
-  if (this->orderedEntries != nullptr) {
+  if (this->orderedEntries != NULL) {
     this->orderedEntries->FreePayloadsAndDestroy();
   }
-  if (this->pageStartIndices != nullptr) {
+  if (this->pageStartIndices != NULL) {
     this->pageStartIndices->Free();
   }
   TView::Free();

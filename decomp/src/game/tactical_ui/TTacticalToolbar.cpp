@@ -52,7 +52,7 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
       g_pMacViewMgr->tileOverlayStripWorlds[0]->GetBlitSurface();
 
   TArmyTacUnit* sideAUnit = static_cast<TArmyTacUnit*>(currentUnit);
-  if (sideAUnit != nullptr) {
+  if (sideAUnit != NULL) {
     int qualityPercent = sideAUnit->sourceUnit->experiencePercent;
     short barWidth = static_cast<short>(sideAUnit->qualityLevel) * 0xb;
     if (qualityPercent % 100 > 0x31) {
@@ -70,7 +70,7 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
   }
 
   TArmyTacUnit* sideBUnit = otherSideCurrentUnit;
-  if (sideBUnit != nullptr) {
+  if (sideBUnit != NULL) {
     short barWidth = static_cast<short>(sideBUnit->qualityLevel) * 0xb;
     int qualityPercent = sideBUnit->sourceUnit->experiencePercent;
     if (qualityPercent % 100 > 0x31) {

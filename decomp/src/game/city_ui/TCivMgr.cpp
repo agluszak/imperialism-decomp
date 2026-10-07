@@ -60,21 +60,21 @@ void TCivMgr::ClearCivilianSelectionHighlightsForNation(short nationId) {
 TCivUnit* TCivMgr::SelectFirstAvailableCivilianForNation(short nationId) {
   TSortedList* civilianList = g_apNationStates[nationId]->trackedObjectList;
   int civilianCount = civilianList->GetCount();
-  TCivUnit* candidate = nullptr;
+  TCivUnit* candidate = NULL;
   for (short ordinal = 1; ordinal <= civilianCount; ++ordinal) {
     candidate = static_cast<TCivUnit*>(civilianList->GetEntryByOrdinal(ordinal));
     if (candidate->unitOrder == kUnitOrderIdle) {
       break;
     }
-    candidate = nullptr;
+    candidate = NULL;
   }
 
-  if (candidate != nullptr) {
+  if (candidate != NULL) {
     this->DispatchSelectedUnitToGlobalMapStateHandler(candidate);
   }
   this->selectedEntry = candidate;
 
-  if (candidate != nullptr && candidate->completionMarker != -1) {
+  if (candidate != NULL && candidate->completionMarker != -1) {
     g_pSfxPlaybackSystem->PlaySoundEffect(candidate->completionMarker, 0, 1);
     if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory) {
       g_pHelpMgr->CheckUnitAdvice(candidate);
@@ -86,7 +86,7 @@ TCivUnit* TCivMgr::SelectFirstAvailableCivilianForNation(short nationId) {
 
 // FUNCTION: IMPERIALISM 0x004d2270
 void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEntry) {
-  if (pUnitOrderEntry != nullptr) {
+  if (pUnitOrderEntry != NULL) {
     switch (pUnitOrderEntry->orderType) {
     case 1:
       g_pGlobalMapState->DimByProspecting(pUnitOrderEntry);
@@ -122,7 +122,7 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
   int actionCode = 0;
   short nationId = g_pSimMgr->GetPlayerCountry();
   TCivUnit* clickedEntry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
-  if (clickedEntry != nullptr) {
+  if (clickedEntry != NULL) {
     clickedEntry =
         g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetPlayerCountry());
     if (clickedEntry->IsInIdleSelectionState()) {
@@ -138,20 +138,20 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
   TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder;
   if (actionCode == 2) {
     TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
-    if (mapUberPicture == nullptr) {
+    if (mapUberPicture == NULL) {
       return false;
     }
 
     mapUberPicture->SetMapInteractionMode(0);
     selectedEntry = tileEntry;
     DispatchSelectedUnitToGlobalMapStateHandler(tileEntry);
-    if (tileEntry != nullptr) {
+    if (tileEntry != NULL) {
       tileEntry->MoveTo(tileEntry->tileIndex);
-      if (g_pViewMgr->mapUberPicture != nullptr) {
+      if (g_pViewMgr->mapUberPicture != NULL) {
         g_pViewMgr->mapUberPicture->InvalidateTile(tileEntry->tileIndex);
       }
       mapUberPicture = g_pViewMgr->mapUberPicture;
-      if (mapUberPicture != nullptr) {
+      if (mapUberPicture != NULL) {
         static_cast<TCivToolbar*>(
             mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex])
             ->SetSelectedUnit(tileEntry);
@@ -173,7 +173,7 @@ unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTi
   CivilianTileActionCodeStorage actionCode = kCivilianTileActionNone;
   TCivUnit* entry =
       g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetPlayerCountry());
-  if (entry != nullptr) {
+  if (entry != NULL) {
     entry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetPlayerCountry());
     if (!entry->IsInIdleSelectionState()) {
       actionCode = kCivilianTileActionShowOrderReport;
@@ -216,14 +216,14 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
     TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder;
     selectedEntry = tileEntry;
     DispatchSelectedUnitToGlobalMapStateHandler(tileEntry);
-    if (tileEntry != nullptr) {
+    if (tileEntry != NULL) {
       tileEntry->MoveTo(tileEntry->tileIndex);
       TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
-      if (mapUberPicture != nullptr) {
+      if (mapUberPicture != NULL) {
         mapUberPicture->InvalidateTile(tileEntry->tileIndex);
       }
       mapUberPicture = g_pViewMgr->mapUberPicture;
-      if (mapUberPicture != nullptr) {
+      if (mapUberPicture != NULL) {
         static_cast<TCivToolbar*>(
             mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex])
             ->SetSelectedUnit(tileEntry);
@@ -294,11 +294,11 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
   }
 
   TCivUnit* selectedEntry = this->selectedEntry;
-  if (selectedEntry == nullptr) {
+  if (selectedEntry == NULL) {
     nationId = g_pSimMgr->GetPlayerCountry();
     TCivUnit* pOwnedCivilianEntry =
         g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
-    if (pOwnedCivilianEntry == nullptr) {
+    if (pOwnedCivilianEntry == NULL) {
       return kCivilianTileActionNone;
     }
     if (!g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetPlayerCountry())
@@ -312,7 +312,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
     return kCivilianTileActionSelectUnit;
   }
 
-  if ((pClickedTileUnit != nullptr) && (pClickedTileUnit != selectedEntry)) {
+  if ((pClickedTileUnit != NULL) && (pClickedTileUnit != selectedEntry)) {
     return (pClickedTileUnit->unitOrder != kUnitOrderIdle) ? kCivilianTileActionShowOrderReport
                                                            : kCivilianTileActionSelectUnit;
   }
@@ -351,7 +351,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
   }
 
   TCivUnit* orderAtTile = tile->firstCivilianOrder;
-  if (orderAtTile != nullptr) {
+  if (orderAtTile != NULL) {
     nationId = g_pSimMgr->GetPlayerCountry();
     if (orderAtTile->ownerNationSlot == nationId) {
       return orderAtTile->IsInIdleSelectionState() ? kCivilianTileActionSelectUnit
@@ -371,20 +371,20 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
 void TCivMgr::SelectUnit(TCivUnit* entryContext, bool refreshCommandPanel) {
   this->selectedEntry = entryContext;
   this->DispatchSelectedUnitToGlobalMapStateHandler(entryContext);
-  if (entryContext == nullptr) {
+  if (entryContext == NULL) {
     return;
   }
 
   entryContext->MoveTo(entryContext->tileIndex);
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
-  if (mapUberPicture != nullptr) {
+  if (mapUberPicture != NULL) {
     mapUberPicture->InvalidateTile(entryContext->tileIndex);
   }
 
   if (refreshCommandPanel) {
     mapUberPicture = g_pViewMgr->mapUberPicture;
-    if (mapUberPicture != nullptr) {
+    if (mapUberPicture != NULL) {
       static_cast<TCivToolbar*>(
           mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex])
           ->SetSelectedUnit(entryContext);
@@ -395,12 +395,12 @@ void TCivMgr::SelectUnit(TCivUnit* entryContext, bool refreshCommandPanel) {
 // FUNCTION: IMPERIALISM 0x004d2cf0
 void TCivMgr::OrderAndCycle(UnitOrder order) {
   TCivUnit* entry = this->selectedEntry;
-  if (entry != nullptr) {
+  if (entry != NULL) {
     entry->SetOrders(order, 0);
   }
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
-  if (mapUberPicture != nullptr) {
+  if (mapUberPicture != NULL) {
     mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
   }
 }
@@ -408,7 +408,7 @@ void TCivMgr::OrderAndCycle(UnitOrder order) {
 // FUNCTION: IMPERIALISM 0x004d2d30
 void TCivMgr::DisbandSelected() {
   TCivUnit* entry = this->selectedEntry;
-  if (entry == nullptr) {
+  if (entry == NULL) {
     return;
   }
 
@@ -434,11 +434,11 @@ void TCivMgr::DisbandSelected() {
   entry->ResetCivWorkOrderAndRefreshCounters();
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
-  if (mapUberPicture != nullptr) {
+  if (mapUberPicture != NULL) {
     mapUberPicture->RedrawTile(tileIndex);
   }
   mapUberPicture = g_pViewMgr->mapUberPicture;
-  if (mapUberPicture != nullptr) {
+  if (mapUberPicture != NULL) {
     mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
   }
 }
@@ -535,30 +535,30 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
   }
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
-  if (mapUberPicture != nullptr) {
+  if (mapUberPicture != NULL) {
     mapUberPicture->SetMapInteractionMode(0);
   }
   g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
 
   this->selectedEntry = pCivilianOrderEntry;
   this->DispatchSelectedUnitToGlobalMapStateHandler(pCivilianOrderEntry);
-  if (pCivilianOrderEntry != nullptr) {
+  if (pCivilianOrderEntry != NULL) {
     pCivilianOrderEntry->MoveTo(pCivilianOrderEntry->tileIndex);
 
     TMapUberPicture* invalidateTarget = g_pViewMgr->mapUberPicture;
-    if (invalidateTarget != nullptr) {
+    if (invalidateTarget != NULL) {
       invalidateTarget->InvalidateTile(pCivilianOrderEntry->tileIndex);
     }
 
     TMapUberPicture* refreshTarget = g_pViewMgr->mapUberPicture;
-    if (refreshTarget != nullptr) {
+    if (refreshTarget != NULL) {
       static_cast<TCivToolbar*>(
           refreshTarget->categoryPages[refreshTarget->activeUnitCategoryIndex])
           ->SetSelectedUnit(pCivilianOrderEntry);
     }
   }
 
-  if (mapUberPicture != nullptr) {
+  if (mapUberPicture != NULL) {
     mapUberPicture->NoticeTile(pCivilianOrderEntry->tileIndex);
   }
 }
@@ -691,7 +691,7 @@ bool TCivMgr::QueueProspectingOrderAndPlayFeedback(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x004d3a60
 bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   TCivUnit* pCiv = this->selectedEntry;
-  if (pCiv == nullptr) {
+  if (pCiv == NULL) {
     return false;
   }
 
@@ -749,7 +749,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         short nationId = g_pSimMgr->GetPlayerCountry();
         g_apNationStates[nationId]->treasuryValue -= 3000;
         pCiv->SetOrders(kUnitOrderBuildPort, pCiv->tileIndex);
-        if (g_pViewMgr->mapUberPicture != nullptr) {
+        if (g_pViewMgr->mapUberPicture != NULL) {
           g_pViewMgr->mapUberPicture->InvalidateTile(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232b, 0, 1);
@@ -776,7 +776,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         short nationId = g_pSimMgr->GetPlayerCountry();
         g_apNationStates[nationId]->treasuryValue -= 2000;
         pCiv->SetOrders(kUnitOrderBuildFort, pCiv->tileIndex);
-        if (g_pViewMgr->mapUberPicture != nullptr) {
+        if (g_pViewMgr->mapUberPicture != NULL) {
           g_pViewMgr->mapUberPicture->InvalidateTile(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232a, 0, 1);
@@ -843,10 +843,10 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 void TCivMgr::MoveAndRedrawUnit(short nNewTileIndex, TCivUnit* pCivOrderEntry) {
   short previousTile = pCivOrderEntry->tileIndex;
   pCivOrderEntry->MoveTo(nNewTileIndex);
-  if (previousTile != -1 && g_pViewMgr->mapUberPicture != nullptr) {
+  if (previousTile != -1 && g_pViewMgr->mapUberPicture != NULL) {
     g_pViewMgr->mapUberPicture->RedrawTile(previousTile);
   }
-  if (nNewTileIndex != -1 && g_pViewMgr->mapUberPicture != nullptr) {
+  if (nNewTileIndex != -1 && g_pViewMgr->mapUberPicture != NULL) {
     g_pViewMgr->mapUberPicture->RedrawTile(nNewTileIndex);
   }
 }
@@ -877,12 +877,12 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   }
   case 1:
     g_pGlobalMapState->QueueDepotConstructionOrder(order->tileIndex, order->ownerNationSlot);
-    g_apNationStates[order->ownerNationSlot]->BuildTransportLinkedInfluenceMap(nullptr);
+    g_apNationStates[order->ownerNationSlot]->BuildTransportLinkedInfluenceMap(NULL);
     order->completionMarker = 0x232a;
     break;
   case 2:
     g_pGlobalMapState->QueuePortConstructionOrder(order->tileIndex, order->ownerNationSlot);
-    g_apNationStates[order->ownerNationSlot]->BuildTransportLinkedInfluenceMap(nullptr);
+    g_apNationStates[order->ownerNationSlot]->BuildTransportLinkedInfluenceMap(NULL);
     order->completionMarker = 0x232b;
     break;
   case 0:

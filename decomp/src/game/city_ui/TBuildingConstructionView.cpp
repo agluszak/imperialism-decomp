@@ -78,7 +78,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
   TStaticText* tex1 =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'e', 'x', '1')));
-  if (tex1 == nullptr) {
+  if (tex1 == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x47b);
   }
   tex1->InstallTextStyle(style.desc, 0);
@@ -88,7 +88,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   // 'tex2' — sub text. Retail passes the low word of the third argument as the group.
   TStaticText* tex2 =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'e', 'x', '2')));
-  if (tex2 == nullptr) {
+  if (tex2 == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x481);
   }
   tex2->InstallTextStyle(style.desc, 0);
@@ -107,7 +107,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
   TStaticText* nameCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
-  if (nameCtrl == nullptr) {
+  if (nameCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x493);
   }
   nameCtrl->InstallTextStyle(style.desc, 0);
@@ -118,7 +118,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   // 'cost' — localized cost label (string group 0x2738, index 0x14).
   TStaticText* costCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', 't')));
-  if (costCtrl == nullptr) {
+  if (costCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x49a);
   }
   costCtrl->InstallTextStyle(style.desc, 0);
@@ -146,7 +146,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   // 'or  ' — connective label, hidden except for slots 0/3/4 where it is repositioned.
   TStaticText* orCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'r', ' ', ' ')));
-  if (orCtrl == nullptr) {
+  if (orCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4b7);
   }
   if (slot != 0 && slot != 4 && slot != 3) {
@@ -179,7 +179,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   // 'warn' — warning text, filled in by the eligibility branch below.
   TStaticText* warnCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('w', 'a', 'r', 'n')));
-  if (warnCtrl == nullptr) {
+  if (warnCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4d6);
   }
 
@@ -204,7 +204,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   } else {
     // Other slots: eligible if the pending order can be raised to the missing capacity.
     TProductionOrder* order = city->trailingOrderSlots[slot + 2];
-    if (order == nullptr) {
+    if (order == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4e8);
     }
     short originalQuantity = order->quantity;

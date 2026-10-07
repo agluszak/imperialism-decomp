@@ -266,7 +266,7 @@ void TCouncilView::StartVoting() {
     visibleVoteTier = kCouncilTickerIntervalMapMode;
 
     TControl* endControl = static_cast<TControl*>(ResolveControlByTag(kControlTagEnd));
-    if (endControl != nullptr) {
+    if (endControl != NULL) {
       endControl->AssertValid();
       endControl->controlTag =
           (phase == kGamePhaseCouncilDefeat) ? kEndControlTagReselect : kEndControlTagReselectAlt;
@@ -285,9 +285,9 @@ void TCouncilView::StartVoting() {
   visibleVoteTier = 0;
 
   TCouncilTickerAnimation* tickerAnimation = new TCouncilTickerAnimation();
-  if (tickerAnimation != nullptr) {
+  if (tickerAnimation != NULL) {
     tickerAnimation->InitializeCouncilTicker(this, 2);
-    if (g_pUiAnimator != nullptr) {
+    if (g_pUiAnimator != NULL) {
       g_pUiAnimator->AddAnimation(tickerAnimation);
     }
   }
@@ -295,7 +295,7 @@ void TCouncilView::StartVoting() {
   SetCursor(g_pViewMgr->turnEventCursors[26]);
 
   TControl* endControl = static_cast<TControl*>(ResolveControlByTag(kControlTagEnd));
-  if (endControl != nullptr) {
+  if (endControl != NULL) {
     endControl->AssertValid();
     endControl->ViewEnable(0, 0);
   }
@@ -330,7 +330,7 @@ void TCouncilView::NextTick() {
   }
 
   if (visibleVoteTier == councilNationCount + 2) {
-    SetCursor(LoadCursorA(nullptr, IDC_ARROW));
+    SetCursor(LoadCursorA(NULL, IDC_ARROW));
     TView* endControlTarget = ResolveControlByTag(kControlTagEnd);
     endControlTarget->AssertValid();
     endControlTarget->ViewEnable(1, 0);

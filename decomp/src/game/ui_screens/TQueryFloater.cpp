@@ -89,7 +89,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   } else if (tag == kControlTagNews) {
     TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, false);
-    if (g_pNewsMgr->perNationStoryLastUsedTick[0] != nullptr) {
+    if (g_pNewsMgr->perNationStoryLastUsedTick[0] != NULL) {
       g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalNewspaper);
     } else {
       g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);

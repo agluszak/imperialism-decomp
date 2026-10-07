@@ -14,7 +14,7 @@ TFuzzySet::~TFuzzySet() {}
 void TFuzzySet::IFuzzySet() {
   m_memberCount = 0;
   for (int i = 0; i < 10; ++i) {
-    m_members[i] = nullptr;
+    m_members[i] = NULL;
   }
 }
 

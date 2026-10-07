@@ -18,7 +18,7 @@ class TLowDiskWarningDialog : public TModalTemplateDialog {
 public:
   // FUNCTION: IMPERIALISM 0x00415b70
   ~TLowDiskWarningDialog() override {}
-  explicit TLowDiskWarningDialog(void* initParam = nullptr); // 0x005e1bc0
+  explicit TLowDiskWarningDialog(void* initParam = NULL); // 0x005e1bc0
 
   CString promptText; // 0x74
 

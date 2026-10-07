@@ -58,7 +58,7 @@ void TWarehouseView::DoStartup() {
   for (int commodityCount = 0; commodityCount < 23; ++commodityCount) {
     TStaticText* control = static_cast<TStaticText*>(ResolveControlByTag(*commodityTag));
     *commodityControl = static_cast<TPictureNumberText*>(control);
-    if (control != nullptr) {
+    if (control != NULL) {
       control->InstallTextStyle(style.desc, 0);
       control->SetJustification(1, false);
     }
@@ -69,7 +69,7 @@ void TWarehouseView::DoStartup() {
   // 'labo' -- labor value control.
   laborValueControl =
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'o')));
-  if (laborValueControl != nullptr) {
+  if (laborValueControl != NULL) {
     laborValueControl->InstallTextStyle(style.desc, 0);
     laborValueControl->SetJustification(1, false);
   }
@@ -77,7 +77,7 @@ void TWarehouseView::DoStartup() {
   // 'powe' -- power value control.
   powerValueControl =
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e')));
-  if (powerValueControl != nullptr) {
+  if (powerValueControl != NULL) {
     powerValueControl->InstallTextStyle(style.desc, 0);
     powerValueControl->SetJustification(1, false);
   }

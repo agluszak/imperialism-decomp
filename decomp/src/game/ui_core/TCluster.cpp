@@ -37,7 +37,7 @@ TCluster::TCluster(const TCluster& source)
 void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size,
                                                        int layoutParam4, int layoutParam5,
                                                        int layoutParam6, int layoutParam7) {
-  if (parent != nullptr) {
+  if (parent != NULL) {
     nativeWindow = parent->nativeWindow;
   }
   controlTag = kControlTagSpSpSpSp;
@@ -48,10 +48,10 @@ void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* off
   ownerLocalY = offset->y;
   frameWidth = size->x;
   frameHeight = size->y;
-  if (parent != nullptr) {
+  if (parent != NULL) {
     parent->AttachChildControl(this, 0);
   }
-  resourceContext = nullptr;
+  resourceContext = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00491650

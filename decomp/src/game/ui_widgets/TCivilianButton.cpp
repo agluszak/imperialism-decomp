@@ -41,7 +41,7 @@ void TCivilianButton::SetButton(TCivUnit* selectedOrder) {
 // FUNCTION: IMPERIALISM 0x0058b4f0
 void TCivilianButton::Draw(RECT* rectBuffer) {
   if (ownerContext != 0) {
-    TPicture::Draw(nullptr);
+    TPicture::Draw(NULL);
   }
   UpdatePaletteIndexWithDefaultFallback(0x10);
 

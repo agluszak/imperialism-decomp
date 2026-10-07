@@ -44,7 +44,7 @@ void TPurchaseCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 // FUNCTION: IMPERIALISM 0x004cc550
 void TPurchaseCluster::SetValue(short nValue, bool redrawFlag) {
   TNumberText* valueControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagValu));
-  if (valueControl == nullptr) {
+  if (valueControl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x781);
   }
   valueControl->SetControlValue(nValue, 0);

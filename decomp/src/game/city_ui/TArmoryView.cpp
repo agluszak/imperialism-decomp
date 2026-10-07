@@ -65,18 +65,18 @@ void TArmoryView::DoStartup() {
 
     TCivilianButton* button =
         static_cast<TCivilianButton*>(ResolveControlByTag(kControlTagCiv0 + row)); // 'civ0'+row
-    if (button == nullptr) {
+    if (button == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb19);
     }
     button->SetPictureRsrcID(static_cast<short>(0x1d60 + 2 * pictureVariant), 1);
 
     TView* numRow = ResolveControlByTag(kControlTagNum0 + row); // 'num0'+row
-    if (numRow == nullptr) {
+    if (numRow == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb1c);
     }
     TNumberText* numb =
         static_cast<TNumberText*>(numRow->ResolveControlByTag(kControlTagNumb)); // 'numb'
-    if (numb == nullptr) {
+    if (numb == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb1d);
     }
     numb->ViewEnable(0, 0);
@@ -174,12 +174,12 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
       }
       if (selectedUnitOrder->SetQuantity(newValue)) {
         TView* numXControl = ResolveControlByTag(kControlTagNum0 + selectedRowIndex); // 'num0'+idx
-        if (numXControl == nullptr) {
+        if (numXControl == NULL) {
           FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb87);
         }
         TNumberText* numbControl =
             static_cast<TNumberText*>(numXControl->ResolveControlByTag(kControlTagNumb)); // 'numb'
-        if (numbControl == nullptr) {
+        if (numbControl == NULL) {
           FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb88);
         }
         numbControl->SetControlValue(newValue, 0);
@@ -312,7 +312,7 @@ void TArmoryView::SetUnit(short nBuildingSlotId) {
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TStaticText* unit =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('u', 'n', 'i', 't')));
-  if (unit == nullptr) {
+  if (unit == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc1a);
   }
   unit->SetTextWithStrListID(0x2717, static_cast<short>(order->resourceTypeIndex + 1), false);
@@ -396,7 +396,7 @@ void TArmoryView::SetUnit(short nBuildingSlotId) {
 
   TStaticText* description =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('d', 'e', 's', 'c')));
-  if (description == nullptr) {
+  if (description == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc57);
   }
   description->SetTextWithStrListID(0x2750, static_cast<short>(resourceType + 1), false);

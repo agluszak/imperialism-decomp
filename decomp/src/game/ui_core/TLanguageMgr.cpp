@@ -193,7 +193,7 @@ bool TLanguageMgr::SetLanguage(unsigned long languageTag) {
   FreeTableRows();
 
   CString preplutPath(kPreplutPath);
-  if (g_pImperialismApp != nullptr) {
+  if (g_pImperialismApp != NULL) {
     preplutPath += g_pImperialismApp->languageCodeString;
   }
   return ReadPrepLUT(preplutPath, languageTag);

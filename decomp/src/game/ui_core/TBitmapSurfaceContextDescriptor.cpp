@@ -49,7 +49,7 @@ bool TBitmapSurfaceContextDescriptor::InitializeSurfaceNode(int width, int heigh
   blitSurface.clipRect.right = d->x;
   blitSurface.clipRect.bottom = d->y;
   blitSurface.surfaceDib = (*GetPixMapHandle())->dib;
-  return *GetPixMapHandle() != nullptr;
+  return *GetPixMapHandle() != NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00496420

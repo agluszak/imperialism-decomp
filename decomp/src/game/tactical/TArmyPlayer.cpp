@@ -128,7 +128,7 @@ void TArmyPlayer::ApplyChanges(unsigned char sideWonFlag) {
 // FUNCTION: IMPERIALISM 0x0059b4f0
 void TArmyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
   POSITION pos = unitList->listState.Find(unit);
-  if (pos != nullptr) {
+  if (pos != NULL) {
     unitList->listState.RemoveAt(pos);
   }
   armyStack->RemoveUnitFromChain(static_cast<TArmyTacUnit*>(unit)->sourceUnit);

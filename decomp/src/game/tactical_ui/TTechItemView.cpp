@@ -191,7 +191,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       node->Locate(placement, false);
       node->SetModality(true);
       TDialogBehavior* behavior = node->GetDialogBehavior();
-      if (behavior != nullptr) {
+      if (behavior != NULL) {
         behavior->defaultCommandCode = kControlTagOkay; // 'okay'
       }
       node->PoseModally();

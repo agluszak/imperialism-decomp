@@ -44,7 +44,7 @@ void TMapKey::DoPostCreate(int arg) {
 
   for (int i = 0; i < 7; ++i) {
     TCountry* descriptor = g_apTerrainTypeDescriptorTable[i];
-    if (descriptor == nullptr) {
+    if (descriptor == NULL) {
       g_pSimMgr->GetString(0x275d, 2, &label);
     } else {
       descriptor->FormatOverlayTerrainLabelText(&label);

@@ -138,7 +138,7 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     SetCursor(g_pViewMgr->turnEventCursors[26]);
     TTextList* scenarioList = static_cast<TTextList*>(sourceHandler);
     ShowInfo(scenarioIndexByListRow[scenarioList->selectedIndex]);
-    SetCursor(LoadCursorA(nullptr, IDC_ARROW));
+    SetCursor(LoadCursorA(NULL, IDC_ARROW));
   } else if (commandId == kControlTagPick) { // 'pick'
     TMapPreviewView* mapPreview =
         static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap)); // 'pmap'

@@ -623,7 +623,7 @@ void TTraceDialog::AppendTraceTextAndFlushCompleteLines(const char* text) {
 
   // The dialog is created lazily on the first trace line rather than at construction.
   if (dialogCreated == 0) {
-    Create(0xd0, nullptr);
+    Create(0xd0, NULL);
     dialogCreated = 1;
   }
 

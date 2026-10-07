@@ -59,7 +59,7 @@ void TDealBookPicture::Startup(short startupValue) {
 
   // 'mark' toggle + label reload.
   TView* markControl = this->ResolveControlByTag(kControlTagMark); // 'mark'
-  if (markControl == nullptr) {
+  if (markControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x129);
   }
   markControl->ViewEnable(1, 0);
@@ -130,11 +130,11 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
   }
 
   TView* leftCtrl = this->ResolveControlByTag(kControlTagLcor);
-  if (leftCtrl == nullptr) {
+  if (leftCtrl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x16e);
   }
   TView* rightCtrl = this->ResolveControlByTag(kControlTagRcor);
-  if (rightCtrl == nullptr) {
+  if (rightCtrl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x170);
   }
 
@@ -385,7 +385,7 @@ void TDealBookPicture::SwitchPages() {
     sellPageView->SetItem(-1);
 
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
-    if (tabsControl == nullptr) {
+    if (tabsControl == NULL) {
       FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x2a2);
     }
 

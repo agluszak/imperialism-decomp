@@ -185,7 +185,7 @@ void TView::AttachChildControl(class TView* child, int flag) {
   child->ownerContext = this;
   child->nextHandler = this;
 
-  if (childList == nullptr) {
+  if (childList == NULL) {
     childList = new TViewChildList();
   }
 
@@ -405,7 +405,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
     sourceRegion = static_cast<HRGN>((*region)->rgn);
   }
   HRGN destRegion = static_cast<HRGN>((*localRegion)->rgn.m_hObject);
-  CombineRgn(destRegion, sourceRegion, nullptr, RGN_COPY);
+  CombineRgn(destRegion, sourceRegion, NULL, RGN_COPY);
 
   CPoint cachedPos;
   GetAbsolutePosition(&cachedPos);
@@ -747,7 +747,7 @@ void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
     CRect quickDrawExtent(*GetQDExtent(&extentStorage));
     RECT hoverHelpRect;
     CopyRect(&hoverHelpRect, &quickDrawExtent);
-    if (g_pCursorControlPanel != nullptr) {
+    if (g_pCursorControlPanel != NULL) {
       g_pCursorControlPanel->SetTextAndLayoutRect(hoverHelpText, &hoverHelpRect);
     }
   }
@@ -760,7 +760,7 @@ void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
       return;
     }
   }
-  HCURSOR hCursor = LoadCursorA(nullptr, IDC_ARROW);
+  HCURSOR hCursor = LoadCursorA(NULL, IDC_ARROW);
   SetCursor(hCursor);
 }
 // FUNCTION: IMPERIALISM 0x0048c380

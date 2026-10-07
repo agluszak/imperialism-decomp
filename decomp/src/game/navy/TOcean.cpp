@@ -40,10 +40,10 @@ void TOcean::AllocateRouteNodeStateBufferByCount(short count) {
   routeNodeCount = count;
   delete[] routeSegments;
   routeSegments = new CRect[count];
-  if (routeSegments == nullptr) {
-    routeSegments = nullptr;
+  if (routeSegments == NULL) {
+    routeSegments = NULL;
   }
-  if (routeSegments == nullptr) {
+  if (routeSegments == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UOcean.h", 0x1e7);
   }
 }
@@ -692,8 +692,8 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   }
   bool hasPendingNode = false;
   if ((zone->nationKeyMask & static_cast<unsigned char>(1 << nation)) != 0) {
-    for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
-      if (node->location == zone && node->nation == nation && node->taskForce == nullptr) {
+    for (TShip* node = TShip::GetFirst(); node != NULL; node = node->next) {
+      if (node->location == zone && node->nation == nation && node->taskForce == NULL) {
         hasPendingNode = true;
         break;
       }
@@ -702,12 +702,12 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   zone->ShowFocusIngot(hasPendingNode);
 
   short tileNotifyIndex = entry->ingotTileIndex;
-  if (tileNotifyIndex != -1 && g_pViewMgr->mapUberPicture != nullptr) {
+  if (tileNotifyIndex != -1 && g_pViewMgr->mapUberPicture != NULL) {
     g_pViewMgr->mapUberPicture->NoticeTile(tileNotifyIndex);
   }
 
   if (selectedTaskForce == entry) {
-    selectedTaskForce = nullptr;
+    selectedTaskForce = NULL;
   }
 }
 
@@ -784,21 +784,21 @@ TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
 
 // FUNCTION: IMPERIALISM 0x00564600
 TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone) {
-  if (selectedTaskForce != nullptr && selectedTaskForce->location != pMapOrderContextZone) {
+  if (selectedTaskForce != NULL && selectedTaskForce->location != pMapOrderContextZone) {
     selectedTaskForce->RegainVirginity(g_pSimMgr->GetPlayerCountry(), pMapOrderContextZone);
-    if (pMapOrderContextZone == nullptr) {
+    if (pMapOrderContextZone == NULL) {
       TTaskForce* previous = selectedTaskForce;
-      selectedTaskForce = nullptr;
+      selectedTaskForce = NULL;
       previous->Free();
     }
   }
-  if (selectedTaskForce == nullptr) {
-    if (pMapOrderContextZone != nullptr) {
+  if (selectedTaskForce == NULL) {
+    if (pMapOrderContextZone != NULL) {
       selectedTaskForce = pMapOrderContextZone->CreateTaskForceFromNavyOrdersForNationIfEligible(
           g_pSimMgr->GetPlayerCountry());
       return selectedTaskForce;
     }
-  } else if (pMapOrderContextZone != nullptr) {
+  } else if (pMapOrderContextZone != NULL) {
     selectedTaskForce->MaxOut(0);
   }
   return selectedTaskForce;

@@ -30,7 +30,7 @@ bool TControlSeaZoneMission::IsDefensiveSeaZoneMission() const {
 void TControlSeaZoneMission::Initialize() {
   float score = static_cast<float>(missionTargetZone->ComputeMapActionContextNodeValueAverage());
 
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
+  for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortOwnerNation() == nationId) ? g_PortZoneFriendlyMissionScoreMultiplier
@@ -47,7 +47,7 @@ TMission* TControlSeaZoneMission::GetReplacement() {
   bool foundCoverage = false;
   for (int terrainIndex = 0; terrainIndex < kTerrainTypeDescriptorTableCount; ++terrainIndex) {
     TCountry* nation = g_apTerrainTypeDescriptorTable[terrainIndex];
-    if (nation == nullptr) {
+    if (nation == NULL) {
       continue;
     }
     if (terrainIndex != nationId && !nation->IsColonyOf(nationId)) {
@@ -65,15 +65,15 @@ TMission* TControlSeaZoneMission::GetReplacement() {
     nationState->AssertValid();
     short contextOrdinal = missionTargetZone->GetContextOrdinalOrInvalid();
     nationState->SetZoneStatus(contextOrdinal, kMissionDesirabilityUnmarked);
-    return nullptr;
+    return NULL;
   }
 
-  if (resolvedPortZone != nullptr && resolvedPortZone->QueryPortZoneCapability() &&
+  if (resolvedPortZone != NULL && resolvedPortZone->QueryPortZoneCapability() &&
       !resolvedPortZone->QueryZoneCapabilityFlagD(nationId)) {
     resolvedPortZone = RefreshMissionPortZoneContextForNation();
   }
 
-  return (resolvedPortZone != nullptr) ? this : nullptr;
+  return (resolvedPortZone != NULL) ? this : NULL;
 }
 
 // Inherited unchanged by TBeachheadMission (real base class relationship).
@@ -83,7 +83,7 @@ void TControlSeaZoneMission::SetStateByte8To2() {
   TZone** ownerSlot = &homePort->primaryNeighbors[0];
   if (*ownerSlot == missionTargetZone) {
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-    for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+    for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
       if (ship->location != missionTargetZone ||
           !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, ship->nation)) {
         continue;
@@ -131,7 +131,7 @@ void TControlSeaZoneMission::SetStateByte8To2() {
 void TControlSeaZoneMission::CalculateImportance() {
   float score = static_cast<float>(missionTargetZone->ComputeMapActionContextNodeValueAverage());
 
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
+  for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortOwnerNation() == nationId) ? g_PortZoneFriendlyMissionScoreMultiplier
@@ -153,7 +153,7 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   mapOrderEntry->SetAggression(1);
 
   int nationBitmask = 0;
-  TZone* firstMatchContext = nullptr;
+  TZone* firstMatchContext = NULL;
   for (int nation = 0; nation < 7; ++nation) {
     if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation, nationId)) {
       nationBitmask |= 1 << nation;
@@ -168,7 +168,7 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   }
 
   TZone* entryContext = mapOrderEntry->location;
-  if ((entryContext->nationKeyMask & nationBitmask) == 0 && firstMatchContext != nullptr) {
+  if ((entryContext->nationKeyMask & nationBitmask) == 0 && firstMatchContext != NULL) {
     mapOrderEntry->OrderBlockade(firstMatchContext);
     return;
   }

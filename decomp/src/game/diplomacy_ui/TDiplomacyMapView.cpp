@@ -95,7 +95,7 @@ bool IsMaskPixelSetAndOnRegionEdge(int x, int y, DiplomacyMaskBufferRun* run, ch
 }
 
 static inline void AssertActionButtonResolved(void* button) {
-  if (button == nullptr) {
+  if (button == NULL) {
     FailNilPointerWithAssert(s_SourcePathUDiplomacyViews, 0x3a7);
   }
 }
@@ -152,15 +152,15 @@ void TDiplomacyMapView::DoPostCreate(int arg) {
 
   if (g_pSimMgr->mode == kGamePhaseDiplomacy) {
     TView* endControl = ResolveControlByTag(kControlTagEnd);
-    if (endControl != nullptr) {
+    if (endControl != NULL) {
       endControl->Free();
     }
     TView* querControl = ResolveControlByTag(kControlTagQuer);
-    if (querControl != nullptr) {
+    if (querControl != NULL) {
       querControl->Free();
     }
     TView* topBControl = ResolveControlByTag(kControlTagTopB);
-    if (topBControl != nullptr) {
+    if (topBControl != NULL) {
       topBControl->Free();
     }
     SetPictureRsrcID(0x20d0, 1);
@@ -414,7 +414,7 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
 
   for (int gp = 0; gp < 7; ++gp) {
     TCountry* terrain = g_apTerrainTypeDescriptorTable[gp];
-    if (terrain == nullptr) {
+    if (terrain == NULL) {
       continue;
     }
     RECT* labelRect = &nationLabelRects[gp];
@@ -447,7 +447,7 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
                                              0x2b72, 0x2b73, 0x2b74};
   for (int mn = 7; mn < 23; ++mn) {
     TCountry* terrain = g_apTerrainTypeDescriptorTable[mn];
-    if (terrain == nullptr) {
+    if (terrain == NULL) {
       continue;
     }
     RECT* labelRect = &nationLabelRects[mn];

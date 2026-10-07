@@ -202,7 +202,7 @@ TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900
 void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
-  this->IEventHandler(nullptr);
+  this->IEventHandler(NULL);
   idleFrequencyTicks = idleFrequency;
   diplomacyQueueContext = 0;
   sessionReadyFlag = 0;
@@ -267,7 +267,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
       nationStatusTags[i] = IMPERIALISM_FOURCC('s', 'u', 'n', 'a');
     }
 
-    if (g_apTerrainTypeDescriptorTable[i] == nullptr) {
+    if (g_apTerrainTypeDescriptorTable[i] == NULL) {
       nationStatusTags[i] = IMPERIALISM_FOURCC('d', 'e', 'a', 'd');
     } else {
       if (!g_pSimMgr->ReallyInTheGame(static_cast<NationSlot>(i))) {
@@ -364,7 +364,7 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
   stream->WriteSharedString(&gameNameString);
   stream->WriteBytes(&queueSyncDword, 4);
   stream->WriteBytes(&sessionReadyFlag, 1);
-  if (g_pNetMgr != nullptr) {
+  if (g_pNetMgr != NULL) {
     g_pNetMgr->WriteTo(stream);
   }
 }
@@ -392,7 +392,7 @@ void TMultiplayerMgr::SetSyncPhases(eGamePhaseNewStyle completedPhase,
   resumePhase = nextPhase;
   pendingNationBitmask = 0;
   for (int nationSlot = 0; nationSlot < kMajorNationSessionSlotCount; ++nationSlot) {
-    if (g_apTerrainTypeDescriptorTable[nationSlot] != nullptr) {
+    if (g_apTerrainTypeDescriptorTable[nationSlot] != NULL) {
       pendingNationBitmask |= 1 << nationSlot;
     }
   }
@@ -577,7 +577,7 @@ bool TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch() {
   unsigned char opened = g_pNetMgr->Host(static_cast<LPCSTR>(gameName),
                                          static_cast<LPCSTR>(playerNameString), g_szEmptyString);
   if (opened) {
-    lobbyDialogView = nullptr;
+    lobbyDialogView = NULL;
     g_pSimMgr->multiplayerSessionRole = kSessionRoleHost;
     return true;
   }

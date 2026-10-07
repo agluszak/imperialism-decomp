@@ -1529,8 +1529,8 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
   if (class3 != baseClass) {
     MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-    MapGeneratorTileRecord* dst = nullptr;
-    MapGeneratorTileRecord* src = nullptr;
+    MapGeneratorTileRecord* dst = NULL;
+    MapGeneratorTileRecord* src = NULL;
     bool copy = true;
     switch ((g_mapGenLcgState >> 0xc & 0x7fff) % 5) {
     case 1:
@@ -1582,7 +1582,7 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
     g_mapGenLcgState = r * 0x15a4e35 + 1;
     unsigned int r2 = g_mapGenLcgState >> 0xc & 0x7fff;
     result = r2 / 7;
-    MapGeneratorTileRecord* src = nullptr;
+    MapGeneratorTileRecord* src = NULL;
     bool copy = true;
     switch (r2 % 7) {
     case 0:
@@ -1816,7 +1816,7 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
 
   // Copy the whole grid, then write it back rotated so the chosen column band leads.
   int* scratch = new int[0xe3d0];
-  if (scratch == nullptr) {
+  if (scratch == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMapper.cpp", 0x904);
   }
 
@@ -1837,7 +1837,7 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
     ++sourceCol;
   } while (destByte < 0xf30);
 
-  if (scratch != nullptr) {
+  if (scratch != NULL) {
     delete[] scratch;
   }
 }
@@ -2251,7 +2251,7 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
   int rowBase = 0;
 
   do {
-    SeaSegment* best = nullptr;
+    SeaSegment* best = NULL;
     unsigned int si = 0;
     if (segments.Count() != 0) {
       int leftEdge = (scanY & 1) + leftCol * 2;
@@ -2292,7 +2292,7 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
         }
 
         if (crosses) {
-          if (best == nullptr) {
+          if (best == NULL) {
             best = segments.At(si);
           } else {
             SeaSegment* cur = segments.At(si);
@@ -2326,7 +2326,7 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
       } while (si < static_cast<unsigned int>(segments.Count()));
     }
 
-    if (best != nullptr) {
+    if (best != NULL) {
       region = static_cast<short>(best->SelectAttrByAngle());
       if (firstX < 0) {
         firstX = cellX;
@@ -2361,7 +2361,7 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
 void TMapMaker::BuildCityRegionBorderOverlaySegments() {
 
   // Reset the overlay-quad table.
-  if (g_seapointQuadTable.Data() != nullptr) {
+  if (g_seapointQuadTable.Data() != NULL) {
     free(g_seapointQuadTable.Detach());
   }
 
@@ -2492,7 +2492,7 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
   SeapointStretch& quad = g_seapointQuadTable;
 
   // Reset the output segment table.
-  if (seg.data != nullptr) {
+  if (seg.data != NULL) {
     free(seg.Detach());
   }
 
@@ -2746,11 +2746,11 @@ int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int
 // FUNCTION: IMPERIALISM 0x0052d750
 void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
   int* tileCounts = new int[cityRegionCount];
-  if (tileCounts == nullptr) {
+  if (tileCounts == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c5);
   }
   char* mergedFlags = new char[cityRegionCount];
-  if (mergedFlags == nullptr) {
+  if (mergedFlags == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c8);
   }
 

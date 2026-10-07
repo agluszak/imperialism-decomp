@@ -1094,7 +1094,7 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
   int secondSideScore[kNationSlotCount];
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     TCountry* descriptor = g_apTerrainTypeDescriptorTable[nationSlot];
-    if (descriptor == nullptr) {
+    if (descriptor == NULL) {
       topSideScore[nationSlot] = rand() % 50 + 50;
       secondSideScore[nationSlot] = rand() % 50 + 50;
       continue;
@@ -1270,7 +1270,7 @@ void TDiplomacyMgr::ChooseCandidates(int* topNationSlot, int* secondNationSlot) 
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     nationSlotOrder[nationSlot] = nationSlot;
     int sum = 0;
-    if (g_apTerrainTypeDescriptorTable[nationSlot] != nullptr) {
+    if (g_apTerrainTypeDescriptorTable[nationSlot] != NULL) {
       for (int metric = 0; metric < 4; ++metric) {
         sum += comparativePowerRows[nationSlot][metric];
       }

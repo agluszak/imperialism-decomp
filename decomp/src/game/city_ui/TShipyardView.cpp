@@ -247,7 +247,7 @@ void TShipyardView::SetShip(short shipType) {
 
   CRect invalidRect;
   TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSnam)); // 'snam'
-  if (shipName == nullptr) {
+  if (shipName == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x408);
   }
   shipName->SetTextWithStrListID(0x2716, static_cast<short>(shipType + 1), false);
@@ -448,7 +448,7 @@ void TShipyardView::SetStats(short shipType) {
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TStaticText* history = static_cast<TStaticText*>(ResolveControlByTag(kControlTagHist)); // 'hist'
-  if (history == nullptr) {
+  if (history == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x410);
   }
   history->SetTextWithStrListID(0x23f7, shipType, false);
@@ -458,7 +458,7 @@ void TShipyardView::SetStats(short shipType) {
   for (short statIndex = 0; statIndex < 6; ++statIndex) {
     TNumberText* stat =
         static_cast<TNumberText*>(ResolveControlByTag(kControlTagSta0 + statIndex)); // 'sta0'+index
-    if (stat == nullptr) {
+    if (stat == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x418);
     }
     stat->SetControlValue(TShip::GetTypeStat(shipType, statIndex), 0);

@@ -24,7 +24,7 @@ TAnimator::TAnimator()
 
 // FUNCTION: IMPERIALISM 0x004a0b20
 void TAnimator::IAnimator(int idleFrequency) {
-  IEventHandler(nullptr);
+  IEventHandler(NULL);
   idleFrequencyTicks = idleFrequency;
   RECT bounds;
   bounds.left = 0;

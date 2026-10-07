@@ -542,19 +542,19 @@ void TOfferDeskPicture::ShowAdvice() {
 // FUNCTION: IMPERIALISM 0x005c04f0
 void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   TView* clusterControl = ResolveControlByTag(kControlTagClus);
-  if (clusterControl == nullptr) {
+  if (clusterControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x83b);
   }
 
   TAmtBarCluster* noMoreControl =
       static_cast<TAmtBarCluster*>(clusterControl->ResolveControlByTag(kControlTagNomo));
-  if (noMoreControl == nullptr) {
+  if (noMoreControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x83d);
   }
   suppressEventFlag = noMoreControl->IsTradeControlAtMinimum();
 
   TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
-  if (purchaseControl == nullptr) {
+  if (purchaseControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x842);
   }
   proposedAmount = static_cast<short>(purchaseControl->UpdateControlCachedIntFromWindowText());
@@ -579,7 +579,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
 
     if (proposedAmount != 0) {
       TView* toolbar = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTool);
-      if (toolbar != nullptr) {
+      if (toolbar != NULL) {
         static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(
             static_cast<short>(respondingNationSlot));
       }

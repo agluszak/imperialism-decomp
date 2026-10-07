@@ -17,8 +17,7 @@ IMPLEMENT_DYNCREATE(TSuperCivRoster, TPageView)
 // FUNCTION: IMPERIALISM 0x004ab470
 void TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pOffsetLayout,
                                                   int* pSizeLayout) {
-  InitializeUiResourceEntryFrameAndParent(nullptr, pOwnerContext, pOffsetLayout, pSizeLayout, 5, 5,
-                                          0);
+  InitializeUiResourceEntryFrameAndParent(NULL, pOwnerContext, pOffsetLayout, pSizeLayout, 5, 5, 0);
   controlTag = kControlTagPage; // 'page'
   TPageView::DoPostCreate(0);
 

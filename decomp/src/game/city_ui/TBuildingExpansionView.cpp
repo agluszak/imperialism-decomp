@@ -55,7 +55,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
   TStaticText* nameCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
-  if (nameCtrl == nullptr) {
+  if (nameCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa78);
   }
   nameCtrl->InstallTextStyle(style.desc, 0);
@@ -66,7 +66,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   // 'cost' localized label (string group 0x2738, index 0x14).
   TStaticText* costCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', 't')));
-  if (costCtrl == nullptr) {
+  if (costCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa7f);
   }
   costCtrl->InstallTextStyle(style.desc, 0);
@@ -88,12 +88,12 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   // 'warn' label — configured (or hidden) below depending on the upgrade-queued check.
   TStaticText* warnCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('w', 'a', 'r', 'n')));
-  if (warnCtrl == nullptr) {
+  if (warnCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa95);
   }
 
   TProductionOrder* order = this->city->trailingOrderSlots[this->buildingSlotId + 2];
-  if (order == nullptr) {
+  if (order == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa97);
   }
 
@@ -116,7 +116,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
 
     TControl* okayCtrl =
         static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
-    if (okayCtrl == nullptr) {
+    if (okayCtrl == NULL) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xaac);
     }
     okayCtrl->Show(0, 0);
@@ -129,7 +129,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   // Route the cancel button and OK button through command tag 0x22.
   TControl* cnclCtrl =
       static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'n', 'c', 'l')));
-  if (cnclCtrl == nullptr) {
+  if (cnclCtrl == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xab7);
   }
   cnclCtrl->eventNumber = 0x22;

@@ -14,7 +14,7 @@ CSubViewIterator::CSubViewIterator(const TView* owner, char forward) {
   ownerView = owner;
   direction = forward;
   identTag = kControlTagSpSpSpSp;
-  currentChild = nullptr;
+  currentChild = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x004919a0
@@ -22,19 +22,19 @@ CSubViewIterator::CSubViewIterator(const TView* owner) {
   ownerView = owner;
   direction = 1;
   identTag = kControlTagSpSpSpSp;
-  currentChild = nullptr;
+  currentChild = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00491a00
 TView* CSubViewIterator::FirstSubView() {
   TViewChildList* list = ownerView->childList;
-  if (list == nullptr) {
-    position00 = nullptr;
+  if (list == NULL) {
+    position00 = NULL;
   } else {
     position00 = (direction != 0) ? list->GetHeadPosition() : list->GetTailPosition();
   }
-  if (position00 == nullptr) {
-    currentChild = nullptr;
+  if (position00 == NULL) {
+    currentChild = NULL;
     return currentChild;
   }
   currentChild = (direction != 0) ? list->GetNext(position00) : list->GetPrev(position00);
@@ -43,8 +43,8 @@ TView* CSubViewIterator::FirstSubView() {
 
 // FUNCTION: IMPERIALISM 0x00491a70
 TView* CSubViewIterator::NextSubView() {
-  if (position00 == nullptr) {
-    currentChild = nullptr;
+  if (position00 == NULL) {
+    currentChild = NULL;
     return currentChild;
   }
   TViewChildList* list = ownerView->childList;
@@ -54,7 +54,7 @@ TView* CSubViewIterator::NextSubView() {
 
 // FUNCTION: IMPERIALISM 0x00491ab0
 int CSubViewIterator::MoreSubViews() {
-  return currentChild != nullptr;
+  return currentChild != NULL;
 }
 
 void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry) {
@@ -105,24 +105,24 @@ TView*
 TTurnEventDialogFactoryRegistry::ResolveDialogNodeByMessageContext(TurnEventId messageContext,
                                                                    int contextSlot) {
   CPoint anchor(0, 0);
-  return InvokeDialogFactoryFromPacket(contextSlot, nullptr, messageContext, anchor);
+  return InvokeDialogFactoryFromPacket(contextSlot, NULL, messageContext, anchor);
 }
 
 // FUNCTION: IMPERIALISM 0x00491cc0
 TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
     int nContextId, TView* pEventPacket, TurnEventId nEventCode, const CPoint& anchorPoint) {
-  TView* result = nullptr;
+  TView* result = NULL;
   POSITION pos = factories.GetHeadPosition();
   while (pos != 0) {
     TurnEventDialogFactoryProc factory = factories.GetNext(pos);
     result = factory(0, static_cast<int>(nEventCode));
-    if (result != nullptr) {
+    if (result != NULL) {
       break;
     }
   }
 
-  if (result != nullptr) {
-    if (pEventPacket != nullptr) {
+  if (result != NULL) {
+    if (pEventPacket != NULL) {
       pEventPacket->AttachChildControl(result, 0);
     }
     if (anchorPoint.y != 0 || anchorPoint.x != 0) {
@@ -145,7 +145,7 @@ TView* TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket(int nConte
   g_McAppUiActiveFlag = 0;
   TView* result =
       RunRegisteredDialogFactoriesByEventCode(nContextId, pEventPacket, nEventCode, anchorPoint);
-  if (result != nullptr) {
+  if (result != NULL) {
     result->DispatchControlEventToChildrenAndSelf(nContextId);
     result->NoOpUiCallback();
   }

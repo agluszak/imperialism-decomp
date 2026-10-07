@@ -85,7 +85,7 @@ void TFocusAnimation::ClipAndPaste() {
   SetQuickDrawStrokeColor(0xffffff);
 
   if (g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib != 0) {
-    if (srcContext != nullptr && srcContext->blitSurface.surfaceDib != 0) {
+    if (srcContext != NULL && srcContext->blitSurface.surfaceDib != 0) {
       int sourceSurfaceHeight =
           srcContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
       if (sourceSurfaceHeight < 1) {

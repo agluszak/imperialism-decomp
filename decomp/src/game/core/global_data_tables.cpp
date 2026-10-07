@@ -767,7 +767,7 @@ int g_nQuickDrawPenVerticalSize = 0;
 // GLOBAL: IMPERIALISM 0x006a1db4
 int g_bQuickDrawStrokePairDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1da8
-CRgn* g_pGlobalClipRegionHandleObject = nullptr;
+CRgn* g_pGlobalClipRegionHandleObject = NULL;
 // GLOBAL: IMPERIALISM 0x006950fc
 COLORREF g_QuickDrawForegroundColor = PALETTEINDEX(0xff);
 // GLOBAL: IMPERIALISM 0x00695100
@@ -824,9 +824,9 @@ int g_MapInteractionPreviewRowParity = 0;
 // GLOBAL: IMPERIALISM 0x006a33b8
 int g_MapInteractionPreviewColumnParity = 0;
 // GLOBAL: IMPERIALISM 0x006a1da0
-CDC* g_pQuickDrawMemoryDc = nullptr;
+CDC* g_pQuickDrawMemoryDc = NULL;
 // GLOBAL: IMPERIALISM 0x006a1dbc
-HGDIOBJ g_hQuickDrawSavedBitmap = nullptr;
+HGDIOBJ g_hQuickDrawSavedBitmap = NULL;
 // GLOBAL: IMPERIALISM 0x006a1db0
 int g_nActiveQuickDrawSurfaceFlags = 0;
 // RefreshRgnBoundingBox asserts when this compatibility gate is zero.
@@ -1107,21 +1107,21 @@ CRect g_aCityBuildingLayoutRects[72] = {CRect(0x110, 0xfc, 0x11f, 0x10a),
                                         CRect(0, 0, 0, 0)};
 
 // GLOBAL: IMPERIALISM 0x006a1da4
-HRGN g_hOpenRgnAccumulator = nullptr;
+HRGN g_hOpenRgnAccumulator = NULL;
 
 // GLOBAL: IMPERIALISM 0x006a24d4
 bool g_Sanitize_City_Counter_Value = false;
 // GLOBAL: IMPERIALISM 0x6a134c
-TResourceMgr* g_pResourceMgr = nullptr;
+TResourceMgr* g_pResourceMgr = NULL;
 // GLOBAL: IMPERIALISM 0x00694150
 LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqua.ttf",
-                          "data\\AntquaB.ttf", nullptr};
+                          "data\\AntquaB.ttf", NULL};
 // GLOBAL: IMPERIALISM 0x006a1890
 int g_nDibOrientationFlag = 0;
 // GLOBAL: IMPERIALISM 0x0069b89c
 int g_nAuxOutputDeviceIndex = -1;
 // GLOBAL: IMPERIALISM 0x6a1d9c
-CDC* g_pScopedMapQuickDrawDcHandleObject = nullptr;
+CDC* g_pScopedMapQuickDrawDcHandleObject = NULL;
 // GLOBAL: IMPERIALISM 0x6a1dac
 void* g_pScopedMapQuickDrawViewContext = 0;
 // GLOBAL: IMPERIALISM 0x6a1c98
@@ -1134,9 +1134,9 @@ BOOL g_cachedShowSplashFlag = FALSE;
 
 // Active root of the in-progress UI resource tree and the entry currently being registered.
 // GLOBAL: IMPERIALISM 0x006a141c
-TView* g_pUiResourceHead = nullptr;
+TView* g_pUiResourceHead = NULL;
 // GLOBAL: IMPERIALISM 0x006a1420
-TView* g_pUiResourceContext = nullptr;
+TView* g_pUiResourceContext = NULL;
 
 // FUNCTION: IMPERIALISM 0x00489a50
 int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue) {
@@ -2161,7 +2161,7 @@ unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24] = {
 };
 
 // GLOBAL: IMPERIALISM 0x006a590c
-TInfoBarText* g_pCursorControlPanel = nullptr;
+TInfoBarText* g_pCursorControlPanel = NULL;
 
 // GLOBAL: IMPERIALISM 0x006a59e0
 POINT g_ptControlStringModalMessage = {0, 0};
@@ -2180,12 +2180,12 @@ CList<TWindow*, TWindow*> g_LiveViewRegistry;
 // CList template.
 
 // GLOBAL: IMPERIALISM 0x006a1b24
-TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;
+TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = NULL;
 
 // GLOBAL: IMPERIALISM 0x006a1d18
 GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord = {0, {0, 0, 0, 0}};
 // GLOBAL: IMPERIALISM 0x006a1dc0
-GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord = nullptr;
+GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord = NULL;
 // UDisplayMgr font-name literals and runtime CString slots (InitializeTurnOrderNavigationDialog).
 // GLOBAL: IMPERIALISM 0x00695150
 extern "C" const char g_szUiFontLiteralBelweBdBt[] = "Belwe Bd BT";

@@ -12,7 +12,6 @@ IMPLEMENT_DYNCREATE(TStatusButton, TButton)
 // FUNCTION: IMPERIALISM 0x00586330
 TStatusButton::TStatusButton() : TButton() {}
 
-
 // FUNCTION: IMPERIALISM 0x00586400
 void TStatusButton::DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {
   CString scratchA;
@@ -23,23 +22,23 @@ void TStatusButton::DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEv
       return;
     }
 
-    if (g_pActiveCityDialogLegendSelectionOwner != nullptr) {
+    if (g_pActiveCityDialogLegendSelectionOwner != NULL) {
       static_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->Close();
-      g_pActiveCityDialogLegendSelectionOwner = nullptr;
+      g_pActiveCityDialogLegendSelectionOwner = NULL;
       g_bCityDialogLegendSelectionInitialized = 0;
     }
 
     TControl* backControl =
         static_cast<TControl*>(ownerContext->ResolveControlByTag(kControlTagBack));
-    if (backControl != nullptr) {
+    if (backControl != NULL) {
       backControl->Free();
       ownerContext->RefreshControl();
     }
 
     if (controlTag != kControlTagArms && controlTag == kControlTagClos) {
-      if (g_pActiveCityDialogLegendSelectionOwner != nullptr) {
+      if (g_pActiveCityDialogLegendSelectionOwner != NULL) {
         static_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->Close();
-        g_pActiveCityDialogLegendSelectionOwner = nullptr;
+        g_pActiveCityDialogLegendSelectionOwner = NULL;
       }
       g_bCityDialogLegendSelectionInitialized = 0;
       GetWindow()->Close();

@@ -56,14 +56,14 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   }
 
   TZone* zone = g_pMapActionContextListHead;
-  if (zone == nullptr) {
+  if (zone == NULL) {
     return false;
   }
   unsigned char excludeOwnerMask = static_cast<unsigned char>((1 << (primaryOwner & 0x1f)) ^ 0x7f);
   while ((zone->nationKeyMask & excludeOwnerMask) == 0 ||
          !zone->ContainsCityStatePointerInZoneArrayByCityIndex(static_cast<short>(tileIndex))) {
     zone = zone->prev18;
-    if (zone == nullptr) {
+    if (zone == NULL) {
       return false;
     }
   }
@@ -214,17 +214,17 @@ void TDefendProvinceMission::Free() {
   CIterator iter(orderList);
   void* current = iter.Reset();
   while (iter.More()) {
-    static_cast<TMilitaryUnit*>(current)->ownerMission = nullptr;
+    static_cast<TMilitaryUnit*>(current)->ownerMission = NULL;
     current = iter.Advance();
   }
 
   orderList->RemoveAll();
-  if (orderList != nullptr) {
+  if (orderList != NULL) {
     orderList->FreePayloadsAndDestroy();
   }
-  orderList = nullptr;
+  orderList = NULL;
 
-  if (this != nullptr) {
+  if (this != NULL) {
     delete this;
   }
 }
@@ -345,5 +345,5 @@ bool TDefendProvinceMission::Matches(eMissionType missionType, int key, TZone* z
 TMission* TDefendProvinceMission::GetReplacement() {
   short tileOwnerNationCode =
       g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
-  return (tileOwnerNationCode == nationId) ? this : nullptr;
+  return (tileOwnerNationCode == nationId) ? this : NULL;
 }

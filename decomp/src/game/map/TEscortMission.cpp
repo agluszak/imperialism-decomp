@@ -46,7 +46,7 @@ void TEscortMission::Initialize() {
 // FUNCTION: IMPERIALISM 0x00539ca0
 void TEscortMission::CalculateImportance() {
   TGreatPower* nation = g_apNationStates[nationId];
-  short needCap = (nation != nullptr) ? nation->transportCapacity : 0;
+  short needCap = (nation != NULL) ? nation->transportCapacity : 0;
   if (needCap == 0) {
     needCap = 1;
   }
@@ -56,7 +56,7 @@ void TEscortMission::CalculateImportance() {
   TZone* cachedOwner = *cachedOwnerSlot;
   float score = static_cast<float>(cachedOwner->ComputeMapActionContextNodeValueAverage());
 
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
+  for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
     TZone** zoneOwnerSlot = &zone->primaryNeighbors[0];
     if (*zoneOwnerSlot == cachedOwner) {
       short ownerNationCode = zone->GetPortOwnerNation();
@@ -78,7 +78,7 @@ void TEscortMission::CalculateNeeds() {
 
   for (int i = 7; i < 23; ++i) {
     TMinor* nation = g_apSecondaryNationStateSlots[i];
-    if (nation == nullptr) {
+    if (nation == NULL) {
       continue;
     }
 
@@ -105,7 +105,7 @@ void TEscortMission::CalculateNeeds() {
     TZone* targetContext = homePortZone->primaryNeighbors[0];
 
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-    for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+    for (TShip* node = TShip::GetFirst(); node != NULL; node = node->next) {
       if (node->location != targetContext) {
         continue;
       }
@@ -160,7 +160,7 @@ bool TEscortMission::Matches(eMissionType missionType, int key, TZone* zoneConte
 
 // FUNCTION: IMPERIALISM 0x0053a290
 void TEscortMission::GiveOrders() {
-  if (orderList != nullptr) {
+  if (orderList != NULL) {
     orderList->active = 0;
     orderList->next->SetChainActiveFlag(0);
   }

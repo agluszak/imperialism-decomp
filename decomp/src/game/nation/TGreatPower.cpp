@@ -228,7 +228,7 @@ void TGreatPower::TraceRail(char* regionMap, short regionId) {
 
 // FUNCTION: IMPERIALISM 0x004dbbb0
 char* TGreatPower::BuildCityInfluenceLevelMap() {
-  BuildTransportLinkedInfluenceMap(nullptr);
+  BuildTransportLinkedInfluenceMap(NULL);
 
   char* influenceByTile = new char[kStrategicTileCount];
   memset(influenceByTile, 0, kStrategicTileCount);
@@ -236,7 +236,7 @@ char* TGreatPower::BuildCityInfluenceLevelMap() {
   CIterator townIter(townMarkerList);
   for (TTown* town = static_cast<TTown*>(townIter.Reset()); townIter.More();
        town = static_cast<TTown*>(townIter.Advance())) {
-    if (town != nullptr && town->transportLinked) {
+    if (town != NULL && town->transportLinked) {
       char influence = static_cast<char>((town->enabledFlag != 0) + 1);
       influenceByTile[town->tileIndex] = influence;
 

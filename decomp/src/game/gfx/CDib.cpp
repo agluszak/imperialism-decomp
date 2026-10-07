@@ -546,7 +546,7 @@ void CDib::CopyRgbQuadTableFrom(const LOGPALETTE* source) {
 // FUNCTION: IMPERIALISM 0x0047b130
 void CDib::AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette) {
   m_hPalette =
-      (palette != nullptr) ? static_cast<HPALETTE>(palette->m_hObject) : static_cast<HPALETTE>(0);
+      (palette != NULL) ? static_cast<HPALETTE>(palette->m_hObject) : static_cast<HPALETTE>(0);
   RGBQUAD* dest = static_cast<RGBQUAD*>(m_colorTablePixels);
   int index = 0;
   if (0 < m_paletteCount) {

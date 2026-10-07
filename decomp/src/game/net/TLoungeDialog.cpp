@@ -79,7 +79,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
       YouHaveNewGameData();
       g_pGameFlowState->DispatchTurnEventCode9WithTwoTextTokens(
           -0xd, 0, g_pLoungeLocalPlayerNameSharedText, g_pLoungeLocalPlayerNameSharedText);
-      g_pGameFlowState->EmitTurnEventEAnd9SessionContextPackets(nullptr);
+      g_pGameFlowState->EmitTurnEventEAnd9SessionContextPackets(NULL);
     }
   } else {
     g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);

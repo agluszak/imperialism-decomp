@@ -98,7 +98,7 @@ static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tile
 // The loader's original vtable has no destructor slot; every caller owns this exact type.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
-  if (loaderHandle == nullptr) {
+  if (loaderHandle == NULL) {
     return;
   }
   delete *loaderHandle;
@@ -261,7 +261,7 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
   commodityIndex = 0;
   while (commodityIndex < 0x17) {
     TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(commodityIndex + 700);
-    if (loaderHandle != nullptr && *loaderHandle != 0) {
+    if (loaderHandle != NULL && *loaderHandle != 0) {
       TBitmapResourceLoader* loader = *loaderHandle;
       loader->EnsureBitmapResourceLoadedAndCopyRectSize();
       loader->flags |= 1;

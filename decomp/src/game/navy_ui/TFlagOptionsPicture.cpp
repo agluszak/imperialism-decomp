@@ -45,7 +45,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
         if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
           int saveResult = 0;
           if (g_pGameFlowState->networkSavePending != 0) {
-            saveResult = g_pGameFlowState->AttemptSave(0xa1, nullptr, false);
+            saveResult = g_pGameFlowState->AttemptSave(0xa1, NULL, false);
           }
           g_pGameFlowState->DispatchTaggedGameStateEvent1F20(tag, saveResult, -3);
         } else if (tag == kControlTagQuit) {

@@ -44,14 +44,14 @@ void TAmbitApplication::IAmbitApplication() {
   edgeScrollTarget = 0;
   languagePackId = theApp.languagePackId;
 
-  if (g_pLanguageMgr == nullptr) {
+  if (g_pLanguageMgr == NULL) {
     g_pLanguageMgr = new TLanguageMgr();
   }
 
   g_pLanguageMgr->SetLanguage(languagePackId);
 
   TSimMgr* simMgr = new TSimMgr();
-  if (simMgr != nullptr) {
+  if (simMgr != NULL) {
     simMgr->ISimMgr();
   }
   g_pSimMgr = simMgr;
@@ -61,72 +61,72 @@ void TAmbitApplication::IAmbitApplication() {
   g_pAssetMgr = assetMgr;
 
   TViewMgr* viewMgr = new TViewMgr();
-  if (viewMgr != nullptr) {
+  if (viewMgr != NULL) {
     viewMgr->LoadTurnEventCursorTable();
   }
   g_pViewMgr = viewMgr;
 
   TDisplayMgr* displayMgr = new TDisplayMgr();
-  if (displayMgr != nullptr) {
+  if (displayMgr != NULL) {
     displayMgr->IDisplayMgr();
   }
   g_pDisplayMgr = displayMgr;
 
   TMacViewMgr* mapView = new TMacViewMgr();
-  if (mapView != nullptr) {
+  if (mapView != NULL) {
     mapView->IMacViewMgr();
   }
   g_pMacViewMgr = mapView;
 
-  if (g_pHelpMgr == nullptr) {
+  if (g_pHelpMgr == NULL) {
     g_pHelpMgr = new THelpMgr();
   }
-  if (g_pHelpMgr != nullptr) {
+  if (g_pHelpMgr != NULL) {
     g_pHelpMgr->IHelpMgr();
   }
 
-  if (g_pGameFlowState != nullptr) {
+  if (g_pGameFlowState != NULL) {
     g_pGameFlowState->Free();
-    g_pGameFlowState = nullptr;
+    g_pGameFlowState = NULL;
   }
 
   g_pGameFlowState = new TMultiplayerMgr();
-  if (g_pGameFlowState != nullptr) {
+  if (g_pGameFlowState != NULL) {
     g_pGameFlowState->IMultiplayerMgr(0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0049e1a0
 void TAmbitApplication::Free() {
-  if (g_pLanguageMgr != nullptr) {
+  if (g_pLanguageMgr != NULL) {
     g_pLanguageMgr->Free();
-    g_pLanguageMgr = nullptr;
+    g_pLanguageMgr = NULL;
   }
-  if (g_pMacViewMgr != nullptr) {
+  if (g_pMacViewMgr != NULL) {
     g_pMacViewMgr->Free();
-    g_pMacViewMgr = nullptr;
+    g_pMacViewMgr = NULL;
   }
-  if (g_pHelpMgr != nullptr) {
+  if (g_pHelpMgr != NULL) {
     g_pHelpMgr->Free();
-    g_pHelpMgr = nullptr;
+    g_pHelpMgr = NULL;
   }
   g_pSimMgr->Free();
 
-  if (g_pAssetMgr != nullptr) {
+  if (g_pAssetMgr != NULL) {
     g_pAssetMgr->Free();
-    g_pAssetMgr = nullptr;
+    g_pAssetMgr = NULL;
   }
-  if (g_pViewMgr != nullptr) {
+  if (g_pViewMgr != NULL) {
     g_pViewMgr->Free();
-    g_pViewMgr = nullptr;
+    g_pViewMgr = NULL;
   }
-  if (g_pDisplayMgr != nullptr) {
+  if (g_pDisplayMgr != NULL) {
     g_pDisplayMgr->Free();
-    g_pDisplayMgr = nullptr;
+    g_pDisplayMgr = NULL;
   }
-  if (g_pGameFlowState != nullptr) {
+  if (g_pGameFlowState != NULL) {
     g_pGameFlowState->Free();
-    g_pGameFlowState = nullptr;
+    g_pGameFlowState = NULL;
   }
   TApplication::Free();
 }
@@ -150,7 +150,7 @@ void TAmbitApplication::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0049e320
 void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
-  if (!InModalState() && edgeScrollTarget != nullptr) {
+  if (!InModalState() && edgeScrollTarget != NULL) {
     short code = g_pViewMgr->currentTurnEventCode;
     if (code == kTurnEventStrategicMap || code == kTurnEventCitySiteSelector ||
         code == kTurnEventTacticalView || code == kTurnEventTacticalStatusRefresh ||
@@ -198,7 +198,7 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
 
 // FUNCTION: IMPERIALISM 0x0049e4b0
 void TAmbitApplication::DoKeyEvent(TToolboxEvent* event) {
-  if (g_pDisplayMgr != nullptr && g_pDisplayMgr->activeDialog != nullptr) {
+  if (g_pDisplayMgr != NULL && g_pDisplayMgr->activeDialog != NULL) {
     g_pDisplayMgr->activeDialog->DoKeyEvent(event);
   }
 }

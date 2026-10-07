@@ -180,12 +180,12 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
         values[i] = nation->specialResourceTradeBalance << 2;
         break;
       case 6: {
-        TCity* city = (nation == nullptr) ? nullptr : nation->city;
+        TCity* city = (nation == NULL) ? NULL : nation->city;
         values[i] = city->rollingItemProductionScore;
         break;
       }
       case 7: {
-        TCity* city = (nation == nullptr) ? nullptr : nation->city;
+        TCity* city = (nation == NULL) ? NULL : nation->city;
         TPopulationMgr* stats = city->productionSummary;
         TLaborPool* units = stats->productionSlots;
         values[i] = static_cast<short>((units->highSkillCount * 2 + units->mediumSkillCount) * 2 +
@@ -197,7 +197,7 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
         values[i] = nation->aidAllocationTotal / 10;
         break;
       case 9:
-        values[i] = (nation == nullptr) ? 0 : static_cast<int>(nation->transportCapacity) << 1;
+        values[i] = (nation == NULL) ? 0 : static_cast<int>(nation->transportCapacity) << 1;
         break;
       default:
         break;

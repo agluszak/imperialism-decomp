@@ -44,7 +44,7 @@ void TTransFocusAnimation::Free() {
   if (insetBitmapSurface != 0) {
     g_pDisplayMgr->RemoveGWorld(insetBitmapSurface);
   }
-  if (this != nullptr) {
+  if (this != NULL) {
     delete this;
   }
 }

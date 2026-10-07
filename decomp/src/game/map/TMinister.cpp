@@ -13,7 +13,7 @@
 IMPLEMENT_DYNCREATE(TMinister, TObject)
 
 // FUNCTION: IMPERIALISM 0x0052eb80
-TMinister::TMinister() : greatPower(nullptr), ranking(0), skillIndex(0) {}
+TMinister::TMinister() : greatPower(NULL), ranking(0), skillIndex(0) {}
 
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::IMinister(TGreatPower* ownerContext) {

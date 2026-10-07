@@ -240,10 +240,10 @@ struct LoadedVersionResourceBlock {
 // FUNCTION: IMPERIALISM 0x005e0590
 CString TAssetMgr::FormatVersionStringFromVersionResource() {
   CString versionText;
-  HRSRC resourceHandle = FindResourceA(nullptr, MAKEINTRESOURCEA(1), MAKEINTRESOURCEA(16));
-  if (resourceHandle != nullptr) {
-    HGLOBAL loadedResource = LoadResource(nullptr, resourceHandle);
-    if (loadedResource != nullptr) {
+  HRSRC resourceHandle = FindResourceA(NULL, MAKEINTRESOURCEA(1), MAKEINTRESOURCEA(16));
+  if (resourceHandle != NULL) {
+    HGLOBAL loadedResource = LoadResource(NULL, resourceHandle);
+    if (loadedResource != NULL) {
       const LoadedVersionResourceBlock* versionInfo =
           static_cast<const LoadedVersionResourceBlock*>(static_cast<const void*>(loadedResource));
       unsigned int fileVersionMS = versionInfo->fixedInfo.dwFileVersionMS;

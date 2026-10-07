@@ -782,7 +782,7 @@ bool TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory* story, i
   short otherNation;
   do {
     otherNation = static_cast<short>(rand() % 7);
-  } while (otherNation == nationSlot || g_apTerrainTypeDescriptorTable[otherNation] == nullptr);
+  } while (otherNation == nationSlot || g_apTerrainTypeDescriptorTable[otherNation] == NULL);
 
   story->parmKind[1] = 1;
   story->parmValue[1] = 1 << otherNation;

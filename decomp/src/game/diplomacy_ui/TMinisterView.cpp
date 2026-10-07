@@ -79,7 +79,7 @@ TView* TMinisterView::OpenBook(int bookId) {
 // FUNCTION: IMPERIALISM 0x004f2ef0
 void TMinisterView::FreeDisplayArea() {
   TView* dispControl = ResolveControlByTag(kControlTagDisp);
-  if (dispControl != nullptr) {
+  if (dispControl != NULL) {
     dispControl->Free();
   }
 }

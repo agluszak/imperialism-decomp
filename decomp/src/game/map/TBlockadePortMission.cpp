@@ -49,7 +49,7 @@ void TBlockadePortMission::ReadFrom(TStream* stream) {
 void TBlockadePortMission::Initialize() {
   float score = static_cast<float>(missionTargetZone->ComputeMapActionContextNodeValueAverage());
 
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
+  for (TZone* zone = TZone::GetFirstPortZone(); zone != NULL; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortOwnerNation() == nationId) ? g_PortZoneFriendlyMissionScoreMultiplier
@@ -71,15 +71,15 @@ TMission* TBlockadePortMission::GetReplacement() {
   if (!hasCoverage) {
     short contextOrdinal = portZoneContext->GetContextOrdinalOrInvalid();
     nation->SetZoneStatus(contextOrdinal, kMissionDesirabilityUnmarked);
-    return nullptr;
+    return NULL;
   }
 
-  if (resolvedPortZone != nullptr && resolvedPortZone->QueryPortZoneCapability() &&
+  if (resolvedPortZone != NULL && resolvedPortZone->QueryPortZoneCapability() &&
       !resolvedPortZone->QueryZoneCapabilityFlagD(nationId)) {
     resolvedPortZone = RefreshMissionPortZoneContextForNation();
   }
 
-  return (resolvedPortZone != nullptr) ? this : nullptr;
+  return (resolvedPortZone != NULL) ? this : NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x0053ae90
@@ -97,7 +97,7 @@ void TBlockadePortMission::CalculateNeeds() {
   if (portZoneContext->GetPortOwnerNation() < 7) {
     short targetNationCode = portZoneContext->GetPortOwnerNation();
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-    for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+    for (TShip* node = TShip::GetFirst(); node != NULL; node = node->next) {
       if (node->nation == targetNationCode && node->IsInHomePort() &&
           node->GetMaxStrength() <= node->strength) {
         AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);
@@ -107,7 +107,7 @@ void TBlockadePortMission::CalculateNeeds() {
         vector, navyDistributionWeights, 4);
   } else {
     for (int nation = 0; nation < 7; ++nation) {
-      if (g_apNationStates[nation] == nullptr) {
+      if (g_apNationStates[nation] == NULL) {
         continue;
       }
       if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, nation)) {
@@ -115,7 +115,7 @@ void TBlockadePortMission::CalculateNeeds() {
       }
       short targetNationCode = portZoneContext->GetPortOwnerNation();
       float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-      for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+      for (TShip* node = TShip::GetFirst(); node != NULL; node = node->next) {
         if (node->nation == targetNationCode && node->IsInHomePort() &&
             node->GetMaxStrength() <= node->strength) {
           AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);

@@ -5,15 +5,15 @@
 // FUNCTION: IMPERIALISM 0x00495fd0
 TQuickDrawSurfaceContext::~TQuickDrawSurfaceContext() {
   TBitmapSurfaceNode** slot = static_cast<TBitmapSurfaceNode**>(blitSurface.surfaceObject);
-  if (slot != nullptr) {
+  if (slot != NULL) {
     TBitmapSurfaceNode* node = *slot;
-    if (node != nullptr) {
+    if (node != NULL) {
       delete node->dib;
       delete node;
     }
     delete slot;
   }
-  blitSurface.surfaceObject = nullptr;
+  blitSurface.surfaceObject = NULL;
   blitSurface.pixelBits = 0;
   blitSurface.stride = 0;
   blitSurface.pad06 = 0;

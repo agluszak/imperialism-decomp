@@ -132,7 +132,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
     TMapUberPicture* mapPicture = g_pViewMgr->mapUberPicture;
     TView* activeToolbar = mapPicture->categoryPages[mapPicture->activeUnitCategoryIndex];
-    if (activeToolbar != nullptr) {
+    if (activeToolbar != NULL) {
       unsigned int arrowTag =
           kControlTagArmyRatioFirst + g_awTacticalUnitCategoryCodeBySlot[militaryUnit->orderType];
       TNumberedArrowButton* arrow =
@@ -172,7 +172,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 void TArmyUnitView::RenameUnit() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUArmyViews, 0x204);
   }
 
@@ -194,7 +194,7 @@ void TArmyUnitView::RenameUnit() {
 
   node->SetModality(true);
   TDialogBehavior* behavior = node->GetDialogBehavior();
-  if (behavior != nullptr) {
+  if (behavior != NULL) {
     behavior->defaultCommandCode = kControlTagOkay; // 'okay'
   }
   int modalResult = node->PoseModally();

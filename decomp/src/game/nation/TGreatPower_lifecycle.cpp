@@ -482,7 +482,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
     this->townMarkerList->AddTail(townMarker);
   }
 
-  if (entryCount > 0 && this->city != nullptr) {
+  if (entryCount > 0 && this->city != NULL) {
     this->city->SetSelectedTownMarker(
         static_cast<TTown*>(this->townMarkerList->GetEntryByOrdinal(1)));
   }

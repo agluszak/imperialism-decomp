@@ -26,15 +26,15 @@ int TModalDialogBase::PrepareAndCreateModalFromTemplate() {
     AFX_MODULE_STATE* moduleState = AfxGetModuleState();
     HMODULE module = moduleState->m_hCurrentInstanceHandle;
     HRSRC resourceInfo = ::FindResourceA(module, MAKEINTRESOURCEA(templateId), RT_DIALOG);
-    if (resourceInfo == nullptr) {
+    if (resourceInfo == NULL) {
       return 0;
     }
     loadedResource = ::LoadResource(module, resourceInfo);
   }
-  if (loadedResource != nullptr) {
+  if (loadedResource != NULL) {
     templateBytes = ::LockResource(loadedResource);
   }
-  if (templateBytes == nullptr) {
+  if (templateBytes == NULL) {
     return 0;
   }
 
@@ -42,7 +42,7 @@ int TModalDialogBase::PrepareAndCreateModalFromTemplate() {
   AfxUnhookWindowCreate();
   CWnd* owner = CWnd::FromHandle(ownerWindow);
   ownerWasDisabled = 0;
-  if (ownerWindow != nullptr && ::IsWindowEnabled(ownerWindow)) {
+  if (ownerWindow != NULL && ::IsWindowEnabled(ownerWindow)) {
     ::EnableWindow(ownerWindow, FALSE);
     ownerWasDisabled = 1;
   }
@@ -68,7 +68,7 @@ int TModalDialogBase::DoModal() {
   if (ownerWasDisabled != 0) {
     ::EnableWindow(ownerWindow, TRUE);
   }
-  if (ownerWindow != nullptr) {
+  if (ownerWindow != NULL) {
     HWND activeWindow = ::GetActiveWindow();
     if (activeWindow == m_hWnd) {
       ::SetActiveWindow(ownerWindow);

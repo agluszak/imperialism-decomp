@@ -36,8 +36,8 @@ void TRightLeftView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
 
   if (this->controlTag == kControlTagRght) {
-    this->HandleEvent(100, this, nullptr);
+    this->HandleEvent(100, this, NULL);
   } else {
-    this->HandleEvent(101, this, nullptr);
+    this->HandleEvent(101, this, NULL);
   }
 }

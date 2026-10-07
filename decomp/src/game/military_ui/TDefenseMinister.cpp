@@ -143,17 +143,17 @@ void TDefenseMinister::DoPeacetimeDeployment() {
   unsigned char* priorityMap = this->CreatePeaceDefenseMap(ownedRegionsList);
 
   TList* bucket1 = new TList();
-  if (bucket1 == nullptr) {
+  if (bucket1 == NULL) {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x12f);
   }
 
   TList* bucket2 = new TList();
-  if (bucket2 == nullptr) {
+  if (bucket2 == NULL) {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x130);
   }
 
   TList* bucket3 = new TList();
-  if (bucket3 == nullptr) {
+  if (bucket3 == NULL) {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x131);
   }
 
@@ -191,7 +191,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
   n -= 2;
   if (n > 0) {
     short* scratchBuf = new short[n];
-    if (scratchBuf == nullptr) {
+    if (scratchBuf == NULL) {
       FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x15e);
     }
 
@@ -246,7 +246,7 @@ unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegion
   int regionCount = ownedRegions->GetSize();
 
   unsigned char* priorityMap = new unsigned char[kStrategicTileCount];
-  if (priorityMap == nullptr) {
+  if (priorityMap == NULL) {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x1a9);
   }
   memset(priorityMap, 0, kStrategicTileCount);
@@ -368,12 +368,12 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
   }
 
   int* weightSum = new int[kStrategicTileCount];
-  if (weightSum == nullptr) {
+  if (weightSum == NULL) {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x24a);
   }
 
   int* maxWeight = new int[kStrategicTileCount];
-  if (weightSum == nullptr) {
+  if (weightSum == NULL) {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x24e);
   }
 

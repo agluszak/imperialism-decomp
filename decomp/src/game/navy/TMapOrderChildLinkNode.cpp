@@ -8,7 +8,7 @@
 
 // FUNCTION: IMPERIALISM 0x00536f70
 void TMapOrderChildLinkNode::SetChainActiveFlag(unsigned char flag) {
-  for (TMapOrderChildLinkNode* node = this; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = this; node != NULL; node = node->next) {
     node->active = flag;
   }
 }
@@ -20,10 +20,10 @@ void TMapOrderChildLinkNode::InitAndLinkBetween(TShip* child, TMapOrderChildLink
   next = nextNode;
   prev = prevNode;
   active = 1;
-  if (nextNode != nullptr) {
+  if (nextNode != NULL) {
     nextNode->prev = this;
   }
-  if (prev != nullptr) {
+  if (prev != NULL) {
     prev->next = this;
   }
 }
@@ -46,18 +46,18 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TShip* child_no
 // FUNCTION: IMPERIALISM 0x00552540
 void TMapOrderChildLinkNode::RelinkBetween(TMapOrderChildLinkNode* prevNode,
                                            TMapOrderChildLinkNode* nextNode) {
-  if (prev != nullptr) {
+  if (prev != NULL) {
     prev->next = next;
   }
-  if (next != nullptr) {
+  if (next != NULL) {
     next->prev = prev;
   }
   prev = prevNode;
   next = nextNode;
-  if (prevNode != nullptr) {
+  if (prevNode != NULL) {
     prevNode->next = this;
   }
-  if (next != nullptr) {
+  if (next != NULL) {
     next->prev = this;
   }
 }

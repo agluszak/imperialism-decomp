@@ -66,7 +66,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
   do {
     CString cellText;
     TView* ctrl = this->ResolveControlByTag(*tagPtr);
-    if (ctrl == nullptr) {
+    if (ctrl == NULL) {
       FailNilPointerWithAssert(s_SourcePathUTradeViews, 0xbf);
     }
 
@@ -109,7 +109,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
   } while (tagPtr < &g_tradeCommodityRowTagTable[17]);
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
-  if (g_pQuickDrawMemoryDc != nullptr &&
+  if (g_pQuickDrawMemoryDc != NULL &&
       ::GetBkMode(g_pQuickDrawMemoryDc->GetSafeHdc()) == TRANSPARENT) {
     ++g_runtimeTradeTransparentTextDrawCount;
   }

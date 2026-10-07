@@ -1218,7 +1218,7 @@ void TAutoGreatPower::LoseProvince(int regionId) {
   CIterator missionCursor(this->missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
-    if (mission->Matches(kMissionTypeDefendProvince, regionId, nullptr)) {
+    if (mission->Matches(kMissionTypeDefendProvince, regionId, NULL)) {
       CPtrList* listState = &this->missionQueue->listState;
       POSITION pos = listState->Find(mission, 0);
       if (pos != 0) {
@@ -1488,17 +1488,17 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
 
 // FUNCTION: IMPERIALISM 0x004eae70
 void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
-  if (city == nullptr) {
+  if (city == NULL) {
     return;
   }
 
   CIterator unitIter(militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-    if (unit->ownerMission == nullptr &&
+    if (unit->ownerMission == NULL &&
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* mission =
-          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex, nullptr);
+          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex, NULL);
       mission->AcceptReenforcement(unit, true);
     }
   }
@@ -1520,10 +1520,10 @@ void TAutoGreatPower::AssignMilitiaToDefendMissions() {
   CIterator iter(militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
-    if (unit->ownerMission == nullptr &&
+    if (unit->ownerMission == NULL &&
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* handler =
-          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex, nullptr);
+          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex, NULL);
       handler->AcceptReenforcement(unit, true);
     }
   }
@@ -1698,7 +1698,7 @@ short CompareMissionsByWeightedShortfall(TMission* left, TMission* right) {
 void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused) {
   missionQueue->SortBy(&CompareMissionOrderEntriesByMovementClassThenEfficiency, this);
 
-  TMission* nextByClass[4] = {nullptr, nullptr, nullptr, nullptr};
+  TMission* nextByClass[4] = {NULL, NULL, NULL, NULL};
   int availableClassMask = 3;
   {
     CIterator candidateIter(missionQueue);
@@ -1716,7 +1716,7 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
        mission = static_cast<TMission*>(missionIter.Advance())) {
     int classMask = static_cast<char>(mission->marker11);
     if (nextByClass[classMask] == mission) {
-      nextByClass[classMask] = nullptr;
+      nextByClass[classMask] = NULL;
     }
 
     bool eligible =
@@ -1726,7 +1726,7 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
     }
     if (eligible && classMask != 0) {
       TMission* nextMission = nextByClass[classMask];
-      if (nextMission != nullptr) {
+      if (nextMission != NULL) {
         float nextMissionRatio =
             nextMission->importanceScore / nextMission->IndustrialCostOfNeeds();
         float missionRatio = mission->importanceScore / mission->IndustrialCostOfNeeds();
@@ -1766,16 +1766,16 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
   float weightFractions[9];
   int total;
   for (;;) {
-    TMission* bestNavy = nullptr;
+    TMission* bestNavy = NULL;
     {
       CIterator navyIter(missionQueue);
       for (TMission* entry = static_cast<TMission*>(navyIter.Reset()); navyIter.More();
            entry = static_cast<TMission*>(navyIter.Advance())) {
         TMission* candidate = entry->GetNavyMission();
-        if (candidate == nullptr || candidate->flag10 != 0) {
+        if (candidate == NULL || candidate->flag10 != 0) {
           continue;
         }
-        if (bestNavy == nullptr) {
+        if (bestNavy == NULL) {
           bestNavy = candidate;
           continue;
         }
@@ -1797,7 +1797,7 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
       }
     }
 
-    if (bestNavy != nullptr) {
+    if (bestNavy != NULL) {
       for (int navyZeroIdx = 0; navyZeroIdx < 9; ++navyZeroIdx) {
         weights[navyZeroIdx] = 0;
       }
@@ -1807,40 +1807,40 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
             static_cast<float>(weights[navyWeightIdx]) / static_cast<float>(total);
       }
 
-      TShip* bestShip = nullptr;
+      TShip* bestShip = NULL;
       float bestShipScore = 0.0f;
-      for (TShip* shipNode = TShip::GetFirst(); shipNode != nullptr; shipNode = shipNode->next) {
-        if (shipNode->nation == nationSlot && shipNode->mission == nullptr) {
+      for (TShip* shipNode = TShip::GetFirst(); shipNode != NULL; shipNode = shipNode->next) {
+        if (shipNode->nation == nationSlot && shipNode->mission == NULL) {
           float score = bestNavy->FitnessOf(shipNode, weightFractions);
-          if (bestShip == nullptr || bestShipScore < score) {
+          if (bestShip == NULL || bestShipScore < score) {
             bestShipScore = score;
             bestShip = shipNode;
           }
         }
       }
 
-      if (bestShip != nullptr) {
+      if (bestShip != NULL) {
         bestNavy->AcceptReenforcement(bestShip, true);
         continue;
       }
     }
 
-    TMission* bestArmy = nullptr;
-    TMission* eligibleRunnerUp = nullptr;
+    TMission* bestArmy = NULL;
+    TMission* eligibleRunnerUp = NULL;
     {
       CIterator armyIter(missionQueue);
       for (TMission* entry = static_cast<TMission*>(armyIter.Reset()); armyIter.More();
            entry = static_cast<TMission*>(armyIter.Advance())) {
         TMission* candidate = entry->GetArmyMission();
-        if (candidate == nullptr || candidate->flag10 != 0) {
+        if (candidate == NULL || candidate->flag10 != 0) {
           continue;
         }
         float candidateScore = ComputeMissionRemainingPriorityScore(candidate);
-        if (eligibleRunnerUp == nullptr && candidateScore > g_MissionScoreZeroThreshold &&
+        if (eligibleRunnerUp == NULL && candidateScore > g_MissionScoreZeroThreshold &&
             (candidate->marker11 & 1) != 0) {
           eligibleRunnerUp = candidate;
         }
-        if (bestArmy == nullptr) {
+        if (bestArmy == NULL) {
           bestArmy = candidate;
           continue;
         }
@@ -1860,10 +1860,10 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
       }
     }
 
-    if (bestArmy == nullptr) {
+    if (bestArmy == NULL) {
       return;
     }
-    if (eligibleRunnerUp != nullptr &&
+    if (eligibleRunnerUp != NULL &&
         static_cast<char>(eligibleRunnerUp->state08) <= static_cast<char>(bestArmy->state08) &&
         (bestArmy->marker11 & 1) == 0) {
       float bestArmyRatio = bestArmy->importanceScore / bestArmy->IndustrialCostOfNeeds();
@@ -1893,15 +1893,15 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
           static_cast<float>(weights[armyNormIdx]) / static_cast<float>(total);
     }
 
-    TMilitaryUnit* bestUnit = nullptr;
+    TMilitaryUnit* bestUnit = NULL;
     float bestUnitScore = 0.0f;
     {
       CIterator unitIter(militaryUnitList);
       for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
            unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-        if (unit->ownerMission == nullptr) {
+        if (unit->ownerMission == NULL) {
           float score = bestArmy->FitnessOf(unit, weightFractions);
-          if (bestUnit == nullptr || bestUnitScore < score) {
+          if (bestUnit == NULL || bestUnitScore < score) {
             bestUnitScore = score;
             bestUnit = unit;
           }
@@ -1909,7 +1909,7 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
       }
     }
 
-    if (bestUnit == nullptr) {
+    if (bestUnit == NULL) {
       return;
     }
     bestArmy->AcceptReenforcement(bestUnit, true);

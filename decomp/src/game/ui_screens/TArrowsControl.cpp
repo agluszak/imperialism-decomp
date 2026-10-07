@@ -34,8 +34,8 @@ void TArrowsControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
 
   if (point->y <= this->frameHeight / 2) {
-    this->HandleEvent(100, this, nullptr);
+    this->HandleEvent(100, this, NULL);
   } else {
-    this->HandleEvent(101, this, nullptr);
+    this->HandleEvent(101, this, NULL);
   }
 }

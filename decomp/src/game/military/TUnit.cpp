@@ -67,16 +67,16 @@ void TUnit::ContinueOrders() {
 
 // FUNCTION: IMPERIALISM 0x005c2680
 void TUnit::Free() {
-  TSortedList* manager = nullptr;
+  TSortedList* manager = NULL;
   if (!this->militaryRegistrationFlag) {
     manager = g_apNationStates[this->ownerNationSlot]->trackedObjectList;
   } else {
     TCountry* terrain = g_apTerrainTypeDescriptorTable[this->ownerNationSlot];
     manager = terrain->militaryUnitList;
   }
-  if (manager != nullptr) {
+  if (manager != NULL) {
     POSITION pos = manager->listState.Find(this);
-    if (pos != nullptr) {
+    if (pos != NULL) {
       manager->listState.RemoveAt(pos);
     }
   }

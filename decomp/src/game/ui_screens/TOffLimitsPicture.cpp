@@ -5,7 +5,7 @@
 IMPLEMENT_DYNCREATE(TOffLimitsPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005737d0
-TOffLimitsPicture::TOffLimitsPicture() : TPicture(), ownClipRegion(nullptr) {}
+TOffLimitsPicture::TOffLimitsPicture() : TPicture(), ownClipRegion(NULL) {}
 
 // FUNCTION: IMPERIALISM 0x00573830
 TOffLimitsPicture::~TOffLimitsPicture() {}
@@ -19,7 +19,7 @@ void TOffLimitsPicture::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x00573890
 void TOffLimitsPicture::Draw(RECT* rectBuffer) {
-  if (ownClipRegion != nullptr) {
+  if (ownClipRegion != NULL) {
     GetActiveQuickDrawDc()->SelectClipRgn(&(*ownClipRegion)->rgn, RGN_DIFF);
     TPicture::Draw(rectBuffer);
     GetActiveQuickDrawDc()->SelectClipRgn(0, RGN_COPY);
@@ -29,7 +29,7 @@ void TOffLimitsPicture::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x00573900
 void TOffLimitsPicture::Free() {
   DisposeRgn(ownClipRegion);
-  ownClipRegion = nullptr;
+  ownClipRegion = NULL;
   TView::Free();
 }
 

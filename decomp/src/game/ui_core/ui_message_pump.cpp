@@ -7,7 +7,7 @@ char __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode) {
   MSG msg;
   int continueIdle = 1;
   LONG idleCount = 0;
-  while (continueIdle != 0 && PeekMessageA(&msg, nullptr, 0, 0, PM_NOREMOVE) == 0) {
+  while (continueIdle != 0 && PeekMessageA(&msg, NULL, 0, 0, PM_NOREMOVE) == 0) {
     LONG currentIdleCount = idleCount;
     ++idleCount;
     if (AfxGetApp()->OnIdle(currentIdleCount) == 0) {

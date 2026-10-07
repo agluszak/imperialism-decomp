@@ -233,7 +233,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
     if (g_pApplication->screenMode > 1) {
       TView* okayControl = ResolveControlByTag(kControlTagOkay);
-      if (okayControl != nullptr) {
+      if (okayControl != NULL) {
         QueueDeferredUiEventPacket(this, 0xa, okayControl);
       }
     }

@@ -31,7 +31,7 @@ void TMegaPicture::IMegaPicture(TView* panel, int* offsetLayout, int* sizeLayout
 void TMegaPicture::Draw(RECT* rectBuffer) {
   CRect contentRect(*rectBuffer);
   CRect screenRect = ViewToQDRect(&contentRect);
-  if (surfaceContext == nullptr) {
+  if (surfaceContext == NULL) {
     return;
   }
   ResetQuickDrawStrokeState();
@@ -126,8 +126,7 @@ void TMegaPicture::SetMode(unsigned short value, bool refreshNow) {
 }
 
 // FUNCTION: IMPERIALISM 0x005736c0
-void TMegaPicture::ClearModeBits(unsigned short mask, char useAndMask,
-                                                         char refreshNow) {
+void TMegaPicture::ClearModeBits(unsigned short mask, char useAndMask, char refreshNow) {
   if (useAndMask) {
     modeFlags &= mask;
   } else {

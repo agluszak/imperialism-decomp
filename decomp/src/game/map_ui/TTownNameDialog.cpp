@@ -27,7 +27,7 @@ void TTownNameDialog::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
   TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagName));
-  if (nameControl == nullptr) {
+  if (nameControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x4d3);
   }
 
@@ -44,7 +44,7 @@ void TTownNameDialog::DoPostCreate(int arg) {
 void TTownNameDialog::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
   TView* nameControl = ResolveControlByTag(kControlTagName);
-  if (nameControl != nullptr) {
+  if (nameControl != NULL) {
     CRect bounds;
     nameControl->QueryBounds(&bounds);
     g_pViewMgr->SetForeColor(0xf);

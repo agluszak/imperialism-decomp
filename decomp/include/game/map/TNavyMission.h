@@ -25,11 +25,11 @@ public:
   float requiredShipEquipageByCategory[4]; // +0x2c
 
   TNavyMission() : TMission() {
-    missionTargetZone = nullptr;
-    resolvedPortZone = nullptr;
-    selectedOrder = nullptr;
-    this->taskForce = nullptr;
-    orderList = nullptr;
+    missionTargetZone = NULL;
+    resolvedPortZone = NULL;
+    selectedOrder = NULL;
+    this->taskForce = NULL;
+    orderList = NULL;
     navyState = 0;
     for (int i = 0; i < 4; ++i) {
       requiredShipEquipageByCategory[i] = 0.0f;

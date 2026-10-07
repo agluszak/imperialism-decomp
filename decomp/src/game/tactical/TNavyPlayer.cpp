@@ -22,7 +22,7 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
   unitList = new TList();
   sideReadyFlag = false;
 
-  for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = force->shipList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     TNavyTacUnit* unit = new TNavyTacUnit();
     unit->InitializeFromSourceShip(ship);

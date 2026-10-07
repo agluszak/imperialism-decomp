@@ -30,7 +30,7 @@ void TNumberText::SetControlValue(int val, int refresh) {
 
 // FUNCTION: IMPERIALISM 0x004911c0
 int TNumberText::UpdateControlCachedIntFromWindowText() {
-  if (this->editWindow != nullptr) {
+  if (this->editWindow != NULL) {
     CString textVal;
     this->editWindow->GetWindowText(textVal);
     this->value = atoi(textVal);

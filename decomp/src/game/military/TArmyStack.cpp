@@ -17,18 +17,18 @@
 // FUNCTION: IMPERIALISM 0x004a3b70
 TMilitaryUnit* TArmyStack::ResetCursorAndGetHeadUnit() {
   this->cursor = this->head14;
-  return (this->head14 != nullptr) ? this->head14->unit : nullptr;
+  return (this->head14 != NULL) ? this->head14->unit : NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3b90
 TMilitaryUnit* TArmyStack::AdvanceCursorAndGetUnit() {
-  if (this->cursor != nullptr) {
+  if (this->cursor != NULL) {
     this->cursor = this->cursor->next;
-    if (this->cursor != nullptr) {
+    if (this->cursor != NULL) {
       return this->cursor->unit;
     }
   }
-  return nullptr;
+  return NULL;
 }
 
 IMPLEMENT_DYNCREATE(TArmyStack, TObject)
@@ -108,7 +108,7 @@ void TArmyStack::AddUnitByRosterId(short rosterID) {
 // FUNCTION: IMPERIALISM 0x004a7b20
 void TArmyStack::AddUnitToChainHead(TMilitaryUnit* unit) {
   TArmyStackUnitNode* node = new TArmyStackUnitNode();
-  if (node == nullptr) {
+  if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUArmyMgr, 0xbeb);
   }
   node->unit = unit;
@@ -120,7 +120,7 @@ void TArmyStack::AddUnitToChainHead(TMilitaryUnit* unit) {
 // FUNCTION: IMPERIALISM 0x004a7ba0
 void TArmyStack::RemoveUnitFromChain(TMilitaryUnit* unit) {
   TArmyStackUnitNode* prev = head14;
-  if (prev != nullptr) {
+  if (prev != NULL) {
     TArmyStackUnitNode* node = prev->next;
     if (prev->unit == unit) {
       head14 = node;
@@ -128,11 +128,11 @@ void TArmyStack::RemoveUnitFromChain(TMilitaryUnit* unit) {
       --unitCount;
       return;
     }
-    for (; node != nullptr && node->unit != unit; node = node->next) {
+    for (; node != NULL && node->unit != unit; node = node->next) {
       prev = node;
     }
     TArmyStackUnitNode* found = prev->next;
-    if (found != nullptr) {
+    if (found != NULL) {
       prev->next = found->next;
       delete found;
       --unitCount;

@@ -53,7 +53,7 @@ TAdmiral::TAdmiral(NationSlot nationSlotArg)
 }
 
 static void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContext) {
-  if (ownerContext != nullptr) {
+  if (ownerContext != NULL) {
     ownerContext->ElectFlagship();
   }
 }
@@ -302,7 +302,7 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) cons
 // FUNCTION: IMPERIALISM 0x00552160
 int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) const {
   int total = 0;
-  for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = force->shipList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     short resourceType = ship->type;
     short strengthBucket = static_cast<short>(ship->experience / 100);

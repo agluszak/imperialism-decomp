@@ -28,7 +28,7 @@ TMission* TArmyMission::GetArmyMission() {
 
 // FUNCTION: IMPERIALISM 0x00535730
 TMission* TArmyMission::GetNavyMission() {
-  return nullptr;
+  return NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x00535750
@@ -44,7 +44,7 @@ TArmyMission::TArmyMission(int nodeKey) : TMission() {
 
   TList* list = new TList;
   orderList = list;
-  if (list == nullptr) {
+  if (list == NULL) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
   }
 
@@ -75,20 +75,20 @@ void TArmyMission::AccumulateOrderPriorityVector(float* vector) const {
 
 // FUNCTION: IMPERIALISM 0x0053c220
 void TArmyMission::Free() {
-  if (orderList != nullptr) {
+  if (orderList != NULL) {
     CIterator iter(orderList);
     void* current = iter.Reset();
     while (iter.More()) {
-      static_cast<TMilitaryUnit*>(current)->ownerMission = nullptr;
+      static_cast<TMilitaryUnit*>(current)->ownerMission = NULL;
       current = iter.Advance();
     }
 
     orderList->RemoveAll();
     orderList->FreePayloadsAndDestroy();
-    orderList = nullptr;
+    orderList = NULL;
   }
 
-  if (this != nullptr) {
+  if (this != NULL) {
     delete this;
   }
 }
@@ -134,7 +134,7 @@ void TArmyMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053c4f0
 bool TArmyMission::SmokeEmIfYouGotEm() {
-  if (orderList != nullptr) {
+  if (orderList != NULL) {
     CIterator iter(orderList);
     void* item = iter.Reset();
     while (iter.More()) {
@@ -153,7 +153,7 @@ bool TArmyMission::SmokeEmIfYouGotEm() {
 void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, bool notify) {
   unit->AssertValid();
   TMission* owner = unit->ownerMission;
-  if (owner != nullptr) {
+  if (owner != NULL) {
     owner->RejectConstituent(unit, notify);
   }
   unit->ownerMission = this;
@@ -165,13 +165,13 @@ void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, bool notify) {
 
 // FUNCTION: IMPERIALISM 0x0053c5e0
 void TArmyMission::RejectConstituent(TMilitaryUnit* unit, bool notify) {
-  if (orderList != nullptr) {
+  if (orderList != NULL) {
     POSITION pos = orderList->listState.Find(unit);
-    if (pos != nullptr) {
+    if (pos != NULL) {
       orderList->listState.RemoveAt(pos);
     }
   }
-  unit->ownerMission = nullptr;
+  unit->ownerMission = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x0053c620
@@ -484,5 +484,5 @@ float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVect
 TMission* TArmyMission::GetReplacement() {
   short tileOwnerNationCode =
       g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
-  return (tileOwnerNationCode == nationId) ? this : nullptr;
+  return (tileOwnerNationCode == nationId) ? this : NULL;
 }

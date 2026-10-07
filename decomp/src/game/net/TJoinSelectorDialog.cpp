@@ -42,7 +42,7 @@ void TJoinSelectorDialog::DoPostCreate(int arg) {
   CString normalizedPlayerName = g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameString);
   ApplyControlThemeStyleAndOptionalCaption(nameControl, 0, 0xc, 0x2b6b, 1, normalizedPlayerName);
   nameControl->maxCharacterCount = 0xc;
-  if (nameControl->editWindow != nullptr) {
+  if (nameControl->editWindow != NULL) {
     nameControl->editWindow->SendMessage(0xc5, nameControl->maxCharacterCount, 0);
   }
 
