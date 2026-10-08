@@ -125,6 +125,9 @@ pub struct PendingWorkState {
     pub nations: MajorNationTable<NationPendingWork>,
     pub newspaper_events: Vec<PendingNewspaperEvent>,
     pub war_transitions: Vec<WarTransition>,
+    /// Active-nation prompts queued by `DispatchPendingStatusPrompts` for the
+    /// current newspaper; retail shows them over the newspaper in this order.
+    pub status_prompts: Vec<crate::PendingStatusPrompt>,
 }
 
 pub const NEWS_TEMPLATE_COUNT: usize = 360;
@@ -342,11 +345,67 @@ pub enum TurnSummary {
     },
 }
 impl TurnSummary {
+    pub const fn turn_tick(self) -> i32 {
+        match self {
+            Self::MilitaryRecruit { turn_tick, .. } | Self::Retail { turn_tick, .. } => turn_tick,
+        }
+    }
+
     pub(crate) const fn order_key(self) -> i16 {
         match self {
             Self::MilitaryRecruit { .. } => 3,
             Self::Retail { order_kind, .. } => order_kind,
         }
+    }
+}
+
+/// Retail `TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch` content: the
+/// summary entries recorded during the previous economic turn, in queue order.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PreviousTurnSummary {
+    pub entries: Vec<TurnSummary>,
+    /// Merchant capacity granted by `order_kind == 1` entries; `None` when zero.
+    pub aid_capacity: Option<i16>,
+}
+
+impl GameState {
+    /// Retail `TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch` minus
+    /// presentation: `None` when no entry dates from the previous economic turn.
+    pub fn previous_turn_summary(&self, nation: MajorNationId) -> Option<PreviousTurnSummary> {
+        let previous_turn = self.turn.economic_turn - 1;
+        let mut total_grant: i16 = 0;
+        let entries: Vec<TurnSummary> = self.pending.nations[nation]
+            .turn_summary
+            .iter()
+            .copied()
+            .filter(|entry| entry.turn_tick() == previous_turn)
+            .inspect(|entry| {
+                if let TurnSummary::Retail {
+                    order_kind: 1,
+                    payload,
+                    flags,
+                    ..
+                } = entry
+                    && let Some(ship_type) = u8::try_from(*payload)
+                        .ok()
+                        .and_then(crate::ShipType::from_index)
+                {
+                    total_grant = total_grant.wrapping_add(
+                        crate::city_industry::ship_type_merchant_weight(ship_type)
+                            .wrapping_mul(*flags),
+                    );
+                }
+            })
+            .collect();
+        if entries.is_empty() {
+            return None;
+        }
+        let aid_capacity =
+            (total_grant != 0).then(|| self.nations.major(nation).economy.capacities.trade_offer);
+        Some(PreviousTurnSummary {
+            entries,
+            aid_capacity,
+        })
     }
 }
 
@@ -919,6 +978,73 @@ mod tests {
                 nation_mask_arg(1 << 2),
                 NewsArgument::Empty,
             ]
+        );
+    }
+
+    #[test]
+    fn previous_turn_summary_keeps_only_last_turn_entries_in_order() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        state.turn.economic_turn = 5;
+        let stale = TurnSummary::Retail {
+            turn_tick: 3,
+            order_kind: 0,
+            payload: 2,
+            flags: 1,
+        };
+        let recruit = TurnSummary::MilitaryRecruit {
+            turn_tick: 4,
+            unit_type: MilitaryUnitKind::from_index(1).unwrap(),
+            count: 2,
+        };
+        let goods = TurnSummary::Retail {
+            turn_tick: 4,
+            order_kind: 2,
+            payload: 7,
+            flags: 3,
+        };
+        state.pending.nations[nation].turn_summary = vec![stale, recruit, goods];
+
+        assert_eq!(
+            state.previous_turn_summary(nation),
+            Some(PreviousTurnSummary {
+                entries: vec![recruit, goods],
+                aid_capacity: None,
+            })
+        );
+
+        state.turn.economic_turn = 6;
+        assert_eq!(state.previous_turn_summary(nation), None);
+    }
+
+    #[test]
+    fn previous_turn_summary_reports_merchant_capacity_after_weighted_ship_grants() {
+        let mut state = game_state();
+        let nation = MajorNationId::new(0);
+        state.turn.economic_turn = 2;
+        state.nations.majors[&nation].economy.capacities.trade_offer = 27;
+        let unweighted = TurnSummary::Retail {
+            turn_tick: 1,
+            order_kind: 1,
+            payload: crate::ShipType::Frigate as i16,
+            flags: 2,
+        };
+        state.pending.nations[nation].turn_summary = vec![unweighted];
+        assert_eq!(
+            state.previous_turn_summary(nation).unwrap().aid_capacity,
+            None
+        );
+
+        let trader = TurnSummary::Retail {
+            turn_tick: 1,
+            order_kind: 1,
+            payload: crate::ShipType::Trader as i16,
+            flags: 1,
+        };
+        state.pending.nations[nation].turn_summary = vec![unweighted, trader];
+        assert_eq!(
+            state.previous_turn_summary(nation).unwrap().aid_capacity,
+            Some(27)
         );
     }
 }
